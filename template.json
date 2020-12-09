@@ -1,12 +1,139 @@
 {
   "Actor": {
     "types": [
+      "player_character",
+      "non_player_character"
     ],
     "templates": {
+      "physiology": {
+        "race": 0,
+        "ghoul": false
+      },
+      "special": {
+        "strength": {
+          "value": 5,
+          "temp_mod": 0,
+          "perm_mod": 0
+        },
+        "perception": {
+          "value": 5,
+          "temp_mod": 0,
+          "perm_mod": 0
+        },
+        "endurance": {
+          "value": 5,
+          "temp_mod": 0,
+          "perm_mod": 0
+        },
+        "charisma": {
+          "value": 5,
+          "temp_mod": 0,
+          "perm_mod": 0
+        },
+        "intelligence": {
+          "value": 5,
+          "temp_mod": 0,
+          "perm_mod": 0
+        },
+        "luck": {
+          "value": 5,
+          "temp_mod": 0,
+          "perm_mod": 0
+        }
+      },
+      "secondary": {
+        "level": 1,
+        "experience": 0,
+        "health": {
+          "value": 10,
+          "max": 10,
+          "mod": 0
+        },
+        "healing_rate": {
+          "value": 2,
+          "mod": 0
+        },
+        "action_points": {
+          "value": 10,
+          "max": 10,
+          "mod": 0
+        },
+        "strain": {
+          "value": 20,
+          "max": 20,
+          "mod": 0
+        },
+        "insanity": {
+          "value": 0,
+          "max": 5,
+          "mod": 0
+        },
+        "size": 0,
+        "carry_weight": 10,
+        "resistances": {
+          "poison": {
+            "value": 10,
+            "mod": 0
+          },
+          "radiation": {
+            "value": 5,
+            "mod": 0
+          }
+        },
+        "magic_force_mod": 0
+      },
+      "skills": {
+        "skills": {
+          "barter": {},
+          "diplomacy": {},
+          "explosives": {},
+          "firearms": {},
+          "intimidation": {},
+          "lockpick": {},
+          "magical_energy_weapons": {},
+          "mechanics": {},
+          "medicine": {},
+          "melee": {},
+          "science": {},
+          "sleight": {},
+          "sneak": {},
+          "survival": {},
+          "thaumaturgy": {},
+          "unarmed": {}
+        },
+        "skill_points":0,
+        "critical_success": 5,
+        "critical_failure": 95
+      },
+      "resistances": {
+      },
+      "flavor": {
+        "virtue": "",
+        "karma": {
+          "min": -100,
+          "value": 0,
+          "max": 100
+        },
+        "special_talent": ""
+      },
+      "background": {
+        "name": "",
+        "background": "",
+        "history": "",
+        "fears": "",
+        "dreams": ""
+      }
     }
   },
   "Item": {
     "types": [
+      "item",
+      "trait",
+      "perk",
+      "spell",
+      "mark",
+      "schematic",
+      "aerial_maneuver"
     ],
     "templates": {
     }

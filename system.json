@@ -28,10 +28,10 @@
     }
   ],
   "socket": false,
-  "initiative": "1d10 + (@attributes.perception)",
+  "initiative": "1d10 + (@special.perception)",
   "gridDistance": 2,
   "gridUnits": "m",
-  "primaryTokenAttribute": "resources.health",
-  "secondaryTokenAttribute": "resources.action_points",
+  "primaryTokenAttribute": "secondary.health",
+  "secondaryTokenAttribute": "secondary.action_points",
   "url": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module"
 }

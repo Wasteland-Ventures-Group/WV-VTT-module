@@ -222,13 +222,15 @@
   },
   "Item": {
     "types": [
-      "item",
+      "past",
+      "quirk",
       "trait",
       "perk",
       "spell",
       "mark",
       "schematic",
-      "aerial_maneuver"
+      "aerial_maneuver",
+      "item"
     ],
     "templates": {
     }

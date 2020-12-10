@@ -15,6 +15,7 @@
   "scripts": [
   ],
   "esmodules": [
+    "wasteland_ventures.js"
   ],
   "styles": [
   ],

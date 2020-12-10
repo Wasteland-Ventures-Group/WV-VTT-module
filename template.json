@@ -6,8 +6,7 @@
     ],
     "templates": {
       "physiology": {
-        "race": 0,
-        "ghoul": false
+        "race": 0
       },
       "special": {
         "strength": {

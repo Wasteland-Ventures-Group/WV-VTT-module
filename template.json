@@ -83,22 +83,118 @@
       },
       "skills": {
         "skills": {
-          "barter": {},
-          "diplomacy": {},
-          "explosives": {},
-          "firearms": {},
-          "intimidation": {},
-          "lockpick": {},
-          "magical_energy_weapons": {},
-          "mechanics": {},
-          "medicine": {},
-          "melee": {},
-          "science": {},
-          "sleight": {},
-          "sneak": {},
-          "survival": {},
-          "thaumaturgy": {},
-          "unarmed": {}
+          "barter": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "diplomacy": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "explosives": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "firearms": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "intimidation": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "lockpick": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "magical_energy_weapons": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "mechanics": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "medicine": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "melee": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "science": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "sleight": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "sneak": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "survival": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "thaumaturgy": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          },
+          "unarmed": {
+            "ranks": 0,
+            "pasts": 0,
+            "perks": 0,
+            "traits": 0,
+            "misc": 0
+          }
         },
         "skill_points":0,
         "critical_success": 5,

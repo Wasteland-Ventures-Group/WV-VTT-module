@@ -1,0 +1,25 @@
+{
+  "name": "wv-vtt-module",
+  "description": "A system that adapts Wasteland Ventures to Foundry VTT",
+  "version": "0.0.1",
+  "author": {
+    "name": "Kai Moschcau",
+    "email": "mail@kmoschcau.de",
+    "url": "https://kmoschcau.de"
+  },
+  "contributors": [],
+  "bugs": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues",
+  "homepage": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module",
+  "repository": "github:Wasteland-Ventures-Group/WV-VTT-module",
+  "license": "MIT",
+  "main": "wasteland_ventures.js",
+  "private": true,
+  "devDependencies": {
+    "eslint": "^7.15.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1"
+  },
+  "dependencies": {}
+}

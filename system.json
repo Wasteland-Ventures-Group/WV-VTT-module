@@ -1,14 +1,14 @@
 {
   "name": "wasteland-ventures",
   "title": "Wasteland Ventures",
-  "description": "A system that adaptes FoE to Foundry VTT.",
+  "description": "A system that adapts Wasteland Ventures to Foundry VTT",
   "version": "0.0.1",
   "templateVersion": 2,
   "authors": [
     {
       "name": "Kai Moschcau",
       "email": "mail@kmoschcau.de",
-      "url": "www.kmoschcau.de"
+      "url": "https://kmoschcau.de"
     }
   ],
   "minimumCoreVersion": "0.7.8",

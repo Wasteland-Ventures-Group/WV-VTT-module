@@ -4,13 +4,7 @@
   "description": "A system that adapts Wasteland Ventures to Foundry VTT",
   "version": "0.0.1",
   "templateVersion": 2,
-  "authors": [
-    {
-      "name": "Kai Moschcau",
-      "email": "mail@kmoschcau.de",
-      "url": "https://kmoschcau.de"
-    }
-  ],
+  "author": "Kai Moschcau <mail@kmoschcau.de>",
   "minimumCoreVersion": "0.7.8",
   "scripts": [
   ],

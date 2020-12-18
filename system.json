@@ -9,9 +9,10 @@
   "scripts": [
   ],
   "esmodules": [
-    "wasteland_ventures.js"
+    "scripts/wasteland_ventures.js"
   ],
   "styles": [
+    "css/common.css"
   ],
   "packs": [
   ],

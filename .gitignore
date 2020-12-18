@@ -1,1 +1,8 @@
+# Dirs to ignore
+/css/
+/html/
+/mock/
 /node_modules/
+
+# Files to ignore
+/foundryvtt.js

@@ -19,7 +19,13 @@
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1"
+    "eslint-plugin-promise": "^4.2.1",
+    "gulp": "^4.0.2",
+    "gulp-hbs": "^0.2.0",
+    "gulp-header": "^2.0.9",
+    "gulp-sass": "^4.1.0",
+    "node-sass": "^5.0.0",
+    "sass": "^1.30.0"
   },
   "dependencies": {}
 }

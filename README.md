@@ -55,12 +55,15 @@ However, there is a general `hbs` task, that runs all of them in parallel.
 Some tasks have a variant with the `:watch` suffix. Those tasks are meant to be
 run as a background task and will look for changes in the corresponding input
 files to run on their own. For example, one can run the following on a terminal
-to have the Sass and Handlebars for the character sheet be recompiled when
-changes are made to the input files:
+to have the Sass and Handlebars be recompiled when changes are made to the input
+files:
 ```sh
-gulp sass:watch &
-gulp hbs:char:watch &
+gulp &
 ```
+
+You can then work on the files and open the final HTML file in a browser to see
+the compiled version. The gulp task also takes care of linking the compiled CSS
+to the HTML file.
 
 ## Contributing
 

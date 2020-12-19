@@ -24,6 +24,7 @@ hbs.registerHelper('localize', (key) => {
 function compileHandlebars () {
   return parallel(compileHbsCharacterSheet)
 }
+compileHandlebars.description = 'Compile all Handlerbars templates'
 
 function compileHbsCharacterSheet () {
   return src('./mock/character.json')
@@ -31,16 +32,20 @@ function compileHbsCharacterSheet () {
     .pipe(header('<link rel="stylesheet" href="../css/common.css">\n'))
     .pipe(dest('./html'))
 }
+compileHbsCharacterSheet.description =
+  'Compile the character sheet Handlebars template'
 
 function compileSass () {
   return src(sassPath)
     .pipe(sass().on('error', sass.logError))
     .pipe(dest(cssPath))
 }
+compileSass.description = 'Compile all Sass files into CSS'
 
 function watchHandlebars () {
   parallel(watchHbsCharacterSheet)
 }
+watchHandlebars.description = 'Run all watch tasks for the Handlebars templates'
 
 function watchHbsCharacterSheet () {
   const watcher = watch(
@@ -52,6 +57,8 @@ function watchHbsCharacterSheet () {
     console.log(`\n${path} changed`)
   })
 }
+watchHbsCharacterSheet.description =
+  'Watch the input files for the character sheet Handlebars template for changes and run the compile task'
 
 function watchSass () {
   const watcher = watch(sassPath, compileSass)
@@ -59,6 +66,8 @@ function watchSass () {
     console.log(`\n${path} changed`)
   })
 }
+watchSass.description =
+  'Watch the input files for the Sass task for changes and run the compile task'
 
 exports.hbs = compileHandlebars
 exports['hbs:char'] = compileHbsCharacterSheet

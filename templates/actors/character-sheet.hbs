@@ -14,6 +14,19 @@
       <span>{{localize "wv.labels.secondary.action_points"}}</span>
       <div>{{secondary.action_points.value}}/{{secondary.action_points.max}}</div>
     </div>
+    <div class="wv-criticals">
+      <span>{{localize "wv.labels.secondary.criticals"}}</span>
+      <div class="grid-2cols standard-grid-gaps">
+        <span>{{localize "wv.labels.secondary.criticals.success"}}</span>
+        <span>{{localize "wv.labels.secondary.criticals.failure"}}</span>
+        <div>{{secondary.criticals.success}}</div>
+        <div>{{secondary.criticals.failure}}</div>
+      </div>
+    </div>
+    <div class="wv-initiative">
+      <span>{{localize "wv.labels.secondary.initiative"}}</span>
+      <div>1d10 + {{special.[1].value}}</div>
+    </div>
   </div>
   <div class="wv-special-and-skills">
     <div class="grid-2cols standard-grid-gaps">

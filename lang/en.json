@@ -1,7 +1,11 @@
 {
   "wv.labels.secondary.action_points": "Action Points",
+  "wv.labels.secondary.criticals": "Criticals",
+  "wv.labels.secondary.criticals.failure": "Failure",
+  "wv.labels.secondary.criticals.success": "Success",
   "wv.labels.secondary.experience": "Experience",
   "wv.labels.secondary.health": "Health",
+  "wv.labels.secondary.initiative": "Initiative",
   "wv.labels.secondary.level": "Level",
   "wv.labels.skills.name": "Skill",
   "wv.labels.skills.value": "Value",

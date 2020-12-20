@@ -1,6 +1,6 @@
 <form autocomplete="off">
   <div class="flexrow">
-    <div class="wv-level grid-2cols">
+    <div class="wv-level grid-2cols standard-grid-gaps">
       <span>{{localize "wv.labels.secondary.level"}}</span>
       <div>{{secondary.level}}</div>
       <span>{{localize "wv.labels.secondary.experience"}}</span>
@@ -16,7 +16,7 @@
     </div>
   </div>
   <div class="wv-special-and-skills">
-    <div class="wv-special-grid grid-2cols">
+    <div class="grid-2cols standard-grid-gaps">
       <span>{{localize "wv.labels.special.name"}}</span>
       <span>{{localize "wv.labels.special.value"}}</span>
       {{#each special as |spec|}}
@@ -24,7 +24,7 @@
       <div>{{spec.value}}</div>
       {{/each}}
     </div>
-    <div class="wv-skill-grid grid-2cols">
+    <div class="grid-2cols standard-grid-gaps">
       <span>{{localize "wv.labels.skills.name"}}</span>
       <span>{{localize "wv.labels.skills.value"}}</span>
       {{#each skills as |skill|}}

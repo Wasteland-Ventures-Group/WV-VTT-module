@@ -1,47 +1,69 @@
 <form autocomplete="off">
   <div class="flexrow">
-    <div class="wv-level grid-2cols standard-grid-gaps">
-      <span>{{localize "wv.labels.secondary.level"}}</span>
-      <div>{{secondary.level}}</div>
-      <span>{{localize "wv.labels.secondary.experience"}}</span>
-      <div>{{secondary.experience}}</div>
+    <div class="wv-level standard-padding grid-2cols standard-grid-gaps">
+      <label>{{localize "wv.labels.secondary.level"}}</label>
+      <span>{{secondary.level}}</span>
+      <label>{{localize "wv.labels.secondary.experience"}}</label>
+      <span>{{secondary.experience}}</span>
     </div>
-    <div class="wv-health">
-      <span>{{localize "wv.labels.secondary.health"}}</span>
-      <div>{{secondary.health.value}}/{{secondary.health.max}}</div>
+    <div class="wv-health standard-padding grid-2cols standard-grid-gaps">
+      <label>{{localize "wv.labels.secondary.health"}}</label>
+      <span>{{secondary.health.value}}/{{secondary.health.max}}</span>
+      <label>{{localize "wv.labels.secondary.healing_rate"}}</label>
+      <span>{{secondary.healing_rate}}</span>
     </div>
-    <div class="wv-action-points">
-      <span>{{localize "wv.labels.secondary.action_points"}}</span>
-      <div>{{secondary.action_points.value}}/{{secondary.action_points.max}}</div>
+    <div class="wv-action-points standard-padding">
+      <label>{{localize "wv.labels.secondary.action_points"}}</label>
+      <span>{{secondary.action_points.value}}/{{secondary.action_points.max}}</span>
     </div>
-    <div class="wv-criticals">
-      <span>{{localize "wv.labels.secondary.criticals"}}</span>
+    <div class="wv-criticals standard-padding">
+      <label>{{localize "wv.labels.secondary.criticals"}}</label>
       <div class="grid-2cols standard-grid-gaps">
-        <span>{{localize "wv.labels.secondary.criticals.success"}}</span>
-        <span>{{localize "wv.labels.secondary.criticals.failure"}}</span>
-        <div>{{secondary.criticals.success}}</div>
-        <div>{{secondary.criticals.failure}}</div>
+        <label>{{localize "wv.labels.secondary.criticals.success"}}</label>
+        <span>{{secondary.criticals.success}}</span>
+        <label>{{localize "wv.labels.secondary.criticals.failure"}}</label>
+        <span>{{secondary.criticals.failure}}</span>
       </div>
     </div>
-    <div class="wv-initiative">
-      <span>{{localize "wv.labels.secondary.initiative"}}</span>
-      <div>1d10 + {{special.[1].value}}</div>
+    <div class="wv-initiative standard-padding">
+      <label>{{localize "wv.labels.secondary.initiative"}}</label>
+      <span>1d10 + {{special.[1].value}}</span>
+    </div>
+    <div class="wv-radiation standard-padding">
+      <label>{{localize "wv.labels.ailments.radiation"}}</label>
+      <div class="grid-2cols standard-grid-gaps">
+        <label>{{localize "wv.labels.ailments.radiation.absorbed"}}</label>
+        <span>{{secondary.radiation.value}} {{localize "wv.labels.ailments.radiation.absorbed.unit"}}</span>
+      </div>
+      <div>
+        <label>{{localize "wv.labels.ailments.radiation.effects"}}</label>
+        <span>{{secondary.radiation.effects}}</span>
+      </div>
+    </div>
+    <div class="wv-resistances standard-padding">
+      <label>{{localize "wv.labels.resistances"}}</label>
+      <div class="grid-2cols standard-grid-gaps">
+        <label>{{localize "wv.labels.resistances.radiation"}}</label>
+        <span>{{secondary.resistances.radiation}}</span>
+        <label>{{localize "wv.labels.resistances.poison"}}</label>
+        <span>{{secondary.resistances.poison}}</span>
+      </div>
     </div>
   </div>
   <div class="wv-special-and-skills">
-    <div class="grid-2cols standard-grid-gaps">
-      <span>{{localize "wv.labels.special.name"}}</span>
-      <span>{{localize "wv.labels.special.value"}}</span>
+    <div class="standard-padding grid-2cols standard-grid-gaps">
+      <label>{{localize "wv.labels.special.name"}}</label>
+      <label>{{localize "wv.labels.special.value"}}</label>
       {{#each special as |spec|}}
-      <span>{{localize spec.name}}</span>
+      <label>{{localize spec.name}}</label>
       <div>{{spec.value}}</div>
       {{/each}}
     </div>
-    <div class="grid-2cols standard-grid-gaps">
-      <span>{{localize "wv.labels.skills.name"}}</span>
-      <span>{{localize "wv.labels.skills.value"}}</span>
+    <div class="standard-padding grid-2cols standard-grid-gaps">
+      <label>{{localize "wv.labels.skills.name"}}</label>
+      <label>{{localize "wv.labels.skills.value"}}</label>
       {{#each skills as |skill|}}
-      <span>{{localize skill.name}}</span>
+      <label>{{localize skill.name}}</label>
       <div>{{skill.value}}</div>
       {{/each}}
     </div>

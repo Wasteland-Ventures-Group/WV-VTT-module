@@ -55,10 +55,15 @@ const compileHandlebars = parallel(compileCharacterSheet)
 compileHandlebars.description = 'Compile all Handlerbars templates'
 
 function watchHbsCharacterSheet () {
+  // The file name patterns have to be written as explicit globs, to get the
+  // underlying chokidar library to put watches on the directory of the files
+  // and not on the inodes of the files directly. Doing so would brake for
+  // editors with atomic write (like Vim) and only trigger on the first change.
+  // See: https://github.com/gulpjs/gulp/issues/1322
   const watcher = watch(
-    ['./lang/en.json',
-      './mock/character.json',
-      './templates/actors/character-sheet.hbs'],
+    ['./lang/[e-e]n.json',
+      './mock/[c-c]haracter.json',
+      './templates/actors/[c-c]haracter-sheet.hbs'],
     compileCharacterSheet)
 
   watcher.on('change', (path) => {

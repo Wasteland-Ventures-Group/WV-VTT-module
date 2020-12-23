@@ -5,18 +5,25 @@ const hbs = require('gulp-hbs')
 const header = require('gulp-header')
 const sass = require('gulp-sass')
 sass.compiler = require('node-sass')
+const ts = require('gulp-typescript')
+const tsProject = ts.createProject('tsconfig.json')
 
 // = Handlebars tasks ==========================================================
 
-const htmlPath = './html'
-const i18nDataPath = './lang/en.json'
+const cssLinkBasePath = '../../../dist/css'
+const htmlOutPath = './test/out/html'
+const i18nBasePath = './dist/lang'
+const i18nEnPath = `${i18nBasePath}/en.json`
+const mockBasePath = './test/mock'
+const handlebarsBasePath = './dist/handlebars'
 
 const htmlHeader =
 `<!DOCTYPE html>
 <head>
+  <meta charset="utf-8">
   <title>Character Sheet</title>
-  <link rel="stylesheet" href="../css/common.css">
-  <link rel="stylesheet" href="../css/actors/character-sheet.css">
+  <link rel="stylesheet" href="${cssLinkBasePath}/common.css">
+  <link rel="stylesheet" href="${cssLinkBasePath}/actors/character-sheet.css">
 </head>
 `
 
@@ -29,9 +36,9 @@ hbs.registerHelper('localize', (key) => {
 })
 
 function parseI18nFile (cb) {
-  fs.readFile(i18nDataPath, 'utf-8', (err, data) => {
+  fs.readFile(i18nEnPath, 'utf-8', (err, data) => {
     if (err) {
-      log(`Could not read ${i18nDataPath}: ${err}`)
+      log(`Could not read ${i18nEnPath}: ${err}`)
       cb(err)
     } else {
       enData = JSON.parse(data)
@@ -39,14 +46,14 @@ function parseI18nFile (cb) {
     }
   })
 }
-parseI18nFile.description = `Parse the i18n file ${i18nDataPath}`
+parseI18nFile.description = `Parse the i18n file ${i18nEnPath}`
 
 const compileCharacterSheet =
   series(parseI18nFile, function compileHbsCharacterSheet () {
-    return src('./mock/character.json')
-      .pipe(hbs(src('./templates/actors/character-sheet.hbs')))
+    return src(`${mockBasePath}/character.json`)
+      .pipe(hbs(src(`${handlebarsBasePath}/actors/character-sheet.hbs`)))
       .pipe(header(htmlHeader))
-      .pipe(dest(htmlPath))
+      .pipe(dest(htmlOutPath))
   })
 compileCharacterSheet.description =
   'Compile the character sheet Handlebars template'
@@ -61,9 +68,9 @@ function watchHbsCharacterSheet () {
   // editors with atomic write (like Vim) and only trigger on the first change.
   // See: https://github.com/gulpjs/gulp/issues/1322
   const watcher = watch(
-    ['./lang/[e-e]n.json',
-      './mock/[c-c]haracter.json',
-      './templates/actors/[c-c]haracter-sheet.hbs'],
+    [`${i18nBasePath}/[e-e]n.json`,
+      `${mockBasePath}/[c-c]haracter.json`,
+      `${handlebarsBasePath}/actors/[c-c]haracter-sheet.hbs`],
     compileCharacterSheet)
 
   watcher.on('change', (path) => {
@@ -78,13 +85,13 @@ watchHandlebars.description = 'Run all watch tasks for the Handlebars templates'
 
 // = Sass tasks ================================================================
 
-const cssPath = './css'
-const sassPath = './sass/**/*.sass'
+const cssOutPath = './dist/css'
+const sassPath = './src/sass/**/*.sass'
 
 function compileSass () {
   return src(sassPath)
     .pipe(sass().on('error', sass.logError))
-    .pipe(dest(cssPath))
+    .pipe(dest(cssOutPath))
 }
 compileSass.description = 'Compile all Sass files into CSS'
 
@@ -98,10 +105,34 @@ function watchSass () {
 watchSass.description =
   'Watch the input files for the Sass task for changes and run the compile task'
 
+// = Typescript tasks ==========================================================
+
+const jsOutPath = './dist/modules'
+
+function compileTypescript () {
+  return tsProject.src()
+    .pipe(tsProject())
+    .js
+    .pipe(dest(jsOutPath))
+}
+compileTypescript.description = 'Compile the Typescript to Javascript'
+
+function watchTypescript () {
+  const watcher = watch(tsProject.src())
+
+  watcher.on('change', (path) => {
+    log(`${path} changed`)
+  })
+}
+watchTypescript.description =
+  'Watch the Typescript input files for changes and run the compile task'
+
 // = General tasks =============================================================
 
-const watchAll = parallel(watchHandlebars, watchSass)
+const watchAll = parallel(watchHandlebars, watchSass, watchTypescript)
 watchAll.description = 'Run all watch tasks'
+
+// = Task exports ==============================================================
 
 exports.hbs = compileHandlebars
 exports['hbs:char'] = compileCharacterSheet
@@ -109,4 +140,6 @@ exports['hbs:char:watch'] = watchHbsCharacterSheet
 exports['hbs:watch'] = watchHandlebars
 exports.sass = compileSass
 exports['sass:watch'] = watchSass
+exports.ts = compileTypescript
+exports['ts:watch'] = watchTypescript
 exports.default = watchAll

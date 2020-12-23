@@ -29,28 +29,31 @@ directory.
 
 ### Compiling/Transpiling
 
-This project uses [Sass](https://sass-lang.com/) to generate its CSS files.
-Additionally, this project and FVTT itself use
-[Handlebars](https://handlebarsjs.com/) to populate the application templates
-with data. While populating the templates with data, a localization mechanism is
-used to put translated strings into the the templates. The entire templating
-mechanism is mocked by a few [Gulp](https://gulpjs.com/) tasks. That way
-templates can be created and tested without the need to start FVTT and load the
-system into it.
+This project uses [Typescript](https://www.typescriptlang.org/) to generate its
+Javascript, [Sass](https://sass-lang.com/) to generate its CSS and it and FVTT
+itself use [Handlebars](https://handlebarsjs.com/) to populate the application
+templates with data. While populating the templates with data, a localization
+mechanism is used to put translated strings into the the templates. The entire
+templating mechanism is mocked by a few [Gulp](https://gulpjs.com/) tasks. That
+way templates can be created and tested without the need to start FVTT and load
+the system into it.
 
 ### Gulp Tasks
 
-Gulp is a task runner for javascript, to automate repetitive tasks. It can even
+Gulp is a task runner for Javascript, to automate repetitive tasks. It can even
 look out for changes in the input files for a task and rerun the task on its own
 in that case.
 
-There are two sets of major tasks in this project currently. The `sass` tasks
-compile Sass files under `./sass` (and all subdirs) into CSS files in `./css`.
-The `hbs` tasks compile Handlebars templates under `./templates` into HTML pages
-under `./html`. In doing so they use the mock character data under `./mock` and
-the translation data under `./lang`. In contrast to the `sass` tasks, the `hbs`
-tasks are not generalized. Instead there is a single task for each template.
-However, there is a general `hbs` task, that runs all of them in parallel.
+There are three sets of major tasks in this project currently. The `ts` tasks
+compile the Typescript under `./src/typescript` (and all subdirs) into
+Javascript in `./dist/modules`. The `sass` tasks compile Sass files under
+`./src/sass` (and all subdirs) into CSS files in `./dist/css`. The `hbs` tasks
+compile Handlebars templates under `./dist/templates` into HTML pages under
+`./test/out/html`. In doing so they use the mock character data under
+`./test/mock` and the translation data under `./dist/lang`. In contrast to the
+`sass` tasks, the `hbs` tasks are not generalized. Instead there is a single
+task for each template. However, there is a general `hbs` task, that runs all of
+them in parallel.
 
 Some tasks have a variant with the `:watch` suffix. Those tasks are meant to be
 run as a background task and will look for changes in the corresponding input

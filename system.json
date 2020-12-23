@@ -10,10 +10,10 @@
   "scripts": [
   ],
   "esmodules": [
-    "scripts/wasteland_ventures.js"
+    "dist/modules/wasteland_ventures.js"
   ],
   "styles": [
-    "css/common.css"
+    "dist/css/common.css"
   ],
   "packs": [
   ],
@@ -21,7 +21,7 @@
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "dist/lang/en.json"
     }
   ],
   "socket": false,

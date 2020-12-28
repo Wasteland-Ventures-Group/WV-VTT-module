@@ -9,8 +9,7 @@
     "strict": true,
     "target": "ES2017",
     "types": [
-      "foundry-pc-types",
-      "node"
+      "foundry-pc-types"
     ]
   },
   "include": [

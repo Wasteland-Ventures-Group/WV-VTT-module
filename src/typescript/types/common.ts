@@ -12,10 +12,10 @@ export interface ModdedResource extends foundry.Resource {
 * rules of the Wasteland Ventures ruleset.
 */
 export interface Special {
-  strenght: number,
-  perception: number,
-  endurance: number,
-  charisma: number,
-  intelligence: number,
+  strenght: number
+  perception: number
+  endurance: number
+  charisma: number
+  intelligence: number
   luck: number
 }

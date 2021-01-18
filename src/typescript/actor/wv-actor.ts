@@ -1,8 +1,10 @@
+import { PlayerCharacterData } from '../types/actor'
+
 /**
  * The basic Wasteland Ventures Actor.
  */
-export default class WvActor extends Actor {
-  prepareBaseData () {
+export default class WvActor extends Actor<Item, PlayerCharacterData> {
+  prepareBaseData (): void {
     this._prepareBaseMaxHealth()
   }
 
@@ -11,7 +13,7 @@ export default class WvActor extends Actor {
   /**
    * Set the max health in `data` from the values in `_data`.
    */
-  _prepareBaseMaxHealth () {
-    this.data.secondary.health.max = 10 + this._data.special.endurance.value
+  _prepareBaseMaxHealth (): void {
+    this.data.data.hitPoints = this._data.data.endurance + 10
   }
 }

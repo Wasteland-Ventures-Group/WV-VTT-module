@@ -1,3 +1,2 @@
-Hooks.once('init', () => {
-  Actors.unregisterSheet('core', ActorSheet)
-})
+Hooks.once('init', (() => {
+}) as HooksCallbacks.Init)

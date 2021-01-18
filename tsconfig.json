@@ -5,15 +5,15 @@
       "ES6",
       "ES2017"
     ],
+    "moduleResolution": "Node",
     "outDir": "dist/scripts",
     "strict": true,
     "target": "ES2017",
     "types": [
-      "foundry-pc-types"
+      "foundry-vtt-types"
     ]
   },
   "include": [
-    "./src/**/*.ts",
-    "./foundryvtt.js"
+    "./src/**/*.ts"
   ]
 }

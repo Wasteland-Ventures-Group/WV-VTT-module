@@ -1,7 +1,8 @@
 /**
-* An interface of what Foundry VTT will automatically recognize as a "resource".
-*/
+ * An interface of what Foundry VTT will automatically recognize as a
+ * "resource".
+ */
 export interface Resource {
-  value: number,
+  value: number
   max: number
 }

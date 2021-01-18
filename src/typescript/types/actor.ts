@@ -18,7 +18,7 @@ export class SpecialTemplate implements common.Special {
   intelligence = 0
   luck = 0
 
-  constructor(special: Partial<common.Special>) {
+  constructor (special: Partial<common.Special>) {
     Object.assign(this, special)
   }
 }
@@ -28,7 +28,7 @@ export class SpecialTemplate implements common.Special {
 * file.
 */
 export class VitalsTemplate {
-  constructor(
+  constructor (
     public hitPoints = 10,
     public actionPoints = 10,
     public insanity = 0
@@ -40,9 +40,9 @@ export class VitalsTemplate {
 * file.
 */
 export class LevelingTemplate {
-  constructor(
+  constructor (
     public experience = 0,
-    public levelIntelligences: Array<number> = []
+    public levelIntelligences: number[] = []
   ) {}
 }
 
@@ -51,7 +51,7 @@ export class LevelingTemplate {
 * file.
 */
 export class BackgroundTemplate {
-  constructor(
+  constructor (
     public name = '',
     public background = '',
     public history = '',

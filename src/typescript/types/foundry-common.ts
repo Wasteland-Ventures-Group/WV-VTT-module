@@ -3,6 +3,13 @@
  * "resource".
  */
 export interface Resource {
+  /**
+   * The current value of a resource
+   */
   value: number;
+
+  /**
+   * The maximum value of a resource
+   */
   max: number;
 }

@@ -42,7 +42,7 @@
     }
   },
   "lint-staged": {
-    "*.(d.ts|test-d.ts)": "eslint --fix",
+    "*.ts": "eslint --fix",
     "*.(js|json)": "prettier --write"
   }
 }

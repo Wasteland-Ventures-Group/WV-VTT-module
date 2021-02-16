@@ -1,5 +1,6 @@
 # Dirs to ignore
 /dist/css/
+/dist/modules/
 /node_modules/
 /test/mock/
 /test/out/

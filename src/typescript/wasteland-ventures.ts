@@ -1,2 +1,1 @@
-Hooks.once('init', (() => {
-}) as HooksCallbacks.Init)
+Hooks.once('init', () => {});

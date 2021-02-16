@@ -3,6 +3,6 @@
  * "resource".
  */
 export interface Resource {
-  value: number
-  max: number
+  value: number;
+  max: number;
 }

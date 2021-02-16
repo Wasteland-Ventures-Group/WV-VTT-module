@@ -1,19 +1,11 @@
 {
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "ES6",
-      "ES2017"
-    ],
+    "lib": ["DOM", "ES2020"],
     "moduleResolution": "Node",
     "outDir": "dist/scripts",
     "strict": true,
-    "target": "ES2017",
-    "types": [
-      "foundry-vtt-types"
-    ]
+    "target": "ES2020",
+    "types": ["foundry-vtt-types"]
   },
-  "include": [
-    "./src/**/*.ts"
-  ]
+  "include": ["./src/typescript/**/*.ts"]
 }

@@ -1,34 +1,34 @@
-import * as common from './common'
+import * as common from './common';
 
-export type PlayerCharacterData =
+export type PlayerCharacterData = Actor.Data<
   SpecialTemplate & VitalsTemplate & LevelingTemplate & BackgroundTemplate
+>;
 
-export type NonPlayerCharacterData =
-  SpecialTemplate & VitalsTemplate
+export type NonPlayerCharacterData = SpecialTemplate & VitalsTemplate;
 
 /**
-* This is the "special" template for {@link Actor}s from the `template.json`
-* file.
-*/
+ * This is the "special" template for {@link Actor}s from the `template.json`
+ * file.
+ */
 export class SpecialTemplate implements common.Special {
-  strenght = 0
-  perception = 0
-  endurance = 0
-  charisma = 0
-  intelligence = 0
-  luck = 0
+  strenght = 0;
+  perception = 0;
+  endurance = 0;
+  charisma = 0;
+  intelligence = 0;
+  luck = 0;
 
-  constructor (special: Partial<common.Special>) {
-    Object.assign(this, special)
+  constructor(special: Partial<common.Special>) {
+    Object.assign(this, special);
   }
 }
 
 /**
-* This is the "vitals" template for {@link Actor}s from the `template.json`
-* file.
-*/
+ * This is the "vitals" template for {@link Actor}s from the `template.json`
+ * file.
+ */
 export class VitalsTemplate {
-  constructor (
+  constructor(
     public hitPoints = 10,
     public actionPoints = 10,
     public insanity = 0
@@ -36,22 +36,22 @@ export class VitalsTemplate {
 }
 
 /**
-* This is the "leveling" template for {@link Actor}s from the `template.json`
-* file.
-*/
+ * This is the "leveling" template for {@link Actor}s from the `template.json`
+ * file.
+ */
 export class LevelingTemplate {
-  constructor (
+  constructor(
     public experience = 0,
     public levelIntelligences: number[] = []
   ) {}
 }
 
 /**
-* This is the "background" template for {@link Actor}s from the `template.json`
-* file.
-*/
+ * This is the "background" template for {@link Actor}s from the `template.json`
+ * file.
+ */
 export class BackgroundTemplate {
-  constructor (
+  constructor(
     public name = '',
     public background = '',
     public history = '',

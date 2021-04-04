@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     "lib": ["DOM", "ES2020"],
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "outDir": "dist/scripts",
     "strict": true,
     "target": "ES2020",
-    "types": ["foundry-vtt-types"]
+    "types": ["@league-of-foundry-developers/foundry-vtt-types"]
   },
   "include": ["./src/typescript/**/*.ts"]
 }

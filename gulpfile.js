@@ -25,7 +25,7 @@ const htmlHeader = `<!DOCTYPE html>
   <meta charset="utf-8">
   <title>Character Sheet</title>
   <link rel="stylesheet" href="${cssLinkBasePath}/common.css">
-  <link rel="stylesheet" href="${cssLinkBasePath}/actors/character-sheet.css">
+  <link rel="stylesheet" href="${cssLinkBasePath}/actors/characterSheet.css">
 </head>
 `;
 
@@ -54,7 +54,7 @@ const compileCharacterSheet = series(
   parseI18nFile,
   function compileHbsCharacterSheet() {
     return src(`${mockBasePath}/character.json`)
-      .pipe(hbs(src(`${handlebarsBasePath}/actors/character-sheet.hbs`)))
+      .pipe(hbs(src(`${handlebarsBasePath}/actors/characterSheet.hbs`)))
       .pipe(header(htmlHeader))
       .pipe(dest(htmlOutPath));
   }

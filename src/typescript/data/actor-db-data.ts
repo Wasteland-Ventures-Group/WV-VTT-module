@@ -119,6 +119,9 @@ export interface Background {
   size: number;
 }
 
+/**
+ * The system specific database data of Wasteland Ventures actors.
+ */
 export type WvActorDbDataData = Special & Vitals & Leveling & Background;
 
 /**

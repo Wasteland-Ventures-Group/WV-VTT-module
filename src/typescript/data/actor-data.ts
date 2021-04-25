@@ -2,7 +2,7 @@ import { WvActorDbDataData } from "./actor-db-data";
 import { WvItemDbData } from "./item-db-data";
 
 /**
- * The derived internal data of Wasteland Ventures actors
+ * The derived system specific data of Wasteland Ventures actors
  */
 export interface WvActorDerivedDataData extends WvActorDbDataData {
   /**

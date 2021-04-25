@@ -1,3 +1,3 @@
 import { WvItemDbData } from "./../data/item-db-data";
 
-export class WvItem extends Item<WvItemDbData> {}
+export default class WvItem extends Item<WvItemDbData> {}

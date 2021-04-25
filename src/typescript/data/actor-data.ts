@@ -1,8 +1,8 @@
-import { WvActorDbDataData } from './actor-db-data';
-import { WvItemDbData } from './item-db-data';
+import { WvActorDbDataData } from "./actor-db-data";
+import { WvItemDbData } from "./item-db-data";
 
 /**
- * The derived data of Wasteland Ventures actors
+ * The derived internal data of Wasteland Ventures actors
  */
 export interface WvActorDerivedDataData extends WvActorDbDataData {
   /**
@@ -46,5 +46,10 @@ export interface WvActorDerivedDataData extends WvActorDbDataData {
   maxStrain: number;
 }
 
-export interface WvActorDerivedData
-  extends Actor.Data<WvActorDerivedDataData, WvItemDbData> {}
+/**
+ * The derived data of Wasteland Ventures actors.
+ */
+export type WvActorDerivedData = Actor.Data<
+  WvActorDerivedDataData,
+  WvItemDbData
+>;

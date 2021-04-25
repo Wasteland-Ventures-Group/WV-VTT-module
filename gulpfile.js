@@ -1,24 +1,24 @@
 /* globals require exports */
 
-const log = require('fancy-log');
-const fs = require('fs');
-const { src, dest, parallel, series, watch } = require('gulp');
-const hbs = require('gulp-hbs');
-const header = require('gulp-header');
-const sass = require('gulp-sass');
-sass.compiler = require('node-sass');
-const ts = require('gulp-typescript');
+const log = require("fancy-log");
+const fs = require("fs");
+const { src, dest, parallel, series, watch } = require("gulp");
+const hbs = require("gulp-hbs");
+const header = require("gulp-header");
+const sass = require("gulp-sass");
+sass.compiler = require("node-sass");
+const ts = require("gulp-typescript");
 
-const tsProject = ts.createProject('tsconfig.json');
+const tsProject = ts.createProject("tsconfig.json");
 
 // = Handlebars tasks ==========================================================
 
-const cssLinkBasePath = '../../../dist/css';
-const htmlOutPath = './test/out/html';
-const i18nBasePath = './dist/lang';
+const cssLinkBasePath = "../../../dist/css";
+const htmlOutPath = "./test/out/html";
+const i18nBasePath = "./dist/lang";
 const i18nEnPath = `${i18nBasePath}/en.json`;
-const mockBasePath = './test/mock';
-const handlebarsBasePath = './dist/handlebars';
+const mockBasePath = "./test/mock";
+const handlebarsBasePath = "./dist/handlebars";
 
 const htmlHeader = `<!DOCTYPE html>
 <head>
@@ -33,12 +33,12 @@ const htmlHeader = `<!DOCTYPE html>
 // localization file is changed a lot in a short time, but should not be a
 // problem in practice.
 let enData;
-hbs.registerHelper('localize', (key) => {
+hbs.registerHelper("localize", (key) => {
   return enData[key];
 });
 
 function parseI18nFile(cb) {
-  fs.readFile(i18nEnPath, 'utf-8', (err, data) => {
+  fs.readFile(i18nEnPath, "utf-8", (err, data) => {
     if (err) {
       log(`Could not read ${i18nEnPath}: ${err}`);
       cb(err);
@@ -60,10 +60,10 @@ const compileCharacterSheet = series(
   }
 );
 compileCharacterSheet.description =
-  'Compile the character sheet Handlebars template';
+  "Compile the character sheet Handlebars template";
 
 const compileHandlebars = parallel(compileCharacterSheet);
-compileHandlebars.description = 'Compile all Handlerbars templates';
+compileHandlebars.description = "Compile all Handlerbars templates";
 
 function watchHbsCharacterSheet() {
   // The file name patterns have to be written as explicit globs, to get the
@@ -80,71 +80,71 @@ function watchHbsCharacterSheet() {
     compileCharacterSheet
   );
 
-  watcher.on('change', (path) => {
+  watcher.on("change", (path) => {
     log(`${path} changed`);
   });
 }
 watchHbsCharacterSheet.description =
-  'Watch the input files for the character sheet Handlebars template for changes and run the compile task';
+  "Watch the input files for the character sheet Handlebars template for changes and run the compile task";
 
 const watchHandlebars = parallel(watchHbsCharacterSheet);
 watchHandlebars.description =
-  'Run all watch tasks for the Handlebars templates';
+  "Run all watch tasks for the Handlebars templates";
 
 // = Sass tasks ================================================================
 
-const cssOutPath = './dist/css';
-const sassPath = './src/sass/**/*.sass';
+const cssOutPath = "./dist/css";
+const sassPath = "./src/sass/**/*.sass";
 
 function compileSass() {
   return src(sassPath)
-    .pipe(sass().on('error', sass.logError))
+    .pipe(sass().on("error", sass.logError))
     .pipe(dest(cssOutPath));
 }
-compileSass.description = 'Compile all Sass files into CSS';
+compileSass.description = "Compile all Sass files into CSS";
 
 function watchSass() {
   const watcher = watch(sassPath, compileSass);
 
-  watcher.on('change', (path) => {
+  watcher.on("change", (path) => {
     log(`${path} changed`);
   });
 }
 watchSass.description =
-  'Watch the input files for the Sass task for changes and run the compile task';
+  "Watch the input files for the Sass task for changes and run the compile task";
 
 // = Typescript tasks ==========================================================
 
-const jsOutPath = './dist/modules';
+const jsOutPath = "./dist/modules";
 
 function compileTypescript() {
   return tsProject.src().pipe(tsProject()).js.pipe(dest(jsOutPath));
 }
-compileTypescript.description = 'Compile the Typescript to Javascript';
+compileTypescript.description = "Compile the Typescript to Javascript";
 
 function watchTypescript() {
   const watcher = watch(tsProject.src());
 
-  watcher.on('change', (path) => {
+  watcher.on("change", (path) => {
     log(`${path} changed`);
   });
 }
 watchTypescript.description =
-  'Watch the Typescript input files for changes and run the compile task';
+  "Watch the Typescript input files for changes and run the compile task";
 
 // = General tasks =============================================================
 
 const watchAll = parallel(watchHandlebars, watchSass, watchTypescript);
-watchAll.description = 'Run all watch tasks';
+watchAll.description = "Run all watch tasks";
 
 // = Task exports ==============================================================
 
 exports.hbs = compileHandlebars;
-exports['hbs:char'] = compileCharacterSheet;
-exports['hbs:char:watch'] = watchHbsCharacterSheet;
-exports['hbs:watch'] = watchHandlebars;
+exports["hbs:char"] = compileCharacterSheet;
+exports["hbs:char:watch"] = watchHbsCharacterSheet;
+exports["hbs:watch"] = watchHandlebars;
 exports.sass = compileSass;
-exports['sass:watch'] = watchSass;
+exports["sass:watch"] = watchSass;
 exports.ts = compileTypescript;
-exports['ts:watch'] = watchTypescript;
+exports["ts:watch"] = watchTypescript;
 exports.default = watchAll;

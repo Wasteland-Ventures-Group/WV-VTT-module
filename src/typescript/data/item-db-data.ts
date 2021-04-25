@@ -1,46 +1,46 @@
 interface PastDbData {}
 interface PastItemDbData extends Item.Data<PastDbData> {
-  type: 'past';
+  type: "past";
 }
 
 interface QuirkDbData {}
 interface QuirkItemDbData extends Item.Data<QuirkDbData> {
-  type: 'quirk';
+  type: "quirk";
 }
 
 interface TraitDbData {}
 interface TraitItemDbData extends Item.Data<TraitDbData> {
-  type: 'trait';
+  type: "trait";
 }
 
 interface PerkDbData {}
 interface PerkItemDbData extends Item.Data<PerkDbData> {
-  type: 'perk';
+  type: "perk";
 }
 
 interface SpellDbData {}
 interface SpellItemDbData extends Item.Data<SpellDbData> {
-  type: 'spell';
+  type: "spell";
 }
 
 interface MarkDbData {}
 interface MarkItemDbData extends Item.Data<MarkDbData> {
-  type: 'mark';
+  type: "mark";
 }
 
 interface SchematicDbData {}
 interface SchematicItemDbData extends Item.Data<SchematicDbData> {
-  type: 'schematic';
+  type: "schematic";
 }
 
 interface AerialManeuverDbData {}
 interface AerialManeuverItemDbData extends Item.Data<AerialManeuverDbData> {
-  type: 'aerialManeuver';
+  type: "aerialManeuver";
 }
 
 interface ItemDbData {}
 interface ItemItemDbData extends Item.Data<ItemDbData> {
-  type: 'item';
+  type: "item";
 }
 
 export type WvItemDbData =

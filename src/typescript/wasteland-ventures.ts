@@ -1,1 +1,1 @@
-Hooks.once('init', () => {});
+Hooks.once("init", () => {});

@@ -1,4 +1,4 @@
-import { WvItemDbData } from './item-db-data';
+import { WvItemDbData } from "./item-db-data";
 
 /**
  * This is an interface to represent a set of SPECIAL values in general under
@@ -124,5 +124,4 @@ export type WvActorDbDataData = Special & Vitals & Leveling & Background;
 /**
  * The database data of Wasteland Ventures actors.
  */
-export interface WvActorDbData
-  extends Actor.Data<WvActorDbDataData, WvItemDbData> {}
+export type WvActorDbData = Actor.Data<WvActorDbDataData, WvItemDbData>;

@@ -1,4 +1,4 @@
-import { WvItemDbData } from "./item-db-data";
+import { WvItemDbData } from "./itemDbData";
 
 /**
  * This is an interface to represent a set of SPECIAL values in general under

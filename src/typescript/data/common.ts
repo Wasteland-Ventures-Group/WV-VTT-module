@@ -1,4 +1,4 @@
-import * as foundry from "./foundry-common";
+import * as foundry from "./foundryCommon";
 
 /**
  * This is a {@link foundry.Resource} with an additional modifier.

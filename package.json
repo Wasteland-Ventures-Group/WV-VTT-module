@@ -15,7 +15,7 @@
   "main": "wasteland_ventures.js",
   "private": true,
   "devDependencies": {
-    "@league-of-foundry-developers/foundry-vtt-types": "^0.7.9-5",
+    "@league-of-foundry-developers/foundry-vtt-types": "^0.7.9-6",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "eslint": "^7.19.0",

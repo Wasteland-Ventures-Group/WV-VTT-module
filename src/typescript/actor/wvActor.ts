@@ -13,14 +13,16 @@ export default class WvActor extends Actor<
   /**
    * @override
    */
-  prepareBaseData(): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  prepareBaseData() {
     this.computeBaseSecondaryStatistics();
   }
 
   /**
    * @override
    */
-  prepareDerivedData(): void {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  prepareDerivedData() {
     this.applySizeModifiers();
   }
 

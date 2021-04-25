@@ -79,6 +79,22 @@ export interface Leveling {
 }
 
 /**
+ * This is the "resistances" template for {@link Actor}s from the
+ * `template.json` file.
+ */
+export interface Resistances {
+  /**
+   * The base poison resistance of an Actor
+   */
+  poison: number;
+
+  /**
+   * The base radiation resistance of an Actor
+   */
+  radiation: number;
+}
+
+/**
  * This is the "background" template for {@link Actor}s from the `template.json`
  * file.
  */

@@ -1,9 +1,6 @@
 {
   "Actor": {
-    "types": [
-      "playerCharacter",
-      "nonPlayerCharacter"
-    ],
+    "types": ["playerCharacter", "nonPlayerCharacter"],
     "templates": {
       "special": {
         "strength": 5,
@@ -22,6 +19,10 @@
         "experience": 0,
         "levelIntelligences": []
       },
+      "resistances": {
+        "poison": 10,
+        "radiation": 5
+      },
       "background": {
         "name": "",
         "background": "",
@@ -32,18 +33,10 @@
       }
     },
     "playerCharacter": {
-      "templates": [
-        "special",
-        "vitals",
-        "leveling",
-        "background"
-      ]
+      "templates": ["special", "vitals", "leveling", "background"]
     },
     "nonPlayerCharacter": {
-      "templates": [
-        "special",
-        "vitals"
-      ]
+      "templates": ["special", "vitals"]
     }
   },
   "Item": {
@@ -58,7 +51,6 @@
       "aerialManeuver",
       "item"
     ],
-    "templates": {
-    }
+    "templates": {}
   }
 }

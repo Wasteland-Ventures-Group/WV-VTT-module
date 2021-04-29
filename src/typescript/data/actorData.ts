@@ -1,5 +1,5 @@
-import { WvActorDbDataData } from "./actorDbData";
-import { WvItemDbData } from "./itemDbData";
+import { WvActorDbDataData } from "./actorDbData.js";
+import { WvItemDbData } from "./itemDbData.js";
 
 /**
  * The derived system specific data of Wasteland Ventures actors

@@ -1,5 +1,5 @@
-import { CONSTANTS } from "../constants";
-import WvActor from "./wvActor";
+import { CONSTANTS } from "../constants.js";
+import WvActor from "./wvActor.js";
 
 /**
  * The basic Wasteland Ventures Actor Sheet.

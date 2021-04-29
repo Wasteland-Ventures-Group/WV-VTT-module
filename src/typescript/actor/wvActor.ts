@@ -1,6 +1,6 @@
-import { WvActorDerivedData } from "./../data/actorData";
-import { WvActorDbData } from "./../data/actorDbData";
-import WvItem from "./../item/wvItem";
+import { WvActorDerivedData } from "./../data/actorData.js";
+import { WvActorDbData } from "./../data/actorDbData.js";
+import WvItem from "./../item/wvItem.js";
 
 /**
  * The basic Wasteland Ventures Actor.

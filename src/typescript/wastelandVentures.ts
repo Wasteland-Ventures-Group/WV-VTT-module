@@ -1,6 +1,6 @@
-import WvActor from "./actor/wvActor";
-import WvActorSheet from "./actor/wvActorSheet";
-import WvItem from "./item/wvItem";
+import WvActor from "./actor/wvActor.js";
+import WvActorSheet from "./actor/wvActorSheet.js";
+import WvItem from "./item/wvItem.js";
 
 Hooks.once("init", () => {
   // Register our own Entity classes.

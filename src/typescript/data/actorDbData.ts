@@ -1,4 +1,4 @@
-import { WvItemDbData } from "./itemDbData";
+import { WvItemDbData } from "./itemDbData.js";
 
 /**
  * This is an interface to represent a set of SPECIAL values in general under

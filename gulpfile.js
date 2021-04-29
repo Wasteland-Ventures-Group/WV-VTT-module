@@ -5,8 +5,7 @@ const fs = require("fs");
 const { src, dest, parallel, series, watch } = require("gulp");
 const hbs = require("gulp-hbs");
 const header = require("gulp-header");
-const sass = require("gulp-sass");
-sass.compiler = require("node-sass");
+const sass = require("gulp-dart-sass");
 const ts = require("gulp-typescript");
 
 const tsProject = ts.createProject("tsconfig.json");

@@ -9,7 +9,7 @@
   "compatibleCoreVersion": "0.7.9",
   "scripts": [],
   "esmodules": ["modules/wastelandVentures.js"],
-  "styles": ["css/common.css"],
+  "styles": ["css/common.css", "css/actors/actorSheet.css"],
   "packs": [],
   "languages": [
     {

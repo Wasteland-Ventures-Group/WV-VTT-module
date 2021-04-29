@@ -11,8 +11,8 @@ export default class WvActorSheet extends ActorSheet<ActorSheet.Data<WvActor>> {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["wasteland-ventures"],
-      template: `${CONSTANTS.systemPath}/handlebars/actors/characterSheet.hbs`
+      classes: ["wasteland-ventures", "actor-sheet"],
+      template: `${CONSTANTS.systemPath}/handlebars/actors/actorSheet.hbs`
     } as typeof ActorSheet["defaultOptions"]);
   }
 
@@ -22,13 +22,5 @@ export default class WvActorSheet extends ActorSheet<ActorSheet.Data<WvActor>> {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   activateListeners(html: JQuery<HTMLElement>) {
     super.activateListeners(html);
-  }
-
-  /**
-   * @override
-   */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  getData() {
-    return super.getData();
   }
 }

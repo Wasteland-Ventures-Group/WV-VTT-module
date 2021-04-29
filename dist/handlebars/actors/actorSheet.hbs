@@ -1,23 +1,23 @@
-<form autocomplete="off">
+<form class="{{cssClass}}" autocomplete="off">
   <div class="flexrow">
-    <div class="wv-level standard-padding grid-2cols standard-grid-gaps">
+    <div class="level standard-padding grid-2cols standard-grid-gaps">
       <label>{{localize "wv.labels.secondary.level"}}</label>
-      <span>{{secondary.level}}</span>
+      <span>{{data.level}}</span>
       <label>{{localize "wv.labels.secondary.experience"}}</label>
-      <span>{{secondary.experience}}</span>
+      <span>{{data.experience}}</span>
     </div>
-    <div class="wv-health standard-padding grid-2cols standard-grid-gaps">
+    <div class="health standard-padding grid-2cols standard-grid-gaps">
       <label>{{localize "wv.labels.secondary.health"}}</label>
-      <span>{{secondary.health.value}}/{{secondary.health.max}}</span>
+      <span>{{data.hitPoints}}/{{data.maxHitPoints}}</span>
       <label>{{localize "wv.labels.secondary.healing_rate"}}</label>
-      <span>{{secondary.healing_rate}}</span>
+      <span>{{data.healingRate}}</span>
     </div>
-    <div class="wv-action-points standard-padding">
+    <div class="action-points standard-padding">
       <label>{{localize "wv.labels.secondary.action_points"}}</label>
-      <span>{{secondary.action_points.value}}/{{secondary.action_points.max}}</span>
+      <span>{{data.actionPoints}}/{{data.maxActionPoints}}</span>
     </div>
-    <div class="wv-criticals standard-padding">
-      <label>{{localize "wv.labels.secondary.criticals"}}</label>
+    <div class="criticals standard-padding">
+      <label>{{localize "wv.labels.secondary.criticals.title"}}</label>
       <div class="grid-2cols standard-grid-gaps">
         <label>{{localize "wv.labels.secondary.criticals.success"}}</label>
         <span>{{secondary.criticals.success}}</span>
@@ -25,12 +25,12 @@
         <span>{{secondary.criticals.failure}}</span>
       </div>
     </div>
-    <div class="wv-initiative standard-padding">
+    <div class="initiative standard-padding">
       <label>{{localize "wv.labels.secondary.initiative"}}</label>
-      <span>1d10 + {{special.[1].value}}</span>
+      <span>1d10 + {{data.agility}}</span>
     </div>
-    <div class="wv-radiation standard-padding">
-      <label>{{localize "wv.labels.ailments.radiation"}}</label>
+    <div class="radiation standard-padding">
+      <label>{{localize "wv.labels.ailments.radiation.title"}}</label>
       <div class="grid-2cols standard-grid-gaps">
         <label>{{localize "wv.labels.ailments.radiation.absorbed"}}</label>
         <span>{{secondary.radiation.value}} {{localize "wv.labels.ailments.radiation.absorbed.unit"}}</span>
@@ -40,8 +40,8 @@
         <span>{{secondary.radiation.effects}}</span>
       </div>
     </div>
-    <div class="wv-resistances standard-padding">
-      <label>{{localize "wv.labels.resistances"}}</label>
+    <div class="resistances standard-padding">
+      <label>{{localize "wv.labels.resistances.title"}}</label>
       <div class="grid-2cols standard-grid-gaps">
         <label>{{localize "wv.labels.resistances.radiation"}}</label>
         <span>{{secondary.resistances.radiation}}</span>
@@ -50,7 +50,7 @@
       </div>
     </div>
   </div>
-  <div class="wv-special-and-skills">
+  <div class="special-and-skills">
     <div class="standard-padding grid-2cols standard-grid-gaps">
       <label>{{localize "wv.labels.special.name"}}</label>
       <label>{{localize "wv.labels.special.value"}}</label>

@@ -1,45 +1,83 @@
 {
-  "wv.labels.secondary.action_points": "Action Points",
-  "wv.labels.secondary.criticals": "Criticals",
-  "wv.labels.secondary.criticals.failure": "Failure",
-  "wv.labels.secondary.criticals.success": "Success",
-  "wv.labels.secondary.experience": "Experience",
-  "wv.labels.secondary.healing_rate": "Healing Rate",
-  "wv.labels.secondary.health": "Health",
-  "wv.labels.secondary.initiative": "Initiative",
-  "wv.labels.secondary.level": "Level",
-  "wv.labels.ailments.radiation": "Radiation",
-  "wv.labels.ailments.radiation.absorbed": "Absorbed dose",
-  "wv.labels.ailments.radiation.absorbed.unit": "Rad(s)",
-  "wv.labels.ailments.radiation.effects": "Effects",
-  "wv.labels.resistances": "Resistances",
-  "wv.labels.resistances.poison": "Poison",
-  "wv.labels.resistances.radiation": "Radiation",
-  "wv.labels.skills.name": "Skill",
-  "wv.labels.skills.value": "Value",
-  "wv.labels.special.name": "SPECIAL",
-  "wv.labels.special.value": "Value",
-  "wv.skills.barter": "Barter",
-  "wv.skills.diplomacy": "Diplomacy",
-  "wv.skills.explosives": "Explosives",
-  "wv.skills.firearms": "Firearms",
-  "wv.skills.intimidation": "Intimidation",
-  "wv.skills.lockpick": "Lockpick",
-  "wv.skills.magical_energy_weapons": "Magical Energy Weapons",
-  "wv.skills.mechanics": "Mechanics",
-  "wv.skills.medicine": "Medicine",
-  "wv.skills.melee": "Melee",
-  "wv.skills.science": "Science",
-  "wv.skills.sleight": "Sleight",
-  "wv.skills.sneak": "Sneak",
-  "wv.skills.survival": "Survival",
-  "wv.skills.thaumaturgy": "Thaumaturgy",
-  "wv.skills.unarmed": "Unarmed",
-  "wv.special.agi.short": "AGI",
-  "wv.special.cha.short": "CHA",
-  "wv.special.end.short": "END",
-  "wv.special.int.short": "INT",
-  "wv.special.lck.short": "LCK",
-  "wv.special.per.short": "PER",
-  "wv.special.str.short": "STR"
+  "wv": {
+    "labels": {
+      "secondary": {
+        "action_points": "Action Points",
+        "criticals": {
+          "failure": "Failure",
+          "success": "Success",
+          "title": "Criticals"
+        },
+        "experience": "Experience",
+        "healing_rate": "Healing Rate",
+        "health": "Health",
+        "initiative": "Initiative",
+        "level": "Level"
+      },
+      "ailments": {
+        "radiation": {
+          "absorbed": {
+            "title": "Absorbed dose",
+            "unit": "Rad(s)"
+          },
+          "effects": "Effects",
+          "title": "Radiation"
+        }
+      },
+      "resistances": {
+        "poison": "Poison",
+        "radiation": "Radiation",
+        "title": "Resistances"
+      },
+      "skills": {
+        "name": "Skill",
+        "value": "Value"
+      },
+      "special": {
+        "name": "SPECIAL",
+        "value": "Value"
+      }
+    },
+    "skills": {
+      "barter": "Barter",
+      "diplomacy": "Diplomacy",
+      "explosives": "Explosives",
+      "firearms": "Firearms",
+      "intimidation": "Intimidation",
+      "lockpick": "Lockpick",
+      "magical_energy_weapons": "Magical Energy Weapons",
+      "mechanics": "Mechanics",
+      "medicine": "Medicine",
+      "melee": "Melee",
+      "science": "Science",
+      "sleight": "Sleight",
+      "sneak": "Sneak",
+      "survival": "Survival",
+      "thaumaturgy": "Thaumaturgy",
+      "unarmed": "Unarmed"
+    },
+    "special": {
+      "agi": {
+        "short": "AGI"
+      },
+      "cha": {
+        "short": "CHA"
+      },
+      "end": {
+        "short": "END"
+      },
+      "int": {
+        "short": "INT"
+      },
+      "lck": {
+        "short": "LCK"
+      },
+      "per": {
+        "short": "PER"
+      },
+      "str": {
+        "short": "STR"
+      }
+    }
+  }
 }

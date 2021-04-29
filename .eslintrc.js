@@ -11,7 +11,7 @@ module.exports = {
         browser: true
       },
       extends: ["plugin:@typescript-eslint/recommended"],
-      files: ["*.ts"],
+      files: ["src/typescript/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./tsconfig.json",

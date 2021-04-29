@@ -7,21 +7,15 @@
   "author": "Kai Moschcau <mail@kmoschcau.de>",
   "minimumCoreVersion": "0.7.8",
   "compatibleCoreVersion": "0.7.9",
-  "scripts": [
-  ],
-  "esmodules": [
-    "dist/modules/wasteland_ventures.js"
-  ],
-  "styles": [
-    "dist/css/common.css"
-  ],
-  "packs": [
-  ],
+  "scripts": [],
+  "esmodules": ["modules/wastelandVentures.js"],
+  "styles": ["css/common.css"],
+  "packs": [],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "dist/lang/en.json"
+      "path": "lang/en.json"
     }
   ],
   "socket": false,

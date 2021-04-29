@@ -1,5 +1,2 @@
 /.git/
-/dist/*
-!/dist/handlebars/
-!/dist/lang/
 /package-lock.json

@@ -21,6 +21,18 @@ module.exports = {
       rules: {
         "tsdoc/syntax": "warn"
       }
+    },
+    {
+      extends: ["plugin:@typescript-eslint/recommended"],
+      files: ["gulpfile.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        sourceType: "module"
+      },
+      plugins: ["@typescript-eslint", "eslint-plugin-tsdoc"],
+      rules: {
+        "tsdoc/syntax": "warn"
+      }
     }
   ],
   parserOptions: {

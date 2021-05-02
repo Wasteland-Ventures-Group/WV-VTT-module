@@ -1,7 +1,10 @@
 import * as log from "fancy-log";
+import * as fs from "fs";
 import { src, dest, parallel, watch } from "gulp";
 import * as dartSass from "gulp-dart-sass";
 import * as typescript from "gulp-typescript";
+
+import { TemplateEntityType } from "./src/typescript/data/common";
 
 // = Path constants ============================================================
 
@@ -27,9 +30,13 @@ const systemPath = "./src/system.json";
 const systemWatchPath = "./src/[s-s]ystem.json";
 const systemOutPath = "./dist";
 
-const templatePath = "./src/template.json";
-const templateWatchPath = "./src/[t-t]emplate.json";
-const templateOutPath = "./dist";
+const templateWatchBasePath = "./src/typescript/data";
+const templateWatchPaths = [
+  `${templateWatchBasePath}/[c-c]ommon.ts`,
+  `${templateWatchBasePath}/actorDbData.ts`,
+  `${templateWatchBasePath}/itemDbData.ts`
+];
+const templateOutPath = "./dist/template.json";
 
 // = Handlebars copy ===========================================================
 
@@ -99,15 +106,31 @@ systemWatch.description = "Watch system.json for changes and copy it";
 
 // = template.json tasks =======================================================
 
-export function template(): NodeJS.ReadWriteStream {
-  return src(templatePath).pipe(dest(templateOutPath));
+export function template(cb: fs.NoParamCallback): void {
+  // We somehow have to get TS to reimport the files each time. Currently they
+  // are only loaded the first time and then cached.
+  Promise.all([
+    import("./src/typescript/data/actorDbData"),
+    import("./src/typescript/data/itemDbData")
+  ])
+    .then(([actorDbData, itemDbData]) => {
+      const actorEntityTypes = [new actorDbData.WvActorDbDataData()];
+      const itemEntityTypes = [new itemDbData.ItemDbData()];
+      fs.writeFile(
+        templateOutPath,
+        JSON.stringify(createTemplateObject(actorEntityTypes, itemEntityTypes)),
+        cb
+      );
+    })
+    .catch((reason) => log(`template generation failed: ${reason}`));
 }
-template.description = "Copy the template.json file";
+template.description = "Generate the template.json file";
 
 export function templateWatch(): void {
-  watch(templateWatchPath, template).on("change", logChange);
+  watch(templateWatchPaths, template).on("change", logChange);
 }
-templateWatch.description = "Watch template.json for changes and copy it";
+templateWatch.description =
+  "Watch the template.json input files for changes and generate it";
 
 // = General tasks =============================================================
 
@@ -128,4 +151,36 @@ watchAll.description = "Run all watch tasks";
 
 function logChange(path: string) {
   log(`${path} change`);
+}
+
+interface EntitiesTemplates extends Record<string, unknown> {
+  types: string[];
+}
+
+interface Template {
+  Actor: EntitiesTemplates;
+  Item: EntitiesTemplates;
+}
+
+function createTemplateObject(
+  actorEntityTypes: TemplateEntityType[],
+  itemEntityTypes: TemplateEntityType[]
+) {
+  const template: Template = {
+    Actor: {
+      types: []
+    },
+    Item: {
+      types: []
+    }
+  };
+  actorEntityTypes.forEach((actorEntityType) => {
+    template.Actor.types.push(actorEntityType.getTypeName());
+    template.Actor[actorEntityType.getTypeName()] = actorEntityType;
+  });
+  itemEntityTypes.forEach((itemEntityType) => {
+    template.Item.types.push(itemEntityType.getTypeName());
+    template.Item[itemEntityType.getTypeName()] = itemEntityType;
+  });
+  return template;
 }

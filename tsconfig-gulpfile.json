@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2020"],
+    "moduleResolution": "node",
+    "noEmit": true,
+    "strict": true,
+    "target": "ES2020",
+    "types": ["@league-of-foundry-developers/foundry-vtt-types"]
+  },
+  "files": [
+    "gulpfile.ts",
+    "./src/typescript/data/common.ts",
+    "./src/typescript/data/actorDbData.ts",
+    "./src/typescript/data/itemDbData.ts"
+  ]
+}

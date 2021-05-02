@@ -1,3 +1,5 @@
+import { TemplateEntityType } from "./common";
+
 interface PastDbData {}
 interface PastItemDbData extends Item.Data<PastDbData> {
   type: "past";
@@ -38,7 +40,22 @@ interface AerialManeuverItemDbData extends Item.Data<AerialManeuverDbData> {
   type: "aerialManeuver";
 }
 
-interface ItemDbData {}
+export class ItemDbData implements TemplateEntityType {
+  constructor(
+    /**
+     * The value of the item in caps
+     */
+    public value: number = 0
+  ) {}
+
+  /**
+   * @override
+   */
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  getTypeName() {
+    return "item";
+  }
+}
 interface ItemItemDbData extends Item.Data<ItemDbData> {
   type: "item";
 }

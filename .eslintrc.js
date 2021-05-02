@@ -27,6 +27,7 @@ module.exports = {
       files: ["gulpfile.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
+        project: "./tsconfig-gulpfile.json",
         sourceType: "module"
       },
       plugins: ["@typescript-eslint", "eslint-plugin-tsdoc"],

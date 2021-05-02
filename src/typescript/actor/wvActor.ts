@@ -44,9 +44,9 @@ export default class WvActor extends Actor<
    * Compute the base healing rate of the actor.
    */
   protected computeBaseHealingRate(): number {
-    if (this.data.data.endurance >= 8) {
+    if (this.data.data.special.endurance >= 8) {
       return 3;
-    } else if (this.data.data.endurance >= 4) {
+    } else if (this.data.data.special.endurance >= 4) {
       return 2;
     } else {
       return 1;
@@ -58,7 +58,7 @@ export default class WvActor extends Actor<
    */
   protected computeLevel(): number {
     return Math.floor(
-      (1 + Math.sqrt(this._data.data.experience / 12.5 + 1)) / 2
+      (1 + Math.sqrt(this._data.data.leveling.experience / 12.5 + 1)) / 2
     );
   }
 
@@ -66,35 +66,35 @@ export default class WvActor extends Actor<
    * Compute the base maximum action points of the Actor.
    */
   protected computedBaseMaxActionPoints(): number {
-    return Math.floor(this.data.data.agility / 2) + 10;
+    return Math.floor(this.data.data.special.agility / 2) + 10;
   }
 
   /**
    * Compute the base maximum carry weight of the Actor in kg.
    */
   protected computeBaseMaxCarryWeight(): number {
-    return this.data.data.strenght * 5 + 10;
+    return this.data.data.special.strenght * 5 + 10;
   }
 
   /**
    * Compute the base maximum health of the Actor.
    */
   protected computeBaseMaxHitPoints(): number {
-    return this.data.data.endurance + 10;
+    return this.data.data.special.endurance + 10;
   }
 
   /**
    * Compute the base maximum insanity of the Actor.
    */
   protected computeBaseMaxInsanity(): number {
-    return Math.floor(this.data.data.intelligence / 2) + 5;
+    return Math.floor(this.data.data.special.intelligence / 2) + 5;
   }
 
   /**
    * Compute the base maximum skill points of the Actor.
    */
   protected computeBaseMaxSkillPoints(): number {
-    return this._data.data.levelIntelligences.reduce(
+    return this._data.data.leveling.levelIntelligences.reduce(
       (skillPoints, intelligence) =>
         skillPoints + Math.floor(intelligence / 2) + 10,
       0
@@ -114,7 +114,7 @@ export default class WvActor extends Actor<
    */
   protected applySizeModifiers(): void {
     // TODO: hit chance, reach, combat trick mods
-    switch (this.data.data.size) {
+    switch (this.data.data.background.size) {
       case 4:
         this.data.data.maxHitPoints += 4;
         this.data.data.maxCarryWeight += 60;

@@ -8,21 +8,21 @@ import * as typescript from "gulp-typescript";
 const cssOutPath = "./dist/css";
 const sassPath = "./src/sass/**/*.sass";
 
-function compileSass() {
+export function sass() {
   return src(sassPath)
     .pipe(dartSass().on("error", dartSass.logError))
     .pipe(dest(cssOutPath));
 }
-compileSass.description = "Compile all Sass files into CSS";
+sass.description = "Compile all Sass files into CSS";
 
-function watchSass() {
-  const watcher = watch(sassPath, compileSass);
+export function sassWatch() {
+  const watcher = watch(sassPath, sass);
 
   watcher.on("change", (path) => {
     log(`${path} changed`);
   });
 }
-watchSass.description =
+sassWatch.description =
   "Watch the Sass input files for changes and run the compile task";
 
 // = Typescript tasks ==========================================================
@@ -30,12 +30,12 @@ watchSass.description =
 const tsProject = typescript.createProject("tsconfig.json");
 const jsOutPath = "./dist/modules";
 
-function compileTypescript() {
+export function ts() {
   return tsProject.src().pipe(tsProject()).js.pipe(dest(jsOutPath));
 }
-compileTypescript.description = "Compile all Typescript files to Javascript";
+ts.description = "Compile all Typescript files to Javascript";
 
-function watchTypescript() {
+export function tsWatch() {
   const includes = tsProject.config.include;
   if (includes) {
     const watcher = watch(includes);
@@ -45,18 +45,10 @@ function watchTypescript() {
     });
   }
 }
-watchTypescript.description =
+tsWatch.description =
   "Watch the Typescript input files for changes and run the compile task";
 
 // = General tasks =============================================================
 
-const watchAll = parallel(watchSass, watchTypescript);
+export const watchAll = parallel(sassWatch, tsWatch);
 watchAll.description = "Run all watch tasks";
-
-// = Task exports ==============================================================
-
-export const sass = compileSass;
-export const sassWatch = watchSass;
-export const ts = compileTypescript;
-export const tsWatch = watchTypescript;
-export default watchAll;

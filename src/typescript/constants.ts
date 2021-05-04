@@ -1,3 +1,12 @@
+export type SpecialNames =
+  | "strength"
+  | "perception"
+  | "endurance"
+  | "charisma"
+  | "intelligence"
+  | "agility"
+  | "luck";
+
 /**
  * This object holds common constants for the Wasteland Ventures system.
  */

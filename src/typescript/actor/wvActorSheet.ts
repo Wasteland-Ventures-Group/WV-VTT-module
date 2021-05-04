@@ -1,4 +1,4 @@
-import { Specials as DbSpecial } from "../data/actorDbData.js";
+import { SpecialNames } from "../constants.js";
 import { CONSTANTS } from "../constants.js";
 import WvLocalization, { Special as I18nSpecial } from "../i18n.js";
 import WvActor from "./wvActor.js";
@@ -7,7 +7,6 @@ interface Special extends I18nSpecial {
   value?: number;
 }
 
-type SpecialNames = keyof DbSpecial;
 type Specials = Partial<Record<SpecialNames, Special>>;
 
 interface SheetData extends ActorSheet.Data<WvActor> {

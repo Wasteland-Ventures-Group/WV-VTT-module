@@ -87,7 +87,7 @@ ts.description = "Compile all Typescript files to Javascript";
 
 export function tsWatch(): void {
   const includes = tsProject.config.include;
-  includes && watch(includes).on("change", logChange);
+  includes && watch(includes, ts).on("change", logChange);
 }
 tsWatch.description =
   "Watch the Typescript input files for changes and run the compile task";

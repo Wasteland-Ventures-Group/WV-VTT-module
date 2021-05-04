@@ -96,11 +96,22 @@ export class SecondaryStatistics {
 
 export class WvActorDerivedDataData extends WvActorDbDataData {
   constructor(
+    /** The SPECIALs of an Actor */
     public specials: Specials = new Specials(),
+
+    /** The vitals of an Actor */
     public vitals: Vitals = new Vitals(),
+
+    /** The leveling stats of an Actor */
     public leveling: Leveling = new Leveling(),
+
+    /** The background of an Actor */
     public background: Background = new Background(),
+
+    /** The resistances of an Actor */
     public resistances: Resistances | undefined = new Resistances(),
+
+    /** The secondary statistics of an Actor */
     public secondary:
       | SecondaryStatistics
       | undefined = new SecondaryStatistics()

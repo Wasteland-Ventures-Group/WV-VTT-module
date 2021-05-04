@@ -2,8 +2,8 @@ import { TemplateEntityType } from "./common.js";
 import { WvItemDbData } from "./itemDbData.js";
 
 /**
- * This is an interface to represent a set of SPECIAL values in general under
- * the rules of the Wasteland Ventures ruleset.
+ * This is the "specials" template for {@link Actor}s from the `template.json`
+ * file.
  */
 export class Specials {
   constructor(
@@ -138,9 +138,16 @@ export class Background {
  */
 export class WvActorDbDataData implements TemplateEntityType {
   constructor(
+    /** The SPECIALs of an Actor */
     public specials: Specials = new Specials(),
+
+    /** The vitals of an Actor */
     public vitals: Vitals = new Vitals(),
+
+    /** The leveling stats of an Actor */
     public leveling: Leveling = new Leveling(),
+
+    /** The background of an Actor */
     public background: Background = new Background()
   ) {}
 

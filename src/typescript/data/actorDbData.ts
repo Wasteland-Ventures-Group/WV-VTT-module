@@ -91,24 +91,6 @@ export class Leveling {
 }
 
 /**
- * This is the "resistances" template for {@link Actor}s from the
- * `template.json` file.
- */
-export class Resistances {
-  constructor(
-    /**
-     * The base poison resistance of an Actor
-     */
-    public poison: number = 10,
-
-    /**
-     * The base radiation resistance of an Actor
-     */
-    public radiation: number = 5
-  ) {}
-}
-
-/**
  * This is the "background" template for {@link Actor}s from the `template.json`
  * file.
  */

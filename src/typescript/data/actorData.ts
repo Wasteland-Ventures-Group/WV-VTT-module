@@ -66,6 +66,23 @@ export class Leveling extends DbLeveling {
 }
 
 /**
+ * Derived resistance values
+ */
+export class Resistances {
+  constructor(
+    /**
+     * The basic poison resitance of an Actor
+     */
+    public poison: number = 10,
+
+    /**
+     * The basic radiation resistance of an Actor
+     */
+    public radiation: number = 5
+  ) {}
+}
+
+/**
  * Derived secondary statistics
  */
 export class SecondaryStatistics {
@@ -83,6 +100,7 @@ export class WvActorDerivedDataData extends WvActorDbDataData {
     public vitals: Vitals = new Vitals(),
     public leveling: Leveling = new Leveling(),
     public background: Background = new Background(),
+    public resistances: Resistances | undefined = new Resistances(),
     public secondary:
       | SecondaryStatistics
       | undefined = new SecondaryStatistics()

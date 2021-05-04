@@ -1,4 +1,4 @@
-import { WvActorDerivedData } from "./../data/actorData.js";
+import { Resistances, WvActorDerivedData } from "./../data/actorData.js";
 import { WvActorDbData } from "./../data/actorDbData.js";
 import WvItem from "./../item/wvItem.js";
 
@@ -39,6 +39,7 @@ export default class WvActor extends Actor<
     this.data.data.vitals.maxInsanity = this.computeBaseMaxInsanity();
     this.data.data.secondary = {};
     this.data.data.secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
+    this.data.data.resistances = new Resistances();
   }
 
   /**

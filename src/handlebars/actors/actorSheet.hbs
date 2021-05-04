@@ -1,20 +1,20 @@
-<form autocomplete="off">
+<form class="{{cssClass}}" autocomplete="off">
   <div class="flexrow">
     <div class="level standard-padding grid-2cols standard-grid-gaps">
       <label>{{localize "wv.labels.secondary.level"}}</label>
-      <span>{{data.level}}</span>
+      <span>{{data.leveling.level}}</span>
       <label>{{localize "wv.labels.secondary.experience"}}</label>
-      <span>{{data.experience}}</span>
+      <span>{{data.leveling.experience}}</span>
     </div>
     <div class="health standard-padding grid-2cols standard-grid-gaps">
       <label>{{localize "wv.labels.secondary.health"}}</label>
-      <span>{{data.hitPoints}}/{{data.maxHitPoints}}</span>
+      <span>{{data.vitals.hitPoints}}/{{data.maxHitPoints}}</span>
       <label>{{localize "wv.labels.secondary.healing_rate"}}</label>
       <span>{{data.healingRate}}</span>
     </div>
     <div class="action-points standard-padding">
       <label>{{localize "wv.labels.secondary.action_points"}}</label>
-      <span>{{data.actionPoints}}/{{data.maxActionPoints}}</span>
+      <span>{{data.vitals.actionPoints}}/{{data.maxActionPoints}}</span>
     </div>
     <div class="criticals standard-padding">
       <label>{{localize "wv.labels.secondary.criticals.title"}}</label>
@@ -27,7 +27,7 @@
     </div>
     <div class="initiative standard-padding">
       <label>{{localize "wv.labels.secondary.initiative"}}</label>
-      <span>1d10 + {{data.agility}}</span>
+      <span>1d10 + {{data.special.perception}}</span>
     </div>
     <div class="radiation standard-padding">
       <label>{{localize "wv.labels.ailments.radiation.title"}}</label>
@@ -54,8 +54,8 @@
     <div class="standard-padding grid-2cols standard-grid-gaps">
       <label>{{localize "wv.labels.special.name"}}</label>
       <label>{{localize "wv.labels.special.value"}}</label>
-      {{#each special as |spec|}}
-      <label>{{localize spec.name}}</label>
+      {{#each sheet.specials as |spec|}}
+      <label>{{localize spec.long}}</label>
       <div>{{spec.value}}</div>
       {{/each}}
     </div>

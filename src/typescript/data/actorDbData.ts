@@ -10,7 +10,7 @@ export class Special {
     /**
      * The current base Strength of an Actor
      */
-    public strenght: number = 5,
+    public strength: number = 5,
 
     /**
      * The current base Perception of an Actor

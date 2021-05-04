@@ -73,7 +73,7 @@ export default class WvActor extends Actor<
    * Compute the base maximum carry weight of the Actor in kg.
    */
   protected computeBaseMaxCarryWeight(): number {
-    return this.data.data.special.strenght * 5 + 10;
+    return this.data.data.special.strength * 5 + 10;
   }
 
   /**

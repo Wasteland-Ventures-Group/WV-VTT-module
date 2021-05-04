@@ -8,13 +8,13 @@
     </div>
     <div class="health standard-padding grid-2cols standard-grid-gaps">
       <label>{{localize "wv.labels.secondary.health"}}</label>
-      <span>{{data.vitals.hitPoints}}/{{data.maxHitPoints}}</span>
+      <span>{{data.vitals.hitPoints}}/{{data.vitals.maxHitPoints}}</span>
       <label>{{localize "wv.labels.secondary.healing_rate"}}</label>
-      <span>{{data.healingRate}}</span>
+      <span>{{data.vitals.healingRate}}</span>
     </div>
     <div class="action-points standard-padding">
       <label>{{localize "wv.labels.secondary.action_points"}}</label>
-      <span>{{data.vitals.actionPoints}}/{{data.maxActionPoints}}</span>
+      <span>{{data.vitals.actionPoints}}/{{data.vitals.maxActionPoints}}</span>
     </div>
     <div class="criticals standard-padding">
       <label>{{localize "wv.labels.secondary.criticals.title"}}</label>
@@ -27,7 +27,7 @@
     </div>
     <div class="initiative standard-padding">
       <label>{{localize "wv.labels.secondary.initiative"}}</label>
-      <span>1d10 + {{data.special.perception}}</span>
+      <span>1d10 + {{data.specials.perception}}</span>
     </div>
     <div class="radiation standard-padding">
       <label>{{localize "wv.labels.ailments.radiation.title"}}</label>

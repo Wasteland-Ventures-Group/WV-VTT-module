@@ -5,7 +5,7 @@ import { WvItemDbData } from "./itemDbData.js";
  * This is an interface to represent a set of SPECIAL values in general under
  * the rules of the Wasteland Ventures ruleset.
  */
-export class Special {
+export class Specials {
   constructor(
     /**
      * The current base Strength of an Actor
@@ -63,7 +63,12 @@ export class Vitals {
     /**
      * The current insanity of an Actor
      */
-    public insanity: number = 0
+    public insanity: number = 0,
+
+    /**
+     * The current strain of an Actor
+     */
+    public strain: number = 20
   ) {}
 }
 
@@ -151,7 +156,7 @@ export class Background {
  */
 export class WvActorDbDataData implements TemplateEntityType {
   constructor(
-    public special: Special = new Special(),
+    public specials: Specials = new Specials(),
     public vitals: Vitals = new Vitals(),
     public leveling: Leveling = new Leveling(),
     public background: Background = new Background()

@@ -1,49 +1,92 @@
-import { WvActorDbDataData } from "./actorDbData.js";
+import {
+  Background,
+  Leveling as DbLeveling,
+  Specials as DbSpecials,
+  Vitals as DbVitals,
+  WvActorDbDataData
+} from "./actorDbData.js";
 import { WvItemDbData } from "./itemDbData.js";
 
 /**
- * The derived system specific data of Wasteland Ventures actors
+ * Derived SPECIALs related data
  */
-export interface WvActorDerivedDataData extends WvActorDbDataData {
-  /**
-   * The healing rate of an Actor per 8 hours of rest
-   */
-  healingRate: number;
+export class Specials extends DbSpecials {}
 
-  /**
-   * The current level of an Actor
-   */
-  level: number;
+/**
+ * Derived vitals data
+ */
+export class Vitals extends DbVitals {
+  constructor(
+    /**
+     * The healing rate of an Actor per 8 hours of rest
+     */
+    public healingRate?: number,
 
-  /**
-   * The current maximum action points of an Actor
-   */
-  maxActionPoints: number;
+    /**
+     * The current maximum action points of an Actor
+     */
+    public maxActionPoints?: number,
 
-  /**
-   * The maximum carry weight of an Actor in kg
-   */
-  maxCarryWeight: number;
+    /**
+     * The maximum hit points of an Actor
+     */
+    public maxHitPoints?: number,
 
-  /**
-   * The maximum hit points of an Actor
-   */
-  maxHitPoints: number;
+    /**
+     * The maximum insanity of an Actor
+     */
+    public maxInsanity?: number,
 
-  /**
-   * The maximum insanity of an Actor
-   */
-  maxInsanity: number;
+    /**
+     * The maximum strain of an Actor
+     */
+    public maxStrain?: number
+  ) {
+    super();
+  }
+}
 
-  /**
-   * The maximum skill points of an Actor
-   */
-  maxSkillPoints: number;
+/**
+ * Derived leveling related data
+ */
+export class Leveling extends DbLeveling {
+  constructor(
+    /**
+     * The current level of an Actor
+     */
+    public level?: number,
 
-  /**
-   * The maximum strain of an Actor
-   */
-  maxStrain: number;
+    /**
+     * The maximum skill points of an Actor
+     */
+    public maxSkillPoints?: number
+  ) {
+    super();
+  }
+}
+
+/**
+ * Derived secondary statistics
+ */
+export class SecondaryStatistics {
+  constructor(
+    /**
+     * The maximum carry weight of an Actor in kg
+     */
+    public maxCarryWeight?: number
+  ) {}
+}
+
+export class WvActorDerivedDataData extends WvActorDbDataData {
+  constructor(
+    public specials: Specials = new Specials(),
+    public vitals: Vitals = new Vitals(),
+    public leveling: Leveling = new Leveling(),
+    public background: Background = new Background(),
+    public secondary: SecondaryStatistics = new SecondaryStatistics()
+  ) {
+    super(specials, vitals, leveling, background);
+  }
 }
 
 /**

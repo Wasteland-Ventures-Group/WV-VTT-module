@@ -30,23 +30,23 @@ export default class WvActor extends Actor<
    * Compute and set the Actor's base secondary statistics.
    */
   protected computeBaseSecondaryStatistics(): void {
-    this.data.data.level = this.computeLevel();
-    this.data.data.maxHitPoints = this.computeBaseMaxHitPoints();
-    this.data.data.healingRate = this.computeBaseHealingRate();
-    this.data.data.maxActionPoints = this.computedBaseMaxActionPoints();
-    this.data.data.maxStrain = this.computeBaseMaxStrain();
-    this.data.data.maxSkillPoints = this.computeBaseMaxSkillPoints();
-    this.data.data.maxInsanity = this.computeBaseMaxInsanity();
-    this.data.data.maxCarryWeight = this.computeBaseMaxCarryWeight();
+    this.data.data.leveling.level = this.computeLevel();
+    this.data.data.vitals.maxHitPoints = this.computeBaseMaxHitPoints();
+    this.data.data.vitals.healingRate = this.computeBaseHealingRate();
+    this.data.data.vitals.maxActionPoints = this.computedBaseMaxActionPoints();
+    this.data.data.vitals.maxStrain = this.computeBaseMaxStrain();
+    this.data.data.leveling.maxSkillPoints = this.computeBaseMaxSkillPoints();
+    this.data.data.vitals.maxInsanity = this.computeBaseMaxInsanity();
+    this.data.data.secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
   }
 
   /**
    * Compute the base healing rate of the actor.
    */
   protected computeBaseHealingRate(): number {
-    if (this.data.data.special.endurance >= 8) {
+    if (this.data.data.specials.endurance >= 8) {
       return 3;
-    } else if (this.data.data.special.endurance >= 4) {
+    } else if (this.data.data.specials.endurance >= 4) {
       return 2;
     } else {
       return 1;
@@ -66,28 +66,28 @@ export default class WvActor extends Actor<
    * Compute the base maximum action points of the Actor.
    */
   protected computedBaseMaxActionPoints(): number {
-    return Math.floor(this.data.data.special.agility / 2) + 10;
+    return Math.floor(this.data.data.specials.agility / 2) + 10;
   }
 
   /**
    * Compute the base maximum carry weight of the Actor in kg.
    */
   protected computeBaseMaxCarryWeight(): number {
-    return this.data.data.special.strength * 5 + 10;
+    return this.data.data.specials.strength * 5 + 10;
   }
 
   /**
    * Compute the base maximum health of the Actor.
    */
   protected computeBaseMaxHitPoints(): number {
-    return this.data.data.special.endurance + 10;
+    return this.data.data.specials.endurance + 10;
   }
 
   /**
    * Compute the base maximum insanity of the Actor.
    */
   protected computeBaseMaxInsanity(): number {
-    return Math.floor(this.data.data.special.intelligence / 2) + 5;
+    return Math.floor(this.data.data.specials.intelligence / 2) + 5;
   }
 
   /**
@@ -106,44 +106,55 @@ export default class WvActor extends Actor<
    * the level of the Actor has been computed.
    */
   protected computeBaseMaxStrain(): number {
-    return 20 + Math.floor(this.data.data.level / 5) * 5;
+    if (this.data.data.leveling.level === undefined) {
+      throw "The level should be computed before computing strain.";
+    }
+    return 20 + Math.floor(this.data.data.leveling.level / 5) * 5;
   }
 
   /**
    * Apply the stat modifiers, based on the size category of the Actor.
+   * @throws if max hit points or max carry weight are not defined
    */
   protected applySizeModifiers(): void {
+    if (
+      this.data.data.vitals.maxHitPoints === undefined ||
+      this.data.data.secondary.maxCarryWeight === undefined
+    ) {
+      throw "Max hit points and carry weight should be computed before size modifiers";
+    }
+
     // TODO: hit chance, reach, combat trick mods
     switch (this.data.data.background.size) {
       case 4:
-        this.data.data.maxHitPoints += 4;
-        this.data.data.maxCarryWeight += 60;
+        this.data.data.vitals.maxHitPoints += 4;
+        this.data.data.secondary.maxCarryWeight += 60;
         break;
       case 3:
-        this.data.data.maxHitPoints += 2;
-        this.data.data.maxCarryWeight += 40;
+        this.data.data.vitals.maxHitPoints += 2;
+        this.data.data.secondary.maxCarryWeight += 40;
         break;
       case 2:
-        this.data.data.maxHitPoints += 1;
-        this.data.data.maxCarryWeight += 10;
+        this.data.data.vitals.maxHitPoints += 1;
+        this.data.data.secondary.maxCarryWeight += 10;
         break;
       case 1:
-        this.data.data.maxCarryWeight += 5;
+        this.data.data.secondary.maxCarryWeight += 5;
         break;
       case -1:
-        this.data.data.maxCarryWeight -= 5;
+        this.data.data.secondary.maxCarryWeight -= 5;
         break;
       case -2:
-        this.data.data.maxHitPoints -= 1;
-        this.data.data.maxCarryWeight -= 10;
+        this.data.data.vitals.maxHitPoints -= 1;
+        this.data.data.secondary.maxCarryWeight -= 10;
         break;
       case -3:
-        this.data.data.maxHitPoints -= 2;
-        this.data.data.maxCarryWeight -= 40;
+        this.data.data.vitals.maxHitPoints -= 2;
+        this.data.data.secondary.maxCarryWeight -= 40;
         break;
       case -4:
-        this.data.data.maxHitPoints -= 4;
-        this.data.data.maxCarryWeight -= 60;
+        this.data.data.vitals.maxHitPoints -= 4;
+        this.data.data.secondary.maxCarryWeight -= 60;
         break;
       case 0:
       default:

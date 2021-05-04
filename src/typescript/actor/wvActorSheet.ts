@@ -1,4 +1,4 @@
-import { Special as DbSpecial } from "../data/actorDbData.js";
+import { Specials as DbSpecial } from "../data/actorDbData.js";
 import { CONSTANTS } from "../constants.js";
 import WvLocalization, { Special as I18nSpecial } from "../i18n.js";
 import WvActor from "./wvActor.js";
@@ -48,12 +48,12 @@ export default class WvActorSheet extends ActorSheet<SheetData> {
     const data = await super.getData();
     data.sheet = {};
     data.sheet.specials = {};
-    let k: keyof typeof data.data.special;
-    for (k in data.data.special) {
+    let k: keyof typeof data.data.specials;
+    for (k in data.data.specials) {
       data.sheet.specials[k] = {
         long: specialI18n[k].long,
         short: specialI18n[k].short,
-        value: data.data.special[k]
+        value: data.data.specials[k]
       };
     }
     return data;

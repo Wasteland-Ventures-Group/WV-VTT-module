@@ -83,7 +83,9 @@ export class WvActorDerivedDataData extends WvActorDbDataData {
     public vitals: Vitals = new Vitals(),
     public leveling: Leveling = new Leveling(),
     public background: Background = new Background(),
-    public secondary: SecondaryStatistics = new SecondaryStatistics()
+    public secondary:
+      | SecondaryStatistics
+      | undefined = new SecondaryStatistics()
   ) {
     super(specials, vitals, leveling, background);
   }

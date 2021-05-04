@@ -37,6 +37,7 @@ export default class WvActor extends Actor<
     this.data.data.vitals.maxStrain = this.computeBaseMaxStrain();
     this.data.data.leveling.maxSkillPoints = this.computeBaseMaxSkillPoints();
     this.data.data.vitals.maxInsanity = this.computeBaseMaxInsanity();
+    this.data.data.secondary = {};
     this.data.data.secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
   }
 
@@ -119,6 +120,7 @@ export default class WvActor extends Actor<
   protected applySizeModifiers(): void {
     if (
       this.data.data.vitals.maxHitPoints === undefined ||
+      this.data.data.secondary === undefined ||
       this.data.data.secondary.maxCarryWeight === undefined
     ) {
       throw "Max hit points and carry weight should be computed before size modifiers";

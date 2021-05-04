@@ -56,26 +56,33 @@
       "thaumaturgy": "Thaumaturgy",
       "unarmed": "Unarmed"
     },
-    "special": {
-      "agi": {
+    "specials": {
+      "agility": {
+        "long": "Agility",
         "short": "AGI"
       },
-      "cha": {
+      "charisma": {
+        "long": "Charisma",
         "short": "CHA"
       },
-      "end": {
+      "endurance": {
+        "long": "Endurance",
         "short": "END"
       },
-      "int": {
+      "intelligence": {
+        "long": "Intelligence",
         "short": "INT"
       },
-      "lck": {
+      "luck": {
+        "long": "Luck",
         "short": "LCK"
       },
-      "per": {
+      "perception": {
+        "long": "Perception",
         "short": "PER"
       },
-      "str": {
+      "strength": {
+        "long": "Strength",
         "short": "STR"
       }
     }

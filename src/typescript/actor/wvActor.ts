@@ -33,7 +33,7 @@ export default class WvActor extends Actor<
     this.data.data.leveling.level = this.computeLevel();
     this.data.data.vitals.maxHitPoints = this.computeBaseMaxHitPoints();
     this.data.data.vitals.healingRate = this.computeBaseHealingRate();
-    this.data.data.vitals.maxActionPoints = this.computedBaseMaxActionPoints();
+    this.data.data.vitals.maxActionPoints = this.computeBaseMaxActionPoints();
     this.data.data.vitals.maxStrain = this.computeBaseMaxStrain();
     this.data.data.leveling.maxSkillPoints = this.computeBaseMaxSkillPoints();
     this.data.data.vitals.maxInsanity = this.computeBaseMaxInsanity();
@@ -67,7 +67,7 @@ export default class WvActor extends Actor<
   /**
    * Compute the base maximum action points of the Actor.
    */
-  protected computedBaseMaxActionPoints(): number {
+  protected computeBaseMaxActionPoints(): number {
     return Math.floor(this.data.data.specials.agility / 2) + 10;
   }
 

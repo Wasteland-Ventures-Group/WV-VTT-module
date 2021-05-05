@@ -1,6 +1,8 @@
+import { SkillNames } from "../constants.js";
 import {
   Background,
   Leveling as DbLeveling,
+  Magic,
   Specials as DbSpecials,
   Vitals as DbVitals,
   WvActorDbDataData
@@ -11,6 +13,61 @@ import { WvItemDbData } from "./itemDbData.js";
  * Derived SPECIALs related data
  */
 export class Specials extends DbSpecials {}
+
+/**
+ * Derived skill values
+ */
+export class Skills implements Partial<Record<SkillNames, number>> {
+  constructor(
+    /** The barter skill value of an Actor */
+    public barter?: number,
+
+    /** The diplomacy skill value of an Actor */
+    public diplomacy?: number,
+
+    /** The explosives skill value of an Actor */
+    public explosives?: number,
+
+    /** The firearms skill value of an Actor */
+    public firearms?: number,
+
+    /** The intimidation skill value of an Actor */
+    public intimidation?: number,
+
+    /** The lockpick skill value of an Actor */
+    public lockpick?: number,
+
+    /** The magical energy weapons skill value of an Actor */
+    public magical_energy_weapons?: number,
+
+    /** The mechanics skill value of an Actor */
+    public mechanics?: number,
+
+    /** The medicine skill value of an Actor */
+    public medicine?: number,
+
+    /** The melee skill value of an Actor */
+    public melee?: number,
+
+    /** The science skill value of an Actor */
+    public science?: number,
+
+    /** The sleight skill value of an Actor */
+    public sleight?: number,
+
+    /** The sneak skill value of an Actor */
+    public sneak?: number,
+
+    /** The survival skill value of an Actor */
+    public survival?: number,
+
+    /** The thaumaturgy skill value of an Actor */
+    public thaumaturgy?: number,
+
+    /** The unarmed skill value of an Actor */
+    public unarmed?: number
+  ) {}
+}
 
 /**
  * Derived vitals data
@@ -99,6 +156,9 @@ export class WvActorDerivedDataData extends WvActorDbDataData {
     /** The SPECIALs of an Actor */
     public specials: Specials = new Specials(),
 
+    /** The skills of an Actor */
+    public skills: Skills = new Skills(),
+
     /** The vitals of an Actor */
     public vitals: Vitals = new Vitals(),
 
@@ -116,7 +176,7 @@ export class WvActorDerivedDataData extends WvActorDbDataData {
       | SecondaryStatistics
       | undefined = new SecondaryStatistics()
   ) {
-    super(specials, vitals, leveling, background);
+    super(specials, vitals, leveling, new Magic(), background);
   }
 }
 

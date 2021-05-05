@@ -7,10 +7,48 @@ export type SpecialNames =
   | "agility"
   | "luck";
 
+export type SkillNames =
+  | "barter"
+  | "diplomacy"
+  | "explosives"
+  | "firearms"
+  | "intimidation"
+  | "lockpick"
+  | "magical_energy_weapons"
+  | "mechanics"
+  | "medicine"
+  | "melee"
+  | "science"
+  | "sleight"
+  | "sneak"
+  | "survival"
+  | "thaumaturgy"
+  | "unarmed";
+
+export type ThaumaturgySpecials = Exclude<SpecialNames, "luck">;
+
 /**
  * This object holds common constants for the Wasteland Ventures system.
  */
 export const CONSTANTS = {
+  skillSpecials: {
+    barter: "charisma",
+    diplomacy: "charisma",
+    explosives: "perception",
+    firearms: "agility",
+    intimidation: "strength",
+    lockpick: "perception",
+    magical_energy_weapons: "perception",
+    mechanics: "intelligence",
+    medicine: "intelligence",
+    melee: "strength",
+    science: "intelligence",
+    sleight: "agility",
+    sneak: "agility",
+    survival: "endurance",
+    unarmed: "endurance"
+  } as Record<SkillNames, SpecialNames>,
+
   /**
    * This is the path for the system directory in Foundry's global working
    * directory.

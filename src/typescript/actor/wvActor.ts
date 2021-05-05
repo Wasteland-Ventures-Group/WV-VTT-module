@@ -1,4 +1,9 @@
-import { Resistances, WvActorDerivedData } from "./../data/actorData.js";
+import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
+import {
+  Resistances,
+  Skills,
+  WvActorDerivedData
+} from "./../data/actorData.js";
 import { WvActorDbData } from "./../data/actorDbData.js";
 import WvItem from "./../item/wvItem.js";
 
@@ -40,6 +45,7 @@ export default class WvActor extends Actor<
     this.data.data.secondary = {};
     this.data.data.secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
     this.data.data.resistances = new Resistances();
+    this.data.data.skills = this.computeBaseSkillValues();
   }
 
   /**
@@ -112,6 +118,35 @@ export default class WvActor extends Actor<
       throw "The level should be computed before computing strain.";
     }
     return 20 + Math.floor(this.data.data.leveling.level / 5) * 5;
+  }
+
+  /**
+   * Compute the base skill values of an Actor.
+   */
+  protected computeBaseSkillValues(): Skills {
+    const skills = new Skills();
+    let skill: SkillNames;
+    for (skill in CONSTANTS.skillSpecials) {
+      skills[skill] = this.computeBaseSkillValue(
+        CONSTANTS.skillSpecials[skill]
+      );
+    }
+    skills["thaumaturgy"] = this.computeBaseSkillValue(
+      this.data.data.magic.thaumSpecial
+    );
+    return skills;
+  }
+
+  /**
+   * Compute the base skill value of an Actor, given the associated SPECIAL
+   * name.
+   * @param special - the name of the SPECIAL for the skill
+   */
+  protected computeBaseSkillValue(special: SpecialNames): number {
+    return (
+      this.data.data.specials[special] * 2 +
+      Math.floor(this.data.data.specials.luck / 2)
+    );
   }
 
   /**

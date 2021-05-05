@@ -1,3 +1,4 @@
+import { ThaumaturgySpecials } from "../constants.js";
 import { TemplateEntityType } from "./common.js";
 import { WvItemDbData } from "./itemDbData.js";
 
@@ -133,6 +134,15 @@ export class Background {
   ) {}
 }
 
+export class Magic {
+  constructor(
+    /**
+     * The SPECIAL associated with the Thaumaturgy skill
+     */
+    public thaumSpecial: ThaumaturgySpecials = "intelligence"
+  ) {}
+}
+
 /**
  * The system specific database data of Wasteland Ventures actors.
  */
@@ -146,6 +156,9 @@ export class WvActorDbDataData implements TemplateEntityType {
 
     /** The leveling stats of an Actor */
     public leveling: Leveling = new Leveling(),
+
+    /** The magic stats of an Actor */
+    public magic: Magic = new Magic(),
 
     /** The background of an Actor */
     public background: Background = new Background()

@@ -62,7 +62,7 @@
     <div class="standard-padding grid-2cols standard-grid-gaps">
       <label>{{localize "wv.labels.skills.name"}}</label>
       <label>{{localize "wv.labels.skills.value"}}</label>
-      {{#each skills as |skill|}}
+      {{#each sheet.skills as |skill|}}
       <label>{{localize skill.name}}</label>
       <div>{{skill.value}}</div>
       {{/each}}

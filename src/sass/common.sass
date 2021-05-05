@@ -1,9 +1,10 @@
-.grid-2cols
-  display: grid
-  grid-template-columns: auto auto
+@for $i from 2 through 6
+  .grid-#{$i}cols
+    display: grid
+    grid-template-columns: repeat(#{$i}, auto)
 
-.flex-baseline
-  align-items: baseline
+.flex-center
+  align-items: center
 
 .flex-fixed
   flex-grow: 0

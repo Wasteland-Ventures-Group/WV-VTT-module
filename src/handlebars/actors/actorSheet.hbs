@@ -6,27 +6,27 @@
       <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
       <div class="flexrow">
         <div class="level standard-padding flexcol">
-          <div class="flexrow flex-baseline">
+          <div class="flexrow flex-center">
             <label class="resource-label">{{localize "wv.labels.secondary.level"}}</label>
             <span class="flex-fixed resource-display">{{data.leveling.level}}</span>
           </div>
-          <div class="flexrow flex-baseline">
+          <div class="flexrow flex-center">
             <label class="resource-label">{{localize "wv.labels.secondary.experience"}}</label>
             <input class="flex-fixed resource-input-5" type="number" name="data.leveling.experience" value="{{data.leveling.experience}}" min="0" />
           </div>
         </div>
         <div class="health standard-padding flexcol">
-          <div class="flexrow flex-baseline">
+          <div class="flexrow flex-center">
             <label class="resource-label">{{localize "wv.labels.secondary.health"}}</label>
             <input class="flex-fixed resource-input-2" type="number" name="data.vitals.hitPoints" value="{{data.vitals.hitPoints}}" min="0" max="{{data.vitals.maxHitPoints}}" />
             <span class="flex-fixed">/{{data.vitals.maxHitPoints}}</span>
           </div>
-          <div class="flexrow flex-baseline">
+          <div class="flexrow flex-center">
             <label class="resource-label">{{localize "wv.labels.secondary.healing_rate"}}</label>
             <span class="flex-fixed resource-display">{{data.vitals.healingRate}}</span>
           </div>
         </div>
-        <div class="action-points standard-padding flexrow flex-baseline">
+        <div class="action-points standard-padding flexrow flex-center">
           <label class="resource-label">{{localize "wv.labels.secondary.action_points"}}</label>
           <input class="flex-fixed resource-input-2" type="number" name="data.vitals.actionPoints" value="{{data.vitals.actionPoints}}" min="0" max="{{data.vitals.maxActionPoints}}" />
           <span class="flex-fixed">/{{data.vitals.maxActionPoints}}</span>
@@ -43,20 +43,24 @@
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
       <div class="special-and-skills">
-        <div class="standard-padding grid-2cols standard-grid-gaps">
+        <div class="standard-padding grid-3cols standard-grid-gaps flex-center">
           <label>{{localize "wv.labels.special.name"}}</label>
           <label>{{localize "wv.labels.special.value"}}</label>
-          {{#each sheet.specials as |spec|}}
+          <label>Roll</label>
+          {{#each sheet.specials as |spec key|}}
             <label>{{localize spec.long}}</label>
-            <div>{{spec.value}}</div>
+            <input class="flex-fixed resource-input-2" type="number" name="data.specials.{{key}}" value="{{spec.value}}" min="0" max="15" />
+            <button class="rollable" data-special="{{key}}">Roll</button>
           {{/each}}
         </div>
-        <div class="standard-padding grid-2cols standard-grid-gaps">
+        <div class="standard-padding grid-3cols standard-grid-gaps flex-center">
           <label>{{localize "wv.labels.skills.name"}}</label>
           <label>{{localize "wv.labels.skills.value"}}</label>
-          {{#each sheet.skills as |skill|}}
+          <label>Roll</label>
+          {{#each sheet.skills as |skill key|}}
             <label>{{localize skill.name}}</label>
-            <div>{{skill.value}}</div>
+            <input class="flex-fixed resource-input-3" type="number" name="data.skills.{{key}}" value="{{skill.value}}" min="0" max="100" />
+            <button class="rollable" data-skill="{{key}}">Roll</button>
           {{/each}}
         </div>
       </div>

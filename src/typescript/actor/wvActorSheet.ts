@@ -3,6 +3,8 @@ import { CONSTANTS } from "../constants.js";
 import WvLocalization, { Special as I18nSpecial } from "../wvLocalization.js";
 import WvActor from "./wvActor.js";
 
+type RollEvent = JQuery.ClickEvent<HTMLElement, any, HTMLElement, HTMLElement>;
+
 interface Special extends I18nSpecial {
   value?: number;
 }
@@ -25,7 +27,7 @@ interface SheetData extends ActorSheet.Data<WvActor> {
 /**
  * The basic Wasteland Ventures Actor Sheet.
  */
-export default class WvActorSheet extends ActorSheet<SheetData> {
+export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
   /**
    * @override
    */
@@ -46,6 +48,11 @@ export default class WvActorSheet extends ActorSheet<SheetData> {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   activateListeners(html: JQuery<HTMLElement>) {
     super.activateListeners(html);
+
+    html
+      .find(".rollable[data-special]")
+      .on("click", this.rollSpecial.bind(this));
+    html.find(".rollable[data-skill]").on("click", this.rollSkill.bind(this));
   }
 
   /**
@@ -78,5 +85,35 @@ export default class WvActorSheet extends ActorSheet<SheetData> {
     }
 
     return data;
+  }
+
+  protected rollSpecial(event: RollEvent): void {
+    event.preventDefault();
+    const dataset = event.target.dataset;
+
+    if (dataset.special) {
+      const roll = new Roll(
+        `1d100cs>(@${dataset.special}*10)`,
+        this.actor.data.data.specials
+      );
+      roll.roll().toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor })
+      });
+    }
+  }
+
+  protected rollSkill(event: RollEvent): void {
+    event.preventDefault();
+    const dataset = event.target.dataset;
+
+    if (dataset.skill) {
+      const roll = new Roll(
+        `1d100cs>@${dataset.skill}`,
+        this.actor.data.data.skills
+      );
+      roll.roll().toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor })
+      });
+    }
   }
 }

@@ -1,71 +1,69 @@
-<form class="{{cssClass}}" autocomplete="off">
-  <div class="flexrow">
-    <div class="level standard-padding grid-2cols standard-grid-gaps">
-      <label>{{localize "wv.labels.secondary.level"}}</label>
-      <span>{{data.leveling.level}}</span>
-      <label>{{localize "wv.labels.secondary.experience"}}</label>
-      <span>{{data.leveling.experience}}</span>
-    </div>
-    <div class="health standard-padding grid-2cols standard-grid-gaps">
-      <label>{{localize "wv.labels.secondary.health"}}</label>
-      <span>{{data.vitals.hitPoints}}/{{data.vitals.maxHitPoints}}</span>
-      <label>{{localize "wv.labels.secondary.healing_rate"}}</label>
-      <span>{{data.vitals.healingRate}}</span>
-    </div>
-    <div class="action-points standard-padding">
-      <label>{{localize "wv.labels.secondary.action_points"}}</label>
-      <span>{{data.vitals.actionPoints}}/{{data.vitals.maxActionPoints}}</span>
-    </div>
-    <div class="criticals standard-padding">
-      <label>{{localize "wv.labels.secondary.criticals.title"}}</label>
-      <div class="grid-2cols standard-grid-gaps">
-        <label>{{localize "wv.labels.secondary.criticals.success"}}</label>
-        <span>{{secondary.criticals.success}}</span>
-        <label>{{localize "wv.labels.secondary.criticals.failure"}}</label>
-        <span>{{secondary.criticals.failure}}</span>
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.image}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+      <div class="flexrow">
+        <div class="level standard-padding flexcol">
+          <div class="flexrow flex-baseline">
+            <label class="resource-label">{{localize "wv.labels.secondary.level"}}</label>
+            <span class="flex-fixed resource-display">{{data.leveling.level}}</span>
+          </div>
+          <div class="flexrow flex-baseline">
+            <label class="resource-label">{{localize "wv.labels.secondary.experience"}}</label>
+            <input class="flex-fixed resource-input-5" type="number" name="data.leveling.experience" value="{{data.leveling.experience}}" min="0" />
+          </div>
+        </div>
+        <div class="health standard-padding flexcol">
+          <div class="flexrow flex-baseline">
+            <label class="resource-label">{{localize "wv.labels.secondary.health"}}</label>
+            <input class="flex-fixed resource-input-2" type="number" name="data.vitals.hitPoints" value="{{data.vitals.hitPoints}}" min="0" max="{{data.vitals.maxHitPoints}}" />
+            <span class="flex-fixed">/{{data.vitals.maxHitPoints}}</span>
+          </div>
+          <div class="flexrow flex-baseline">
+            <label class="resource-label">{{localize "wv.labels.secondary.healing_rate"}}</label>
+            <span class="flex-fixed resource-display">{{data.vitals.healingRate}}</span>
+          </div>
+        </div>
+        <div class="action-points standard-padding flexrow flex-baseline">
+          <label class="resource-label">{{localize "wv.labels.secondary.action_points"}}</label>
+          <input class="flex-fixed resource-input-2" type="number" name="data.vitals.actionPoints" value="{{data.vitals.actionPoints}}" min="0" max="{{data.vitals.maxActionPoints}}" />
+          <span class="flex-fixed">/{{data.vitals.maxActionPoints}}</span>
+        </div>
       </div>
     </div>
-    <div class="initiative standard-padding">
-      <label>{{localize "wv.labels.secondary.initiative"}}</label>
-      <span>1d10 + {{data.specials.perception}}</span>
-    </div>
-    <div class="radiation standard-padding">
-      <label>{{localize "wv.labels.ailments.radiation.title"}}</label>
-      <div class="grid-2cols standard-grid-gaps">
-        <label>{{localize "wv.labels.ailments.radiation.absorbed.title"}}</label>
-        <span>{{secondary.radiation.value}} {{localize "wv.labels.ailments.radiation.absorbed.unit"}}</span>
+  </header>
+
+  <nav class="tabs" data-group="primary">
+    <a class="item" data-tab="stats">Stats</a>
+    <a class="item" data-tab="background">background</a>
+  </nav>
+
+  <section class="content">
+    <div class="tab active" data-group="primary" data-tab="stats">
+      <div class="special-and-skills">
+        <div class="standard-padding grid-2cols standard-grid-gaps">
+          <label>{{localize "wv.labels.special.name"}}</label>
+          <label>{{localize "wv.labels.special.value"}}</label>
+          {{#each sheet.specials as |spec|}}
+            <label>{{localize spec.long}}</label>
+            <div>{{spec.value}}</div>
+          {{/each}}
+        </div>
+        <div class="standard-padding grid-2cols standard-grid-gaps">
+          <label>{{localize "wv.labels.skills.name"}}</label>
+          <label>{{localize "wv.labels.skills.value"}}</label>
+          {{#each sheet.skills as |skill|}}
+            <label>{{localize skill.name}}</label>
+            <div>{{skill.value}}</div>
+          {{/each}}
+        </div>
       </div>
-      <div>
-        <label>{{localize "wv.labels.ailments.radiation.effects"}}</label>
-        <span>{{secondary.radiation.effects}}</span>
-      </div>
     </div>
-    <div class="resistances standard-padding">
-      <label>{{localize "wv.labels.resistances.title"}}</label>
-      <div class="grid-2cols standard-grid-gaps">
-        <label>{{localize "wv.labels.resistances.radiation"}}</label>
-        <span>{{secondary.resistances.radiation}}</span>
-        <label>{{localize "wv.labels.resistances.poison"}}</label>
-        <span>{{secondary.resistances.poison}}</span>
-      </div>
+
+    <div class="tab" data-group="primary" data-tab="background">
     </div>
-  </div>
-  <div class="special-and-skills">
-    <div class="standard-padding grid-2cols standard-grid-gaps">
-      <label>{{localize "wv.labels.special.name"}}</label>
-      <label>{{localize "wv.labels.special.value"}}</label>
-      {{#each sheet.specials as |spec|}}
-      <label>{{localize spec.long}}</label>
-      <div>{{spec.value}}</div>
-      {{/each}}
-    </div>
-    <div class="standard-padding grid-2cols standard-grid-gaps">
-      <label>{{localize "wv.labels.skills.name"}}</label>
-      <label>{{localize "wv.labels.skills.value"}}</label>
-      {{#each sheet.skills as |skill|}}
-      <label>{{localize skill.name}}</label>
-      <div>{{skill.value}}</div>
-      {{/each}}
-    </div>
-  </div>
+  </section>
+
 </form>

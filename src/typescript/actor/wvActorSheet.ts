@@ -33,6 +33,9 @@ export default class WvActorSheet extends ActorSheet<SheetData> {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["wasteland-ventures", "actor-sheet"],
+      tabs: [
+        { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
+      ],
       template: `${CONSTANTS.systemPath}/handlebars/actors/actorSheet.hbs`
     } as typeof ActorSheet["defaultOptions"]);
   }

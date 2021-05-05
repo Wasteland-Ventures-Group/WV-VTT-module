@@ -1,0 +1,13 @@
+.resource-label
+  padding-right: 1ch
+
+.resource-display
+  flex-basis: min-content
+  width: min-content
+  text-align: right
+
+@for $i from 2 through 5
+  input.resource-input-#{$i}
+    $width: calc(#{$i}ch + 9px)
+    flex-basis: $width
+    width: $width

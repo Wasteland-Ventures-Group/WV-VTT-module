@@ -1,6 +1,7 @@
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import {
   Resistances,
+  SecondaryStatistics,
   Skills,
   WvActorDerivedData
 } from "./../data/actorData.js";
@@ -20,7 +21,7 @@ export default class WvActor extends Actor<
    */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   prepareBaseData() {
-    this.computeBaseSecondaryStatistics();
+    this.computeDerived();
   }
 
   /**
@@ -31,21 +32,58 @@ export default class WvActor extends Actor<
     this.applySizeModifiers();
   }
 
+  // ===========================================================================
+  // = Calculations before items
+  // ===========================================================================
+
   /**
    * Compute and set the Actor's base secondary statistics.
    */
-  protected computeBaseSecondaryStatistics(): void {
-    this.data.data.leveling.level = this.computeLevel();
-    this.data.data.vitals.maxHitPoints = this.computeBaseMaxHitPoints();
-    this.data.data.vitals.healingRate = this.computeBaseHealingRate();
-    this.data.data.vitals.maxActionPoints = this.computeBaseMaxActionPoints();
-    this.data.data.vitals.maxStrain = this.computeBaseMaxStrain();
-    this.data.data.leveling.maxSkillPoints = this.computeBaseMaxSkillPoints();
-    this.data.data.vitals.maxInsanity = this.computeBaseMaxInsanity();
-    this.data.data.secondary = {};
-    this.data.data.secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
+  protected computeDerived(): void {
+    this.computeDerivedLeveling();
+    this.computeDerivedVitals();
+    this.computeDerivedSecondary();
     this.data.data.resistances = new Resistances();
     this.data.data.skills = this.computeBaseSkillValues();
+  }
+
+  // = Leveling ================================================================
+
+  protected computeDerivedLeveling(): void {
+    const leveling = this.data.data.leveling;
+    leveling.level = this.computeLevel();
+    leveling.maxSkillPoints = this.computeBaseMaxSkillPoints();
+  }
+
+  /**
+   * Compute the level of the Actor.
+   */
+  protected computeLevel(): number {
+    return Math.floor(
+      (1 + Math.sqrt(this._data.data.leveling.experience / 12.5 + 1)) / 2
+    );
+  }
+
+  /**
+   * Compute the base maximum skill points of the Actor.
+   */
+  protected computeBaseMaxSkillPoints(): number {
+    return this._data.data.leveling.levelIntelligences.reduce(
+      (skillPoints, intelligence) =>
+        skillPoints + Math.floor(intelligence / 2) + 10,
+      0
+    );
+  }
+
+  // = Vitals ==================================================================
+
+  protected computeDerivedVitals(): void {
+    const vitals = this.data.data.vitals;
+    vitals.maxHitPoints = this.computeBaseMaxHitPoints();
+    vitals.healingRate = this.computeBaseHealingRate();
+    vitals.maxActionPoints = this.computeBaseMaxActionPoints();
+    vitals.maxStrain = this.computeBaseMaxStrain();
+    vitals.maxInsanity = this.computeBaseMaxInsanity();
   }
 
   /**
@@ -62,26 +100,10 @@ export default class WvActor extends Actor<
   }
 
   /**
-   * Compute the level of the Actor.
-   */
-  protected computeLevel(): number {
-    return Math.floor(
-      (1 + Math.sqrt(this._data.data.leveling.experience / 12.5 + 1)) / 2
-    );
-  }
-
-  /**
    * Compute the base maximum action points of the Actor.
    */
   protected computeBaseMaxActionPoints(): number {
     return Math.floor(this.data.data.specials.agility / 2) + 10;
-  }
-
-  /**
-   * Compute the base maximum carry weight of the Actor in kg.
-   */
-  protected computeBaseMaxCarryWeight(): number {
-    return this.data.data.specials.strength * 5 + 10;
   }
 
   /**
@@ -99,17 +121,6 @@ export default class WvActor extends Actor<
   }
 
   /**
-   * Compute the base maximum skill points of the Actor.
-   */
-  protected computeBaseMaxSkillPoints(): number {
-    return this._data.data.leveling.levelIntelligences.reduce(
-      (skillPoints, intelligence) =>
-        skillPoints + Math.floor(intelligence / 2) + 10,
-      0
-    );
-  }
-
-  /**
    * Compute the base maximum strain of the Actor. This should be called after
    * the level of the Actor has been computed.
    */
@@ -119,6 +130,23 @@ export default class WvActor extends Actor<
     }
     return 20 + Math.floor(this.data.data.leveling.level / 5) * 5;
   }
+
+  // = Secondary ===============================================================
+
+  protected computeDerivedSecondary(): void {
+    const secondary = new SecondaryStatistics();
+    secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
+    this.data.data.secondary = secondary;
+  }
+
+  /**
+   * Compute the base maximum carry weight of the Actor in kg.
+   */
+  protected computeBaseMaxCarryWeight(): number {
+    return this.data.data.specials.strength * 5 + 10;
+  }
+
+  // = Skills ==================================================================
 
   /**
    * Compute the base skill values of an Actor.
@@ -148,6 +176,10 @@ export default class WvActor extends Actor<
       Math.floor(this.data.data.specials.luck / 2)
     );
   }
+
+  // ===========================================================================
+  // = Calculations after items
+  // ===========================================================================
 
   /**
    * Apply the stat modifiers, based on the size category of the Actor.

@@ -1,8 +1,10 @@
+import * as del from "del";
 import * as log from "fancy-log";
 import * as fs from "fs";
-import { src, dest, parallel, watch } from "gulp";
+import { src, dest, parallel, series, watch } from "gulp";
 import * as dartSass from "gulp-dart-sass";
 import * as typescript from "gulp-typescript";
+import * as zip from "gulp-zip";
 
 import { TemplateEntityType } from "./src/typescript/data/common";
 
@@ -14,23 +16,24 @@ import { TemplateEntityType } from "./src/typescript/data/common";
 // with atomic write (like Vim) and only trigger on the first change.
 // See: https://github.com/gulpjs/gulp/issues/1322
 
-const distPrefix = "./dist/wasteland-ventures";
+const distPrefix = "./dist";
+const distWvPrefix = `${distPrefix}/wasteland-ventures`;
 
 const handlebarsPath = "./src/handlebars/**/*.hbs";
-const handlebarsOutPath = `${distPrefix}/handlebars`;
+const handlebarsOutPath = `${distWvPrefix}/handlebars`;
 
 const langPath = "./src/lang/*.json";
-const langOutPath = `${distPrefix}/lang`;
+const langOutPath = `${distWvPrefix}/lang`;
 
 const sassPath = "./src/sass/**/*.sass";
-const cssOutPath = `${distPrefix}/css`;
+const cssOutPath = `${distWvPrefix}/css`;
 
 const tsProject = typescript.createProject("tsconfig.json");
-const jsOutPath = `${distPrefix}/modules`;
+const jsOutPath = `${distWvPrefix}/modules`;
 
 const systemPath = "./src/system.json";
 const systemWatchPath = "./src/[s-s]ystem.json";
-const systemOutPath = distPrefix;
+const systemOutPath = distWvPrefix;
 
 const templateWatchBasePath = "./src/typescript/data";
 const templateWatchPaths = [
@@ -38,7 +41,7 @@ const templateWatchPaths = [
   `${templateWatchBasePath}/[a-a]ctorDbData.ts`,
   `${templateWatchBasePath}/[i-i]temDbData.ts`
 ];
-const templateOutPath = `${distPrefix}/template.json`;
+const templateOutPath = `${distWvPrefix}/template.json`;
 
 // = Handlebars copy ===========================================================
 
@@ -118,7 +121,7 @@ export function template(cb: fs.NoParamCallback): void {
     .then(([actorDbData, itemDbData]) => {
       const actorEntityTypes = [new actorDbData.WvActorDbDataData()];
       const itemEntityTypes = [new itemDbData.ItemDbData()];
-      fs.mkdir(distPrefix, { recursive: true }, () => {
+      fs.mkdir(distWvPrefix, { recursive: true }, () => {
         fs.writeFile(
           templateOutPath,
           JSON.stringify(
@@ -153,10 +156,37 @@ export const watchAll = parallel(
 );
 watchAll.description = "Run all watch tasks";
 
+export function clean(): Promise<string[]> {
+  return del(`${distPrefix}/**`, { force: true });
+}
+clean.description = "Clean the dist dir";
+
+// = Distribution tasks ========================================================
+
+export function distZip(): NodeJS.ReadWriteStream {
+  return src(`${distPrefix}/**`)
+    .pipe(zip(`wasteland-ventures-${getVersionNumber()}.zip`))
+    .pipe(dest(distPrefix));
+}
+distZip.description = "Zip the distribution files";
+
+export const buildZip = series(pack, distZip);
+buildZip.description = "Pack and zip the distribution files";
+
 // = Common functions ==========================================================
 
 function logChange(path: string) {
   log(`${path} change`);
+}
+
+function getVersionNumber(): string {
+  let systemJson: string;
+  if (fs.existsSync(`${distWvPrefix}/system.json`)) {
+    systemJson = `${distWvPrefix}/system.json`;
+  } else {
+    systemJson = "./src/system.json";
+  }
+  return JSON.parse(fs.readFileSync(systemJson).toString())["version"];
 }
 
 interface EntitiesTemplates extends Record<string, unknown> {

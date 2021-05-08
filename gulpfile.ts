@@ -14,29 +14,31 @@ import { TemplateEntityType } from "./src/typescript/data/common";
 // with atomic write (like Vim) and only trigger on the first change.
 // See: https://github.com/gulpjs/gulp/issues/1322
 
+const distPrefix = "./dist/wasteland-ventures";
+
 const handlebarsPath = "./src/handlebars/**/*.hbs";
-const handlebarsOutPath = "./dist/handlebars";
+const handlebarsOutPath = `${distPrefix}/handlebars`;
 
 const langPath = "./src/lang/*.json";
-const langOutPath = "./dist/lang";
+const langOutPath = `${distPrefix}/lang`;
 
 const sassPath = "./src/sass/**/*.sass";
-const cssOutPath = "./dist/css";
+const cssOutPath = `${distPrefix}/css`;
 
 const tsProject = typescript.createProject("tsconfig.json");
-const jsOutPath = "./dist/modules";
+const jsOutPath = `${distPrefix}/modules`;
 
 const systemPath = "./src/system.json";
 const systemWatchPath = "./src/[s-s]ystem.json";
-const systemOutPath = "./dist";
+const systemOutPath = distPrefix;
 
 const templateWatchBasePath = "./src/typescript/data";
 const templateWatchPaths = [
   `${templateWatchBasePath}/[c-c]ommon.ts`,
-  `${templateWatchBasePath}/actorDbData.ts`,
-  `${templateWatchBasePath}/itemDbData.ts`
+  `${templateWatchBasePath}/[a-a]ctorDbData.ts`,
+  `${templateWatchBasePath}/[i-i]temDbData.ts`
 ];
-const templateOutPath = "./dist/template.json";
+const templateOutPath = `${distPrefix}/template.json`;
 
 // = Handlebars copy ===========================================================
 
@@ -116,11 +118,15 @@ export function template(cb: fs.NoParamCallback): void {
     .then(([actorDbData, itemDbData]) => {
       const actorEntityTypes = [new actorDbData.WvActorDbDataData()];
       const itemEntityTypes = [new itemDbData.ItemDbData()];
-      fs.writeFile(
-        templateOutPath,
-        JSON.stringify(createTemplateObject(actorEntityTypes, itemEntityTypes)),
-        cb
-      );
+      fs.mkdir(distPrefix, { recursive: true }, () => {
+        fs.writeFile(
+          templateOutPath,
+          JSON.stringify(
+            createTemplateObject(actorEntityTypes, itemEntityTypes)
+          ),
+          cb
+        );
+      });
     })
     .catch((reason) => log(`template generation failed: ${reason}`));
 }

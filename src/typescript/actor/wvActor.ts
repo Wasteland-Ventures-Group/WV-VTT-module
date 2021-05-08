@@ -30,7 +30,7 @@ export default class WvActor extends Actor<
   // = Calculations before items
   // ===========================================================================
 
-  /** Compute and set the Actor's base secondary statistics. */
+  /** Compute and set the Actor's derived statistics. */
   protected computeDerived(): void {
     this.computeDerivedLeveling();
     this.computeDerivedVitals();
@@ -41,6 +41,7 @@ export default class WvActor extends Actor<
 
   // = Leveling ================================================================
 
+  /** Compute and set the Actor's derived leveling statistics. */
   protected computeDerivedLeveling(): void {
     const leveling = this.data.data.leveling;
     leveling.level = this.computeLevel();
@@ -65,6 +66,7 @@ export default class WvActor extends Actor<
 
   // = Vitals ==================================================================
 
+  /** Compute and set the Actor's derived vitals statistics. */
   protected computeDerivedVitals(): void {
     const vitals = this.data.data.vitals;
     vitals.maxHitPoints = this.computeBaseMaxHitPoints();
@@ -113,6 +115,7 @@ export default class WvActor extends Actor<
 
   // = Secondary ===============================================================
 
+  /** Compute and set the Actor's derived secondary statistics. */
   protected computeDerivedSecondary(): void {
     const secondary = new SecondaryStatistics();
     secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();

@@ -14,7 +14,7 @@ export type SkillNames =
   | "firearms"
   | "intimidation"
   | "lockpick"
-  | "magical_energy_weapons"
+  | "magicalEnergyWeapons"
   | "mechanics"
   | "medicine"
   | "melee"
@@ -38,7 +38,7 @@ export const CONSTANTS = {
     firearms: "agility",
     intimidation: "strength",
     lockpick: "perception",
-    magical_energy_weapons: "perception",
+    magicalEnergyWeapons: "perception",
     mechanics: "intelligence",
     medicine: "intelligence",
     melee: "strength",

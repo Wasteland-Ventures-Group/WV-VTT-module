@@ -2,14 +2,14 @@
   "wv": {
     "labels": {
       "secondary": {
-        "action_points": "Action Points",
+        "actionPoints": "Action Points",
         "criticals": {
           "failure": "Failure",
           "success": "Success",
           "title": "Criticals"
         },
         "experience": "Experience",
-        "healing_rate": "Healing Rate",
+        "healingRate": "Healing Rate",
         "health": "Health",
         "initiative": "Initiative",
         "level": "Level"
@@ -45,7 +45,7 @@
       "firearms": "Firearms",
       "intimidation": "Intimidation",
       "lockpick": "Lockpick",
-      "magical_energy_weapons": "Magical Energy Weapons",
+      "magicalEnergyWeapons": "Magical Energy Weapons",
       "mechanics": "Mechanics",
       "medicine": "Medicine",
       "melee": "Melee",

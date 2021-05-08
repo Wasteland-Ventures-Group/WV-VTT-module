@@ -38,7 +38,7 @@ export class Skills implements Partial<Record<SkillNames, number>> {
     public lockpick?: number,
 
     /** The magical energy weapons skill value of an Actor */
-    public magical_energy_weapons?: number,
+    public magicalEnergyWeapons?: number,
 
     /** The mechanics skill value of an Actor */
     public mechanics?: number,

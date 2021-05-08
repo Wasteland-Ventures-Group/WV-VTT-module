@@ -46,21 +46,23 @@
         <div class="standard-padding grid-3cols standard-grid-gaps flex-center">
           <label>{{localize "wv.labels.special.name"}}</label>
           <label>{{localize "wv.labels.special.value"}}</label>
-          <label>Roll</label>
+          <label>{{localize "wv.labels.special.roll"}}</label>
           {{#each sheet.specials as |spec key|}}
-            <label>{{localize spec.long}}</label>
+            <label>{{spec.long}}</label>
             <input class="flex-fixed resource-input-2" type="number" name="data.specials.{{key}}" value="{{spec.value}}" min="0" max="15" />
-            <button class="rollable" data-special="{{key}}">Roll</button>
+            <button class="rollable" data-special="{{key}}">{{localize "wv.labels.special.roll"}}</button>
           {{/each}}
         </div>
-        <div class="standard-padding grid-3cols standard-grid-gaps flex-center">
+        <div class="standard-padding grid-4cols standard-grid-gaps flex-center">
           <label>{{localize "wv.labels.skills.name"}}</label>
-          <label>{{localize "wv.labels.skills.value"}}</label>
-          <label>Roll</label>
+          <label>{{localize "wv.labels.skills.total"}}</label>
+          <label>{{localize "wv.labels.skills.ranks"}}</label>
+          <label>{{localize "wv.labels.skills.roll"}}</label>
           {{#each sheet.skills as |skill key|}}
-            <label>{{localize skill.name}}</label>
-            <input class="flex-fixed resource-input-3" type="number" name="data.skills.{{key}}" value="{{skill.value}}" min="0" max="100" />
-            <button class="rollable" data-skill="{{key}}">Roll</button>
+            <label>{{skill.name}}</label>
+            <span class="flex-fixed resource-display">{{skill.total}}</span>
+            <input class="flex-fixed resource-input-3" type="number" name="data.leveling.skillRanks.{{key}}" value="{{skill.ranks}}" min="0" max="100" />
+            <button class="rollable" data-skill="{{key}}">{{localize "wv.labels.skills.roll"}}</button>
           {{/each}}
         </div>
       </div>

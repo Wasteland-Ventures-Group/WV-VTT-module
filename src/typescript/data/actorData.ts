@@ -13,55 +13,66 @@ import { WvItemDbData } from "./itemDbData.js";
 export class Specials extends DbSpecials {}
 
 /** Derived skill values */
-export class Skills implements Partial<Record<SkillNames, number>> {
+export class Skills implements Partial<Record<SkillNames, Skill>> {
   constructor(
     /** The barter skill value of an Actor */
-    public barter?: number,
+    public barter?: Skill,
 
     /** The diplomacy skill value of an Actor */
-    public diplomacy?: number,
+    public diplomacy?: Skill,
 
     /** The explosives skill value of an Actor */
-    public explosives?: number,
+    public explosives?: Skill,
 
     /** The firearms skill value of an Actor */
-    public firearms?: number,
+    public firearms?: Skill,
 
     /** The intimidation skill value of an Actor */
-    public intimidation?: number,
+    public intimidation?: Skill,
 
     /** The lockpick skill value of an Actor */
-    public lockpick?: number,
+    public lockpick?: Skill,
 
     /** The magical energy weapons skill value of an Actor */
-    public magicalEnergyWeapons?: number,
+    public magicalEnergyWeapons?: Skill,
 
     /** The mechanics skill value of an Actor */
-    public mechanics?: number,
+    public mechanics?: Skill,
 
     /** The medicine skill value of an Actor */
-    public medicine?: number,
+    public medicine?: Skill,
 
     /** The melee skill value of an Actor */
-    public melee?: number,
+    public melee?: Skill,
 
     /** The science skill value of an Actor */
-    public science?: number,
+    public science?: Skill,
 
     /** The sleight skill value of an Actor */
-    public sleight?: number,
+    public sleight?: Skill,
 
     /** The sneak skill value of an Actor */
-    public sneak?: number,
+    public sneak?: Skill,
 
     /** The survival skill value of an Actor */
-    public survival?: number,
+    public survival?: Skill,
 
     /** The thaumaturgy skill value of an Actor */
-    public thaumaturgy?: number,
+    public thaumaturgy?: Skill,
 
     /** The unarmed skill value of an Actor */
-    public unarmed?: number
+    public unarmed?: Skill
+  ) {}
+}
+
+/** A skill, holding all intermediary steps for the final result */
+export class Skill {
+  constructor(
+    /** The base value of the skill, from SPECIAL only */
+    public base?: number,
+
+    /** The final value of the skill with all modifiers applied */
+    public total?: number
   ) {}
 }
 

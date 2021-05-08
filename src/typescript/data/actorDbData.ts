@@ -1,9 +1,9 @@
-import { ThaumaturgySpecials } from "../constants.js";
+import { SkillNames, SpecialNames, ThaumaturgySpecials } from "../constants.js";
 import { TemplateEntityType } from "./common.js";
 import { WvItemDbData } from "./itemDbData.js";
 
 /** An Actor SPECIALs object for the database */
-export class Specials {
+export class Specials implements Record<SpecialNames, number> {
   constructor(
     /** The current base Strength of an Actor */
     public strength: number = 5,
@@ -54,7 +54,63 @@ export class Leveling {
     /**
      * The skill point relevant intelligence values at each level up of an Actor
      */
-    public levelIntelligences: number[] = []
+    public levelIntelligences: number[] = [],
+
+    /** The skill ranks added for an Actor */
+    public skillRanks: SkillRanks = new SkillRanks()
+  ) {}
+}
+
+/** An Actor invested skill points object for the database */
+export class SkillRanks implements Record<SkillNames, number> {
+  constructor(
+    /** The invested Barter skill points of an Actor */
+    public barter: number = 0,
+
+    /** The invested Diplomacy skill points of an Actor */
+    public diplomacy: number = 0,
+
+    /** The invested Explosives skill points of an Actor */
+    public explosives: number = 0,
+
+    /** The invested Firearms skill points of an Actor */
+    public firearms: number = 0,
+
+    /** The invested Intimidation skill points of an Actor */
+    public intimidation: number = 0,
+
+    /** The invested Lockpick skill points of an Actor */
+    public lockpick: number = 0,
+
+    /** The invested Magical Energy Weapons skill points of an Actor */
+    public magicalEnergyWeapons: number = 0,
+
+    /** The invested Mechanics skill points of an Actor */
+    public mechanics: number = 0,
+
+    /** The invested Medicine skill points of an Actor */
+    public medicine: number = 0,
+
+    /** The invested Melee skill points of an Actor */
+    public melee: number = 0,
+
+    /** The invested Science skill points of an Actor */
+    public science: number = 0,
+
+    /** The invested Sleight skill points of an Actor */
+    public sleight: number = 0,
+
+    /** The invested Sneak skill points of an Actor */
+    public sneak: number = 0,
+
+    /** The invested Survival skill points of an Actor */
+    public survival: number = 0,
+
+    /** The invested Thaumaturgy skill points of an Actor */
+    public thaumaturgy: number = 0,
+
+    /** The invested Unarmed skill points of an Actor */
+    public unarmed: number = 0
   ) {}
 }
 

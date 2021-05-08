@@ -1,26 +1,24 @@
-import { SkillNames, SpecialNames } from "../constants.js";
-import { CONSTANTS } from "../constants.js";
-import WvLocalization, { Special as I18nSpecial } from "../wvLocalization.js";
+import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
+import { Skill } from "../data/actorData.js";
+import WvI18n, { I18nSpecial } from "../wvI18n.js";
 import WvActor from "./wvActor.js";
 
 type RollEvent = JQuery.ClickEvent<HTMLElement, any, HTMLElement, HTMLElement>;
 
-interface Special extends I18nSpecial {
+interface SheetSpecial extends I18nSpecial {
   value?: number;
 }
 
-interface Skill {
+interface SheetSkill {
+  total?: number;
+  ranks?: number;
   name?: string;
-  value?: number;
 }
-
-type Specials = Partial<Record<SpecialNames, Special>>;
-type Skills = Partial<Record<SkillNames, Skill>>;
 
 interface SheetData extends ActorSheet.Data<WvActor> {
   sheet?: {
-    specials?: Specials;
-    skills?: Skills;
+    specials?: Partial<Record<SpecialNames, SheetSpecial>>;
+    skills?: Partial<Record<SkillNames, SheetSkill>>;
   };
 }
 
@@ -55,24 +53,25 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
     const data = await super.getData();
     data.sheet = {};
 
-    const specialsI18n = WvLocalization.specials;
+    const specialI18ns = WvI18n.specials;
     data.sheet.specials = {};
     let special: keyof typeof data.data.specials;
     for (special in data.data.specials) {
       data.sheet.specials[special] = {
-        long: specialsI18n[special].long,
-        short: specialsI18n[special].short,
+        long: specialI18ns[special].long,
+        short: specialI18ns[special].short,
         value: data.data.specials[special]
       };
     }
 
-    const skillsI18n = WvLocalization.skills;
+    const skillI18ns = WvI18n.skills;
     data.sheet.skills = {};
     let skill: keyof typeof data.data.skills;
     for (skill in data.data.skills) {
       data.sheet.skills[skill] = {
-        name: skillsI18n[skill],
-        value: data.data.skills[skill]
+        total: data.data.skills[skill]?.total,
+        ranks: data.data.leveling.skillRanks[skill],
+        name: skillI18ns[skill]
       };
     }
 
@@ -85,7 +84,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
 
     if (dataset.special) {
       const roll = new Roll(
-        `1d100cs>(@${dataset.special}*10)`,
+        `1d100cs<=(@${dataset.special}*10)`,
         this.actor.data.data.specials
       );
       roll.roll().toMessage({
@@ -100,7 +99,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
 
     if (dataset.skill) {
       const roll = new Roll(
-        `1d100cs>@${dataset.skill}`,
+        `1d100cs<=@${dataset.skill}.total`,
         this.actor.data.data.skills
       );
       roll.roll().toMessage({

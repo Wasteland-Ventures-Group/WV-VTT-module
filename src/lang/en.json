@@ -31,10 +31,13 @@
       },
       "skills": {
         "name": "Skill",
-        "value": "Value"
+        "ranks": "Ranks",
+        "roll": "Roll",
+        "total": "Total"
       },
       "special": {
         "name": "SPECIAL",
+        "roll": "Roll",
         "value": "Value"
       }
     },

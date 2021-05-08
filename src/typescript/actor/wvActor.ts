@@ -2,6 +2,7 @@ import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import {
   Resistances,
   SecondaryStatistics,
+  Skill,
   Skills,
   WvActorDerivedData
 } from "./../data/actorData.js";
@@ -17,7 +18,7 @@ export default class WvActor extends Actor<
   /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   prepareBaseData() {
-    this.computeDerived();
+    this.computeBase();
   }
 
   /** @override */
@@ -31,18 +32,18 @@ export default class WvActor extends Actor<
   // ===========================================================================
 
   /** Compute and set the Actor's derived statistics. */
-  protected computeDerived(): void {
-    this.computeDerivedLeveling();
-    this.computeDerivedVitals();
-    this.computeDerivedSecondary();
+  protected computeBase(): void {
+    this.computeBaseLeveling();
+    this.computeBaseVitals();
+    this.computeBaseSecondary();
     this.data.data.resistances = new Resistances();
-    this.data.data.skills = this.computeBaseSkillValues();
+    this.computeBaseSkills();
   }
 
   // = Leveling ================================================================
 
   /** Compute and set the Actor's derived leveling statistics. */
-  protected computeDerivedLeveling(): void {
+  protected computeBaseLeveling(): void {
     const leveling = this.data.data.leveling;
     leveling.level = this.computeLevel();
     leveling.maxSkillPoints = this.computeBaseMaxSkillPoints();
@@ -67,7 +68,7 @@ export default class WvActor extends Actor<
   // = Vitals ==================================================================
 
   /** Compute and set the Actor's derived vitals statistics. */
-  protected computeDerivedVitals(): void {
+  protected computeBaseVitals(): void {
     const vitals = this.data.data.vitals;
     vitals.maxHitPoints = this.computeBaseMaxHitPoints();
     vitals.healingRate = this.computeBaseHealingRate();
@@ -116,7 +117,7 @@ export default class WvActor extends Actor<
   // = Secondary ===============================================================
 
   /** Compute and set the Actor's derived secondary statistics. */
-  protected computeDerivedSecondary(): void {
+  protected computeBaseSecondary(): void {
     const secondary = new SecondaryStatistics();
     secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
     this.data.data.secondary = secondary;
@@ -129,27 +130,45 @@ export default class WvActor extends Actor<
 
   // = Skills ==================================================================
 
+  /** Compute and set the skill values of an actor. */
+  protected computeBaseSkills(): void {
+    this.data.data.skills = this.computeBaseSkillValues();
+  }
+
   /** Compute the base skill values of an Actor. */
   protected computeBaseSkillValues(): Skills {
     const skills = new Skills();
     let skill: SkillNames;
     for (skill in CONSTANTS.skillSpecials) {
-      skills[skill] = this.computeBaseSkillValue(
-        CONSTANTS.skillSpecials[skill]
-      );
+      skills[skill] = this.computeBaseSkill(skill);
     }
-    skills["thaumaturgy"] = this.computeBaseSkillValue(
-      this.data.data.magic.thaumSpecial
-    );
+    skills["thaumaturgy"] = this.computeBaseSkill("thaumaturgy");
     return skills;
   }
 
   /**
-   * Compute the base skill value of an Actor, given the associated SPECIAL
-   * name.
-   * @param special - the name of the SPECIAL for the skill
+   * Compute the initial Skill for the given skill name. This includes the
+   * SPECIAL derived starting value and the final value only increased by skill
+   * point ranks.
+   * @param skill - the name of the skill
    */
-  protected computeBaseSkillValue(special: SpecialNames): number {
+  protected computeBaseSkill(skill: SkillNames): Skill {
+    const baseSkill = this.computeSpecialSkillValue(skill);
+    return new Skill(
+      baseSkill,
+      baseSkill + this.data.data.leveling.skillRanks[skill]
+    );
+  }
+
+  /**
+   * Compute the base skill value of an Actor, derived from SPECIAL.
+   * @param skill - the name of the skill
+   */
+  protected computeSpecialSkillValue(skill: SkillNames): number {
+    const special: SpecialNames =
+      skill === "thaumaturgy"
+        ? this.data.data.magic.thaumSpecial
+        : CONSTANTS.skillSpecials[skill];
     return (
       this.data.data.specials[special] * 2 +
       Math.floor(this.data.data.specials.luck / 2)

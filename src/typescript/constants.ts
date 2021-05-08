@@ -7,6 +7,8 @@ export type SpecialNames =
   | "agility"
   | "luck";
 
+export type ThaumaturgySpecials = Exclude<SpecialNames, "luck">;
+
 export type SkillNames =
   | "barter"
   | "diplomacy"
@@ -24,8 +26,6 @@ export type SkillNames =
   | "survival"
   | "thaumaturgy"
   | "unarmed";
-
-export type ThaumaturgySpecials = Exclude<SpecialNames, "luck">;
 
 /**
  * This object holds common constants for the Wasteland Ventures system.

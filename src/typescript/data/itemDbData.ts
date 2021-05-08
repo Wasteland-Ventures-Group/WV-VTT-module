@@ -42,15 +42,11 @@ interface AerialManeuverItemDbData extends Item.Data<AerialManeuverDbData> {
 
 export class ItemDbData implements TemplateEntityType {
   constructor(
-    /**
-     * The value of the item in caps
-     */
+    /** The value of the item in caps */
     public value: number = 0
   ) {}
 
-  /**
-   * @override
-   */
+  /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   getTypeName() {
     return "item";

@@ -27,9 +27,7 @@ export type SkillNames =
   | "thaumaturgy"
   | "unarmed";
 
-/**
- * This object holds common constants for the Wasteland Ventures system.
- */
+/** This object holds common constants for the Wasteland Ventures system. */
 export const CONSTANTS = {
   skillSpecials: {
     barter: "charisma",

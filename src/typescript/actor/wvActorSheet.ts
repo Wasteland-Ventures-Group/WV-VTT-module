@@ -24,13 +24,9 @@ interface SheetData extends ActorSheet.Data<WvActor> {
   };
 }
 
-/**
- * The basic Wasteland Ventures Actor Sheet.
- */
+/** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
-  /**
-   * @override
-   */
+  /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
@@ -42,9 +38,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
     } as typeof ActorSheet["defaultOptions"]);
   }
 
-  /**
-   * @override
-   */
+  /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   activateListeners(html: JQuery<HTMLElement>) {
     super.activateListeners(html);
@@ -55,9 +49,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
     html.find(".rollable[data-skill]").on("click", this.rollSkill.bind(this));
   }
 
-  /**
-   * @override
-   */
+  /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   async getData() {
     const data = await super.getData();

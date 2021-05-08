@@ -8,25 +8,19 @@ import {
 import { WvActorDbData } from "./../data/actorDbData.js";
 import WvItem from "./../item/wvItem.js";
 
-/**
- * The basic Wasteland Ventures Actor.
- */
+/** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor<
   WvActorDbData,
   WvItem,
   WvActorDerivedData
 > {
-  /**
-   * @override
-   */
+  /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   prepareBaseData() {
     this.computeDerived();
   }
 
-  /**
-   * @override
-   */
+  /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   prepareDerivedData() {
     this.applySizeModifiers();
@@ -36,9 +30,7 @@ export default class WvActor extends Actor<
   // = Calculations before items
   // ===========================================================================
 
-  /**
-   * Compute and set the Actor's base secondary statistics.
-   */
+  /** Compute and set the Actor's base secondary statistics. */
   protected computeDerived(): void {
     this.computeDerivedLeveling();
     this.computeDerivedVitals();
@@ -55,18 +47,14 @@ export default class WvActor extends Actor<
     leveling.maxSkillPoints = this.computeBaseMaxSkillPoints();
   }
 
-  /**
-   * Compute the level of the Actor.
-   */
+  /** Compute the level of the Actor. */
   protected computeLevel(): number {
     return Math.floor(
       (1 + Math.sqrt(this._data.data.leveling.experience / 12.5 + 1)) / 2
     );
   }
 
-  /**
-   * Compute the base maximum skill points of the Actor.
-   */
+  /** Compute the base maximum skill points of the Actor. */
   protected computeBaseMaxSkillPoints(): number {
     return this._data.data.leveling.levelIntelligences.reduce(
       (skillPoints, intelligence) =>
@@ -86,9 +74,7 @@ export default class WvActor extends Actor<
     vitals.maxInsanity = this.computeBaseMaxInsanity();
   }
 
-  /**
-   * Compute the base healing rate of the actor.
-   */
+  /** Compute the base healing rate of the actor. */
   protected computeBaseHealingRate(): number {
     if (this.data.data.specials.endurance >= 8) {
       return 3;
@@ -99,23 +85,17 @@ export default class WvActor extends Actor<
     }
   }
 
-  /**
-   * Compute the base maximum action points of the Actor.
-   */
+  /** Compute the base maximum action points of the Actor. */
   protected computeBaseMaxActionPoints(): number {
     return Math.floor(this.data.data.specials.agility / 2) + 10;
   }
 
-  /**
-   * Compute the base maximum health of the Actor.
-   */
+  /** Compute the base maximum health of the Actor. */
   protected computeBaseMaxHitPoints(): number {
     return this.data.data.specials.endurance + 10;
   }
 
-  /**
-   * Compute the base maximum insanity of the Actor.
-   */
+  /** Compute the base maximum insanity of the Actor. */
   protected computeBaseMaxInsanity(): number {
     return Math.floor(this.data.data.specials.intelligence / 2) + 5;
   }
@@ -139,18 +119,14 @@ export default class WvActor extends Actor<
     this.data.data.secondary = secondary;
   }
 
-  /**
-   * Compute the base maximum carry weight of the Actor in kg.
-   */
+  /** Compute the base maximum carry weight of the Actor in kg. */
   protected computeBaseMaxCarryWeight(): number {
     return this.data.data.specials.strength * 5 + 10;
   }
 
   // = Skills ==================================================================
 
-  /**
-   * Compute the base skill values of an Actor.
-   */
+  /** Compute the base skill values of an Actor. */
   protected computeBaseSkillValues(): Skills {
     const skills = new Skills();
     let skill: SkillNames;

@@ -15,6 +15,19 @@ export default class WvActor extends Actor<
   WvItem,
   WvActorDerivedData
 > {
+  /** Get the ground movement range of the actor. */
+  get groundMoveRange(): number {
+    return this.data.data.vitals.actionPoints * 2;
+  }
+
+  /** Get the ground sprint movement range of the actor. */
+  get groundSprintMoveRange(): number {
+    const actionPoints =
+      this.data.data.vitals.actionPoints +
+      Math.floor(this.data.data.specials.endurance / 2);
+    return actionPoints * 2;
+  }
+
   /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   prepareBaseData() {

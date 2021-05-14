@@ -51,6 +51,8 @@ export const CONSTANTS = {
     unarmed: "endurance"
   } as Record<SkillNames, SpecialNames>,
 
+  systemId: "wasteland-ventures",
+
   /**
    * This is the path for the system directory in Foundry's global working
    * directory.

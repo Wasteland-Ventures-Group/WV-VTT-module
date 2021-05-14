@@ -28,7 +28,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      classes: ["wasteland-ventures", "actor-sheet"],
+      classes: [CONSTANTS.systemId, "actor-sheet"],
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
       ],

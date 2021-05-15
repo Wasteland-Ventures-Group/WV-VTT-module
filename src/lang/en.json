@@ -33,6 +33,7 @@
         "name": "Skill",
         "ranks": "Ranks",
         "roll": "Roll",
+        "special": "SPECIAL",
         "total": "Total"
       },
       "special": {

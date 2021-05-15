@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - support for the DragRuler foundry module, supporting ground movement and
   sprinting highlights
 - saving actor background information
+- show the associated SPECIAL for each skill in the character sheet
 
 ### Changed
 

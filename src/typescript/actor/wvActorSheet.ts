@@ -1,26 +1,6 @@
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
-import { Skill } from "../data/actorData.js";
 import WvI18n, { I18nSpecial } from "../wvI18n.js";
 import WvActor from "./wvActor.js";
-
-type RollEvent = JQuery.ClickEvent<HTMLElement, any, HTMLElement, HTMLElement>;
-
-interface SheetSpecial extends I18nSpecial {
-  value?: number;
-}
-
-interface SheetSkill {
-  total?: number;
-  ranks?: number;
-  name?: string;
-}
-
-interface SheetData extends ActorSheet.Data<WvActor> {
-  sheet?: {
-    specials?: Partial<Record<SpecialNames, SheetSpecial>>;
-    skills?: Partial<Record<SkillNames, SheetSkill>>;
-  };
-}
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
@@ -68,10 +48,15 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
     data.sheet.skills = {};
     let skill: keyof typeof data.data.skills;
     for (skill in data.data.skills) {
+      const special: SpecialNames =
+        skill === "thaumaturgy"
+          ? data.data.magic.thaumSpecial
+          : CONSTANTS.skillSpecials[skill];
       data.sheet.skills[skill] = {
-        total: data.data.skills[skill]?.total,
+        name: skillI18ns[skill],
         ranks: data.data.leveling.skillRanks[skill],
-        name: skillI18ns[skill]
+        special: specialI18ns[special].short,
+        total: data.data.skills[skill]?.total
       };
     }
 
@@ -107,4 +92,24 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
       });
     }
   }
+}
+
+type RollEvent = JQuery.ClickEvent<HTMLElement, any, HTMLElement, HTMLElement>;
+
+interface SheetSpecial extends I18nSpecial {
+  value?: number;
+}
+
+interface SheetSkill {
+  name?: string;
+  ranks?: number;
+  special?: string;
+  total?: number;
+}
+
+interface SheetData extends ActorSheet.Data<WvActor> {
+  sheet?: {
+    skills?: Partial<Record<SkillNames, SheetSkill>>;
+    specials?: Partial<Record<SpecialNames, SheetSpecial>>;
+  };
 }

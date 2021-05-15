@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add support for the DragRuler foundry module, supporting ground movement and
   sprinting highlights
 
+### Fixed
+
+- actor images can now be saved properly
+
 ## [0.0.2] - 2021-05-11
 
 ### Added

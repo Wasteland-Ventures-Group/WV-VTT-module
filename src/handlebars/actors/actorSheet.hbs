@@ -1,6 +1,6 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
-  <header class="sheet-header flexrow">
+  <header class="sheet-header flexrow flex-fixed">
     <img class="profile-img flex-fixed" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
     <div class="actor-info">
       <h1 class="char-name"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
@@ -37,9 +37,9 @@
     </div>
   </header>
 
-  <nav class="tabs" data-group="primary">
-    <a class="item" data-tab="stats">Stats</a>
-    <a class="item" data-tab="background">background</a>
+  <nav class="tabs flex-fixed" data-group="primary">
+    <a class="item" data-tab="stats">{{localize "wv.sheet.tabs.stats"}}</a>
+    <a class="item" data-tab="background">{{localize "wv.sheet.tabs.background"}}</a>
   </nav>
 
   <section class="content">

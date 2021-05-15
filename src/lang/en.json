@@ -41,6 +41,12 @@
         "value": "Value"
       }
     },
+    "sheet": {
+      "tabs": {
+        "stats": "Stats",
+        "background": "Background"
+      }
+    },
     "skills": {
       "barter": "Barter",
       "diplomacy": "Diplomacy",

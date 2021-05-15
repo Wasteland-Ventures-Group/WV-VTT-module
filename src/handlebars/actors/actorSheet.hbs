@@ -5,18 +5,22 @@
     <div class="actor-info">
       <h1 class="char-name"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
       <div class="header-fields">
-        <div class="flexrow">
-          <div class="level standard-padding">
-            <div class="resource-pair">
-              <label class="resource-label">{{localize "wv.labels.secondary.level"}}</label>
-              <span>{{data.leveling.level}}</span>
-            </div>
-            <div class="resource-pair">
-              <label class="resource-label">{{localize "wv.labels.secondary.experience"}}</label>
-              <input class="resource-input-5" type="number" name="data.leveling.experience" value="{{data.leveling.experience}}" min="0" />
-            </div>
+        <div class="leveling-and-karma flexrow">
+          <div class="resource-block resource-pair flex-fixed">
+            <label class="resource-label">{{localize "wv.labels.secondary.level"}}</label>
+            <span class="resource-display">{{data.leveling.level}}</span>
           </div>
-          <div class="health standard-padding">
+          <div class="resource-block resource-pair flex-fixed">
+            <label class="resource-label">{{localize "wv.labels.secondary.experience"}}</label>
+            <input class="resource-input-5" type="number" name="data.leveling.experience" value="{{data.leveling.experience}}" min="0" />
+          </div>
+          <div class="resource-block resource-pair flex-fixed">
+            <label class="resource-label">{{localize "wv.sheet.background.karma"}}</label>
+            <input class="resource-input-3" type="number" name="data.background.karma" value="{{data.background.karma}}" min="-100" max="100" />
+          </div>
+        </div>
+        <div class="main-resources flexrow">
+          <div class="health resource-block flex-fixed">
             <div class="resource-pair">
               <label class="resource-label">{{localize "wv.labels.secondary.health"}}</label>
               <span class="resource-display">
@@ -26,26 +30,22 @@
             </div>
             <div class="resource-pair">
               <label class="resource-label">{{localize "wv.labels.secondary.healingRate"}}</label>
-              <span>{{data.vitals.healingRate}}</span>
+              <span class="resource-display">{{data.vitals.healingRate}}</span>
             </div>
           </div>
-          <div class="action-points standard-padding">
-            <div class="resource-pair">
-              <label class="resource-label">{{localize "wv.labels.secondary.actionPoints"}}</label>
-              <span class="resource-display">
-                <input class="resource-input-2" type="number" name="data.vitals.actionPoints" value="{{data.vitals.actionPoints}}" min="0" max="{{data.vitals.maxActionPoints}}" />
-                <span>/ {{data.vitals.maxActionPoints}}</span>
-              </span>
-            </div>
+          <div class="action-points resource-block flex-fixed resource-pair">
+            <label class="resource-label">{{localize "wv.labels.secondary.actionPoints"}}</label>
+            <span class="resource-display">
+              <input class="resource-input-2" type="number" name="data.vitals.actionPoints" value="{{data.vitals.actionPoints}}" min="0" max="{{data.vitals.maxActionPoints}}" />
+              <span>/ {{data.vitals.maxActionPoints}}</span>
+            </span>
           </div>
-          <div class="strain standard-padding">
-            <div class="resource-pair">
-              <label class="resource-label">{{localize "wv.labels.secondary.strain"}}</label>
-              <span class="resource-display">
-                <input class="resource-input-2" type="number" name="data.vitals.strain" value="{{data.vitals.strain}}" min="0" max="{{data.vitals.maxStrain}}" />
-                <span>/ {{data.vitals.maxStrain}}</span>
-              </span>
-            </div>
+          <div class="strain resource-block flex-fixed resource-pair">
+            <label class="resource-label">{{localize "wv.labels.secondary.strain"}}</label>
+            <span class="resource-display">
+              <input class="resource-input-2" type="number" name="data.vitals.strain" value="{{data.vitals.strain}}" min="0" max="{{data.vitals.maxStrain}}" />
+              <span>/ {{data.vitals.maxStrain}}</span>
+            </span>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
-      <section class="special-and-skills standard-padding">
+      <section class="special-and-skills">
         <div class="grid-3cols standard-grid-gaps flex-center">
           <label>{{localize "wv.labels.special.name"}}</label>
           <label>{{localize "wv.labels.special.value"}}</label>
@@ -89,18 +89,20 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="magic">
-      <section class="magic standard-padding">
-        <label class="resource-label">{{localize "wv.labels.magic.thaumSpecial"}}</label>
-        <select name="data.magic.thaumSpecial">
-          {{#each sheet.magic.thaumSpecials as | thaumSpecial |}}
-          <option value="{{@key}}"{{#if thaumSpecial.selected}} selected{{/if}}>{{thaumSpecial.name}}</option>
-          {{/each}}
-        </select>
+      <section class="magic">
+        <div class="thaum-special resource-pair">
+          <label class="resource-label">{{localize "wv.labels.magic.thaumSpecial"}}</label>
+          <select name="data.magic.thaumSpecial">
+            {{#each sheet.magic.thaumSpecials as | thaumSpecial |}}
+            <option value="{{@key}}"{{#if thaumSpecial.selected}} selected{{/if}}>{{thaumSpecial.name}}</option>
+            {{/each}}
+          </select>
+        </div>
       </section>
     </div>
 
     <div class="tab" data-group="primary" data-tab="background">
-      <section class="background standard-padding">
+      <section class="background">
         <section>
           <label>{{localize "wv.sheet.background.background"}}</label>
           <textarea name="data.background.background">{{data.background.background}}</textarea>
@@ -116,10 +118,6 @@
         <section>
           <label>{{localize "wv.sheet.background.dreams"}}</label>
           <textarea name="data.background.dreams">{{data.background.dreams}}</textarea>
-        </section>
-        <section>
-          <label>{{localize "wv.sheet.background.karma"}}</label>
-          <input class="flex-fixed resource-input-3" type="number" name="data.background.karma" value="{{data.background.karma}}" min="-100" max="100" />
         </section>
       </section>
     </div>

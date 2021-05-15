@@ -1,6 +1,24 @@
-$spacing-distance: 0.5rem
+@use "../common.sass" as common
 
 .wasteland-ventures.actor-sheet
+
+  .resource-block
+    $padding: 3px
+    background-color: common.$shade-lighter
+    border:
+      color: common.$shade-darker
+      radius: common.$border-radius
+      style: solid
+      width: 1px
+    box-sizing: content-box
+    padding: $padding
+
+    .resource-label
+      margin-left: $padding * 2
+
+    .resource-display
+      margin-right: $padding * 2
+
   .sheet-header
 
     .profile-img
@@ -9,55 +27,68 @@ $spacing-distance: 0.5rem
     .actor-info
       align-items: start
       margin:
-        left: $spacing-distance
+        left: common.$spacing-distance
 
       .char-name
         padding:
-          bottom: $spacing-distance
+          bottom: common.$spacing-distance
 
         > input
           height: unset
           width: 100%
 
+      .header-fields
+
+        .leveling-and-karma
+          border:
+            bottom:
+              color: common.$shade-darker
+              style: solid
+              width: 1px
+          justify-content: space-between
+          margin:
+            bottom: common.$spacing-distance
+          padding:
+            bottom: common.$spacing-distance
+
+          > *
+            margin-right: common.$spacing-distance
+
+          > *:last-child
+            margin-right: 0
+
+        .main-resources
+          align-items: center
+          justify-content: space-between
+
+          > *
+            margin-right: common.$spacing-distance
+
+          > *:last-child
+            margin-right: 0
+
+          .resource-label
+            white-space: nowrap
+
   nav.tabs
     margin:
-      top: $spacing-distance
-
-  .level
-    background-color: #ff0
-
-  .health
-    background-color: #f00
-
-  .action-points
-    background-color: #af0
-
-  .strain
-    background-color: #00f
-
-  .criticals
-    background-color: #c00
-
-  .initiative
-    background-color: #acf
-
-  .radiation
-    background-color: #0f0
-
-  .resistances
-    background-color: #aaa
+      top: common.$spacing-distance
 
   .special-and-skills
-    background-color: #fafafa
     display: flex
     align-items: flex-start
     justify-content: space-between
+
+  .magic
+
+    .thaum-special
+      display: inline flex
 
   .background
 
     > section
       margin:
-        top: $spacing-distance
+        top: common.$spacing-distance
 
     > section:first-child
       margin:

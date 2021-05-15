@@ -30,7 +30,8 @@
         "healingRate": "Healing Rate",
         "health": "Health",
         "initiative": "Initiative",
-        "level": "Level"
+        "level": "Level",
+        "strain": "Strain"
       },
       "skills": {
         "name": "Skill",

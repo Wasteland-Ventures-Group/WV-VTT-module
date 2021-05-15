@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - saving actor background information
 - show the associated SPECIAL for each skill in the character sheet
 - ability to select the Thaumaturgy associated SPECIAL
+- editable strain
 
 ### Changed
 

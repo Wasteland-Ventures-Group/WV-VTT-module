@@ -35,8 +35,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
 
     const specialI18ns = WvI18n.specials;
     data.sheet.specials = {};
-    let special: keyof typeof data.data.specials;
-    for (special in data.data.specials) {
+    for (const special of SpecialNames) {
       data.sheet.specials[special] = {
         long: specialI18ns[special].long,
         short: specialI18ns[special].short,
@@ -46,8 +45,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
 
     const skillI18ns = WvI18n.skills;
     data.sheet.skills = {};
-    let skill: keyof typeof data.data.skills;
-    for (skill in data.data.skills) {
+    for (const skill of SkillNames) {
       const special: SpecialNames =
         skill === "thaumaturgy"
           ? data.data.magic.thaumSpecial

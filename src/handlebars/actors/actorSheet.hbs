@@ -49,10 +49,10 @@
           <label>{{localize "wv.labels.special.name"}}</label>
           <label>{{localize "wv.labels.special.value"}}</label>
           <label>{{localize "wv.labels.special.roll"}}</label>
-          {{#each sheet.specials as |spec key|}}
+          {{#each sheet.specials as | spec |}}
             <label>{{spec.long}}</label>
-            <input class="flex-fixed resource-input-2" type="number" name="data.specials.{{key}}" value="{{spec.value}}" min="0" max="15" />
-            <button class="rollable" data-special="{{key}}">{{localize "wv.labels.special.roll"}}</button>
+            <input class="flex-fixed resource-input-2" type="number" name="data.specials.{{@key}}" value="{{spec.value}}" min="0" max="15" />
+            <button class="rollable" data-special="{{@key}}">{{localize "wv.labels.special.roll"}}</button>
           {{/each}}
         </div>
         <div class="standard-padding grid-5cols standard-grid-gaps flex-center">
@@ -61,12 +61,12 @@
           <label>{{localize "wv.labels.skills.total"}}</label>
           <label>{{localize "wv.labels.skills.ranks"}}</label>
           <label>{{localize "wv.labels.skills.roll"}}</label>
-          {{#each sheet.skills as |skill key|}}
+          {{#each sheet.skills as | skill |}}
             <label>{{skill.name}}</label>
             <label>{{skill.special}}</label>
             <span class="flex-fixed resource-display">{{skill.total}}</span>
-            <input class="flex-fixed resource-input-3" type="number" name="data.leveling.skillRanks.{{key}}" value="{{skill.ranks}}" min="0" max="100" />
-            <button class="rollable" data-skill="{{key}}">{{localize "wv.labels.skills.roll"}}</button>
+            <input class="flex-fixed resource-input-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="0" max="100" />
+            <button class="rollable" data-skill="{{@key}}">{{localize "wv.labels.skills.roll"}}</button>
           {{/each}}
         </div>
       </section>

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2021-05-15
+
 ### Added
 
 - support for the DragRuler foundry module, supporting ground movement and
@@ -41,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - basic character Actor implementation with editable SPECIALs
 
-[Unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.1.0...HEAD
+[0.1.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.0.2...v0.1.0
 [0.0.2]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.0.1...v0.0.2
 [0.0.1]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/tag/v0.0.1

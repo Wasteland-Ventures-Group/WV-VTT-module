@@ -1,4 +1,29 @@
+$spacing-distance: 0.5rem
+
 .wasteland-ventures.actor-sheet
+  .sheet-header
+
+    .profile-img
+      max-height: 200px
+
+    .actor-info
+      align-items: start
+      margin:
+        left: $spacing-distance
+
+      .char-name
+        padding:
+          bottom: $spacing-distance
+
+        > input
+          height: unset
+          width: 100%
+
+  nav.tabs
+    margin:
+      bottom: $spacing-distance
+      top: $spacing-distance
+
   .level
     background:
       color: #ff0

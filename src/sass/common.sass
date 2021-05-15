@@ -1,45 +1,47 @@
-@for $i from 2 through 6
-  .grid-#{$i}cols
-    display: grid
-    grid-template-columns: repeat(#{$i}, auto)
+.wasteland-ventures
 
-.flex-center
-  align-items: center
+  @for $i from 2 through 6
+    .grid-#{$i}cols
+      display: grid
+      grid-template-columns: repeat(#{$i}, auto)
 
-.flex-fixed
-  flex-grow: 0
-  flex-shrink: 0
+  .flex-center
+    align-items: center
 
-.standard-padding
-  padding: 5px
+  .flex-fixed
+    flex-grow: 0
+    flex-shrink: 0
 
-.standard-grid-gaps
-  column-gap: 1rem
-  row-gap: .5rem
+  .standard-padding
+    padding: 5px
 
-$tab-border-width: 1px
+  .standard-grid-gaps
+    column-gap: 1rem
+    row-gap: .5rem
 
-.tabs
-  .item
+  $tab-border-width: 1px
+
+  .tabs
+    .item
+      border:
+        color: #0005
+        style: solid
+        width: $tab-border-width
+        top:
+          left-radius: 3px
+          right-radius: 3px
+        left-width: 0
+      padding: 5px
+
+    .item:first-child
+      border-left-width: $tab-border-width
+
+    .item.active
+      border-bottom-width: 0
+
+  .content
     border:
       color: #0005
       style: solid
       width: $tab-border-width
-      top:
-        left-radius: 3px
-        right-radius: 3px
-      left-width: 0
-    padding: 5px
-
-  .item:first-child
-    border-left-width: $tab-border-width
-
-  .item.active
-    border-bottom-width: 0
-
-.content
-  border:
-    color: #0005
-    style: solid
-    width: $tab-border-width
-    top-width: 0
+      top-width: 0

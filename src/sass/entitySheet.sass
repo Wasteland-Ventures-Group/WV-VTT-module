@@ -1,27 +1,29 @@
-.resource-pair
-  align-items: center
-  display: flex
-  height: 26px
-  justify-content: space-between
+.wasteland-ventures
 
-  > .resource-label
-    margin:
-      right: 1ch
-
-  > .resource-display
-    align-items: baseline
+  .resource-pair
+    align-items: center
     display: flex
-    flex-wrap: nowrap
-    white-space: nowrap
+    height: 26px
+    justify-content: space-between
 
-    > input
+    > .resource-label
       margin:
         right: 1ch
 
-@for $i from 2 through 5
-  input.resource-input-#{$i}
-    $width: calc(#{$i}ch + 9px)
-    flex-basis: $width
-    justify-self: right
-    text-align: right
-    width: $width
+    > .resource-display
+      align-items: baseline
+      display: flex
+      flex-wrap: nowrap
+      white-space: nowrap
+
+      > input
+        margin:
+          right: 1ch
+
+  @for $i from 2 through 5
+    input.resource-input-#{$i}
+      $width: calc(#{$i}ch + 9px)
+      flex-basis: $width
+      justify-self: right
+      text-align: right
+      width: $width

@@ -9,13 +9,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- add support for the DragRuler foundry module, supporting ground movement and
+- support for the DragRuler foundry module, supporting ground movement and
   sprinting highlights
+- saving actor background information
 
 ### Changed
 
 - rearranged the actor sheet header section
 - general improvements to resource display in entity sheets
+
+### Removed
+
+- the system specific "name" field for actors, since this is already saved by
+  foundry itself
 
 ### Fixed
 

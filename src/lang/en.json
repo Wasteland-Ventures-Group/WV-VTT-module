@@ -42,6 +42,13 @@
       }
     },
     "sheet": {
+      "background": {
+        "background": "Background",
+        "history": "History",
+        "fears": "Fears",
+        "dreams": "Dreams",
+        "karma": "Karma"
+      },
       "tabs": {
         "stats": "Stats",
         "background": "Background"

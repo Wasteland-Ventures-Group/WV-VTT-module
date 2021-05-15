@@ -117,9 +117,6 @@ export class SkillRanks implements Record<SkillNames, number> {
 /** An Actor background object for the database */
 export class Background {
   constructor(
-    /** The name of an Actor */
-    public name: string = "",
-
     /** The background of an Actor */
     public background: string = "",
 

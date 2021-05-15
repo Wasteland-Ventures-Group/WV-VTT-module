@@ -44,7 +44,7 @@
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
-      <div class="special-and-skills">
+      <section class="special-and-skills">
         <div class="standard-padding grid-3cols standard-grid-gaps flex-center">
           <label>{{localize "wv.labels.special.name"}}</label>
           <label>{{localize "wv.labels.special.value"}}</label>
@@ -67,10 +67,32 @@
             <button class="rollable" data-skill="{{key}}">{{localize "wv.labels.skills.roll"}}</button>
           {{/each}}
         </div>
-      </div>
+      </section>
     </div>
 
     <div class="tab" data-group="primary" data-tab="background">
+      <section class="background">
+        <section>
+          <label>{{localize "wv.sheet.background.background"}}</label>
+          <textarea name="data.background.background">{{data.background.background}}</textarea>
+        </section>
+        <section>
+          <label>{{localize "wv.sheet.background.history"}}</label>
+          <textarea name="data.background.history">{{data.background.history}}</textarea>
+        </section>
+        <section>
+          <label>{{localize "wv.sheet.background.fears"}}</label>
+          <textarea name="data.background.fears">{{data.background.fears}}</textarea>
+        </section>
+        <section>
+          <label>{{localize "wv.sheet.background.dreams"}}</label>
+          <textarea name="data.background.dreams">{{data.background.dreams}}</textarea>
+        </section>
+        <section>
+          <label>{{localize "wv.sheet.background.karma"}}</label>
+          <input class="flex-fixed resource-input-3" type="number" name="data.background.karma" value="{{data.background.karma}}" min="-100" max="100" />
+        </section>
+      </section>
     </div>
   </section>
 

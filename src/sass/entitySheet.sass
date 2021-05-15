@@ -3,11 +3,16 @@
 
 .resource-display
   flex-basis: min-content
-  width: min-content
+  justify:
+    self: right
   text-align: right
+  width: min-content
 
 @for $i from 2 through 5
   input.resource-input-#{$i}
     $width: calc(#{$i}ch + 9px)
     flex-basis: $width
+    justify:
+      self: right
+    text-align: right
     width: $width

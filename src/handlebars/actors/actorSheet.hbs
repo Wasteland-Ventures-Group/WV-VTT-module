@@ -60,8 +60,8 @@
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
-      <section class="special-and-skills">
-        <div class="standard-padding grid-3cols standard-grid-gaps flex-center">
+      <section class="special-and-skills standard-padding">
+        <div class="grid-3cols standard-grid-gaps flex-center">
           <label>{{localize "wv.labels.special.name"}}</label>
           <label>{{localize "wv.labels.special.value"}}</label>
           <label>{{localize "wv.labels.special.roll"}}</label>
@@ -71,7 +71,7 @@
             <button class="rollable" data-special="{{@key}}">{{localize "wv.labels.special.roll"}}</button>
           {{/each}}
         </div>
-        <div class="standard-padding grid-5cols standard-grid-gaps flex-center">
+        <div class="grid-5cols standard-grid-gaps flex-center">
           <label>{{localize "wv.labels.skills.name"}}</label>
           <label>{{localize "wv.labels.skills.special"}}</label>
           <label>{{localize "wv.labels.skills.total"}}</label>
@@ -89,7 +89,7 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="magic">
-      <section class="magic">
+      <section class="magic standard-padding">
         <label class="resource-label">{{localize "wv.labels.magic.thaumSpecial"}}</label>
         <select name="data.magic.thaumSpecial">
           {{#each sheet.magic.thaumSpecials as | thaumSpecial |}}
@@ -100,7 +100,7 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="background">
-      <section class="background">
+      <section class="background standard-padding">
         <section>
           <label>{{localize "wv.sheet.background.background"}}</label>
           <textarea name="data.background.background">{{data.background.background}}</textarea>

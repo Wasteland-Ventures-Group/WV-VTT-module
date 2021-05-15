@@ -6,31 +6,37 @@
       <h1 class="char-name"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
       <div class="header-fields">
         <div class="flexrow">
-          <div class="level standard-padding flexcol">
-            <div class="flexrow flex-center">
+          <div class="level standard-padding">
+            <div class="resource-pair">
               <label class="resource-label">{{localize "wv.labels.secondary.level"}}</label>
-              <span class="flex-fixed resource-display">{{data.leveling.level}}</span>
+              <span>{{data.leveling.level}}</span>
             </div>
-            <div class="flexrow flex-center">
+            <div class="resource-pair">
               <label class="resource-label">{{localize "wv.labels.secondary.experience"}}</label>
-              <input class="flex-fixed resource-input-5" type="number" name="data.leveling.experience" value="{{data.leveling.experience}}" min="0" />
+              <input class="resource-input-5" type="number" name="data.leveling.experience" value="{{data.leveling.experience}}" min="0" />
             </div>
           </div>
-          <div class="health standard-padding flexcol">
-            <div class="flexrow flex-center">
+          <div class="health standard-padding">
+            <div class="resource-pair">
               <label class="resource-label">{{localize "wv.labels.secondary.health"}}</label>
-              <input class="flex-fixed resource-input-2" type="number" name="data.vitals.hitPoints" value="{{data.vitals.hitPoints}}" min="0" max="{{data.vitals.maxHitPoints}}" />
-              <span class="flex-fixed">/{{data.vitals.maxHitPoints}}</span>
+              <span class="resource-display">
+                <input class="resource-input-2" type="number" name="data.vitals.hitPoints" value="{{data.vitals.hitPoints}}" min="0" max="{{data.vitals.maxHitPoints}}" />
+                <span>/ {{data.vitals.maxHitPoints}}</span>
+              </span>
             </div>
-            <div class="flexrow flex-center">
+            <div class="resource-pair">
               <label class="resource-label">{{localize "wv.labels.secondary.healingRate"}}</label>
-              <span class="flex-fixed resource-display">{{data.vitals.healingRate}}</span>
+              <span>{{data.vitals.healingRate}}</span>
             </div>
           </div>
-          <div class="action-points standard-padding flexrow flex-center">
-            <label class="resource-label">{{localize "wv.labels.secondary.actionPoints"}}</label>
-            <input class="flex-fixed resource-input-2" type="number" name="data.vitals.actionPoints" value="{{data.vitals.actionPoints}}" min="0" max="{{data.vitals.maxActionPoints}}" />
-            <span class="flex-fixed">/{{data.vitals.maxActionPoints}}</span>
+          <div class="action-points standard-padding">
+            <div class="resource-pair">
+              <label class="resource-label">{{localize "wv.labels.secondary.actionPoints"}}</label>
+              <span class="resource-display">
+                <input class="resource-input-2" type="number" name="data.vitals.actionPoints" value="{{data.vitals.actionPoints}}" min="0" max="{{data.vitals.maxActionPoints}}" />
+                <span>/ {{data.vitals.maxActionPoints}}</span>
+              </span>
+            </div>
           </div>
         </div>
       </div>

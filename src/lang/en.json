@@ -1,19 +1,6 @@
 {
   "wv": {
     "labels": {
-      "secondary": {
-        "actionPoints": "Action Points",
-        "criticals": {
-          "failure": "Failure",
-          "success": "Success",
-          "title": "Criticals"
-        },
-        "experience": "Experience",
-        "healingRate": "Healing Rate",
-        "health": "Health",
-        "initiative": "Initiative",
-        "level": "Level"
-      },
       "ailments": {
         "radiation": {
           "absorbed": {
@@ -28,6 +15,19 @@
         "poison": "Poison",
         "radiation": "Radiation",
         "title": "Resistances"
+      },
+      "secondary": {
+        "actionPoints": "Action Points",
+        "criticals": {
+          "failure": "Failure",
+          "success": "Success",
+          "title": "Criticals"
+        },
+        "experience": "Experience",
+        "healingRate": "Healing Rate",
+        "health": "Health",
+        "initiative": "Initiative",
+        "level": "Level"
       },
       "skills": {
         "name": "Skill",
@@ -51,8 +51,8 @@
         "karma": "Karma"
       },
       "tabs": {
-        "stats": "Stats",
-        "background": "Background"
+        "background": "Background",
+        "stats": "Stats"
       }
     },
     "skills": {

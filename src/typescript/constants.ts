@@ -10,6 +10,9 @@ export const SpecialNames = [
 ] as const;
 
 export type ThaumaturgySpecials = Exclude<SpecialNames, "luck">;
+export const ThaumaturgySpecials = SpecialNames.filter(
+  (special) => special !== "luck"
+) as ThaumaturgySpecials[];
 
 export type SkillNames = typeof SkillNames[number];
 export const SkillNames = [

@@ -11,6 +11,9 @@
           "title": "Radiation"
         }
       },
+      "magic": {
+        "thaumSpecial": "SPECIA for Thaumaturgy"
+      },
       "resistances": {
         "poison": "Poison",
         "radiation": "Radiation",
@@ -52,6 +55,7 @@
       },
       "tabs": {
         "background": "Background",
+        "magic": "Magic",
         "stats": "Stats"
       }
     },

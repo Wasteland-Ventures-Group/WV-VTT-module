@@ -1,4 +1,9 @@
-import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
+import {
+  CONSTANTS,
+  SkillNames,
+  SpecialNames,
+  ThaumaturgySpecials
+} from "../constants.js";
 import WvI18n, { I18nSpecial } from "../wvI18n.js";
 import WvActor from "./wvActor.js";
 
@@ -58,6 +63,15 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
       };
     }
 
+    data.sheet.magic = {};
+    data.sheet.magic.thaumSpecials = {};
+    for (const thaumSpecial of ThaumaturgySpecials) {
+      data.sheet.magic.thaumSpecials[thaumSpecial] = {
+        name: specialI18ns[thaumSpecial].long,
+        selected: thaumSpecial === data.data.magic.thaumSpecial
+      };
+    }
+
     return data;
   }
 
@@ -94,6 +108,19 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
 
 type RollEvent = JQuery.ClickEvent<HTMLElement, any, HTMLElement, HTMLElement>;
 
+interface SheetThaumSpecial {
+  name?: string;
+  selected?: boolean;
+}
+
+type SheetThaumSpecials = Partial<
+  Record<ThaumaturgySpecials, SheetThaumSpecial>
+>;
+
+interface SheetMagic {
+  thaumSpecials?: SheetThaumSpecials;
+}
+
 interface SheetSpecial extends I18nSpecial {
   value?: number;
 }
@@ -107,6 +134,7 @@ interface SheetSkill {
 
 interface SheetData extends ActorSheet.Data<WvActor> {
   sheet?: {
+    magic?: SheetMagic;
     skills?: Partial<Record<SkillNames, SheetSkill>>;
     specials?: Partial<Record<SpecialNames, SheetSpecial>>;
   };

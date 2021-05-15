@@ -39,6 +39,7 @@
 
   <nav class="tabs flex-fixed" data-group="primary">
     <a class="item" data-tab="stats">{{localize "wv.sheet.tabs.stats"}}</a>
+    <a class="item" data-tab="magic">{{localize "wv.sheet.tabs.magic"}}</a>
     <a class="item" data-tab="background">{{localize "wv.sheet.tabs.background"}}</a>
   </nav>
 
@@ -69,6 +70,17 @@
             <button class="rollable" data-skill="{{@key}}">{{localize "wv.labels.skills.roll"}}</button>
           {{/each}}
         </div>
+      </section>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="magic">
+      <section class="magic">
+        <label class="resource-label">{{localize "wv.labels.magic.thaumSpecial"}}</label>
+        <select name="data.magic.thaumSpecial">
+          {{#each sheet.magic.thaumSpecials as | thaumSpecial |}}
+          <option value="{{@key}}"{{#if thaumSpecial.selected}} selected{{/if}}>{{thaumSpecial.name}}</option>
+          {{/each}}
+        </select>
       </section>
     </div>
 

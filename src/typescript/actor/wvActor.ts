@@ -17,13 +17,13 @@ export default class WvActor extends Actor<
 > {
   /** Get the ground movement range of the actor. */
   get groundMoveRange(): number {
-    return this.data.data.vitals.actionPoints * 2;
+    return this.data.data.vitals.actionPoints.value * 2;
   }
 
   /** Get the ground sprint movement range of the actor. */
   get groundSprintMoveRange(): number {
     const actionPoints =
-      this.data.data.vitals.actionPoints +
+      this.data.data.vitals.actionPoints.value +
       Math.floor(this.data.data.specials.endurance / 2);
     return actionPoints * 2;
   }
@@ -83,11 +83,11 @@ export default class WvActor extends Actor<
   /** Compute and set the Actor's derived vitals statistics. */
   protected computeBaseVitals(): void {
     const vitals = this.data.data.vitals;
-    vitals.maxHitPoints = this.computeBaseMaxHitPoints();
+    vitals.hitPoints.max = this.computeBaseMaxHitPoints();
     vitals.healingRate = this.computeBaseHealingRate();
-    vitals.maxActionPoints = this.computeBaseMaxActionPoints();
-    vitals.maxStrain = this.computeBaseMaxStrain();
-    vitals.maxInsanity = this.computeBaseMaxInsanity();
+    vitals.actionPoints.max = this.computeBaseMaxActionPoints();
+    vitals.strain.max = this.computeBaseMaxStrain();
+    vitals.insanity.max = this.computeBaseMaxInsanity();
   }
 
   /** Compute the base healing rate of the actor. */
@@ -198,7 +198,7 @@ export default class WvActor extends Actor<
    */
   protected applySizeModifiers(): void {
     if (
-      this.data.data.vitals.maxHitPoints === undefined ||
+      this.data.data.vitals.hitPoints.max === undefined ||
       this.data.data.secondary === undefined ||
       this.data.data.secondary.maxCarryWeight === undefined
     ) {
@@ -208,15 +208,15 @@ export default class WvActor extends Actor<
     // TODO: hit chance, reach, combat trick mods
     switch (this.data.data.background.size) {
       case 4:
-        this.data.data.vitals.maxHitPoints += 4;
+        this.data.data.vitals.hitPoints.max += 4;
         this.data.data.secondary.maxCarryWeight += 60;
         break;
       case 3:
-        this.data.data.vitals.maxHitPoints += 2;
+        this.data.data.vitals.hitPoints.max += 2;
         this.data.data.secondary.maxCarryWeight += 40;
         break;
       case 2:
-        this.data.data.vitals.maxHitPoints += 1;
+        this.data.data.vitals.hitPoints.max += 1;
         this.data.data.secondary.maxCarryWeight += 10;
         break;
       case 1:
@@ -226,15 +226,15 @@ export default class WvActor extends Actor<
         this.data.data.secondary.maxCarryWeight -= 5;
         break;
       case -2:
-        this.data.data.vitals.maxHitPoints -= 1;
+        this.data.data.vitals.hitPoints.max -= 1;
         this.data.data.secondary.maxCarryWeight -= 10;
         break;
       case -3:
-        this.data.data.vitals.maxHitPoints -= 2;
+        this.data.data.vitals.hitPoints.max -= 2;
         this.data.data.secondary.maxCarryWeight -= 40;
         break;
       case -4:
-        this.data.data.vitals.maxHitPoints -= 4;
+        this.data.data.vitals.hitPoints.max -= 4;
         this.data.data.secondary.maxCarryWeight -= 60;
         break;
       case 0:

@@ -4,16 +4,26 @@ import { CONSTANTS } from "./constants.js";
 import { DragRuler } from "./integrations/dragRuler/dragRuler.js";
 import { createWvSpeedProvider } from "./integrations/dragRuler/wvSpeedProvider.js";
 import WvItem from "./item/wvItem.js";
+import { migrateWorld, migrationNeeded } from "./migrations/world.js";
+import { registerSystemSettings } from "./settings.js";
 
 Hooks.once("init", () => {
   // Register our own Entity classes.
   CONFIG.Actor.entityClass = WvActor;
   CONFIG.Item.entityClass = WvItem;
 
+  registerSystemSettings();
+
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("wastelandVentures", WvActorSheet, {
     makeDefault: true
   });
+});
+
+Hooks.once("ready", () => {
+  if (migrationNeeded()) {
+    migrateWorld();
+  }
 });
 
 Hooks.once(

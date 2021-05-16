@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- internal system settings
+- data migration framework
+
+### Changed
+
+- changed vitals into foundry "Resources", so they can be used as bars
+
 ### Fixed
 
 - fixed the default data path for initiative

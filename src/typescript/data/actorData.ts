@@ -80,19 +80,7 @@ export class Skill {
 export class Vitals extends DbVitals {
   constructor(
     /** The healing rate of an Actor per 8 hours of rest */
-    public healingRate?: number,
-
-    /** The current maximum action points of an Actor */
-    public maxActionPoints?: number,
-
-    /** The maximum hit points of an Actor */
-    public maxHitPoints?: number,
-
-    /** The maximum insanity of an Actor */
-    public maxInsanity?: number,
-
-    /** The maximum strain of an Actor */
-    public maxStrain?: number
+    public healingRate?: number
   ) {
     super();
   }

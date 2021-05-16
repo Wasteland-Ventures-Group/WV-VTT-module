@@ -36,6 +36,10 @@ export const SkillNames = [
 
 /** This object holds common constants for the Wasteland Ventures system. */
 export const CONSTANTS = {
+  /** The version number where the last migration was needed */
+  needsMigrationVersion: "0.2.0",
+
+  /** This holds skills mapping to their associated SPECIALs. */
   skillSpecials: {
     barter: "charisma",
     diplomacy: "charisma",
@@ -54,7 +58,11 @@ export const CONSTANTS = {
     unarmed: "endurance"
   } as Record<SkillNames, SpecialNames>,
 
+  /** The ID of the system */
   systemId: "wasteland-ventures",
+
+  /** The name of the system */
+  systemName: "Wasteland Ventures",
 
   /**
    * This is the path for the system directory in Foundry's global working

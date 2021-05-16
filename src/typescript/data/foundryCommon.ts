@@ -1,11 +1,12 @@
 /**
- * An interface of what Foundry VTT will automatically recognize as a
- * "resource".
+ * A class for what Foundry VTT will automatically recognize as a "resource".
  */
-export interface Resource {
-  /** The current value of a resource */
-  value: number;
+export class Resource {
+  constructor(
+    /** The current value of a resource */
+    public value: number,
 
-  /** The maximum value of a resource */
-  max: number;
+    /** The maximum value of a resource */
+    public max?: number
+  ) {}
 }

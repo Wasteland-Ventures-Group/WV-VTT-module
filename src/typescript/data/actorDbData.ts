@@ -1,5 +1,6 @@
 import { SkillNames, SpecialNames, ThaumaturgySpecials } from "../constants.js";
 import { TemplateEntityType } from "./common.js";
+import { Resource as FoundryResource } from "./foundryCommon.js";
 import { WvItemDbData } from "./itemDbData.js";
 
 /** An Actor SPECIALs object for the database */
@@ -32,16 +33,16 @@ export class Specials implements Record<SpecialNames, number> {
 export class Vitals {
   constructor(
     /** The current amount of hit points of an Actor */
-    public hitPoints: number = 10,
+    public hitPoints: FoundryResource = new FoundryResource(10),
 
     /** The current amount of action points of an Actor */
-    public actionPoints: number = 10,
+    public actionPoints: FoundryResource = new FoundryResource(10),
 
     /** The current insanity of an Actor */
-    public insanity: number = 0,
+    public insanity: FoundryResource = new FoundryResource(0),
 
     /** The current strain of an Actor */
-    public strain: number = 20
+    public strain: FoundryResource = new FoundryResource(20)
   ) {}
 }
 

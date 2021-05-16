@@ -23,7 +23,7 @@
     }
   ],
   "socket": false,
-  "initiative": "1d10 + (@special.perception)",
+  "initiative": "1d10 + (@specials.perception)",
   "gridDistance": 2,
   "gridUnits": "m",
   "primaryTokenAttribute": "secondary.health",

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- fixed the default data path for initiative
+
 ## [0.1.0] - 2021-05-15
 
 ### Added

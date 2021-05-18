@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - automatic AP reset on combat start and next round ([#4](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/4))
 
+### Fixed
+
+- actor images getting stretched in the actor sheet in certain cases
+
 ## [0.2.0] - 2021-05-16
 
 ### Added

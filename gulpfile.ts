@@ -25,6 +25,7 @@ const handlebarsOutPath = `${distWvPrefix}/handlebars`;
 const langPath = "./src/lang/*.json";
 const langOutPath = `${distWvPrefix}/lang`;
 
+const sassRoot = "./src/sass/wasteland-ventures.sass";
 const sassPath = "./src/sass/**/*.sass";
 const cssOutPath = `${distWvPrefix}/css`;
 
@@ -71,7 +72,7 @@ langWatch.description = "Watch the language files for changes and copy them";
 // = Sass tasks ================================================================
 
 export function sass(): NodeJS.ReadWriteStream {
-  return src(sassPath)
+  return src(sassRoot)
     .pipe(dartSass().on("error", dartSass.logError))
     .pipe(dest(cssOutPath));
 }

@@ -1,4 +1,6 @@
+// vim: foldmethod=marker
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
+import { Resource } from "../data/foundryCommon.js";
 import {
   Resistances,
   SecondaryStatistics,
@@ -15,18 +17,92 @@ export default class WvActor extends Actor<
   WvItem,
   WvActorDerivedData
 > {
+  // Data access {{{1
+
+  // Main stats access {{{2
+
+  // Getters {{{3
+
+  /** A convenience getter for the Actor's hit points. */
+  get hitPoints(): Resource {
+    return this.data.data.vitals.hitPoints;
+  }
+
+  /** A convenience getter for the Actor's action points. */
+  get actionPoints(): Resource {
+    return this.data.data.vitals.actionPoints;
+  }
+
+  /** A convenience getter for the Actor's strain. */
+  get strain(): Resource {
+    return this.data.data.vitals.strain;
+  }
+
+  // Update methods {{{3
+
+  /**
+   * Create update data for updating the hit points and optionally update the
+   * Actor.
+   * @param hitPoints - the new hit points value
+   * @param update - whether to directly update or only return the update data
+   * @returns the update data
+   */
+  updateHitPoints(hitPoints: number, update = true): UpdateData {
+    const updateData: UpdateData = {
+      _id: this._id,
+      data: { vitals: { hitPoints: { value: hitPoints } } }
+    };
+    if (update) this.update(updateData);
+    return updateData;
+  }
+
+  /**
+   * Create update data for updating the action points and optionally update the
+   * Actor.
+   * @param actionPoints - the new action points value
+   * @param update - whether to directly update or only return the update data
+   * @returns the update data
+   */
+  updateActionPoints(actionPoints: number, update = true): UpdateData {
+    const updateData: UpdateData = {
+      _id: this._id,
+      data: { vitals: { actionPoints: { value: actionPoints } } }
+    };
+    if (update) this.update(updateData);
+    return updateData;
+  }
+
+  /**
+   * Create update data for updating the strain and optionally update the Actor.
+   * @param strain - the new strain value
+   * @param update - whether to directly update or only return the update data
+   * @returns the update data
+   */
+  updateStrain(strain: number, update = true): UpdateData {
+    const updateData: UpdateData = {
+      _id: this._id,
+      data: { vitals: { strain: { value: strain } } }
+    };
+    if (update) this.update(updateData);
+    return updateData;
+  }
+
+  // Misc stats access {{{2
+
   /** Get the ground movement range of the actor. */
   get groundMoveRange(): number {
-    return this.data.data.vitals.actionPoints.value * 2;
+    return this.actionPoints.value * 2;
   }
 
   /** Get the ground sprint movement range of the actor. */
   get groundSprintMoveRange(): number {
     const actionPoints =
-      this.data.data.vitals.actionPoints.value +
+      this.actionPoints.value +
       Math.floor(this.data.data.specials.endurance / 2);
     return actionPoints * 2;
   }
+
+  // Data computation {{{1
 
   /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -40,9 +116,7 @@ export default class WvActor extends Actor<
     this.applySizeModifiers();
   }
 
-  // ===========================================================================
-  // = Calculations before items
-  // ===========================================================================
+  // Computations before items {{{2
 
   /** Compute and set the Actor's derived statistics. */
   protected computeBase(): void {
@@ -53,7 +127,7 @@ export default class WvActor extends Actor<
     this.computeBaseSkills();
   }
 
-  // = Leveling ================================================================
+  // Leveling {{{3
 
   /** Compute and set the Actor's derived leveling statistics. */
   protected computeBaseLeveling(): void {
@@ -65,20 +139,20 @@ export default class WvActor extends Actor<
   /** Compute the level of the Actor. */
   protected computeLevel(): number {
     return Math.floor(
-      (1 + Math.sqrt(this._data.data.leveling.experience / 12.5 + 1)) / 2
+      (1 + Math.sqrt(this.data.data.leveling.experience / 12.5 + 1)) / 2
     );
   }
 
   /** Compute the base maximum skill points of the Actor. */
   protected computeBaseMaxSkillPoints(): number {
-    return this._data.data.leveling.levelIntelligences.reduce(
+    return this.data.data.leveling.levelIntelligences.reduce(
       (skillPoints, intelligence) =>
         skillPoints + Math.floor(intelligence / 2) + 10,
       0
     );
   }
 
-  // = Vitals ==================================================================
+  // Vitals {{{3
 
   /** Compute and set the Actor's derived vitals statistics. */
   protected computeBaseVitals(): void {
@@ -127,7 +201,7 @@ export default class WvActor extends Actor<
     return 20 + Math.floor(this.data.data.leveling.level / 5) * 5;
   }
 
-  // = Secondary ===============================================================
+  // Secondary {{{3
 
   /** Compute and set the Actor's derived secondary statistics. */
   protected computeBaseSecondary(): void {
@@ -141,7 +215,7 @@ export default class WvActor extends Actor<
     return this.data.data.specials.strength * 5 + 10;
   }
 
-  // = Skills ==================================================================
+  // Skills {{{3
 
   /** Compute and set the skill values of an actor. */
   protected computeBaseSkills(): void {
@@ -188,9 +262,7 @@ export default class WvActor extends Actor<
     );
   }
 
-  // ===========================================================================
-  // = Calculations after items
-  // ===========================================================================
+  // Computations after items {{{2
 
   /**
    * Apply the stat modifiers, based on the size category of the Actor.
@@ -241,4 +313,9 @@ export default class WvActor extends Actor<
       default:
     }
   }
+
+  // }}}1
 }
+
+/** The type of the update data for WvActors. */
+export type UpdateData = DeepPartial<WvActorDbData> & { _id: string };

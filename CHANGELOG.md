@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- automatic AP reset on combat start and next round (#4)
+
 ## [0.2.0] - 2021-05-16
 
 ### Added

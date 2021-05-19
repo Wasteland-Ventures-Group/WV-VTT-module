@@ -52,7 +52,7 @@ files to run on their own. For example, one can run the following on a terminal
 to have the Sass and Typescript be recompiled when changes are made to the input
 files:
 ```sh
-gulp watchAll &
+./gulp.js watchAll &
 ```
 
 ### Putting the results in FoundryVTT
@@ -71,9 +71,9 @@ semantic versioning spec. Then add that version number to the changelog and
 change the `system.json` version number to the new version. Also in the
 `system.json` change the `download` property to the location where the new
 download will be in. Then commit all that and tag it with a version tag like so:
-`git tag v0.0.2`. After this run `gulp buildZip`, push the commit and tag with
-`git push; git push --tags` and create a new release from the tag on GitHub.
-Then upload the packaged zip from the `dist` dir to the release.
+`git tag v0.0.2`. After this run `./gulp.js buildZip`, push the commit and tag
+with `git push; git push --tags` and create a new release from the tag on
+GitHub. Then upload the packaged zip from the `dist` dir to the release.
 
 ## Contributing
 

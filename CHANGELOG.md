@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - automatic AP reset on combat start and next round ([#4](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/4))
+- a gulp shim to use the ts-node/esm loader and prevent the module not found
+  errors
 
 ### Fixed
 

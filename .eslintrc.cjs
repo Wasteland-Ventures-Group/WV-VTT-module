@@ -2,7 +2,7 @@
 
 module.exports = {
   env: {
-    es6: true
+    es2020: true
   },
   extends: ["eslint:recommended", "plugin:prettier/recommended"],
   overrides: [
@@ -34,6 +34,12 @@ module.exports = {
       rules: {
         "tsdoc/syntax": "warn"
       }
+    },
+    {
+      env: {
+        node: true
+      },
+      files: ["gulp.js"]
     }
   ],
   parserOptions: {

@@ -1,7 +1,9 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "lib": ["DOM", "ES2020"],
-    "moduleResolution": "node",
+    "module": "ES2020",
+    "moduleResolution": "Node",
     "outDir": "dist/modules",
     "strict": true,
     "target": "ES2020",

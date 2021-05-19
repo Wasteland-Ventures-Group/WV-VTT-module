@@ -1,10 +1,10 @@
-import * as del from "del";
-import * as log from "fancy-log";
-import * as fs from "fs";
-import { src, dest, parallel, series, watch } from "gulp";
-import * as dartSass from "gulp-dart-sass";
-import * as typescript from "gulp-typescript";
-import * as zip from "gulp-zip";
+import del from "del";
+import log from "fancy-log";
+import fs from "fs";
+import gulp from "gulp";
+import dartSass from "gulp-dart-sass";
+import typescript from "gulp-typescript";
+import zip from "gulp-zip";
 
 import { TemplateEntityType } from "./src/typescript/data/common";
 
@@ -47,12 +47,12 @@ const templateOutPath = `${distWvPrefix}/template.json`;
 // = Handlebars copy ===========================================================
 
 export function hbs(): NodeJS.ReadWriteStream {
-  return src(handlebarsPath).pipe(dest(handlebarsOutPath));
+  return gulp.src(handlebarsPath).pipe(gulp.dest(handlebarsOutPath));
 }
 hbs.description = "Copy all handlebars files";
 
 export function hbsWatch(): void {
-  watch(handlebarsPath, hbs).on("change", logChange);
+  gulp.watch(handlebarsPath, hbs).on("change", logChange);
 }
 hbsWatch.description =
   "Watch the Handlebars input files for changes and copy them";
@@ -60,26 +60,27 @@ hbsWatch.description =
 // = Lang tasks ================================================================
 
 export function lang(): NodeJS.ReadWriteStream {
-  return src(langPath).pipe(dest(langOutPath));
+  return gulp.src(langPath).pipe(gulp.dest(langOutPath));
 }
 lang.description = "Copy all language files";
 
 export function langWatch(): void {
-  watch(langPath, lang).on("change", logChange);
+  gulp.watch(langPath, lang).on("change", logChange);
 }
 langWatch.description = "Watch the language files for changes and copy them";
 
 // = Sass tasks ================================================================
 
 export function sass(): NodeJS.ReadWriteStream {
-  return src(sassRoot)
+  return gulp
+    .src(sassRoot)
     .pipe(dartSass().on("error", dartSass.logError))
-    .pipe(dest(cssOutPath));
+    .pipe(gulp.dest(cssOutPath));
 }
 sass.description = "Compile all Sass files into CSS";
 
 export function sassWatch(): void {
-  watch(sassPath, sass).on("change", logChange);
+  gulp.watch(sassPath, sass).on("change", logChange);
 }
 sassWatch.description =
   "Watch the Sass input files for changes and run the compile task";
@@ -87,13 +88,13 @@ sassWatch.description =
 // = Typescript tasks ==========================================================
 
 export function ts(): NodeJS.ReadWriteStream {
-  return tsProject.src().pipe(tsProject()).js.pipe(dest(jsOutPath));
+  return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(jsOutPath));
 }
 ts.description = "Compile all Typescript files to Javascript";
 
 export function tsWatch(): void {
   const includes = tsProject.config.include;
-  includes && watch(includes, ts).on("change", logChange);
+  includes && gulp.watch(includes, ts).on("change", logChange);
 }
 tsWatch.description =
   "Watch the Typescript input files for changes and run the compile task";
@@ -101,12 +102,12 @@ tsWatch.description =
 // = system.json tasks =========================================================
 
 export function system(): NodeJS.ReadWriteStream {
-  return src(systemPath).pipe(dest(systemOutPath));
+  return gulp.src(systemPath).pipe(gulp.dest(systemOutPath));
 }
 system.description = "Copy the system.json file";
 
 export function systemWatch(): void {
-  watch(systemWatchPath, system).on("change", logChange);
+  gulp.watch(systemWatchPath, system).on("change", logChange);
 }
 systemWatch.description = "Watch system.json for changes and copy it";
 
@@ -116,8 +117,8 @@ export function template(cb: fs.NoParamCallback): void {
   // We somehow have to get TS to reimport the files each time. Currently they
   // are only loaded the first time and then cached.
   Promise.all([
-    import("./src/typescript/data/actorDbData"),
-    import("./src/typescript/data/itemDbData")
+    import("./src/typescript/data/actorDbData.js"),
+    import("./src/typescript/data/itemDbData.js")
   ])
     .then(([actorDbData, itemDbData]) => {
       const actorEntityTypes = [new actorDbData.WvActorDbDataData()];
@@ -137,17 +138,17 @@ export function template(cb: fs.NoParamCallback): void {
 template.description = "Generate the template.json file";
 
 export function templateWatch(): void {
-  watch(templateWatchPaths, template).on("change", logChange);
+  gulp.watch(templateWatchPaths, template).on("change", logChange);
 }
 templateWatch.description =
   "Watch the template.json input files for changes and generate it";
 
 // = General tasks =============================================================
 
-export const pack = parallel(hbs, lang, sass, ts, system, template);
+export const pack = gulp.parallel(hbs, lang, sass, ts, system, template);
 pack.description = "Copy and compile all relevant files to the dist dir";
 
-export const watchAll = parallel(
+export const watchAll = gulp.parallel(
   hbsWatch,
   langWatch,
   sassWatch,
@@ -165,13 +166,14 @@ clean.description = "Clean the dist dir";
 // = Distribution tasks ========================================================
 
 export function distZip(): NodeJS.ReadWriteStream {
-  return src(`${distPrefix}/**`)
+  return gulp
+    .src(`${distPrefix}/**`)
     .pipe(zip(`wasteland-ventures-${getVersionNumber()}.zip`))
-    .pipe(dest(distPrefix));
+    .pipe(gulp.dest(distPrefix));
 }
 distZip.description = "Zip the distribution files";
 
-export const buildZip = series(pack, distZip);
+export const buildZip = gulp.series(pack, distZip);
 buildZip.description = "Pack and zip the distribution files";
 
 // = Common functions ==========================================================

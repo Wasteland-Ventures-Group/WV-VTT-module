@@ -54,6 +54,9 @@
         "dreams": "Dreams",
         "karma": "Karma"
       },
+      "names": {
+        "actorSheet": "Actor Sheet"
+      },
       "tabs": {
         "background": "Background",
         "magic": "Magic",

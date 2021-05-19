@@ -20,6 +20,7 @@ Hooks.once("init", () => {
 
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet("wastelandVentures", WvActorSheet, {
+    label: "wv.sheet.names.actorSheet",
     makeDefault: true
   });
 });

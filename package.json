@@ -1,7 +1,6 @@
 {
   "name": "wv-vtt-module",
   "description": "A system that adapts Wasteland Ventures to Foundry VTT",
-  "version": "0.0.1",
   "author": {
     "name": "Kai Moschcau",
     "email": "mail@kmoschcau.de",
@@ -12,7 +11,6 @@
   "homepage": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module",
   "repository": "github:Wasteland-Ventures-Group/WV-VTT-module",
   "license": "MIT",
-  "main": "wasteland_ventures.js",
   "private": true,
   "type": "module",
   "devDependencies": {

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - actor images getting stretched in the actor sheet in certain cases
 - localized the name of the actor sheet
+- minor improvements to the character sheet
 
 ## [0.2.0] - 2021-05-16
 

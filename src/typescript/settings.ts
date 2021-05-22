@@ -2,7 +2,7 @@ import { CONSTANTS } from "./constants.js";
 
 export const migrVerSettingName = "systemMigrationVersion";
 
-export function registerSystemSettings() {
+export function registerSystemSettings(): void {
   /** Track the system version of the last migration */
   game.settings.register(CONSTANTS.systemId, migrVerSettingName, {
     config: false,

@@ -5,18 +5,12 @@ import {
   Resistances,
   SecondaryStatistics,
   Skill,
-  Skills,
-  WvActorDerivedData
+  Skills
 } from "./../data/actorData.js";
-import { WvActorDbData } from "./../data/actorDbData.js";
-import WvItem from "./../item/wvItem.js";
+import { PlayerCharacterDataSource } from "./../data/actorDbData.js";
 
 /** The basic Wasteland Ventures Actor. */
-export default class WvActor extends Actor<
-  WvActorDbData,
-  WvItem,
-  WvActorDerivedData
-> {
+export default class WvActor extends Actor {
   // Data access {{{1
 
   // Main stats access {{{2
@@ -49,7 +43,7 @@ export default class WvActor extends Actor<
    */
   updateHitPoints(hitPoints: number, update = true): UpdateData {
     const updateData: UpdateData = {
-      _id: this._id,
+      _id: this.id,
       data: { vitals: { hitPoints: { value: hitPoints } } }
     };
     if (update) this.update(updateData);
@@ -65,7 +59,7 @@ export default class WvActor extends Actor<
    */
   updateActionPoints(actionPoints: number, update = true): UpdateData {
     const updateData: UpdateData = {
-      _id: this._id,
+      _id: this.id,
       data: { vitals: { actionPoints: { value: actionPoints } } }
     };
     if (update) this.update(updateData);
@@ -80,7 +74,7 @@ export default class WvActor extends Actor<
    */
   updateStrain(strain: number, update = true): UpdateData {
     const updateData: UpdateData = {
-      _id: this._id,
+      _id: this.id,
       data: { vitals: { strain: { value: strain } } }
     };
     if (update) this.update(updateData);
@@ -318,4 +312,6 @@ export default class WvActor extends Actor<
 }
 
 /** The type of the update data for WvActors. */
-export type UpdateData = DeepPartial<WvActorDbData> & { _id: string };
+export type UpdateData = DeepPartial<PlayerCharacterDataSource> & {
+  _id: string | null;
+};

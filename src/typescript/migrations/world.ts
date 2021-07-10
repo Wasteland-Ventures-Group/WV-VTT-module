@@ -1,9 +1,11 @@
 import { CONSTANTS } from "../constants.js";
+import { getGame } from "../foundryHelpers.js";
 import { migrVerSettingName } from "../settings.js";
 import { migrateActors } from "./actors.js";
 
 /** Check if a data migration is needed and possible. */
 export function migrationNeeded(): boolean {
+  if (!(game instanceof Game)) return false;
   if (!game.user) return false;
   if (!game.user.isGM) return false;
 
@@ -11,7 +13,7 @@ export function migrationNeeded(): boolean {
 }
 
 export function isNewerVersionThanLast(version: string): boolean {
-  const lastMigrVersion = game.settings.get(
+  const lastMigrVersion = getGame().settings.get(
     CONSTANTS.systemId,
     migrVerSettingName
   );
@@ -30,21 +32,25 @@ export function isNewerVersionThanLast(version: string): boolean {
 export async function migrateWorld(): Promise<void> {
   if (ui.notifications) {
     ui.notifications.info(
-      `Applying ${CONSTANTS.systemName} system migration for version ${game.system.data.version}. Please be patient and do not close your game or shut down your server.`,
+      `Applying ${CONSTANTS.systemName} system migration for version ${
+        getGame().system.data.version
+      }. Please be patient and do not close your game or shut down your server.`,
       { permanent: true }
     );
   }
 
   await migrateActors();
 
-  game.settings.set(
+  getGame().settings.set(
     CONSTANTS.systemId,
     migrVerSettingName,
-    game.system.data.version
+    getGame().system.data.version
   );
   if (ui.notifications) {
     ui.notifications.info(
-      `${CONSTANTS.systemName} system migration to version ${game.system.data.version} completed!`,
+      `${CONSTANTS.systemName} system migration to version ${
+        getGame().system.data.version
+      } completed!`,
       { permanent: true }
     );
   }

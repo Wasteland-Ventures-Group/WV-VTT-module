@@ -121,8 +121,10 @@ export function template(cb: fs.NoParamCallback): void {
     import("./src/typescript/data/itemDbData.js")
   ])
     .then(([actorDbData, itemDbData]) => {
-      const actorEntityTypes = [new actorDbData.WvActorDbDataData()];
-      const itemEntityTypes = [new itemDbData.ItemDbData()];
+      const actorEntityTypes = [
+        new actorDbData.PlayerCharacterDataSourceData()
+      ];
+      const itemEntityTypes = [new itemDbData.ItemDataSourceData()];
       fs.mkdir(distWvPrefix, { recursive: true }, () => {
         fs.writeFile(
           templateOutPath,

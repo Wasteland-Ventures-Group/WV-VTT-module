@@ -2,16 +2,21 @@ import { CONSTANTS } from "../constants.js";
 import { isNewerVersionThanLast } from "./world.js";
 
 export async function migrateActors(): Promise<void> {
+  if (!(game instanceof Game)) {
+    console.error("Game was not yet initialized!");
+    return;
+  }
+
   if (!game.actors) {
     console.error("Actors was not yet defined!");
     return;
   }
 
-  for (const actor of game.actors.entities) {
+  for (const actor of game.actors) {
     try {
       const updateData = migrateActorData(actor.data);
-      if (!isObjectEmpty(updateData)) {
-        console.log(`Migrating Actor entity ${actor.name}`);
+      if (!foundry.utils.isObjectEmpty(updateData)) {
+        console.log(`Migrating Actor ${actor.name}`);
         await actor.update(updateData, { enforceTypes: false });
       }
     } catch (err) {
@@ -22,7 +27,9 @@ export async function migrateActors(): Promise<void> {
   }
 }
 
-function migrateActorData(oldActorData: Actor.Data): Record<string, unknown> {
+function migrateActorData(
+  oldActorData: foundry.data.ActorData
+): Record<string, unknown> {
   const updateData = {};
 
   migrateTo_0_3_0(oldActorData, updateData);
@@ -31,12 +38,12 @@ function migrateActorData(oldActorData: Actor.Data): Record<string, unknown> {
 }
 
 function migrateTo_0_3_0(
-  oldActorData: Actor.Data<Pre_0_3_0_Actor>,
+  oldActorData: { data: Pre_0_3_0_Actor },
   updateData: Record<string, unknown>
 ): void {
   if (!isNewerVersionThanLast("0.2.0")) return;
 
-  console.log(`Migrating to 0.2.0`);
+  console.log(`Migrating to 0.3.0`);
 
   const oldVitals = oldActorData.data.vitals;
   if (typeof oldVitals?.actionPoints === "number") {

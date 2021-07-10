@@ -5,10 +5,12 @@ import {
   ThaumaturgySpecials
 } from "../constants.js";
 import WvI18n, { I18nSpecial } from "../wvI18n.js";
-import WvActor from "./wvActor.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
-export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
+export default class WvActorSheet extends ActorSheet<
+  ActorSheet.Options,
+  SheetData
+> {
   /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   static get defaultOptions() {
@@ -33,9 +35,9 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
   }
 
   /** @override */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  async getData() {
+  async getData(): Promise<SheetData> {
     const data = await super.getData();
+    const actorProps = data.actor.data.data;
     data.sheet = {};
 
     const specialI18ns = WvI18n.specials;
@@ -44,7 +46,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
       data.sheet.specials[special] = {
         long: specialI18ns[special].long,
         short: specialI18ns[special].short,
-        value: data.data.specials[special]
+        value: actorProps.specials[special]
       };
     }
 
@@ -53,13 +55,13 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
     for (const skill of SkillNames) {
       const special: SpecialNames =
         skill === "thaumaturgy"
-          ? data.data.magic.thaumSpecial
+          ? actorProps.magic.thaumSpecial
           : CONSTANTS.skillSpecials[skill];
       data.sheet.skills[skill] = {
         name: skillI18ns[skill],
-        ranks: data.data.leveling.skillRanks[skill],
+        ranks: actorProps.leveling.skillRanks[skill],
         special: specialI18ns[special].short,
-        total: data.data.skills[skill]?.total
+        total: actorProps.skills[skill]?.total
       };
     }
 
@@ -68,7 +70,7 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
     for (const thaumSpecial of ThaumaturgySpecials) {
       data.sheet.magic.thaumSpecials[thaumSpecial] = {
         name: specialI18ns[thaumSpecial].long,
-        selected: thaumSpecial === data.data.magic.thaumSpecial
+        selected: thaumSpecial === actorProps.magic.thaumSpecial
       };
     }
 
@@ -106,7 +108,12 @@ export default class WvActorSheet extends ActorSheet<SheetData, WvActor> {
   }
 }
 
-type RollEvent = JQuery.ClickEvent<HTMLElement, any, HTMLElement, HTMLElement>;
+type RollEvent = JQuery.ClickEvent<
+  HTMLElement,
+  unknown,
+  HTMLElement,
+  HTMLElement
+>;
 
 interface SheetThaumSpecial {
   name?: string;
@@ -132,7 +139,7 @@ interface SheetSkill {
   total?: number;
 }
 
-interface SheetData extends ActorSheet.Data<WvActor> {
+interface SheetData extends ActorSheet.Data {
   sheet?: {
     magic?: SheetMagic;
     skills?: Partial<Record<SkillNames, SheetSkill>>;

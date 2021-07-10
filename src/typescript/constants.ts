@@ -34,6 +34,26 @@ export const SkillNames = [
   "unarmed"
 ] as const;
 
+/** Type names for the system's document types */
+export const TYPES = {
+  /** Type names for Actor types */
+  ACTOR: {
+    PLAYER_CHARACTER: "playerCharacter"
+  },
+  /** Type names for Item types */
+  ITEM: {
+    AERIAL_MANEUVER: "aerialManeuver",
+    ITEM: "item",
+    MARK: "mark",
+    PAST: "past",
+    PERK: "perk",
+    QUIRK: "quirk",
+    SCHEMATIC: "schematic",
+    SPELL: "spell",
+    TRAIT: "trait"
+  }
+};
+
 /** This object holds common constants for the Wasteland Ventures system. */
 export const CONSTANTS = {
   /** The version number where the last migration was needed */

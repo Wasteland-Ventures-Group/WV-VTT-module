@@ -1,46 +1,63 @@
+import { TYPES } from "../constants.js";
 import { TemplateEntityType } from "./common";
 
-interface PastDbData {}
-interface PastItemDbData extends Item.Data<PastDbData> {
-  type: "past";
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface PastDataSourceData {}
+interface PastDataSource {
+  type: typeof TYPES.ITEM.PAST;
+  data: PastDataSourceData;
 }
 
-interface QuirkDbData {}
-interface QuirkItemDbData extends Item.Data<QuirkDbData> {
-  type: "quirk";
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface QuirkDataSourceData {}
+interface QuirkDataSource {
+  type: typeof TYPES.ITEM.QUIRK;
+  data: QuirkDataSourceData;
 }
 
-interface TraitDbData {}
-interface TraitItemDbData extends Item.Data<TraitDbData> {
-  type: "trait";
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface TraitDataSourceData {}
+interface TraitDataSource {
+  type: typeof TYPES.ITEM.TRAIT;
+  data: TraitDataSourceData;
 }
 
-interface PerkDbData {}
-interface PerkItemDbData extends Item.Data<PerkDbData> {
-  type: "perk";
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface PerkDataSourceData {}
+interface PerkDataSource {
+  type: typeof TYPES.ITEM.PERK;
+  data: PerkDataSourceData;
 }
 
-interface SpellDbData {}
-interface SpellItemDbData extends Item.Data<SpellDbData> {
-  type: "spell";
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface SpellDataSourceData {}
+interface SpellDataSource {
+  type: typeof TYPES.ITEM.SPELL;
+  data: SpellDataSourceData;
 }
 
-interface MarkDbData {}
-interface MarkItemDbData extends Item.Data<MarkDbData> {
-  type: "mark";
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface MarkDataSourceData {}
+interface MarkDataSource {
+  type: typeof TYPES.ITEM.MARK;
+  data: MarkDataSourceData;
 }
 
-interface SchematicDbData {}
-interface SchematicItemDbData extends Item.Data<SchematicDbData> {
-  type: "schematic";
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface SchematicDataSourceData {}
+interface SchematicDataSource {
+  type: typeof TYPES.ITEM.SCHEMATIC;
+  data: SchematicDataSourceData;
 }
 
-interface AerialManeuverDbData {}
-interface AerialManeuverItemDbData extends Item.Data<AerialManeuverDbData> {
-  type: "aerialManeuver";
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface AerialManeuverDataSourceData {}
+interface AerialManeuverDataSource {
+  type: typeof TYPES.ITEM.AERIAL_MANEUVER;
+  data: AerialManeuverDataSourceData;
 }
 
-export class ItemDbData implements TemplateEntityType {
+export class ItemDataSourceData implements TemplateEntityType {
   constructor(
     /** The value of the item in caps */
     public value: number = 0
@@ -49,20 +66,24 @@ export class ItemDbData implements TemplateEntityType {
   /** @override */
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   getTypeName() {
-    return "item";
+    return TYPES.ITEM.ITEM;
   }
 }
-interface ItemItemDbData extends Item.Data<ItemDbData> {
-  type: "item";
+
+/** The Wasteland Ventures item data source */
+interface ItemDataSource {
+  type: typeof TYPES.ITEM.ITEM;
+  data: ItemDataSourceData;
 }
 
-export type WvItemDbData =
-  | PastItemDbData
-  | QuirkItemDbData
-  | TraitItemDbData
-  | PerkItemDbData
-  | SpellItemDbData
-  | MarkItemDbData
-  | SchematicItemDbData
-  | AerialManeuverItemDbData
-  | ItemItemDbData;
+/** A union for data sources of all Item types */
+export type WvItemDataSource =
+  | PastDataSource
+  | QuirkDataSource
+  | TraitDataSource
+  | PerkDataSource
+  | SpellDataSource
+  | MarkDataSource
+  | SchematicDataSource
+  | AerialManeuverDataSource
+  | ItemDataSource;

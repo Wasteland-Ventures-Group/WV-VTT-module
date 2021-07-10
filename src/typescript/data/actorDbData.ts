@@ -1,7 +1,11 @@
-import { SkillNames, SpecialNames, ThaumaturgySpecials } from "../constants.js";
+import {
+  SkillNames,
+  SpecialNames,
+  ThaumaturgySpecials,
+  TYPES
+} from "../constants.js";
 import { TemplateEntityType } from "./common.js";
 import { Resource as FoundryResource } from "./foundryCommon.js";
-import { WvItemDbData } from "./itemDbData.js";
 
 /** An Actor SPECIALs object for the database */
 export class Specials implements Record<SpecialNames, number> {
@@ -146,8 +150,8 @@ export class Magic {
   ) {}
 }
 
-/** An Actor stats object for the database */
-export class WvActorDbDataData implements TemplateEntityType {
+/** The player character data-source data */
+export class PlayerCharacterDataSourceData implements TemplateEntityType {
   constructor(
     /** The SPECIALs of an Actor */
     public specials: Specials = new Specials(),
@@ -166,11 +170,16 @@ export class WvActorDbDataData implements TemplateEntityType {
   ) {}
 
   /** @override */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  getTypeName() {
-    return "playerCharacter";
+  getTypeName(): string {
+    return TYPES.ACTOR.PLAYER_CHARACTER;
   }
 }
 
-/** The database data of Wasteland Ventures actors. */
-export type WvActorDbData = Actor.Data<WvActorDbDataData, WvItemDbData>;
+/** The player character data-source */
+export interface PlayerCharacterDataSource {
+  type: typeof TYPES.ACTOR.PLAYER_CHARACTER;
+  data: PlayerCharacterDataSourceData;
+}
+
+/** A union for data-sources of all Actor types */
+export type WvActorDataSource = PlayerCharacterDataSource;

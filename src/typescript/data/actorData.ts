@@ -1,13 +1,12 @@
-import { SkillNames } from "../constants.js";
+import { SkillNames, TYPES } from "../constants.js";
 import {
   Background,
   Leveling as DbLeveling,
   Magic,
   Specials as DbSpecials,
   Vitals as DbVitals,
-  WvActorDbDataData
+  PlayerCharacterDataSourceData
 } from "./actorDbData.js";
-import { WvItemDbData } from "./itemDbData.js";
 
 /** Derived SPECIALs related data */
 export class Specials extends DbSpecials {}
@@ -118,7 +117,8 @@ export class SecondaryStatistics {
   ) {}
 }
 
-export class WvActorDerivedDataData extends WvActorDbDataData {
+/** The player character data-properties data */
+export class PlayerCharacterDataPropertiesData extends PlayerCharacterDataSourceData {
   constructor(
     /** The SPECIALs of an Actor */
     public specials: Specials = new Specials(),
@@ -147,8 +147,11 @@ export class WvActorDerivedDataData extends WvActorDbDataData {
   }
 }
 
-/** The derived data of Wasteland Ventures actors. */
-export type WvActorDerivedData = Actor.Data<
-  WvActorDerivedDataData,
-  WvItemDbData
->;
+/** The player character data-properties */
+export interface PlayerCharacterDataProperties {
+  type: typeof TYPES.ACTOR.PLAYER_CHARACTER;
+  data: PlayerCharacterDataPropertiesData;
+}
+
+/** A union for the data properties of all Actor types */
+export type WvActorDataProperties = PlayerCharacterDataProperties;

@@ -1,12 +1,10 @@
 export default class WvCombat extends Combat {
-  /** @override */
-  async nextRound(): Promise<this | undefined> {
+  override async nextRound(): Promise<this | undefined> {
     this.resetActionPoints();
     return super.nextRound();
   }
 
-  /** @override */
-  async startCombat(): Promise<this | undefined> {
+  override async startCombat(): Promise<this | undefined> {
     this.resetActionPoints();
     return super.startCombat();
   }

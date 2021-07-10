@@ -11,9 +11,7 @@ export default class WvActorSheet extends ActorSheet<
   ActorSheet.Options,
   SheetData
 > {
-  /** @override */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  static get defaultOptions() {
+  static override get defaultOptions(): ActorSheet.Options {
     return mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "actor-sheet"],
       tabs: [
@@ -23,9 +21,7 @@ export default class WvActorSheet extends ActorSheet<
     } as typeof ActorSheet["defaultOptions"]);
   }
 
-  /** @override */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  activateListeners(html: JQuery<HTMLElement>) {
+  override activateListeners(html: JQuery<HTMLElement>): void {
     super.activateListeners(html);
 
     html
@@ -34,8 +30,7 @@ export default class WvActorSheet extends ActorSheet<
     html.find(".rollable[data-skill]").on("click", this.rollSkill.bind(this));
   }
 
-  /** @override */
-  async getData(): Promise<SheetData> {
+  override async getData(): Promise<SheetData> {
     const data = await super.getData();
     const actorProps = data.actor.data.data;
     data.sheet = {};

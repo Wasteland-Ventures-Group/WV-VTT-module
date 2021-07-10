@@ -98,15 +98,11 @@ export default class WvActor extends Actor {
 
   // Data computation {{{1
 
-  /** @override */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  prepareBaseData() {
+  override prepareBaseData(): void {
     this.computeBase();
   }
 
-  /** @override */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  prepareDerivedData() {
+  override prepareDerivedData(): void {
     this.applySizeModifiers();
   }
 

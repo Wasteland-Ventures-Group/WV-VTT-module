@@ -22,11 +22,11 @@ export type I18nSkills = Record<SkillNames, string>;
 export default class WvI18n {
   /** Get the internationalization of the SPECIALs. */
   static get specials(): I18nSpecials {
-    return (getGame().i18n.localize("wv.specials") as unknown) as I18nSpecials;
+    return getGame().i18n.localize("wv.specials") as unknown as I18nSpecials;
   }
 
   /** Get the internationalization of the skills. */
   static get skills(): I18nSkills {
-    return (getGame().i18n.localize("wv.skills") as unknown) as I18nSkills;
+    return getGame().i18n.localize("wv.skills") as unknown as I18nSkills;
   }
 }

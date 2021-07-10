@@ -64,8 +64,7 @@ export class ItemDataSourceData implements TemplateEntityType {
   ) {}
 
   /** @override */
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  getTypeName() {
+  getTypeName(): string {
     return TYPES.ITEM.ITEM;
   }
 }

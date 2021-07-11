@@ -4,6 +4,8 @@ import {
   SpecialNames,
   ThaumaturgySpecials
 } from "../constants.js";
+import { getGame } from "../foundryHelpers.js";
+import { isSkillName, isSpecialName } from "../helpers.js";
 import WvI18n, { I18nSpecial } from "../wvI18n.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
@@ -72,6 +74,9 @@ export default class WvActorSheet extends ActorSheet<
     return data;
   }
 
+  /**
+   * Roll a SPECIAL for the Actor.
+   */
   protected rollSpecial(event: RollEvent): void {
     event.preventDefault();
     const dataset = event.target.dataset;
@@ -82,11 +87,15 @@ export default class WvActorSheet extends ActorSheet<
         this.actor.data.data.specials
       );
       roll.roll().toMessage({
+        flavor: this.getSpecialRollFlavor(dataset.special),
         speaker: ChatMessage.getSpeaker({ actor: this.actor })
       });
     }
   }
 
+  /**
+   * Roll a Skill for the Actor.
+   */
   protected rollSkill(event: RollEvent): void {
     event.preventDefault();
     const dataset = event.target.dataset;
@@ -97,9 +106,36 @@ export default class WvActorSheet extends ActorSheet<
         this.actor.data.data.skills
       );
       roll.roll().toMessage({
+        flavor: this.getSkillRollFlavor(dataset.skill),
         speaker: ChatMessage.getSpeaker({ actor: this.actor })
       });
     }
+  }
+
+  /**
+   * Get an internationalized SPECIAL roll flavor text.
+   * @param name - the name of the SPECIAL
+   * @returns the internationalized flavor text
+   */
+  private getSpecialRollFlavor(name: string): string {
+    const i18n = getGame().i18n;
+    const i18nName = isSpecialName(name)
+      ? WvI18n.specials[name].long
+      : i18n.localize("wv.labels.errors.unknownSpecial");
+    return i18n.format("wv.labels.rolls.genericFlavor", { what: i18nName });
+  }
+
+  /**
+   * Get an internationalized Skill roll flavor text.
+   * @param name - the name of the Skill
+   * @returns the internationalized flavor text
+   */
+  private getSkillRollFlavor(name: string): string {
+    const i18n = getGame().i18n;
+    const i18nName = isSkillName(name)
+      ? WvI18n.skills[name]
+      : i18n.localize("wv.labels.errors.unknownSkill");
+    return i18n.format("wv.labels.rolls.genericFlavor", { what: i18nName });
   }
 }
 

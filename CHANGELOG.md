@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- flavor text for character sheet rolls ([#1](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/1))
+
 ## [0.3.0] - 2021-07-10
 
 ### Added

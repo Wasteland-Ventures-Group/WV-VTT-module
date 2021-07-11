@@ -11,6 +11,10 @@
           "title": "Radiation"
         }
       },
+      "errors": {
+        "unknownSpecial": "unknown SPECIAL",
+        "unknownSkill": "unknown Skill"
+      },
       "magic": {
         "thaumSpecial": "SPECIA for Thaumaturgy"
       },
@@ -18,6 +22,9 @@
         "poison": "Poison",
         "radiation": "Radiation",
         "title": "Resistances"
+      },
+      "rolls": {
+        "genericFlavor": "Rolling {what}"
       },
       "secondary": {
         "actionPoints": "Action Points",

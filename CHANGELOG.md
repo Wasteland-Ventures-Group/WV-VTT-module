@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - flavor text for character sheet rolls ([#1](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/1))
 
+### Fixed
+
+- pressing enter in the character sheet no longer triggers a Strength roll
+  ([#8](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/8))
+
 ## [0.3.0] - 2021-07-10
 
 ### Added

@@ -53,6 +53,10 @@
         "value": "Value"
       }
     },
+    "migration": {
+      "completed": "{systemName} system migration to version {version} completed!",
+      "started": "Applying {systemName} system migration for version {version}. Please be patient and do not close your game or shut down your server."
+    },
     "sheet": {
       "background": {
         "background": "Background",

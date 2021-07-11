@@ -32,9 +32,10 @@ export function isNewerVersionThanLast(version: string): boolean {
 export async function migrateWorld(): Promise<void> {
   if (ui.notifications) {
     ui.notifications.info(
-      `Applying ${CONSTANTS.systemName} system migration for version ${
-        getGame().system.data.version
-      }. Please be patient and do not close your game or shut down your server.`,
+      getGame().i18n.format("wv.migration.started", {
+        systemName: CONSTANTS.systemName,
+        version: getGame().system.data.version
+      }),
       { permanent: true }
     );
   }
@@ -48,9 +49,10 @@ export async function migrateWorld(): Promise<void> {
   );
   if (ui.notifications) {
     ui.notifications.info(
-      `${CONSTANTS.systemName} system migration to version ${
-        getGame().system.data.version
-      } completed!`,
+      getGame().i18n.format("wv.migration.completed", {
+        systemName: CONSTANTS.systemName,
+        version: getGame().system.data.version
+      }),
       { permanent: true }
     );
   }

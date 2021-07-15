@@ -181,7 +181,7 @@ buildZip.description = "Pack and zip the distribution files";
 // = Common functions ==========================================================
 
 function logChange(path: string) {
-  log(`${path} change`);
+  log(`${path} changed`);
 }
 
 function getVersionNumber(): string {

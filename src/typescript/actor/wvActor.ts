@@ -1,6 +1,8 @@
 // vim: foldmethod=marker
+import { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import { Resource } from "../data/foundryCommon.js";
+import { getGmIds } from "../helpers.js";
 import WvI18n from "../wvI18n.js";
 import {
   Resistances,
@@ -103,27 +105,39 @@ export default class WvActor extends Actor {
    * Roll a SPECIAL for this Actor.
    * @param special - the name of the SPECIAL to roll
    */
-  rollSpecial(special: SpecialNames): void {
+  rollSpecial(special: SpecialNames, options?: RollOptions): void {
+    const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
+      flavor: WvI18n.getSpecialRollFlavor(special),
+      speaker: ChatMessage.getSpeaker({ actor: this })
+    };
+    if (options?.whisperToGms) {
+      msgOptions["whisper"] = getGmIds();
+    }
+
     new Roll(`1d100cs<=(${this.data.data.specials[special]}*10)`)
-      .roll()
-      .toMessage({
-        flavor: WvI18n.getSpecialRollFlavor(special),
-        speaker: ChatMessage.getSpeaker({ actor: this })
-      });
+      .roll({ async: true })
+      .then((r) => r.toMessage(msgOptions));
   }
 
   /**
    * Roll a Skill for this Actor.
    * @param skill - the name of the Skill to roll
    */
-  rollSkill(skill: SkillNames): void {
+  rollSkill(skill: SkillNames, options?: RollOptions): void {
     const skillTotal = this.data.data.skills[skill]?.total;
     if (!skillTotal) throw "The skills have not been calculated yet!";
 
-    new Roll(`1d100cs=<${skillTotal}`).roll().toMessage({
+    const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
       flavor: WvI18n.getSkillRollFlavor(skill),
       speaker: ChatMessage.getSpeaker({ actor: this })
-    });
+    };
+    if (options?.whisperToGms) {
+      msgOptions["whisper"] = getGmIds();
+    }
+
+    new Roll(`1d100cs=<${skillTotal}`)
+      .roll({ async: true })
+      .then((r) => r.toMessage(msgOptions));
   }
 
   // Data computation {{{1
@@ -335,6 +349,17 @@ export default class WvActor extends Actor {
   }
 
   // }}}1
+}
+
+/**
+ * Options for modifying actor rolls.
+ */
+interface RollOptions {
+  /**
+   * Whether to whisper the roll to GMs.
+   * @defaultValue `false`
+   */
+  whisperToGms?: boolean;
 }
 
 /** The type of the update data for WvActors. */

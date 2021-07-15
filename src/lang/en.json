@@ -24,7 +24,8 @@
         "title": "Resistances"
       },
       "rolls": {
-        "genericFlavor": "Rolling {what}"
+        "genericFlavor": "Rolling {what}",
+        "buttonTitle": "Ctrl-Click to whisper to the GM(s)"
       },
       "secondary": {
         "actionPoints": "Action Points",

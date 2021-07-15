@@ -68,7 +68,7 @@
           {{#each sheet.specials as | spec |}}
             <label>{{spec.long}}</label>
             <input class="flex-fixed resource-input-2" type="number" name="data.specials.{{@key}}" value="{{spec.value}}" min="0" max="15" />
-            <div class="rollable" data-special="{{@key}}">{{localize "wv.labels.special.roll"}}</div>
+            <div class="rollable" data-special="{{@key}}" title="{{localize 'wv.labels.rolls.buttonTitle'}}">{{localize "wv.labels.special.roll"}}</div>
           {{/each}}
         </div>
         <div class="grid-5cols standard-grid-gaps flex-center">
@@ -82,7 +82,7 @@
             <label>{{skill.special}}</label>
             <span class="flex-fixed resource-display">{{skill.total}}</span>
             <input class="flex-fixed resource-input-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="0" max="100" />
-            <div class="rollable" data-skill="{{@key}}">{{localize "wv.labels.skills.roll"}}</div>
+            <div class="rollable" data-skill="{{@key}}" title="{{localize 'wv.labels.rolls.buttonTitle'}}">{{localize "wv.labels.skills.roll"}}</div>
           {{/each}}
         </div>
       </section>

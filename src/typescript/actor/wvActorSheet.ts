@@ -83,7 +83,7 @@ export default class WvActorSheet extends ActorSheet<
 
     const special = event.target.dataset.special;
     if (special && isSpecialName(special)) {
-      this.actor.rollSpecial(special);
+      this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
     } else {
       console.warn("Could not get the SPECIAL name for a roll.");
     }
@@ -97,7 +97,7 @@ export default class WvActorSheet extends ActorSheet<
 
     const skill = event.target.dataset.skill;
     if (skill && isSkillName(skill)) {
-      this.actor.rollSkill(skill);
+      this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
     } else {
       console.warn("Could not get the Skill name for a Skill roll.");
     }

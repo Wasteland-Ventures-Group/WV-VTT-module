@@ -4,7 +4,6 @@ import {
   SpecialNames,
   ThaumaturgySpecials
 } from "../constants.js";
-import { getGame } from "../foundryHelpers.js";
 import { isSkillName, isSpecialName } from "../helpers.js";
 import WvI18n, { I18nSpecial } from "../wvI18n.js";
 
@@ -14,7 +13,7 @@ export default class WvActorSheet extends ActorSheet<
   SheetData
 > {
   static override get defaultOptions(): ActorSheet.Options {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "actor-sheet"],
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
@@ -28,8 +27,10 @@ export default class WvActorSheet extends ActorSheet<
 
     html
       .find(".rollable[data-special]")
-      .on("click", this.rollSpecial.bind(this));
-    html.find(".rollable[data-skill]").on("click", this.rollSkill.bind(this));
+      .on("click", this.onClickRollSpecial.bind(this));
+    html
+      .find(".rollable[data-skill]")
+      .on("click", this.onClickRollSkill.bind(this));
   }
 
   override async getData(): Promise<SheetData> {
@@ -75,67 +76,31 @@ export default class WvActorSheet extends ActorSheet<
   }
 
   /**
-   * Roll a SPECIAL for the Actor.
+   * Handle a click event on the SPECIAL roll buttons.
    */
-  protected rollSpecial(event: RollEvent): void {
+  protected onClickRollSpecial(event: RollEvent): void {
     event.preventDefault();
-    const dataset = event.target.dataset;
 
-    if (dataset.special) {
-      const roll = new Roll(
-        `1d100cs<=(@${dataset.special}*10)`,
-        this.actor.data.data.specials
-      );
-      roll.roll().toMessage({
-        flavor: this.getSpecialRollFlavor(dataset.special),
-        speaker: ChatMessage.getSpeaker({ actor: this.actor })
-      });
+    const special = event.target.dataset.special;
+    if (special && isSpecialName(special)) {
+      this.actor.rollSpecial(special);
+    } else {
+      console.warn("Could not get the SPECIAL name for a roll.");
     }
   }
 
   /**
-   * Roll a Skill for the Actor.
+   * Handle a click event on the Skill roll buttons.
    */
-  protected rollSkill(event: RollEvent): void {
+  protected onClickRollSkill(event: RollEvent): void {
     event.preventDefault();
-    const dataset = event.target.dataset;
 
-    if (dataset.skill) {
-      const roll = new Roll(
-        `1d100cs<=@${dataset.skill}.total`,
-        this.actor.data.data.skills
-      );
-      roll.roll().toMessage({
-        flavor: this.getSkillRollFlavor(dataset.skill),
-        speaker: ChatMessage.getSpeaker({ actor: this.actor })
-      });
+    const skill = event.target.dataset.skill;
+    if (skill && isSkillName(skill)) {
+      this.actor.rollSkill(skill);
+    } else {
+      console.warn("Could not get the Skill name for a Skill roll.");
     }
-  }
-
-  /**
-   * Get an internationalized SPECIAL roll flavor text.
-   * @param name - the name of the SPECIAL
-   * @returns the internationalized flavor text
-   */
-  private getSpecialRollFlavor(name: string): string {
-    const i18n = getGame().i18n;
-    const i18nName = isSpecialName(name)
-      ? WvI18n.specials[name].long
-      : i18n.localize("wv.labels.errors.unknownSpecial");
-    return i18n.format("wv.labels.rolls.genericFlavor", { what: i18nName });
-  }
-
-  /**
-   * Get an internationalized Skill roll flavor text.
-   * @param name - the name of the Skill
-   * @returns the internationalized flavor text
-   */
-  private getSkillRollFlavor(name: string): string {
-    const i18n = getGame().i18n;
-    const i18nName = isSkillName(name)
-      ? WvI18n.skills[name]
-      : i18n.localize("wv.labels.errors.unknownSkill");
-    return i18n.format("wv.labels.rolls.genericFlavor", { what: i18nName });
   }
 }
 

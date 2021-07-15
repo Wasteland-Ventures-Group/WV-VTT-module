@@ -1,6 +1,7 @@
 // vim: foldmethod=marker
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import { Resource } from "../data/foundryCommon.js";
+import WvI18n from "../wvI18n.js";
 import {
   Resistances,
   SecondaryStatistics,
@@ -94,6 +95,35 @@ export default class WvActor extends Actor {
       this.actionPoints.value +
       Math.floor(this.data.data.specials.endurance / 2);
     return actionPoints * 2;
+  }
+
+  // Rolls {{{1
+
+  /**
+   * Roll a SPECIAL for this Actor.
+   * @param special - the name of the SPECIAL to roll
+   */
+  rollSpecial(special: SpecialNames): void {
+    new Roll(`1d100cs<=(${this.data.data.specials[special]}*10)`)
+      .roll()
+      .toMessage({
+        flavor: WvI18n.getSpecialRollFlavor(special),
+        speaker: ChatMessage.getSpeaker({ actor: this })
+      });
+  }
+
+  /**
+   * Roll a Skill for this Actor.
+   * @param skill - the name of the Skill to roll
+   */
+  rollSkill(skill: SkillNames): void {
+    const skillTotal = this.data.data.skills[skill]?.total;
+    if (!skillTotal) throw "The skills have not been calculated yet!";
+
+    new Roll(`1d100cs=<${skillTotal}`).roll().toMessage({
+      flavor: WvI18n.getSkillRollFlavor(skill),
+      speaker: ChatMessage.getSpeaker({ actor: this })
+    });
   }
 
   // Data computation {{{1

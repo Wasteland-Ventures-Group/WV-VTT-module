@@ -25,7 +25,8 @@
       },
       "rolls": {
         "genericFlavor": "Rolling {what}",
-        "buttonTitle": "Ctrl-Click to whisper to the GM(s)"
+        "roll": "Roll",
+        "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both"
       },
       "secondary": {
         "actionPoints": "Action Points",

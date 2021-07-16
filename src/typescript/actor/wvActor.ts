@@ -2,6 +2,7 @@
 import { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import { Resource } from "../data/foundryCommon.js";
+import Formulator from "../formulator.js";
 import { getGmIds } from "../foundryHelpers.js";
 import WvI18n from "../wvI18n.js";
 import {
@@ -114,7 +115,11 @@ export default class WvActor extends Actor {
       msgOptions["whisper"] = getGmIds();
     }
 
-    new Roll(`1d100cs<=(${this.data.data.specials[special]}*10)`)
+    new Roll(
+      Formulator.special(this.data.data.specials[special])
+        .modify(options?.modifier)
+        .toString()
+    )
       .roll({ async: true })
       .then((r) => r.toMessage(msgOptions));
   }
@@ -135,7 +140,7 @@ export default class WvActor extends Actor {
       msgOptions["whisper"] = getGmIds();
     }
 
-    new Roll(`1d100cs=<${skillTotal}`)
+    new Roll(Formulator.skill(skillTotal).modify(options?.modifier).toString())
       .roll({ async: true })
       .then((r) => r.toMessage(msgOptions));
   }
@@ -355,6 +360,12 @@ export default class WvActor extends Actor {
  * Options for modifying actor rolls.
  */
 interface RollOptions {
+  /**
+   * An ad-hoc modifier to roll with. When undefined, no modifier is applied.
+   * @defaultValue `undefined`
+   */
+  modifier?: number;
+
   /**
    * Whether to whisper the roll to GMs.
    * @defaultValue `false`

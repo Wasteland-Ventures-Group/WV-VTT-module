@@ -1,3 +1,4 @@
+import RollModifierDialog from "../applications/rollModifierDialog.js";
 import {
   CONSTANTS,
   SkillNames,
@@ -83,7 +84,16 @@ export default class WvActorSheet extends ActorSheet<
 
     const special = event.target.dataset.special;
     if (special && isSpecialName(special)) {
-      this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
+      if (event.shiftKey) {
+        new RollModifierDialog((modifier) => {
+          this.actor.rollSpecial(special, {
+            modifier: modifier,
+            whisperToGms: event.ctrlKey
+          });
+        }).render(true);
+      } else {
+        this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
+      }
     } else {
       console.warn("Could not get the SPECIAL name for a roll.");
     }
@@ -97,7 +107,16 @@ export default class WvActorSheet extends ActorSheet<
 
     const skill = event.target.dataset.skill;
     if (skill && isSkillName(skill)) {
-      this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
+      if (event.shiftKey) {
+        new RollModifierDialog((modifier) => {
+          this.actor.rollSkill(skill, {
+            modifier: modifier,
+            whisperToGms: event.ctrlKey
+          });
+        }).render(true);
+      } else {
+        this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
+      }
     } else {
       console.warn("Could not get the Skill name for a Skill roll.");
     }

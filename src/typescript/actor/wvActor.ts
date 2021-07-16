@@ -2,7 +2,7 @@
 import { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import { Resource } from "../data/foundryCommon.js";
-import { getGmIds } from "../helpers.js";
+import { getGmIds } from "../foundryHelpers.js";
 import WvI18n from "../wvI18n.js";
 import {
   Resistances,

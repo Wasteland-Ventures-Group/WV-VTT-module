@@ -39,7 +39,11 @@ export default class RollModifierDialog extends Application<Options> {
   }
 
   override async getData(): Promise<DialogData> {
-    return { description: this.options.description };
+    return {
+      description: this.options.description,
+      max: this.options.max,
+      min: this.options.min
+    };
   }
 
   /**
@@ -63,18 +67,45 @@ export default class RollModifierDialog extends Application<Options> {
   }
 }
 
+/**
+ * This is the data supplied to the handlebars template.
+ */
 interface DialogData {
   /**
-   * The description for the input of the dialog.
+   * The description for the input of the dialog. When undefined, a generic
+   * description is used.
    */
   description?: string;
+
+  /**
+   * The maximum value for the input.
+   */
+  max?: number;
+
+  /**
+   * The minimum value for the input.
+   */
+  min?: number;
 }
 
+/**
+ * These are the options for the RollModifierDialog.
+ */
 interface Options extends Application.Options {
   /**
    * An optional description for the dialog.
    */
   description?: string;
+
+  /**
+   * An optional max value for the modifier.
+   */
+  max?: number;
+
+  /**
+   * An optional min value for the modifier.
+   */
+  min?: number;
 }
 
 type SubmitEvent = JQuery.SubmitEvent<

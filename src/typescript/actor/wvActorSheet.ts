@@ -92,7 +92,11 @@ export default class WvActorSheet extends ActorSheet<
               whisperToGms: event.ctrlKey
             });
           },
-          { description: WvI18n.getSpecialModifierDescription(special) }
+          {
+            description: WvI18n.getSpecialModifierDescription(special),
+            min: -100,
+            max: 100
+          }
         ).render(true);
       } else {
         this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
@@ -118,7 +122,11 @@ export default class WvActorSheet extends ActorSheet<
               whisperToGms: event.ctrlKey
             });
           },
-          { description: WvI18n.getSkillModifierDescription(skill) }
+          {
+            description: WvI18n.getSkillModifierDescription(skill),
+            min: -100,
+            max: 100
+          }
         ).render(true);
       } else {
         this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });

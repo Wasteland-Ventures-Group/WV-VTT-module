@@ -1,11 +1,11 @@
 <form>
-  <label>
+  <label class="contained-target-inline">
     {{#if description}}
       {{description}}
     {{else}}
       {{localize "wv.labels.rolls.genericModifierDescription"}}
     {{/if}}
-    <input name="modifier" type="number" value="0" />
+    <input class="size-2" name="modifier" type="number" value="0" />
   </label>
   <button class="rollable">{{localize "wv.labels.rolls.roll"}}</button>
 </form>

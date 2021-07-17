@@ -1,34 +1,48 @@
 @use "./common.sass" as common
 
-.wasteland-ventures
+.wasteland-ventures.entity-sheet
 
-  .resource-pair
+  .resource-block
+    $padding: 3px
+    background-color: common.$shade-lighter
+    border:
+      color: common.$shade-darker
+      radius: common.$border-radius
+      style: solid
+      width: 1px
+    box-sizing: content-box
+    padding: $padding
+
+    &.resource-block-line > *
+      margin:
+        left: $padding * 2
+
+      > .resource-display
+        margin:
+          right: $padding * 2
+
+    > .resource-block-line
+      margin:
+        left: $padding * 2
+        right: $padding * 2
+
+  .resource-block-line
     align-items: center
     display: flex
     height: common.$input-height
     justify-content: space-between
 
-    > .resource-label
-      margin:
-        right: 1ch
+    > label.contained-target-inline
+      flex-basis: 100%
 
-    > .resource-display
-      align-items: baseline
-      display: flex
-      flex-wrap: nowrap
-      white-space: nowrap
+  .resource-display
+    justify-self: right
+    text-align: right
 
-      > input
-        margin:
-          right: 1ch
-
-  @for $i from 2 through 5
-    input.resource-input-#{$i}
-      $width: calc(#{$i}ch + 9px)
-      flex-basis: $width
-      justify-self: right
-      text-align: right
-      width: $width
+  div.resource-display
+    align-items: baseline
+    display: flex
+    justify-content: space-between
 
   .rollable
     border:

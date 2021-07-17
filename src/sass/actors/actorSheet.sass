@@ -1,23 +1,6 @@
 @use "../common.sass" as common
 
-.wasteland-ventures.actor-sheet
-
-  .resource-block
-    $padding: 3px
-    background-color: common.$shade-lighter
-    border:
-      color: common.$shade-darker
-      radius: common.$border-radius
-      style: solid
-      width: 1px
-    box-sizing: content-box
-    padding: $padding
-
-    .resource-label
-      margin-left: $padding * 2
-
-    .resource-display
-      margin-right: $padding * 2
+.wasteland-ventures.entity-sheet.actor-sheet
 
   .sheet-header
 
@@ -67,9 +50,6 @@
 
           > *:last-child
             margin-right: 0
-
-          .resource-label
-            white-space: nowrap
 
   nav.tabs
     margin:

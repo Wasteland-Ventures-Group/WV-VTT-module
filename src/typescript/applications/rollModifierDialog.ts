@@ -1,15 +1,28 @@
 import { CONSTANTS } from "../constants.js";
+import { getGame } from "../foundryHelpers.js";
 
-export default class RollModifierDialog extends Application {
-  static override get defaultOptions(): Application.Options {
+/**
+ * An application to prompt the user for a roll modifier.
+ */
+export default class RollModifierDialog extends Application<Options> {
+  static override get defaultOptions(): Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "roll-modifier-dialog"],
-      template: `${CONSTANTS.systemPath}/handlebars/rollModifierDialog.hbs`
+      template: `${CONSTANTS.systemPath}/handlebars/rollModifierDialog.hbs`,
+      title: getGame().i18n.localize("wv.labels.rolls.modifierTitle")
     } as typeof ActorSheet["defaultOptions"]);
   }
 
-  constructor(callback: RollModifierDialog["callback"]) {
-    super();
+  /**
+   * @param callback - the callback to be executed once the user submits the
+   *                   application's form
+   * @param options - futher options passed along to the superclass
+   */
+  constructor(
+    callback: RollModifierDialog["callback"],
+    options?: Partial<Options>
+  ) {
+    super(options);
     this.callback = callback;
   }
 
@@ -22,8 +35,11 @@ export default class RollModifierDialog extends Application {
     super.activateListeners(html);
 
     html.on("submit", this.onSubmit.bind(this));
-    const input = html.find("input")[0];
-    input.select();
+    html.find("input")[0].select();
+  }
+
+  override async getData(): Promise<DialogData> {
+    return { description: this.options.description };
   }
 
   /**
@@ -45,6 +61,20 @@ export default class RollModifierDialog extends Application {
       throw `The modifier element is not an HTMLInputElement.`;
     }
   }
+}
+
+interface DialogData {
+  /**
+   * The description for the input of the dialog.
+   */
+  description?: string;
+}
+
+interface Options extends Application.Options {
+  /**
+   * An optional description for the dialog.
+   */
+  description?: string;
 }
 
 type SubmitEvent = JQuery.SubmitEvent<

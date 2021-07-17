@@ -37,11 +37,20 @@ export default class WvI18n {
    * @returns the internationalized flavor text
    */
   static getSpecialRollFlavor(name: string): string {
-    const i18n = getGame().i18n;
-    const i18nName = isSpecialName(name)
-      ? this.specials[name].long
-      : i18n.localize("wv.labels.errors.unknownSpecial");
-    return i18n.format("wv.labels.rolls.genericFlavor", { what: i18nName });
+    return getGame().i18n.format("wv.labels.rolls.flavor", {
+      what: this.getSpecialLongName(name)
+    });
+  }
+
+  /**
+   * Get an internationalized SPECIAL roll modifier description.
+   * @param name - the name of the SPECIAL
+   * @returns the internationalized description
+   */
+  static getSpecialModifierDescription(name: string): string {
+    return getGame().i18n.format("wv.labels.rolls.modifierDescription", {
+      what: this.getSpecialLongName(name)
+    });
   }
 
   /**
@@ -50,10 +59,41 @@ export default class WvI18n {
    * @returns the internationalized flavor text
    */
   static getSkillRollFlavor(name: string): string {
-    const i18n = getGame().i18n;
-    const i18nName = isSkillName(name)
+    return getGame().i18n.format("wv.labels.rolls.flavor", {
+      what: this.getSkillName(name)
+    });
+  }
+
+  /**
+   * Get an internationalized Skill roll modifier description.
+   * @param name - the name of the Skill
+   * @returns the internationalized description
+   */
+  static getSkillModifierDescription(name: string): string {
+    return getGame().i18n.format("wv.labels.rolls.modifierDescription", {
+      what: this.getSkillName(name)
+    });
+  }
+
+  /**
+   * Get the long, internationalized name of a given SPECIAL name.
+   * @param name - the name of the SPECIAL
+   * @returns the internationalized, long SPECIAL name.
+   */
+  private static getSpecialLongName(name: string): string {
+    return isSpecialName(name)
+      ? this.specials[name].long
+      : getGame().i18n.localize("wv.labels.errors.unknownSpecial");
+  }
+
+  /**
+   * Get the internationalized name of a given Skill name.
+   * @param name - the name of the Skill
+   * @returns the internationalized Skill name.
+   */
+  private static getSkillName(name: string): string {
+    return isSkillName(name)
       ? this.skills[name]
-      : i18n.localize("wv.labels.errors.unknownSkill");
-    return i18n.format("wv.labels.rolls.genericFlavor", { what: i18nName });
+      : getGame().i18n.localize("wv.labels.errors.unknownSkill");
   }
 }

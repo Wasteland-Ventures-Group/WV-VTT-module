@@ -24,9 +24,12 @@
         "title": "Resistances"
       },
       "rolls": {
-        "genericFlavor": "Rolling {what}",
-        "roll": "Roll",
-        "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both"
+        "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both",
+        "flavor": "Rolling {what}",
+        "genericModifierDescription": "Enter a modifier:",
+        "modifierDescription": "Enter a modifier for {what}:",
+        "modifierTitle": "Modified Roll",
+        "roll": "Roll"
       },
       "secondary": {
         "actionPoints": "Action Points",

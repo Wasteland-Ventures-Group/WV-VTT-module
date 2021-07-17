@@ -85,12 +85,15 @@ export default class WvActorSheet extends ActorSheet<
     const special = event.target.dataset.special;
     if (special && isSpecialName(special)) {
       if (event.shiftKey) {
-        new RollModifierDialog((modifier) => {
-          this.actor.rollSpecial(special, {
-            modifier: modifier,
-            whisperToGms: event.ctrlKey
-          });
-        }).render(true);
+        new RollModifierDialog(
+          (modifier) => {
+            this.actor.rollSpecial(special, {
+              modifier: modifier,
+              whisperToGms: event.ctrlKey
+            });
+          },
+          { description: WvI18n.getSpecialModifierDescription(special) }
+        ).render(true);
       } else {
         this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
       }
@@ -108,12 +111,15 @@ export default class WvActorSheet extends ActorSheet<
     const skill = event.target.dataset.skill;
     if (skill && isSkillName(skill)) {
       if (event.shiftKey) {
-        new RollModifierDialog((modifier) => {
-          this.actor.rollSkill(skill, {
-            modifier: modifier,
-            whisperToGms: event.ctrlKey
-          });
-        }).render(true);
+        new RollModifierDialog(
+          (modifier) => {
+            this.actor.rollSkill(skill, {
+              modifier: modifier,
+              whisperToGms: event.ctrlKey
+            });
+          },
+          { description: WvI18n.getSkillModifierDescription(skill) }
+        ).render(true);
       } else {
         this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
       }

@@ -27,10 +27,10 @@ export default class WvActorSheet extends ActorSheet<
     super.activateListeners(html);
 
     html
-      .find(".rollable[data-special]")
+      .find("button[data-special]")
       .on("click", this.onClickRollSpecial.bind(this));
     html
-      .find(".rollable[data-skill]")
+      .find("button[data-skill]")
       .on("click", this.onClickRollSkill.bind(this));
   }
 

@@ -56,6 +56,35 @@ export const TYPES = {
 
 /** This object holds common constants for the Wasteland Ventures system. */
 export const CONSTANTS = {
+  /** This holds various min/max values for stats. */
+  bounds: {
+    experience: {
+      max: 43500,
+      min: 0
+    },
+    /** Bounds for the Karma value */
+    karma: {
+      max: 100,
+      min: -100
+    },
+    /** Bounds related to SPECIAL values. */
+    special: {
+      /** The bounds for points invested in a SPECIAL. */
+      points: {
+        max: 15,
+        min: 0
+      }
+    },
+    /** Bounds related to Skill values. */
+    skills: {
+      /** The bounds for points invested in a Skill. */
+      points: {
+        max: 85,
+        min: 0
+      }
+    }
+  },
+
   /** The version number where the last migration was needed */
   needsMigrationVersion: "0.2.0",
 

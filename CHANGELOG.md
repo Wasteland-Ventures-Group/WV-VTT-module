@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - back-end bounds validation for the roll modifier dialog
+- back-end bounds validation for the character sheet [#9]
+- front-end bounds validation for the character sheet [#9]
+
+[#9]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/9
 
 ## [0.3.1] - 2021-07-17
 

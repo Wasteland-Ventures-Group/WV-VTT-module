@@ -15,13 +15,13 @@
           <div class="resource-block resource-block-line flex-fixed">
             <label class="contained-target-inline">
               {{localize "wv.labels.secondary.experience"}}
-              <input class="size-5" type="number" name="data.leveling.experience" value="{{data.data.leveling.experience}}" min="0" />
+              <input class="size-5" type="number" name="data.leveling.experience" value="{{data.data.leveling.experience}}" min="{{sheet.bounds.experience.min}}" max="{{sheet.bounds.experience.max}}" />
             </label>
           </div>
           <div class="resource-block resource-block-line flex-fixed">
             <label class="contained-target-inline">
               {{localize "wv.sheet.background.karma"}}
-              <input class="size-4" type="number" name="data.background.karma" value="{{data.data.background.karma}}" min="-100" max="100" />
+              <input class="size-4" type="number" name="data.background.karma" value="{{data.data.background.karma}}" min="{{sheet.bounds.karma.min}}" max="{{sheet.bounds.karma.max}}" />
             </label>
           </div>
         </div>
@@ -84,7 +84,7 @@
           <label>{{localize "wv.labels.special.roll"}}</label>
           {{#each sheet.specials as | spec |}}
             <label>{{spec.long}}</label>
-            <input class="size-2" type="number" name="data.specials.{{@key}}" value="{{spec.value}}" min="0" max="15" />
+            <input class="size-2" type="number" name="data.specials.{{@key}}" value="{{spec.value}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
             <button data-special="{{@key}}" title="{{localize 'wv.labels.rolls.buttonTitle'}}" type="button">{{localize "wv.labels.special.roll"}}</button>
           {{/each}}
         </div>
@@ -98,7 +98,7 @@
             <label>{{skill.name}}</label>
             <label>{{skill.special}}</label>
             <span class="resource-display size-3">{{skill.total}}</span>
-            <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="0" max="100" />
+            <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
             <button data-skill="{{@key}}" title="{{localize 'wv.labels.rolls.buttonTitle'}}" type="button">{{localize "wv.labels.skills.roll"}}</button>
           {{/each}}
         </div>

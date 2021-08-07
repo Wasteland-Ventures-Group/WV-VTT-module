@@ -13,6 +13,8 @@ import {
 } from "./../data/actorData.js";
 import { PlayerCharacterDataSource } from "./../data/actorDbData.js";
 
+/* eslint-disable @typescript-eslint/member-ordering */
+
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
   // Data access {{{1
@@ -353,8 +355,137 @@ export default class WvActor extends Actor {
     }
   }
 
+  // Data Validation {{{1
+
+  /**
+   * Check whether the passed change data is valid.
+   * @param change - the change data to validate
+   * @returns false, if the change data is not valid
+   */
+  validChangeData(
+    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
+  ): false | void {
+    if (!this.validVitals(change)) return false;
+    if (!this.validBackground(change)) return false;
+    if (!this.validLeveling(change)) return false;
+    if (!this.validSpecials(change)) return false;
+  }
+
+  /**
+   * Validate the vitals update data.
+   * @param change - the change data to validate
+   * @returns false, if the change data is not valid
+   */
+  protected validVitals(
+    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
+  ): false | void {
+    if (!change?.data) return;
+
+    if (change.data.vitals) {
+      const vitals = change.data.vitals;
+      const min = 0;
+
+      if (vitals.hitPoints?.value && this.hitPoints.max) {
+        const value = vitals.hitPoints.value;
+        const max = this.hitPoints.max;
+        if (!value.between(min, max)) return false;
+      }
+
+      if (vitals.actionPoints?.value && this.actionPoints.max) {
+        const value = vitals.actionPoints.value;
+        const max = this.actionPoints.max;
+        if (!value.between(min, max)) return false;
+      }
+
+      if (vitals.strain?.value && this.strain.max) {
+        const value = vitals.strain.value;
+        const max = this.strain.max;
+        if (!value.between(min, max)) return false;
+      }
+    }
+  }
+
+  /**
+   * Validate the background update data.
+   * @param change - the change data to validate
+   * @returns false, if the change data is not valid
+   */
+  protected validBackground(
+    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
+  ): false | void {
+    if (!change?.data) return;
+
+    if (change.data.background) {
+      const background = change.data.background;
+
+      if (background.karma) {
+        const value = background.karma;
+        const max = CONSTANTS.bounds.karma.max;
+        const min = CONSTANTS.bounds.karma.min;
+        if (!value.between(min, max)) return false;
+      }
+    }
+  }
+
+  /**
+   * Validate the leveling update data.
+   * @param change - the change data to validate
+   * @returns false, if the change data is not valid
+   */
+  protected validLeveling(
+    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
+  ): false | void {
+    if (!change?.data) return;
+
+    if (change.data.leveling) {
+      const leveling = change.data.leveling;
+
+      if (leveling.experience) {
+        const value = leveling.experience;
+        const max = CONSTANTS.bounds.experience.max;
+        const min = CONSTANTS.bounds.experience.min;
+        if (!value.between(min, max)) return false;
+      }
+
+      if (leveling.skillRanks) {
+        const max = CONSTANTS.bounds.skills.points.max;
+        const min = CONSTANTS.bounds.skills.points.min;
+        for (const skill of SkillNames) {
+          const value = leveling.skillRanks[skill];
+          if (value && !value.between(min, max)) return false;
+        }
+      }
+    }
+  }
+
+  /**
+   * Validate the vitals update data.
+   * @param change - the change data to validate
+   * @returns false, if the change data is not valid
+   */
+  protected validSpecials(
+    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
+  ): false | void {
+    if (!change?.data) return;
+
+    if (change.data.specials) {
+      const max = CONSTANTS.bounds.special.points.max;
+      const min = CONSTANTS.bounds.special.points.min;
+      for (const special of SpecialNames) {
+        const value = change.data.specials[special];
+        if (value && !value.between(min, max)) return false;
+      }
+    }
+  }
   // }}}1
 }
+
+/* eslint-enable @typescript-eslint/member-ordering */
+
+Hooks.on<Hooks.PreUpdateDocument<typeof Actor>>(
+  "preUpdateActor",
+  (actor, change) => actor.validChangeData(change)
+);
 
 /**
  * Options for modifying actor rolls.

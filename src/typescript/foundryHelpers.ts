@@ -12,9 +12,10 @@ export function getGame(): Game {
  * Get the user IDs of all GM players.
  * @returns an array of GM user IDs.
  */
+// TODO: replace with ChatMessage.getWhisperRecipients(), once types fixed
 export function getGmIds(): string[] {
   const users = getGame().users;
-  if (!users) throw "Users has not been initialized!";
+  if (!users) throw "Users was not yet initialized!";
 
   return users.reduce<string[]>((a, u) => {
     if (u.isGM && u.id) a.push(u.id);

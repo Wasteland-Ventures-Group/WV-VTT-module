@@ -23,8 +23,10 @@ export default class WvActorSheet extends ActorSheet<
     } as typeof ActorSheet["defaultOptions"]);
   }
 
-  override activateListeners(html: JQuery<HTMLElement>): void {
+  override activateListeners(html: JQuery<HTMLFormElement>): void {
     super.activateListeners(html);
+
+    html.on("change submit", (event) => event.target.reportValidity());
 
     html
       .find("button[data-special]")
@@ -38,6 +40,8 @@ export default class WvActorSheet extends ActorSheet<
     const data = await super.getData();
     const actorProps = data.actor.data.data;
     data.sheet = {};
+
+    data.sheet.bounds = CONSTANTS.bounds;
 
     const specialI18ns = WvI18n.specials;
     data.sheet.specials = {};
@@ -170,6 +174,7 @@ interface SheetSkill {
 
 interface SheetData extends ActorSheet.Data {
   sheet?: {
+    bounds?: typeof CONSTANTS["bounds"];
     magic?: SheetMagic;
     skills?: Partial<Record<SkillNames, SheetSkill>>;
     specials?: Partial<Record<SpecialNames, SheetSpecial>>;

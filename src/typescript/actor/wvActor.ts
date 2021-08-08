@@ -360,26 +360,28 @@ export default class WvActor extends Actor {
   /**
    * Check whether the passed change data is valid.
    * @param change - the change data to validate
-   * @returns false, if the change data is not valid
+   * @returns whether the data is valid
    */
   validChangeData(
     change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): false | void {
+  ): boolean {
     if (!this.validVitals(change)) return false;
     if (!this.validBackground(change)) return false;
     if (!this.validLeveling(change)) return false;
     if (!this.validSpecials(change)) return false;
+
+    return true;
   }
 
   /**
    * Validate the vitals update data.
    * @param change - the change data to validate
-   * @returns false, if the change data is not valid
+   * @returns whether the data is valid
    */
   protected validVitals(
     change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): false | void {
-    if (!change?.data) return;
+  ): boolean {
+    if (!change?.data) return true;
 
     if (change.data.vitals) {
       const vitals = change.data.vitals;
@@ -403,17 +405,19 @@ export default class WvActor extends Actor {
         if (!value.between(min, max)) return false;
       }
     }
+
+    return true;
   }
 
   /**
    * Validate the background update data.
    * @param change - the change data to validate
-   * @returns false, if the change data is not valid
+   * @returns whether the data is valid
    */
   protected validBackground(
     change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): false | void {
-    if (!change?.data) return;
+  ): boolean {
+    if (!change?.data) return true;
 
     if (change.data.background) {
       const background = change.data.background;
@@ -425,17 +429,19 @@ export default class WvActor extends Actor {
         if (!value.between(min, max)) return false;
       }
     }
+
+    return true;
   }
 
   /**
    * Validate the leveling update data.
    * @param change - the change data to validate
-   * @returns false, if the change data is not valid
+   * @returns whether the data is valid
    */
   protected validLeveling(
     change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): false | void {
-    if (!change?.data) return;
+  ): boolean {
+    if (!change?.data) return true;
 
     if (change.data.leveling) {
       const leveling = change.data.leveling;
@@ -456,17 +462,19 @@ export default class WvActor extends Actor {
         }
       }
     }
+
+    return true;
   }
 
   /**
    * Validate the vitals update data.
    * @param change - the change data to validate
-   * @returns false, if the change data is not valid
+   * @returns whether the data is valid
    */
   protected validSpecials(
     change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): false | void {
-    if (!change?.data) return;
+  ): boolean {
+    if (!change?.data) return true;
 
     if (change.data.specials) {
       const max = CONSTANTS.bounds.special.points.max;
@@ -476,6 +484,8 @@ export default class WvActor extends Actor {
         if (value && !value.between(min, max)) return false;
       }
     }
+
+    return true;
   }
   // }}}1
 }

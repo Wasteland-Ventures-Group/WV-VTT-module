@@ -3,7 +3,8 @@ import { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-t
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import { Resource } from "../data/foundryCommon.js";
 import Formulator from "../formulator.js";
-import { getGmIds } from "../foundryHelpers.js";
+import { getGame, getGmIds } from "../foundryHelpers.js";
+import { boundsSettingNames } from "../settings.js";
 import WvI18n from "../wvI18n.js";
 import {
   Resistances,
@@ -455,7 +456,14 @@ export default class WvActor extends Actor {
 
       if (leveling.skillRanks) {
         const max = CONSTANTS.bounds.skills.points.max;
-        const min = CONSTANTS.bounds.skills.points.min;
+        const skillMin = getGame().settings.get(
+          CONSTANTS.systemId,
+          boundsSettingNames.skills.points.min
+        );
+        const min =
+          typeof skillMin === "number"
+            ? skillMin
+            : CONSTANTS.bounds.experience.min;
         for (const skill of SkillNames) {
           const value = leveling.skillRanks[skill];
           if (value && !value.between(min, max)) return false;
@@ -478,7 +486,14 @@ export default class WvActor extends Actor {
 
     if (change.data.specials) {
       const max = CONSTANTS.bounds.special.points.max;
-      const min = CONSTANTS.bounds.special.points.min;
+      const specialMin = getGame().settings.get(
+        CONSTANTS.systemId,
+        boundsSettingNames.special.points.min
+      );
+      const min =
+        typeof specialMin === "number"
+          ? specialMin
+          : CONSTANTS.bounds.special.points.min;
       for (const special of SpecialNames) {
         const value = change.data.specials[special];
         if (value && !value.between(min, max)) return false;

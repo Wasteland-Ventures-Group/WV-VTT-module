@@ -5,7 +5,9 @@ import {
   SpecialNames,
   ThaumaturgySpecials
 } from "../constants.js";
+import { getGame } from "../foundryHelpers.js";
 import { isSkillName, isSpecialName } from "../helpers.js";
+import { boundsSettingNames } from "../settings.js";
 import WvI18n, { I18nSpecial } from "../wvI18n.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
@@ -42,6 +44,20 @@ export default class WvActorSheet extends ActorSheet<
     data.sheet = {};
 
     data.sheet.bounds = CONSTANTS.bounds;
+    const skillMin = getGame().settings.get(
+      CONSTANTS.systemId,
+      boundsSettingNames.skills.points.min
+    );
+    if (typeof skillMin === "number") {
+      data.sheet.bounds.skills.points.min = skillMin;
+    }
+    const specialMin = getGame().settings.get(
+      CONSTANTS.systemId,
+      boundsSettingNames.special.points.min
+    );
+    if (typeof specialMin === "number") {
+      data.sheet.bounds.special.points.min = specialMin;
+    }
 
     const specialI18ns = WvI18n.specials;
     data.sheet.specials = {};

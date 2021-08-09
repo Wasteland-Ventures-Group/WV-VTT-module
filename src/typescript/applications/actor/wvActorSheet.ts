@@ -1,14 +1,14 @@
-import RollModifierDialog from "../applications/rollModifierDialog.js";
+import RollModifierDialog from "../rollModifierDialog.js";
 import {
   CONSTANTS,
   SkillNames,
   SpecialNames,
   ThaumaturgySpecials
-} from "../constants.js";
-import { getGame } from "../foundryHelpers.js";
-import { isSkillName, isSpecialName } from "../helpers.js";
-import { boundsSettingNames } from "../settings.js";
-import WvI18n, { I18nSpecial } from "../wvI18n.js";
+} from "../../constants.js";
+import { getGame } from "../../foundryHelpers.js";
+import { isSkillName, isSpecialName } from "../../helpers.js";
+import { boundsSettingNames } from "../../settings.js";
+import WvI18n, { I18nSpecial } from "../../wvI18n.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet<
@@ -30,6 +30,7 @@ export default class WvActorSheet extends ActorSheet<
 
     html.on("change submit", (event) => event.target.reportValidity());
 
+    // stat rolls
     html
       .find("button[data-special]")
       .on("click", this.onClickRollSpecial.bind(this));
@@ -99,7 +100,7 @@ export default class WvActorSheet extends ActorSheet<
   /**
    * Handle a click event on the SPECIAL roll buttons.
    */
-  protected onClickRollSpecial(event: RollEvent): void {
+  protected onClickRollSpecial(event: ClickEvent): void {
     event.preventDefault();
 
     const special = event.target.dataset.special;
@@ -129,7 +130,7 @@ export default class WvActorSheet extends ActorSheet<
   /**
    * Handle a click event on the Skill roll buttons.
    */
-  protected onClickRollSkill(event: RollEvent): void {
+  protected onClickRollSkill(event: ClickEvent): void {
     event.preventDefault();
 
     const skill = event.target.dataset.skill;
@@ -157,7 +158,7 @@ export default class WvActorSheet extends ActorSheet<
   }
 }
 
-type RollEvent = JQuery.ClickEvent<
+type ClickEvent = JQuery.ClickEvent<
   HTMLElement,
   unknown,
   HTMLElement,

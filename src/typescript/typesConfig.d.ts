@@ -1,6 +1,7 @@
 import WvActor from "./actor/wvActor.js";
 import { WvActorDataProperties } from "./data/actorData.js";
 import { WvActorDataSource } from "./data/actorDbData.js";
+import { WvItemDataProperties } from "./data/itemData.js";
 import { WvItemDataSource } from "./data/itemDbData.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvItem from "./item/wvItem.js";
@@ -13,6 +14,7 @@ declare global {
 
   interface DataConfig {
     Actor: WvActorDataProperties;
+    Item: WvItemDataProperties;
   }
 
   interface DocumentClassConfig {

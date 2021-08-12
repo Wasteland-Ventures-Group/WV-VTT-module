@@ -1,6 +1,6 @@
 // vim: foldmethod=marker
 import { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
-import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
+import { CONSTANTS, SkillNames, SpecialNames, TYPES } from "../constants.js";
 import { Resource } from "../data/foundryCommon.js";
 import Formulator from "../formulator.js";
 import { getGame, getGmIds } from "../foundryHelpers.js";
@@ -154,6 +154,11 @@ export default class WvActor extends Actor {
     this.computeBase();
   }
 
+  override prepareEmbeddedEntities(): void {
+    super.prepareEmbeddedEntities();
+    this.applyItemEffects();
+  }
+
   override prepareDerivedData(): void {
     this.applySizeModifiers();
   }
@@ -302,6 +307,19 @@ export default class WvActor extends Actor {
       this.data.data.specials[special] * 2 +
       Math.floor(this.data.data.specials.luck / 2)
     );
+  }
+
+  // Computations with items {{{2
+
+  /**
+   * Apply the RuleElements of Effect type Items.
+   */
+  protected applyItemEffects(): void {
+    this.data.items.forEach((item) => {
+      if (item.data.type === TYPES.ITEM.EFFECT) {
+        item.data.data.rules.forEach((rule) => rule.modify(this));
+      }
+    });
   }
 
   // Computations after items {{{2

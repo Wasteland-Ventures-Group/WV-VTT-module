@@ -39,11 +39,12 @@ export const TYPES = {
   /** Type names for Actor types */
   ACTOR: {
     PLAYER_CHARACTER: "playerCharacter"
-  },
+  } as const,
   /** Type names for Item types */
   ITEM: {
     AERIAL_MANEUVER: "aerialManeuver",
     ITEM: "item",
+    EFFECT: "effect",
     MARK: "mark",
     PAST: "past",
     PERK: "perk",
@@ -51,7 +52,7 @@ export const TYPES = {
     SCHEMATIC: "schematic",
     SPELL: "spell",
     TRAIT: "trait"
-  }
+  } as const
 };
 
 /** This object holds common constants for the Wasteland Ventures system. */

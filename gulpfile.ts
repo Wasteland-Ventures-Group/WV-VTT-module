@@ -124,7 +124,10 @@ export function template(cb: fs.NoParamCallback): void {
       const actorEntityTypes = [
         new actorDbData.PlayerCharacterDataSourceData()
       ];
-      const itemEntityTypes = [new itemDbData.ItemDataSourceData()];
+      const itemEntityTypes = [
+        new itemDbData.EffectDataSourceData(),
+        new itemDbData.ItemDataSourceData()
+      ];
       fs.mkdir(distWvPrefix, { recursive: true }, () => {
         fs.writeFile(
           templateOutPath,

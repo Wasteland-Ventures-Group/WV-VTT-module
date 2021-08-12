@@ -71,6 +71,7 @@
 
   <nav class="tabs flex-fixed" data-group="primary">
     <a class="item" data-tab="stats">{{localize "wv.sheet.tabs.stats"}}</a>
+    <a class="item" data-tab="effects">{{localize "wv.sheet.tabs.effects"}}</a>
     <a class="item" data-tab="magic">{{localize "wv.sheet.tabs.magic"}}</a>
     <a class="item" data-tab="background">{{localize "wv.sheet.tabs.background"}}</a>
   </nav>
@@ -102,6 +103,23 @@
             <button data-skill="{{@key}}" title="{{localize 'wv.labels.rolls.buttonTitle'}}" type="button">{{localize "wv.labels.skills.roll"}}</button>
           {{/each}}
         </div>
+      </section>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="effects">
+      <section class="effects">
+        <a class="effect-control fas fa-plus" data-action="create" data-type="effect" title="{{localize wv.fvttItems.actions.create}}"></a>
+        <ol class="fvtt-item-list">
+          {{#each sheet.effects as |effect|}}
+            <li class="fvtt-item effect" data-id="{{effect.id}}">
+              <h4>{{effect.name}}</h4>
+              <div class="fvtt-item-controls flexrow">
+                <a class="effect-control fas fa-pen" data-action="edit" title="{{localize wv.fvttItems.actions.edit}}"></a>
+                <a class="effect-control fas fa-minus" data-action="delete" title"{{localize wv.fvttItems.actions.delete}}"></a>
+              </div>
+            </li>
+          {{/each}}
+        </ol>
       </section>
     </div>
 

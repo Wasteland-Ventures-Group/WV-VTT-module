@@ -1,5 +1,19 @@
 {
   "wv": {
+    "fvttItems": {
+      "actions": {
+        "create": "Create",
+        "delete": "Delete",
+        "edit": "Edit",
+        "toggle": "Toggle"
+      },
+      "newName": "New {what}",
+      "types": {
+        "effects": {
+          "name": "Effect"
+        }
+      }
+    },
     "labels": {
       "ailments": {
         "radiation": {
@@ -75,6 +89,8 @@
       },
       "tabs": {
         "background": "Background",
+        "effects": "Effects",
+        "items": "Items",
         "magic": "Magic",
         "stats": "Stats"
       }

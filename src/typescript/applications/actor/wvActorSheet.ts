@@ -3,7 +3,8 @@ import {
   CONSTANTS,
   SkillNames,
   SpecialNames,
-  ThaumaturgySpecials
+  ThaumaturgySpecials,
+  TYPES
 } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
 import { isSkillName, isSpecialName } from "../../helpers.js";
@@ -37,6 +38,17 @@ export default class WvActorSheet extends ActorSheet<
     html
       .find("button[data-skill]")
       .on("click", this.onClickRollSkill.bind(this));
+
+    // item handling
+    html
+      .find(".effect-control[data-action=create]")
+      .on("click", this.onClickCreateItem.bind(this));
+    html
+      .find(".effect-control[data-action=edit]")
+      .on("click", this.onClickEditItem.bind(this));
+    html
+      .find(".effect-control[data-action=delete]")
+      .on("click", this.onClickDeleteItem.bind(this));
   }
 
   override async getData(): Promise<SheetData> {
@@ -92,6 +104,18 @@ export default class WvActorSheet extends ActorSheet<
         name: specialI18ns[thaumSpecial].long,
         selected: thaumSpecial === actorProps.magic.thaumSpecial
       };
+    }
+
+    data.sheet.effects = [];
+    for (const item of this.actor.items) {
+      if (!item.id) continue;
+
+      if (TYPES.ITEM.EFFECT === item.data.type) {
+        data.sheet.effects.push({
+          id: item.id,
+          name: item.name
+        });
+      }
     }
 
     return data;
@@ -156,6 +180,48 @@ export default class WvActorSheet extends ActorSheet<
       console.warn("Could not get the Skill name for a Skill roll.");
     }
   }
+
+  /**
+   * Handle a click event on a create item button.
+   */
+  protected onClickCreateItem(event: ClickEvent): void {
+    if (event.target.dataset.type !== TYPES.ITEM.EFFECT) return;
+
+    const data: ConstructorParameters<typeof Item>[0] = {
+      name: getGame().i18n.format("wv.fvttItems.newName", {
+        what: getGame().i18n.localize("wv.fvttItems.types.effects.name")
+      }),
+      type: event.target.dataset.type
+    };
+    Item.create(data, { parent: this.actor });
+  }
+
+  /**
+   * Handle a click event on an edit item button.
+   */
+  protected onClickEditItem(event: ClickEvent): void {
+    const id = $(event.target).parents(".fvtt-item").data("id");
+    if (!(typeof id === "string") || !id) return;
+
+    const item = this.actor.items.get(id);
+    if (item && item.sheet) {
+      item.sheet.render(true);
+    }
+  }
+
+  /**
+   * Handle a click event on a delete item button.
+   */
+  protected onClickDeleteItem(event: ClickEvent): void {
+    const id = $(event.target).parents(".fvtt-item").data("id");
+    if (!(typeof id === "string") || !id) return;
+
+    const item = this.actor.items.get(id);
+    if (item) {
+      item.delete();
+      this.render(false);
+    }
+  }
 }
 
 type ClickEvent = JQuery.ClickEvent<
@@ -164,6 +230,11 @@ type ClickEvent = JQuery.ClickEvent<
   HTMLElement,
   HTMLElement
 >;
+
+interface SheetEffect {
+  id: string;
+  name: string | null;
+}
 
 interface SheetThaumSpecial {
   name?: string;
@@ -192,6 +263,7 @@ interface SheetSkill {
 interface SheetData extends ActorSheet.Data {
   sheet?: {
     bounds?: typeof CONSTANTS["bounds"];
+    effects?: SheetEffect[];
     magic?: SheetMagic;
     skills?: Partial<Record<SkillNames, SheetSkill>>;
     specials?: Partial<Record<SpecialNames, SheetSpecial>>;

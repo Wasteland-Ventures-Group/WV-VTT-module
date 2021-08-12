@@ -1,4 +1,5 @@
 import { TYPES } from "../constants.js";
+import RuleElement from "../ruleEngine/ruleElement.js";
 import { TemplateEntityType } from "./common";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -57,6 +58,24 @@ interface AerialManeuverDataSource {
   data: AerialManeuverDataSourceData;
 }
 
+export class EffectDataSourceData implements TemplateEntityType {
+  constructor(
+    /** The rule elements of the effect. */
+    public rules: RuleElement[] = []
+  ) {}
+
+  /** @override */
+  getTypeName(): string {
+    return TYPES.ITEM.EFFECT;
+  }
+}
+
+/** The Wasteland Ventures arbitrary effect data source */
+interface EffectDataSource {
+  type: typeof TYPES.ITEM.EFFECT;
+  data: EffectDataSourceData;
+}
+
 export class ItemDataSourceData implements TemplateEntityType {
   constructor(
     /** The value of the item in caps */
@@ -85,4 +104,5 @@ export type WvItemDataSource =
   | MarkDataSource
   | SchematicDataSource
   | AerialManeuverDataSource
+  | EffectDataSource
   | ItemDataSource;

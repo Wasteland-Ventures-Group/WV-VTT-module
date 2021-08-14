@@ -1,0 +1,150 @@
+{
+  "wv": {
+    "fvttItems": {
+      "actions": {
+        "create": "Erstellen",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "toggle": "Schalten"
+      },
+      "newName": "{what} (Neu)",
+      "types": {
+        "effects": {
+          "name": "Effekt"
+        }
+      }
+    },
+    "labels": {
+      "ailments": {
+        "radiation": {
+          "absorbed": {
+            "title": "Absorbierte Dosis",
+            "unit": "Rad(s)"
+          },
+          "effects": "Effekte",
+          "title": "Strahlung"
+        }
+      },
+      "errors": {
+        "unknownSpecial": "unbekanntes SPECIAL",
+        "unknownSkill": "unbekannter Skill"
+      },
+      "placeholders": {
+        "documentName": "Name"
+      },
+      "magic": {
+        "thaumSpecial": "SPECIA für Thaumaturgie"
+      },
+      "resistances": {
+        "poison": "Gift",
+        "radiation": "Strahlung",
+        "title": "Resistenzen"
+      },
+      "rolls": {
+        "buttonTitle": "Strg-Klick zum flüstern zu GM(s)\nUmschalt-Klick zum Rollen mit Modifikator\nBeides für beides",
+        "flavor": "Rolle {what}",
+        "genericModifierDescription": "Gib einen Modifikator an:",
+        "modifierDescription": "Gib einen Modifikator für {what} an:",
+        "modifierTitle": "Modifizierter Würfelwurf",
+        "roll": "Rollen"
+      },
+      "secondary": {
+        "actionPoints": "Aktionspunkte",
+        "criticals": {
+          "failure": "Versagen",
+          "success": "Erfolg",
+          "title": "Kritische Resultate"
+        },
+        "experience": "Erfahrung",
+        "healingRate": "Heilungsrate",
+        "health": "Gesundheit",
+        "initiative": "Initiative",
+        "level": "Level",
+        "strain": "Anstrengung"
+      },
+      "skills": {
+        "name": "Skill",
+        "ranks": "Ränge",
+        "roll": "Rollen",
+        "special": "SPECIAL",
+        "total": "Gesamt"
+      },
+      "special": {
+        "name": "SPECIAL",
+        "roll": "Rollen",
+        "value": "Wert"
+      }
+    },
+    "migration": {
+      "completed": "{systemName} Systemmigration zu Version {version} abgeschlossen!",
+      "started": "Wende {systemName} Systemmigration nach Version {version} an. Bitte habe Geduld und schließe weder das Spiel, noch beende den Server."
+    },
+    "sheet": {
+      "background": {
+        "background": "Hintergrund",
+        "history": "Geschichte",
+        "fears": "Ängste",
+        "dreams": "Ambitionen",
+        "karma": "Karma"
+      },
+      "names": {
+        "actorSheet": "Aktorbogen"
+      },
+      "tabs": {
+        "background": "Hintergrund",
+        "effects": "Effekte",
+        "items": "Gegenstände",
+        "magic": "Magie",
+        "stats": "Statistiken"
+      }
+    },
+    "skills": {
+      "barter": "Feilschen",
+      "diplomacy": "Diplomatie",
+      "explosives": "Sprengstoffe",
+      "firearms": "Feuerwaffen",
+      "intimidation": "Einschüchtern",
+      "lockpick": "Schlossknacken",
+      "magicalEnergyWeapons": "Magiewaffen",
+      "mechanics": "Mechanik",
+      "medicine": "Medizin",
+      "melee": "Nahkampf",
+      "science": "Wissenschaft",
+      "sleight": "Fingerfertigkeit",
+      "sneak": "Schleichen",
+      "survival": "Überlebensfähigkeit",
+      "thaumaturgy": "Thaumaturgie",
+      "unarmed": "Unbewaffnet"
+    },
+    "specials": {
+      "agility": {
+        "long": "Geschicklichkeit",
+        "short": "AGI"
+      },
+      "charisma": {
+        "long": "Ausstrahlung",
+        "short": "CHA"
+      },
+      "endurance": {
+        "long": "Ausdauer",
+        "short": "END"
+      },
+      "intelligence": {
+        "long": "Intelligenz",
+        "short": "INT"
+      },
+      "luck": {
+        "long": "Glück",
+        "short": "LCK"
+      },
+      "perception": {
+        "long": "Wahrnehmung",
+        "short": "PER"
+      },
+      "strength": {
+        "long": "Stärke",
+        "short": "STR"
+      }
+    }
+  }
+}

@@ -2,8 +2,24 @@
 
 .wasteland-ventures.document-sheet
 
-  .document-img
-    max-height: 200px
+  .sheet-header
+
+    .document-img
+      align-self: start
+      max-height: 200px
+
+    .document-info
+      align-self: start
+      margin:
+        left: common.$spacing-distance
+
+      .document-name
+        padding:
+          bottom: common.$spacing-distance
+
+        > input
+          height: unset
+          width: 100%
 
   .resource-block
     $padding: 3px

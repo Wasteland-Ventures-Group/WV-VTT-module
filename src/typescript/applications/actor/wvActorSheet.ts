@@ -19,10 +19,12 @@ export default class WvActorSheet extends ActorSheet<
   static override get defaultOptions(): ActorSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "document-sheet", "actor-sheet"],
+      height: 1000,
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
       ],
-      template: `${CONSTANTS.systemPath}/handlebars/actors/actorSheet.hbs`
+      template: `${CONSTANTS.systemPath}/handlebars/actors/actorSheet.hbs`,
+      width: 700
     } as typeof ActorSheet["defaultOptions"]);
   }
 

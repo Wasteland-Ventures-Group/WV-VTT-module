@@ -4,7 +4,7 @@ import { CONSTANTS } from "../../constants.js";
 export default class WvItemSheet extends ItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: [CONSTANTS.systemId, "entity-sheet", "item-sheet"]
+      classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"]
     } as typeof ItemSheet["defaultOptions"]);
   }
 

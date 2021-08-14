@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - configurable minimum bounds for SPECIALs and Skills
+- default width and height for actor sheets to avoid a scrollbar on first open
 
 ### Fixed
 

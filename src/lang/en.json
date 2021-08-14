@@ -29,6 +29,9 @@
         "unknownSpecial": "unknown SPECIAL",
         "unknownSkill": "unknown Skill"
       },
+      "placeholders": {
+        "documentName": "Name"
+      },
       "magic": {
         "thaumSpecial": "SPECIA for Thaumaturgy"
       },

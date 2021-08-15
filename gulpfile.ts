@@ -6,7 +6,7 @@ import dartSass from "gulp-dart-sass";
 import typescript from "gulp-typescript";
 import zip from "gulp-zip";
 
-import { TemplateDocumentType } from "./src/typescript/data/common.js";
+import type { TemplateDocumentType } from "./src/typescript/data/common.js";
 
 // = Path constants ============================================================
 

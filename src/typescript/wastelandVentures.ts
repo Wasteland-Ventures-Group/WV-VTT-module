@@ -1,6 +1,6 @@
+import type { DragRuler } from "./integrations/dragRuler/dragRuler.js";
 import { configureFoundry } from "./config.js";
 import { CONSTANTS } from "./constants.js";
-import { DragRuler } from "./integrations/dragRuler/dragRuler.js";
 import { createWvSpeedProvider } from "./integrations/dragRuler/wvSpeedProvider.js";
 import { migrateWorld, migrationNeeded } from "./migrations/world.js";
 import { registerSystemSettings } from "./settings.js";

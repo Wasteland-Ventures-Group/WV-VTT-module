@@ -1,6 +1,6 @@
+import type { TemplateDocumentType } from "./common.js";
+import type { RuleElementJson } from "../ruleEngine/ruleElement.js";
 import { TYPES } from "../constants.js";
-import RuleElement from "../ruleEngine/ruleElement.js";
-import { TemplateDocumentType } from "./common.js";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PastDataSourceData {}

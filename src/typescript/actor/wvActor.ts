@@ -1,18 +1,18 @@
 // vim: foldmethod=marker
-import { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
-import { CONSTANTS, SkillNames, SpecialNames, TYPES } from "../constants.js";
-import { Resource } from "../data/foundryCommon.js";
-import Formulator from "../formulator.js";
-import { getGame, getGmIds } from "../foundryHelpers.js";
-import { boundsSettingNames } from "../settings.js";
-import WvI18n from "../wvI18n.js";
+import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
+import type { PlayerCharacterDataSource } from "./../data/actorDbData.js";
+import type { Resource } from "../data/foundryCommon.js";
 import {
   Resistances,
   SecondaryStatistics,
   Skill,
   Skills
-} from "./../data/actorData.js";
-import { PlayerCharacterDataSource } from "./../data/actorDbData.js";
+} from "../data/actorData.js";
+import { CONSTANTS, SkillNames, SpecialNames, TYPES } from "../constants.js";
+import Formulator from "../formulator.js";
+import { getGame, getGmIds } from "../foundryHelpers.js";
+import { boundsSettingNames } from "../settings.js";
+import WvI18n from "../wvI18n.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 

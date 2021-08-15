@@ -1,10 +1,11 @@
+import type { TemplateDocumentType } from "./common.js";
+
 import {
   SkillNames,
   SpecialNames,
   ThaumaturgySpecials,
   TYPES
 } from "../constants.js";
-import { TemplateDocumentType } from "./common.js";
 import { Resource as FoundryResource } from "./foundryCommon.js";
 
 /** An Actor SPECIALs object for the database */

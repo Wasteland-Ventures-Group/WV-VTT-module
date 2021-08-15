@@ -1,4 +1,5 @@
-import { SkillNames, SpecialNames } from "./constants";
+import type { SkillNames, SpecialNames } from "./constants";
+
 import { getGame } from "./foundryHelpers.js";
 import { isSkillName, isSpecialName } from "./helpers.js";
 

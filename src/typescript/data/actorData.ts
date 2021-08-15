@@ -1,4 +1,5 @@
-import { SkillNames, TYPES } from "../constants.js";
+import type { SkillNames, TYPES } from "../constants.js";
+
 import {
   Background,
   Leveling as DbLeveling,

@@ -36,12 +36,6 @@ const systemPath = "./src/system.json";
 const systemWatchPath = "./src/[s-s]ystem.json";
 const systemOutPath = distWvPrefix;
 
-const templateWatchBasePath = "./src/typescript/data";
-const templateWatchPaths = [
-  `${templateWatchBasePath}/[c-c]ommon.ts`,
-  `${templateWatchBasePath}/[a-a]ctorDbData.ts`,
-  `${templateWatchBasePath}/[i-i]temDbData.ts`
-];
 const templateOutPath = `${distWvPrefix}/template.json`;
 
 // = Handlebars copy ===========================================================
@@ -142,12 +136,6 @@ export function template(cb: fs.NoParamCallback): void {
 }
 template.description = "Generate the template.json file";
 
-export function templateWatch(): void {
-  gulp.watch(templateWatchPaths, template).on("change", logChange);
-}
-templateWatch.description =
-  "Watch the template.json input files for changes and generate it";
-
 // = General tasks =============================================================
 
 export const pack = gulp.parallel(hbs, lang, sass, ts, system, template);
@@ -158,8 +146,7 @@ export const watchAll = gulp.parallel(
   langWatch,
   sassWatch,
   tsWatch,
-  systemWatch,
-  templateWatch
+  systemWatch
 );
 watchAll.description = "Run all watch tasks";
 

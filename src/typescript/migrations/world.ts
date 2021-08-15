@@ -26,7 +26,7 @@ export function isNewerVersionThanLast(version: string): boolean {
 }
 
 /**
- * Migrate the entire world with all entities.
+ * Migrate the entire world with all documents.
  * @returns A Promise which resolves once the migration completed
  */
 export async function migrateWorld(): Promise<void> {

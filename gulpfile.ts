@@ -6,7 +6,7 @@ import dartSass from "gulp-dart-sass";
 import typescript from "gulp-typescript";
 import zip from "gulp-zip";
 
-import { TemplateEntityType } from "./src/typescript/data/common";
+import { TemplateDocumentType } from "./src/typescript/data/common.js";
 
 // = Path constants ============================================================
 
@@ -121,10 +121,10 @@ export function template(cb: fs.NoParamCallback): void {
     import("./src/typescript/data/itemDbData.js")
   ])
     .then(([actorDbData, itemDbData]) => {
-      const actorEntityTypes = [
+      const actorDocumentTypes = [
         new actorDbData.PlayerCharacterDataSourceData()
       ];
-      const itemEntityTypes = [
+      const itemDocumentTypes = [
         new itemDbData.EffectDataSourceData(),
         new itemDbData.ItemDataSourceData()
       ];
@@ -132,7 +132,7 @@ export function template(cb: fs.NoParamCallback): void {
         fs.writeFile(
           templateOutPath,
           JSON.stringify(
-            createTemplateObject(actorEntityTypes, itemEntityTypes)
+            createTemplateObject(actorDocumentTypes, itemDocumentTypes)
           ),
           cb
         );
@@ -197,18 +197,18 @@ function getVersionNumber(): string {
   return JSON.parse(fs.readFileSync(systemJson).toString())["version"];
 }
 
-interface EntitiesTemplates extends Record<string, unknown> {
+interface DocumentTemplates extends Record<string, unknown> {
   types: string[];
 }
 
 interface Template {
-  Actor: EntitiesTemplates;
-  Item: EntitiesTemplates;
+  Actor: DocumentTemplates;
+  Item: DocumentTemplates;
 }
 
 function createTemplateObject(
-  actorEntityTypes: TemplateEntityType[],
-  itemEntityTypes: TemplateEntityType[]
+  actorDocumentTypes: TemplateDocumentType[],
+  itemDocumentTypes: TemplateDocumentType[]
 ) {
   const template: Template = {
     Actor: {
@@ -218,13 +218,13 @@ function createTemplateObject(
       types: []
     }
   };
-  actorEntityTypes.forEach((actorEntityType) => {
-    template.Actor.types.push(actorEntityType.getTypeName());
-    template.Actor[actorEntityType.getTypeName()] = actorEntityType;
+  actorDocumentTypes.forEach((actorDocumentType) => {
+    template.Actor.types.push(actorDocumentType.getTypeName());
+    template.Actor[actorDocumentType.getTypeName()] = actorDocumentType;
   });
-  itemEntityTypes.forEach((itemEntityType) => {
-    template.Item.types.push(itemEntityType.getTypeName());
-    template.Item[itemEntityType.getTypeName()] = itemEntityType;
+  itemDocumentTypes.forEach((itemDocumentType) => {
+    template.Item.types.push(itemDocumentType.getTypeName());
+    template.Item[itemDocumentType.getTypeName()] = itemDocumentType;
   });
   return template;
 }

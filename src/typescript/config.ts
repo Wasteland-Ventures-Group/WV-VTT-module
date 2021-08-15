@@ -6,7 +6,7 @@ import Effect from "./item/effect.js";
 import WvItem from "./item/wvItem.js";
 
 export function configureFoundry(): void {
-  // Register our own Entity classes.
+  // Register our own Document classes.
   CONFIG.Actor.documentClass = WvActor;
   CONFIG.Item.documentClass = WvItem;
 

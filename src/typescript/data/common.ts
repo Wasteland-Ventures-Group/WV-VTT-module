@@ -7,7 +7,9 @@ export interface ModdedResource extends foundry.Resource {
 }
 
 /** This represents an object that can be serialized to the `template.json`. */
-export interface TemplateEntityType {
-  /** Get the name of the entity, which should be used in the `template.json`. */
+export interface TemplateDocumentType {
+  /**
+   * Get the name of the Document, which should be used in the `template.json`.
+   */
   getTypeName(): string;
 }

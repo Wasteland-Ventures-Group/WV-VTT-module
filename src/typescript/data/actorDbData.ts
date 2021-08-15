@@ -4,7 +4,7 @@ import {
   ThaumaturgySpecials,
   TYPES
 } from "../constants.js";
-import { TemplateEntityType } from "./common.js";
+import { TemplateDocumentType } from "./common.js";
 import { Resource as FoundryResource } from "./foundryCommon.js";
 
 /** An Actor SPECIALs object for the database */
@@ -151,7 +151,7 @@ export class Magic {
 }
 
 /** The player character data-source data */
-export class PlayerCharacterDataSourceData implements TemplateEntityType {
+export class PlayerCharacterDataSourceData implements TemplateDocumentType {
   constructor(
     /** The SPECIALs of an Actor */
     public specials: Specials = new Specials(),

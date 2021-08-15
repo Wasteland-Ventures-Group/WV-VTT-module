@@ -1,6 +1,6 @@
 import { TYPES } from "../constants.js";
 import RuleElement from "../ruleEngine/ruleElement.js";
-import { TemplateEntityType } from "./common";
+import { TemplateDocumentType } from "./common.js";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PastDataSourceData {}
@@ -58,7 +58,7 @@ interface AerialManeuverDataSource {
   data: AerialManeuverDataSourceData;
 }
 
-export class EffectDataSourceData implements TemplateEntityType {
+export class EffectDataSourceData implements TemplateDocumentType {
   constructor(
     /** The rule elements of the effect. */
     public rules: RuleElement[] = []
@@ -76,7 +76,7 @@ interface EffectDataSource {
   data: EffectDataSourceData;
 }
 
-export class ItemDataSourceData implements TemplateEntityType {
+export class ItemDataSourceData implements TemplateDocumentType {
   constructor(
     /** The value of the item in caps */
     public value: number = 0

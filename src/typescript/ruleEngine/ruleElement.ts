@@ -1,5 +1,6 @@
 import type WvItem from "../item/wvItem.js";
 import type { RuleElementIds } from "./ruleElements.js";
+import type RuleElementWarning from "./ruleElementWarning.js";
 
 /**
  * A rule engine element, allowing the modification of a data point, specified
@@ -11,18 +12,18 @@ export default class RuleElement {
    * Create a RuleElement from the given data and owning item.
    * @param source      - the source data for the RuleElement
    * @param item        - the owning item
-   * @param warningKeys - i18n keys of potential warnings encountered when
-   *                      validating the source before creating the RuleElement
+   * @param warnings    - potential warnings encountered when validating the
+   *                      source before creating the RuleElement
    * @param errorKeys   - i18n keys of potential errors encountered when
    *                      validating the source before creating the RuleElement
    */
   constructor(
     source: RuleElementSource,
     public item: WvItem,
-    warningKeys: string[] = [],
+    warnings: RuleElementWarning[] = [],
     errorKeys: string[] = []
   ) {
-    this.warningKeys = warningKeys;
+    this.warnings = warnings;
     this.errorKeys = errorKeys;
     this.source = source;
 
@@ -30,7 +31,7 @@ export default class RuleElement {
   }
 
   /** Messages keys for warnings that were encountered in the source */
-  warningKeys: string[];
+  warnings: RuleElementWarning[];
 
   /** Messages keys for errors that were encountered in the source */
   errorKeys: string[];
@@ -60,7 +61,7 @@ export default class RuleElement {
 
   /** Whether the RuleElement has warnings */
   hasWarnings(): boolean {
-    return this.warningKeys.length > 0;
+    return this.warnings.length > 0;
   }
 
   /** Whether the RuleElement is new */

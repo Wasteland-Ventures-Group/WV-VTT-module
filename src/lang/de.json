@@ -87,6 +87,9 @@
         "newName": "Neues Regelelement"
       },
       "errors": {
+        "messages": {
+          "changedToDefault": "Der Wert wurde zu \"{value}\" geändert."
+        },
         "semantic": {
           "enabled": {
             "wrongType": "Das enabled Feld war kein boolean."

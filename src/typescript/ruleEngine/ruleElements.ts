@@ -8,6 +8,8 @@ import type {
 import RuleElement from "./ruleElement.js";
 import FlatModifier from "./ruleElements/flatModifier.js";
 import NewRuleElement from "./ruleElements/newRuleElement.js";
+import type RuleElementWarning from "./ruleElementWarning.js";
+import WrongTypeWarning from "./warnings/wrongTypeWarning.js";
 
 /** RuleElement identifier strings */
 export const RULE_ELEMENT_IDS = {
@@ -58,7 +60,7 @@ export default class RuleElements {
     item: WvItem
   ): RuleElement {
     const newSource = this.newRuleElementSource();
-    const warningKeys: string[] = [];
+    const warnings: RuleElementWarning[] = [];
     const errorKeys: string[] = [];
 
     let constructor: ConstructorOf<RuleElement>;
@@ -73,7 +75,12 @@ export default class RuleElements {
       type = data.type;
     } else {
       constructor = RULE_ELEMENTS[newSource.type];
-      warningKeys.push("wv.ruleEngine.errors.semantic.type.wrongType");
+      warnings.push(
+        new WrongTypeWarning(
+          "wv.ruleEngine.errors.semantic.type.wrongType",
+          newSource.type
+        )
+      );
       type = newSource.type;
     }
 
@@ -81,35 +88,60 @@ export default class RuleElements {
     if (typeof data.enabled === "boolean") enabled = data.enabled;
     else {
       enabled = newSource.enabled;
-      warningKeys.push("wv.ruleEngine.errors.semantic.enabled.wrongType");
+      warnings.push(
+        new WrongTypeWarning(
+          "wv.ruleEngine.errors.semantic.enabled.wrongType",
+          enabled
+        )
+      );
     }
 
     let label: string;
     if (typeof data.label === "string") label = data.label;
     else {
       label = newSource.label;
-      warningKeys.push("wv.ruleEngine.errors.semantic.label.wrongType");
+      warnings.push(
+        new WrongTypeWarning(
+          "wv.ruleEngine.errors.semantic.label.wrongType",
+          label
+        )
+      );
     }
 
     let priority: number;
     if (typeof data.priority === "number") priority = data.priority;
     else {
       priority = newSource.priority;
-      warningKeys.push("wv.ruleEngine.errors.semantic.priority.wrongType");
+      warnings.push(
+        new WrongTypeWarning(
+          "wv.ruleEngine.errors.semantic.priority.wrongType",
+          priority
+        )
+      );
     }
 
     let selector: string;
     if (typeof data.selector === "string") selector = data.selector;
     else {
       selector = newSource.selector;
-      warningKeys.push("wv.ruleEngine.errors.semantic.selector.wrongType");
+      warnings.push(
+        new WrongTypeWarning(
+          "wv.ruleEngine.errors.semantic.selector.wrongType",
+          selector
+        )
+      );
     }
 
     let value: number;
     if (typeof data.value === "number") value = data.value;
     else {
       value = newSource.value;
-      warningKeys.push("wv.ruleEngine.errors.semantic.value.wrongType");
+      warnings.push(
+        new WrongTypeWarning(
+          "wv.ruleEngine.errors.semantic.value.wrongType",
+          value
+        )
+      );
     }
 
     const source: RuleElementSource = {
@@ -121,7 +153,7 @@ export default class RuleElements {
       value: value
     };
 
-    return new constructor(source, item, warningKeys, errorKeys);
+    return new constructor(source, item, warnings, errorKeys);
   }
 }
 

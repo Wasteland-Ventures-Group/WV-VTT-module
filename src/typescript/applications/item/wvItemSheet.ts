@@ -1,5 +1,6 @@
 import { CONSTANTS, HANDLEBARS } from "../../constants.js";
 import type { RuleElementSource } from "../../ruleEngine/ruleElement.js";
+import WrongTypeWarning from "../../ruleEngine/warnings/wrongTypeWarning.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet<
@@ -27,12 +28,20 @@ export default class WvItemSheet extends ItemSheet<
         elements: data.data.data.rules.elements.map((rule) => {
           return {
             errorKeys: rule.errorKeys,
-            warningKeys: rule.warningKeys,
+            warnings: rule.warnings.map((warning) => {
+              return warning instanceof WrongTypeWarning
+                ? ({
+                    messageKey: warning.messageKey,
+                    changeMessageKey: warning.changeMessageKey,
+                    changeValue: warning.changeValue
+                  } as SheetDataWarning)
+                : ({ messageKey: warning.messageKey } as SheetDataWarning);
+            }),
             hasErrors: rule.hasErrors(),
             hasWarnings: rule.hasWarnings(),
             isNew: rule.isNew(),
             source: rule.source
-          };
+          } as SheetDataRuleElement;
         })
       }
     };
@@ -54,9 +63,15 @@ export interface SheetData extends ItemSheet.Data {
 
 export interface SheetDataRuleElement {
   errorKeys?: string[];
-  warningKeys?: string[];
+  warnings?: SheetDataWarning[];
   hasErrors?: boolean;
   hasWarnings?: boolean;
   isNew?: boolean;
   source?: RuleElementSource;
+}
+
+export interface SheetDataWarning {
+  changeMessage?: string;
+  changeValue?: string | boolean | number;
+  warningMessage?: string;
 }

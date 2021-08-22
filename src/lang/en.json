@@ -87,6 +87,9 @@
         "newName": "New Rule Element"
       },
       "errors": {
+        "messages": {
+          "changedToDefault": "The value was changed to \"{value}\"."
+        },
         "semantic": {
           "enabled": {
             "wrongType": "The enabled field was not a boolean."

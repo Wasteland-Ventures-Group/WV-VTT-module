@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - a schema for the language files
+- add a rule engine for items and basic modifier items ([#6](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/1))
 
 ## [0.3.3] - 2021-08-08
 

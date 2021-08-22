@@ -63,6 +63,7 @@ export default class RuleElement {
    */
   onPrepareEmbeddedEntities(doc: Actor | Item): void {
     if (this.hasErrors()) return;
+    if (!this.source.enabled) return;
 
     this._onPrepareEmbeddedEntities(doc);
   }

@@ -1,6 +1,11 @@
 import type { TemplateDocumentType } from "./common.js";
-import type { RuleElementJson } from "../ruleEngine/ruleElement.js";
+import type { RuleElementSource } from "../ruleEngine/ruleElement.js";
 import { TYPES } from "../constants.js";
+
+/** A RuleElements DB container, that can be used in different Items. */
+export class Rules {
+  constructor(public sources: RuleElementSource[] = []) {}
+}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PastDataSourceData {}
@@ -60,8 +65,8 @@ interface AerialManeuverDataSource {
 
 export class EffectDataSourceData implements TemplateDocumentType {
   constructor(
-    /** The rule elements of the effect. */
-    public rules: RuleElement[] = []
+    /** The rules of the Effect. */
+    public rules: Rules = new Rules()
   ) {}
 
   /** @override */
@@ -78,6 +83,9 @@ interface EffectDataSource {
 
 export class ItemDataSourceData implements TemplateDocumentType {
   constructor(
+    /** TThe rules of the Item */
+    public rules: Rules = new Rules(),
+
     /** The value of the item in caps */
     public value: number = 0
   ) {}

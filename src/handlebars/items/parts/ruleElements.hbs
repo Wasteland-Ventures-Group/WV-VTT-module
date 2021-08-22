@@ -1,0 +1,22 @@
+<section class="rule-elements">
+  <a class="rule-element-control fas fa-plus" data-action="create" title="{{localize wv.ruleEngine.ruleElement.create}}"></a>
+  <ol class="rule-element-list">
+    {{log data}}
+    {{#each sheet.rules.elements as |element|}}
+      <li class="rule-element{{ternary element.isNew ' new-element' ''}}{{ternary element.hasErrors ' errornous-element' ''}}" data-index="{{@index}}">
+        <div class="rule-element-header">
+          <h4>{{element.source.label}}</h4>
+          <a class="rule-element-control fas fa-minus" data-action="delete" title="{{localize wv.ruleEngine.ruleElement.delete}}"></a>
+        </div>
+        <textarea name="sheet.rules.{{@index}}">{{jsonPretty element.source}}</textarea>
+        {{#if element.hasErrors}}
+          <ul>
+            {{#each element.errorKeys as |errorKey|}}
+              <li>{{localize errorKey}}</li>
+            {{/each}}
+          </ul>
+        {{/if}}
+      </li>
+    {{/each}}
+  </ol>
+</section>

@@ -80,6 +80,37 @@
       "completed": "{systemName} Systemmigration zu Version {version} abgeschlossen!",
       "started": "Wende {systemName} Systemmigration nach Version {version} an. Bitte habe Geduld und schließe weder das Spiel, noch beende den Server."
     },
+    "ruleEngine": {
+      "ruleElement": {
+        "create": "Erstellen",
+        "delete": "Löschen",
+        "newName": "Neues Regelelement"
+      },
+      "errors": {
+        "semantic": {
+          "enabled": {
+            "wrongType": "Das enabled Feld war kein boolean."
+          },
+          "label": {
+            "wrongType": "Das label Feld war kein string."
+          },
+          "priority": {
+            "wrongType": "Das priority Feld war keine number."
+          },
+          "selector": {
+            "wrongType": "Das selector Feld war kein string."
+          },
+          "type": {
+            "notFound": "Der Regelelementtyp ist nicht bekannt.",
+            "wrongType": "Das type Feld war kein string."
+          },
+          "value": {
+            "wrongType": "Das value Feld war keine number."
+          }
+        },
+        "syntax": "Syntaxfehler in Regelelementdefinition {number}: {message}"
+      }
+    },
     "sheet": {
       "background": {
         "background": "Hintergrund",
@@ -89,7 +120,8 @@
         "karma": "Karma"
       },
       "names": {
-        "actorSheet": "Aktorbogen"
+        "actorSheet": "Aktorbogen",
+        "effectSheet": "Effektbogen"
       },
       "tabs": {
         "background": "Hintergrund",

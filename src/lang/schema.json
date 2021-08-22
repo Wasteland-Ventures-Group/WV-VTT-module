@@ -340,6 +340,95 @@
             }
           }
         },
+        "ruleEngine": {
+          "type": "object",
+          "description": "Labels related to the Rule Engine",
+          "required": ["ruleElement", "errors"],
+          "properties": {
+            "ruleElement": {
+              "type": "object",
+              "description": "Various labels related to RuleElements",
+              "required": ["create", "delete", "newName"],
+              "properties": {
+                "create": {
+                  "type": "string",
+                  "description": "The label for creating a RuleElement"
+                },
+                "delete": {
+                  "type": "string",
+                  "description": "The label for deleting a RuleElement"
+                },
+                "newName": {
+                  "type": "string",
+                  "description": "The default label for a new RuleElement"
+                }
+              }
+            },
+            "errors": {
+              "type": "object",
+              "description": "Labels for different errors",
+              "required": ["semantic", "syntax"],
+              "properties": {
+                "semantic": {
+                  "type": "object",
+                  "description": "Various semantic errors",
+                  "required": [
+                    "enabled",
+                    "label",
+                    "priority",
+                    "selector",
+                    "type",
+                    "value"
+                  ],
+                  "properties": {
+                    "enabled": {
+                      "$ref": "#/definitions/ruleElementFieldErrors",
+                      "description": "Error messages related to the enabled field"
+                    },
+                    "label": {
+                      "$ref": "#/definitions/ruleElementFieldErrors",
+                      "description": "Error messages related to the label field"
+                    },
+                    "priority": {
+                      "$ref": "#/definitions/ruleElementFieldErrors",
+                      "description": "Error messages related to the priority field"
+                    },
+                    "selector": {
+                      "$ref": "#/definitions/ruleElementFieldErrors",
+                      "description": "Error messages related to the selector field"
+                    },
+                    "type": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/ruleElementFieldErrors"
+                        },
+                        {
+                          "description": "Error messages related to the type field",
+                          "required": ["notFound"],
+                          "properties": {
+                            "notFound": {
+                              "type": "string",
+                              "description": "The error message for unknown RuleElement types"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "value": {
+                      "$ref": "#/definitions/ruleElementFieldErrors",
+                      "description": "Error messages related to the value field"
+                    }
+                  }
+                },
+                "syntax": {
+                  "type": "string",
+                  "description": "The description for the JSON syntax error, containing references to the number of the rule element with `number` and the error message with `message`",
+                  "pattern": "(?:\\{number\\}.*\\{message\\})|(?:\\{message\\}.*\\{number\\})"
+                }
+              }
+            }
+          }
+        },
         "sheet": {
           "type": "object",
           "description": "Labels related to sheets",
@@ -375,11 +464,15 @@
             "names": {
               "type": "object",
               "description": "Names for different sheets",
-              "required": ["actorSheet"],
+              "required": ["actorSheet", "effectSheet"],
               "properties": {
                 "actorSheet": {
                   "type": "string",
                   "description": "The label for the Actor sheet"
+                },
+                "effectSheet": {
+                  "type": "string",
+                  "description": "The label for the Effect sheet"
                 }
               }
             },
@@ -583,6 +676,17 @@
         "name": {
           "type": "string",
           "description": "The name of the Item type"
+        }
+      }
+    },
+    "ruleElementFieldErrors": {
+      "type": "object",
+      "description": "A schema for different error messages of RuleElement source fields",
+      "required": ["wrongType"],
+      "properties": {
+        "wrongType": {
+          "type": "string",
+          "description": "The message when the field is of the wrong type"
         }
       }
     },

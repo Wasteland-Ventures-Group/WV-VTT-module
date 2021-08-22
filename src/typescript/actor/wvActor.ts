@@ -8,11 +8,12 @@ import {
   Skill,
   Skills
 } from "../data/actorData.js";
-import { CONSTANTS, SkillNames, SpecialNames, TYPES } from "../constants.js";
+import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import Formulator from "../formulator.js";
 import { getGame, getGmIds } from "../foundryHelpers.js";
 import { boundsSettingNames } from "../settings.js";
 import WvI18n from "../wvI18n.js";
+import type RuleElement from "../ruleEngine/ruleElement.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
@@ -315,11 +316,15 @@ export default class WvActor extends Actor {
    * Apply the RuleElements of Effect type Items.
    */
   protected applyItemEffects(): void {
+    const rules: RuleElement[] = [];
+
     this.data.items.forEach((item) => {
-      if (item.data.type === TYPES.ITEM.EFFECT) {
-        item.data.data.rules.forEach((rule) => rule.modify(this));
-      }
+      item.data.data.rules.elements.forEach((rule) => rules.push(rule));
     });
+
+    rules
+      .sort((a, b) => a.priority - b.priority)
+      .forEach((rule) => rule.onPrepareEmbeddedEntities(this));
   }
 
   // Computations after items {{{2

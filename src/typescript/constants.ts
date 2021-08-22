@@ -120,3 +120,12 @@ export const CONSTANTS = {
    */
   systemPath: "systems/wasteland-ventures"
 };
+
+export const HANDLEBARS = {
+  partPaths: {
+    item: {
+      header: `${CONSTANTS.systemPath}/handlebars/items/parts/header.hbs`,
+      rules: `${CONSTANTS.systemPath}/handlebars/items/parts/ruleElements.hbs`
+    }
+  }
+};

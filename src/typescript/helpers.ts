@@ -40,3 +40,17 @@ export function isMappedItemType(
 ): type is keyof typeof TYPE_CONSTRUCTORS.ITEM {
   return Object.keys(TYPE_CONSTRUCTORS.ITEM).includes(type);
 }
+
+/**
+ * A custom typeguard to check whether an Item is of the type, mapped from the
+ * type name.
+ * @param item - the item to check
+ * @param type - the type name to check
+ * @returns whether the Item is of the mapped type
+ */
+export function isOfItemType<T extends keyof typeof TYPE_CONSTRUCTORS.ITEM>(
+  item: Item,
+  type: T
+): item is InstanceType<typeof TYPE_CONSTRUCTORS.ITEM[T]> {
+  return item instanceof TYPE_CONSTRUCTORS.ITEM[type];
+}

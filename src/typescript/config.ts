@@ -1,6 +1,7 @@
 import WvActor from "./actor/wvActor.js";
 import WvActorSheet from "./applications/actor/wvActorSheet.js";
-import { CONSTANTS } from "./constants.js";
+import EffectSheet from "./applications/item/effectSheet.js";
+import { CONSTANTS, TYPES } from "./constants.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvItem from "./item/wvItem.js";
 
@@ -16,5 +17,10 @@ export function configureFoundry(): void {
   Actors.registerSheet(CONSTANTS.systemId, WvActorSheet, {
     label: "wv.sheet.names.actorSheet",
     makeDefault: true
+  });
+
+  Items.registerSheet(CONSTANTS.systemId, EffectSheet, {
+    label: "wv.sheet.names.effectSheet",
+    types: [TYPES.ITEM.EFFECT]
   });
 }

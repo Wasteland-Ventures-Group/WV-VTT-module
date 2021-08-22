@@ -1,12 +1,23 @@
 import type { TYPES } from "../constants.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
-import { EffectDataSourceData, ItemDataSourceData } from "./itemDbData.js";
+import {
+  EffectDataSourceData,
+  ItemDataSourceData,
+  Rules as DbRules
+} from "./itemDbData.js";
+
+/** A RuleElements container, that can be used in different Items. */
+export class Rules extends DbRules {
+  constructor(public elements: RuleElement[] = []) {
+    super();
+  }
+}
 
 /** The Effect Item data-properties data */
 export class EffectDataPropertiesData extends EffectDataSourceData {
   constructor(
     /** The rule elements of the effect. */
-    public rules: RuleElement[] = []
+    public rules: Rules = new Rules()
   ) {
     super(rules);
   }
@@ -20,10 +31,13 @@ export interface EffectDataProperties {
 
 export class ItemDataPropertiesData extends ItemDataSourceData {
   constructor(
+    /** The rules of the item */
+    public rules: Rules = new Rules(),
+
     /** The value of the item in caps */
     public value: number = 0
   ) {
-    super(value);
+    super(rules, value);
   }
 }
 

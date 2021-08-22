@@ -1,62 +1,117 @@
-import FlatModifier from "./ruleElements/flatModifier.js";
+import type WvItem from "../item/wvItem.js";
+import type { RuleElementIds } from "./ruleElements.js";
 
 /**
  * A rule engine element, allowing the modification of a data point, specified
- * by a selector by a given value. How the data point is modified depends on the
- * type of the element.
+ * by a selector and a given value. How the data point is modified depends on
+ * the type of the element.
  */
-export default abstract class RuleElement {
-  /** A mapping of type identifiers to RuleElement constructors. */
-  static TYPES: Partial<Record<string, RuleElementConstructor>> = {
-    [FlatModifier.TYPE]: FlatModifier
-  };
-
+export default class RuleElement {
   /**
-   * Create a new RuleElement from an unknown JSON object.
-   * @param json - the unknow, serialized JSON object
-   * @returns a RuleElement if the needed properties existed, null otherwise
+   * Create a RuleElement from the given data and owning item.
+   * @param source - the source data for the RuleElement
+   * @param item   - the owning item
+   * @param errors - potential errors encountered when validating the source
+   *                 before creating the RuleElement
    */
-  static fromJson(json: unknown): RuleElement | null {
-    if (typeof json !== "object" || !json) return null;
+  constructor(
+    source: RuleElementSource,
+    public item: WvItem,
+    errors: string[] = []
+  ) {
+    this.errorKeys = errors;
+    this.source = source;
 
-    const rule: Partial<RuleElement> = json;
-    if (!rule.type || typeof rule.type !== "string") return null;
-
-    const constructor = RuleElement.TYPES[rule.type];
-    if (!constructor) return null;
-
-    return constructor.fromJson(json);
+    this.validateSource();
   }
 
-  /** The label of the element */
-  abstract readonly label: string;
+  /** Messages keys for errors that were encountered in the source */
+  errorKeys: string[];
 
-  /** The selector of the element */
-  abstract readonly selector: string;
+  /** The data of the RuleElement */
+  source: RuleElementSource;
 
-  /** The value of the element */
-  abstract readonly value: number;
+  /** Get the priority number of the RuleElement. */
+  get priority(): number {
+    return this.source.priority;
+  }
 
-  /** The type identifier of the element */
-  abstract readonly type: string;
+  /** Get the property selector of the RuleElement. */
+  get selector(): string {
+    return this.source.selector;
+  }
+
+  /** Get the value of the RuleElement. */
+  get value(): number {
+    return this.source.value;
+  }
+
+  /** Whether the RuleElement has errors */
+  hasErrors(): boolean {
+    return this.errorKeys.length > 0;
+  }
+
+  /** Whether the RuleElement is new */
+  isNew(): boolean {
+    return false;
+  }
 
   /**
-   * Modify the passed Document.
+   * Modify the passed Document on the prepareEmbeddedEntities step, if the
+   * RuleElement does not have errors.
    * @param doc - the Document to modify
    */
-  abstract modify(doc: Actor | Item): void;
-}
+  onPrepareEmbeddedEntities(doc: Actor | Item): void {
+    if (this.hasErrors()) return;
 
-// TODO: enforce this better on the subclasses
-/** An interface to describe the static side of RuleElements. */
-export interface RuleElementConstructor extends ConstructorOf<RuleElement> {
-  /** The type identifier for this RuleElement */
-  readonly TYPE: string;
+    this._onPrepareEmbeddedEntities(doc);
+  }
+
+  /** Validate the input source and add any error messages to errors. */
+  protected validateSource(): void {
+    // NOOP
+  }
 
   /**
-   * Create a new RuleElement from an unknown JSON object.
-   * @param json - the unknow, serialized JSON object
-   * @returns a RuleElement if the needed properties existed, null otherwise
+   * Modify the passed Document on the prepareEmbeddedEntities step.
+   *
+   * This is only called when the RuleElement has no errors and should be
+   * overridden by subclasses.
+   * @param doc - the Document to modify
    */
-  fromJson(json: unknown): RuleElement | null;
+  protected _onPrepareEmbeddedEntities(doc: Actor | Item): void {
+    // NOOP
+  }
 }
+
+/** The RuleElement raw data layout */
+export type RuleElementSource = {
+  /** Whether this rule element is enabled */
+  enabled: boolean;
+  /** The label of the element */
+  label: string;
+  /** The place in the order of application, starting with lowest */
+  priority: number;
+  /** The selector of the element */
+  selector: string;
+  /** The type identifier of the element */
+  type: string;
+  /** The value of the element */
+  value: number;
+};
+
+/**
+ * A version of the RuleElement raw data layout, where the type is definitely a
+ * known ID.
+ */
+export type TypedRuleElementSource = RuleElementSource & {
+  type: RuleElementIds;
+};
+
+/**
+ * An unknown version of the RuleElement raw data layout, where each key might
+ * not exist and is of an unknown type.
+ */
+export type UnknownRuleElementSource = {
+  [K in keyof RuleElementSource]?: unknown;
+};

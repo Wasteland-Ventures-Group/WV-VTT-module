@@ -1,0 +1,607 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/lang/schema.json",
+  "title": "Wasteland Ventures localization file",
+  "description": "This schema represents the layout of a localization file for the Wasteland Ventures system module for the Foundry virtual tabletop.",
+  "type": "object",
+  "required": ["wv"],
+  "properties": {
+    "wv": {
+      "type": "object",
+      "description": "The root element for the Wasteland Ventures system localization",
+      "required": [
+        "fvttItems",
+        "labels",
+        "migration",
+        "ruleEngine",
+        "sheet",
+        "skills",
+        "specials"
+      ],
+      "properties": {
+        "fvttItems": {
+          "type": "object",
+          "description": "Entries related to Foundry's concept of Items",
+          "required": ["actions", "newName", "types"],
+          "properties": {
+            "actions": {
+              "type": "object",
+              "description": "Labels for actions, related to managing Items",
+              "required": ["create", "delete", "edit", "toggle"],
+              "properties": {
+                "create": {
+                  "type": "string",
+                  "description": "The action label for creating Items"
+                },
+                "delete": {
+                  "type": "string",
+                  "description": "The action label for delete Items"
+                },
+                "edit": {
+                  "type": "string",
+                  "description": "The action label for editing Items"
+                },
+                "toggle": {
+                  "type": "string",
+                  "description": "The action label for toggling Items"
+                }
+              }
+            },
+            "newName": {
+              "type": "string",
+              "description": "The placeholder name for a new Item, containing a reference to the item name with `what`.",
+              "pattern": "\\{what\\}"
+            },
+            "types": {
+              "type": "object",
+              "description": "Labels for different types of system Items",
+              "properties": {
+                "effects": {
+                  "$ref": "#/definitions/itemType",
+                  "description": "Labels related to Effect Items"
+                }
+              }
+            }
+          }
+        },
+        "labels": {
+          "type": "object",
+          "description": "Miscellaneous labels",
+          "required": [
+            "ailments",
+            "errors",
+            "placeholders",
+            "magic",
+            "resistances",
+            "rolls",
+            "secondary",
+            "skills",
+            "special"
+          ],
+          "properties": {
+            "ailments": {
+              "type": "object",
+              "description": "Labels for different ailments",
+              "required": ["radiation"],
+              "properties": {
+                "radiation": {
+                  "type": "object",
+                  "description": "Labels for the radiation ailment",
+                  "required": ["absorbed", "effects", "title"],
+                  "properties": {
+                    "absorbed": {
+                      "type": "object",
+                      "description": "Labels for the absorbed dose",
+                      "required": ["title", "unit"],
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "description": "The title for the absorbed dose section"
+                        },
+                        "unit": {
+                          "type": "string",
+                          "description": "The unit of absorbed raditation"
+                        }
+                      }
+                    },
+                    "effects": {
+                      "type": "string",
+                      "description": "The title for the radiation effects"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "The title label for the radiation section"
+                    }
+                  }
+                }
+              }
+            },
+            "errors": {
+              "type": "object",
+              "description": "Labels for unknown stats",
+              "required": ["unknownSpecial", "unknownSkill"],
+              "properties": {
+                "unknownSpecial": {
+                  "type": "string",
+                  "description": "The label for an unknown SPECIAL"
+                },
+                "unknownSkill": {
+                  "type": "string",
+                  "description": "The label for an unknown Skill"
+                }
+              }
+            },
+            "placeholders": {
+              "type": "object",
+              "description": "Labels used as placeholders in inputs",
+              "required": ["documentName"],
+              "properties": {
+                "documentName": {
+                  "type": "string",
+                  "description": "The placeholder label for generic documents"
+                }
+              }
+            },
+            "magic": {
+              "type": "object",
+              "description": "Labels related to magic",
+              "required": ["thaumSpecial"],
+              "properties": {
+                "thaumSpecial": {
+                  "type": "string",
+                  "description": "The label for the thaumaturgy select"
+                }
+              }
+            },
+            "resistances": {
+              "type": "object",
+              "description": "Labels for resistances",
+              "required": ["poison", "radiation", "title"],
+              "properties": {
+                "poison": {
+                  "type": "string",
+                  "description": "The label for the poison resistance"
+                },
+                "radiation": {
+                  "type": "string",
+                  "description": "The label for the radiation resistance"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The label for the resistances section"
+                }
+              }
+            },
+            "rolls": {
+              "type": "object",
+              "description": "Labels related to rolls",
+              "required": [
+                "buttonTitle",
+                "flavor",
+                "genericModifierDescription",
+                "modifierDescription",
+                "modifierTitle",
+                "roll"
+              ],
+              "properties": {
+                "buttonTitle": {
+                  "type": "string",
+                  "description": "The title (tooltip) for roll buttons"
+                },
+                "flavor": {
+                  "type": "string",
+                  "description": "The flavor text for the chat messages, containing a reference to what is rolled with `what`",
+                  "pattern": "\\{what\\}"
+                },
+                "genericModifierDescription": {
+                  "type": "string",
+                  "description": "The label for a roll modifier dialog, when the target is not known"
+                },
+                "modifierDescription": {
+                  "type": "string",
+                  "description": "The label for a roll modifier dialog, containing a reference to what is modified with `what`",
+                  "pattern": "\\{what\\}"
+                },
+                "modifierTitle": {
+                  "type": "string",
+                  "description": "The title for a roll modifier dialog window"
+                },
+                "roll": {
+                  "type": "string",
+                  "description": "The label for the roll/confirm button on a roll modifier dialog window"
+                }
+              }
+            },
+            "secondary": {
+              "type": "object",
+              "description": "Labels for secondary stats",
+              "required": [
+                "actionPoints",
+                "criticals",
+                "experience",
+                "healingRate",
+                "health",
+                "initiative",
+                "level",
+                "strain"
+              ],
+              "properties": {
+                "actionPoints": {
+                  "type": "string",
+                  "description": "The label for the Action Points"
+                },
+                "criticals": {
+                  "type": "object",
+                  "description": "Labels related to criticals",
+                  "required": ["failure", "success", "title"],
+                  "properties": {
+                    "failure": {
+                      "type": "string",
+                      "description": "The label for critical failures"
+                    },
+                    "success": {
+                      "type": "string",
+                      "description": "The label for critical successes"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "The title label for criticals"
+                    }
+                  }
+                },
+                "experience": {
+                  "type": "string",
+                  "description": "The label for the experience"
+                },
+                "healingRate": {
+                  "type": "string",
+                  "description": "The label for the healing rate"
+                },
+                "health": {
+                  "type": "string",
+                  "description": "The label for the health"
+                },
+                "initiative": {
+                  "type": "string",
+                  "description": "The label for the initiative"
+                },
+                "level": {
+                  "type": "string",
+                  "description": "The label for the level"
+                },
+                "strain": {
+                  "type": "string",
+                  "description": "The label for the strain"
+                }
+              }
+            },
+            "skills": {
+              "type": "object",
+              "description": "Labels related to the Skills table in the actor sheet",
+              "required": ["name", "ranks", "roll", "special", "total"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The label for the name column"
+                },
+                "ranks": {
+                  "type": "string",
+                  "description": "The label for the ranks column"
+                },
+                "roll": {
+                  "type": "string",
+                  "description": "The label for the roll column"
+                },
+                "special": {
+                  "type": "string",
+                  "description": "The label for the SPECIAL column"
+                },
+                "total": {
+                  "type": "string",
+                  "description": "The label for the total column"
+                }
+              }
+            },
+            "special": {
+              "type": "object",
+              "description": "Labels related to the SPECIALS table in the actor sheet",
+              "required": ["name", "roll", "value"],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "The label for the name column"
+                },
+                "roll": {
+                  "type": "string",
+                  "description": "The label for the roll button column"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "The label for the value column"
+                }
+              }
+            }
+          }
+        },
+        "migration": {
+          "type": "object",
+          "description": "Labels for migrations",
+          "required": ["completed", "started"],
+          "properties": {
+            "completed": {
+              "type": "string",
+              "description": "The notification text for completed migrations, containing references to the system name with `systemName` and the system version with `version`",
+              "pattern": "(?:\\{systemName\\}.*\\{version\\})|(?:\\{version\\}.*\\{systemName\\})"
+            },
+            "started": {
+              "type": "string",
+              "description": "The notification text for started migration, containing references to the system name with `systemName` and the system version with `version`s",
+              "pattern": "(?:\\{systemName\\}.*\\{version\\})|(?:\\{version\\}.*\\{systemName\\})"
+            }
+          }
+        },
+        "sheet": {
+          "type": "object",
+          "description": "Labels related to sheets",
+          "required": ["background", "names", "tabs"],
+          "properties": {
+            "background": {
+              "type": "object",
+              "description": "Labels for the background",
+              "required": ["background", "history", "fears", "dreams", "karma"],
+              "properties": {
+                "background": {
+                  "type": "string",
+                  "description": "Label for the background text area"
+                },
+                "history": {
+                  "type": "string",
+                  "description": "Label for the history text area"
+                },
+                "fears": {
+                  "type": "string",
+                  "description": "Label for the fears text area"
+                },
+                "dreams": {
+                  "type": "string",
+                  "description": "Label for the dreams text area"
+                },
+                "karma": {
+                  "type": "string",
+                  "description": "Label for the karma field"
+                }
+              }
+            },
+            "names": {
+              "type": "object",
+              "description": "Names for different sheets",
+              "required": ["actorSheet"],
+              "properties": {
+                "actorSheet": {
+                  "type": "string",
+                  "description": "The label for the Actor sheet"
+                }
+              }
+            },
+            "tabs": {
+              "type": "object",
+              "description": "Labels for tabs",
+              "required": ["background", "effects", "items", "magic", "stats"],
+              "properties": {
+                "background": {
+                  "type": "string",
+                  "description": "The label for the background tab"
+                },
+                "effects": {
+                  "type": "string",
+                  "description": "The label for the effects tab"
+                },
+                "items": {
+                  "type": "string",
+                  "description": "The label for the items tab"
+                },
+                "magic": {
+                  "type": "string",
+                  "description": "The label for the magic tab"
+                },
+                "stats": {
+                  "type": "string",
+                  "description": "The label for the stats tab"
+                }
+              }
+            }
+          }
+        },
+        "skills": {
+          "type": "object",
+          "description": "Labels for different Skills",
+          "required": [
+            "barter",
+            "diplomacy",
+            "explosives",
+            "firearms",
+            "intimidation",
+            "lockpick",
+            "magicalEnergyWeapons",
+            "mechanics",
+            "medicine",
+            "melee",
+            "science",
+            "sleight",
+            "sneak",
+            "survival",
+            "thaumaturgy",
+            "unarmed"
+          ],
+          "properties": {
+            "barter": {
+              "type": "string",
+              "description": "The name of the Barter Skill"
+            },
+            "diplomacy": {
+              "type": "string",
+              "description": "The name of the Diplomacy Skill"
+            },
+            "explosives": {
+              "type": "string",
+              "description": "The name of the Explosives Skill"
+            },
+            "firearms": {
+              "type": "string",
+              "description": "The name of the Firearms Skill"
+            },
+            "intimidation": {
+              "type": "string",
+              "description": "The name of the Intimidation Skill"
+            },
+            "lockpick": {
+              "type": "string",
+              "description": "The name of the Lockpick Skill"
+            },
+            "magicalEnergyWeapons": {
+              "type": "string",
+              "description": "The name of the Magical Energy Weapons Skill"
+            },
+            "mechanics": {
+              "type": "string",
+              "description": "The name of the Mechanics Skill"
+            },
+            "medicine": {
+              "type": "string",
+              "description": "The name of the Medicine Skill"
+            },
+            "melee": {
+              "type": "string",
+              "description": "The name of the Melee Skill"
+            },
+            "science": {
+              "type": "string",
+              "description": "The name of the Science Skill"
+            },
+            "sleight": {
+              "type": "string",
+              "description": "The name of the Sleight Skill"
+            },
+            "sneak": {
+              "type": "string",
+              "description": "The name of the Sneak Skill"
+            },
+            "survival": {
+              "type": "string",
+              "description": "The name of the Survival Skill"
+            },
+            "thaumaturgy": {
+              "type": "string",
+              "description": "The name of the Thaumaturgy Skill"
+            },
+            "unarmed": {
+              "type": "string",
+              "description": "The name of the Unarmed Skill"
+            }
+          }
+        },
+        "specials": {
+          "type": "object",
+          "description": "Labels for different SPECIALs",
+          "required": [
+            "agility",
+            "charisma",
+            "endurance",
+            "intelligence",
+            "luck",
+            "perception",
+            "strength"
+          ],
+          "properties": {
+            "agility": {
+              "$ref": "#/definitions/special",
+              "description": "Labels for the Agility SPECIAL",
+              "default": {
+                "long": "",
+                "short": "AGI"
+              }
+            },
+            "charisma": {
+              "$ref": "#/definitions/special",
+              "description": "Labels for the Charisma SPECIAL",
+              "default": {
+                "long": "",
+                "short": "CHA"
+              }
+            },
+            "endurance": {
+              "$ref": "#/definitions/special",
+              "description": "Labels for the Endurance SPECIAL",
+              "default": {
+                "long": "",
+                "short": "END"
+              }
+            },
+            "intelligence": {
+              "$ref": "#/definitions/special",
+              "description": "Labels for the Intelligence SPECIAL",
+              "default": {
+                "long": "",
+                "short": "INT"
+              }
+            },
+            "luck": {
+              "$ref": "#/definitions/special",
+              "description": "Labels for the Luck SPECIAL",
+              "default": {
+                "long": "",
+                "short": "LCK"
+              }
+            },
+            "perception": {
+              "$ref": "#/definitions/special",
+              "description": "Labels for the Perception SPECIAL",
+              "default": {
+                "long": "",
+                "short": "PER"
+              }
+            },
+            "strength": {
+              "$ref": "#/definitions/special",
+              "description": "Labels for the Strength SPECIAL",
+              "default": {
+                "long": "",
+                "short": "STR"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "itemType": {
+      "type": "object",
+      "description": "A schema for Item types",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the Item type"
+        }
+      }
+    },
+    "special": {
+      "type": "object",
+      "description": "A schema for SPECIALs",
+      "required": ["long", "short"],
+      "properties": {
+        "long": {
+          "type": "string",
+          "description": "The long name of the SPECIAL"
+        },
+        "short": {
+          "type": "string",
+          "description": "The short name of the SPECIAL, should be three characters",
+          "minLength": 3,
+          "maxLength": 3
+        }
+      }
+    }
+  }
+}

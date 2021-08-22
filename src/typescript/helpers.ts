@@ -1,3 +1,4 @@
+import { TYPE_CONSTRUCTORS } from "./typeMappings.js";
 import { SkillNames, SpecialNames } from "./constants.js";
 
 /**
@@ -27,4 +28,15 @@ export function isSpecialName(name: string): name is SpecialNames {
  */
 export function isSkillName(name: string): name is SkillNames {
   return SkillNames.includes(name as SkillNames);
+}
+
+/**
+ * A custom typeguard to check whether a string is a mapped type identifier.
+ * @param type - the type name to check
+ * @returns whether the type name is mapped
+ */
+export function isMappedItemType(
+  type: string
+): type is keyof typeof TYPE_CONSTRUCTORS.ITEM {
+  return Object.keys(TYPE_CONSTRUCTORS.ITEM).includes(type);
 }

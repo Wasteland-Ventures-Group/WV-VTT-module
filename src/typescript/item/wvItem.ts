@@ -1,4 +1,5 @@
-import { TYPE_CONSTRUCTORS } from "../config.js";
+import { TYPE_CONSTRUCTORS } from "../typeMappings.js";
+import { isMappedItemType } from "../helpers.js";
 
 /** The basic Wasteland Ventures Item. */
 export default class WvItem extends Item {
@@ -18,7 +19,7 @@ export default class WvItem extends Item {
 
   /**
    * Create a new WvItem or subclass registered in
-   * {@link TYPE_CONSTRUCTORS.ITEMS}.
+   * {@link TYPE_CONSTRUCTORS.ITEM}.
    * @see Item.constructor
    */
   constructor(
@@ -33,14 +34,14 @@ export default class WvItem extends Item {
     if (context?.wastelandVentures?.ready) {
       super(data, context);
     } else {
-      if (data) {
-        const constructor = TYPE_CONSTRUCTORS.ITEMS[data.type];
-        if (constructor) {
-          // If we are able to find a mapped constructor, then use that one
-          // instead and instantiate a subclass of WvItem with the readied
-          // context to break out of the recursion.
-          return new constructor(data, WvItem.readyContext(context));
-        }
+      if (data && isMappedItemType(data.type)) {
+        // If we are able to find a mapped constructor, then use that one
+        // instead and instantiate a subclass of WvItem with the readied
+        // context to break out of the recursion.
+        return new TYPE_CONSTRUCTORS.ITEM[data.type](
+          data,
+          WvItem.readyContext(context)
+        );
       }
 
       // If we are not able to, just instantiate a WvItem with the readied

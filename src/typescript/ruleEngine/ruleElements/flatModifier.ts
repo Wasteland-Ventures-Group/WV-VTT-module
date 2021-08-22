@@ -9,7 +9,7 @@ export default class FlatModifier extends RuleElement {
     const oldValue = foundry.utils.getProperty(doc.data.data, this.selector);
     if (typeof oldValue === "number") {
       const newValue = oldValue + this.value;
-      doc.data.update({ [this.selector]: newValue });
+      foundry.utils.setProperty(doc.data.data, this.selector, newValue);
     }
   }
 }

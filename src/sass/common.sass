@@ -5,6 +5,10 @@ $shade-lighter: #fff5
 $shade-darker: #0005
 $spacing-distance: 0.5rem
 
+$color-new: #0c0
+$color-warning: #dc0
+$color-error: #e00
+
 .wasteland-ventures
 
   @for $i from 1 through $max-input-chars
@@ -35,7 +39,7 @@ $spacing-distance: 0.5rem
     text-align: right
 
   input:invalid
-    color: red
+    color: $color-error
 
   label.contained-target-inline
     align-items: baseline

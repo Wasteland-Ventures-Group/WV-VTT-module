@@ -9,21 +9,28 @@ import type { RuleElementIds } from "./ruleElements.js";
 export default class RuleElement {
   /**
    * Create a RuleElement from the given data and owning item.
-   * @param source - the source data for the RuleElement
-   * @param item   - the owning item
-   * @param errors - potential errors encountered when validating the source
-   *                 before creating the RuleElement
+   * @param source      - the source data for the RuleElement
+   * @param item        - the owning item
+   * @param warningKeys - i18n keys of potential warnings encountered when
+   *                      validating the source before creating the RuleElement
+   * @param errorKeys   - i18n keys of potential errors encountered when
+   *                      validating the source before creating the RuleElement
    */
   constructor(
     source: RuleElementSource,
     public item: WvItem,
-    errors: string[] = []
+    warningKeys: string[] = [],
+    errorKeys: string[] = []
   ) {
-    this.errorKeys = errors;
+    this.warningKeys = warningKeys;
+    this.errorKeys = errorKeys;
     this.source = source;
 
     this.validateSource();
   }
+
+  /** Messages keys for warnings that were encountered in the source */
+  warningKeys: string[];
 
   /** Messages keys for errors that were encountered in the source */
   errorKeys: string[];
@@ -51,9 +58,19 @@ export default class RuleElement {
     return this.errorKeys.length > 0;
   }
 
+  /** Whether the RuleElement has warnings */
+  hasWarnings(): boolean {
+    return this.warningKeys.length > 0;
+  }
+
   /** Whether the RuleElement is new */
   isNew(): boolean {
     return false;
+  }
+
+  /** Whether something prevents this rule element from modifying the owner. */
+  shouldNotModify(): boolean {
+    return this.hasErrors() || !this.source.enabled;
   }
 
   /**
@@ -62,8 +79,7 @@ export default class RuleElement {
    * @param doc - the Document to modify
    */
   onPrepareEmbeddedEntities(doc: Actor | Item): void {
-    if (this.hasErrors()) return;
-    if (!this.source.enabled) return;
+    if (this.shouldNotModify()) return;
 
     this._onPrepareEmbeddedEntities(doc);
   }

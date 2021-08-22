@@ -20,9 +20,37 @@
         display: flex
         margin-bottom: common.$spacing-distance
 
-        .rule-element-controls
-          margin-left: auto
-          width: min-content
+        > *:not(:first-child)
+          margin-left: common.$spacing-distance
+
+        h4
+          margin-right: auto
+
+        .rule-element-icons
+          align-items: center
+          display: flex
+
+          > *:not(:first-child)
+            margin-left: common.$spacing-distance
+
+          .rule-element-new-icon
+            color: common.$color-new
+
+          .rule-element-error-icon
+            color: common.$color-error
+
+          .rule-element-warning-icon
+            color: common.$color-warning
 
       .rule-element-source
         resize: none
+
+      .rule-element-errors
+
+        .fas
+          color: common.$color-error
+
+      .rule-element-warnings
+
+        .fas
+          color: common.$color-warning

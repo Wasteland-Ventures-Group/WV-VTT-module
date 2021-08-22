@@ -27,7 +27,9 @@ export default class WvItemSheet extends ItemSheet<
         elements: data.data.data.rules.elements.map((rule) => {
           return {
             errorKeys: rule.errorKeys,
+            warningKeys: rule.warningKeys,
             hasErrors: rule.hasErrors(),
+            hasWarnings: rule.hasWarnings(),
             isNew: rule.isNew(),
             source: rule.source
           };
@@ -52,7 +54,9 @@ export interface SheetData extends ItemSheet.Data {
 
 export interface SheetDataRuleElement {
   errorKeys?: string[];
+  warningKeys?: string[];
   hasErrors?: boolean;
+  hasWarnings?: boolean;
   isNew?: boolean;
   source?: RuleElementSource;
 }

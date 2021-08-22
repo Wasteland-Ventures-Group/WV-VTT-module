@@ -58,7 +58,8 @@ export default class RuleElements {
     item: WvItem
   ): RuleElement {
     const newSource = this.newRuleElementSource();
-    const errors: string[] = [];
+    const warningKeys: string[] = [];
+    const errorKeys: string[] = [];
 
     let constructor: ConstructorOf<RuleElement>;
     let type: string;
@@ -67,12 +68,12 @@ export default class RuleElements {
         constructor = RULE_ELEMENTS[data.type];
       } else {
         constructor = RuleElement;
-        errors.push("wv.ruleEngine.errors.semantic.type.notFound");
+        errorKeys.push("wv.ruleEngine.errors.semantic.type.notFound");
       }
       type = data.type;
     } else {
       constructor = RULE_ELEMENTS[newSource.type];
-      errors.push("wv.ruleEngine.errors.semantic.type.wrongType");
+      warningKeys.push("wv.ruleEngine.errors.semantic.type.wrongType");
       type = newSource.type;
     }
 
@@ -80,35 +81,35 @@ export default class RuleElements {
     if (typeof data.enabled === "boolean") enabled = data.enabled;
     else {
       enabled = newSource.enabled;
-      errors.push("wv.ruleEngine.errors.semantic.enabled.wrongType");
+      warningKeys.push("wv.ruleEngine.errors.semantic.enabled.wrongType");
     }
 
     let label: string;
     if (typeof data.label === "string") label = data.label;
     else {
       label = newSource.label;
-      errors.push("wv.ruleEngine.errors.semantic.label.wrongType");
+      warningKeys.push("wv.ruleEngine.errors.semantic.label.wrongType");
     }
 
     let priority: number;
     if (typeof data.priority === "number") priority = data.priority;
     else {
       priority = newSource.priority;
-      errors.push("wv.ruleEngine.errors.semantic.priority.wrongType");
+      warningKeys.push("wv.ruleEngine.errors.semantic.priority.wrongType");
     }
 
     let selector: string;
     if (typeof data.selector === "string") selector = data.selector;
     else {
       selector = newSource.selector;
-      errors.push("wv.ruleEngine.errors.semantic.selector.wrongType");
+      warningKeys.push("wv.ruleEngine.errors.semantic.selector.wrongType");
     }
 
     let value: number;
     if (typeof data.value === "number") value = data.value;
     else {
       value = newSource.value;
-      errors.push("wv.ruleEngine.errors.semantic.value.wrongType");
+      warningKeys.push("wv.ruleEngine.errors.semantic.value.wrongType");
     }
 
     const source: RuleElementSource = {
@@ -120,7 +121,7 @@ export default class RuleElements {
       value: value
     };
 
-    return new constructor(source, item, errors);
+    return new constructor(source, item, warningKeys, errorKeys);
   }
 }
 

@@ -48,8 +48,8 @@ $spacing-distance: 0.5rem
         left: 1ch
 
   .standard-grid-gaps
-    column-gap: 1rem
-    row-gap: .5rem
+    column-gap: calc(#{$spacing-distance} * 2)
+    row-gap: $spacing-distance
 
   $tab-border-width: 1px
 
@@ -79,4 +79,11 @@ $spacing-distance: 0.5rem
       top-width: 0
 
     .tab
-      padding: 0.5rem
+      padding: $spacing-distance
+
+  button.control
+    height: 26px
+    margin:
+      left: 0
+      right: 0
+    width: 26px

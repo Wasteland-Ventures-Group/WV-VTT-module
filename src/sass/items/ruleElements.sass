@@ -1,0 +1,28 @@
+@use "../common.sass" as common
+
+.rule-elements
+
+  .rule-element-list
+
+    .rule-element:not(:last-child)
+      margin-bottom: common.$spacing-distance
+
+    .rule-element
+      background-color: common.$shade-lighter
+      border:
+        radius: 3px
+        style: solid
+        width: 1px
+      box-shadow: 0 0 5px common.$shade-darker
+      padding: common.$spacing-distance
+
+      .rule-element-header
+        display: flex
+        margin-bottom: common.$spacing-distance
+
+        .rule-element-controls
+          margin-left: auto
+          width: min-content
+
+      .rule-element-source
+        resize: none

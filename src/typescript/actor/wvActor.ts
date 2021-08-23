@@ -117,9 +117,7 @@ export default class WvActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
     if (options?.whisperToGms) {
-      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm")
-        .map((user) => user.id)
-        .filter(present);
+      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm");
     }
 
     new Roll(
@@ -144,9 +142,7 @@ export default class WvActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
     if (options?.whisperToGms) {
-      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm")
-        .map((user) => user.id)
-        .filter(present);
+      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm");
     }
 
     new Roll(Formulator.skill(skillTotal).modify(options?.modifier).toString())

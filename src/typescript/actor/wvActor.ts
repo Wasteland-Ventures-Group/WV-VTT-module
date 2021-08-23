@@ -10,10 +10,11 @@ import {
 } from "../data/actorData.js";
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import Formulator from "../formulator.js";
-import { getGame, getGmIds } from "../foundryHelpers.js";
+import { getGame } from "../foundryHelpers.js";
 import { boundsSettingNames } from "../settings.js";
 import WvI18n from "../wvI18n.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
+import { present } from "../helpers.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
@@ -116,7 +117,9 @@ export default class WvActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
     if (options?.whisperToGms) {
-      msgOptions["whisper"] = getGmIds();
+      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm")
+        .map((user) => user.id)
+        .filter(present);
     }
 
     new Roll(
@@ -141,7 +144,9 @@ export default class WvActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
     if (options?.whisperToGms) {
-      msgOptions["whisper"] = getGmIds();
+      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm")
+        .map((user) => user.id)
+        .filter(present);
     }
 
     new Roll(Formulator.skill(skillTotal).modify(options?.modifier).toString())

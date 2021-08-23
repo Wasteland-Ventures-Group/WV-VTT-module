@@ -14,7 +14,7 @@ export async function migrateActors(): Promise<void> {
 
   for (const actor of game.actors) {
     try {
-      const updateData = migrateActorData(actor.data);
+      const updateData = migrateActorData(actor.toObject());
       if (!foundry.utils.isObjectEmpty(updateData)) {
         console.log(`Migrating Actor ${actor.name}`);
         await actor.update(updateData, { enforceTypes: false });
@@ -28,7 +28,7 @@ export async function migrateActors(): Promise<void> {
 }
 
 function migrateActorData(
-  oldActorData: foundry.data.ActorData
+  oldActorData: foundry.data.ActorData["_source"]
 ): Record<string, unknown> {
   const updateData = {};
 

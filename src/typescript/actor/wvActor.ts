@@ -14,7 +14,6 @@ import { getGame } from "../foundryHelpers.js";
 import { boundsSettingNames } from "../settings.js";
 import WvI18n from "../wvI18n.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
-import { present } from "../helpers.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 

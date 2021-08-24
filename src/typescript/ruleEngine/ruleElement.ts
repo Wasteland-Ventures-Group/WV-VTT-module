@@ -97,7 +97,8 @@ export default class RuleElement {
    * overridden by subclasses.
    * @param doc - the Document to modify
    */
-  protected _onPrepareEmbeddedEntities(doc: Actor | Item): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected _onPrepareEmbeddedEntities(_doc: Actor | Item): void {
     // NOOP
   }
 }

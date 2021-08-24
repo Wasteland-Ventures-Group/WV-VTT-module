@@ -4,12 +4,7 @@ import { Rules } from "./rules.js";
 
 /** The Effect Item data-properties data */
 export class EffectDataPropertiesData extends EffectDataSourceData {
-  constructor(
-    /** The rule elements of the effect. */
-    public rules: Rules = new Rules()
-  ) {
-    super(rules);
-  }
+  override rules: Rules = new Rules();
 }
 
 /** The Effect Item data-properties */
@@ -19,15 +14,7 @@ export interface EffectDataProperties {
 }
 
 export class ItemDataPropertiesData extends ItemDataSourceData {
-  constructor(
-    /** The rules of the item */
-    public rules: Rules = new Rules(),
-
-    /** The value of the item in caps */
-    public value: number = 0
-  ) {
-    super(rules, value);
-  }
+  override rules: Rules = new Rules();
 }
 
 export interface ItemDataProperties {

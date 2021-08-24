@@ -59,10 +59,8 @@ interface AerialManeuverDataSource {
 }
 
 export class EffectDataSourceData implements TemplateDocumentType {
-  constructor(
-    /** The rules of the Effect. */
-    public rules: DbRules = new DbRules()
-  ) {}
+  /** The rules of the Effect. */
+  rules = new DbRules();
 
   /** @override */
   getTypeName(): string {
@@ -77,13 +75,11 @@ interface EffectDataSource {
 }
 
 export class ItemDataSourceData implements TemplateDocumentType {
-  constructor(
-    /** TThe rules of the Item */
-    public rules: DbRules = new DbRules(),
+  /** The rules of the Item */
+  rules = new DbRules();
 
-    /** The value of the item in caps */
-    public value: number = 0
-  ) {}
+  /** The value of the item in caps */
+  value = 0;
 
   /** @override */
   getTypeName(): string {

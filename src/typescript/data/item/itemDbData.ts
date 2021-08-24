@@ -1,6 +1,7 @@
 import type { TemplateDocumentType } from "../common.js";
 import { TYPES } from "../../constants.js";
 import { DbRules } from "./rules.js";
+import PhysicalItem from "./mixins/physicalItem.js";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface PastDataSourceData {}
@@ -74,23 +75,22 @@ interface EffectDataSource {
   data: EffectDataSourceData;
 }
 
-export class ItemDataSourceData implements TemplateDocumentType {
-  /** The rules of the Item */
-  rules = new DbRules();
+export const ItemDataSourceData = PhysicalItem(
+  class ItemDataSourceDataBase implements TemplateDocumentType {
+    /** The rules of the Item */
+    rules = new DbRules();
 
-  /** The value of the item in caps */
-  value = 0;
-
-  /** @override */
-  getTypeName(): string {
-    return TYPES.ITEM.ITEM;
+    /** @override */
+    getTypeName(): string {
+      return TYPES.ITEM.ITEM;
+    }
   }
-}
+);
 
 /** The Wasteland Ventures item data source */
 interface ItemDataSource {
   type: typeof TYPES.ITEM.ITEM;
-  data: ItemDataSourceData;
+  data: typeof ItemDataSourceData;
 }
 
 /** A union for data sources of all Item types */

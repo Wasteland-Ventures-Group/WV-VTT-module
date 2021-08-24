@@ -1,6 +1,7 @@
 import type { TemplateDocumentType } from "../common.js";
 import { TYPES } from "../../constants.js";
 import { DbRules } from "./rules.js";
+import type { RangedWeaponDataSource } from "./physicalItemDbData.js";
 import PhysicalItem from "./mixins/physicalItem.js";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -75,33 +76,15 @@ interface EffectDataSource {
   data: EffectDataSourceData;
 }
 
-export const ItemDataSourceData = PhysicalItem(
-  class ItemDataSourceDataBase implements TemplateDocumentType {
-    /** The rules of the Item */
-    rules = new DbRules();
-
-    /** @override */
-    getTypeName(): string {
-      return TYPES.ITEM.ITEM;
-    }
-  }
-);
-
-/** The Wasteland Ventures item data source */
-interface ItemDataSource {
-  type: typeof TYPES.ITEM.ITEM;
-  data: typeof ItemDataSourceData;
-}
-
 /** A union for data sources of all Item types */
 export type WvItemDataSource =
-  | PastDataSource
-  | QuirkDataSource
-  | TraitDataSource
-  | PerkDataSource
-  | SpellDataSource
-  | MarkDataSource
-  | SchematicDataSource
   | AerialManeuverDataSource
   | EffectDataSource
-  | ItemDataSource;
+  | MarkDataSource
+  | PastDataSource
+  | PerkDataSource
+  | QuirkDataSource
+  | RangedWeaponDataSource
+  | SchematicDataSource
+  | SpellDataSource
+  | TraitDataSource;

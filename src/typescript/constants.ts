@@ -49,6 +49,7 @@ export const TYPES = {
     PAST: "past",
     PERK: "perk",
     QUIRK: "quirk",
+    RANGED_WEAPON: "rangedWeapon",
     SCHEMATIC: "schematic",
     SPELL: "spell",
     TRAIT: "trait"

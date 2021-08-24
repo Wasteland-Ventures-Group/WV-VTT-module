@@ -1,5 +1,6 @@
 import type { TYPES } from "../../constants.js";
-import { EffectDataSourceData, ItemDataSourceData } from "./itemDbData.js";
+import { EffectDataSourceData } from "./itemDbData.js";
+import { RangedWeaponDataSourceData } from "./physicalItemDbData.js";
 import { Rules } from "./rules.js";
 
 /** The Effect Item data-properties data */
@@ -13,14 +14,18 @@ export interface EffectDataProperties {
   data: EffectDataPropertiesData;
 }
 
-export class ItemDataPropertiesData extends ItemDataSourceData {
+/** The RangedWeapon Item data-properties data */
+export class RangedWeaponDataPropertiesData extends RangedWeaponDataSourceData {
   override rules: Rules = new Rules();
 }
 
-export interface ItemDataProperties {
-  type: typeof TYPES.ITEM.ITEM;
-  data: ItemDataPropertiesData;
+/** The RangedWeapon Item data-properties */
+export interface RangedWeaponDataProperties {
+  type: typeof TYPES.ITEM.RANGED_WEAPON;
+  data: RangedWeaponDataPropertiesData;
 }
 
 /** A union for the data properties of all Item types */
-export type WvItemDataProperties = EffectDataProperties | ItemDataProperties;
+export type WvItemDataProperties =
+  | EffectDataProperties
+  | RangedWeaponDataProperties;

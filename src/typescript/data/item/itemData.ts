@@ -1,17 +1,6 @@
 import type { TYPES } from "../../constants.js";
-import type RuleElement from "../../ruleEngine/ruleElement.js";
-import {
-  EffectDataSourceData,
-  ItemDataSourceData,
-  Rules as DbRules
-} from "./itemDbData.js";
-
-/** A RuleElements container, that can be used in different Items. */
-export class Rules extends DbRules {
-  constructor(public elements: RuleElement[] = []) {
-    super();
-  }
-}
+import { EffectDataSourceData, ItemDataSourceData } from "./itemDbData.js";
+import { Rules } from "./rules.js";
 
 /** The Effect Item data-properties data */
 export class EffectDataPropertiesData extends EffectDataSourceData {

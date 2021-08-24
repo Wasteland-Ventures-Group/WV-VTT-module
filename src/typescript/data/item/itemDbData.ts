@@ -1,6 +1,6 @@
-import type { TemplateDocumentType } from "./common.js";
-import type { RuleElementSource } from "../ruleEngine/ruleElement.js";
-import { TYPES } from "../constants.js";
+import type { TemplateDocumentType } from "../common.js";
+import type { RuleElementSource } from "../../ruleEngine/ruleElement.js";
+import { TYPES } from "../../constants.js";
 
 /** A RuleElements DB container, that can be used in different Items. */
 export class Rules {

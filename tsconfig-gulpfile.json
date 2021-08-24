@@ -13,7 +13,7 @@
     "gulpfile.ts",
     "./src/typescript/data/foundryCommon.ts",
     "./src/typescript/data/common.ts",
-    "./src/typescript/data/actorDbData.ts",
-    "./src/typescript/data/itemDbData.ts"
+    "./src/typescript/data/actor/actorDbData.ts",
+    "./src/typescript/data/item/itemDbData.ts"
   ]
 }

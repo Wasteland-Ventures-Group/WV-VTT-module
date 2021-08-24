@@ -111,8 +111,8 @@ export function template(cb: fs.NoParamCallback): void {
   // We somehow have to get TS to reimport the files each time. Currently they
   // are only loaded the first time and then cached.
   Promise.all([
-    import("./src/typescript/data/actorDbData.js"),
-    import("./src/typescript/data/itemDbData.js")
+    import("./src/typescript/data/actor/actorDbData.js"),
+    import("./src/typescript/data/item/itemDbData.js")
   ])
     .then(([actorDbData, itemDbData]) => {
       const actorDocumentTypes = [

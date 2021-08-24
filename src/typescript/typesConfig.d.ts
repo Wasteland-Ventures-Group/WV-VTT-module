@@ -1,8 +1,8 @@
 import WvActor from "./actor/wvActor.js";
-import { WvActorDataProperties } from "./data/actorData.js";
-import { WvActorDataSource } from "./data/actorDbData.js";
-import { WvItemDataProperties } from "./data/itemData.js";
-import { WvItemDataSource } from "./data/itemDbData.js";
+import { WvActorDataProperties } from "./data/actor/actorData.js";
+import { WvActorDataSource } from "./data/actor/actorDbData.js";
+import { WvItemDataProperties } from "./data/item/itemData.js";
+import { WvItemDataSource } from "./data/item/itemDbData.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvItem from "./item/wvItem.js";
 

@@ -1,13 +1,13 @@
 // vim: foldmethod=marker
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
-import type { PlayerCharacterDataSource } from "./../data/actorDbData.js";
+import type { PlayerCharacterDataSource } from "./../data/actor/actorDbData.js";
 import type { Resource } from "../data/foundryCommon.js";
 import {
   Resistances,
   SecondaryStatistics,
   Skill,
   Skills
-} from "../data/actorData.js";
+} from "../data/actor/actorData.js";
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";

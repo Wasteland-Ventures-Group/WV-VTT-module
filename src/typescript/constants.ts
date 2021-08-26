@@ -52,7 +52,8 @@ export const TYPES = {
     RANGED_WEAPON: "rangedWeapon",
     SCHEMATIC: "schematic",
     SPELL: "spell",
-    TRAIT: "trait"
+    TRAIT: "trait",
+    WEAPON: "weapon"
   }
 } as const;
 

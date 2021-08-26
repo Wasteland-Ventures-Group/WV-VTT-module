@@ -112,16 +112,16 @@ export function template(cb: fs.NoParamCallback): void {
   // are only loaded the first time and then cached.
   Promise.all([
     import("./src/typescript/data/actor/actorDbData.js"),
-    import("./src/typescript/data/item/itemDbData.js"),
-    import("./src/typescript/data/item/physicalItemDbData.js")
+    import("./src/typescript/data/item/effect/source.js"),
+    import("./src/typescript/data/item/weapon/source.js")
   ])
-    .then(([actorDbData, itemDbData, physicalItemDbData]) => {
+    .then(([actorDbData, effectSource, weaponSource]) => {
       const actorDocumentTypes = [
         new actorDbData.PlayerCharacterDataSourceData()
       ];
       const itemDocumentTypes = [
-        new itemDbData.EffectDataSourceData(),
-        new physicalItemDbData.RangedWeaponDataSourceData()
+        new effectSource.EffectDataSourceData(),
+        new weaponSource.WeaponDataSourceData()
       ];
       fs.mkdir(distWvPrefix, { recursive: true }, () => {
         fs.writeFile(

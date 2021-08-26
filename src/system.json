@@ -6,7 +6,7 @@
   "templateVersion": 2,
   "author": "Kai Moschcau <mail@kmoschcau.de>",
   "minimumCoreVersion": "0.8.8",
-  "compatibleCoreVersion": "0.8.8",
+  "compatibleCoreVersion": "0.8.9",
   "scripts": [],
   "esmodules": ["modules/wastelandVentures.js"],
   "styles": ["css/wasteland-ventures.css"],

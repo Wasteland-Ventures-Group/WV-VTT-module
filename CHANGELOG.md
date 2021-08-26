@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - a schema for the language files
 - add a rule engine for items and basic modifier items ([#6](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/1))
 
+### Changed
+
+- update the compatible core version to Foundry VTT 0.8.9
+
 ## [0.3.3] - 2021-08-08
 
 ### Added

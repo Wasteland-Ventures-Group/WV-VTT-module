@@ -6,6 +6,7 @@ import typescript from "gulp-typescript";
 import { CONSTANTS } from "./src/typescript/constants.js";
 import distZipTask from "./gulp/distZip.js";
 import templateTask from "./gulp/template.js";
+import compendiumSchemasTask from "./gulp/compendiumSchemas.js";
 
 // = Path constants ============================================================
 
@@ -107,6 +108,10 @@ systemWatch.description = "Watch system.json for changes and copy it";
 // = template.json tasks =======================================================
 
 export const template = templateTask;
+
+// = schema tasks ==============================================================
+
+export const compSchemas = compendiumSchemasTask;
 
 // = General tasks =============================================================
 

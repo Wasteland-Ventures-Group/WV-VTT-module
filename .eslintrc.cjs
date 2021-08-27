@@ -81,7 +81,15 @@ module.exports = {
             }
           }
         ]
-      }
+      },
+      overrides: [
+        {
+          files: ["./src/typescript/data/**/*.ts"],
+          rules: {
+            "@typescript-eslint/no-inferrable-types": "off"
+          }
+        }
+      ]
     },
     {
       extends: ["plugin:@typescript-eslint/recommended"],

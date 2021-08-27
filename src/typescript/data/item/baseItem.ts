@@ -8,13 +8,13 @@ export default abstract class BaseItem implements TemplateDocumentType {
    * player can give their specific instance of an item, but rather the name of
    * the item "prototype".
    */
-  name = "";
+  name: string = "";
 
   /** The description of the item in the Wasteland Wares list. */
-  description = "";
+  description: string = "";
 
   /** The rules of the item. */
-  rules = new DbRules();
+  rules: DbRules = new DbRules();
 
   /** @override */
   abstract getTypeName(): string;

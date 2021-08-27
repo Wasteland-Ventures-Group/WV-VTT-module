@@ -1,4 +1,4 @@
-import fs from "fs";
+import { promises as fs } from "fs";
 import gulp from "gulp";
 import * as tsj from "ts-json-schema-generator";
 import type { Config } from "ts-json-schema-generator";
@@ -23,20 +23,20 @@ const schemaBasePaths: SchemaConfig[] = [
   }
 ];
 
-export default function compendiumSchemasTask(cb: () => void): void {
-  schemaBasePaths.forEach((config) => {
-    createSchema(
-      {
-        skipTypeCheck: true,
-        tsconfig: tsConfigPath,
-        ...config
-      },
-      config.outputBasePath,
-      config.fileName
-    );
-  });
-
-  cb();
+export default async function compendiumSchemasTask(): Promise<void[]> {
+  return Promise.all(
+    schemaBasePaths.map((config) => {
+      return createSchema(
+        {
+          skipTypeCheck: true,
+          tsconfig: tsConfigPath,
+          ...config
+        },
+        config.outputBasePath,
+        config.fileName
+      );
+    })
+  );
 }
 compendiumSchemasTask.description =
   "Generate the JSON schemas for the compendiums.";
@@ -47,17 +47,16 @@ export function compendiumSchemasWatchTask(): void {
 compendiumSchemasWatchTask.description =
   "Watch the data files and run the compSchemas task on change";
 
-function createSchema(
+async function createSchema(
   config: Config,
   outputBasePath: string,
   fileName: string
-): void {
-  fs.mkdir(outputBasePath, { recursive: true }, () => {
-    fs.writeFileSync(
-      `${outputBasePath}/${fileName}.json`,
-      JSON.stringify(tsj.createGenerator(config).createSchema(config.type))
-    );
-  });
+): Promise<void> {
+  await fs.mkdir(outputBasePath, { recursive: true });
+  return fs.writeFile(
+    `${outputBasePath}/${fileName}.json`,
+    JSON.stringify(tsj.createGenerator(config).createSchema(config.type))
+  );
 }
 
 interface SchemaConfig {

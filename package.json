@@ -19,6 +19,7 @@
     "@types/gulp": "^4.0.8",
     "@types/gulp-dart-sass": "^1.0.0",
     "@types/gulp-zip": "^4.0.1",
+    "@types/node": "^16.7.3",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "del": "^6.0.0",

@@ -1,35 +1,28 @@
-import fs from "fs";
+import { promises as fs } from "fs";
 import log from "fancy-log";
 import { distWvPrefix, templateOutPath } from "../gulpfile.js";
 import type { TemplateDocumentType } from "../src/typescript/data/common.js";
 
-export default function templateTask(cb: () => void): void {
+export default async function templateTask(): Promise<void> {
   // We somehow have to get TS to reimport the files each time. Currently they
   // are only loaded the first time and then cached.
-  Promise.all([
+  const imports = Promise.all([
     import("../src/typescript/data/actor/actorDbData.js"),
     import("../src/typescript/data/item/effect/source.js"),
     import("../src/typescript/data/item/weapon/source.js")
-  ])
-    .then(([actorDbData, effectSource, weaponSource]) => {
-      const actorDocumentTypes = [
-        new actorDbData.PlayerCharacterDataSourceData()
-      ];
-      const itemDocumentTypes = [
-        new effectSource.EffectDataSourceData(),
-        new weaponSource.WeaponDataSourceData()
-      ];
-      fs.mkdir(distWvPrefix, { recursive: true }, () => {
-        fs.writeFile(
-          templateOutPath,
-          JSON.stringify(
-            createTemplateObject(actorDocumentTypes, itemDocumentTypes)
-          ),
-          cb
-        );
-      });
-    })
-    .catch((reason) => log(`template generation failed: ${reason}`));
+  ]);
+  await fs.mkdir(distWvPrefix, { recursive: true });
+  const [actorDbData, effectSource, weaponSource] = await imports;
+
+  const actorDocumentTypes = [new actorDbData.PlayerCharacterDataSourceData()];
+  const itemDocumentTypes = [
+    new effectSource.EffectDataSourceData(),
+    new weaponSource.WeaponDataSourceData()
+  ];
+  return fs.writeFile(
+    templateOutPath,
+    JSON.stringify(createTemplateObject(actorDocumentTypes, itemDocumentTypes))
+  );
 }
 templateTask.description = "Generate the template.json file";
 

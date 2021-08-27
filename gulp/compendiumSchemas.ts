@@ -52,11 +52,10 @@ function createSchema(
   outputBasePath: string,
   fileName: string
 ): void {
-  const schema = tsj.createGenerator(config).createSchema(config.type);
   fs.mkdir(outputBasePath, { recursive: true }, () => {
     fs.writeFileSync(
       `${outputBasePath}/${fileName}.json`,
-      JSON.stringify(schema, null, 2)
+      JSON.stringify(tsj.createGenerator(config).createSchema(config.type))
     );
   });
 }

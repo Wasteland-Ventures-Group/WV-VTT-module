@@ -1,12 +1,11 @@
-import del from "del";
-import log from "fancy-log";
-import fs from "fs";
-import gulp from "gulp";
 import dartSass from "gulp-dart-sass";
+import del from "del";
+import gulp from "gulp";
+import log from "fancy-log";
 import typescript from "gulp-typescript";
-import zip from "gulp-zip";
-
-import type { TemplateDocumentType } from "./src/typescript/data/common.js";
+import { CONSTANTS } from "./src/typescript/constants.js";
+import distZipTask from "./gulp/distZip.js";
+import templateTask from "./gulp/template.js";
 
 // = Path constants ============================================================
 
@@ -16,8 +15,8 @@ import type { TemplateDocumentType } from "./src/typescript/data/common.js";
 // with atomic write (like Vim) and only trigger on the first change.
 // See: https://github.com/gulpjs/gulp/issues/1322
 
-const distPrefix = "./dist";
-const distWvPrefix = `${distPrefix}/wasteland-ventures`;
+export const distPrefix = "./dist";
+export const distWvPrefix = `${distPrefix}/${CONSTANTS.systemId}`;
 
 const handlebarsPath = "./src/handlebars/**/*.hbs";
 const handlebarsOutPath = `${distWvPrefix}/handlebars`;
@@ -25,7 +24,7 @@ const handlebarsOutPath = `${distWvPrefix}/handlebars`;
 const langPath = "./src/lang/*.json";
 const langOutPath = `${distWvPrefix}/lang`;
 
-const sassRoot = "./src/sass/wasteland-ventures.sass";
+const sassRoot = `./src/sass/${CONSTANTS.systemId}.sass`;
 const sassPath = "./src/sass/**/*.sass";
 const cssOutPath = `${distWvPrefix}/css`;
 
@@ -36,7 +35,7 @@ const systemPath = "./src/system.json";
 const systemWatchPath = "./src/[s-s]ystem.json";
 const systemOutPath = distWvPrefix;
 
-const templateOutPath = `${distWvPrefix}/template.json`;
+export const templateOutPath = `${distWvPrefix}/template.json`;
 
 // = Handlebars copy ===========================================================
 
@@ -107,35 +106,7 @@ systemWatch.description = "Watch system.json for changes and copy it";
 
 // = template.json tasks =======================================================
 
-export function template(cb: () => void): void {
-  // We somehow have to get TS to reimport the files each time. Currently they
-  // are only loaded the first time and then cached.
-  Promise.all([
-    import("./src/typescript/data/actor/actorDbData.js"),
-    import("./src/typescript/data/item/effect/source.js"),
-    import("./src/typescript/data/item/weapon/source.js")
-  ])
-    .then(([actorDbData, effectSource, weaponSource]) => {
-      const actorDocumentTypes = [
-        new actorDbData.PlayerCharacterDataSourceData()
-      ];
-      const itemDocumentTypes = [
-        new effectSource.EffectDataSourceData(),
-        new weaponSource.WeaponDataSourceData()
-      ];
-      fs.mkdir(distWvPrefix, { recursive: true }, () => {
-        fs.writeFile(
-          templateOutPath,
-          JSON.stringify(
-            createTemplateObject(actorDocumentTypes, itemDocumentTypes)
-          ),
-          cb
-        );
-      });
-    })
-    .catch((reason) => log(`template generation failed: ${reason}`));
-}
-template.description = "Generate the template.json file";
+export const template = templateTask;
 
 // = General tasks =============================================================
 
@@ -158,13 +129,7 @@ clean.description = "Clean the dist dir";
 
 // = Distribution tasks ========================================================
 
-export function distZip(): NodeJS.ReadWriteStream {
-  return gulp
-    .src(`${distPrefix}/**`)
-    .pipe(zip(`wasteland-ventures-${getVersionNumber()}.zip`))
-    .pipe(gulp.dest(distPrefix));
-}
-distZip.description = "Zip the distribution files";
+export const distZip = distZipTask;
 
 export const buildZip = gulp.series(pack, distZip);
 buildZip.description = "Pack and zip the distribution files";
@@ -173,46 +138,4 @@ buildZip.description = "Pack and zip the distribution files";
 
 function logChange(path: string) {
   log(`${path} changed`);
-}
-
-function getVersionNumber(): string {
-  let systemJson: string;
-  if (fs.existsSync(`${distWvPrefix}/system.json`)) {
-    systemJson = `${distWvPrefix}/system.json`;
-  } else {
-    systemJson = "./src/system.json";
-  }
-  return JSON.parse(fs.readFileSync(systemJson).toString())["version"];
-}
-
-interface DocumentTemplates extends Record<string, unknown> {
-  types: string[];
-}
-
-interface Template {
-  Actor: DocumentTemplates;
-  Item: DocumentTemplates;
-}
-
-function createTemplateObject(
-  actorDocumentTypes: TemplateDocumentType[],
-  itemDocumentTypes: TemplateDocumentType[]
-) {
-  const template: Template = {
-    Actor: {
-      types: []
-    },
-    Item: {
-      types: []
-    }
-  };
-  actorDocumentTypes.forEach((actorDocumentType) => {
-    template.Actor.types.push(actorDocumentType.getTypeName());
-    template.Actor[actorDocumentType.getTypeName()] = actorDocumentType;
-  });
-  itemDocumentTypes.forEach((itemDocumentType) => {
-    template.Item.types.push(itemDocumentType.getTypeName());
-    template.Item[itemDocumentType.getTypeName()] = itemDocumentType;
-  });
-  return template;
 }

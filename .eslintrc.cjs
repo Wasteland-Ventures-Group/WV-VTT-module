@@ -11,7 +11,7 @@ module.exports = {
         browser: true
       },
       extends: ["plugin:@typescript-eslint/recommended"],
-      files: ["src/typescript/**/*.ts"],
+      files: ["./src/typescript/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./tsconfig.json",
@@ -85,7 +85,7 @@ module.exports = {
     },
     {
       extends: ["plugin:@typescript-eslint/recommended"],
-      files: ["gulpfile.ts"],
+      files: ["./gulpfile.ts", "./gulp/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
         project: "./tsconfig-gulpfile.json",

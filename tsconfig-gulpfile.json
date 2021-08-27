@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "importsNotUsedAsValues": "error",
     "lib": ["ES2020"],
     "module": "ES2020",
     "moduleResolution": "Node",
@@ -10,10 +11,12 @@
     "types": ["@league-of-foundry-developers/foundry-vtt-types"]
   },
   "files": [
-    "gulpfile.ts",
+    "./gulpfile.ts",
+    "./src/typescript/constants.ts",
     "./src/typescript/data/foundryCommon.ts",
     "./src/typescript/data/common.ts",
     "./src/typescript/data/actor/actorDbData.ts",
     "./src/typescript/data/item/itemDbData.ts"
-  ]
+  ],
+  "include": ["./gulp/**/*.ts"]
 }

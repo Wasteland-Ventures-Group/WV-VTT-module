@@ -1,0 +1,53 @@
+{
+  "_id": "0000000000000001",
+  "name": "Gretta M9",
+  "type": "weapon",
+  "img": "icons/svg/item-bag.svg",
+  "data": {
+    "name": "Gretta M9",
+    "description": "Standard firearm of griffin mercenaries, especially Talon Mercs. Reliable and cheap",
+    "attacks": [
+      {
+        "name": "single",
+        "description": "A single shot attack",
+        "ap": 4,
+        "damage": {
+          "base": 1,
+          "die": 2,
+          "dieRange": false
+        },
+        "dtReduction": 0,
+        "rounds": 1,
+        "splash": "TODO"
+      }
+    ],
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 12
+    },
+    "rules": {
+      "sources": []
+    },
+    "strengthRequirement": 2,
+    "value": 100,
+    "weight": 1
+  },
+  "effects": [],
+  "flags": {}
+}

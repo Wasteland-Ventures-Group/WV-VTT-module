@@ -1,7 +1,9 @@
 import fs from "fs";
+import gulp from "gulp";
 import * as tsj from "ts-json-schema-generator";
 import type { Config } from "ts-json-schema-generator";
 import { WeaponDataSourceData } from "../src/typescript/data/item/weapon/source.js";
+import { logChange } from "../gulpfile.js";
 
 // The paths here are relative to the project root
 const sourceBasePath = "./src/typescript/data";
@@ -9,6 +11,8 @@ const itemSourceBasePath = `${sourceBasePath}/item`;
 const tsConfigPath = "./tsconfig-schemas.json";
 const outputBasePath = "./src/schemas";
 const itemOutputBasePath = `${outputBasePath}/item`;
+
+const watchPath = "../src/typescript/data/**/*.ts";
 
 const schemaBasePaths: SchemaConfig[] = [
   {
@@ -36,6 +40,12 @@ export default function compendiumSchemasTask(cb: () => void): void {
 }
 compendiumSchemasTask.description =
   "Generate the JSON schemas for the compendiums.";
+
+export function compendiumSchemasWatchTask(): void {
+  gulp.watch(watchPath, compendiumSchemasTask).on("change", logChange);
+}
+compendiumSchemasWatchTask.description =
+  "Watch the data files and run the compSchemas task on change";
 
 function createSchema(
   config: Config,

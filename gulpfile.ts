@@ -6,7 +6,9 @@ import typescript from "gulp-typescript";
 import { CONSTANTS } from "./src/typescript/constants.js";
 import distZipTask from "./gulp/distZip.js";
 import templateTask from "./gulp/template.js";
-import compendiumSchemasTask from "./gulp/compendiumSchemas.js";
+import compendiumSchemasTask, {
+  compendiumSchemasWatchTask
+} from "./gulp/compendiumSchemas.js";
 
 // = Path constants ============================================================
 
@@ -112,6 +114,7 @@ export const template = templateTask;
 // = schema tasks ==============================================================
 
 export const compSchemas = compendiumSchemasTask;
+export const compSchemasWatch = compendiumSchemasWatchTask;
 
 // = General tasks =============================================================
 
@@ -119,6 +122,7 @@ export const pack = gulp.parallel(hbs, lang, sass, ts, system, template);
 pack.description = "Copy and compile all relevant files to the dist dir";
 
 export const watchAll = gulp.parallel(
+  compSchemasWatch,
   hbsWatch,
   langWatch,
   sassWatch,
@@ -141,6 +145,7 @@ buildZip.description = "Pack and zip the distribution files";
 
 // = Common functions ==========================================================
 
-function logChange(path: string) {
+export function logChange(path: string): void {
   log(`${path} changed`);
 }
+logChange.description = "This is just a utility function and not a task.";

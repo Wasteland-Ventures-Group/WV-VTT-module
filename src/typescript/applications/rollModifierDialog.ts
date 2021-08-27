@@ -81,17 +81,17 @@ interface DialogData {
    * The description for the input of the dialog. When undefined, a generic
    * description is used.
    */
-  description?: string;
+  description?: string | undefined;
 
   /**
    * The maximum value for the input.
    */
-  max?: number;
+  max?: number | undefined;
 
   /**
    * The minimum value for the input.
    */
-  min?: number;
+  min?: number | undefined;
 }
 
 /**

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    // "exactOptionalPropertyTypes": true, // TODO: add this ones dependencies support it (node and foundry types)
     "importsNotUsedAsValues": "error",
     "lib": ["DOM", "ES2020"],
     "module": "ES2020",

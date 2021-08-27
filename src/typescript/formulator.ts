@@ -43,7 +43,7 @@ export default class Formulator {
   /**
    * An optional modifier to the roll
    */
-  private modifier?: number;
+  private modifier?: number | undefined;
 
   /**
    * Modify the target number of the roll.

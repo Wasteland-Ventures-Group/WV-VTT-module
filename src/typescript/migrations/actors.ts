@@ -20,8 +20,9 @@ export async function migrateActors(): Promise<void> {
         await actor.update(updateData, { enforceTypes: false });
       }
     } catch (err) {
+      const message = err instanceof Error ? err.message : "Unknown error";
       console.error(
-        `Failed ${CONSTANTS.systemName} system migration for Actor ${actor.name}: ${err.message}`
+        `Failed ${CONSTANTS.systemName} system migration for Actor ${actor.name}: ${message}`
       );
     }
   }

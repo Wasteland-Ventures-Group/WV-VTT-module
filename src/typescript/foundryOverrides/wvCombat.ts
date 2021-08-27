@@ -16,6 +16,13 @@ export default class WvCombat extends Combat {
         console.debug(`The combatant has no actor. id=${c.id}`);
         return;
       }
+      if (typeof c.actor.actionPoints.max !== "number") {
+        console.debug(
+          `The combatant actor's max action points is undefined. id=${c.id}`
+        );
+        return;
+      }
+
       c.actor.update({
         _id: c.actor.id,
         data: { vitals: { actionPoints: { value: c.actor.actionPoints.max } } }

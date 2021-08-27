@@ -107,7 +107,7 @@ systemWatch.description = "Watch system.json for changes and copy it";
 
 // = template.json tasks =======================================================
 
-export function template(cb: fs.NoParamCallback): void {
+export function template(cb: () => void): void {
   // We somehow have to get TS to reimport the files each time. Currently they
   // are only loaded the first time and then cached.
   Promise.all([

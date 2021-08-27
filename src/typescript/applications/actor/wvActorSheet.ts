@@ -259,7 +259,7 @@ interface SheetSkill {
   name?: string;
   ranks?: number;
   special?: string;
-  total?: number;
+  total?: number | undefined;
 }
 
 interface SheetData extends ActorSheet.Data {

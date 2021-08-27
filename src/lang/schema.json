@@ -5,6 +5,7 @@
   "description": "This schema represents the layout of a localization file for the Wasteland Ventures system module for the Foundry virtual tabletop.",
   "type": "object",
   "required": ["wv"],
+  "additionalProperties": false,
   "properties": {
     "wv": {
       "type": "object",
@@ -18,16 +19,19 @@
         "skills",
         "specials"
       ],
+      "additionalProperties": false,
       "properties": {
         "fvttItems": {
           "type": "object",
           "description": "Entries related to Foundry's concept of Items",
           "required": ["actions", "newName", "types"],
+          "additionalProperties": false,
           "properties": {
             "actions": {
               "type": "object",
               "description": "Labels for actions, related to managing Items",
               "required": ["create", "delete", "edit", "toggle"],
+              "additionalProperties": false,
               "properties": {
                 "create": {
                   "type": "string",
@@ -55,6 +59,8 @@
             "types": {
               "type": "object",
               "description": "Labels for different types of system Items",
+              "required": ["effects"],
+              "additionalProperties": false,
               "properties": {
                 "effects": {
                   "$ref": "#/definitions/itemType",
@@ -78,21 +84,25 @@
             "skills",
             "special"
           ],
+          "additionalProperties": false,
           "properties": {
             "ailments": {
               "type": "object",
               "description": "Labels for different ailments",
               "required": ["radiation"],
+              "additionalProperties": false,
               "properties": {
                 "radiation": {
                   "type": "object",
                   "description": "Labels for the radiation ailment",
                   "required": ["absorbed", "effects", "title"],
+                  "additionalProperties": false,
                   "properties": {
                     "absorbed": {
                       "type": "object",
                       "description": "Labels for the absorbed dose",
                       "required": ["title", "unit"],
+                      "additionalProperties": false,
                       "properties": {
                         "title": {
                           "type": "string",
@@ -120,6 +130,7 @@
               "type": "object",
               "description": "Labels for unknown stats",
               "required": ["unknownSpecial", "unknownSkill"],
+              "additionalProperties": false,
               "properties": {
                 "unknownSpecial": {
                   "type": "string",
@@ -135,6 +146,7 @@
               "type": "object",
               "description": "Labels used as placeholders in inputs",
               "required": ["documentName"],
+              "additionalProperties": false,
               "properties": {
                 "documentName": {
                   "type": "string",
@@ -146,6 +158,7 @@
               "type": "object",
               "description": "Labels related to magic",
               "required": ["thaumSpecial"],
+              "additionalProperties": false,
               "properties": {
                 "thaumSpecial": {
                   "type": "string",
@@ -157,6 +170,7 @@
               "type": "object",
               "description": "Labels for resistances",
               "required": ["poison", "radiation", "title"],
+              "additionalProperties": false,
               "properties": {
                 "poison": {
                   "type": "string",
@@ -183,6 +197,7 @@
                 "modifierTitle",
                 "roll"
               ],
+              "additionalProperties": false,
               "properties": {
                 "buttonTitle": {
                   "type": "string",
@@ -225,6 +240,7 @@
                 "level",
                 "strain"
               ],
+              "additionalProperties": false,
               "properties": {
                 "actionPoints": {
                   "type": "string",
@@ -234,6 +250,7 @@
                   "type": "object",
                   "description": "Labels related to criticals",
                   "required": ["failure", "success", "title"],
+                  "additionalProperties": false,
                   "properties": {
                     "failure": {
                       "type": "string",
@@ -279,6 +296,7 @@
               "type": "object",
               "description": "Labels related to the Skills table in the actor sheet",
               "required": ["name", "ranks", "roll", "special", "total"],
+              "additionalProperties": false,
               "properties": {
                 "name": {
                   "type": "string",
@@ -306,6 +324,7 @@
               "type": "object",
               "description": "Labels related to the SPECIALS table in the actor sheet",
               "required": ["name", "roll", "value"],
+              "additionalProperties": false,
               "properties": {
                 "name": {
                   "type": "string",
@@ -327,6 +346,7 @@
           "type": "object",
           "description": "Labels for migrations",
           "required": ["completed", "started"],
+          "additionalProperties": false,
           "properties": {
             "completed": {
               "type": "string",
@@ -344,11 +364,13 @@
           "type": "object",
           "description": "Labels related to the Rule Engine",
           "required": ["ruleElement", "errors"],
+          "additionalProperties": false,
           "properties": {
             "ruleElement": {
               "type": "object",
               "description": "Various labels related to RuleElements",
               "required": ["create", "delete", "newName"],
+              "additionalProperties": false,
               "properties": {
                 "create": {
                   "type": "string",
@@ -368,11 +390,13 @@
               "type": "object",
               "description": "Labels for different errors",
               "required": ["messages", "semantic", "syntax"],
+              "additionalProperties": false,
               "properties": {
                 "messages": {
                   "type": "object",
                   "description": "Different messages related to errors",
                   "required": ["changedToDefault"],
+                  "additionalProperties": false,
                   "properties": {
                     "changedToDefault": {
                       "type": "string",
@@ -392,24 +416,34 @@
                     "type",
                     "value"
                   ],
+                  "additionalProperties": false,
                   "properties": {
                     "enabled": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "description": "Error messages related to the enabled field"
+                      "description": "Error messages related to the enabled field",
+                      "additionalProperties": false
                     },
                     "label": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "description": "Error messages related to the label field"
+                      "description": "Error messages related to the label field",
+                      "additionalProperties": false
                     },
                     "priority": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "description": "Error messages related to the priority field"
+                      "description": "Error messages related to the priority field",
+                      "additionalProperties": false
                     },
                     "selector": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "description": "Error messages related to the selector field"
+                      "description": "Error messages related to the selector field",
+                      "additionalProperties": false
                     },
                     "type": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "notFound": {},
+                        "wrongType": {}
+                      },
                       "allOf": [
                         {
                           "$ref": "#/definitions/ruleElementFieldErrors"
@@ -428,7 +462,8 @@
                     },
                     "value": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "description": "Error messages related to the value field"
+                      "description": "Error messages related to the value field",
+                      "additionalProperties": false
                     }
                   }
                 },
@@ -445,11 +480,13 @@
           "type": "object",
           "description": "Labels related to sheets",
           "required": ["background", "names", "tabs"],
+          "additionalProperties": false,
           "properties": {
             "background": {
               "type": "object",
               "description": "Labels for the background",
               "required": ["background", "history", "fears", "dreams", "karma"],
+              "additionalProperties": false,
               "properties": {
                 "background": {
                   "type": "string",
@@ -477,6 +514,7 @@
               "type": "object",
               "description": "Names for different sheets",
               "required": ["actorSheet", "effectSheet"],
+              "additionalProperties": false,
               "properties": {
                 "actorSheet": {
                   "type": "string",
@@ -492,6 +530,7 @@
               "type": "object",
               "description": "Labels for tabs",
               "required": ["background", "effects", "items", "magic", "stats"],
+              "additionalProperties": false,
               "properties": {
                 "background": {
                   "type": "string",
@@ -538,6 +577,7 @@
             "thaumaturgy",
             "unarmed"
           ],
+          "additionalProperties": false,
           "properties": {
             "barter": {
               "type": "string",
@@ -617,6 +657,7 @@
             "perception",
             "strength"
           ],
+          "additionalProperties": false,
           "properties": {
             "agility": {
               "$ref": "#/definitions/special",
@@ -684,6 +725,7 @@
       "type": "object",
       "description": "A schema for Item types",
       "required": ["name"],
+      "additionalProperties": false,
       "properties": {
         "name": {
           "type": "string",
@@ -706,6 +748,7 @@
       "type": "object",
       "description": "A schema for SPECIALs",
       "required": ["long", "short"],
+      "additionalProperties": false,
       "properties": {
         "long": {
           "type": "string",

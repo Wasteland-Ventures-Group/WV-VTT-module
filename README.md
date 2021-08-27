@@ -29,7 +29,8 @@ and all dependencies will be installed into the `node_modules` directory.
 
 This project uses [Typescript][ts] to generate its Javascript and [Sass][sass]
 to generate its CSS. In addition, the `template.json` is not written by hand,
-but generated from Typescript classes.
+but generated from Typescript classes. Further, compendiums are composed of one
+JSON file per entry and then compiled as part of the build process.
 
 ### Gulp Tasks
 
@@ -37,23 +38,61 @@ Gulp is a task runner for Javascript, to automate repetitive tasks. It can even
 look out for changes in the input files for a task and rerun the task on its own
 in that case.
 
-There are two sets of major tasks in this project currently. The `ts` tasks
-compile the Typescript under `./src/typescript` (and all subdirs) into
-Javascript in `./dist/wasteland-ventures/modules`. The `sass` tasks compile Sass
-files under `./src/sass` (and all subdirs) into CSS files in
-`./dist/wasteland-ventures/css`. Besides that, there is the `template` task that
-generate the `template.json` file out of the Typescript source code. Finally
-there are copy tasks for the `system.json` (`system`) and Handlebars templates
-(`hbs`). If you just want to build the whole thing, use the `pack` task.
+#### Running gulp
+
+On Linux machines, you can easily run gulp with just this command:
+```sh
+./gulp.js
+```
+
+On Windows machines, you likely have to run it this way:
+```pwsh
+node gulp.js
+```
+
+From here on, only the Linux form will be listed, the Windows form should work
+in a similar way.
+
+#### Getting an overview over tasks
+
+For an overview of the tasks, run:
+```sh
+./gulp.js --tasks
+```
+
+#### Background tasks
 
 Some tasks have a variant with the `Watch` suffix. Those tasks are meant to be
 run as a background task and will look for changes in the corresponding input
 files to run on their own. For example, one can run the following on a terminal
-to have the Sass and Typescript be recompiled when changes are made to the input
-files:
+to have the files be recompiled when changes are made to the input files:
 ```sh
 ./gulp.js watchAll &
 ```
+
+### Adding entries to compendiums
+
+The compendium sources are located under `src/compendiums`. They are grouped
+first by document type (Usually "actor" and "item") and then by their system sub
+types (for example "weapon").
+
+It is recommended to edit the JSON files in those directories with an editor,
+that can supply additional information and checks via JSON schema. Currently
+there are ready made configurations for VS Code and Nvim with coc-nvim
+available.
+
+Before you can start editing, the schemas have to be generated at least once and
+again, if changes are made to the system data types. To generate the schemas,
+run:
+```sh
+./gulp.js compSchemas
+```
+
+### Adding translations
+
+The translation files are located in `src/lang` and have a ready made JSON
+schema in the repo. This schema is written by hand and changes every time the
+translations change.
 
 ### Putting the results in FoundryVTT
 

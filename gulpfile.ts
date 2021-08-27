@@ -6,9 +6,10 @@ import typescript from "gulp-typescript";
 import { CONSTANTS } from "./src/typescript/constants.js";
 import distZipTask from "./gulp/distZip.js";
 import templateTask from "./gulp/template.js";
-import compendiumSchemasTask, {
-  compendiumSchemasWatchTask
-} from "./gulp/compendiumSchemas.js";
+import compendiumSchemasTask from "./gulp/compendiumSchemas.js";
+import compileCompendiumsTask, {
+  compileCompendiumsWatchTask
+} from "./gulp/compileCompendiums.js";
 
 // = Path constants ============================================================
 
@@ -114,15 +115,27 @@ export const template = templateTask;
 // = schema tasks ==============================================================
 
 export const compSchemas = compendiumSchemasTask;
-export const compSchemasWatch = compendiumSchemasWatchTask;
+
+// = compendiums compile tasks =================================================
+
+export const compileComps = compileCompendiumsTask;
+export const compileCompsWatch = compileCompendiumsWatchTask;
 
 // = General tasks =============================================================
 
-export const pack = gulp.parallel(hbs, lang, sass, ts, system, template);
+export const pack = gulp.parallel(
+  compileComps,
+  hbs,
+  lang,
+  sass,
+  ts,
+  system,
+  template
+);
 pack.description = "Copy and compile all relevant files to the dist dir";
 
 export const watchAll = gulp.parallel(
-  compSchemasWatch,
+  compileCompsWatch,
   hbsWatch,
   langWatch,
   sassWatch,

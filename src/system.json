@@ -10,7 +10,15 @@
   "scripts": [],
   "esmodules": ["modules/wastelandVentures.js"],
   "styles": ["css/wasteland-ventures.css"],
-  "packs": [],
+  "packs": [
+    {
+      "name": "weapons",
+      "label": "Wasteland Ventures Weapons",
+      "path": "compendiums/item/weapons.db",
+      "entity": "Item",
+      "system": "wasteland-ventures"
+    }
+  ],
   "languages": [
     {
       "lang": "en",

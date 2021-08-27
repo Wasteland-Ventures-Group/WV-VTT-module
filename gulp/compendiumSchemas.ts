@@ -1,9 +1,15 @@
 import { promises as fs } from "fs";
 import gulp from "gulp";
-import * as tsj from "ts-json-schema-generator";
-import type { Config } from "ts-json-schema-generator";
-import { WeaponDataSourceData } from "../src/typescript/data/item/weapon/source.js";
-import { logChange } from "../gulpfile.js";
+import {
+  Config,
+  createFormatter,
+  createParser,
+  createProgram,
+  ObjectType,
+  ObjectTypeFormatter,
+  SchemaGenerator
+} from "ts-json-schema-generator";
+import type { JSONSchema7 } from "json-schema";
 
 // The paths here are relative to the project root
 const sourceBasePath = "./src/typescript/data";
@@ -12,20 +18,18 @@ const tsConfigPath = "./tsconfig-schemas.json";
 const outputBasePath = "./src/schemas";
 const itemOutputBasePath = `${outputBasePath}/item`;
 
-const watchPath = "../src/typescript/data/**/*.ts";
-
-const schemaBasePaths: SchemaConfig[] = [
+const schemaConfigs: SchemaConfig[] = [
   {
     fileName: "weapon",
     outputBasePath: itemOutputBasePath,
     path: `${itemSourceBasePath}/weapon/source.ts`,
-    type: WeaponDataSourceData.name
+    type: "CompendiumWeapon"
   }
 ];
 
 export default async function compendiumSchemasTask(): Promise<void[]> {
   return Promise.all(
-    schemaBasePaths.map((config) => {
+    schemaConfigs.map((config) => {
       return createSchema(
         {
           skipTypeCheck: true,
@@ -41,21 +45,24 @@ export default async function compendiumSchemasTask(): Promise<void[]> {
 compendiumSchemasTask.description =
   "Generate the JSON schemas for the compendiums.";
 
-export function compendiumSchemasWatchTask(): void {
-  gulp.watch(watchPath, compendiumSchemasTask).on("change", logChange);
-}
-compendiumSchemasWatchTask.description =
-  "Watch the data files and run the compSchemas task on change";
-
 async function createSchema(
   config: Config,
   outputBasePath: string,
   fileName: string
 ): Promise<void> {
+  const formatter = createFormatter(
+    config,
+    (fmt, circularReferenceTypeFormatter) =>
+      fmt.addTypeFormatter(new IdFormatter(circularReferenceTypeFormatter))
+  );
+  const program = createProgram(config);
+  const parser = createParser(program, config);
+  const generator = new SchemaGenerator(program, parser, formatter, config);
+
   await fs.mkdir(outputBasePath, { recursive: true });
   return fs.writeFile(
     `${outputBasePath}/${fileName}.json`,
-    JSON.stringify(tsj.createGenerator(config).createSchema(config.type))
+    JSON.stringify(generator.createSchema(config.type))
   );
 }
 
@@ -64,4 +71,23 @@ interface SchemaConfig {
   outputBasePath: string;
   path: string;
   type: string;
+}
+
+class IdFormatter extends ObjectTypeFormatter {
+  override supportsType(type: ObjectType): boolean {
+    if (!(type instanceof ObjectType)) return false;
+    return type
+      .getProperties()
+      .some((property) => property.getName() === "_id");
+  }
+
+  override getDefinition(type: ObjectType): JSONSchema7 {
+    const definition = super.getDefinition(type);
+    if (definition?.properties?._id) {
+      if (typeof definition.properties._id !== "boolean") {
+        definition.properties._id.pattern = "^[a-zA-Z0-9]{16}$";
+      }
+    }
+    return definition;
+  }
 }

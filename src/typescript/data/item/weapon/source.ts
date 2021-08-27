@@ -1,4 +1,5 @@
 import { TYPES } from "../../../constants.js";
+import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import PhysicalBaseItem from "../physicalBaseItem.js";
 import type Attack from "./attack.js";
 import type Ranges from "./ranges.js";
@@ -51,4 +52,9 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
   override getTypeName(): string {
     return TYPES.ITEM.WEAPON;
   }
+}
+
+export interface CompendiumWeapon
+  extends FoundryCompendiumData<WeaponDataSourceData> {
+  type: "weapon";
 }

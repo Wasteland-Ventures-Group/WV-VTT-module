@@ -420,25 +420,30 @@
                   "properties": {
                     "enabled": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
+                      "type": "object",
                       "description": "Error messages related to the enabled field",
                       "additionalProperties": false
                     },
                     "label": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
+                      "type": "object",
                       "description": "Error messages related to the label field",
                       "additionalProperties": false
                     },
                     "priority": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
+                      "type": "object",
                       "description": "Error messages related to the priority field",
                       "additionalProperties": false
                     },
                     "selector": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
+                      "type": "object",
                       "description": "Error messages related to the selector field",
                       "additionalProperties": false
                     },
                     "type": {
+                      "type": "object",
                       "additionalProperties": false,
                       "properties": {
                         "notFound": {},
@@ -462,6 +467,7 @@
                     },
                     "value": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
+                      "type": "object",
                       "description": "Error messages related to the value field",
                       "additionalProperties": false
                     }

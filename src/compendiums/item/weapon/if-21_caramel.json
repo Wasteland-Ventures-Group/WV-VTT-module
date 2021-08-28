@@ -1,0 +1,53 @@
+{
+  "name": "IF-21 \"Caramel\"",
+  "type": "weapon",
+  "img": "icons/svg/item-bag.svg",
+  "data": {
+    "name": "IF-21 \"Caramel\"",
+    "description": "Standard sidearm of pony officers. Proved and tested by battlefields and wastes.",
+    "attacks": [
+      {
+        "name": "single",
+        "description": "A single shot attack",
+        "ap": 4,
+        "damage": {
+          "base": 2,
+          "die": 3,
+          "dieRange": false
+        },
+        "dtReduction": 0,
+        "rounds": 1,
+        "splash": "TODO"
+      }
+    ],
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 12
+    },
+    "rules": {
+      "sources": []
+    },
+    "strengthRequirement": 4,
+    "value": 300,
+    "weight": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000002"
+}

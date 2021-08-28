@@ -1,8 +1,8 @@
-import dartSass from "gulp-dart-sass";
-import del from "del";
-import gulp from "gulp";
-import log from "fancy-log";
-import typescript from "gulp-typescript";
+import * as dartSass from "gulp-dart-sass";
+import * as del from "del";
+import * as gulp from "gulp";
+import * as log from "fancy-log";
+import * as typescript from "gulp-typescript";
 import { CONSTANTS } from "./src/typescript/constants.js";
 import distZipTask from "./gulp/distZip.js";
 import templateTask from "./gulp/template.js";
@@ -10,6 +10,7 @@ import compendiumSchemasTask from "./gulp/compendiumSchemas.js";
 import compileCompendiumsTask, {
   compileCompendiumsWatchTask
 } from "./gulp/compileCompendiums.js";
+import validateJsonTask from "./gulp/validateJson.js";
 
 // = Path constants ============================================================
 
@@ -115,6 +116,8 @@ export const template = templateTask;
 // = schema tasks ==============================================================
 
 export const compSchemas = compendiumSchemasTask;
+export const validateJson = gulp.series(compSchemas, validateJsonTask);
+validateJson.description = "Validate all JSON files.";
 
 // = compendiums compile tasks =================================================
 

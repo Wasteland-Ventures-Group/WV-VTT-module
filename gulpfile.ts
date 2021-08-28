@@ -1,8 +1,8 @@
-import * as dartSass from "gulp-dart-sass";
-import * as del from "del";
-import * as gulp from "gulp";
-import * as log from "fancy-log";
-import * as typescript from "gulp-typescript";
+import dartSass from "gulp-dart-sass";
+import del from "del";
+import gulp from "gulp";
+import log from "fancy-log";
+import typescript from "gulp-typescript";
 import { CONSTANTS } from "./src/typescript/constants.js";
 import distZipTask from "./gulp/distZip.js";
 import templateTask from "./gulp/template.js";

@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
-import * as glob from "glob-promise";
-import * as gulp from "gulp";
+import glob from "glob-promise";
+import gulp from "gulp";
 import { logChange } from "../gulpfile.js";
 
 const inputBasePath = "./src/compendiums";

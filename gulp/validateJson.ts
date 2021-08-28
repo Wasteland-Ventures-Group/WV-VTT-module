@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import Ajv, { ValidateFunction } from "ajv";
-import * as glob from "glob-promise";
-import * as log from "fancy-log";
+import glob from "glob-promise";
+import log from "fancy-log";
 
 const ajv = new Ajv({ strict: true, messages: true });
 

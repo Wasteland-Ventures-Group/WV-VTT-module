@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
-import * as gulp from "gulp";
-import * as zip from "gulp-zip";
+import gulp from "gulp";
+import zip from "gulp-zip";
 import { distPrefix, distWvPrefix } from "../gulpfile.js";
 import { CONSTANTS } from "../src/typescript/constants.js";
 

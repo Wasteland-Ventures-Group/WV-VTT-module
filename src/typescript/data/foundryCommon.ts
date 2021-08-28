@@ -30,8 +30,6 @@ export interface FoundryCompendiumData<T> {
   img: string;
   /** Foundry Active Effects on the entry */
   effects: unknown[];
-  /** The sort order of the entry */
-  sort: number;
   /** Custom flags on the entry */
   flags: Record<string, unknown>;
 }

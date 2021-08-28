@@ -16,6 +16,9 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
   /** The attacks of the weapon */
   attacks: Attack[] = [];
 
+  /** Whether the weapon is a holdout weapon */
+  holdout: boolean = false;
+
   /** The ranges of the weapon */
   ranges: Ranges = {
     short: {

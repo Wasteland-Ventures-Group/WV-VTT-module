@@ -1,5 +1,4 @@
 {
-  "_id": "0000000000000001",
   "name": "Gretta M9",
   "type": "weapon",
   "img": "icons/svg/item-bag.svg",
@@ -49,5 +48,7 @@
     "weight": 1
   },
   "effects": [],
-  "flags": {}
+  "sort": 0,
+  "flags": {},
+  "_id": "WVweapon00000001"
 }

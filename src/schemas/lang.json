@@ -420,56 +420,38 @@
                   "properties": {
                     "enabled": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "type": "object",
-                      "description": "Error messages related to the enabled field",
-                      "additionalProperties": false
+                      "description": "Error messages related to the enabled field"
                     },
                     "label": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "type": "object",
-                      "description": "Error messages related to the label field",
-                      "additionalProperties": false
+                      "description": "Error messages related to the label field"
                     },
                     "priority": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "type": "object",
-                      "description": "Error messages related to the priority field",
-                      "additionalProperties": false
+                      "description": "Error messages related to the priority field"
                     },
                     "selector": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "type": "object",
-                      "description": "Error messages related to the selector field",
-                      "additionalProperties": false
+                      "description": "Error messages related to the selector field"
                     },
                     "type": {
                       "type": "object",
+                      "description": "Error messages related to the type field",
+                      "required": ["notFound", "wrongType"],
                       "additionalProperties": false,
                       "properties": {
-                        "notFound": {},
-                        "wrongType": {}
-                      },
-                      "allOf": [
-                        {
-                          "$ref": "#/definitions/ruleElementFieldErrors"
+                        "notFound": {
+                          "type": "string",
+                          "description": "The error message for unknown RuleElement types"
                         },
-                        {
-                          "description": "Error messages related to the type field",
-                          "required": ["notFound"],
-                          "properties": {
-                            "notFound": {
-                              "type": "string",
-                              "description": "The error message for unknown RuleElement types"
-                            }
-                          }
+                        "wrongType": {
+                          "$ref": "#/definitions/ruleElementFieldErrors/properties/wrongType"
                         }
-                      ]
+                      }
                     },
                     "value": {
                       "$ref": "#/definitions/ruleElementFieldErrors",
-                      "type": "object",
-                      "description": "Error messages related to the value field",
-                      "additionalProperties": false
+                      "description": "Error messages related to the value field"
                     }
                   }
                 },
@@ -743,6 +725,7 @@
       "type": "object",
       "description": "A schema for different error messages of RuleElement source fields",
       "required": ["wrongType"],
+      "additionalProperties": false,
       "properties": {
         "wrongType": {
           "type": "string",

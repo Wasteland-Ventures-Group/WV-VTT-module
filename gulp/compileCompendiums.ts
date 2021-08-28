@@ -32,6 +32,8 @@ compileCompendiumsTask.description =
 export function compileCompendiumsWatchTask(): void {
   gulp.watch(watchPath, compileCompendiumsTask).on("change", logChange);
 }
+compileCompendiumsWatchTask.description =
+  "Watch the compendium input files for changes and trigger the compile task.";
 
 async function compileCompendium(config: CompendiumConfig): Promise<void> {
   const fileNames = await glob(config.inputGlob);

@@ -1,10 +1,20 @@
 {
+  "templateVersion": 2,
+  "manifestPlusVersion": "1.2.0",
   "name": "wasteland-ventures",
   "title": "Wasteland Ventures",
   "description": "A system that adapts Wasteland Ventures to Foundry VTT",
+  "author": "Kai Moschcau",
+  "authors": [
+    {
+      "name": "Kai Moschcau",
+      "url": "https://kmoschcau.de",
+      "email": "mail@kmoschcau.de",
+      "discord": "f1r3w4rr10r#0733",
+      "twitter": "@kmoschcau"
+    }
+  ],
   "version": "0.3.3",
-  "templateVersion": 2,
-  "author": "Kai Moschcau <mail@kmoschcau.de>",
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "0.8.9",
   "scripts": [],
@@ -37,5 +47,7 @@
   "gridUnits": "m",
   "url": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module",
   "manifest": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/system.json",
-  "download": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/download/v0.3.3/wasteland-ventures-0.3.3.zip"
+  "download": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/download/v0.3.3/wasteland-ventures-0.3.3.zip",
+  "readme": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/README.md",
+  "changelog": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/CHANGELOG.md"
 }

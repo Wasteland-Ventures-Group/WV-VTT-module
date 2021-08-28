@@ -1,5 +1,4 @@
 import { promises as fs } from "fs";
-import log from "fancy-log";
 import { distWvPrefix, templateOutPath } from "../gulpfile.js";
 import type { TemplateDocumentType } from "../src/typescript/data/common.js";
 

@@ -1,5 +1,4 @@
 import { promises as fs } from "fs";
-import gulp from "gulp";
 import {
   Config,
   createFormatter,

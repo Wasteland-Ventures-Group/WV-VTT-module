@@ -1,10 +1,11 @@
-/* globals module */
-
 module.exports = {
   env: {
     es2020: true
   },
   extends: ["eslint:recommended", "plugin:prettier/recommended"],
+  parserOptions: {
+    sourceType: "module"
+  },
   overrides: [
     {
       env: {
@@ -109,9 +110,15 @@ module.exports = {
         node: true
       },
       files: ["gulp.js"]
+    },
+    {
+      env: {
+        commonjs: true
+      },
+      files: ["./**/*.cjs"],
+      parserOptions: {
+        sourceType: "script"
+      }
     }
-  ],
-  parserOptions: {
-    sourceType: "module"
-  }
+  ]
 };

@@ -2,5 +2,25 @@
   <img class="document-img item-img flex-fixed" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
   <div class="document-info">
     <h1 class="document-name"><input name="name" type="text" value="{{data.name}}" placeholder="{{localize 'wv.labels.placeholders.documentName'}}" /></h1>
+    <div class="header-fields">
+      <div class="general-info flexrow">
+        {{#if data.data.name}}
+          <h3 class="proto-name">{{data.data.name}}</h3>
+        {{/if}}
+        {{#if data.data.value}}
+          <span class="general-info-element flex-fixed">
+            <span class="fas fa-coins"></span><span>{{data.data.value}}</span>
+          </span>
+        {{/if}}
+        {{#if data.data.weight}}
+          <span class="general-info-element flex-fixed">
+            <span class="fas fa-weight"></span><span>{{data.data.weight}}</span>
+          </span>
+        {{/if}}
+      </div>
+      {{#if data.data.description}}
+        <section>{{data.data.description}}</section>
+      {{/if}}
+    </div>
   </div>
 </header>

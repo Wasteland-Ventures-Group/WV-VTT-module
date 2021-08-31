@@ -1,6 +1,28 @@
+@use "../common.sass" as common
+
 .wasteland-ventures.document-sheet.item-sheet
 
   .sheet-header
 
     .document-img
       max-height: 100px
+
+    .document-info
+
+      .header-fields
+
+        .general-info
+          align-items: baseline
+          margin-bottom: 0.5rem
+
+          *:not(:last-child)
+            margin-right: common.$spacing-distance * 5
+
+          .proto-name
+            margin-bottom: 0
+
+          .general-info-element
+            white-space: nowrap
+
+            .fas
+              margin-right: common.$spacing-distance

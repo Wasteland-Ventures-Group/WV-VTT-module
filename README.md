@@ -5,9 +5,16 @@ the Foundry Virtual Tabletop (Foundry VTT or FVTT) tool.
 
 ## Installation
 
-To install this system onto your Foundry instance, first copy [this
-URL][system], then go into your setup pages to systems, then paste the URL into
-the manifest URL bar and click install.
+### The latest release
+
+Simply search for "Wasteland Ventures" in the systems list in the Foundry
+package management. You can install it directly via Foundry.
+
+### From main/git
+
+To install the latest development version onto your Foundry instance, first copy
+[this URL][system], then go into your setup pages to systems, then paste the URL
+into the manifest URL bar and click install.
 
 ## Development
 

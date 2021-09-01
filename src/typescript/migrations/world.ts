@@ -2,6 +2,7 @@ import { CONSTANTS } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 import { migrVerSettingName } from "../settings.js";
 import migrateActors from "./actors.js";
+import migrateItems from "./items.js";
 
 /** Check if a data migration is needed and possible. */
 export function migrationNeeded(): boolean {
@@ -41,6 +42,7 @@ export async function migrateWorld(): Promise<void> {
   }
 
   await migrateActors();
+  await migrateItems();
 
   getGame().settings.set(
     CONSTANTS.systemId,

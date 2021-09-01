@@ -3,6 +3,8 @@
 This is an implementation of the Wasteland Ventures pen and paper RPG system for
 the Foundry Virtual Tabletop (Foundry VTT or FVTT) tool.
 
+The system rules themselves can be found on [Google Docs][rules].
+
 ## Installation
 
 ### The latest release
@@ -125,6 +127,7 @@ GitHub. Then upload the packaged zip from the `dist` dir to the release.
 
 Issues and pull requests are welcome.
 
+[rules]: https://drive.google.com/drive/folders/0B9tzIuxnnTLrTzlsb3BMTlhpbFk?resourcekey=0-0eZ5HHuCDrAs8sYYkoOTLA
 [system]: https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/system.json
 [nodeJs]: https://nodejs.org/en/
 [nodenv]: https://github.com/nodenv/nodenv

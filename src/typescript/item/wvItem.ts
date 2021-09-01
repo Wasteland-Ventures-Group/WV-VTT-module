@@ -1,5 +1,7 @@
 import { TYPE_CONSTRUCTORS } from "../typeMappings.js";
 import { isMappedItemType } from "../helpers.js";
+import RuleElements from "../ruleEngine/ruleElements.js";
+import type { RuleElementSource } from "../ruleEngine/ruleElement.js";
 
 /** The basic Wasteland Ventures Item. */
 export default class WvItem extends Item {
@@ -48,6 +50,23 @@ export default class WvItem extends Item {
       // context to break out of the recursion.
       super(data, WvItem.readyContext(context));
     }
+  }
+
+  override prepareBaseData(): void {
+    this.data.data.rules.elements = this.data.data.rules.sources.map((rule) =>
+      RuleElements.fromOwningItem(rule, this)
+    );
+  }
+
+  /**
+   * Update the RuleElement sources of this Effect.
+   * @param sources - the new RuleElements
+   */
+  updateRuleSources(sources: RuleElementSource[]): void {
+    this.update({
+      _id: this.id,
+      data: { rules: { sources: sources } }
+    });
   }
 }
 

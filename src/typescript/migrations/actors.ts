@@ -1,14 +1,14 @@
-import { CONSTANTS } from "../constants.js";
+import { LOG } from "../systemLogger.js";
 import { isNewerVersionThanLast } from "./world.js";
 
 export async function migrateActors(): Promise<void> {
   if (!(game instanceof Game)) {
-    console.error("Game was not yet initialized!");
+    LOG.error("Game was not yet initialized!");
     return;
   }
 
   if (!game.actors) {
-    console.error("Actors was not yet defined!");
+    LOG.error("Actors was not yet defined!");
     return;
   }
 
@@ -44,7 +44,7 @@ function migrateTo_0_3_0(
 ): void {
   if (!isNewerVersionThanLast("0.2.0")) return;
 
-  console.log(`Migrating to 0.3.0`);
+  LOG.info(`Migrating to 0.3.0`);
 
   const oldVitals = oldActorData.data.vitals;
   if (typeof oldVitals?.actionPoints === "number") {

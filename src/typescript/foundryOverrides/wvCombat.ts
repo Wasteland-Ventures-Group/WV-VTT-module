@@ -1,3 +1,5 @@
+import { LOG } from "../systemLogger.js";
+
 export default class WvCombat extends Combat {
   override async nextRound(): Promise<this | undefined> {
     this.resetActionPoints();
@@ -13,11 +15,11 @@ export default class WvCombat extends Combat {
   private resetActionPoints() {
     this.combatants.forEach((c) => {
       if (!c.actor) {
-        console.debug(`The combatant has no actor. id=${c.id}`);
+        LOG.debug(`The combatant has no actor. id=${c.id}`);
         return;
       }
       if (typeof c.actor.actionPoints.max !== "number") {
-        console.debug(
+        LOG.debug(
           `The combatant actor's max action points is undefined. id=${c.id}`
         );
         return;

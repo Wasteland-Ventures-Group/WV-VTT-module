@@ -4,6 +4,7 @@ import type WvItem from "../../item/wvItem.js";
 import type { RuleElementSource } from "../../ruleEngine/ruleElement.js";
 import RuleElements from "../../ruleEngine/ruleElements.js";
 import WrongTypeWarning from "../../ruleEngine/warnings/wrongTypeWarning.js";
+import { LOG } from "../../systemLogger.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet<
@@ -70,9 +71,7 @@ export default class WvItemSheet extends ItemSheet<
     const sources = this.item.data.data.rules.sources;
     sources.push(RuleElements.newRuleElementSource());
     this.item.updateRuleSources(sources);
-    console.debug(
-      `${CONSTANTS.systemName} | Created RuleElement on item with id [${this.item.id}]`
-    );
+    LOG.debug(`Created RuleElement on item with id [${this.item.id}]`);
     this.item.prepareBaseData();
     this.render(false);
   }
@@ -87,9 +86,7 @@ export default class WvItemSheet extends ItemSheet<
     const sources = this.item.data.data.rules.sources;
     sources.splice(index, 1);
     this.item.updateRuleSources(sources);
-    console.debug(
-      `${CONSTANTS.systemName} | Deleted RuleElement on item with id [${this.item.id}]`
-    );
+    LOG.debug(`Deleted RuleElement on item with id [${this.item.id}]`);
     this.item.prepareBaseData();
     this.render(false);
   }
@@ -147,10 +144,7 @@ export default class WvItemSheet extends ItemSheet<
         { permanent: true }
       );
     }
-    console.warn(
-      `${CONSTANTS.systemName} | Syntax error in rule element definition ${index}.`,
-      message
-    );
+    LOG.warn(`Syntax error in rule element definition ${index}.`, message);
   }
 }
 

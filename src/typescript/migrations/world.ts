@@ -1,7 +1,7 @@
 import { CONSTANTS } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 import { migrVerSettingName } from "../settings.js";
-import { migrateActors } from "./actors.js";
+import migrateActors from "./actors.js";
 
 /** Check if a data migration is needed and possible. */
 export function migrationNeeded(): boolean {

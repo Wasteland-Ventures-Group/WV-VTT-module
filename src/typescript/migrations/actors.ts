@@ -1,7 +1,7 @@
 import { LOG } from "../systemLogger.js";
 import { isNewerVersionThanLast } from "./world.js";
 
-export async function migrateActors(): Promise<void> {
+export default async function migrateActors(): Promise<void> {
   if (!(game instanceof Game)) {
     LOG.error("Game was not yet initialized!");
     return;
@@ -12,19 +12,35 @@ export async function migrateActors(): Promise<void> {
     return;
   }
 
+  if (!game.scenes) {
+    LOG.error("Scenes was not yet defined!");
+    return;
+  }
+
   for (const actor of game.actors) {
-    try {
-      const updateData = migrateActorData(actor.toObject());
-      if (!foundry.utils.isObjectEmpty(updateData)) {
-        console.log(`Migrating Actor ${actor.name}`);
-        await actor.update(updateData, { enforceTypes: false });
-      }
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
-      console.error(
-        `Failed ${CONSTANTS.systemName} system migration for Actor ${actor.name}: ${message}`
-      );
+    migrateActor(actor);
+  }
+
+  for (const scene of game.scenes) {
+    for (const token of scene.tokens) {
+      if (token.data.actorLink) continue;
+      if (!token.actor) continue;
+
+      migrateActor(token.actor);
     }
+  }
+}
+
+async function migrateActor(actor: foundry.documents.BaseActor): Promise<void> {
+  try {
+    const updateData = migrateActorData(actor.toObject());
+    if (!foundry.utils.isObjectEmpty(updateData)) {
+      LOG.info(`Migrating Actor ${actor.name}. id=${actor.id}`);
+      await actor.update(updateData, { enforceTypes: false });
+    }
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
+    LOG.error(`Failed migration for Actor ${actor.id}: ${message}`);
   }
 }
 

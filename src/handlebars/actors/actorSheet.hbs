@@ -27,22 +27,18 @@
         </div>
         <div class="main-resources flexrow">
           <div class="health resource-block flex-fixed">
-            <div class="resource-block-line">
-              <label class="contained-target-inline">
-                {{localize "wv.sheets.actor.secondary.health"}}
-                <div class="resource-display">
-                  <input class="size-2" type="number" name="data.vitals.hitPoints.value" value="{{data.data.vitals.hitPoints.value}}" min="0" max="{{data.data.vitals.hitPoints.max}}" />
-                  <span>&nbsp;/&nbsp;</span>
-                  <span class="size-2">{{data.data.vitals.hitPoints.max}}</span>
-                </div>
-              </label>
-            </div>
-            <div class="resource-block-line">
-              <label class="contained-target-inline">
-                {{localize "wv.sheets.actor.secondary.healingRate"}}
-                <span class="resource-display size-1">{{data.data.vitals.healingRate}}</span>
-              </label>
-            </div>
+            <label class="contained-target-inline resource-block-line">
+              {{localize "wv.sheets.actor.secondary.health"}}
+              <div class="resource-display">
+                <input class="size-2" type="number" name="data.vitals.hitPoints.value" value="{{data.data.vitals.hitPoints.value}}" min="0" max="{{data.data.vitals.hitPoints.max}}" />
+                <span>&nbsp;/&nbsp;</span>
+                <span class="size-2">{{data.data.vitals.hitPoints.max}}</span>
+              </div>
+            </label>
+            <label class="contained-target-inline resource-block-line">
+              {{localize "wv.sheets.actor.secondary.healingRate"}}
+              <span class="resource-display size-1">{{data.data.vitals.healingRate}}</span>
+            </label>
           </div>
           <div class="action-points resource-block flex-fixed resource-block-line">
             <label class="contained-target-inline">

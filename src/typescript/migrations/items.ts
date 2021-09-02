@@ -89,5 +89,7 @@ async function getUpdateDataFromCompendium(
   const document = await compendium.getDocument(match[2]);
   if (!document) return {};
 
-  return { data: document.toObject().data };
+  const updateData = { data: document.toObject().data };
+  delete updateData.data.rules;
+  return updateData;
 }

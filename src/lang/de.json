@@ -101,7 +101,8 @@
       "common": {
         "names": {
           "actorSheet": "Aktorbogen",
-          "effectSheet": "Effektbogen"
+          "effectSheet": "Effektbogen",
+          "weaponSheet": "Waffenbogen"
         },
         "placeholders": {
           "documentName": "Name"
@@ -111,10 +112,39 @@
           "effects": "Effekte",
           "items": "Gegenstände",
           "magic": "Magie",
+          "rules": "Regeln",
           "stats": "Statistiken"
         }
       },
-      "item": {}
+      "item": {
+        "weapon": {
+          "attacks": {
+            "ap": "AP-Kosten",
+            "damage": "Schaden",
+            "dtReduction": "DT Reduktion",
+            "rounds": "Schüße",
+            "title": "Angriffe"
+          },
+          "holdout": "Versteckbar",
+          "ranges": {
+            "distance": "Distanz",
+            "long": "Weit",
+            "medium": "Mittel",
+            "modifier": "Modifikator",
+            "range": "Reichweite",
+            "short": "Kurz",
+            "title": "Reichweiten"
+          },
+          "reload": {
+            "ap": "AP-Kosten",
+            "caliber": "Kaliber",
+            "containerType": "Kontainertyp",
+            "size": "Größe",
+            "title": "Nachladen"
+          },
+          "strengthRequirement": "Nötige Stärke"
+        }
+      }
     },
     "skills": {
       "errors": {

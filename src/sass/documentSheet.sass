@@ -46,6 +46,16 @@
         left: $padding * 2
         right: $padding * 2
 
+    @for $i from 2 through 6
+
+      > .grid-#{$i}cols
+        margin:
+          left: $padding * 2
+          right: $padding * 2
+
+        > *
+          line-height: common.$input-height
+
   .resource-block-line
     align-items: center
     display: flex

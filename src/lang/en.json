@@ -101,7 +101,8 @@
       "common": {
         "names": {
           "actorSheet": "Actor Sheet",
-          "effectSheet": "Effect Sheet"
+          "effectSheet": "Effect Sheet",
+          "weaponSheet": "Weapon Sheet"
         },
         "placeholders": {
           "documentName": "Name"
@@ -111,10 +112,39 @@
           "effects": "Effects",
           "items": "Items",
           "magic": "Magic",
+          "rules": "Rules",
           "stats": "Stats"
         }
       },
-      "item": {}
+      "item": {
+        "weapon": {
+          "attacks": {
+            "ap": "AP Cost",
+            "damage": "Damage",
+            "dtReduction": "DT Reduction",
+            "rounds": "Rounds",
+            "title": "Attacks"
+          },
+          "holdout": "Holdout Weapon",
+          "ranges": {
+            "distance": "Distance",
+            "long": "Long",
+            "medium": "Medium",
+            "modifier": "Modifier",
+            "range": "Range",
+            "short": "Short",
+            "title": "Ranges"
+          },
+          "reload": {
+            "ap": "AP Cost",
+            "caliber": "Caliber",
+            "containerType": "Container Type",
+            "size": "Size",
+            "title": "Reload"
+          },
+          "strengthRequirement": "Strength required"
+        }
+      }
     },
     "skills": {
       "errors": {

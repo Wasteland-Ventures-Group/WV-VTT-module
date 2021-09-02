@@ -417,7 +417,7 @@
                 "names": {
                   "type": "object",
                   "description": "Names for different sheets",
-                  "required": ["actorSheet", "effectSheet"],
+                  "required": ["actorSheet", "effectSheet", "weaponSheet"],
                   "additionalProperties": false,
                   "properties": {
                     "actorSheet": {
@@ -427,6 +427,10 @@
                     "effectSheet": {
                       "type": "string",
                       "description": "The label for the Effect sheet"
+                    },
+                    "weaponSheet": {
+                      "type": "string",
+                      "description": "The label for the Weapon sheet"
                     }
                   }
                 },
@@ -450,6 +454,7 @@
                     "effects",
                     "items",
                     "magic",
+                    "rules",
                     "stats"
                   ],
                   "additionalProperties": false,
@@ -470,6 +475,10 @@
                       "type": "string",
                       "description": "The label for the magic tab"
                     },
+                    "rules": {
+                      "type": "string",
+                      "description": "The label for the rules tab"
+                    },
                     "stats": {
                       "type": "string",
                       "description": "The label for the stats tab"
@@ -480,8 +489,145 @@
             },
             "item": {
               "type": "object",
-              "description": "Labels for item sheets",
-              "additionalProperties": false
+              "description": "Labels for Item sheets",
+              "required": ["weapon"],
+              "additionalProperties": false,
+              "properties": {
+                "weapon": {
+                  "type": "object",
+                  "description": "Labels for Weapon sheets",
+                  "required": [
+                    "attacks",
+                    "holdout",
+                    "ranges",
+                    "reload",
+                    "strengthRequirement"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "attacks": {
+                      "type": "object",
+                      "description": "Labels related to attacks",
+                      "required": [
+                        "ap",
+                        "damage",
+                        "dtReduction",
+                        "rounds",
+                        "title"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "ap": {
+                          "type": "string",
+                          "description": "The label for the AP cost"
+                        },
+                        "damage": {
+                          "type": "string",
+                          "description": "The label for the damage"
+                        },
+                        "dtReduction": {
+                          "type": "string",
+                          "description": "The label for the DT reduction"
+                        },
+                        "rounds": {
+                          "type": "string",
+                          "description": "The label for the rounds"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "The heading for the attacks block"
+                        }
+                      }
+                    },
+                    "holdout": {
+                      "type": "string",
+                      "description": "The label for the holdout display"
+                    },
+                    "ranges": {
+                      "type": "object",
+                      "description": "Labels related to ranges",
+                      "required": [
+                        "distance",
+                        "long",
+                        "medium",
+                        "modifier",
+                        "range",
+                        "short",
+                        "title"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "distance": {
+                          "type": "string",
+                          "description": "The name for the distance column"
+                        },
+                        "long": {
+                          "type": "string",
+                          "description": "The name for the long range"
+                        },
+                        "medium": {
+                          "type": "string",
+                          "description": "The name for the medium range"
+                        },
+                        "modifier": {
+                          "type": "string",
+                          "description": "The name for the modifier column"
+                        },
+                        "range": {
+                          "type": "string",
+                          "description": "The name for the range column"
+                        },
+                        "short": {
+                          "type": "string",
+                          "description": "The name for the short range"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "The heading for the ranges block"
+                        }
+                      }
+                    },
+                    "reload": {
+                      "type": "object",
+                      "description": "Labels related to reloading",
+                      "required": [
+                        "ap",
+                        "caliber",
+                        "containerType",
+                        "size",
+                        "title"
+                      ],
+                      "additionalProperties": false,
+                      "properties": {
+                        "ap": {
+                          "type": "string",
+                          "description": "The label for the reload AP"
+                        },
+                        "caliber": {
+                          "type": "string",
+                          "description": "The label for the caliber"
+                        },
+                        "containerType": {
+                          "type": "string",
+                          "description": "The label for the container type"
+                        },
+                        "size": {
+                          "type": "string",
+                          "description": "The label for the reload size"
+                        },
+                        "title": {
+                          "type": "string",
+                          "description": "The heading for the reload block"
+                        }
+                      }
+                    },
+                    "strengthRequirement": {
+                      "type": "string",
+                      "description": "The label for the strength requirement display"
+                    }
+                  }
+                }
+              }
             }
           }
         },

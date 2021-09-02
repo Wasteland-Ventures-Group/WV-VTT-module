@@ -1,0 +1,92 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+  {{> (get . "sheet.parts.header")}}
+
+  <nav class="tabs flex-fixed" data-group="primary">
+    <a class="item" data-tab="stats">{{localize "wv.sheets.common.tabs.stats"}}</a>
+    <a class="item" data-tab="rules">{{localize "wv.sheets.common.tabs.effects"}}</a>
+  </nav>
+
+  <section class="content">
+    <div class="tab active" data-group="primary" data-tab="stats">
+      <div class="resource-block flex-fixed">
+        <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.attacks.title"}}</h4>
+        {{#each data.data.attacks as |attack|}}
+          <div class="resource-block flex-fixed">
+            <h5 class="resource-block-line">{{attack.name}}</h5>
+            <section class="resource-block-line">{{attack.description}}</section>
+            <label class="resource-block-line contained-target-inline">
+              {{localize "wv.sheets.item.weapon.attacks.damage"}}
+              <span>{{attack.damage.base}}+({{attack.damage.dice}})</span>
+            </label>
+            <label class="resource-block-line contained-target-inline">
+              {{localize "wv.sheets.item.weapon.attacks.rounds"}}
+              <span>{{attack.rounds}}</span>
+            </label>
+            <label class="resource-block-line contained-target-inline">
+              {{localize "wv.sheets.item.weapon.attacks.dtReduction"}}
+              <span>{{attack.dtReduction}}</span>
+            </label>
+            <label class="resource-block-line contained-target-inline">
+              {{localize "wv.sheets.item.weapon.attacks.ap"}}
+              <span>{{attack.ap}}</span>
+            </label>
+          </div>
+        {{/each}}
+      </div>
+      <div class="resource-block flex-fixed">
+        <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.ranges.title"}}</h4>
+        <div class="grid-3cols standard-col-gaps flex-center">
+          <label>{{localize "wv.sheets.item.weapon.ranges.range"}}</label>
+          <label>{{localize "wv.sheets.item.weapon.ranges.distance"}}</label>
+          <label>{{localize "wv.sheets.item.weapon.ranges.modifier"}}</label>
+          <label>{{localize "wv.sheets.item.weapon.ranges.short"}}</label>
+          <span class="resource-display size-3">{{data.data.ranges.short.distance}}</span>
+          <span class="resource-display size-3">{{data.data.ranges.short.modifier}}</span>
+          <label>{{localize "wv.sheets.item.weapon.ranges.medium"}}</label>
+          <span class="resource-display size-3">{{data.data.ranges.medium.distance}}</span>
+          <span class="resource-display size-3">{{data.data.ranges.medium.modifier}}</span>
+          <label>{{localize "wv.sheets.item.weapon.ranges.long"}}</label>
+          <span class="resource-display size-3">{{data.data.ranges.long.distance}}</span>
+          <span class="resource-display size-3">{{data.data.ranges.long.modifier}}</span>
+        </div>
+      </div>
+      {{#if sheet.usesAmmo}}
+        <div class="resource-block flex-fixed">
+          <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.reload.title"}}</h4>
+          <label class="resource-block-line contained-target-inline">
+            {{localize "wv.sheets.item.weapon.reload.ap"}}
+            <span class="resource-display size-2">{{data.data.reload.ap}}</span>
+          </label>
+          <label class="resource-block-line contained-target-inline">
+            {{localize "wv.sheets.item.weapon.reload.caliber"}}
+            <span class="resource-display">{{data.data.reload.caliber}}</span>
+          </label>
+          <label class="resource-block-line contained-target-inline">
+            {{localize "wv.sheets.item.weapon.reload.containerType"}}
+            <span class="resource-display">{{data.data.reload.containerType}}</span>
+          </label>
+          <label class="resource-block-line contained-target-inline">
+            {{localize "wv.sheets.item.weapon.reload.size"}}
+            <span class="resource-display size-2">{{data.data.reload.size}}</span>
+          </label>
+        </div>
+      {{/if}}
+      <div class="resource-block resource-block-line flex-fixed">
+        <label class="contained-target-inline">
+          {{localize "wv.sheets.item.weapon.strengthRequirement"}}
+          <span class="resource-display size-2">{{data.data.strengthRequirement}}</span>
+        </label>
+      </div>
+      <div class="resource-block resource-block-line flex-fixed">
+        <label class="contained-target-inline">
+          {{localize "wv.sheets.item.weapon.holdout"}}
+          <span class="resource-display far {{ternary data.data.holdout 'fa-check-square' 'fa-square'}}"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="rules">
+      {{> (get . "sheet.parts.rules")}}
+    </div>
+  </section>
+</form>

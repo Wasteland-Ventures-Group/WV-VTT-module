@@ -15,12 +15,12 @@ export function configureFoundry(): void {
 
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet(CONSTANTS.systemId, WvActorSheet, {
-    label: "wv.sheet.names.actorSheet",
+    label: "wv.sheets.common.names.actorSheet",
     makeDefault: true
   });
 
   Items.registerSheet(CONSTANTS.systemId, EffectSheet, {
-    label: "wv.sheet.names.effectSheet",
+    label: "wv.sheets.common.names.effectSheet",
     types: [TYPES.ITEM.EFFECT]
   });
 }

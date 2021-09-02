@@ -4,8 +4,7 @@
       "actions": {
         "create": "Create",
         "delete": "Delete",
-        "edit": "Edit",
-        "toggle": "Toggle"
+        "edit": "Edit"
       },
       "newName": "New {what}",
       "types": {
@@ -14,66 +13,13 @@
         }
       }
     },
-    "labels": {
-      "ailments": {
-        "radiation": {
-          "absorbed": {
-            "title": "Absorbed dose",
-            "unit": "Rad(s)"
-          },
-          "effects": "Effects",
-          "title": "Radiation"
-        }
-      },
-      "errors": {
-        "unknownSpecial": "unknown SPECIAL",
-        "unknownSkill": "unknown Skill"
-      },
-      "placeholders": {
-        "documentName": "Name"
-      },
-      "magic": {
-        "thaumSpecial": "SPECIA for Thaumaturgy"
-      },
-      "resistances": {
-        "poison": "Poison",
-        "radiation": "Radiation",
-        "title": "Resistances"
-      },
-      "rolls": {
-        "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both",
-        "flavor": "Rolling {what}",
-        "genericModifierDescription": "Enter a modifier:",
-        "modifierDescription": "Enter a modifier for {what}:",
-        "modifierTitle": "Modified Roll",
-        "roll": "Roll"
-      },
-      "secondary": {
-        "actionPoints": "Action Points",
-        "criticals": {
-          "failure": "Failure",
-          "success": "Success",
-          "title": "Criticals"
-        },
-        "experience": "Experience",
-        "healingRate": "Healing Rate",
-        "health": "Health",
-        "initiative": "Initiative",
-        "level": "Level",
-        "strain": "Strain"
-      },
-      "skills": {
-        "name": "Skill",
-        "ranks": "Ranks",
-        "roll": "Roll",
-        "special": "SPECIAL",
-        "total": "Total"
-      },
-      "special": {
-        "name": "SPECIAL",
-        "roll": "Roll",
-        "value": "Value"
-      }
+    "rolls": {
+      "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both",
+      "flavor": "Rolling {what}",
+      "genericModifierDescription": "Enter a modifier:",
+      "modifierDescription": "Enter a modifier for {what}:",
+      "modifierTitle": "Modified Roll",
+      "roll": "Roll"
     },
     "migration": {
       "completed": "{systemName} system migration to version {version} completed!",
@@ -113,72 +59,119 @@
         "syntax": "Syntax error in rule element definition {number}: {message}"
       }
     },
-    "sheet": {
-      "background": {
-        "background": "Background",
-        "history": "History",
-        "fears": "Fears",
-        "dreams": "Dreams",
-        "karma": "Karma"
+    "sheets": {
+      "actor": {
+        "background": {
+          "background": "Background",
+          "history": "History",
+          "fears": "Fears",
+          "dreams": "Dreams",
+          "karma": "Karma"
+        },
+        "magic": {
+          "thaumSpecial": "SPECIA for Thaumaturgy"
+        },
+        "secondary": {
+          "actionPoints": "Action Points",
+          "criticals": {
+            "failure": "Failure",
+            "success": "Success",
+            "title": "Criticals"
+          },
+          "experience": "Experience",
+          "healingRate": "Healing Rate",
+          "health": "Health",
+          "initiative": "Initiative",
+          "level": "Level",
+          "strain": "Strain"
+        },
+        "skills": {
+          "name": "Skill",
+          "ranks": "Ranks",
+          "roll": "Roll",
+          "special": "SPECIAL",
+          "total": "Total"
+        },
+        "special": {
+          "name": "SPECIAL",
+          "roll": "Roll",
+          "value": "Value"
+        }
       },
-      "names": {
-        "actorSheet": "Actor Sheet",
-        "effectSheet": "Effect Sheet"
+      "common": {
+        "names": {
+          "actorSheet": "Actor Sheet",
+          "effectSheet": "Effect Sheet"
+        },
+        "placeholders": {
+          "documentName": "Name"
+        },
+        "tabs": {
+          "background": "Background",
+          "effects": "Effects",
+          "items": "Items",
+          "magic": "Magic",
+          "stats": "Stats"
+        }
       },
-      "tabs": {
-        "background": "Background",
-        "effects": "Effects",
-        "items": "Items",
-        "magic": "Magic",
-        "stats": "Stats"
-      }
+      "item": {}
     },
     "skills": {
-      "barter": "Barter",
-      "diplomacy": "Diplomacy",
-      "explosives": "Explosives",
-      "firearms": "Firearms",
-      "intimidation": "Intimidation",
-      "lockpick": "Lockpick",
-      "magicalEnergyWeapons": "Magical Energy Weapons",
-      "mechanics": "Mechanics",
-      "medicine": "Medicine",
-      "melee": "Melee",
-      "science": "Science",
-      "sleight": "Sleight",
-      "sneak": "Sneak",
-      "survival": "Survival",
-      "thaumaturgy": "Thaumaturgy",
-      "unarmed": "Unarmed"
+      "errors": {
+        "unknownSkill": "unknown Skill"
+      },
+      "names": {
+        "barter": "Barter",
+        "diplomacy": "Diplomacy",
+        "explosives": "Explosives",
+        "firearms": "Firearms",
+        "intimidation": "Intimidation",
+        "lockpick": "Lockpick",
+        "magicalEnergyWeapons": "Magical Energy Weapons",
+        "mechanics": "Mechanics",
+        "medicine": "Medicine",
+        "melee": "Melee",
+        "science": "Science",
+        "sleight": "Sleight",
+        "sneak": "Sneak",
+        "survival": "Survival",
+        "thaumaturgy": "Thaumaturgy",
+        "unarmed": "Unarmed"
+      }
     },
     "specials": {
-      "agility": {
-        "long": "Agility",
-        "short": "AGI"
+      "errors": {
+        "unknownSpecial": "unknown SPECIAL"
       },
-      "charisma": {
-        "long": "Charisma",
-        "short": "CHA"
-      },
-      "endurance": {
-        "long": "Endurance",
-        "short": "END"
-      },
-      "intelligence": {
-        "long": "Intelligence",
-        "short": "INT"
-      },
-      "luck": {
-        "long": "Luck",
-        "short": "LCK"
-      },
-      "perception": {
-        "long": "Perception",
-        "short": "PER"
-      },
-      "strength": {
-        "long": "Strength",
-        "short": "STR"
+      "names": {
+        "agility": {
+          "long": "Agility",
+          "short": "AGI"
+        },
+        "charisma": {
+          "long": "Charisma",
+          "short": "CHA"
+        },
+        "endurance": {
+          "long": "Endurance",
+          "short": "END"
+        },
+        "intelligence": {
+          "long": "Intelligence",
+          "short": "INT"
+        },
+        "luck": {
+          "long": "Luck",
+          "short": "LCK"
+        },
+        "perception": {
+          "long": "Perception",
+          "short": "PER"
+        },
+        "strength": {
+          "long": "Strength",
+          "short": "STR"
+        }
       }
     }
   }

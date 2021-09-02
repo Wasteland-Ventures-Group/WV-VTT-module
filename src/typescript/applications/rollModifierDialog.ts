@@ -9,7 +9,7 @@ export default class RollModifierDialog extends Application<Options> {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "roll-modifier-dialog"],
       template: `${CONSTANTS.systemPath}/handlebars/rollModifierDialog.hbs`,
-      title: getGame().i18n.localize("wv.labels.rolls.modifierTitle")
+      title: getGame().i18n.localize("wv.rolls.modifierTitle")
     } as typeof ActorSheet["defaultOptions"]);
   }
 

@@ -12,10 +12,10 @@ export default interface Attack {
     base: number;
 
     /** The number of d6 to throw for variable damage */
-    die: number;
+    dice: number;
 
     /** Whether the die property is the minimum value of a die range */
-    dieRange: boolean;
+    diceRange: boolean;
   };
 
   /** The amount of rounds used with the attack */

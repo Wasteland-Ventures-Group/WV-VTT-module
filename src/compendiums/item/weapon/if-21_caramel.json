@@ -12,8 +12,8 @@
         "ap": 4,
         "damage": {
           "base": 2,
-          "die": 3,
-          "dieRange": false
+          "dice": 3,
+          "diceRange": false
         },
         "dtReduction": 0,
         "rounds": 1,

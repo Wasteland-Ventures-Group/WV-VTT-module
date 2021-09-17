@@ -502,6 +502,7 @@
                     "holdout",
                     "ranges",
                     "reload",
+                    "skill",
                     "strengthRequirement"
                   ],
                   "additionalProperties": false,
@@ -621,6 +622,10 @@
                           "description": "The heading for the reload block"
                         }
                       }
+                    },
+                    "skill": {
+                      "type": "string",
+                      "description": "The label for the skill display"
                     },
                     "strengthRequirement": {
                       "type": "string",
@@ -842,12 +847,22 @@
             "attacks": {
               "type": "object",
               "description": "Labels related to Weapon Attacks",
-              "required": ["damageRoll", "hitRoll", "notEnoughAp", "range"],
+              "required": [
+                "damageRoll",
+                "execute",
+                "hitRoll",
+                "notEnoughAp",
+                "range"
+              ],
               "additionalProperties": false,
               "properties": {
                 "damageRoll": {
                   "type": "string",
                   "description": "The label for the damage roll of an attack"
+                },
+                "execute": {
+                  "type": "string",
+                  "description": "The label for the execute button"
                 },
                 "hitRoll": {
                   "type": "string",

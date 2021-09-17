@@ -1,6 +1,7 @@
 import { TYPES } from "../../constants.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
+import WvI18n from "../../wvI18n.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 export default class WeaponSheet extends WvItemSheet {
@@ -23,20 +24,47 @@ export default class WeaponSheet extends WvItemSheet {
     return super.item;
   }
 
-  override async getData(): Promise<SheetData> {
-    if (this.item.data.type !== "weapon")
-      throw "The Weapon data is of the wrong type!";
+  override activateListeners(html: JQuery<HTMLFormElement>): void {
+    super.activateListeners(html);
 
+    html
+      .find("button[data-attack]")
+      .on("click", this.onClickAttackExecute.bind(this));
+  }
+
+  override async getData(): Promise<SheetData> {
     const data: SheetData = await super.getData();
     if (!data.sheet) data.sheet = {};
 
-    data.sheet.usesAmmo = this.item.data.data.reload !== "self";
+    data.sheet.skill = WvI18n.skills[this.item.systemData.skill];
+    data.sheet.usesAmmo = this.item.systemData.reload !== "self";
     return data;
+  }
+
+  /**
+   * Handle a click event on an Attack execute button.
+   */
+  protected onClickAttackExecute(event: ClickEvent): void {
+    const attackKey = event.target.dataset.attack;
+    if (!attackKey) return;
+
+    const attack = this.item.systemData.attacks.attacks[attackKey];
+    if (!attack) return;
+
+    attack.execute();
   }
 }
 
+type ClickEvent = JQuery.ClickEvent<
+  HTMLElement,
+  unknown,
+  HTMLElement,
+  HTMLElement
+>;
+
 export interface SheetData extends ItemSheetData {
   sheet?: ItemSheetData["sheet"] & {
+    skill?: string;
     usesAmmo?: boolean;
   };
 }

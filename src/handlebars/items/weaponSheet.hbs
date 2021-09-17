@@ -8,6 +8,12 @@
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
+      <div class="resource-block resource-block-line flex-fixed">
+        <label class="contained-target-inline">
+          {{localize "wv.sheets.item.weapon.skill"}}
+          <span class="resource-display">{{sheet.skill}}</span>
+        </label>
+      </div>
       <div class="resource-block flex-fixed">
         <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.attacks.title"}}</h4>
         {{#each data.data.attacks.sources as |attack|}}
@@ -29,6 +35,7 @@
               {{localize "wv.sheets.item.weapon.attacks.ap"}}
               <span>{{attack.ap}}</span>
             </label>
+            <button type="button" data-attack={{@key}}>{{localize "wv.weapons.attacks.execute"}}</button>
           </div>
         {{/each}}
       </div>

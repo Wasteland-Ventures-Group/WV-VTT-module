@@ -142,6 +142,7 @@
             "size": "Größe",
             "title": "Nachladen"
           },
+          "skill": "Skill",
           "strengthRequirement": "Nötige Stärke"
         }
       }
@@ -207,6 +208,7 @@
     "weapons": {
       "attacks": {
         "damageRoll": "Schaden",
+        "execute": "Ausführen",
         "hitRoll": "Treffer",
         "notEnoughAp": "Nicht genug AP um das zu nutzen!",
         "range": "Reichweite"

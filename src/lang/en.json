@@ -142,6 +142,7 @@
             "size": "Size",
             "title": "Reload"
           },
+          "skill": "Skill",
           "strengthRequirement": "Strength required"
         }
       }
@@ -207,6 +208,7 @@
     "weapons": {
       "attacks": {
         "damageRoll": "Damage",
+        "execute": "Execute",
         "hitRoll": "Hit",
         "notEnoughAp": "No enough AP to use!",
         "range": "Range"

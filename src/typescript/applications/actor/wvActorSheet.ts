@@ -44,13 +44,13 @@ export default class WvActorSheet extends ActorSheet<
 
     // item handling
     html
-      .find(".effect-control[data-action=create]")
+      .find(".control[data-action=create]")
       .on("click", this.onClickCreateItem.bind(this));
     html
-      .find(".effect-control[data-action=edit]")
+      .find(".control[data-action=edit]")
       .on("click", this.onClickEditItem.bind(this));
     html
-      .find(".effect-control[data-action=delete]")
+      .find(".control[data-action=delete]")
       .on("click", this.onClickDeleteItem.bind(this));
   }
 
@@ -110,11 +110,19 @@ export default class WvActorSheet extends ActorSheet<
     }
 
     data.sheet.effects = [];
+    data.sheet.weapons = [];
     for (const item of this.actor.items) {
       if (!item.id) continue;
 
       if (TYPES.ITEM.EFFECT === item.data.type) {
         data.sheet.effects.push({
+          id: item.id,
+          name: item.name
+        });
+      }
+
+      if (TYPES.ITEM.WEAPON === item.data.type) {
+        data.sheet.weapons.push({
           id: item.id,
           name: item.name
         });
@@ -239,6 +247,11 @@ interface SheetEffect {
   name: string | null;
 }
 
+interface SheetWeapon {
+  id: string;
+  name: string | null;
+}
+
 interface SheetThaumSpecial {
   name?: string;
   selected?: boolean;
@@ -270,5 +283,6 @@ interface SheetData extends ActorSheet.Data {
     magic?: SheetMagic;
     skills?: Partial<Record<SkillNames, SheetSkill>>;
     specials?: Partial<Record<SpecialNames, SheetSpecial>>;
+    weapons?: SheetWeapon[];
   };
 }

@@ -453,7 +453,7 @@
                   "required": [
                     "background",
                     "effects",
-                    "items",
+                    "inventory",
                     "magic",
                     "rules",
                     "stats"
@@ -468,9 +468,9 @@
                       "type": "string",
                       "description": "The label for the effects tab"
                     },
-                    "items": {
+                    "inventory": {
                       "type": "string",
-                      "description": "The label for the items tab"
+                      "description": "The label for the inventory tab"
                     },
                     "magic": {
                       "type": "string",

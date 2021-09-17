@@ -110,7 +110,7 @@
         "tabs": {
           "background": "Hintergrund",
           "effects": "Effekte",
-          "items": "Gegenstände",
+          "inventory": "Inventar",
           "magic": "Magie",
           "rules": "Regeln",
           "stats": "Statistiken"

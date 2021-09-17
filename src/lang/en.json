@@ -110,7 +110,7 @@
         "tabs": {
           "background": "Background",
           "effects": "Effects",
-          "items": "Items",
+          "inventory": "Inventory",
           "magic": "Magic",
           "rules": "Rules",
           "stats": "Stats"

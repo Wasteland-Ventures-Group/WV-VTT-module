@@ -10,10 +10,9 @@
     <div class="tab active" data-group="primary" data-tab="stats">
       <div class="resource-block flex-fixed">
         <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.attacks.title"}}</h4>
-        {{#each data.data.attacks as |attack|}}
+        {{#each data.data.attacks.sources as |attack|}}
           <div class="resource-block flex-fixed">
-            <h5 class="resource-block-line">{{attack.name}}</h5>
-            <section class="resource-block-line">{{attack.description}}</section>
+            <h5 class="resource-block-line">{{@key}}</h5>
             <label class="resource-block-line contained-target-inline">
               {{localize "wv.sheets.item.weapon.attacks.damage"}}
               <span>{{attack.damage.base}}+({{attack.damage.dice}})</span>

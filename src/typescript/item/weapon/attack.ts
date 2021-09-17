@@ -9,10 +9,15 @@ import type Weapon from "../weapon.js";
 export default class Attack {
   /**
    * Create an Attack from the given data.
+   * @param name - the identifier name of the attack
    * @param data - the attack source data
    * @param weapon - the Weapon this Attack belongs to
    */
-  constructor(public data: AttackSource, public weapon: Weapon) {}
+  constructor(
+    public name: string,
+    public data: AttackSource,
+    public weapon: Weapon
+  ) {}
 
   /**
    * Execute the attack
@@ -51,10 +56,16 @@ export default class Attack {
    * Create the header for the chat message.
    */
   private get header(): string {
-    return this.weapon.name
-      ? `<h3>${this.weapon.name}</h3>
-<h4>${this.weapon.data.data.name}</h3>`
-      : `<h3>${this.weapon.data.data.name}</h3>`;
+    const hasCustomName = this.weapon.name !== this.weapon.data.data.name;
+    const heading = hasCustomName
+      ? this.weapon.name
+      : this.weapon.data.data.name;
+
+    const subHeading = hasCustomName
+      ? `${this.weapon.data.data.name} - ${this.name}`
+      : this.name;
+
+    return `<h3>${heading}</h3><h4>${subHeading}</h4>`;
   }
 
   private get body(): string {
@@ -66,28 +77,22 @@ export default class Attack {
       weaponData.ranges.long.distance
     ];
 
-    const loc = getGame().i18n.localize;
-
-    return `<p>${loc("wv.weapons.attacks.hitRoll")}: [[1d100cs<=@skills.${
-      weaponData.skill
-    }.total]]</p>
-<p>${loc("wv.weapons.attacks.damageRoll")}: [[(${this.data.damage.dice}d6) + ${
-      this.data.damage.base
-    }]]</p>
+    return `<p>${getGame().i18n.localize(
+      "wv.weapons.attacks.hitRoll"
+    )}: [[1d100cs<=@skills.${weaponData.skill}.total]]</p>
+<p>${getGame().i18n.localize("wv.weapons.attacks.damageRoll")}: [[(${
+      this.data.damage.dice
+    }d6) + ${this.data.damage.base}]]</p>
 <ul>
-  <li>${loc("wv.weapons.attacks.range")}: ${ranges.join("/")}</li>
+  <li>${getGame().i18n.localize("wv.weapons.attacks.range")}: ${ranges.join(
+      "/"
+    )}</li>
 </ul>`;
   }
 }
 
 /** The Attack raw data layout */
 export interface AttackSource {
-  /** A name for the attack */
-  name: string;
-
-  /** Notes or a description of the attack */
-  description: string;
-
   /** The values related to the damage the weapon causes */
   damage: {
     /** The base damage amount */

@@ -28,8 +28,10 @@ export default class Weapon extends WvItem {
 
   override prepareBaseData(): void {
     super.prepareBaseData();
-    this.systemData.attacks.attacks = this.systemData.attacks.sources.map(
-      (attack) => new Attack(attack, this)
+    this.systemData.attacks.attacks = {};
+    Object.entries(this.systemData.attacks.sources).forEach(
+      ([name, source]) =>
+        (this.systemData.attacks.attacks[name] = new Attack(name, source, this))
     );
   }
 }

@@ -2,6 +2,7 @@ import type { ChatMessageDataConstructorData } from "@league-of-foundry-develope
 import WvActor from "../../actor/wvActor.js";
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../weapon.js";
+import Formulator from "../../formulator.js";
 
 /**
  * An attack of a Weapon Item.
@@ -21,13 +22,17 @@ export default class Attack {
 
   /**
    * Execute the attack
+   * @param options - options for the roll
    */
-  execute(): void {
+  execute(options: RollOptions = {}): void {
     if (!(this.weapon.actor instanceof WvActor)) return;
 
     const msgOptions: ChatMessageDataConstructorData = {
       speaker: ChatMessage.getSpeaker({ actor: this.weapon.actor })
     };
+    if (options?.whisperToGms) {
+      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm");
+    }
 
     const currentAp = this.weapon.actor.data.data.vitals.actionPoints.value;
     const apUse = this.data.ap;
@@ -47,7 +52,7 @@ export default class Attack {
 
     ChatMessage.create(
       foundry.utils.mergeObject(msgOptions, {
-        content: this.header + this.body
+        content: this.header + this.getBody(options?.modifier)
       })
     );
   }
@@ -68,8 +73,18 @@ export default class Attack {
     return `<h3>${heading}</h3><h4>${subHeading}</h4>`;
   }
 
-  private get body(): string {
+  /**
+   * Create the body for the chat message.
+   * @param modifier - an optional hit target modifier
+   */
+  private getBody(modifier?: number): string {
+    if (!this.weapon.actor) throw "The owning weapon has no actor!";
+
     const weaponData = this.weapon.systemData;
+    const skillTotal =
+      this.weapon.actor.data.data.skills[weaponData.skill]?.total;
+    if (!skillTotal)
+      throw "The owning actor's skills have not been calculated!";
 
     const ranges = [
       weaponData.ranges.short.distance,
@@ -79,7 +94,7 @@ export default class Attack {
 
     return `<p>${getGame().i18n.localize(
       "wv.weapons.attacks.hitRoll"
-    )}: [[1d100cs<=@skills.${weaponData.skill}.total]]</p>
+    )}: [[${Formulator.skill(skillTotal).modify(modifier)}]]</p>
 <p>${getGame().i18n.localize("wv.weapons.attacks.damageRoll")}: [[(${
       this.data.damage.dice
     }d6) + ${this.data.damage.base}]]</p>
@@ -116,4 +131,21 @@ export interface AttackSource {
 
   /** The amount of action points needed to attack */
   ap: number;
+}
+
+/**
+ * Options for modifying Attack rolls.
+ */
+interface RollOptions {
+  /**
+   * An ad-hoc modifier to roll with. When undefined, no modifier is applied.
+   * @defaultValue `undefined`
+   */
+  modifier?: number;
+
+  /**
+   * Whether to whisper the Attack to GMs.
+   * @defaultValue `false`
+   */
+  whisperToGms?: boolean;
 }

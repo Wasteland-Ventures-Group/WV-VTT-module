@@ -2,6 +2,7 @@ import { TYPES } from "../../constants.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
 import WvI18n from "../../wvI18n.js";
+import RollModifierDialog from "../rollModifierDialog.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 export default class WeaponSheet extends WvItemSheet {
@@ -51,7 +52,19 @@ export default class WeaponSheet extends WvItemSheet {
     const attack = this.item.systemData.attacks.attacks[attackKey];
     if (!attack) return;
 
-    attack.execute();
+    if (event.shiftKey) {
+      new RollModifierDialog(
+        (modifier) => {
+          attack.execute({ modifier: modifier, whisperToGms: event.ctrlKey });
+        },
+        {
+          min: -100,
+          max: 100
+        }
+      ).render(true);
+    } else {
+      attack.execute({ whisperToGms: event.ctrlKey });
+    }
   }
 }
 

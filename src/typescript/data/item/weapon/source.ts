@@ -1,7 +1,7 @@
-import { TYPES } from "../../../constants.js";
+import { SkillNames, TYPES } from "../../../constants.js";
 import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import PhysicalBaseItem from "../physicalBaseItem.js";
-import type Attack from "./attack.js";
+import { DbAttacks } from "./attack.js";
 import type Ranges from "./ranges.js";
 import type { Reload } from "./reload.js";
 
@@ -14,7 +14,7 @@ export default interface WeaponDataSource {
 /** The Weapon Item data-source data */
 export class WeaponDataSourceData extends PhysicalBaseItem {
   /** The attacks of the weapon */
-  attacks: Attack[] = [];
+  attacks: DbAttacks = new DbAttacks();
 
   /** Whether the weapon is a holdout weapon */
   holdout: boolean = false;
@@ -48,6 +48,9 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
     containerType: "magazine",
     size: 0
   };
+
+  /** The skill associated with the weapon attacks */
+  skill: SkillNames = "firearms";
 
   /** The strength requirement for this weapon to be equipped */
   strengthRequirement: number = 0;

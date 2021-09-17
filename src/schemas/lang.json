@@ -17,7 +17,8 @@
         "ruleEngine",
         "sheets",
         "skills",
-        "specials"
+        "specials",
+        "weapons"
       ],
       "additionalProperties": false,
       "properties": {
@@ -827,6 +828,38 @@
                     "long": "",
                     "short": "STR"
                   }
+                }
+              }
+            }
+          }
+        },
+        "weapons": {
+          "type": "object",
+          "description": "Labels related to Weapon Items",
+          "required": ["attacks"],
+          "additionalProperties": false,
+          "properties": {
+            "attacks": {
+              "type": "object",
+              "description": "Labels related to Weapon Attacks",
+              "required": ["damageRoll", "hitRoll", "notEnoughAp", "range"],
+              "additionalProperties": false,
+              "properties": {
+                "damageRoll": {
+                  "type": "string",
+                  "description": "The label for the damage roll of an attack"
+                },
+                "hitRoll": {
+                  "type": "string",
+                  "description": "The label for the hit roll of an attack"
+                },
+                "notEnoughAp": {
+                  "type": "string",
+                  "description": "The message when the weapon owner does not have enough AP for the attack"
+                },
+                "range": {
+                  "type": "string",
+                  "description": "The label for the ranges of a weapon"
                 }
               }
             }

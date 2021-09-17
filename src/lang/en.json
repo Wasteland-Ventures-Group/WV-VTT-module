@@ -203,6 +203,14 @@
           "short": "STR"
         }
       }
+    },
+    "weapons": {
+      "attacks": {
+        "damageRoll": "Damage",
+        "hitRoll": "Hit",
+        "notEnoughAp": "No enough AP to use!",
+        "range": "Range"
+      }
     }
   }
 }

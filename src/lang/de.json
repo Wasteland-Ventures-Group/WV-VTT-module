@@ -203,6 +203,14 @@
           "short": "STR"
         }
       }
+    },
+    "weapons": {
+      "attacks": {
+        "damageRoll": "Schaden",
+        "hitRoll": "Treffer",
+        "notEnoughAp": "Nicht genug AP um das zu nutzen!",
+        "range": "Reichweite"
+      }
     }
   }
 }

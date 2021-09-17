@@ -9,8 +9,6 @@ export class DbRules {
 
 /** A RuleElements container, that can be used in different Items. */
 export class Rules extends DbRules {
-  override sources: RuleElementSource[] = [];
-
   /** The RuleElements, created from the sources */
   elements: RuleElement[] = [];
 }

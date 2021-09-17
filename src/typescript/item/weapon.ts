@@ -1,4 +1,6 @@
 import { TYPES } from "../constants.js";
+import type WeaponDataProperties from "../data/item/weapon/properties.js";
+import Attack from "./weapon/attack.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent a weapon in the Wasteland Ventures system. */
@@ -12,5 +14,22 @@ export default class Weapon extends WvItem {
       throw `The passed data's type is not ${TYPES.ITEM.WEAPON}.`;
 
     super(data, context);
+  }
+
+  /**
+   * Get the system data of this weapon.
+   */
+  get systemData(): WeaponDataProperties["data"] {
+    if (!this.data || this.data.type !== TYPES.ITEM.WEAPON)
+      throw `This data's data type is not ${TYPES.ITEM.WEAPON}.`;
+
+    return this.data.data;
+  }
+
+  override prepareBaseData(): void {
+    super.prepareBaseData();
+    this.systemData.attacks.attacks = this.systemData.attacks.sources.map(
+      (attack) => new Attack(attack, this)
+    );
   }
 }

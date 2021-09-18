@@ -1,9 +1,9 @@
 {
-  "name": "IF-71 Epona",
+  "name": "IF-71 \"Epona\"",
   "type": "weapon",
   "img": "icons/svg/item-bag.svg",
   "data": {
-    "name": "IF-71 Epona",
+    "name": "IF-71 \"Epona\"",
     "description": "A pistol designed for special operations use. Literal hoofcannon",
     "notes": "",
     "attacks": {

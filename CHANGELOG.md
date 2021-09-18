@@ -10,7 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - a schema for the language files
-- add a rule engine for items and basic modifier items ([#6](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/1))
+- add a rule engine for items and basic modifier items ([#6](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/6))
+- German internationalization support
+- added support for prototype items ([#26](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/26))
+  - these are items, whose base stats can not be modified directly
+  - they are updated from compendiums, should the stats of them change in the
+    rules
+- first weapon item implementation
+  - support for hit and damage rolls per attack
+  - attacks can be dragged to the hotbar to create macros
+  - weapons are prototype items
+- a system weapon compendium (WIP)
+- some support for Manifest+ ([#16](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/16))
 
 ### Changed
 

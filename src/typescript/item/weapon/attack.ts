@@ -93,7 +93,8 @@ export default class Attack {
       weaponData.ranges.long.distance
     ];
 
-    return `<p>${getGame().i18n.localize(
+    return `<p>${this.weapon.data.data.notes}</p>
+<p>${getGame().i18n.localize(
       "wv.weapons.attacks.hitRoll"
     )}: [[${Formulator.skill(skillTotal).modify(modifier)}]]</p>
 <p>${getGame().i18n.localize("wv.weapons.attacks.damageRoll")}: [[(${

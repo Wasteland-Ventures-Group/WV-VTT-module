@@ -491,9 +491,21 @@
             "item": {
               "type": "object",
               "description": "Labels for Item sheets",
-              "required": ["weapon"],
+              "required": ["common", "weapon"],
               "additionalProperties": false,
               "properties": {
+                "common": {
+                  "type": "object",
+                  "description": "Common labels for Items",
+                  "required": ["notes"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "notes": {
+                      "type": "string",
+                      "description": "The label user provided notes"
+                    }
+                  }
+                },
                 "weapon": {
                   "type": "object",
                   "description": "Labels for Weapon sheets",

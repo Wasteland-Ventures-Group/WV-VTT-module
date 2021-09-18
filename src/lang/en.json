@@ -117,6 +117,9 @@
         }
       },
       "item": {
+        "common": {
+          "notes": "Notes"
+        },
         "weapon": {
           "attacks": {
             "ap": "AP Cost",

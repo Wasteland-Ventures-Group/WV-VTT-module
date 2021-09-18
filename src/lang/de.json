@@ -117,6 +117,9 @@
         }
       },
       "item": {
+        "common": {
+          "notes": "Notizen"
+        },
         "weapon": {
           "attacks": {
             "ap": "AP-Kosten",

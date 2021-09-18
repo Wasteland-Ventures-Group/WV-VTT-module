@@ -13,6 +13,9 @@ export default abstract class BaseItem implements TemplateDocumentType {
   /** The description of the item in the Wasteland Wares list. */
   description: string = "";
 
+  /** User provided notes. */
+  notes: string = "";
+
   /** The rules of the item. */
   rules: DbRules = new DbRules();
 

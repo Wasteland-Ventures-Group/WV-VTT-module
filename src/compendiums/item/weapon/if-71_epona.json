@@ -5,6 +5,7 @@
   "data": {
     "name": "IF-71 Epona",
     "description": "A pistol designed for special operations use. Literal hoofcannon",
+    "notes": "",
     "attacks": {
       "sources": {
         "Single": {

@@ -5,6 +5,7 @@
   "data": {
     "name": "IF-21 \"Caramel\"",
     "description": "Standard sidearm of pony officers. Proved and tested by battlefields and wastes.",
+    "notes": "",
     "attacks": {
       "sources": {
         "Single": {

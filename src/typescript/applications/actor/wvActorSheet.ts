@@ -11,6 +11,7 @@ import { isSkillName, isSpecialName } from "../../helpers.js";
 import { boundsSettingNames } from "../../settings.js";
 import WvI18n, { I18nSpecial } from "../../wvI18n.js";
 import { LOG } from "../../systemLogger.js";
+import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet<
@@ -20,6 +21,10 @@ export default class WvActorSheet extends ActorSheet<
   static override get defaultOptions(): ActorSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "document-sheet", "actor-sheet"],
+      dragDrop: [
+        { dragSelector: "button[data-special]" },
+        { dragSelector: "button[data-skill]" }
+      ],
       height: 1000,
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
@@ -130,6 +135,56 @@ export default class WvActorSheet extends ActorSheet<
     }
 
     return data;
+  }
+
+  override _onDragStart(event: DragEvent): void {
+    if (!this.actor.id) return super._onDragStart(event);
+
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return super._onDragStart(event);
+
+    const specialName = target.dataset.special ?? "";
+    const skillName = target.dataset.skill ?? "";
+
+    if (isSpecialName(specialName)) {
+      this.onDragSpecial(event, this.actor.id, specialName);
+    } else if (isSkillName(skillName)) {
+      this.onDragSkill(event, this.actor.id, skillName);
+    }
+  }
+
+  /**
+   * Handle a drag start event on the SPECIAL roll buttons.
+   */
+  protected onDragSpecial(
+    event: DragEvent,
+    actorId: string,
+    specialName: SpecialNames
+  ): void {
+    const dragData: SpecialDragData = {
+      actorId,
+      specialName,
+      type: "special"
+    };
+
+    event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
+  }
+
+  /**
+   * Handle a drag start event on the Skill roll buttons.
+   */
+  protected onDragSkill(
+    event: DragEvent,
+    actorId: string,
+    skillName: SkillNames
+  ): void {
+    const dragData: SkillDragData = {
+      actorId,
+      skillName,
+      type: "skill"
+    };
+
+    event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
   }
 
   /**

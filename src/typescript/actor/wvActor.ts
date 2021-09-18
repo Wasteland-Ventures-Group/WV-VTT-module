@@ -14,6 +14,8 @@ import { getGame } from "../foundryHelpers.js";
 import { boundsSettingNames } from "../settings.js";
 import WvI18n from "../wvI18n.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
+import type DragData from "../dragData.js";
+import { isSkillName, isSpecialName } from "../helpers.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
@@ -534,6 +536,60 @@ Hooks.on<Hooks.PreUpdateDocument<typeof Actor>>(
   "preUpdateActor",
   (actor, change) => actor.validChangeData(change)
 );
+
+/** The drag data of an Actor SPECIAL */
+export interface SpecialDragData extends DragData {
+  /** The ID of the Actor, the SPECIAL belongs to */
+  actorId: string;
+
+  /** The name of the SPECIAL on the Actor */
+  specialName: SpecialNames;
+
+  type: "special";
+}
+
+/**
+ * A custom typeguard, to check whether an unknown object is a SpecialDragData.
+ * @param data - the unknown object
+ * @returns whether it is a SpecialDragData
+ */
+export function isSpecialDragData(
+  data: Record<string, unknown>
+): data is SpecialDragData {
+  return (
+    data.type === "special" &&
+    typeof data.actorId === "string" &&
+    typeof data.specialName === "string" &&
+    isSpecialName(data.specialName)
+  );
+}
+
+/** The drag data of an Actor Skill */
+export interface SkillDragData extends DragData {
+  /** The ID of the Actor, the Skill belongs to */
+  actorId: string;
+
+  /** The name of the Skill on the Actor */
+  skillName: SkillNames;
+
+  type: "skill";
+}
+
+/**
+ * A custom typeguard, to check whether an unknown object is a SkillDragData.
+ * @param data - the unknown object
+ * @returns whether it is a SkillDragData
+ */
+export function isSkillDragData(
+  data: Record<string, unknown>
+): data is SkillDragData {
+  return (
+    data.type === "skill" &&
+    typeof data.actorId === "string" &&
+    typeof data.skillName === "string" &&
+    isSkillName(data.skillName)
+  );
+}
 
 /**
  * Options for modifying actor rolls.

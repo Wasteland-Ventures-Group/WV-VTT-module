@@ -6,7 +6,7 @@ import Attack, { WeaponAttackDragData } from "../item/weapon/attack.js";
  * Assign a Weapon Attack Macro to the user's hotbar. This will assign an
  * already existing Macro, if one with the same properties already exists, as
  * would be created from the drag data.
- * @param slot - the hotbar slot to assign the macro to
+ * @param slot - the hotbar slot to assign the Macro to
  * @param data - the Weapon Attack drag data
  */
 export default async function assignWeaponAttackMacro(
@@ -51,7 +51,7 @@ async function getOrCreateWeaponAttackMacro(
 }
 
 /**
- * Create a Macro name from the actor, weapon data and attack name.
+ * Create a Macro name from the Actor, Weapon data and Attack name.
  * @param actorData - the source data of the Actor, the Macro is for
  * @param weaponData - the source data of the Weapon, the Macro is for
  * @param attackName - the name of the Attack, the Macro is for
@@ -75,10 +75,10 @@ function createMacroCommand(data: WeaponAttackDragData): string {
 }
 
 /**
- * Execute a Weapon Attack macro on an Actor.
- * @param actorId - the ID of the Actor, the weapon belongs to
+ * Execute a Weapon Attack Macro on an Actor.
+ * @param actorId - the ID of the Actor, the Weapon belongs to
  * @param weaponId - the ID of the Weapon on the Actor
- * @param attackName - the name of the Attack on the weapon
+ * @param attackName - the name of the Attack on the Weapon
  */
 export function executeWeaponAttack(
   actorId: string,

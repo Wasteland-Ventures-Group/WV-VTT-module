@@ -3,6 +3,7 @@ import WvActor from "../../actor/wvActor.js";
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../weapon.js";
 import Formulator from "../../formulator.js";
+import type DragData from "../../dragData.js";
 
 /**
  * An attack of a Weapon Item.
@@ -134,7 +135,7 @@ export interface AttackSource {
 }
 
 /** The drag data of a Weapon Attack */
-export interface WeaponAttackDragData extends Record<string, unknown> {
+export interface WeaponAttackDragData extends DragData {
   /** The ID of the Actor, owning the Weapon */
   actorId: string;
 

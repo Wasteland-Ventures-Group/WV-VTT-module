@@ -1,6 +1,7 @@
 import { TYPES } from "../../constants.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
+import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import WvI18n from "../../wvI18n.js";
 import RollModifierDialog from "../rollModifierDialog.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
@@ -11,6 +12,7 @@ export default class WeaponSheet extends WvItemSheet {
     defaultOptions.classes.push("weapon-sheet");
     return foundry.utils.mergeObject(defaultOptions, {
       height: 500,
+      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }],
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
       ],
@@ -29,7 +31,7 @@ export default class WeaponSheet extends WvItemSheet {
     super.activateListeners(html);
 
     html
-      .find("button[data-attack]")
+      .find(".weapon-attack > button[data-attack]")
       .on("click", this.onClickAttackExecute.bind(this));
   }
 
@@ -40,6 +42,37 @@ export default class WeaponSheet extends WvItemSheet {
     data.sheet.skill = WvI18n.skills[this.item.systemData.skill];
     data.sheet.usesAmmo = this.item.systemData.reload !== "self";
     return data;
+  }
+
+  override _onDragStart(event: DragEvent): void {
+    if (!this.item.actor?.id || !this.item.id) return super._onDragStart(event);
+
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return super._onDragStart(event);
+
+    const attackKey = target.dataset.attack;
+    if (!attackKey) return super._onDragStart(event);
+
+    const dragData: WeaponAttackDragData = {
+      actorId: this.item.actor.id,
+      attackName: attackKey,
+      type: "weaponAttack",
+      weaponId: this.item.id
+    };
+
+    event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
+
+    if (this.item.img) {
+      const image = new Image();
+      image.src = this.item.img;
+      const height = 50;
+      const width = 50;
+      event.dataTransfer?.setDragImage(
+        DragDrop.createDragImage(image, width, height),
+        width / 2,
+        height / 2
+      );
+    }
   }
 
   /**

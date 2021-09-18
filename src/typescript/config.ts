@@ -3,10 +3,16 @@ import WvActorSheet from "./applications/actor/wvActorSheet.js";
 import EffectSheet from "./applications/item/effectSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
 import { CONSTANTS, TYPES } from "./constants.js";
+import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvItem from "./item/wvItem.js";
+import { macros } from "./macros/index.js";
 
 export function configureFoundry(): void {
+  getGame().wv = {
+    macros
+  };
+
   // Register our own Document classes.
   CONFIG.Actor.documentClass = WvActor;
   CONFIG.Item.documentClass = WvItem;
@@ -28,4 +34,14 @@ export function configureFoundry(): void {
     label: "wv.sheets.names.weaponSheet",
     types: [TYPES.ITEM.WEAPON]
   });
+}
+
+declare global {
+  interface Game {
+    /** The Wasteland Ventures property */
+    wv: {
+      /** Wasteland Ventures macros */
+      macros: typeof macros;
+    };
+  }
 }

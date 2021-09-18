@@ -1,0 +1,55 @@
+{
+  "name": "IF-71 Epona",
+  "type": "weapon",
+  "img": "icons/svg/item-bag.svg",
+  "data": {
+    "name": "IF-71 Epona",
+    "description": "A pistol designed for special operations use. Literal hoofcannon",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 4,
+          "damage": {
+            "base": 3,
+            "dice": 4,
+            "diceRange": false
+          },
+          "dtReduction": 0,
+          "rounds": 1,
+          "splash": "TODO"
+        }
+      }
+    },
+    "holdout": false,
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 8
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "firearms",
+    "strengthRequirement": 6,
+    "value": 550,
+    "weight": 1.5
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000003"
+}

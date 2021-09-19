@@ -173,7 +173,7 @@ export default class Attack {
     )}]]</p>
 <p>${getGame().i18n.localize(
       "wv.weapons.attacks.damageRoll"
-    )}: [[(${this.getDamageDice(range)}d6) + ${this.data.damage.base}]]</p>
+    )}: [[(${this.getDamageDice(range)}d6cs>4) + ${this.data.damage.base}]]</p>
 <ul>
   <li>${getGame().i18n.localize(
     "wv.weapons.attacks.range"

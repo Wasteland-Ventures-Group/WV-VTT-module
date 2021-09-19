@@ -43,3 +43,6 @@ interface SpecialBasedRange {
   /** The name of the SPECIAL to use */
   special: SpecialNames;
 }
+
+/** A type representing the different range brackets */
+type RangeBracket = "short" | "medium" | "long";

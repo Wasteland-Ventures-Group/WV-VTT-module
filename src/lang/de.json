@@ -23,6 +23,7 @@
       "genericModifierDescription": "Gib einen Modifikator an:",
       "modifierDescription": "Gib einen Modifikator für {what} an:",
       "modifierTitle": "Modifizierter Würfelwurf",
+      "rangeDescription": "Gib die Distanz zum Ziel an:",
       "roll": "Rollen"
     },
     "ruleEngine": {

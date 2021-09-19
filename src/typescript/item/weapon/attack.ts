@@ -1,3 +1,4 @@
+import RollModifierDialog from "../../applications/rollModifierDialog.js";
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
 import { getGame } from "../../foundryHelpers.js";
@@ -51,41 +52,65 @@ export default class Attack {
 
     this.weapon.actor.updateActionPoints(currentAp - apUse);
 
-    ChatMessage.create(
-      foundry.utils.mergeObject(msgOptions, {
-        content: this.header + this.getBody(options?.modifier)
-      })
-    );
+    new RollModifierDialog(
+      (range) => {
+        ChatMessage.create(
+          foundry.utils.mergeObject(msgOptions, {
+            content: this.header + this.getBody(range, options?.modifier)
+          })
+        );
+      },
+      {
+        description: getGame().i18n.localize("wv.rolls.rangeDescription"),
+        min: 0
+      }
+    ).render(true);
   }
 
   /**
    * Get the system formula representation of the damage of this attack.
    */
   get damageFormula(): string {
-    return `${this.data.damage.base}+(${this.damageDice})`;
+    return `${this.data.damage.base}+(${this.getDamageDice(0)})`;
   }
 
   /**
    * Get the amount of damage d6 of this attack. If the attack has a damage
-   * range, this includes the Strength based bonus dice of the owning actor.
+   * range, this includes the Strength based bonus dice of the owning actor. If
+   * the attack is made with a damage fall-off, this is also taken into account.
+   * @param range - the range to the target
+   * @returns the effective amount of damage dice
    */
-  get damageDice(): number {
-    if (!this.data.damage.diceRange) return this.data.damage.dice;
-
-    if (!this.weapon.actor) throw "The owning weapon has no actor!";
-
+  getDamageDice(range: number): number {
     let dice = this.data.damage.dice;
-    const str = this.weapon.actor.data.data.specials.strength;
 
-    if (str > 10) {
-      dice += 3;
-    } else if (str >= 8) {
-      dice += 2;
-    } else if (str >= 4) {
-      dice += 1;
+    if (this.data.damage.diceRange) {
+      if (!this.weapon.actor) throw "The owning weapon has no actor!";
+
+      const str = this.weapon.actor.data.data.specials.strength;
+
+      if (str > 10) {
+        dice += 3;
+      } else if (str >= 8) {
+        dice += 2;
+      } else if (str >= 4) {
+        dice += 1;
+      }
     }
 
-    return dice;
+    if (this.data.damage.damageFallOff === "shotgun") {
+      switch (this.weapon.getRangeToTarget(range)) {
+        case "long":
+          dice -= 4;
+          break;
+
+        case "medium":
+          dice -= 2;
+          break;
+      }
+    }
+
+    return dice > 0 ? dice : 0;
   }
 
   /**
@@ -106,9 +131,10 @@ export default class Attack {
 
   /**
    * Create the body for the chat message.
+   * @param range - the range to the target
    * @param modifier - an optional hit target modifier
    */
-  private getBody(modifier?: number): string {
+  private getBody(range: number, modifier?: number): string {
     if (!this.weapon.actor) throw "The owning weapon has no actor!";
 
     const weaponData = this.weapon.systemData;
@@ -117,11 +143,24 @@ export default class Attack {
     if (!skillTotal)
       throw "The owning actor's skills have not been calculated!";
 
+    const rangeBracket = this.weapon.getRangeToTarget(range);
     const ranges = [weaponData.ranges.short.distance];
-    if (weaponData.ranges.medium !== "unused")
+    let rangeModifier = 0;
+    if (rangeBracket === "short") {
+      rangeModifier = weaponData.ranges.short.modifier;
+    }
+    if (weaponData.ranges.medium !== "unused") {
       ranges.push(weaponData.ranges.medium.distance);
-    if (weaponData.ranges.long !== "unused")
+      if (rangeBracket === "medium") {
+        rangeModifier = weaponData.ranges.medium.modifier;
+      }
+    }
+    if (weaponData.ranges.long !== "unused") {
       ranges.push(weaponData.ranges.long.distance);
+      if (rangeBracket === "long") {
+        rangeModifier = weaponData.ranges.long.modifier;
+      }
+    }
     const displayRanges = ranges
       .map((range) => this.weapon.getEffectiveRangeDistance(range))
       .join("/");
@@ -129,10 +168,12 @@ export default class Attack {
     return `<p>${this.weapon.data.data.notes}</p>
 <p>${getGame().i18n.localize(
       "wv.weapons.attacks.hitRoll"
-    )}: [[${Formulator.skill(skillTotal).modify(modifier)}]]</p>
-<p>${getGame().i18n.localize("wv.weapons.attacks.damageRoll")}: [[(${
-      this.damageDice
-    }d6) + ${this.data.damage.base}]]</p>
+    )}: [[${Formulator.skill(skillTotal).modify(
+      rangeModifier + (modifier ?? 0)
+    )}]]</p>
+<p>${getGame().i18n.localize(
+      "wv.weapons.attacks.damageRoll"
+    )}: [[(${this.getDamageDice(range)}d6) + ${this.data.damage.base}]]</p>
 <ul>
   <li>${getGame().i18n.localize(
     "wv.weapons.attacks.range"
@@ -153,6 +194,9 @@ export interface AttackSource {
 
     /** Whether the die property is the minimum value of a die range */
     diceRange: boolean;
+
+    /** The type of damage fall-off for the attack */
+    damageFallOff: DamageFallOff;
   };
 
   /** The amount of rounds used with the attack */
@@ -167,6 +211,9 @@ export interface AttackSource {
   /** The amount of action points needed to attack */
   ap: number;
 }
+
+/** A type representing different damage fall-off rules */
+type DamageFallOff = "shotgun" | "none";
 
 /** The drag data of a Weapon Attack */
 export interface WeaponAttackDragData extends DragData {

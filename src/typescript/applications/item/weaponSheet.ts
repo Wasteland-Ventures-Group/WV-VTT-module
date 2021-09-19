@@ -70,6 +70,10 @@ export default class WeaponSheet extends WvItemSheet {
     return data;
   }
 
+  override _canDragStart(): boolean {
+    return this.isEditable;
+  }
+
   override _onDragStart(event: DragEvent): void {
     if (!this.item.actor?.id || !this.item.id) return super._onDragStart(event);
 

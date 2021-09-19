@@ -87,11 +87,11 @@ export default class Attack {
     if (!skillTotal)
       throw "The owning actor's skills have not been calculated!";
 
-    const ranges = [
-      weaponData.ranges.short.distance,
-      weaponData.ranges.medium.distance,
-      weaponData.ranges.long.distance
-    ];
+    const ranges = [weaponData.ranges.short.distance];
+    if (weaponData.ranges.medium !== "unused")
+      ranges.push(weaponData.ranges.medium.distance);
+    if (weaponData.ranges.long !== "unused")
+      ranges.push(weaponData.ranges.long.distance);
 
     return `<p>${this.weapon.data.data.notes}</p>
 <p>${getGame().i18n.localize(

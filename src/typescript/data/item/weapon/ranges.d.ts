@@ -5,11 +5,11 @@ export default interface Ranges {
   /** The short range of the weapon */
   short: Range;
 
-  /** The medium range of the weapon */
-  medium: Range;
+  /** The medium range of the weapon, can be "unused" */
+  medium: Range | "unused";
 
-  /** The long range of the weapon */
-  long: Range;
+  /** The long range of the weapon, can be "unused" */
+  long: Range | "unused";
 }
 
 /** An interface to represent values needed for an weapon's range */

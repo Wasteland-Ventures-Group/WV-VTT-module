@@ -122,6 +122,9 @@ export default class Attack {
       ranges.push(weaponData.ranges.medium.distance);
     if (weaponData.ranges.long !== "unused")
       ranges.push(weaponData.ranges.long.distance);
+    const displayRanges = ranges
+      .map((range) => this.weapon.getEffectiveRangeDistance(range))
+      .join("/");
 
     return `<p>${this.weapon.data.data.notes}</p>
 <p>${getGame().i18n.localize(
@@ -131,9 +134,9 @@ export default class Attack {
       this.damageDice
     }d6) + ${this.data.damage.base}]]</p>
 <ul>
-  <li>${getGame().i18n.localize("wv.weapons.attacks.range")}: ${ranges.join(
-      "/"
-    )}</li>
+  <li>${getGame().i18n.localize(
+    "wv.weapons.attacks.range"
+  )}: ${displayRanges}</li>
 </ul>`;
   }
 }

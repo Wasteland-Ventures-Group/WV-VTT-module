@@ -1,6 +1,6 @@
 import { TYPES } from "../constants.js";
 import type WeaponDataProperties from "../data/item/weapon/properties.js";
-import type { Distance } from "../data/item/weapon/ranges.js";
+import type { Distance, RangeBracket } from "../data/item/weapon/ranges.js";
 import Attack from "./weapon/attack.js";
 import WvItem from "./wvItem.js";
 
@@ -54,6 +54,31 @@ export default class Weapon extends WvItem {
       distance.base +
       this.actor.data.data.specials[distance.special] * distance.multiplier
     );
+  }
+
+  /**
+   * Get the range bracket for the given range.
+   * @param range - the range to get the bracket for
+   * @returns the range bracket
+   */
+  getRangeToTarget(range: number): RangeBracket {
+    const short = this.systemData.ranges.short;
+    const medium = this.systemData.ranges.medium;
+
+    const shortDistance = this.getEffectiveRangeDistance(short.distance);
+
+    let mediumDistance;
+    if (medium !== "unused") {
+      mediumDistance = this.getEffectiveRangeDistance(medium.distance);
+    }
+
+    if (typeof mediumDistance === "number" && range > mediumDistance) {
+      return "long";
+    } else if (range > shortDistance) {
+      return "medium";
+    } else {
+      return "short";
+    }
   }
 
   override prepareBaseData(): void {

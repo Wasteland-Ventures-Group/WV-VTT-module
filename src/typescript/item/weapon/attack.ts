@@ -99,22 +99,14 @@ export default class Attack {
     }
 
     if (this.data.damage.damageFallOff === "shotgun") {
-      const short = this.weapon.systemData.ranges.short;
-      const medium = this.weapon.systemData.ranges.medium;
+      switch (this.weapon.getRangeToTarget(range)) {
+        case "long":
+          dice -= 4;
+          break;
 
-      const shortDistance = this.weapon.getEffectiveRangeDistance(
-        short.distance
-      );
-
-      let mediumDistance;
-      if (medium !== "unused") {
-        mediumDistance = this.weapon.getEffectiveRangeDistance(medium.distance);
-      }
-
-      if (typeof mediumDistance === "number" && range > mediumDistance) {
-        dice -= 4;
-      } else if (range > shortDistance) {
-        dice -= 2;
+        case "medium":
+          dice -= 2;
+          break;
       }
     }
 
@@ -151,11 +143,24 @@ export default class Attack {
     if (!skillTotal)
       throw "The owning actor's skills have not been calculated!";
 
+    const rangeBracket = this.weapon.getRangeToTarget(range);
     const ranges = [weaponData.ranges.short.distance];
-    if (weaponData.ranges.medium !== "unused")
+    let rangeModifier = 0;
+    if (rangeBracket === "short") {
+      rangeModifier = weaponData.ranges.short.modifier;
+    }
+    if (weaponData.ranges.medium !== "unused") {
       ranges.push(weaponData.ranges.medium.distance);
-    if (weaponData.ranges.long !== "unused")
+      if (rangeBracket === "medium") {
+        rangeModifier = weaponData.ranges.medium.modifier;
+      }
+    }
+    if (weaponData.ranges.long !== "unused") {
       ranges.push(weaponData.ranges.long.distance);
+      if (rangeBracket === "long") {
+        rangeModifier = weaponData.ranges.long.modifier;
+      }
+    }
     const displayRanges = ranges
       .map((range) => this.weapon.getEffectiveRangeDistance(range))
       .join("/");
@@ -163,7 +168,9 @@ export default class Attack {
     return `<p>${this.weapon.data.data.notes}</p>
 <p>${getGame().i18n.localize(
       "wv.weapons.attacks.hitRoll"
-    )}: [[${Formulator.skill(skillTotal).modify(modifier)}]]</p>
+    )}: [[${Formulator.skill(skillTotal).modify(
+      rangeModifier + (modifier ?? 0)
+    )}]]</p>
 <p>${getGame().i18n.localize(
       "wv.weapons.attacks.damageRoll"
     )}: [[(${this.getDamageDice(range)}d6) + ${this.data.damage.base}]]</p>

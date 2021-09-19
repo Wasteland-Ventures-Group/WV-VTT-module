@@ -35,3 +35,10 @@ export default class Weapon extends WvItem {
     );
   }
 }
+
+/**
+ * A custom type guard to check whether an Item is a Weapon.
+ */
+export function isWeaponItem(item: WvItem): item is Weapon {
+  return item.data.type === TYPES.ITEM.WEAPON;
+}

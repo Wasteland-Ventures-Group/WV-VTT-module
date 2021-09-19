@@ -16,6 +16,7 @@ import WvI18n from "../wvI18n.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import type DragData from "../dragData.js";
 import { isSkillName, isSpecialName } from "../helpers.js";
+import { isWeaponItem } from "../item/weapon.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
@@ -532,9 +533,32 @@ export default class WvActor extends Actor {
 
 /* eslint-enable @typescript-eslint/member-ordering */
 
+// Validate changes before updating the actor.
 Hooks.on<Hooks.PreUpdateDocument<typeof Actor>>(
   "preUpdateActor",
   (actor, change) => actor.validChangeData(change)
+);
+
+// Rerender Weapon sheets with Strength based damage, belonging to this Actor,
+// if the Actor's Strength changed.
+Hooks.on<Hooks.UpdateDocument<typeof Actor>>(
+  "updateActor",
+  (document, change) => {
+    if (!change?.data?.specials?.strength) return;
+
+    document.items.forEach((item) => {
+      if (!isWeaponItem(item)) return;
+
+      if (
+        Object.values(item.systemData.attacks.sources).some(
+          (attack) => attack.damage.diceRange
+        )
+      ) {
+        item.prepareData();
+        item.render(false);
+      }
+    });
+  }
 );
 
 /** The drag data of an Actor SPECIAL */

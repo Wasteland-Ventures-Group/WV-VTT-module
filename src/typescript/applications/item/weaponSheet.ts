@@ -39,8 +39,22 @@ export default class WeaponSheet extends WvItemSheet {
     const data: SheetData = await super.getData();
     if (!data.sheet) data.sheet = {};
 
+    data.sheet.attacks = Object.entries(
+      this.item.systemData.attacks.attacks
+    ).reduce<Record<string, SheetAttack>>((obj, [name, attack]) => {
+      obj[name] = {
+        ap: attack.data.ap,
+        damage: attack.damageFormula,
+        dtReduction: attack.data.dtReduction,
+        rounds: attack.data.rounds
+      };
+      return obj;
+    }, {});
+
     data.sheet.skill = WvI18n.skills[this.item.systemData.skill];
+
     data.sheet.usesAmmo = this.item.systemData.reload !== "self";
+
     return data;
   }
 
@@ -108,8 +122,16 @@ type ClickEvent = JQuery.ClickEvent<
   HTMLElement
 >;
 
+interface SheetAttack {
+  ap: number;
+  damage: string;
+  dtReduction: number;
+  rounds: number;
+}
+
 export interface SheetData extends ItemSheetData {
   sheet?: ItemSheetData["sheet"] & {
+    attacks?: Record<string, SheetAttack>;
     skill?: string;
     usesAmmo?: boolean;
   };

@@ -22,12 +22,12 @@
       </div>
       <div class="resource-block flex-fixed">
         <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.attacks.title"}}</h4>
-        {{#each data.data.attacks.sources as |attack|}}
+        {{#each sheet.attacks as |attack|}}
           <div class="resource-block flex-fixed weapon-attack">
             <h5 class="resource-block-line">{{@key}}</h5>
             <label class="resource-block-line contained-target-inline">
               {{localize "wv.sheets.item.weapon.attacks.damage"}}
-              <span>{{attack.damage.base}}+({{attack.damage.dice}})</span>
+              <span>{{attack.damage}}</span>
             </label>
             <label class="resource-block-line contained-target-inline">
               {{localize "wv.sheets.item.weapon.attacks.rounds"}}

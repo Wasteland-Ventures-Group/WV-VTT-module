@@ -1,0 +1,56 @@
+{
+  "name": "IF-64 \"Bloomberg\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/rifle-brown.webp",
+  "data": {
+    "name": "IF-64 \"Bloomberg\"",
+    "description": "The standard service rifle of Equestrian Army from the bygone era. There are many like it, but this one could be yours.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 6,
+          "damage": {
+            "base": 4,
+            "dice": 2,
+            "diceRange": false
+          },
+          "dtReduction": 0,
+          "rounds": 1,
+          "splash": "TODO"
+        }
+      }
+    },
+    "holdout": false,
+    "ranges": {
+      "short": {
+        "distance": 100,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 200,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 300,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 20
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "firearms",
+    "strengthRequirement": 4,
+    "value": 500,
+    "weight": 4
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000008"
+}

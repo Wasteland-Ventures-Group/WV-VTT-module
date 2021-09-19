@@ -1,0 +1,56 @@
+{
+  "name": "IF-38 \"Cornhusker\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-pistol-brown.webp",
+  "data": {
+    "name": "IF-38 \"Cornhusker\"",
+    "description": "The revolver favored by Appleloosan settlers, and still iconic to that corner of the world",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 5,
+          "damage": {
+            "base": 2,
+            "dice": 1,
+            "diceRange": false
+          },
+          "dtReduction": 0,
+          "rounds": 1,
+          "splash": "TODO"
+        }
+      }
+    },
+    "holdout": true,
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 6
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "firearms",
+    "strengthRequirement": 3,
+    "value": 100,
+    "weight": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000004"
+}

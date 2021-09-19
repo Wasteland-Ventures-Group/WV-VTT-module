@@ -1,0 +1,56 @@
+{
+  "name": "IF-P39 \"Troubleshoes\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/rifle-brown.webp",
+  "data": {
+    "name": "IF-P39 \"Troubleshoes\"",
+    "description": "An experimental rifle to stop heaviest machinery on the field. Rumor has it, MWT Ministry Mare hated this gun.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 10,
+          "damage": {
+            "base": 15,
+            "dice": 5,
+            "diceRange": false
+          },
+          "dtReduction": 0,
+          "rounds": 1,
+          "splash": "TODO"
+        }
+      }
+    },
+    "holdout": false,
+    "ranges": {
+      "short": {
+        "distance": 250,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 500,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 750,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "internal",
+      "size": 1
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "firearms",
+    "strengthRequirement": 14,
+    "value": 9999,
+    "weight": 30
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000010"
+}

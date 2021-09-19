@@ -1,0 +1,45 @@
+{
+  "name": "Fire Axe",
+  "type": "weapon",
+  "img": "icons/weapons/axes/axe-battle-black.webp",
+  "data": {
+    "name": "Fire Axe",
+    "description": "A firemare's axe, a heavier cousin to the lumber axe. It was meant to go through doors like butter, but it does also go through ribcages with similar ease.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Swipe": {
+          "ap": 6,
+          "damage": {
+            "base": 3,
+            "dice": 2,
+            "diceRange": true
+          },
+          "dtReduction": 0,
+          "rounds": 0,
+          "splash": "TODO"
+        }
+      }
+    },
+    "holdout": false,
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      },
+      "medium": "unused",
+      "long": "unused"
+    },
+    "reload": "self",
+    "rules": {
+      "sources": []
+    },
+    "skill": "melee",
+    "strengthRequirement": 5,
+    "value": 200,
+    "weight": 4
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000017"
+}

@@ -1,0 +1,56 @@
+{
+  "name": "Sling",
+  "type": "weapon",
+  "img": "icons/weapons/slings/slingshot-wood.webp",
+  "data": {
+    "name": "Sling",
+    "description": "Rocks, grenades, your heart, this sling slings everything.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 4,
+          "damage": {
+            "base": 1,
+            "dice": 0,
+            "diceRange": true
+          },
+          "dtReduction": 0,
+          "rounds": 1,
+          "splash": "TODO"
+        }
+      }
+    },
+    "holdout": true,
+    "ranges": {
+      "short": {
+        "distance": 50,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 100,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 150,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 6,
+      "caliber": "TODO",
+      "containerType": "internal",
+      "size": 1
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "melee",
+    "strengthRequirement": 4,
+    "value": 50,
+    "weight": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000018"
+}

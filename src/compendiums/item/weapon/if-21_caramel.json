@@ -1,7 +1,7 @@
 {
   "name": "IF-21 \"Caramel\"",
   "type": "weapon",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/weapons/guns/gun-pistol-brown.webp",
   "data": {
     "name": "IF-21 \"Caramel\"",
     "description": "Standard sidearm of pony officers. Proved and tested by battlefields and wastes.",

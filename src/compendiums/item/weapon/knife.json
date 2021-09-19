@@ -1,7 +1,7 @@
 {
   "name": "Knife",
   "type": "weapon",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/weapons/daggers/knife-green.webp",
   "data": {
     "name": "Knife",
     "description": "Always carry a knife for self defense. Or murder, or shaving, or to keep company for the fork as you starve.",

@@ -16,7 +16,6 @@ import WvI18n from "../wvI18n.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import type DragData from "../dragData.js";
 import { isSkillName, isSpecialName } from "../helpers.js";
-import { isWeaponItem } from "../item/weapon.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 

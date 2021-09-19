@@ -1,4 +1,5 @@
 import { TYPES } from "../../constants.js";
+import type { Range } from "../../data/item/weapon/ranges.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
@@ -50,6 +51,17 @@ export default class WeaponSheet extends WvItemSheet {
       };
       return obj;
     }, {});
+
+    data.sheet.ranges = {};
+    data.sheet.ranges.short = this.mapToSheetRange(
+      this.item.systemData.ranges.short
+    );
+    data.sheet.ranges.medium = this.mapToSheetRange(
+      this.item.systemData.ranges.medium
+    );
+    data.sheet.ranges.long = this.mapToSheetRange(
+      this.item.systemData.ranges.long
+    );
 
     data.sheet.skill = WvI18n.skills[this.item.systemData.skill];
 
@@ -113,6 +125,20 @@ export default class WeaponSheet extends WvItemSheet {
       attack.execute({ whisperToGms: event.ctrlKey });
     }
   }
+
+  /**
+   * Map a Range to a sheet displayable Range
+   * @param range - the Range to map
+   * @returns a sheet displayable Range
+   */
+  protected mapToSheetRange(range: Range | "unused"): Range | undefined {
+    if (range === "unused") return;
+
+    return {
+      distance: this.item.getEffectiveRangeDistance(range.distance),
+      modifier: range.modifier
+    };
+  }
 }
 
 type ClickEvent = JQuery.ClickEvent<
@@ -132,6 +158,11 @@ interface SheetAttack {
 export interface SheetData extends ItemSheetData {
   sheet?: ItemSheetData["sheet"] & {
     attacks?: Record<string, SheetAttack>;
+    ranges?: {
+      short?: Range;
+      medium?: Range;
+      long?: Range;
+    };
     skill?: string;
     usesAmmo?: boolean;
   };

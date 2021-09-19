@@ -15,16 +15,11 @@ function reRenderWeaponSheetsWithStrength(
   actor: Parameters<Hooks.UpdateDocument<typeof Actor>>[0],
   change: Parameters<Hooks.UpdateDocument<typeof Actor>>[1]
 ): void {
-  if (!change?.data?.specials?.strength) return;
+  if (typeof change?.data?.specials?.strength === "undefined") return;
 
   actor.items.forEach((item) => {
     if (!isWeaponItem(item)) return;
 
-    if (
-      Object.values(item.systemData.attacks.sources).some(
-        (attack) => attack.damage.diceRange
-      )
-    )
-      item.render(false);
+    if (item.hasSomeStrengthBasedValues()) item.render(false);
   });
 }

@@ -1,0 +1,56 @@
+{
+    "name": "Whinnyster M-75 \"Varmint Stomper\"",
+    "type": "weapon",
+    "img": "icons/svg/item-bag.svg",
+    "data": {
+      "name": "Whinnyster M-75 \"Varmint Stomper\"",
+      "description": "A simple rifle. Will suffice, unless you are against ROUS. Or anything bigger than rat really.",
+      "attacks": {
+        "sources": {
+          "Single": {
+            "ap": 6,
+            "damage": {
+              "base": 3,
+              "dice": 1,
+              "diceRange": false
+            },
+            "dtReduction": 0,
+            "rounds": 1,
+            "splash": "TODO"
+          }
+        }
+      },
+      "holdout": false,
+      "ranges": {
+        "short": {
+          "distance": 50,
+          "modifier": 0
+        },
+        "medium": {
+          "distance": 100,
+          "modifier": -10
+        },
+        "long": {
+          "distance": 150,
+          "modifier": -20
+        }
+      },
+      "reload": {
+        "ap": 4,
+        "caliber": "TODO",
+        "containerType": "magazine",
+        "size": 6
+      },
+      "rules": {
+        "sources": []
+      },
+      "skill": "firearms",
+      "strengthRequirement": 4,
+      "value": 225,
+      "weight": 3
+    },
+    "effects": [],
+    "flags": {},
+    "_id": "WVweapon00000007"
+  }
+  

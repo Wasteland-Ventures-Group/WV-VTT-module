@@ -1,0 +1,56 @@
+{
+    "name": "Zebra Rifle",
+    "type": "weapon",
+    "img": "icons/svg/item-bag.svg",
+    "data": {
+      "name": "Zebra Rifle",
+      "description": "A creation of pre-War Zebra gunsmiths, this rifle will douse your enemies in fire as well as riddle them with lead.",
+      "attacks": {
+        "sources": {
+          "Single": {
+            "ap": 5,
+            "damage": {
+              "base": 4,
+              "dice": 3,
+              "diceRange": false
+            },
+            "dtReduction": 0,
+            "rounds": 1,
+            "splash": "TODO"
+          }
+        }
+      },
+      "holdout": false,
+      "ranges": {
+        "short": {
+          "distance": 100,
+          "modifier": 0
+        },
+        "medium": {
+          "distance": 200,
+          "modifier": -10
+        },
+        "long": {
+          "distance": 300,
+          "modifier": -20
+        }
+      },
+      "reload": {
+        "ap": 4,
+        "caliber": "TODO",
+        "containerType": "magazine",
+        "size": 30
+      },
+      "rules": {
+        "sources": []
+      },
+      "skill": "firearms",
+      "strengthRequirement": 5,
+      "value": 9999,
+      "weight": 4
+    },
+    "effects": [],
+    "flags": {},
+    "_id": "WVweapon00000011"
+  }
+  

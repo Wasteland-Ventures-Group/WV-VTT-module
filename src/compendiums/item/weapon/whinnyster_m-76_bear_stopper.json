@@ -1,0 +1,56 @@
+{
+    "name": "Whinnyster M-76 \"Bear Stopper\"",
+    "type": "weapon",
+    "img": "icons/svg/item-bag.svg",
+    "data": {
+      "name": "Whinnyster M-76 \"Bear Stopper\"",
+      "description": "A hunting revolver made to stop bears. Used to hunt the most dangerous game.",
+      "attacks": {
+        "sources": {
+          "Single": {
+            "ap": 5,
+            "damage": {
+              "base": 5,
+              "dice": 2,
+              "diceRange": false
+            },
+            "dtReduction": 0,
+            "rounds": 1,
+            "splash": "TODO"
+          }
+        }
+      },
+      "holdout": false,
+      "ranges": {
+        "short": {
+          "distance": 50,
+          "modifier": 0
+        },
+        "medium": {
+          "distance": 100,
+          "modifier": -10
+        },
+        "long": {
+          "distance": 150,
+          "modifier": -20
+        }
+      },
+      "reload": {
+        "ap": 4,
+        "caliber": "TODO",
+        "containerType": "magazine",
+        "size": 4
+      },
+      "rules": {
+        "sources": []
+      },
+      "skill": "firearms",
+      "strengthRequirement": 6,
+      "value": 550,
+      "weight": 2
+    },
+    "effects": [],
+    "flags": {},
+    "_id": "WVweapon00000006"
+  }
+  

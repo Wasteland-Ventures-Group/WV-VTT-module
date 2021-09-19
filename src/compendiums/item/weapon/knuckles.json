@@ -1,0 +1,42 @@
+{
+    "name": "Horseshoe / Knuckles",
+    "type": "weapon",
+    "img": "icons/svg/item-bag.svg",
+    "data": {
+      "name": "Horseshoe / Knuckles",
+      "description": "The humble horseshoe, doesn't bring you luck, but it might bring you a KO.",
+      "attacks": {
+        "sources": {
+          "Single": {
+            "ap": 4,
+            "damage": {
+              "base": 2,
+              "dice": 0,
+              "diceRange": true
+            },
+            "dtReduction": 0,
+            "rounds": 1,
+            "splash": "TODO"
+          }          
+        }
+      },
+      "holdout": true,
+      "ranges": {
+        "short": {
+          "distance": "melee",
+          "modifier": 0
+        }
+      },
+      "rules": {
+        "sources": []
+      },
+      "skill": "unarmed",
+      "strengthRequirement": 2,
+      "value": 60,
+      "weight": 0.5
+    },
+    "effects": [],
+    "flags": {},
+    "_id": "WVweapon00000016"
+  }
+  

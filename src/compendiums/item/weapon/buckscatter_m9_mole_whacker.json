@@ -1,0 +1,56 @@
+{
+    "name": "Buckscatter M9 \"Mole Whacker\"",
+    "type": "weapon",
+    "img": "icons/svg/item-bag.svg",
+    "data": {
+      "name": "Buckscatter M9 \"Mole Whacker\"",
+      "description": "A lever-action shotgun, popular in the pre-War and Wasteland Farms. \"Sure, there are newer designs, but you can’t flip cock them and flip cocking makes a badass.\"",
+      "attacks": {
+        "sources": {
+          "Single": {
+            "ap": 5,
+            "damage": {
+              "base": 1,
+              "dice": 7,
+              "diceRange": false
+            },
+            "dtReduction": 0,
+            "rounds": 1,
+            "splash": "TODO"
+          }
+        }
+      },
+      "holdout": false,
+      "ranges": {
+        "short": {
+          "distance": 10,
+          "modifier": 0
+        },
+        "medium": {
+          "distance": 20,
+          "modifier": -10
+        },
+        "long": {
+          "distance": 30,
+          "modifier": -20
+        }
+      },
+      "reload": {
+        "ap": 2,
+        "caliber": "TODO",
+        "containerType": "internal",
+        "size": 5
+      },
+      "rules": {
+        "sources": []
+      },
+      "skill": "firearms",
+      "strengthRequirement": 6,
+      "value": 225,
+      "weight": 1.5
+    },
+    "effects": [],
+    "flags": {},
+    "_id": "WVweapon00000012"
+  }
+  

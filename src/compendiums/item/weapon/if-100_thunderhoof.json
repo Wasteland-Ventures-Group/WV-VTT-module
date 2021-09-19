@@ -1,0 +1,56 @@
+{
+    "name": "IF-100 \"Thunderhoof\"",
+    "type": "weapon",
+    "img": "icons/svg/item-bag.svg",
+    "data": {
+      "name": "IF-100 \"Thunderhoof\"",
+      "description": "When deeming only one bullet is enough to stop an enemy - no matter how armored - this is the rifle to go.",
+      "attacks": {
+        "sources": {
+          "Single": {
+            "ap": 8,
+            "damage": {
+              "base": 6,
+              "dice": 3,
+              "diceRange": false
+            },
+            "dtReduction": 0,
+            "rounds": 1,
+            "splash": "TODO"
+          }
+        }
+      },
+      "holdout": false,
+      "ranges": {
+        "short": {
+          "distance": 250,
+          "modifier": 0
+        },
+        "medium": {
+          "distance": 500,
+          "modifier": -10
+        },
+        "long": {
+          "distance": 750,
+          "modifier": -20
+        }
+      },
+      "reload": {
+        "ap": 4,
+        "caliber": "TODO",
+        "containerType": "magazine",
+        "size": 8
+      },
+      "rules": {
+        "sources": []
+      },
+      "skill": "firearms",
+      "strengthRequirement": 11,
+      "value": 750,
+      "weight": 15
+    },
+    "effects": [],
+    "flags": {},
+    "_id": "WVweapon00000009"
+  }
+  

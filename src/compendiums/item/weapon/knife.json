@@ -1,0 +1,63 @@
+{
+  "name": "Knife",
+  "type": "weapon",
+  "img": "icons/svg/item-bag.svg",
+  "data": {
+    "name": "Knife",
+    "description": "Always carry a knife for self defense. Or murder, or shaving, or to keep company for the fork as you starve.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Slash": {
+          "ap": 4,
+          "damage": {
+            "base": 1,
+            "dice": 1,
+            "diceRange": true
+          },
+          "dtReduction": 0,
+          "rounds": 0,
+          "splash": "TODO"
+        },
+        "Throw": {
+          "ap": 5,
+          "damage": {
+            "base": 1,
+            "dice": 1,
+            "diceRange": true
+          },
+          "dtReduction": 0,
+          "rounds": 1,
+          "splash": "TODO"
+        }
+      }
+    },
+    "holdout": true,
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      },
+      "medium": {
+        "distance": {
+          "base": 4,
+          "special": "strength",
+          "multiplier": 2
+        },
+        "modifier": -10
+      },
+      "long": "unused"
+    },
+    "reload": "self",
+    "rules": {
+      "sources": []
+    },
+    "skill": "melee",
+    "strengthRequirement": 1,
+    "value": 60,
+    "weight": 0.5
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000048"
+}

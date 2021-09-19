@@ -12,6 +12,7 @@
           "ap": 4,
           "damage": {
             "base": 2,
+            "damageFallOff": "none",
             "dice": 3,
             "diceRange": false
           },

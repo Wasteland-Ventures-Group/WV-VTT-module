@@ -12,6 +12,7 @@
           "ap": 4,
           "damage": {
             "base": 1,
+            "damageFallOff": "shotgun",
             "dice": 7,
             "diceRange": false
           },
@@ -23,6 +24,7 @@
           "ap": 5,
           "damage": {
             "base": 2,
+            "damageFallOff": "shotgun",
             "dice": 10,
             "diceRange": false
           },

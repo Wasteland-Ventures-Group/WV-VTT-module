@@ -19,6 +19,7 @@
       "genericModifierDescription": "Enter a modifier:",
       "modifierDescription": "Enter a modifier for {what}:",
       "modifierTitle": "Modified Roll",
+      "rangeDescription": "Enter the range to the target:",
       "roll": "Roll"
     },
     "migration": {

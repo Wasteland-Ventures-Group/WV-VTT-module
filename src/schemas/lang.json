@@ -76,6 +76,7 @@
             "genericModifierDescription",
             "modifierDescription",
             "modifierTitle",
+            "rangeDescription",
             "roll"
           ],
           "additionalProperties": false,
@@ -101,6 +102,10 @@
             "modifierTitle": {
               "type": "string",
               "description": "The title for a roll modifier dialog window"
+            },
+            "rangeDescription": {
+              "type": "string",
+              "description": "The description for a roll modifier dialog for entering a range"
             },
             "roll": {
               "type": "string",

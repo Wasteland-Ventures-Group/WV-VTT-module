@@ -1,4 +1,5 @@
 import { TYPES } from "../../constants.js";
+import type { Range } from "../../data/item/weapon/ranges.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
@@ -39,8 +40,33 @@ export default class WeaponSheet extends WvItemSheet {
     const data: SheetData = await super.getData();
     if (!data.sheet) data.sheet = {};
 
+    data.sheet.attacks = Object.entries(
+      this.item.systemData.attacks.attacks
+    ).reduce<Record<string, SheetAttack>>((obj, [name, attack]) => {
+      obj[name] = {
+        ap: attack.data.ap,
+        damage: attack.damageFormula,
+        dtReduction: attack.data.dtReduction,
+        rounds: attack.data.rounds
+      };
+      return obj;
+    }, {});
+
+    data.sheet.ranges = {};
+    data.sheet.ranges.short = this.mapToSheetRange(
+      this.item.systemData.ranges.short
+    );
+    data.sheet.ranges.medium = this.mapToSheetRange(
+      this.item.systemData.ranges.medium
+    );
+    data.sheet.ranges.long = this.mapToSheetRange(
+      this.item.systemData.ranges.long
+    );
+
     data.sheet.skill = WvI18n.skills[this.item.systemData.skill];
+
     data.sheet.usesAmmo = this.item.systemData.reload !== "self";
+
     return data;
   }
 
@@ -99,6 +125,20 @@ export default class WeaponSheet extends WvItemSheet {
       attack.execute({ whisperToGms: event.ctrlKey });
     }
   }
+
+  /**
+   * Map a Range to a sheet displayable Range
+   * @param range - the Range to map
+   * @returns a sheet displayable Range
+   */
+  protected mapToSheetRange(range: Range | "unused"): Range | undefined {
+    if (range === "unused") return;
+
+    return {
+      distance: this.item.getEffectiveRangeDistance(range.distance),
+      modifier: range.modifier
+    };
+  }
 }
 
 type ClickEvent = JQuery.ClickEvent<
@@ -108,8 +148,21 @@ type ClickEvent = JQuery.ClickEvent<
   HTMLElement
 >;
 
+interface SheetAttack {
+  ap: number;
+  damage: string;
+  dtReduction: number;
+  rounds: number;
+}
+
 export interface SheetData extends ItemSheetData {
   sheet?: ItemSheetData["sheet"] & {
+    attacks?: Record<string, SheetAttack>;
+    ranges?: {
+      short?: Range;
+      medium?: Range;
+      long?: Range;
+    };
     skill?: string;
     usesAmmo?: boolean;
   };

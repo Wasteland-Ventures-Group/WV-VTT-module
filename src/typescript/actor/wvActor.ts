@@ -532,11 +532,6 @@ export default class WvActor extends Actor {
 
 /* eslint-enable @typescript-eslint/member-ordering */
 
-Hooks.on<Hooks.PreUpdateDocument<typeof Actor>>(
-  "preUpdateActor",
-  (actor, change) => actor.validChangeData(change)
-);
-
 /** The drag data of an Actor SPECIAL */
 export interface SpecialDragData extends DragData {
   /** The ID of the Actor, the SPECIAL belongs to */

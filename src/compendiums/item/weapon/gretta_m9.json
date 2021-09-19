@@ -1,7 +1,7 @@
 {
   "name": "Gretta M9",
   "type": "weapon",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/weapons/guns/gun-pistol-brown.webp",
   "data": {
     "name": "Gretta M9",
     "description": "Standard firearm of griffin mercenaries, especially Talon Mercs. Reliable and cheap",

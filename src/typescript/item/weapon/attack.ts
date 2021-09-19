@@ -59,6 +59,36 @@ export default class Attack {
   }
 
   /**
+   * Get the system formula representation of the damage of this attack.
+   */
+  get damageFormula(): string {
+    return `${this.data.damage.base}+(${this.damageDice})`;
+  }
+
+  /**
+   * Get the amount of damage d6 of this attack. If the attack has a damage
+   * range, this includes the Strength based bonus dice of the owning actor.
+   */
+  get damageDice(): number {
+    if (!this.data.damage.diceRange) return this.data.damage.dice;
+
+    if (!this.weapon.actor) throw "The owning weapon has no actor!";
+
+    let dice = this.data.damage.dice;
+    const str = this.weapon.actor.data.data.specials.strength;
+
+    if (str > 10) {
+      dice += 3;
+    } else if (str >= 8) {
+      dice += 2;
+    } else if (str >= 4) {
+      dice += 1;
+    }
+
+    return dice;
+  }
+
+  /**
    * Create the header for the chat message.
    */
   private get header(): string {
@@ -87,23 +117,26 @@ export default class Attack {
     if (!skillTotal)
       throw "The owning actor's skills have not been calculated!";
 
-    const ranges = [
-      weaponData.ranges.short.distance,
-      weaponData.ranges.medium.distance,
-      weaponData.ranges.long.distance
-    ];
+    const ranges = [weaponData.ranges.short.distance];
+    if (weaponData.ranges.medium !== "unused")
+      ranges.push(weaponData.ranges.medium.distance);
+    if (weaponData.ranges.long !== "unused")
+      ranges.push(weaponData.ranges.long.distance);
+    const displayRanges = ranges
+      .map((range) => this.weapon.getEffectiveRangeDistance(range))
+      .join("/");
 
     return `<p>${this.weapon.data.data.notes}</p>
 <p>${getGame().i18n.localize(
       "wv.weapons.attacks.hitRoll"
     )}: [[${Formulator.skill(skillTotal).modify(modifier)}]]</p>
 <p>${getGame().i18n.localize("wv.weapons.attacks.damageRoll")}: [[(${
-      this.data.damage.dice
+      this.damageDice
     }d6) + ${this.data.damage.base}]]</p>
 <ul>
-  <li>${getGame().i18n.localize("wv.weapons.attacks.range")}: ${ranges.join(
-      "/"
-    )}</li>
+  <li>${getGame().i18n.localize(
+    "wv.weapons.attacks.range"
+  )}: ${displayRanges}</li>
 </ul>`;
   }
 }

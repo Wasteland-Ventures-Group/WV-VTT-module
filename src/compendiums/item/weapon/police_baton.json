@@ -1,42 +1,45 @@
 {
+  "name": "Police Baton",
+  "type": "weapon",
+  "img": "icons/weapons/clubs/club-baton-brown.webp",
+  "data": {
     "name": "Police Baton",
-    "type": "weapon",
-    "img": "icons/svg/item-bag.svg",
-    "data": {
-      "name": "Police Baton",
-      "description": "Pre-War police self defense weapon. Hard hits against old world criminals, and new world raiders.",
-      "attacks": {
-        "sources": {
-          "Single": {
-            "ap": 4,
-            "damage": {
-              "base": 2,
-              "dice": 0,
-              "diceRange": true
-            },
-            "dtReduction": 0,
-            "rounds": 1,
-            "splash": "TODO"
-          }          
+    "description": "Pre-War police self defense weapon. Hard hits against old world criminals, and new world raiders.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 4,
+          "damage": {
+            "base": 2,
+            "dice": 0,
+            "diceRange": true
+          },
+          "dtReduction": 0,
+          "rounds": 1,
+          "splash": "TODO"
         }
-      },
-      "holdout": true,
-      "ranges": {
-        "short": {
-          "distance": "melee",
-          "modifier": 0
-        }
-      },
-      "rules": {
-        "sources": []
-      },
-      "skill": "melee",
-      "strengthRequirement": 1,
-      "value": 60,
-      "weight": 1
+      }
     },
-    "effects": [],
-    "flags": {},
-    "_id": "WVweapon00000015"
-  }
-  
+    "holdout": true,
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      },
+      "medium": "unused",
+      "long": "unused"
+    },
+    "reload": "self",
+    "rules": {
+      "sources": []
+    },
+    "skill": "melee",
+    "strengthRequirement": 1,
+    "value": 60,
+    "weight": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000015"
+}

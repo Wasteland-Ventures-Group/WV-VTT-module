@@ -1,68 +1,67 @@
 {
+  "name": "Buckscatter M12 \"Grandstallion\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-double-barrel.webp",
+  "data": {
     "name": "Buckscatter M12 \"Grandstallion\"",
-    "type": "weapon",
-    "img": "icons/svg/item-bag.svg",
-    "data": {
-      "name": "Buckscatter M12 \"Grandstallion\"",
-      "description": "A literal boomstick, will deliver a kick to anyone you point it towards.",
-      "attacks": {
-        "sources": {
-          "Single": {
-            "ap": 4,
-            "damage": {
-              "base": 1,
-              "dice": 7,
-              "diceRange": false
-            },
-            "dtReduction": 0,
-            "rounds": 1,
-            "splash": "TODO"
+    "description": "A literal boomstick, will deliver a kick to anyone you point it towards.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 4,
+          "damage": {
+            "base": 1,
+            "dice": 7,
+            "diceRange": false
           },
-          "Burst": {
-            "ap": 5,
-            "damage": {
-              "base": 2,
-              "dice": 10,
-              "diceRange": false
-            },
-            "dtReduction": 0,
-            "rounds": 2,
-            "splash": "TODO"
-          }
-          
-        }
-      },
-      "holdout": false,
-      "ranges": {
-        "short": {
-          "distance": 12,
-          "modifier": 0
+          "dtReduction": 0,
+          "rounds": 1,
+          "splash": "TODO"
         },
-        "medium": {
-          "distance": 24,
-          "modifier": -10
-        },
-        "long": {
-          "distance": 36,
-          "modifier": -20
+        "Burst": {
+          "ap": 5,
+          "damage": {
+            "base": 2,
+            "dice": 10,
+            "diceRange": false
+          },
+          "dtReduction": 0,
+          "rounds": 2,
+          "splash": "TODO"
         }
-      },
-      "reload": {
-        "ap": 3,
-        "caliber": "TODO",
-        "containerType": "internal",
-        "size": 2
-      },
-      "rules": {
-        "sources": []
-      },
-      "skill": "firearms",
-      "strengthRequirement": 6,
-      "value": 500,
-      "weight": 3.5
+      }
     },
-    "effects": [],
-    "flags": {},
-    "_id": "WVweapon00000013"
-  }
-  
+    "holdout": false,
+    "ranges": {
+      "short": {
+        "distance": 12,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 24,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 36,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 3,
+      "caliber": "TODO",
+      "containerType": "internal",
+      "size": 2
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "firearms",
+    "strengthRequirement": 6,
+    "value": 500,
+    "weight": 3.5
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000013"
+}

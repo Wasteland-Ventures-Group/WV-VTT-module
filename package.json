@@ -47,6 +47,7 @@
   },
   "scripts": {
     "lint": "eslint --ext .d.ts,.ts,.cjs . && prettier --check ./src/compendiums/**/*.json ./src/lang/*.json ./src/schemas/lang.json",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "typecheck": "tsc --noEmit"
   }
 }

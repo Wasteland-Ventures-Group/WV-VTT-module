@@ -9,12 +9,13 @@ export default class Prompt extends Application<Options> {
    * @returns the number if resolved or an Error if rejected
    */
   static async getNumber(options?: Partial<Options>): Promise<number> {
-    return new Promise((resolve, reject) =>
-      new this((value) => {
+    return new Promise((resolve, reject) => {
+      const prompt = new this((value) => {
         const number = parseInt(value);
         isNaN(number) ? reject("The input was not a number!") : resolve(number);
-      }, options).render(true)
-    );
+      }, foundry.utils.mergeObject(options ?? {}, { type: "number" } as const));
+      prompt.render(true);
+    });
   }
 
   static override get defaultOptions(): Options {
@@ -46,11 +47,38 @@ export default class Prompt extends Application<Options> {
   }
 
   override async getData(): Promise<DialogData> {
+    const type = this.options.type ?? "text";
+
     return {
+      class: this.getClass(),
       description: this.options.description,
       max: this.options.max,
-      min: this.options.min
+      min: this.options.min,
+      type,
+      value: this.options.value ?? (type === "number" ? "0" : "")
     };
+  }
+
+  /** Get the css classes for the input element. */
+  protected getClass(): string | undefined {
+    if (
+      this.options.type === "number" &&
+      typeof this.options.max === "number" &&
+      typeof this.options.min === "number"
+    ) {
+      const maxPlaces = this.getDecimalPlaces(this.options.max);
+      const minPlaces = this.getDecimalPlaces(this.options.min);
+      const places = Math.max(maxPlaces, minPlaces);
+
+      if (places.between(0, 5)) return `size-${places}`;
+    }
+
+    return;
+  }
+
+  /** Get the number of integer decimal places for the given number. */
+  protected getDecimalPlaces(number: number): number {
+    return Math.floor(Math.abs(number)).toString().length;
   }
 
   /**
@@ -72,17 +100,26 @@ export default class Prompt extends Application<Options> {
 
 /** This is the data supplied to the handlebars template. */
 interface DialogData {
+  /** The classes for the input element */
+  class: string | undefined;
+
   /**
    * The description for the input of the dialog. When undefined, a generic
    * description is used.
    */
-  description?: string | undefined;
+  description: string | undefined;
 
   /** The maximum value for the input. */
-  max?: number | undefined;
+  max: number | undefined;
 
   /** The minimum value for the input. */
-  min?: number | undefined;
+  min: number | undefined;
+
+  /** The type of the input */
+  type: "text" | "number";
+
+  /** The default value of the input */
+  value: string;
 }
 
 /** These are the options for the Prompt. */
@@ -95,6 +132,12 @@ interface Options extends Application.Options {
 
   /** An optional min value for the modifier. */
   min?: number;
+
+  /** The type of the input */
+  type?: DialogData["type"];
+
+  /** The default value */
+  value?: string;
 }
 
 /**

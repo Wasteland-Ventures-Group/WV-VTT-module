@@ -5,7 +5,8 @@
     {{else}}
       {{localize "wv.prompt.defaults.description"}}
     {{/if~}}
-    <input class="size-3" name="input" type="number" value="0"
+    <input name="input" type="{{type}}" value="{{value}}"
+      {{~#if class}} class="{{class}}"{{/if~}}
       {{~#if max includeZero=true}} max="{{max}}"{{/if~}}
       {{~#if min includeZero=true}} min="{{min}}"{{/if}} />
   </label>

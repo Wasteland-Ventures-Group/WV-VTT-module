@@ -214,7 +214,7 @@
         "damageRoll": "Damage",
         "execute": "Execute",
         "hitRoll": "Hit",
-        "notEnoughAp": "No enough AP to use!",
+        "notEnoughAp": "Not enough AP to use!",
         "range": "Range"
       }
     }

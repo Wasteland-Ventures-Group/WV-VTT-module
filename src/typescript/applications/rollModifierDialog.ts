@@ -55,17 +55,7 @@ export default class RollModifierDialog extends Application<Options> {
 
     const input = event.target.elements.namedItem("modifier");
     if (input instanceof HTMLInputElement) {
-      const number = parseInt(input.value);
-      if (isNaN(number))
-        throw `The value of the input is not a number: ${input.value}`;
-
-      if (
-        (this.options.min && number < this.options.min) ||
-        (this.options.max && number > this.options.max)
-      )
-        throw `The value of the input is out of bounds: ${input.value}`;
-
-      this.callback(number);
+      this.callback(parseInt(input.value));
       this.close();
     } else {
       throw `The modifier element is not an HTMLInputElement.`;

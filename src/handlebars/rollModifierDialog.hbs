@@ -5,7 +5,7 @@
     {{else}}
       {{localize "wv.rolls.genericModifierDescription"}}
     {{/if}}
-    <input class="size-3" name="modifier" type="number" value="0"{{#if max}} max="{{max}}"{{/if}}{{#if min}} min="{{min}}"{{/if}} />
+    <input class="size-3" name="modifier" type="number" value="0"{{#if max includeZero=true}} max="{{max}}"{{/if}}{{#if min includeZero=true}} min="{{min}}"{{/if}} />
   </label>
   <button>{{localize "wv.rolls.roll"}}</button>
 </form>

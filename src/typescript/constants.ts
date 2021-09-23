@@ -121,7 +121,7 @@ export const CONSTANTS = {
    * directory.
    */
   systemPath: "systems/wasteland-ventures"
-};
+} as const;
 
 export const HANDLEBARS = {
   partPaths: {

@@ -297,6 +297,17 @@ type ClickEvent = JQuery.ClickEvent<
   HTMLElement
 >;
 
+interface SheetBound {
+  points: {
+    min: number;
+  };
+}
+
+interface SheetBounds {
+  skills: SheetBound;
+  special: SheetBound;
+}
+
 interface SheetEffect {
   id: string;
   name: string | null;
@@ -333,7 +344,7 @@ interface SheetSkill {
 
 interface SheetData extends ActorSheet.Data {
   sheet?: {
-    bounds?: typeof CONSTANTS["bounds"];
+    bounds?: SheetBounds;
     effects?: SheetEffect[];
     magic?: SheetMagic;
     skills?: Partial<Record<SkillNames, SheetSkill>>;

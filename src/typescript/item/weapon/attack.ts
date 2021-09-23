@@ -1,4 +1,4 @@
-import RollModifierDialog from "../../applications/rollModifierDialog.js";
+import Prompt from "../../applications/prompt.js";
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
 import { getGame } from "../../foundryHelpers.js";
@@ -26,7 +26,7 @@ export default class Attack {
    * Execute the attack
    * @param options - options for the roll
    */
-  execute(options: RollOptions = {}): void {
+  async execute(options: RollOptions = {}): Promise<void> {
     if (!(this.weapon.actor instanceof WvActor)) return;
 
     const msgOptions: ChatMessageDataConstructorData = {
@@ -52,19 +52,15 @@ export default class Attack {
 
     this.weapon.actor.updateActionPoints(currentAp - apUse);
 
-    new RollModifierDialog(
-      (range) => {
-        ChatMessage.create(
-          foundry.utils.mergeObject(msgOptions, {
-            content: this.header + this.getBody(range, options?.modifier)
-          })
-        );
-      },
-      {
-        description: getGame().i18n.localize("wv.rolls.rangeDescription"),
-        min: 0
-      }
-    ).render(true);
+    const range = await Prompt.getNumber({
+      description: getGame().i18n.localize("wv.prompt.descriptions.range"),
+      min: 0
+    });
+    ChatMessage.create(
+      foundry.utils.mergeObject(msgOptions, {
+        content: this.header + this.getBody(range, options?.modifier)
+      })
+    );
   }
 
   /**

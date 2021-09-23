@@ -1,0 +1,13 @@
+<form>
+  <label class="contained-target-inline">
+    {{~#if description}}
+      {{description}}
+    {{else}}
+      {{localize "wv.prompt.defaults.description"}}
+    {{/if~}}
+    <input class="size-3" name="input" type="number" value="0"
+      {{~#if max includeZero=true}} max="{{max}}"{{/if~}}
+      {{~#if min includeZero=true}} min="{{min}}"{{/if}} />
+  </label>
+  <button>{{localize "wv.prompt.buttonText"}}</button>
+</form>

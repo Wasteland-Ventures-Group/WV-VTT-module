@@ -1,4 +1,4 @@
-import RollModifierDialog from "../rollModifierDialog.js";
+import Prompt from "../prompt.js";
 import {
   CONSTANTS,
   SkillNames,
@@ -190,25 +190,21 @@ export default class WvActorSheet extends ActorSheet<
   /**
    * Handle a click event on the SPECIAL roll buttons.
    */
-  protected onClickRollSpecial(event: ClickEvent): void {
+  protected async onClickRollSpecial(event: ClickEvent): Promise<void> {
     event.preventDefault();
 
     const special = event.target.dataset.special;
     if (special && isSpecialName(special)) {
       if (event.shiftKey) {
-        new RollModifierDialog(
-          (modifier) => {
-            this.actor.rollSpecial(special, {
-              modifier: modifier,
-              whisperToGms: event.ctrlKey
-            });
-          },
-          {
-            description: WvI18n.getSpecialModifierDescription(special),
-            min: -100,
-            max: 100
-          }
-        ).render(true);
+        const modifier = await Prompt.getNumber({
+          description: WvI18n.getSpecialModifierDescription(special),
+          min: -100,
+          max: 100
+        });
+        this.actor.rollSpecial(special, {
+          modifier: modifier,
+          whisperToGms: event.ctrlKey
+        });
       } else {
         this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
       }
@@ -220,25 +216,21 @@ export default class WvActorSheet extends ActorSheet<
   /**
    * Handle a click event on the Skill roll buttons.
    */
-  protected onClickRollSkill(event: ClickEvent): void {
+  protected async onClickRollSkill(event: ClickEvent): Promise<void> {
     event.preventDefault();
 
     const skill = event.target.dataset.skill;
     if (skill && isSkillName(skill)) {
       if (event.shiftKey) {
-        new RollModifierDialog(
-          (modifier) => {
-            this.actor.rollSkill(skill, {
-              modifier: modifier,
-              whisperToGms: event.ctrlKey
-            });
-          },
-          {
-            description: WvI18n.getSkillModifierDescription(skill),
-            min: -100,
-            max: 100
-          }
-        ).render(true);
+        const modifier = await Prompt.getNumber({
+          description: WvI18n.getSkillModifierDescription(skill),
+          min: -100,
+          max: 100
+        });
+        this.actor.rollSkill(skill, {
+          modifier: modifier,
+          whisperToGms: event.ctrlKey
+        });
       } else {
         this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
       }

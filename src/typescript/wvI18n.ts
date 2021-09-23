@@ -51,7 +51,7 @@ export default class WvI18n {
    * @returns the internationalized description
    */
   static getSpecialModifierDescription(name: string): string {
-    return getGame().i18n.format("wv.rolls.modifierDescription", {
+    return getGame().i18n.format("wv.prompt.descriptions.modifier", {
       what: this.getSpecialLongName(name)
     });
   }
@@ -73,7 +73,7 @@ export default class WvI18n {
    * @returns the internationalized description
    */
   static getSkillModifierDescription(name: string): string {
-    return getGame().i18n.format("wv.rolls.modifierDescription", {
+    return getGame().i18n.format("wv.prompt.descriptions.modifier", {
       what: this.getSkillName(name)
     });
   }

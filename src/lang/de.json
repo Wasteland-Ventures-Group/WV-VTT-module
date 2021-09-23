@@ -17,13 +17,21 @@
       "completed": "{systemName} Systemmigration zu Version {version} abgeschlossen!",
       "started": "Wende {systemName} Systemmigration nach Version {version} an. Bitte habe Geduld und schließe weder das Spiel, noch beende den Server."
     },
+    "prompt": {
+      "buttonText": "Abschicken",
+      "defaults": {
+        "description": "Gib einen Wert ein:",
+        "title": "Abfrage"
+      },
+      "descriptions": {
+        "genericModifier": "Gib einen Modifikator an:",
+        "modifier": "Gib einen Modifikator für {what} an:",
+        "range": "Gib die Distanz zum Ziel an:"
+      }
+    },
     "rolls": {
       "buttonTitle": "Strg-Klick zum flüstern zu GM(s)\nUmschalt-Klick zum Rollen mit Modifikator\nBeides für beides",
       "flavor": "Rolle {what}",
-      "genericModifierDescription": "Gib einen Modifikator an:",
-      "modifierDescription": "Gib einen Modifikator für {what} an:",
-      "modifierTitle": "Modifizierter Würfelwurf",
-      "rangeDescription": "Gib die Distanz zum Ziel an:",
       "roll": "Rollen"
     },
     "ruleEngine": {

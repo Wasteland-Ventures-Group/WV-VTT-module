@@ -1,10 +1,11 @@
 import { TYPES } from "../../constants.js";
 import type { Range } from "../../data/item/weapon/ranges.js";
+import { getGame } from "../../foundryHelpers.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import WvI18n from "../../wvI18n.js";
-import RollModifierDialog from "../rollModifierDialog.js";
+import Prompt from "../prompt.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 export default class WeaponSheet extends WvItemSheet {
@@ -108,7 +109,7 @@ export default class WeaponSheet extends WvItemSheet {
   /**
    * Handle a click event on an Attack execute button.
    */
-  protected onClickAttackExecute(event: ClickEvent): void {
+  protected async onClickAttackExecute(event: ClickEvent): Promise<void> {
     const attackKey = event.target.dataset.attack;
     if (!attackKey) return;
 
@@ -116,15 +117,14 @@ export default class WeaponSheet extends WvItemSheet {
     if (!attack) return;
 
     if (event.shiftKey) {
-      new RollModifierDialog(
-        (modifier) => {
-          attack.execute({ modifier: modifier, whisperToGms: event.ctrlKey });
-        },
-        {
-          min: -100,
-          max: 100
-        }
-      ).render(true);
+      const modifier = await Prompt.getNumber({
+        description: getGame().i18n.localize(
+          "wv.prompt.descriptions.genericModifier"
+        ),
+        min: -100,
+        max: 100
+      });
+      attack.execute({ modifier: modifier, whisperToGms: event.ctrlKey });
     } else {
       attack.execute({ whisperToGms: event.ctrlKey });
     }

@@ -13,18 +13,26 @@
         }
       }
     },
-    "rolls": {
-      "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both",
-      "flavor": "Rolling {what}",
-      "genericModifierDescription": "Enter a modifier:",
-      "modifierDescription": "Enter a modifier for {what}:",
-      "modifierTitle": "Modified Roll",
-      "rangeDescription": "Enter the range to the target:",
-      "roll": "Roll"
-    },
     "migration": {
       "completed": "{systemName} system migration to version {version} completed!",
       "started": "Applying {systemName} system migration for version {version}. Please be patient and do not close your game or shut down your server."
+    },
+    "prompt": {
+      "buttonText": "Submit",
+      "defaults": {
+        "description": "Enter a value:",
+        "title": "Prompt"
+      },
+      "descriptions": {
+        "genericModifier": "Enter a modifier:",
+        "modifier": "Enter a modifier for {what}:",
+        "range": "Enter the range to the target:"
+      }
+    },
+    "rolls": {
+      "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both",
+      "flavor": "Rolling {what}",
+      "roll": "Roll"
     },
     "ruleEngine": {
       "ruleElement": {

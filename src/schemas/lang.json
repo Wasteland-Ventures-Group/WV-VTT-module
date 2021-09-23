@@ -13,6 +13,7 @@
       "required": [
         "fvttItems",
         "migration",
+        "prompt",
         "rolls",
         "ruleEngine",
         "sheets",
@@ -67,18 +68,59 @@
             }
           }
         },
+        "prompt": {
+          "type": "object",
+          "description": "Labels related to the prompt dialog",
+          "required": ["buttonText", "defaults", "descriptions"],
+          "additionalProperties": false,
+          "properties": {
+            "buttonText": {
+              "type": "string",
+              "description": "The label for the submit button"
+            },
+            "defaults": {
+              "type": "object",
+              "description": "Default labels for the prompt",
+              "required": ["description", "title"],
+              "additionalProperties": false,
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "description": "The default description"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "The default window title"
+                }
+              }
+            },
+            "descriptions": {
+              "type": "object",
+              "description": "Different descriptions for different use cases",
+              "required": ["genericModifier", "modifier", "range"],
+              "additionalProperties": false,
+              "properties": {
+                "genericModifier": {
+                  "type": "string",
+                  "description": "The label for a roll modifier dialog, when the target is not known"
+                },
+                "modifier": {
+                  "type": "string",
+                  "description": "The label for a roll modifier dialog, containing a reference to what is modified with `what`",
+                  "pattern": "\\{what\\}"
+                },
+                "range": {
+                  "type": "string",
+                  "description": "The description for entering a range"
+                }
+              }
+            }
+          }
+        },
         "rolls": {
           "type": "object",
           "description": "Labels related to rolls",
-          "required": [
-            "buttonTitle",
-            "flavor",
-            "genericModifierDescription",
-            "modifierDescription",
-            "modifierTitle",
-            "rangeDescription",
-            "roll"
-          ],
+          "required": ["buttonTitle", "flavor", "roll"],
           "additionalProperties": false,
           "properties": {
             "buttonTitle": {
@@ -89,23 +131,6 @@
               "type": "string",
               "description": "The flavor text for the chat messages, containing a reference to what is rolled with `what`",
               "pattern": "\\{what\\}"
-            },
-            "genericModifierDescription": {
-              "type": "string",
-              "description": "The label for a roll modifier dialog, when the target is not known"
-            },
-            "modifierDescription": {
-              "type": "string",
-              "description": "The label for a roll modifier dialog, containing a reference to what is modified with `what`",
-              "pattern": "\\{what\\}"
-            },
-            "modifierTitle": {
-              "type": "string",
-              "description": "The title for a roll modifier dialog window"
-            },
-            "rangeDescription": {
-              "type": "string",
-              "description": "The description for a roll modifier dialog for entering a range"
             },
             "roll": {
               "type": "string",

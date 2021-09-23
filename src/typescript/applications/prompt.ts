@@ -18,6 +18,20 @@ export default class Prompt extends Application<Options> {
     });
   }
 
+  /**
+   * Get a string by prompting the user.
+   * @param options - additional options for the Prompt
+   * @returns the string when resolved
+   */
+  static async getString(options?: Partial<Options>): Promise<string> {
+    return new Promise((resolve) => {
+      new this(
+        (value) => resolve(value),
+        foundry.utils.mergeObject(options ?? {}, { type: "text" } as const)
+      ).render(true);
+    });
+  }
+
   static override get defaultOptions(): Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "prompt"],

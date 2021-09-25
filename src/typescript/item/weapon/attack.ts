@@ -40,7 +40,7 @@ export default class Attack {
     const skillTotal =
       this.weapon.actor.data.data.skills[this.weapon.systemData.skill]?.total;
     if (typeof skillTotal !== "number")
-      throw "The owning actor's skills have not been calculated!";
+      throw new Error("The owning actor's skills have not been calculated!");
 
     const range = await Prompt.getNumber({
       description: getGame().i18n.localize("wv.prompt.descriptions.range"),

@@ -16,7 +16,7 @@ export default class EffectSheet extends WvItemSheet {
 
   override get item(): Effect {
     if (!isOfItemType(super.item, TYPES.ITEM.EFFECT))
-      throw "The used Item is not an Effect!";
+      throw new Error("The used Item is not an Effect!");
 
     return super.item;
   }

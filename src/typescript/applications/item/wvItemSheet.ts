@@ -81,7 +81,8 @@ export default class WvItemSheet extends ItemSheet<
    */
   protected onClickDeleteRuleElement(event: ClickEvent): void {
     const index = $(event.target).parents(".rule-element").data("index");
-    if (typeof index !== "number") throw "Could not find the index data!";
+    if (typeof index !== "number")
+      throw new Error("Could not find the index data!");
 
     const sources = this.item.data.data.rules.sources;
     sources.splice(index, 1);

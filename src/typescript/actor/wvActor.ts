@@ -147,7 +147,8 @@ export default class WvActor extends Actor {
    */
   rollSkill(skill: SkillName, options?: RollOptions): void {
     const skillTotal = this.data.data.skills[skill]?.total;
-    if (!skillTotal) throw "The skills have not been calculated yet!";
+    if (!skillTotal)
+      throw new Error("The skills have not been calculated yet!");
 
     const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
       flavor: WvI18n.getSkillRollFlavor(skill),
@@ -256,9 +257,8 @@ export default class WvActor extends Actor {
    * the level of the Actor has been computed.
    */
   protected computeBaseMaxStrain(): number {
-    if (this.data.data.leveling.level === undefined) {
-      throw "The level should be computed before computing strain.";
-    }
+    if (this.data.data.leveling.level === undefined)
+      throw new Error("The level should be computed before computing strain.");
     return 20 + Math.floor(this.data.data.leveling.level / 5) * 5;
   }
 
@@ -351,9 +351,10 @@ export default class WvActor extends Actor {
       this.data.data.vitals.hitPoints.max === undefined ||
       this.data.data.secondary === undefined ||
       this.data.data.secondary.maxCarryWeight === undefined
-    ) {
-      throw "Max hit points and carry weight should be computed before size modifiers";
-    }
+    )
+      throw new Error(
+        "Max hit points and carry weight should be computed before size modifiers"
+      );
 
     // TODO: hit chance, reach, combat trick mods
     switch (this.data.data.background.size) {

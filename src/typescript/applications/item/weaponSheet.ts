@@ -27,7 +27,7 @@ export default class WeaponSheet extends WvItemSheet {
 
   override get item(): Weapon {
     if (!isOfItemType(super.item, TYPES.ITEM.WEAPON))
-      throw "The used Item is not a Weapon!";
+      throw new Error("The used Item is not a Weapon!");
 
     return super.item;
   }

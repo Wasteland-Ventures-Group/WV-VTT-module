@@ -107,7 +107,7 @@ export default class Prompt extends Application<Options> {
       this.callback(input.value);
       this.close();
     } else {
-      throw `The modifier element is not an HTMLInputElement.`;
+      throw new Error(`The modifier element is not an HTMLInputElement.`);
     }
   }
 }

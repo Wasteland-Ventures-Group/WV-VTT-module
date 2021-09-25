@@ -11,7 +11,7 @@ export default class Weapon extends WvItem {
     context: ConstructorParameters<typeof Item>[1]
   ) {
     if (!data || data.type !== TYPES.ITEM.WEAPON)
-      throw `The passed data's type is not ${TYPES.ITEM.WEAPON}.`;
+      throw new Error(`The passed data's type is not ${TYPES.ITEM.WEAPON}.`);
 
     super(data, context);
   }
@@ -21,7 +21,7 @@ export default class Weapon extends WvItem {
    */
   get systemData(): WeaponDataProperties["data"] {
     if (!this.data || this.data.type !== TYPES.ITEM.WEAPON)
-      throw `This data's data type is not ${TYPES.ITEM.WEAPON}.`;
+      throw new Error(`This data's data type is not ${TYPES.ITEM.WEAPON}.`);
 
     return this.data.data;
   }

@@ -9,7 +9,7 @@ export default class Effect extends WvItem {
     context: ConstructorParameters<typeof Item>[1]
   ) {
     if (!data || data.type !== TYPES.ITEM.EFFECT)
-      throw `The passed data's type is not ${TYPES.ITEM.EFFECT}.`;
+      throw new Error(`The passed data's type is not ${TYPES.ITEM.EFFECT}.`);
 
     super(data, context);
   }

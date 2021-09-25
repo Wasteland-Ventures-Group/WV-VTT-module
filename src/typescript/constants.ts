@@ -1,4 +1,4 @@
-export type SpecialNames = typeof SpecialNames[number];
+export type SpecialName = typeof SpecialNames[number];
 export const SpecialNames = [
   "strength",
   "perception",
@@ -9,12 +9,12 @@ export const SpecialNames = [
   "luck"
 ] as const;
 
-export type ThaumaturgySpecials = Exclude<SpecialNames, "luck">;
+export type ThaumaturgySpecials = Exclude<SpecialName, "luck">;
 export const ThaumaturgySpecials = SpecialNames.filter(
   (special) => special !== "luck"
 ) as ThaumaturgySpecials[];
 
-export type SkillNames = typeof SkillNames[number];
+export type SkillName = typeof SkillNames[number];
 export const SkillNames = [
   "barter",
   "diplomacy",
@@ -120,7 +120,7 @@ export const CONSTANTS = {
     sneak: "agility",
     survival: "endurance",
     unarmed: "endurance"
-  } as Record<SkillNames, SpecialNames>,
+  } as Record<SkillName, SpecialName>,
 
   /** The ID of the system */
   systemId: "wasteland-ventures",

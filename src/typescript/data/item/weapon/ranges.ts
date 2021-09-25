@@ -1,4 +1,4 @@
-import { CONSTANTS, SpecialNames } from "../../../constants.js";
+import { CONSTANTS, SpecialName } from "../../../constants.js";
 import { getSpecialMaxPoints, getSpecialMinPoints } from "../../../helpers.js";
 import type { Specials } from "../../actor/actorData.js";
 import type WeaponDataProperties from "./properties.js";
@@ -44,7 +44,7 @@ export interface SpecialBasedRange {
   multiplier: number;
 
   /** The name of the SPECIAL to use */
-  special: SpecialNames;
+  special: SpecialName;
 }
 
 /** A type representing the different range brackets */

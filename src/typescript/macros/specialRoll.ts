@@ -1,5 +1,5 @@
 import type { SpecialDragData } from "../actor/wvActor.js";
-import type { SpecialNames } from "../constants.js";
+import type { SpecialName } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 
 /**
@@ -51,7 +51,7 @@ async function getOrCreateSpecialRollMacro(
  */
 function createMacroName(
   actorData: foundry.data.ActorData["_source"],
-  specialName: SpecialNames
+  specialName: SpecialName
 ): string {
   return `${actorData.name}/${specialName}`;
 }
@@ -72,7 +72,7 @@ function createMacroCommand(data: SpecialDragData): string {
  */
 export function executeSpecialRoll(
   actorId: string,
-  specialName: SpecialNames
+  specialName: SpecialName
 ): void {
   const actor = getGame().actors?.get(actorId);
   if (!(actor instanceof Actor)) return;

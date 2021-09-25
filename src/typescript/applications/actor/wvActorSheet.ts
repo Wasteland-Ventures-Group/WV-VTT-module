@@ -1,7 +1,9 @@
 import Prompt from "../prompt.js";
 import {
   CONSTANTS,
+  SkillName,
   SkillNames,
+  SpecialName,
   SpecialNames,
   ThaumaturgySpecials,
   TYPES
@@ -85,7 +87,7 @@ export default class WvActorSheet extends ActorSheet<
     const skillI18ns = WvI18n.skills;
     data.sheet.skills = {};
     for (const skill of SkillNames) {
-      const special: SpecialNames =
+      const special: SpecialName =
         skill === "thaumaturgy"
           ? actorProps.magic.thaumSpecial
           : CONSTANTS.skillSpecials[skill];
@@ -151,7 +153,7 @@ export default class WvActorSheet extends ActorSheet<
   protected onDragSpecial(
     event: DragEvent,
     actorId: string,
-    specialName: SpecialNames
+    specialName: SpecialName
   ): void {
     const dragData: SpecialDragData = {
       actorId,
@@ -168,7 +170,7 @@ export default class WvActorSheet extends ActorSheet<
   protected onDragSkill(
     event: DragEvent,
     actorId: string,
-    skillName: SkillNames
+    skillName: SkillName
   ): void {
     const dragData: SkillDragData = {
       actorId,
@@ -331,8 +333,8 @@ interface SheetData extends ActorSheet.Data {
     bounds?: SheetBounds;
     effects?: SheetEffect[];
     magic?: SheetMagic;
-    skills?: Partial<Record<SkillNames, SheetSkill>>;
-    specials?: Partial<Record<SpecialNames, SheetSpecial>>;
+    skills?: Partial<Record<SkillName, SheetSkill>>;
+    specials?: Partial<Record<SpecialName, SheetSpecial>>;
     weapons?: SheetWeapon[];
   };
 }

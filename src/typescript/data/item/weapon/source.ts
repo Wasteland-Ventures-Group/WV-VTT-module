@@ -1,4 +1,4 @@
-import { SkillNames, TYPES } from "../../../constants.js";
+import { SkillName, TYPES } from "../../../constants.js";
 import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import PhysicalBaseItem from "../physicalBaseItem.js";
 import { DbAttacks } from "./attack.js";
@@ -42,7 +42,7 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
   };
 
   /** The skill associated with the weapon attacks */
-  skill: SkillNames = "firearms";
+  skill: SkillName = "firearms";
 
   /** The strength requirement for this weapon to be equipped */
   strengthRequirement: number = 0;

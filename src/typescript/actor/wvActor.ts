@@ -8,7 +8,13 @@ import {
   Skill,
   Skills
 } from "../data/actor/actorData.js";
-import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
+import {
+  CONSTANTS,
+  SkillName,
+  SkillNames,
+  SpecialName,
+  SpecialNames
+} from "../constants.js";
 import Formulator from "../formulator.js";
 import WvI18n from "../wvI18n.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
@@ -117,7 +123,7 @@ export default class WvActor extends Actor {
    * Roll a SPECIAL for this Actor.
    * @param special - the name of the SPECIAL to roll
    */
-  rollSpecial(special: SpecialNames, options?: RollOptions): void {
+  rollSpecial(special: SpecialName, options?: RollOptions): void {
     const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
       flavor: WvI18n.getSpecialRollFlavor(special),
       speaker: ChatMessage.getSpeaker({ actor: this })
@@ -139,7 +145,7 @@ export default class WvActor extends Actor {
    * Roll a Skill for this Actor.
    * @param skill - the name of the Skill to roll
    */
-  rollSkill(skill: SkillNames, options?: RollOptions): void {
+  rollSkill(skill: SkillName, options?: RollOptions): void {
     const skillTotal = this.data.data.skills[skill]?.total;
     if (!skillTotal) throw "The skills have not been calculated yet!";
 
@@ -280,7 +286,7 @@ export default class WvActor extends Actor {
   /** Compute the base skill values of an Actor. */
   protected computeBaseSkillValues(): Skills {
     const skills = new Skills();
-    let skill: SkillNames;
+    let skill: SkillName;
     for (skill in CONSTANTS.skillSpecials) {
       skills[skill] = this.computeBaseSkill(skill);
     }
@@ -294,7 +300,7 @@ export default class WvActor extends Actor {
    * point ranks.
    * @param skill - the name of the skill
    */
-  protected computeBaseSkill(skill: SkillNames): Skill {
+  protected computeBaseSkill(skill: SkillName): Skill {
     const baseSkill = this.computeSpecialSkillValue(skill);
     return new Skill(
       baseSkill,
@@ -306,8 +312,8 @@ export default class WvActor extends Actor {
    * Compute the base skill value of an Actor, derived from SPECIAL.
    * @param skill - the name of the skill
    */
-  protected computeSpecialSkillValue(skill: SkillNames): number {
-    const special: SpecialNames =
+  protected computeSpecialSkillValue(skill: SkillName): number {
+    const special: SpecialName =
       skill === "thaumaturgy"
         ? this.data.data.magic.thaumSpecial
         : CONSTANTS.skillSpecials[skill];
@@ -529,7 +535,7 @@ export interface SpecialDragData extends DragData {
   actorId: string;
 
   /** The name of the SPECIAL on the Actor */
-  specialName: SpecialNames;
+  specialName: SpecialName;
 
   type: "special";
 }
@@ -556,7 +562,7 @@ export interface SkillDragData extends DragData {
   actorId: string;
 
   /** The name of the Skill on the Actor */
-  skillName: SkillNames;
+  skillName: SkillName;
 
   type: "skill";
 }

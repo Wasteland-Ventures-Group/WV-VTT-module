@@ -1,5 +1,11 @@
 import { TYPE_CONSTRUCTORS } from "./typeMappings.js";
-import { CONSTANTS, SkillNames, SpecialNames } from "./constants.js";
+import {
+  CONSTANTS,
+  SkillName,
+  SkillNames,
+  SpecialName,
+  SpecialNames
+} from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 import { boundsSettingNames } from "./settings.js";
 
@@ -19,8 +25,8 @@ export function present<TValue>(
  * @param name - the string to test
  * @returns whether the name is a SPECIAL name
  */
-export function isSpecialName(name: string): name is SpecialNames {
-  return SpecialNames.includes(name as SpecialNames);
+export function isSpecialName(name: string): name is SpecialName {
+  return SpecialNames.includes(name as SpecialName);
 }
 
 /**
@@ -28,8 +34,8 @@ export function isSpecialName(name: string): name is SpecialNames {
  * @param name - the string to test
  * @returns whether the name is a Skill name
  */
-export function isSkillName(name: string): name is SkillNames {
-  return SkillNames.includes(name as SkillNames);
+export function isSkillName(name: string): name is SkillName {
+  return SkillNames.includes(name as SkillName);
 }
 
 /**

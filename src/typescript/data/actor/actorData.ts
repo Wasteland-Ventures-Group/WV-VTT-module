@@ -1,4 +1,4 @@
-import type { SkillNames, TYPES } from "../../constants.js";
+import type { SkillName, TYPES } from "../../constants.js";
 import {
   Leveling as DbLeveling,
   Specials as DbSpecials,
@@ -10,7 +10,7 @@ import {
 export class Specials extends DbSpecials {}
 
 /** Derived skill values */
-export class Skills implements Partial<Record<SkillNames, Skill>> {
+export class Skills implements Partial<Record<SkillName, Skill>> {
   /** The barter skill value of an Actor */
   barter?: Skill;
 

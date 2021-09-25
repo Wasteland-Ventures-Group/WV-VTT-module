@@ -1,14 +1,14 @@
 import type { TemplateDocumentType } from "../common.js";
 import {
-  SkillNames,
-  SpecialNames,
+  SkillName,
+  SpecialName,
   ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
 import { Resource as FoundryResource } from "../foundryCommon.js";
 
 /** An Actor SPECIALs object for the database */
-export class Specials implements Record<SpecialNames, number> {
+export class Specials implements Record<SpecialName, number> {
   /** The current base Strength of an Actor */
   strength = 5;
 
@@ -61,7 +61,7 @@ export class Leveling {
 }
 
 /** An Actor invested skill points object for the database */
-export class SkillRanks implements Record<SkillNames, number> {
+export class SkillRanks implements Record<SkillName, number> {
   /** The invested Barter skill points of an Actor */
   barter = 0;
 

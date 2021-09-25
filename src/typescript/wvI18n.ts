@@ -1,4 +1,4 @@
-import type { SkillNames, SpecialNames } from "./constants";
+import type { SkillName, SpecialName } from "./constants";
 
 import { getGame } from "./foundryHelpers.js";
 import { isSkillName, isSpecialName } from "./helpers.js";
@@ -13,10 +13,10 @@ export interface I18nSpecial {
 }
 
 /** The internationalization structure of the SPECIALs. */
-export type I18nSpecials = Record<SpecialNames, I18nSpecial>;
+export type I18nSpecials = Record<SpecialName, I18nSpecial>;
 
 /** The internationalization structure of the SPECIALs. */
-export type I18nSkills = Record<SkillNames, string>;
+export type I18nSkills = Record<SkillName, string>;
 
 /**
  * A helper class to serve Wasteland Ventures internationalization structures.

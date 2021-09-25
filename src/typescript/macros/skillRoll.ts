@@ -1,5 +1,5 @@
 import type { SkillDragData } from "../actor/wvActor.js";
-import type { SkillNames } from "../constants.js";
+import type { SkillName } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 
 /**
@@ -51,7 +51,7 @@ async function getOrCreateSkillRollMacro(
  */
 function createMacroName(
   actorData: foundry.data.ActorData["_source"],
-  skillName: SkillNames
+  skillName: SkillName
 ): string {
   return `${actorData.name}/${skillName}`;
 }
@@ -70,7 +70,7 @@ function createMacroCommand(data: SkillDragData): string {
  * @param actorId - the ID of the Actor, the Skill belongs to
  * @param skillName - the name of the Skill on the Actor
  */
-export function executeSkillRoll(actorId: string, skillName: SkillNames): void {
+export function executeSkillRoll(actorId: string, skillName: SkillName): void {
   const actor = getGame().actors?.get(actorId);
   if (!(actor instanceof Actor)) return;
 

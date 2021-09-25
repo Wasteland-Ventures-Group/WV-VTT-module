@@ -67,7 +67,8 @@ async function migrateFromCompendium(
 ): Promise<void> {
   LOG.info(`Migrating Item ${item.name}. id=${item.id}`);
   await item.update(await getUpdateDataFromCompendium(item), {
-    enforceTypes: true
+    recursive: false,
+    diff: false
   });
 }
 
@@ -90,6 +91,7 @@ async function getUpdateDataFromCompendium(
   if (!document) return {};
 
   const updateData = { data: document.toObject().data };
-  delete updateData.data.rules;
+  updateData.data.notes = item.data.data.notes;
+  updateData.data.rules.sources = item.data.data.rules.sources;
   return updateData;
 }

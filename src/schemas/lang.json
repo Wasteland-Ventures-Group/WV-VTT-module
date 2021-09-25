@@ -894,6 +894,7 @@
                 "execute",
                 "hitRoll",
                 "notEnoughAp",
+                "outOfRange",
                 "range"
               ],
               "additionalProperties": false,
@@ -913,6 +914,10 @@
                 "notEnoughAp": {
                   "type": "string",
                   "description": "The message when the weapon owner does not have enough AP for the attack"
+                },
+                "outOfRange": {
+                  "type": "string",
+                  "description": "The message when the target is out of range for the weapon"
                 },
                 "range": {
                   "type": "string",

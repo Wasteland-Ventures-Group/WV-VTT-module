@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- system chat messages are now internationalized when rendered, instead of when
+  created
+- weapon attack messages are now customized with system specific data ([#20](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/20))
+- weapon attack AP checks and deduction are only done in combat ([#37](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/37))
+- weapon ranges can now just be left undefined, instead of explicitly having to
+  set "unused" as the value
+
 ### Fixed
 
 - a typo in the English 'not enough AP' message for weapon attacks

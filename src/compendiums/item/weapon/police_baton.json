@@ -27,9 +27,7 @@
       "short": {
         "distance": "melee",
         "modifier": 0
-      },
-      "medium": "unused",
-      "long": "unused"
+      }
     },
     "reload": "self",
     "rules": {

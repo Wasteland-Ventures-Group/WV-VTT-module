@@ -10,12 +10,17 @@ import {
 } from "../data/actor/actorData.js";
 import { CONSTANTS, SkillNames, SpecialNames } from "../constants.js";
 import Formulator from "../formulator.js";
-import { getGame } from "../foundryHelpers.js";
-import { boundsSettingNames } from "../settings.js";
 import WvI18n from "../wvI18n.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import type DragData from "../dragData.js";
-import { isSkillName, isSpecialName } from "../helpers.js";
+import {
+  getSkillMaxPoints,
+  getSkillMinPoints,
+  getSpecialMaxPoints,
+  getSpecialMinPoints,
+  isSkillName,
+  isSpecialName
+} from "../helpers.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
@@ -480,15 +485,8 @@ export default class WvActor extends Actor {
       }
 
       if (leveling.skillRanks) {
-        const max = CONSTANTS.bounds.skills.points.max;
-        const skillMin = getGame().settings.get(
-          CONSTANTS.systemId,
-          boundsSettingNames.skills.points.min
-        );
-        const min =
-          typeof skillMin === "number"
-            ? skillMin
-            : CONSTANTS.bounds.experience.min;
+        const max = getSkillMaxPoints();
+        const min = getSkillMinPoints();
         for (const skill of SkillNames) {
           const value = leveling.skillRanks[skill];
           if (value && !value.between(min, max)) return false;
@@ -510,15 +508,8 @@ export default class WvActor extends Actor {
     if (!change?.data) return true;
 
     if (change.data.specials) {
-      const max = CONSTANTS.bounds.special.points.max;
-      const specialMin = getGame().settings.get(
-        CONSTANTS.systemId,
-        boundsSettingNames.special.points.min
-      );
-      const min =
-        typeof specialMin === "number"
-          ? specialMin
-          : CONSTANTS.bounds.special.points.min;
+      const max = getSpecialMaxPoints();
+      const min = getSpecialMinPoints();
       for (const special of SpecialNames) {
         const value = change.data.specials[special];
         if (value && !value.between(min, max)) return false;

@@ -47,8 +47,7 @@
           "multiplier": 2
         },
         "modifier": -10
-      },
-      "long": "unused"
+      }
     },
     "reload": "self",
     "rules": {

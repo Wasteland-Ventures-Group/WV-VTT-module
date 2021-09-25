@@ -1,5 +1,7 @@
 import { TYPE_CONSTRUCTORS } from "./typeMappings.js";
-import { SkillNames, SpecialNames } from "./constants.js";
+import { CONSTANTS, SkillNames, SpecialNames } from "./constants.js";
+import { getGame } from "./foundryHelpers.js";
+import { boundsSettingNames } from "./settings.js";
 
 /**
  * A custom typeguard to check whether a value is not null or undefined.
@@ -53,4 +55,36 @@ export function isOfItemType<T extends keyof typeof TYPE_CONSTRUCTORS.ITEM>(
   type: T
 ): item is InstanceType<typeof TYPE_CONSTRUCTORS.ITEM[T]> {
   return item instanceof TYPE_CONSTRUCTORS.ITEM[type];
+}
+
+/** Get the allowed maximum value for a Special. */
+export function getSpecialMaxPoints(): number {
+  return CONSTANTS.bounds.special.points.max;
+}
+
+/** Get the allowed minimum value for a Special. */
+export function getSpecialMinPoints(): number {
+  const specialMin = getGame().settings.get(
+    CONSTANTS.systemId,
+    boundsSettingNames.special.points.min
+  );
+  return typeof specialMin === "number"
+    ? specialMin
+    : CONSTANTS.bounds.special.points.min;
+}
+
+/** Get the allowed maximum value for a Skill. */
+export function getSkillMaxPoints(): number {
+  return CONSTANTS.bounds.skills.points.max;
+}
+
+/** Get the allowed minimum value for a Skill. */
+export function getSkillMinPoints(): number {
+  const skillMin = getGame().settings.get(
+    CONSTANTS.systemId,
+    boundsSettingNames.skills.points.min
+  );
+  return typeof skillMin === "number"
+    ? skillMin
+    : CONSTANTS.bounds.skills.points.min;
 }

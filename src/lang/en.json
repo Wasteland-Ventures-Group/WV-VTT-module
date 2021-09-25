@@ -223,6 +223,7 @@
         "execute": "Execute",
         "hitRoll": "Hit",
         "notEnoughAp": "Not enough AP to use!",
+        "outOfRange": "The target is out of range!",
         "range": "Range"
       }
     }

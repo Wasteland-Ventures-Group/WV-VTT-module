@@ -5,6 +5,14 @@ import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../weapon.js";
 import Formulator from "../../formulator.js";
 import type DragData from "../../dragData.js";
+import { CONSTANTS } from "../../constants.js";
+import type { WeaponAttackFlags } from "../../hooks/renderChatMessage.js";
+import {
+  getRangeBracket,
+  getRangeModifier,
+  RangeBracket
+} from "../../data/item/weapon/ranges.js";
+import { getSpecialMaxPoints, getSpecialMinPoints } from "../../helpers.js";
 
 /**
  * An attack of a Weapon Item.
@@ -29,45 +37,85 @@ export default class Attack {
   async execute(options: RollOptions = {}): Promise<void> {
     if (!(this.weapon.actor instanceof WvActor)) return;
 
-    const msgOptions: ChatMessageDataConstructorData = {
-      speaker: ChatMessage.getSpeaker({ actor: this.weapon.actor })
-    };
-    if (options?.whisperToGms) {
-      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm");
-    }
-
-    const currentAp = this.weapon.actor.data.data.vitals.actionPoints.value;
-    const apUse = this.data.ap;
-
-    if (currentAp < apUse) {
-      ChatMessage.create(
-        foundry.utils.mergeObject(msgOptions, {
-          content: `${this.header}<p>${getGame().i18n.localize(
-            "wv.weapons.attacks.notEnoughAp"
-          )}</p>`
-        })
-      );
-      return;
-    }
-
-    this.weapon.actor.updateActionPoints(currentAp - apUse);
+    const skillTotal =
+      this.weapon.actor.data.data.skills[this.weapon.systemData.skill]?.total;
+    if (typeof skillTotal !== "number")
+      throw "The owning actor's skills have not been calculated!";
 
     const range = await Prompt.getNumber({
       description: getGame().i18n.localize("wv.prompt.descriptions.range"),
       min: 0
     });
-    ChatMessage.create(
-      foundry.utils.mergeObject(msgOptions, {
-        content: this.header + this.getBody(range, options?.modifier)
-      })
+
+    const rangeBracket = getRangeBracket(
+      this.weapon.systemData.ranges,
+      range,
+      this.weapon.actor?.data.data.specials
     );
+    if (rangeBracket === RangeBracket.OUT_OF_RANGE) {
+      this.createOutOfRangeMessage(this.weapon.actor, options);
+      return;
+    }
+
+    if (
+      this.weapon.actor.getActiveTokens(true).some((token) => token.inCombat)
+    ) {
+      const currentAp = this.weapon.actor.data.data.vitals.actionPoints.value;
+      const apUse = this.data.ap;
+      if (currentAp < apUse) {
+        this.createNotEnoughApMessage(this.weapon.actor, options);
+        return;
+      }
+      this.weapon.actor.updateActionPoints(currentAp - apUse);
+    }
+
+    const rangeModifier = getRangeModifier(
+      this.weapon.systemData.ranges,
+      rangeBracket
+    );
+
+    const hitRoll = new Roll(
+      Formulator.skill(skillTotal)
+        .modify(rangeModifier + (options.modifier ?? 0))
+        .toString()
+    ).evaluate({ async: false });
+
+    const damageDice = this.getDamageDice(
+      rangeBracket,
+      this.weapon.actor.data.data.specials.strength
+    );
+    const damageRoll = new Roll(
+      `${damageDice}d6cs>4 + ${this.data.damage.base}`
+    ).evaluate({ async: false });
+
+    this.createAttackMessage(this.weapon.actor, hitRoll, damageRoll, options);
   }
 
-  /**
-   * Get the system formula representation of the damage of this attack.
-   */
+  /** Get the system formula representation of the damage of this attack. */
   get damageFormula(): string {
-    return `${this.data.damage.base}+(${this.getDamageDice(0)})`;
+    const base = this.data.damage.base;
+    let dice: string;
+    if (this.data.damage.diceRange) {
+      if (this.weapon.actor) {
+        dice = this.getDamageDice(
+          RangeBracket.SHORT,
+          this.weapon.actor.data.data.specials.strength
+        ).toString();
+      } else {
+        const low = this.getDamageDice(
+          RangeBracket.SHORT,
+          getSpecialMinPoints()
+        );
+        const high = this.getDamageDice(
+          RangeBracket.SHORT,
+          getSpecialMaxPoints()
+        );
+        dice = `${low}-${high}`;
+      }
+    } else {
+      dice = this.getDamageDice(RangeBracket.SHORT).toString();
+    }
+    return `${base}+(${dice})`;
   }
 
   /**
@@ -75,32 +123,23 @@ export default class Attack {
    * range, this includes the Strength based bonus dice of the owning actor. If
    * the attack is made with a damage fall-off, this is also taken into account.
    * @param range - the range to the target
+   * @param strength - the Strength of the owning actor
    * @returns the effective amount of damage dice
    */
-  getDamageDice(range: number): number {
+  getDamageDice(range: RangeBracket, strength?: number | undefined): number {
     let dice = this.data.damage.dice;
 
-    if (this.data.damage.diceRange) {
-      if (!this.weapon.actor) throw "The owning weapon has no actor!";
-
-      const str = this.weapon.actor.data.data.specials.strength;
-
-      if (str > 10) {
-        dice += 3;
-      } else if (str >= 8) {
-        dice += 2;
-      } else if (str >= 4) {
-        dice += 1;
-      }
+    if (this.data.damage.diceRange && typeof strength === "number") {
+      dice += this.getStrengthDice(strength);
     }
 
     if (this.data.damage.damageFallOff === "shotgun") {
-      switch (this.weapon.getRangeToTarget(range)) {
-        case "long":
+      switch (range) {
+        case RangeBracket.LONG:
           dice -= 4;
           break;
 
-        case "medium":
+        case RangeBracket.MEDIUM:
           dice -= 2;
           break;
       }
@@ -109,72 +148,102 @@ export default class Attack {
     return dice > 0 ? dice : 0;
   }
 
-  /**
-   * Create the header for the chat message.
-   */
-  private get header(): string {
-    const hasCustomName = this.weapon.name !== this.weapon.data.data.name;
-    const heading = hasCustomName
-      ? this.weapon.name
-      : this.weapon.data.data.name;
-
-    const subHeading = hasCustomName
-      ? `${this.weapon.data.data.name} - ${this.name}`
-      : this.name;
-
-    return `<h3>${heading}</h3><h4>${subHeading}</h4>`;
+  /** Get the Strength bonus dice for the given Strength value. */
+  protected getStrengthDice(strength: number): number {
+    if (strength > 10) {
+      return 3;
+    } else if (strength >= 8) {
+      return 2;
+    } else if (strength >= 4) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 
-  /**
-   * Create the body for the chat message.
-   * @param range - the range to the target
-   * @param modifier - an optional hit target modifier
-   */
-  private getBody(range: number, modifier?: number): string {
-    if (!this.weapon.actor) throw "The owning weapon has no actor!";
+  protected createDefaultMessageData(
+    actor: WvActor,
+    options: RollOptions
+  ): ChatMessageDataConstructorData {
+    const data: ChatMessageDataConstructorData = {
+      speaker: ChatMessage.getSpeaker({ actor }),
+      flags: { [CONSTANTS.systemId]: this.defaultChatMessageFlags }
+    };
 
-    const weaponData = this.weapon.systemData;
-    const skillTotal =
-      this.weapon.actor.data.data.skills[weaponData.skill]?.total;
-    if (!skillTotal)
-      throw "The owning actor's skills have not been calculated!";
+    if (options?.whisperToGms) {
+      data["whisper"] = ChatMessage.getWhisperRecipients("gm");
+    }
 
-    const rangeBracket = this.weapon.getRangeToTarget(range);
-    const ranges = [weaponData.ranges.short.distance];
-    let rangeModifier = 0;
-    if (rangeBracket === "short") {
-      rangeModifier = weaponData.ranges.short.modifier;
-    }
-    if (weaponData.ranges.medium !== "unused") {
-      ranges.push(weaponData.ranges.medium.distance);
-      if (rangeBracket === "medium") {
-        rangeModifier = weaponData.ranges.medium.modifier;
-      }
-    }
-    if (weaponData.ranges.long !== "unused") {
-      ranges.push(weaponData.ranges.long.distance);
-      if (rangeBracket === "long") {
-        rangeModifier = weaponData.ranges.long.modifier;
-      }
-    }
-    const displayRanges = ranges
-      .map((range) => this.weapon.getEffectiveRangeDistance(range))
-      .join("/");
+    return data;
+  }
 
-    return `<p>${this.weapon.data.data.notes}</p>
-<p>${getGame().i18n.localize(
-      "wv.weapons.attacks.hitRoll"
-    )}: [[${Formulator.skill(skillTotal).modify(
-      rangeModifier + (modifier ?? 0)
-    )}]]</p>
-<p>${getGame().i18n.localize(
-      "wv.weapons.attacks.damageRoll"
-    )}: [[(${this.getDamageDice(range)}d6cs>4) + ${this.data.damage.base}]]</p>
-<ul>
-  <li>${getGame().i18n.localize(
-    "wv.weapons.attacks.range"
-  )}: ${displayRanges}</li>
-</ul>`;
+  /** Get the default ChatMessage flags for this Weapon Attack. */
+  protected get defaultChatMessageFlags(): WeaponAttackFlags {
+    return {
+      type: "weaponAttack",
+      weaponName: this.weapon.data.name,
+      weaponSystemData: this.weapon.systemData,
+      attackName: this.name,
+      executed: false
+    };
+  }
+
+  protected createOutOfRangeMessage(
+    actor: WvActor,
+    options: RollOptions
+  ): void {
+    ChatMessage.create(
+      foundry.utils.mergeObject(this.createDefaultMessageData(actor, options), {
+        flags: {
+          [CONSTANTS.systemId]: { executed: false, reason: "outOfRange" }
+        }
+      } as DeepPartial<ChatMessageDataConstructorData>)
+    );
+  }
+
+  protected createNotEnoughApMessage(
+    actor: WvActor,
+    options: RollOptions
+  ): void {
+    ChatMessage.create(
+      foundry.utils.mergeObject(this.createDefaultMessageData(actor, options), {
+        flags: {
+          [CONSTANTS.systemId]: { executed: false, reason: "insufficientAp" }
+        }
+      } as DeepPartial<ChatMessageDataConstructorData>)
+    );
+  }
+
+  protected createAttackMessage(
+    actor: WvActor,
+    hitRoll: Roll,
+    damageRoll: Roll,
+    options: RollOptions
+  ): void {
+    ChatMessage.create(
+      foundry.utils.mergeObject(this.createDefaultMessageData(actor, options), {
+        flags: {
+          [CONSTANTS.systemId]: {
+            executed: true,
+            ownerSpecials: actor.data.data.specials,
+            rolls: {
+              damage: {
+                formula: damageRoll.formula,
+                results: damageRoll.dice[0].results.map(
+                  (result) => result.result
+                ),
+                total: damageRoll.total
+              },
+              hit: {
+                formula: hitRoll.formula,
+                result: hitRoll.dice[0].results[0].result,
+                total: hitRoll.total
+              }
+            }
+          }
+        }
+      } as DeepPartial<ChatMessageDataConstructorData>)
+    );
   }
 }
 

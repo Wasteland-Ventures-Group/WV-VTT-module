@@ -1,5 +1,8 @@
 import { TYPES } from "../../constants.js";
-import type { Range } from "../../data/item/weapon/ranges.js";
+import {
+  getDisplayRangeDistance,
+  Range
+} from "../../data/item/weapon/ranges.js";
 import { getGame } from "../../foundryHelpers.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
@@ -135,11 +138,11 @@ export default class WeaponSheet extends WvItemSheet {
    * @param range - the Range to map
    * @returns a sheet displayable Range
    */
-  protected mapToSheetRange(range: Range | "unused"): Range | undefined {
-    if (range === "unused") return;
+  protected mapToSheetRange(range: Range | undefined): SheetRange | undefined {
+    if (!range) return;
 
     return {
-      distance: this.item.getEffectiveRangeDistance(range.distance),
+      distance: getDisplayRangeDistance(range.distance),
       modifier: range.modifier
     };
   }
@@ -159,13 +162,18 @@ interface SheetAttack {
   rounds: number;
 }
 
+interface SheetRange {
+  distance: string;
+  modifier: number;
+}
+
 export interface SheetData extends ItemSheetData {
   sheet?: ItemSheetData["sheet"] & {
     attacks?: Record<string, SheetAttack>;
     ranges?: {
-      short?: Range;
-      medium?: Range;
-      long?: Range;
+      short?: SheetRange;
+      medium?: SheetRange;
+      long?: SheetRange;
     };
     skill?: string;
     usesAmmo?: boolean;

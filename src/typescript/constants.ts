@@ -89,7 +89,19 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.2.0",
+  needsMigrationVersion: "0.2.0", // TODO: increase to next version
+
+  /** Miscellaneous rules constants */
+  rules: {
+    /** The special, point-blank range for some ranged weapons */
+    pointBlank: {
+      /** The point-blank maximum distance */
+      distance: 4,
+
+      /** The point-blank modifier */
+      modifier: 10
+    }
+  },
 
   /** This holds skills mapping to their associated SPECIALs. */
   skillSpecials: {

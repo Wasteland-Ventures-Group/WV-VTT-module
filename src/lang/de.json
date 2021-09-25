@@ -223,6 +223,7 @@
         "execute": "Ausführen",
         "hitRoll": "Treffer",
         "notEnoughAp": "Nicht genug AP um das zu nutzen!",
+        "outOfRange": "Das Ziel ist außer Reichweite!",
         "range": "Reichweite"
       }
     }

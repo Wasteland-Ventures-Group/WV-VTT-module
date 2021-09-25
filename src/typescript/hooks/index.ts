@@ -3,13 +3,16 @@ import registerForHotbarDrop from "./hotbarDrop.js";
 import registerForInit from "./init.js";
 import registerForPreUpdateActor from "./preUpdateActor.js";
 import registerForReady from "./ready.js";
+import registerForRenderChatMessage from "./renderChatMessage.js";
 import registerForUpdateActor from "./updateActor.js";
 
 /** Register system callbacks for all used hooks. */
 export default function registerForHooks(): void {
   registerForInit();
   registerForReady();
+
   registerForHotbarDrop();
+  registerForRenderChatMessage();
 
   registerForPreUpdateActor();
   registerForUpdateActor();

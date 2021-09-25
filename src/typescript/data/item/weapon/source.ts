@@ -24,14 +24,6 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
     short: {
       distance: 20,
       modifier: 0
-    },
-    medium: {
-      distance: 40,
-      modifier: -10
-    },
-    long: {
-      distance: 60,
-      modifier: -20
     }
   };
 

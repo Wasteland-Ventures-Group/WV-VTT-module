@@ -13,6 +13,7 @@ import {
   RangeBracket
 } from "../../data/item/weapon/ranges.js";
 import { getSpecialMaxPoints, getSpecialMinPoints } from "../../helpers.js";
+import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 
 /**
  * An attack of a Weapon Item.
@@ -220,8 +221,15 @@ export default class Attack {
     damageRoll: Roll,
     options: RollOptions
   ): void {
+    const defaultData = this.createDefaultMessageData(actor, options);
+    const whisperTargets = defaultData.whisper ?? null;
+    const speaker = defaultData.speaker;
+
+    diceSoNice(hitRoll, whisperTargets, speaker);
+    diceSoNice(damageRoll, whisperTargets, speaker);
+
     ChatMessage.create(
-      foundry.utils.mergeObject(this.createDefaultMessageData(actor, options), {
+      foundry.utils.mergeObject(defaultData, {
         flags: {
           [CONSTANTS.systemId]: {
             executed: true,

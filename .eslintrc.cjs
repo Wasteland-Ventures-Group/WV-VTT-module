@@ -89,6 +89,12 @@ module.exports = {
           rules: {
             "@typescript-eslint/no-inferrable-types": "off"
           }
+        },
+        {
+          files: ["./src/typescript/lang.d.ts"],
+          rules: {
+            "tsdoc/syntax": "off"
+          }
         }
       ]
     },

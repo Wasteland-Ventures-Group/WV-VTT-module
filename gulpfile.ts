@@ -11,6 +11,7 @@ import compileCompendiumsTask, {
   compileCompendiumsWatchTask
 } from "./gulp/compileCompendiums.js";
 import validateJsonTask from "./gulp/validateJson.js";
+import langSchemaTask from "./gulp/langSchema.js";
 
 // = Path constants ============================================================
 
@@ -116,7 +117,11 @@ export const template = templateTask;
 // = schema tasks ==============================================================
 
 export const compSchemas = compendiumSchemasTask;
-export const validateJson = gulp.series(compSchemas, validateJsonTask);
+export const langSchema = langSchemaTask;
+export const validateJson = gulp.series(
+  gulp.parallel(compSchemas, langSchema),
+  validateJsonTask
+);
 validateJson.description = "Validate all JSON files.";
 
 // = compendiums compile tasks =================================================

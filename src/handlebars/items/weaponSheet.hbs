@@ -29,14 +29,18 @@
               {{localize "wv.sheets.item.weapon.attacks.damage"}}
               <span>{{attack.damage}}</span>
             </label>
-            <label class="resource-block-line contained-target-inline">
-              {{localize "wv.sheets.item.weapon.attacks.rounds"}}
-              <span>{{attack.rounds}}</span>
-            </label>
-            <label class="resource-block-line contained-target-inline">
-              {{localize "wv.sheets.item.weapon.attacks.dtReduction"}}
-              <span>{{attack.dtReduction}}</span>
-            </label>
+            {{#if attack.rounds}}
+              <label class="resource-block-line contained-target-inline">
+                {{localize "wv.sheets.item.weapon.attacks.rounds"}}
+                <span>{{attack.rounds}}</span>
+              </label>
+            {{/if}}
+            {{#if attack.dtReduction}}
+              <label class="resource-block-line contained-target-inline">
+                {{localize "wv.sheets.item.weapon.attacks.dtReduction"}}
+                <span>{{attack.dtReduction}}</span>
+              </label>
+            {{/if}}
             <label class="resource-block-line contained-target-inline">
               {{localize "wv.sheets.item.weapon.attacks.ap"}}
               <span>{{attack.ap}}</span>

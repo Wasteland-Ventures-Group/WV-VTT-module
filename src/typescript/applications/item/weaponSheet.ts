@@ -69,7 +69,7 @@ export default class WeaponSheet extends WvItemSheet {
 
     data.sheet.skill = WvI18n.skills[this.item.systemData.skill];
 
-    data.sheet.usesAmmo = this.item.systemData.reload !== "self";
+    data.sheet.usesAmmo = this.item.systemData.reload !== undefined;
 
     return data;
   }
@@ -161,8 +161,8 @@ type ClickEvent = JQuery.ClickEvent<
 interface SheetAttack {
   ap: number;
   damage: string;
-  dtReduction: number;
-  rounds: number;
+  dtReduction?: number;
+  rounds?: number;
 }
 
 interface SheetRange {

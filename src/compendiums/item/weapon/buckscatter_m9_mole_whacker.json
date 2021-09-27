@@ -12,17 +12,13 @@
           "ap": 5,
           "damage": {
             "base": 1,
-            "damageFallOff": "shotgun",
             "dice": 7,
-            "diceRange": false
+            "damageFallOff": "shotgun"
           },
-          "dtReduction": 0,
-          "rounds": 1,
-          "splash": "TODO"
+          "rounds": 1
         }
       }
     },
-    "holdout": false,
     "ranges": {
       "short": {
         "distance": 10,

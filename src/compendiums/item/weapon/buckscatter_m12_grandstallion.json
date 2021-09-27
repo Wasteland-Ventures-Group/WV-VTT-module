@@ -12,29 +12,22 @@
           "ap": 4,
           "damage": {
             "base": 1,
-            "damageFallOff": "shotgun",
             "dice": 7,
-            "diceRange": false
+            "damageFallOff": "shotgun"
           },
-          "dtReduction": 0,
-          "rounds": 1,
-          "splash": "TODO"
+          "rounds": 1
         },
         "Burst": {
           "ap": 5,
           "damage": {
             "base": 2,
-            "damageFallOff": "shotgun",
             "dice": 10,
-            "diceRange": false
+            "damageFallOff": "shotgun"
           },
-          "dtReduction": 0,
-          "rounds": 2,
-          "splash": "TODO"
+          "rounds": 2
         }
       }
     },
-    "holdout": false,
     "ranges": {
       "short": {
         "distance": 12,

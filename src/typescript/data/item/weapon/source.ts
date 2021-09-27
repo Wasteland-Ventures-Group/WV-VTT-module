@@ -1,7 +1,7 @@
 import { SkillName, TYPES } from "../../../constants.js";
 import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import PhysicalBaseItem from "../physicalBaseItem.js";
-import { DbAttacks } from "./attack.js";
+import { AttacksSource } from "./attack.js";
 import type Ranges from "./ranges.js";
 import type { Reload } from "./reload.js";
 
@@ -14,10 +14,10 @@ export default interface WeaponDataSource {
 /** The Weapon Item data-source data */
 export class WeaponDataSourceData extends PhysicalBaseItem {
   /** The attacks of the weapon */
-  attacks: DbAttacks = new DbAttacks();
+  attacks: AttacksSource = new AttacksSource();
 
   /** Whether the weapon is a holdout weapon */
-  holdout: boolean = false;
+  holdout?: boolean = false;
 
   /** The ranges of the weapon */
   ranges: Ranges = {
@@ -27,19 +27,8 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
     }
   };
 
-  /**
-   * The reload stats of the weapon.
-   * This can be either "self" or an object with reload info.
-   * "self" means it uses instances of the same item and needs to be "reloaded"
-   * via a ready item action.
-   * An object array has the needed info for a magazine reload.
-   */
-  reload: Reload = {
-    ap: 0,
-    caliber: undefined,
-    containerType: "magazine",
-    size: 0
-  };
+  /** The reload stats of the weapon. */
+  reload?: Reload;
 
   /** The skill associated with the weapon attacks */
   skill: SkillName = "firearms";

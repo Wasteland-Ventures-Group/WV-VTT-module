@@ -12,13 +12,9 @@
           "ap": 5,
           "damage": {
             "base": 2,
-            "damageFallOff": "none",
-            "dice": 1,
-            "diceRange": false
+            "dice": 1
           },
-          "dtReduction": 0,
-          "rounds": 1,
-          "splash": "TODO"
+          "rounds": 1
         }
       }
     },

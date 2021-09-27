@@ -12,17 +12,12 @@
           "ap": 6,
           "damage": {
             "base": 3,
-            "damageFallOff": "none",
-            "dice": 1,
-            "diceRange": false
+            "dice": 1
           },
-          "dtReduction": 0,
-          "rounds": 1,
-          "splash": "TODO"
+          "rounds": 1
         }
       }
     },
-    "holdout": false,
     "ranges": {
       "short": {
         "distance": 50,

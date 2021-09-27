@@ -1,7 +1,5 @@
 /** A type specifying the way a weapon is reloaded */
-export type Reload = Ammo | "self";
-
-interface Ammo {
+export interface Reload {
   /** The amount of action points needed to reload */
   ap: number;
 

@@ -266,27 +266,27 @@ export interface AttackSource {
     dice: number;
 
     /** Whether the die property is the minimum value of a die range */
-    diceRange: boolean;
+    diceRange?: boolean;
 
     /** The type of damage fall-off for the attack */
-    damageFallOff: DamageFallOff;
+    damageFallOff?: DamageFallOff;
   };
 
   /** The amount of rounds used with the attack */
-  rounds: number;
+  rounds?: number;
 
   /** The damage threshold reduction of the attack */
-  dtReduction: number;
+  dtReduction?: number;
 
   /** The splash radius */
-  splash: unknown; // TODO: implement an enum or similar
+  splash?: unknown; // TODO: implement an enum or similar
 
   /** The amount of action points needed to attack */
   ap: number;
 }
 
 /** A type representing different damage fall-off rules */
-type DamageFallOff = "shotgun" | "none";
+type DamageFallOff = "shotgun";
 
 /** The drag data of a Weapon Attack */
 export interface WeaponAttackDragData extends DragData {

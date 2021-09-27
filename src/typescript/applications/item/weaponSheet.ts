@@ -142,7 +142,10 @@ export default class WeaponSheet extends WvItemSheet {
     if (!range) return;
 
     return {
-      distance: getDisplayRangeDistance(range.distance),
+      distance: getDisplayRangeDistance(
+        range.distance,
+        this.actor?.data.data.specials
+      ),
       modifier: range.modifier
     };
   }

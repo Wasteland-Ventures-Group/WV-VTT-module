@@ -80,8 +80,8 @@ export default class Prompt extends Application<Options> {
       typeof this.options.max === "number" &&
       typeof this.options.min === "number"
     ) {
-      const maxPlaces = this.getDecimalPlaces(this.options.max);
-      const minPlaces = this.getDecimalPlaces(this.options.min);
+      const maxPlaces = this.getCharWidth(this.options.max);
+      const minPlaces = this.getCharWidth(this.options.min);
       const places = Math.max(maxPlaces, minPlaces);
 
       if (places.between(0, 5)) return `size-${places}`;
@@ -90,9 +90,11 @@ export default class Prompt extends Application<Options> {
     return;
   }
 
-  /** Get the number of integer decimal places for the given number. */
-  protected getDecimalPlaces(number: number): number {
-    return Math.floor(Math.abs(number)).toString().length;
+  /** Get the width in characters for a given number. */
+  protected getCharWidth(number: number): number {
+    return (
+      Math.floor(Math.abs(number)).toString().length + (number < 0 ? 1 : 0)
+    );
   }
 
   /**

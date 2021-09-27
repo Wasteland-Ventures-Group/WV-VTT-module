@@ -20,21 +20,15 @@
           padding:
             bottom: common.$spacing-distance
 
-          > *
+          > :not(:last-child)
             margin-right: common.$spacing-distance
-
-          > *:last-child
-            margin-right: 0
 
         .main-resources
           align-items: center
           justify-content: space-between
 
-          > *
+          > :not(:last-child)
             margin-right: common.$spacing-distance
-
-          > *:last-child
-            margin-right: 0
 
   .stats
     display: flex
@@ -52,10 +46,6 @@
 
   .background
 
-    > section
+    > section:not(:last-child)
       margin:
         top: common.$spacing-distance
-
-    > section:first-child
-      margin:
-        top: 0

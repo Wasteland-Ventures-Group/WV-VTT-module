@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- crit chance properties on actors and a display for them on the sheet
+
 ### Changed
 
 - system chat messages are now internationalized when rendered, instead of when

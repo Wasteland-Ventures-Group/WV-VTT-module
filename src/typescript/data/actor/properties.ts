@@ -103,8 +103,20 @@ export class Resistances {
   radiation = 5;
 }
 
+/** Stats related to critical success and failure */
+export class Criticals {
+  /** The critical failure chance */
+  failure: number = 100;
+
+  /** The critical success chance */
+  success: number = 1;
+}
+
 /** Derived secondary statistics */
 export class SecondaryStatistics {
+  /** The criticals of the Actor */
+  criticals: Criticals = new Criticals();
+
   /** The maximum carry weight of an Actor in kg */
   maxCarryWeight?: number;
 }
@@ -121,10 +133,10 @@ export class PlayerCharacterDataPropertiesData extends PlayerCharacterDataSource
   override leveling: Leveling = new Leveling();
 
   /** The resistances of an Actor */
-  resistances?: Resistances = new Resistances();
+  resistances: Resistances = new Resistances();
 
   /** The secondary statistics of an Actor */
-  secondary?: SecondaryStatistics = new SecondaryStatistics();
+  secondary: SecondaryStatistics = new SecondaryStatistics();
 }
 
 /** The player character data-properties */

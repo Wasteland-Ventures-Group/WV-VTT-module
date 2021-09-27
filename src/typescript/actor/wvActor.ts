@@ -3,6 +3,7 @@ import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-
 import type { PlayerCharacterDataSource } from "./../data/actor/source.js";
 import type { Resource } from "../data/foundryCommon.js";
 import {
+  Criticals,
   Resistances,
   SecondaryStatistics,
   Skill,
@@ -267,8 +268,17 @@ export default class WvActor extends Actor {
   /** Compute and set the Actor's derived secondary statistics. */
   protected computeBaseSecondary(): void {
     const secondary = new SecondaryStatistics();
+    secondary.criticals = this.computeBaseCriticals();
     secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
     this.data.data.secondary = secondary;
+  }
+
+  /** Compute the base critical stats of the Actor. */
+  protected computeBaseCriticals(): Criticals {
+    const criticals = new Criticals();
+    criticals.failure = Math.min(100, 90 + this.data.data.specials.luck);
+    criticals.success = Math.max(1, this.data.data.specials.luck);
+    return criticals;
   }
 
   /** Compute the base maximum carry weight of the Actor in kg. */

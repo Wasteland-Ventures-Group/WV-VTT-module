@@ -75,18 +75,31 @@
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
-      <section class="special-and-skills">
-        <div class="grid-3cols standard-grid-gaps flex-center">
-          <label>{{localize "wv.sheets.actor.special.name"}}</label>
-          <label>{{localize "wv.sheets.actor.special.value"}}</label>
-          <label>{{localize "wv.sheets.actor.special.roll"}}</label>
-          {{#each sheet.specials as | spec |}}
-            <label>{{spec.long}}</label>
-            <input class="size-2" type="number" name="data.specials.{{@key}}" value="{{spec.value}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
-            <button data-special="{{@key}}" title="{{localize 'wv.rolls.buttonTitle'}}" type="button">{{localize "wv.sheets.actor.special.roll"}}</button>
-          {{/each}}
+      <section class="stats">
+        <div>
+          <div class="resource-block grid-3cols standard-grid-gaps flex-center">
+            <label>{{localize "wv.sheets.actor.special.name"}}</label>
+            <label>{{localize "wv.sheets.actor.special.value"}}</label>
+            <label>{{localize "wv.sheets.actor.special.roll"}}</label>
+            {{#each sheet.specials as | spec |}}
+              <label>{{spec.long}}</label>
+              <input class="size-2" type="number" name="data.specials.{{@key}}" value="{{spec.value}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
+              <button data-special="{{@key}}" title="{{localize 'wv.rolls.buttonTitle'}}" type="button">{{localize "wv.sheets.actor.special.roll"}}</button>
+            {{/each}}
+          </div>
+          <div class="resource-block flex-fixed">
+            <h4 class="resource-block-line">{{localize "wv.sheets.actor.secondary.criticals.title"}}</h4>
+            <label class="contained-target-inline resource-block-line">
+              {{localize "wv.sheets.actor.secondary.criticals.success"}}
+              <span class="resource-display size-2">{{data.data.secondary.criticals.success}}</span>
+            </label>
+            <label class="contained-target-inline resource-block-line">
+              {{localize "wv.sheets.actor.secondary.criticals.failure"}}
+              <span class="resource-display size-3">{{data.data.secondary.criticals.failure}}</span>
+            </label>
+          </div>
         </div>
-        <div class="grid-5cols standard-grid-gaps flex-center">
+        <div class="resource-block grid-5cols standard-grid-gaps flex-center">
           <label>{{localize "wv.sheets.actor.skills.name"}}</label>
           <label>{{localize "wv.sheets.actor.skills.special"}}</label>
           <label>{{localize "wv.sheets.actor.skills.total"}}</label>

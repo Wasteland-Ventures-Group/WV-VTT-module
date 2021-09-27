@@ -16,6 +16,6 @@ export default async function langSchemaTask(): Promise<void> {
     type: rootType
   }).createSchema(rootType);
   await fs.mkdir(outputBasePath, { recursive: true });
-  return fs.writeFile(outputPath, JSON.stringify(schema, undefined, 2));
+  return fs.writeFile(outputPath, JSON.stringify(schema));
 }
 langSchemaTask.description = "Generate a language file schema.";

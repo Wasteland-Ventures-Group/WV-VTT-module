@@ -119,6 +119,7 @@ export default class WvItemSheet extends ItemSheet<
 
       try {
         rules.push(JSON.parse(value));
+        delete formData[key];
       } catch (error) {
         if (error instanceof Error) {
           this.communicateJsonParseError(index, error.message);

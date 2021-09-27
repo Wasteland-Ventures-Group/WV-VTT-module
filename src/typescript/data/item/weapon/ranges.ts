@@ -1,6 +1,6 @@
 import { CONSTANTS, SpecialName } from "../../../constants.js";
 import { getSpecialMaxPoints, getSpecialMinPoints } from "../../../helpers.js";
-import type { Specials } from "../../actor/actorData.js";
+import type { Specials } from "../../actor/properties.js";
 import type WeaponDataProperties from "./properties.js";
 
 /** An interface that represents the source ranges of a weapon. */

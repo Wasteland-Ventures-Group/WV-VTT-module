@@ -6,7 +6,7 @@ export default async function templateTask(): Promise<void> {
   // We somehow have to get TS to reimport the files each time. Currently they
   // are only loaded the first time and then cached.
   const imports = Promise.all([
-    import("../src/typescript/data/actor/actorDbData.js"),
+    import("../src/typescript/data/actor/source.js"),
     import("../src/typescript/data/item/effect/source.js"),
     import("../src/typescript/data/item/weapon/source.js")
   ]);

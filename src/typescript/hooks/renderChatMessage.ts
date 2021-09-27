@@ -1,5 +1,5 @@
 import { CONSTANTS } from "../constants.js";
-import type { Specials } from "../data/actor/actorData.js";
+import type { Specials } from "../data/actor/properties.js";
 import type WeaponDataProperties from "../data/item/weapon/properties.js";
 import { getDisplayRanges } from "../data/item/weapon/ranges.js";
 import { getGame } from "../foundryHelpers.js";

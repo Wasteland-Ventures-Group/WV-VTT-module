@@ -4,7 +4,7 @@ import {
   Specials as DbSpecials,
   Vitals as DbVitals,
   PlayerCharacterDataSourceData
-} from "./actorDbData.js";
+} from "./source.js";
 
 /** Derived SPECIALs related data */
 export class Specials extends DbSpecials {}

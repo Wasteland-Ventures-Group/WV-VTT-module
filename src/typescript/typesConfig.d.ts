@@ -5,8 +5,12 @@ import { WvActorDataSource } from "./data/actor/source.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
 import { WvItemDataSource } from "./data/item/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
-import type { SystemChatMessageFlags } from "./hooks/renderChatMessage.js";
+import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage.js";
 import WvItem from "./item/wvItem.js";
+import type {
+  flagCriticalFailure,
+  flagCriticalSuccesses
+} from "./rolls/criticalsModifiers.js";
 
 declare global {
   interface SourceConfig {
@@ -29,5 +33,19 @@ declare global {
     ChatMessage: {
       [CONSTANTS.systemId]?: SystemChatMessageFlags;
     };
+  }
+
+  namespace DiceTerm {
+    interface Result {
+      criticalSuccess?: boolean;
+      criticalFailure?: boolean;
+    }
+  }
+
+  namespace Die {
+    interface Modifiers {
+      fcs: typeof flagCriticalSuccesses;
+      fcf: typeof flagCriticalFailure;
+    }
   }
 }

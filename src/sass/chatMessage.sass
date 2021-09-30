@@ -1,0 +1,17 @@
+@use "./common.sass" as common
+
+.chat-message
+
+  .dice-total
+
+    &.critical-failure
+      color: common.$color-crit-fail-fg
+      background-color: common.$color-crit-fail-bg
+
+    &.critical-success
+      color: common.$color-crit-succ-fg
+      background-color: common.$color-crit-succ-bg
+
+    &.criticals
+      color: common.$color-crits-fg
+      background-color: common.$color-crits-bg

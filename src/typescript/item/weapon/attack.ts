@@ -6,7 +6,7 @@ import type Weapon from "../weapon.js";
 import Formulator from "../../formulator.js";
 import type DragData from "../../dragData.js";
 import { CONSTANTS } from "../../constants.js";
-import type { WeaponAttackFlags } from "../../hooks/renderChatMessage.js";
+import type { WeaponAttackFlags } from "../../hooks/renderChatMessage/decorateSystemMessage.js";
 import {
   getRangeBracket,
   getRangeModifier,

@@ -1,21 +1,21 @@
-import { CONSTANTS } from "../constants.js";
-import type { Specials } from "../data/actor/properties.js";
-import type WeaponDataProperties from "../data/item/weapon/properties.js";
-import { getDisplayRanges } from "../data/item/weapon/ranges.js";
-import { getGame } from "../foundryHelpers.js";
-
-/** Register system callbacks for the renderChatMessage hook. */
-export default function registerForRenderChatMessage(): void {
-  Hooks.on("renderChatMessage", decorateSystemMessage);
-}
-
-type HookParams = Parameters<Hooks.StaticCallbacks["renderChatMessage"]>;
+import { CONSTANTS } from "../../constants.js";
+import type { Specials } from "../../data/actor/properties.js";
+import type WeaponDataProperties from "../../data/item/weapon/properties.js";
+import { getDisplayRanges } from "../../data/item/weapon/ranges.js";
+import { getGame } from "../../foundryHelpers.js";
+import type { HookParams } from "./index.js";
 
 /** Decorate system messages with content from their flags. */
-function decorateSystemMessage(message: HookParams[0], html: HookParams[1]) {
-  html.addClass(`${CONSTANTS.systemId} system-message`);
-
+export default function decorateSystemMessage(
+  message: HookParams[0],
+  html: HookParams[1]
+): void {
   const systemFlags = message.data.flags[CONSTANTS.systemId];
+  if (!systemFlags) {
+    return;
+  }
+
+  html.addClass(`${CONSTANTS.systemId} system-message`);
   switch (systemFlags?.type) {
     case "weaponAttack":
       decorateWeaponAttack(systemFlags, html);

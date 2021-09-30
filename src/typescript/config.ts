@@ -7,6 +7,10 @@ import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvItem from "./item/wvItem.js";
 import { macros } from "./macros/index.js";
+import {
+  flagCriticalFailure,
+  flagCriticalSuccesses
+} from "./rolls/criticalsModifiers.js";
 
 export function configureFoundry(): void {
   getGame().wv = {
@@ -19,6 +23,10 @@ export function configureFoundry(): void {
 
   // Register our override classes.
   CONFIG.Combat.documentClass = WvCombat;
+
+  // Register our dice modifiers.
+  Die.MODIFIERS.fcf = flagCriticalFailure;
+  Die.MODIFIERS.fcs = flagCriticalSuccesses;
 
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet(CONSTANTS.systemId, WvActorSheet, {

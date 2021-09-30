@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - crit chance properties on actors and a display for them on the sheet
+- Dice So Nice! support for weapon attacks
 
 ### Changed
 
@@ -17,12 +18,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   created
 - weapon attack messages are now customized with system specific data ([#20](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/20))
 - weapon attack AP checks and deduction are only done in combat ([#37](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/37))
-- weapon ranges can now just be left undefined, instead of explicitly having to
-  set "unused" as the value
+- some weapon properties became optional
+  - attacks properties
+    - dice range (will default to false)
+    - damage fall off (will default to none)
+    - rounds (will default to 0)
+    - dt reduction (will default to 0)
+    - splash (will default to none)
+  - weapon ranges (instead of having to set "unused")
+    - medium and long range
+  - holdout (will default to false)
+  - reload (will assume weapon does not support reloading)
+- lang schema is now created from types, reducing the maintainance time needed
+  for it
 
 ### Fixed
 
 - a typo in the English 'not enough AP' message for weapon attacks
+- SPECIAL not being taken into account when displaying ranges on owned weapons
+- restricted width of weapon item range displays
+- correct name of rules tab on weapon item sheet
 
 ### [0.4.0] - 2021-09-19
 

@@ -215,18 +215,20 @@ export default class Attack {
     );
   }
 
-  protected createAttackMessage(
+  protected async createAttackMessage(
     actor: WvActor,
     hitRoll: Roll,
     damageRoll: Roll,
     options: RollOptions
-  ): void {
+  ): Promise<void> {
     const defaultData = this.createDefaultMessageData(actor, options);
     const whisperTargets = defaultData.whisper ?? null;
     const speaker = defaultData.speaker;
 
-    diceSoNice(hitRoll, whisperTargets, speaker);
-    diceSoNice(damageRoll, whisperTargets, speaker);
+    await Promise.all([
+      diceSoNice(hitRoll, whisperTargets, speaker),
+      diceSoNice(damageRoll, whisperTargets, speaker)
+    ]);
 
     ChatMessage.create(
       foundry.utils.mergeObject(defaultData, {

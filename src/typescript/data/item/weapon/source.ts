@@ -16,7 +16,7 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
   /** The attacks of the weapon */
   attacks: AttacksSource = new AttacksSource();
 
-  /** Whether the weapon is a holdout weapon */
+  /** Whether the weapon is a holdout weapon. By default, this is `false`. */
   holdout?: boolean = false;
 
   /** The ranges of the weapon */
@@ -27,7 +27,10 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
     }
   };
 
-  /** The reload stats of the weapon. */
+  /**
+   * The reload stats of the weapon. By default, the weapon does not support
+   * reloading.
+   */
   reload?: Reload;
 
   /** The skill associated with the weapon attacks */

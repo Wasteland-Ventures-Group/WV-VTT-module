@@ -267,20 +267,32 @@ export interface AttackSource {
     /** The number of d6 to throw for variable damage */
     dice: number;
 
-    /** Whether the die property is the minimum value of a die range */
+    /**
+     * Whether the die property is the minimum value of a die range. By default
+     * this is false.
+     */
     diceRange?: boolean;
 
-    /** The type of damage fall-off for the attack */
+    /**
+     * The type of damage fall-off for the attack. By default the attack has no
+     * fall-off.
+     */
     damageFallOff?: DamageFallOff;
   };
 
-  /** The amount of rounds used with the attack */
+  /**
+   * The amount of rounds used with the attack. By default the attack does not
+   * consume rounds.
+   */
   rounds?: number;
 
-  /** The damage threshold reduction of the attack */
+  /**
+   * The damage threshold reduction of the attack. By default the attack has no
+   * DT reduction.
+   */
   dtReduction?: number;
 
-  /** The splash radius */
+  /** The splash radius. By default the attack has no splash. */
   splash?: unknown; // TODO: implement an enum or similar
 
   /** The amount of action points needed to attack */

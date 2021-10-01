@@ -8,10 +8,12 @@ export default interface Ranges {
   /** The short range of the weapon */
   short: Range;
 
-  /** The medium range of the weapon, can be omitted */
+  /**
+   * The medium range of the weapon. By default the weapon has no medium range.
+   */
   medium?: Range;
 
-  /** The long range of the weapon, can be omitted */
+  /** The long range of the weapon. By default the weapon has no long range. */
   long?: Range;
 }
 

@@ -78,6 +78,7 @@ export default class Attack {
     const hitRoll = new Roll(
       Formulator.skill(skillTotal)
         .modify(rangeModifier + (options.modifier ?? 0))
+        .criticals(this.weapon.actor.data.data.secondary.criticals)
         .toString()
     ).evaluate({ async: false });
 
@@ -86,7 +87,7 @@ export default class Attack {
       this.weapon.actor.data.data.specials.strength
     );
     const damageRoll = new Roll(
-      `${damageDice}d6cs>4 + ${this.data.damage.base}`
+      Formulator.damage(this.data.damage.base, damageDice).toString()
     ).evaluate({ async: false });
 
     this.createAttackMessage(this.weapon.actor, hitRoll, damageRoll, options);

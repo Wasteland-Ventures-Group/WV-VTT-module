@@ -136,6 +136,7 @@ export default class WvActor extends Actor {
     new Roll(
       Formulator.special(this.data.data.specials[special])
         .modify(options?.modifier)
+        .criticals(this.data.data.secondary.criticals)
         .toString()
     )
       .roll({ async: true })
@@ -159,7 +160,12 @@ export default class WvActor extends Actor {
       msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm");
     }
 
-    new Roll(Formulator.skill(skillTotal).modify(options?.modifier).toString())
+    new Roll(
+      Formulator.skill(skillTotal)
+        .modify(options?.modifier)
+        .criticals(this.data.data.secondary.criticals)
+        .toString()
+    )
       .roll({ async: true })
       .then((r) => r.toMessage(msgOptions));
   }

@@ -93,6 +93,14 @@ export const CONSTANTS = {
 
   /** Miscellaneous rules constants */
   rules: {
+    damage: {
+      /**
+       * The die target which signals additional damage dealt when rolled
+       * higher or equal.
+       */
+      dieTarget: 5
+    },
+
     /** The special, point-blank range for some ranged weapons */
     pointBlank: {
       /** The point-blank maximum distance */

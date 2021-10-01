@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - crit chance properties on actors and a display for them on the sheet
 - Dice So Nice! support for weapon attacks
+- dice roll modifiers for flagging criticals
+- crit chance consideration for all system rolls
+- expanded and improved the internal system roll formula generator
+  - rolls with negative modifiers, that would result in a target value less than
+    0, are now capped and don't break anymore
 
 ### Changed
 

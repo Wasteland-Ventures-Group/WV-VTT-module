@@ -12,6 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - crit chance properties on actors and a display for them on the sheet
 - Dice So Nice! support for weapon attacks
 - dice roll modifiers for flagging criticals
+  - "1d100fcs&lt;=5" to flag a result less or equal to five as critical success
+  - "1d100fcf&gt;=60" to flag a result greater or equal to sixty as a crticial
+    failure
+  - any of the foundry modifier comparison operators are allowed
+  - without a comparison operator, "fcs" assumes "&lt;=" and "fcf" assumes
+    "&gt;="
+  - "1d100fcs5fcf95" means 5 or lower is a crit success, 95 or higher is a crit
+    fail
 - crit chance consideration for all system rolls
 - expanded and improved the internal system roll formula generator
   - rolls with negative modifiers, that would result in a target value less than

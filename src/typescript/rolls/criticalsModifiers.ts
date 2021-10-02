@@ -12,7 +12,7 @@ export function flagCriticalFailure(
   for (const result of this.results) {
     const comp = DiceTerm.compareResult(
       result.result,
-      match[1] || "=",
+      match[1] || ">=",
       parseInt(match[2])
     );
     result.criticalFailure = comp;
@@ -34,7 +34,7 @@ export function flagCriticalSuccesses(
   for (const result of this.results) {
     const comp = DiceTerm.compareResult(
       result.result,
-      match[1] || "=",
+      match[1] || "<=",
       parseInt(match[2])
     );
     result.criticalSuccess = comp;

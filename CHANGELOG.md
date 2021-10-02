@@ -32,8 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - system chat messages are now internationalized when rendered, instead of when
   created
-- weapon attack messages are now customized with system specific data ([#20](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/20))
-- weapon attack AP checks and deduction are only done in combat ([#37](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/37))
+- weapon attack messages are now customized with system specific data
+  ([#20](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/20))
+- weapon attack AP checks and deduction are only done in combat
+  ([#37](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/37))
 - some weapon properties became optional
   - attacks properties
     - dice range (will default to false)
@@ -47,6 +49,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - reload (will assume weapon does not support reloading)
 - lang schema is now created from types, reducing the maintainance time needed
   for it
+- updated the rendering of weapon attack messages, providing a more polished
+  experience and only showing condensed info, that can be expanded on demand
+  ([#58](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/58))
 
 ### Fixed
 
@@ -60,9 +65,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - a schema for the language files
-- add a rule engine for items and basic modifier items ([#6](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/6))
+- add a rule engine for items and basic modifier items
+  ([#6](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/6))
 - German internationalization support
-- added support for prototype items ([#26](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/26))
+- added support for prototype items
+  ([#26](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/26))
   - these are items, whose base stats can not be modified directly
   - they are updated from compendiums, should the stats of them change in the
     rules
@@ -71,7 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - attacks can be dragged to the hotbar to create macros
   - weapons are prototype items
 - a system weapon compendium (WIP)
-- some support for Manifest+ ([#16](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/16))
+- some support for Manifest+
+  ([#16](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/16))
 
 ### Changed
 
@@ -102,10 +110,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- flavor text for character sheet rolls ([#1](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/1))
+- flavor text for character sheet rolls
+  ([#1](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/1))
 - translatable migration notifications
 - clickable labels to focus the corresponding target inputs
-- roll with modifier by Shift-Clicking the roll buttons  ([#2](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/2))
+- roll with modifier by Shift-Clicking the roll buttons
+  ([#2](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/2))
 - roll as GM whisper by Ctrl-Clicking the roll buttons
 
 ### Fixed
@@ -118,7 +128,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - support for Foundry VTT 0.8.X
-- automatic AP reset on combat start and next round ([#4](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/4))
+- automatic AP reset on combat start and next round
+  ([#4](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/4))
 - a gulp shim to use the ts-node/esm loader and prevent the module not found
   errors
 

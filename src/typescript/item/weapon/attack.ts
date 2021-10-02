@@ -6,7 +6,7 @@ import type Weapon from "../weapon.js";
 import Formulator from "../../formulator.js";
 import type DragData from "../../dragData.js";
 import { CONSTANTS } from "../../constants.js";
-import type { WeaponAttackFlags } from "../../hooks/renderChatMessage/decorateSystemMessage.js";
+import type { WeaponAttackFlags } from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import {
   getRangeBracket,
   getRangeModifier,
@@ -184,6 +184,7 @@ export default class Attack {
     return {
       type: "weaponAttack",
       weaponName: this.weapon.data.name,
+      weaponImage: this.weapon.img,
       weaponSystemData: this.weapon.systemData,
       attackName: this.name,
       executed: false
@@ -246,6 +247,7 @@ export default class Attack {
                 total: damageRoll.total
               },
               hit: {
+                critical: hitRoll.dice[0].results[0].critical,
                 formula: hitRoll.formula,
                 result: hitRoll.dice[0].results[0].result,
                 total: hitRoll.total

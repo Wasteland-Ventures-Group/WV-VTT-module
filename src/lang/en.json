@@ -220,11 +220,17 @@
     "weapons": {
       "attacks": {
         "damageRoll": "Damage",
+        "details": "Details",
         "execute": "Execute",
-        "hitRoll": "Hit",
         "notEnoughAp": "Not enough AP to use!",
         "outOfRange": "The target is out of range!",
-        "range": "Range"
+        "range": "Range",
+        "results": {
+          "criticalHit": "Critical Hit!",
+          "criticalMiss": "Critical Miss!",
+          "hit": "Hit!",
+          "miss": "Miss!"
+        }
       }
     }
   }

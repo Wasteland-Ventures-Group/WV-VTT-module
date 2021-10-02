@@ -1,3 +1,4 @@
+import type { Critical } from "../../rolls/criticalsModifiers.js";
 import type { HookParams } from "./index.js";
 
 /** Decorate roll messages with critical results */
@@ -57,12 +58,17 @@ function findCriticals(roll: Roll): SearchResult {
     if (!(term instanceof Die)) continue;
 
     for (const result of term.results) {
-      if (result.criticalFailure) {
-        if (hasSuccess) return "both";
-        hasFailure = true;
-      } else if (result.criticalSuccess) {
-        if (hasFailure) return "both";
-        hasSuccess = true;
+      if (!result.critical) continue;
+
+      switch (result.critical) {
+        case "failure":
+          if (hasSuccess) return "both";
+          hasFailure = true;
+          break;
+        case "success":
+          if (hasFailure) return "both";
+          hasSuccess = true;
+          break;
       }
     }
   }
@@ -72,4 +78,4 @@ function findCriticals(roll: Roll): SearchResult {
   return "none";
 }
 
-type SearchResult = "none" | "failure" | "success" | "both";
+type SearchResult = Critical | "both";

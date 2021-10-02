@@ -5,9 +5,10 @@ import { WvActorDataSource } from "./data/actor/source.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
 import { WvItemDataSource } from "./data/item/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
-import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage.js";
+import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage/index.js";
 import WvItem from "./item/wvItem.js";
 import type {
+  Critical,
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
@@ -37,8 +38,7 @@ declare global {
 
   namespace DiceTerm {
     interface Result {
-      criticalSuccess?: boolean;
-      criticalFailure?: boolean;
+      critical?: Critical;
     }
   }
 

@@ -387,10 +387,10 @@ export interface LangSchema {
       attacks: {
         /** The label for the damage roll of an attack */
         damageRoll: string;
+        /** The label for the details list of an attack */
+        details: string;
         /** The label for the execute button */
         execute: string;
-        /** The label for the hit roll of an attack */
-        hitRoll: string;
         /**
          * The message when the weapon owner does not have enough AP for the
          * attack
@@ -400,6 +400,17 @@ export interface LangSchema {
         outOfRange: string;
         /** The label for the ranges of a weapon */
         range: string;
+        /** Result labels for the attack */
+        results: {
+          /** The label for a hit */
+          hit: string;
+          /** The label for a miss */
+          miss: string;
+          /** The label for a critical hit */
+          criticalHit: string;
+          /** The label for a critical miss */
+          criticalMiss: string;
+        };
       };
     };
   };

@@ -16,7 +16,15 @@ export function flagCriticalFailure(
       parseInt(match[2])
     );
     result.criticalFailure = comp;
-    if (comp) result.criticalSuccess = false;
+    if (comp) {
+      if (typeof result.count === "number") {
+        result.count = 0;
+      }
+      if (result.success) {
+        result.success = false;
+      }
+      result.criticalSuccess = false;
+    }
   }
 }
 
@@ -38,6 +46,14 @@ export function flagCriticalSuccesses(
       parseInt(match[2])
     );
     result.criticalSuccess = comp;
-    if (comp) result.criticalFailure = false;
+    if (comp) {
+      if (typeof result.count === "number") {
+        result.count = 1;
+      }
+      if (result.success === false) {
+        result.success = true;
+      }
+      result.criticalFailure = false;
+    }
   }
 }

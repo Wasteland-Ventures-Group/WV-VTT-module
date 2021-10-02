@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     "&gt;="
   - "1d100fcs5fcf95" means 5 or lower is a crit success, 95 or higher is a crit
     fail
+  - these modifiers also influence the overall result
+    - critical failures are marked as failures
+    - critical successes are marked as successes
 - crit chance consideration for all system rolls
 - expanded and improved the internal system roll formula generator
   - rolls with negative modifiers, that would result in a target value less than

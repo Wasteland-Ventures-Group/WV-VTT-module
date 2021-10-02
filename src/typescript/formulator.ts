@@ -164,11 +164,11 @@ export default class Formulator {
     let formula = "";
 
     if (typeof this.criticalSuccess === "number") {
-      formula += `fcs<=${this.criticalSuccess}`;
+      formula += `fcs${this.criticalSuccess}`;
     }
 
     if (typeof this.criticalFailure === "number") {
-      formula += `fcf>=${this.criticalFailure}`;
+      formula += `fcf${this.criticalFailure}`;
     }
 
     return formula;

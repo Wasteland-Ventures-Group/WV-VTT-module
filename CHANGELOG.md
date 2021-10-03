@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2021-10-03
+
 ### Added
 
 - crit chance properties on actors and a display for them on the sheet
@@ -68,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - restricted width of weapon item range displays
 - correct name of rules tab on weapon item sheet
 
-### [0.4.0] - 2021-09-19
+## [0.4.0] - 2021-09-19
 
 ### Added
 
@@ -202,7 +204,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - basic character Actor implementation with editable SPECIALs
 
-[Unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.5.0...HEAD
+[0.5.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.4.0...v0.5.0
 [0.4.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.3...v0.4.0
 [0.3.3]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.2...v0.3.3
 [0.3.2]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.1...v0.3.2

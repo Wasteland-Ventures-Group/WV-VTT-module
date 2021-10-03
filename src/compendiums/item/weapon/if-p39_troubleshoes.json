@@ -5,7 +5,7 @@
   "data": {
     "name": "IF-P39 \"Troubleshoes\"",
     "description": "An experimental rifle to stop heaviest machinery on the field. Rumor has it, MWT Ministry Mare hated this gun.",
-    "notes": "",
+    "notes": "Point blank accuracy modifier -10",
     "attacks": {
       "sources": {
         "Single": {

@@ -32,6 +32,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - weapons
   - Machete
   - Staff
+- missing notes on weapons
+  - IF-P39 "Troubleshoes"
+  - Zebra Rifle
 
 ### Changed
 

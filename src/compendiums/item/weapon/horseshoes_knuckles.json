@@ -1,9 +1,9 @@
 {
-  "name": "Horseshoe / Knuckles",
+  "name": "Horseshoes / Knuckles",
   "type": "weapon",
   "img": "icons/weapons/fist/fist-knuckles-stone.webp",
   "data": {
-    "name": "Horseshoe / Knuckles",
+    "name": "Horseshoes / Knuckles",
     "description": "The humble horseshoe, doesn't bring you luck, but it might bring you a KO.",
     "notes": "",
     "attacks": {
@@ -35,5 +35,5 @@
   },
   "effects": [],
   "flags": {},
-  "_id": "WVweapon00000016"
+  "_id": "WVweapon00000082"
 }

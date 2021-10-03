@@ -30,12 +30,12 @@ export default async function validateJsonTask(): Promise<void> {
 validateJsonTask.description =
   "Validate all JSON files with already existing schemas.";
 
-async function validateFiles(config: ValidationConfig): Promise<boolean[]> {
+async function validateFiles(config: ValidationConfig): Promise<void> {
   const fileNames = await glob(config.dataGlob);
   const validate = ajv.compile(
     JSON.parse((await fs.readFile(config.schemaPath)).toString())
   );
-  return Promise.all(
+  const results = await Promise.all(
     fileNames.map(async (fileName) => {
       const valid = validate(
         JSON.parse((await fs.readFile(fileName)).toString())
@@ -44,6 +44,9 @@ async function validateFiles(config: ValidationConfig): Promise<boolean[]> {
       return valid;
     })
   );
+  if (results.some((result) => result === false)) {
+    return Promise.reject(new Error("One or more JSON files are invalid."));
+  }
 }
 
 function logErrors(fileName: string, validate: ValidateFunction<unknown>) {

@@ -116,6 +116,7 @@ export default class WvActorSheet extends ActorSheet<
       if (TYPES.ITEM.EFFECT === item.data.type) {
         data.sheet.effects.push({
           id: item.id,
+          img: item.img,
           name: item.name
         });
       }
@@ -123,6 +124,7 @@ export default class WvActorSheet extends ActorSheet<
       if (TYPES.ITEM.WEAPON === item.data.type) {
         data.sheet.weapons.push({
           id: item.id,
+          img: item.img,
           name: item.name
         });
       }
@@ -296,11 +298,13 @@ interface SheetBounds {
 
 interface SheetEffect {
   id: string;
+  img: string | null;
   name: string | null;
 }
 
 interface SheetWeapon {
   id: string;
+  img: string | null;
   name: string | null;
 }
 

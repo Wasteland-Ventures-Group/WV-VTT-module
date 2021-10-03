@@ -122,6 +122,9 @@
         <ol class="fvtt-item-list">
           {{#each sheet.effects as |effect|}}
             <li class="fvtt-item effect" data-id="{{effect.id}}">
+              {{#if effect.img}}
+                <img src="{{effect.img}}" />
+              {{/if}}
               <h4>{{effect.name}}</h4>
               <div class="fvtt-item-controls flexrow">
                 <button type="button" class="control effect-control fas fa-pen" data-action="edit" title="{{localize 'wv.fvttItems.actions.edit'}}"></button>
@@ -135,10 +138,14 @@
 
     <div class="tab" data-group="primary" data-tab="inventory">
       <section class="inventory">
+        <h3>{{localize "wv.sheets.actor.inventory.headings.weapons"}}</h3>
         <section class="weapons">
           <ol class="fvtt-item-list">
             {{#each sheet.weapons as |weapon|}}
               <li class="fvtt-item weapon" data-id="{{weapon.id}}">
+                {{#if weapon.img}}
+                  <img src="{{weapon.img}}" />
+                {{/if}}
                 <h4>{{weapon.name}}</h4>
                 <div class="fvtt-item-controls flexrow">
                   <button type="button" class="control weapon-control fas fa-pen" data-action="edit" title="{{localize 'wv.fvttItems.actions.edit'}}"></button>

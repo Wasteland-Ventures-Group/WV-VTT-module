@@ -77,6 +77,11 @@
           "dreams": "Dreams",
           "karma": "Karma"
         },
+        "inventory": {
+          "headings": {
+            "weapons": "Weapons"
+          }
+        },
         "magic": {
           "thaumSpecial": "SPECIA for Thaumaturgy"
         },

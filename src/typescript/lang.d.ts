@@ -145,6 +145,14 @@ export interface LangSchema {
           /** Label for the karma field */
           karma: string;
         };
+        /** Labels related to the inventory */
+        inventory: {
+          /** Headings in the inventory */
+          headings: {
+            /** The weapons heading */
+            weapons: string;
+          };
+        };
         /** Labels related to magic */
         magic: {
           /** The label for the thaumaturgy select */

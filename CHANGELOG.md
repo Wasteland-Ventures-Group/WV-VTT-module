@@ -29,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     0, are now capped and don't break anymore
 - item images to the lists in the actor sheet
 - headings for the the lists in the inventory
+- weapons
+  - Machete
+  - Staff
 
 ### Changed
 

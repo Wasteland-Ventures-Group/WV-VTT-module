@@ -1,0 +1,38 @@
+{
+  "name": "Machete",
+  "type": "weapon",
+  "img": "icons/weapons/daggers/dagger-bone-worn-black.webp",
+  "data": {
+    "name": "Machete",
+    "description": "\"That's not a knife. This is a KNIFE.\" -Cragadile Donkey",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Chop": {
+          "damage": {
+            "base": 1,
+            "dice": 2,
+            "diceRange": true
+          },
+          "ap": 4
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 3,
+    "value": 150,
+    "weight": 1,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000050"
+}

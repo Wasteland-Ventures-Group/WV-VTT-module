@@ -1,0 +1,38 @@
+{
+  "name": "Staff",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-simple.webp",
+  "data": {
+    "name": "Staff",
+    "description": "The kind you see wizards use, though this one does nothing for your magic.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 1,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 6
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 2,
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 2,
+    "value": 60,
+    "weight": 0.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000061"
+}

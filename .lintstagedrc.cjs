@@ -1,7 +1,6 @@
 module.exports = {
   "*.ts": "eslint --fix",
   "*.(js|json)": "prettier --write",
-  "src/schemas/lang.json": "ajv compile --strict true -s",
   "src/lang/*.json": (fileNames) =>
     getAjvCommand(fileNames, "src/schemas/lang.json"),
   "src/compendiums/item/weapon/*.json": (fileNames) =>

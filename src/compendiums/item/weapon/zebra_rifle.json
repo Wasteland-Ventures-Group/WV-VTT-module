@@ -5,7 +5,7 @@
   "data": {
     "name": "Zebra Rifle",
     "description": "A creation of pre-War Zebra gunsmiths, this rifle will douse your enemies in fire as well as riddle them with lead.",
-    "notes": "",
+    "notes": "Inflicts Burning status",
     "attacks": {
       "sources": {
         "Single": {

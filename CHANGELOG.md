@@ -30,6 +30,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - item images to the lists in the actor sheet
 - headings for the the lists in the inventory
 - weapons
+  - Buckington Automatic Rifle M18
+  - Gretta M28 MG "Pecker"
+  - Gretta M33 MG "Predator"
+  - Gretta M3 SMG "Greaser"
+  - H&K MGat-39 "Mini Gun"
+  - IF-44 "Angel Bunny"
+  - IF-84 "Stampede"
+  - IF-92 "Melrose"
   - Machete
   - Staff
 

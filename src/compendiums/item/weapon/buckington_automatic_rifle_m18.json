@@ -1,0 +1,60 @@
+{
+  "name": "Buckington Automatic Rifle M18",
+  "type": "weapon",
+  "img": "icons/weapons/guns/rifle-brown.webp",
+  "data": {
+    "name": "Buckington Automatic Rifle M18",
+    "description": "An automatic rifle designed to work as a squad-support weapon. Its rifle-caliber packs more punch than its pistol-caliber counterparts",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 2,
+            "dice": 5
+          },
+          "ap": 5,
+          "rounds": 1
+        },
+        "Burst": {
+          "damage": {
+            "base": 3,
+            "dice": 10
+          },
+          "ap": 8,
+          "rounds": 5
+        }
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 20
+    },
+    "ranges": {
+      "short": {
+        "distance": 100,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 200,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 300,
+        "modifier": -20
+      }
+    },
+    "skill": "firearms",
+    "strengthRequirement": 8,
+    "value": 650,
+    "weight": 8,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000017"
+}

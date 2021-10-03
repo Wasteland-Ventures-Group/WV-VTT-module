@@ -1,0 +1,53 @@
+{
+  "name": "IF-84 \"Stampede\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-double-barrel.webp",
+  "data": {
+    "name": "IF-84 \"Stampede\"",
+    "description": "A drum-fed shotgun. The room can only be considered cleared when every surface of it has been smeared with pellets.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 2,
+            "dice": 7,
+            "damageFallOff": "shotgun"
+          },
+          "ap": 4,
+          "rounds": 1
+        }
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 15
+    },
+    "ranges": {
+      "short": {
+        "distance": 10,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 20,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 30,
+        "modifier": -20
+      }
+    },
+    "skill": "firearms",
+    "strengthRequirement": 7,
+    "value": 750,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000014"
+}

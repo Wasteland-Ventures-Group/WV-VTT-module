@@ -1,6 +1,5 @@
 import { CONSTANTS, HANDLEBARS } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
-import type WvItem from "../../item/wvItem.js";
 import type { RuleElementSource } from "../../ruleEngine/ruleElement.js";
 import RuleElements from "../../ruleEngine/ruleElements.js";
 import WrongTypeWarning from "../../ruleEngine/warnings/wrongTypeWarning.js";
@@ -95,7 +94,7 @@ export default class WvItemSheet extends ItemSheet<
   protected override async _updateObject(
     event: Event,
     formData: Record<string, string | RuleElementSource[] | unknown>
-  ): Promise<WvItem | undefined> {
+  ): Promise<unknown> {
     try {
       this.parseRuleElementSources(formData);
     } catch (error) {

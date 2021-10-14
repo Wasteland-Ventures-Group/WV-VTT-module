@@ -13,21 +13,24 @@ export default class WvCombat extends Combat {
 
   /** Reset the action points of all combatants to their max value. */
   private resetActionPoints() {
-    this.combatants.forEach((c) => {
-      if (!c.actor) {
-        LOG.debug(`The combatant has no actor. id=${c.id}`);
+    this.combatants.forEach((combatant) => {
+      if (!combatant.actor) {
+        LOG.debug(`The combatant has no actor. id=${combatant.id}`);
         return;
       }
-      if (typeof c.actor.actionPoints.max !== "number") {
+      if (typeof combatant.actor.actionPoints.max !== "number") {
         LOG.debug(
-          `The combatant actor's max action points is undefined. id=${c.id}`
+          `The combatant actor's max action points is undefined. id=${combatant.id}`
         );
         return;
       }
+      if (combatant.data.defeated) return;
 
-      c.actor.update({
-        _id: c.actor.id,
-        data: { vitals: { actionPoints: { value: c.actor.actionPoints.max } } }
+      combatant.actor.update({
+        _id: combatant.actor.id,
+        data: {
+          vitals: { actionPoints: { value: combatant.actor.actionPoints.max } }
+        }
       });
     });
   }

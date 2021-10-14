@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Action Points are no longer refreshed on defeated opponents
+
 ## [0.5.0] - 2021-10-03
 
 ### Added

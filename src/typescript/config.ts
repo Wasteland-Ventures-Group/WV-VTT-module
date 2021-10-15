@@ -5,6 +5,7 @@ import WeaponSheet from "./applications/item/weaponSheet.js";
 import { CONSTANTS, TYPES } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
+import WvRuler from "./foundryOverrides/wvRuler.js";
 import WvItem from "./item/wvItem.js";
 import { macros } from "./macros/index.js";
 import {
@@ -23,6 +24,8 @@ export function configureFoundry(): void {
 
   // Register our override classes.
   CONFIG.Combat.documentClass = WvCombat;
+  // @ts-expect-error This is currently the only way to override Ruler
+  Ruler = WvRuler;
 
   // Register our dice modifiers.
   Die.MODIFIERS.fcf = flagCriticalFailure;

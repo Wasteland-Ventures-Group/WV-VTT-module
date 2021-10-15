@@ -2,7 +2,7 @@ import type { DragRuler } from "./dragRuler.js";
 
 import WvActor from "../../actor/wvActor.js";
 
-export function createWvSpeedProvider(
+export default function createWvSpeedProvider(
   speedProvider: typeof DragRuler.SpeedProvider
 ): ConstructorOf<DragRuler.SpeedProvider> {
   return class WvSpeedProvider extends speedProvider {

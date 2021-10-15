@@ -128,6 +128,11 @@ export interface LangSchema {
         syntax: string;
       };
     };
+    /** Labels related to the measuring tool */
+    ruler: {
+      /** The unit for the AP cost for moving */
+      apCostUnit: string;
+    };
     /** Labels related to sheets */
     sheets: {
       /** Labels for actor sheets */

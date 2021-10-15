@@ -68,6 +68,9 @@
         "syntax": "Syntaxfehler in Regelelementdefinition {number}: {message}"
       }
     },
+    "ruler": {
+      "apCostUnit": "AP"
+    },
     "sheets": {
       "actor": {
         "background": {

@@ -44,7 +44,7 @@ export default class WvToken extends Token {
       // Get the starting position.
       const origin = { x: original.data.x, y: original.data.y };
 
-      // Get the snapped top-left coordinate
+      // Get the snapped top-left coordinate.
       let target = { x: clone.data.x, y: clone.data.y };
       if (!originalEvent.shiftKey && grid.type !== CONST.GRID_TYPES.GRIDLESS) {
         const isTiny = clone.data.width < 1 && clone.data.height < 1;
@@ -65,7 +65,7 @@ export default class WvToken extends Token {
         clones.push(clone);
       } else {
         // Reset the vision and warn the user when there are not enough AP to
-        // move
+        // move.
         if (preview) original.updateSource({ noUpdateFog: true });
         if (ui.notifications)
           ui.notifications.info(

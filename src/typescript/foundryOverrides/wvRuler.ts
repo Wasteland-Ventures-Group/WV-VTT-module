@@ -1,5 +1,7 @@
-import { getGame } from "../foundryHelpers.js";
+import WvActor from "../actor/wvActor.js";
+import { getCanvas, getGame } from "../foundryHelpers.js";
 import { getApUse } from "../movement.js";
+import { LOG } from "../systemLogger.js";
 
 export default class WvRuler extends Ruler {
   override measure(
@@ -7,6 +9,64 @@ export default class WvRuler extends Ruler {
     { gridSpaces }: { gridSpaces?: boolean } = {}
   ): Ruler.Segment[] {
     return replaceLabels(super.measure(destination, { gridSpaces }));
+  }
+
+  override async moveToken(): Promise<false | undefined> {
+    // Prepare some stuff and check presence.
+    const game = getGame();
+    const canvas = getCanvas();
+    const grid = canvas.grid;
+    if (!(grid instanceof GridLayer))
+      throw new Error("The canvas has no grid!");
+
+    // Get the movement token and check actor presence.
+    const token = this._getMovementToken();
+    if (!token) return false;
+    if (!(token.actor instanceof WvActor)) {
+      if (ui.notifications)
+        ui.notifications.error(
+          game.i18n.format("wv.messages.movement.noActor", {
+            name: token.name
+          })
+        );
+      LOG.error(`The token has no associated actor! id="${token.id}"`);
+      return false;
+    }
+
+    // When not in combat, just do the normal movement.
+    if (!token.inCombat) return super.moveToken();
+
+    // Get the segments and calculate total distance.
+    const segments = this._getRaysFromWaypoints(
+      this.waypoints,
+      this.destination || undefined
+    ).map((ray) => ({ ray }));
+    const distance = grid
+      .measureDistances(segments, { gridSpaces: true })
+      .reduce((a, b) => a + b, 0);
+
+    // Get the two AP values.
+    const apUse = getApUse(distance);
+    const currAp = token.actor.actionPoints.value;
+
+    // Check if there are enough AP for the movement.
+    if (currAp >= apUse) {
+      // Update the AP on the actor
+      token.actor.updateActionPoints(currAp - apUse);
+    } else {
+      // Warn the user when there are not enough AP to move.
+      if (ui.notifications)
+        ui.notifications.info(
+          game.i18n.format("wv.messages.movement.notEnoughAp", {
+            actual: currAp,
+            name: token.name,
+            needed: apUse
+          })
+        );
+      return false;
+    }
+
+    return super.moveToken();
   }
 }
 

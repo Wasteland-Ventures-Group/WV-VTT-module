@@ -11,7 +11,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - the built-in ruler tool now shows the walk speed AP usage for the distance
   measured (this is incompatible with DragRuler for now)
-- an AP check and subtraction for Token drag/drop movement in combat
+- an AP check for Token drag/drop movement in combat (this is incompatible with
+  DragRuler for now) ([#5])
+- AP subtraction for Token drag/drop movement in combat ([#5])
+- an AP check and subtraction for Token Ruler movement in combat (this is
+  incompatible with DragRuler for now) ([#5])
+[#5]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/5
 
 ## [0.5.0] - 2021-10-03
 
@@ -117,8 +122,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - back-end bounds validation for the roll modifier dialog
-- back-end bounds validation for the character sheet [#9]
-- front-end bounds validation for the character sheet [#9]
+- back-end bounds validation for the character sheet ([#9])
+- front-end bounds validation for the character sheet ([#9])
 
 [#9]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/9
 

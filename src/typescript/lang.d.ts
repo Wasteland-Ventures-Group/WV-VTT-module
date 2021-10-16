@@ -15,7 +15,7 @@ export interface LangSchema {
       /**
        * The placeholder name for a new Item, containing a reference to the item
        * name with `what`.
-       * @pattern \{what\}
+       * @pattern (?=.*\{what\})
        */
       newName: string;
       /** Labels for different types of system Items */
@@ -46,13 +46,13 @@ export interface LangSchema {
       /**
        * The notification text for completed migrations, containing references to
        * the system name with `systemName` and the system version with `version`
-       * @pattern (?:\{systemName\}.*\{version\})|(?:\{version\}.*\{systemName\})
+       * @pattern (?=.*\{systemName\})(?=.*\{version\})
        */
       completed: string;
       /**
        * The notification text for started migration, containing references to
        * the system name with `systemName` and the system version with `version`s
-       * @pattern (?:\{systemName\}.*\{version\})|(?:\{version\}.*\{systemName\})
+       * @pattern (?=.*\{systemName\})(?=.*\{version\})
        */
       started: string;
     };
@@ -74,7 +74,7 @@ export interface LangSchema {
         /**
          * The label for a roll modifier dialog, containing a reference to what
          * is modified with `what`
-         * @pattern \{what\}
+         * @pattern (?=.*\{what\})
          */
         modifier: string;
         /** The description for entering a range */
@@ -88,7 +88,7 @@ export interface LangSchema {
       /**
        * The flavor text for the chat messages, containing a reference to what
        * is rolled with `what`
-       * @pattern \{what\}
+       * @pattern (?=.*\{what\})
        */
       flavor: string;
       /**
@@ -114,7 +114,7 @@ export interface LangSchema {
           /**
            * A message saying that the value of a field was changed to the
            * default, containing a reference to the value with `value`.
-           * @pattern \{value\}
+           * @pattern (?=.*\{value\})
            */
           changedToDefault: string;
         };
@@ -140,7 +140,7 @@ export interface LangSchema {
          * The description for the JSON syntax error, containing references to
          * the number of the rule element with `number` and the error message
          * with `message`
-         * @pattern (?:\{number\}.*\{message\})|(?:\{message\}.*\{number\})
+         * @pattern (?=.*\{number\})(?=.*\{message\})
          */
         syntax: string;
       };

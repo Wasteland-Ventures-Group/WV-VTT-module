@@ -12,6 +12,7 @@ import type {
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
+import type * as settings from "./settings.js";
 
 declare global {
   interface SourceConfig {
@@ -22,6 +23,16 @@ declare global {
   interface DataConfig {
     Actor: WvActorDataProperties;
     Item: WvItemDataProperties;
+  }
+
+  namespace ClientSettings {
+    interface Values {
+      "wasteland-ventures.systemMigrationVersion": string;
+      "wasteland-ventures.bounds.skills.points.min": number;
+      "wasteland-ventures.bounds.special.points.min": number;
+      "wasteland-ventures.enforceApDragDrop": settings.EnforceApSetting;
+      "wasteland-ventures.enforceApRuler": settings.EnforceApSetting;
+    }
   }
 
   interface DocumentClassConfig {

@@ -1,6 +1,8 @@
 import WvActor from "../actor/wvActor.js";
+import { CONSTANTS } from "../constants.js";
 import { getCanvas, getGame } from "../foundryHelpers.js";
 import { getApUse } from "../movement.js";
+import { enforceApRulerSettingName, EnforceApSetting } from "../settings.js";
 import { LOG } from "../systemLogger.js";
 
 export default class WvRuler extends Ruler {
@@ -14,6 +16,16 @@ export default class WvRuler extends Ruler {
   override async moveToken(): Promise<false | undefined> {
     // Prepare some stuff and check presence.
     const game = getGame();
+    const setting = game.settings.get(
+      CONSTANTS.systemId,
+      enforceApRulerSettingName
+    );
+    if (
+      setting === EnforceApSetting.DISABLED ||
+      (setting === EnforceApSetting.PLAYERS && game.user?.isGM)
+    )
+      return super.moveToken();
+
     const canvas = getCanvas();
     const grid = canvas.grid;
     if (!(grid instanceof GridLayer))

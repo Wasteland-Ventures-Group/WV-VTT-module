@@ -150,6 +150,17 @@ export interface LangSchema {
       /** The unit for the AP cost for moving */
       apCostUnit: string;
     };
+    /** Labels related to settings. */
+    settings: {
+      /** The Skill Points minimum bounds setting */
+      skillPointsMinBounds: Setting;
+      /** The SPECIAL Points minimum bounds setting */
+      specialPointsMinBounds: Setting;
+      /** The enforce AP on drag and drop setting */
+      enforceApDragDrop: EnforceApSetting;
+      /** The enforce AP on ruler move setting */
+      enforceApRuler: EnforceApSetting;
+    };
     /** Labels related to sheets */
     sheets: {
       /** Labels for actor sheets */
@@ -456,6 +467,27 @@ interface ItemType {
 interface RuleElementFieldErrors {
   /** The message when the field is of the wrong type */
   wrongType: string;
+}
+
+/** A schema for system settings */
+interface Setting {
+  /** The name of the setting */
+  name: string;
+  /** The hint for the setting */
+  hint: string;
+}
+
+/** A schema for enforce AP settings */
+interface EnforceApSetting extends Setting {
+  /** The setting choice labels */
+  choices: {
+    /** The label for the disabled state */
+    disabled: string;
+    /** The label for only enforcing on players state */
+    players: string;
+    /** The label for enforcing on players and GM state */
+    playersAndGameMaster: string;
+  };
 }
 
 /** A schema for SPECIALs */

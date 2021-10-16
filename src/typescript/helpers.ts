@@ -70,13 +70,10 @@ export function getSpecialMaxPoints(): number {
 
 /** Get the allowed minimum value for a Special. */
 export function getSpecialMinPoints(): number {
-  const specialMin = getGame().settings.get(
+  return getGame().settings.get(
     CONSTANTS.systemId,
     boundsSettingNames.special.points.min
   );
-  return typeof specialMin === "number"
-    ? specialMin
-    : CONSTANTS.bounds.special.points.min;
 }
 
 /** Get the allowed maximum value for a Skill. */
@@ -86,11 +83,8 @@ export function getSkillMaxPoints(): number {
 
 /** Get the allowed minimum value for a Skill. */
 export function getSkillMinPoints(): number {
-  const skillMin = getGame().settings.get(
+  return getGame().settings.get(
     CONSTANTS.systemId,
     boundsSettingNames.skills.points.min
   );
-  return typeof skillMin === "number"
-    ? skillMin
-    : CONSTANTS.bounds.skills.points.min;
 }

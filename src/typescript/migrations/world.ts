@@ -20,8 +20,7 @@ export function isNewerVersionThanLast(version: string): boolean {
   );
   // Either the last migration version is set wrong or it has never been set, so
   // the given version is newer
-  if (typeof lastMigrVersion !== "string" || lastMigrVersion === "")
-    return true;
+  if (lastMigrVersion === "") return true;
 
   return isNewerVersion(version, lastMigrVersion);
 }

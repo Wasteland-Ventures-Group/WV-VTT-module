@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AP subtraction for Token drag/drop movement in combat ([#5])
 - an AP check and subtraction for Token Ruler movement in combat (this is
   incompatible with DragRuler for now) ([#5])
+- translations for system settings
+- settings for AP enforcement via drag and drop and via ruler tool
+
 [#5]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/5
 
 ## [0.5.0] - 2021-10-03

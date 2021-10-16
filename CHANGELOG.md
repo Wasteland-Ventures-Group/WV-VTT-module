@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - the built-in ruler tool now shows the walk speed AP usage for the distance
-  measured
+  measured (this is incompatible with DragRuler for now)
+- an AP check and subtraction for Token drag/drop movement in combat
 
 ## [0.5.0] - 2021-10-03
 

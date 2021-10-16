@@ -24,6 +24,23 @@ export interface LangSchema {
         effects: ItemType;
       };
     };
+    /** Different system messages. */
+    messages: {
+      /** Messages related to movement */
+      movement: {
+        /**
+         * The message when a Token does not have an Actor to get AP from.
+         * @pattern (?=.*\{name\})
+         */
+        noActor: string;
+        /**
+         * The message when an actor does not have enough AP to move a specific
+         * distance.
+         * @pattern (?=.*\{needed\})(?=.*\{actual\})(?=.*\{name\})
+         */
+        notEnoughAp: string;
+      };
+    };
     /** Labels for migrations */
     migration: {
       /**

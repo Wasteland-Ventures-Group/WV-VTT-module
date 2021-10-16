@@ -13,6 +13,12 @@
         }
       }
     },
+    "messages": {
+      "movement": {
+        "noActor": "{name} hat keinen Aktor!",
+        "notEnoughAp": "Nicht genug AP zum bewegen. {needed} waren nötig, {actual} hatte {name} zur Verfügung."
+      }
+    },
     "migration": {
       "completed": "{systemName} Systemmigration zu Version {version} abgeschlossen!",
       "started": "Wende {systemName} Systemmigration nach Version {version} an. Bitte habe Geduld und schließe weder das Spiel, noch beende den Server."

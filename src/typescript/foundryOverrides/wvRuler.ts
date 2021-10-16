@@ -1,4 +1,5 @@
 import { getGame } from "../foundryHelpers.js";
+import { getApUse } from "../movement.js";
 
 export default class WvRuler extends Ruler {
   override measure(
@@ -27,11 +28,6 @@ export function replaceLabels(segments: Ruler.Segment[]): Ruler.Segment[] {
   }
 
   return segments;
-}
-
-/** Get the AP needed to move the given distance. */
-function getApUse(distance: number): number {
-  return Math.floor(distance / 2);
 }
 
 /** Get the label for a segment. */

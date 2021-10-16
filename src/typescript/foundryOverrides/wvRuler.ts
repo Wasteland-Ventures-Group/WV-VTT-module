@@ -40,7 +40,7 @@ function getLabel(
   totalDistance: number,
   isTotal: boolean
 ): string {
-  if (!canvas?.scene) throw Error("There was no canvas or scene!");
+  if (!canvas?.scene) throw new Error("There was no canvas or scene!");
 
   const units = canvas.scene.data.gridUnits;
   const apUnit = getGame().i18n.localize("wv.ruler.apCostUnit");

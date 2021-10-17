@@ -13,6 +13,12 @@
         }
       }
     },
+    "messages": {
+      "movement": {
+        "noActor": "{name} hat keinen Aktor!",
+        "notEnoughAp": "Nicht genug AP zum bewegen. {needed} waren nötig, {actual} hatte {name} zur Verfügung."
+      }
+    },
     "migration": {
       "completed": "{systemName} Systemmigration zu Version {version} abgeschlossen!",
       "started": "Wende {systemName} Systemmigration nach Version {version} an. Bitte habe Geduld und schließe weder das Spiel, noch beende den Server."
@@ -66,6 +72,37 @@
           }
         },
         "syntax": "Syntaxfehler in Regelelementdefinition {number}: {message}"
+      }
+    },
+    "ruler": {
+      "apCostUnit": "AP"
+    },
+    "settings": {
+      "enforceApDragDrop": {
+        "choices": {
+          "disabled": "Deaktiviert",
+          "playersAndGameMaster": "Spieler und Spielleiter",
+          "players": "Spieler"
+        },
+        "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit Drag and Drop bewegt werden.",
+        "name": "Erzwinge AP für Drag and Drop Bewegungen"
+      },
+      "enforceApRuler": {
+        "choices": {
+          "disabled": "Deaktiviert",
+          "playersAndGameMaster": "Spieler und Spielleiter",
+          "players": "Spieler"
+        },
+        "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit dem Messwerkzeug bewegt werden.",
+        "name": "Erzwinge AP für Messwerkzeug Bewegungen"
+      },
+      "skillPointsMinBounds": {
+        "hint": "Das Minimum für Skillpunkte, die in einen Aktorbogen eingegeben werden können.",
+        "name": "Minimum für Skillpunkte"
+      },
+      "specialPointsMinBounds": {
+        "hint": "Das Minimum für SPECIAL-Punkte, die in einen Aktorbogen eingegeben werden können.",
+        "name": "Minimum für SPECIAL-Punkte"
       }
     },
     "sheets": {

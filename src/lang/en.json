@@ -13,6 +13,12 @@
         }
       }
     },
+    "messages": {
+      "movement": {
+        "noActor": "{name} does not have an Actor!",
+        "notEnoughAp": "Not enough AP to move. {needed} were needed, {actual} were available to {name}."
+      }
+    },
     "migration": {
       "completed": "{systemName} system migration to version {version} completed!",
       "started": "Applying {systemName} system migration for version {version}. Please be patient and do not close your game or shut down your server."
@@ -66,6 +72,37 @@
           }
         },
         "syntax": "Syntax error in rule element definition {number}: {message}"
+      }
+    },
+    "ruler": {
+      "apCostUnit": "AP"
+    },
+    "settings": {
+      "enforceApDragDrop": {
+        "choices": {
+          "disabled": "Disabled",
+          "playersAndGameMaster": "Players and GameMaster",
+          "players": "Players only"
+        },
+        "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with Drag and Drop.",
+        "name": "Enforce AP for Drag and Drop movement"
+      },
+      "enforceApRuler": {
+        "choices": {
+          "disabled": "Disabled",
+          "playersAndGameMaster": "Players and GameMaster",
+          "players": "Players only"
+        },
+        "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with the Ruler tool.",
+        "name": "Enforce AP for Ruler movement"
+      },
+      "skillPointsMinBounds": {
+        "hint": "The minimum allowed amount of Skill points, that can be entered into an actor sheet.",
+        "name": "Skill Points minimum bound"
+      },
+      "specialPointsMinBounds": {
+        "hint": "The minimum allowed amount of SPECIAL points, that can be entered into an actor sheet.",
+        "name": "SPECIAL Points minimum bound"
       }
     },
     "sheets": {

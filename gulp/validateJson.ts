@@ -3,7 +3,7 @@ import Ajv, { ValidateFunction } from "ajv";
 import glob from "glob-promise";
 import log from "fancy-log";
 
-const ajv = new Ajv({ strict: true, messages: true });
+const ajv = new Ajv({ allErrors: true, messages: true, strict: true });
 
 const baseSchemaPath = "./src/schemas";
 const langSchemaPath = `${baseSchemaPath}/lang.json`;

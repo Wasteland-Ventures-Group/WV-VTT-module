@@ -28,6 +28,7 @@ import {
   isSkillName,
   isSpecialName
 } from "../helpers.js";
+import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
@@ -107,15 +108,12 @@ export default class WvActor extends Actor {
 
   /** Get the ground movement range of the actor. */
   get groundMoveRange(): number {
-    return this.actionPoints.value * 2;
+    return getGroundMoveRange(this);
   }
 
   /** Get the ground sprint movement range of the actor. */
   get groundSprintMoveRange(): number {
-    const actionPoints =
-      this.actionPoints.value +
-      Math.floor(this.data.data.specials.endurance / 2);
-    return actionPoints * 2;
+    return getGroundSprintMoveRange(this);
   }
 
   // Rolls {{{1

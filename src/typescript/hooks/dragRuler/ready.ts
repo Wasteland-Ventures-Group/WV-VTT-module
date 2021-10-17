@@ -1,6 +1,6 @@
 import { CONSTANTS } from "../../constants.js";
 import type { DragRuler } from "../../integrations/dragRuler/dragRuler.js";
-import { createWvSpeedProvider } from "../../integrations/dragRuler/wvSpeedProvider.js";
+import createWvSpeedProvider from "../../integrations/dragRuler/wvSpeedProvider.js";
 
 /** Register system callbacks for the DragRule module ready hook. */
 export default function registerForDragRulerReady(): void {

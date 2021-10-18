@@ -1,3 +1,54 @@
 {
+  "name": "Q-Same AEW-6 Arcane Revolver",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-pistol-brown.webp",
+  "data": {
+    "name": "Q-Same AEW-6 Arcane Revolver",
+    "description": "A magical six shooter, favorite of many unicorn cowponies. A limited edition variant was made to resemble Clink Whitewood's famous revolver from the popular films during the war.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 5,
+          "damage": {
+            "base": 2,
+            "dice": 1
+          },
+          "dtReduction": 1,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 30,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 60,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 90,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 6
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 2,
+    "value": 150,
+    "weight": 1,
+    "holdout": true
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000027"
 }

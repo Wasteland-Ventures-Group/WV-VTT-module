@@ -1,3 +1,38 @@
 {
-  "_id": "WVweapon00000055"
+  "_id": "WVweapon00000055",
+  "name": "Lumber Axe",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-simple.webp",
+  "data": {
+    "name": "Lumber Axe",
+    "description": "A woodcutter's basic tool, now more used for slashing through the flesh.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Swipe": {
+          "damage": {
+            "base": 2,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 6
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 6,
+    "value": 80,
+    "weight": 5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {}
 }

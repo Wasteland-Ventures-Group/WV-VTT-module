@@ -1,3 +1,38 @@
 {
-  "_id": "WVweapon00000056"
+  "_id": "WVweapon00000056",
+  "name": "Baseball Bat",
+  "type": "weapon",
+  "img": "icons/weapons/staves/staff-simple.webp",
+  "data": {
+    "name": "Baseball Bat",
+    "description": "Once an iconic sport tool, now perfect for smashing skulls and crushing bones.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 1,
+            "dice": 2,
+            "diceRange": true
+          },
+          "ap": 7
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "melee",
+    "strengthRequirement": 4,
+    "value": 80,
+    "weight": 1.5
+  },
+  "effects": [],
+  "flags": {}
 }

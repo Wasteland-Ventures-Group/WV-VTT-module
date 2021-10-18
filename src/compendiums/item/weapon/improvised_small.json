@@ -1,3 +1,38 @@
 {
-  "_id": "WVweapon00000064"
+  "_id": "WVweapon00000064",
+  "name": "Improvised, Small",
+  "type": "weapon",
+  "img": "",
+  "data": {
+    "name": "Improvised, Small",
+    "description": "Item closest to you, literally. Can be a bottle, rock, or screwdriver",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 1,
+            "dice": 0,
+            "diceRange": true
+          },
+          "ap": 4
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 1,
+    "value": 0,
+    "weight": 0,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {}
 }

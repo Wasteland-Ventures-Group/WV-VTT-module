@@ -1,7 +1,7 @@
 import { TYPE_CONSTRUCTORS } from "../typeMappings.js";
 import { isMappedItemType } from "../helpers.js";
 import RuleElements from "../ruleEngine/ruleElements.js";
-import type { RuleElementSource } from "../ruleEngine/ruleElement.js";
+import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 
 /** The basic Wasteland Ventures Item. */
 export default class WvItem extends Item {

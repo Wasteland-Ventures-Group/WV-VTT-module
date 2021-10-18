@@ -1,5 +1,5 @@
 import type RuleElement from "../../ruleEngine/ruleElement.js";
-import type { RuleElementSource } from "../../ruleEngine/ruleElement.js";
+import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
 
 /** A RuleElements DB container, that can be used in different Items. */
 export class DbRules {

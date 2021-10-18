@@ -1,7 +1,7 @@
 import { getGame } from "../foundryHelpers.js";
 import type WvItem from "../item/wvItem.js";
+import type RuleElementSource from "./ruleElementSource.js";
 import type {
-  RuleElementSource,
   TypedRuleElementSource,
   UnknownRuleElementSource
 } from "./ruleElement.js";

@@ -1,6 +1,6 @@
 import { CONSTANTS, HANDLEBARS } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
-import type { RuleElementSource } from "../../ruleEngine/ruleElement.js";
+import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
 import RuleElements from "../../ruleEngine/ruleElements.js";
 import WrongTypeWarning from "../../ruleEngine/warnings/wrongTypeWarning.js";
 import { LOG } from "../../systemLogger.js";

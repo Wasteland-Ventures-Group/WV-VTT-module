@@ -12,6 +12,7 @@ import compileCompendiumsTask, {
 } from "./gulp/compileCompendiums.js";
 import validateJsonTask from "./gulp/validateJson.js";
 import langSchemaTask from "./gulp/langSchema.js";
+import ruleElementSourceSchemaTask from "./gulp/ruleElementSchema.js";
 
 // = Path constants ============================================================
 
@@ -118,6 +119,7 @@ export const template = templateTask;
 
 export const compSchemas = compendiumSchemasTask;
 export const langSchema = langSchemaTask;
+export const ruleElementSchema = ruleElementSourceSchemaTask;
 export const validateJson = gulp.series(
   gulp.parallel(compSchemas, langSchema),
   validateJsonTask
@@ -135,9 +137,10 @@ export const pack = gulp.parallel(
   compileComps,
   hbs,
   lang,
+  ruleElementSchema,
   sass,
-  ts,
   system,
+  ts,
   template
 );
 pack.description = "Copy and compile all relevant files to the dist dir";

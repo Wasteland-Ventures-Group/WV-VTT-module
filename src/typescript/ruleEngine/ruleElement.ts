@@ -1,5 +1,6 @@
 import type WvItem from "../item/wvItem.js";
 import type { RuleElementIds } from "./ruleElements.js";
+import type RuleElementSource from "./ruleElementSource.js";
 import type RuleElementWarning from "./ruleElementWarning.js";
 
 /**
@@ -102,22 +103,6 @@ export default class RuleElement {
     // NOOP
   }
 }
-
-/** The RuleElement raw data layout */
-export type RuleElementSource = {
-  /** Whether this rule element is enabled */
-  enabled: boolean;
-  /** The label of the element */
-  label: string;
-  /** The place in the order of application, starting with lowest */
-  priority: number;
-  /** The selector of the element */
-  selector: string;
-  /** The type identifier of the element */
-  type: string;
-  /** The value of the element */
-  value: number;
-};
 
 /**
  * A version of the RuleElement raw data layout, where the type is definitely a

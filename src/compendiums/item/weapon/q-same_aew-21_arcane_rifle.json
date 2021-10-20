@@ -1,3 +1,53 @@
 {
+  "name": "Q-Same AEW-21 Arcane Rifle",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-red.webp",
+  "data": {
+    "name": "Q-Same AEW-21 Arcane Rifle",
+    "description": "A standard, cheap and common rifle among MEW enthusiasts in the Wastes.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 6,
+          "damage": {
+            "base": 2,
+            "dice": 1
+          },
+          "dtReduction": 2,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 100,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 200,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 300,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 24
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 4,
+    "value": 250,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000031"
 }

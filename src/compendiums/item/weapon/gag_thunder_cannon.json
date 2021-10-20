@@ -1,3 +1,52 @@
 {
+  "name": "GAG Thunder Cannon",
+  "type": "weapon",
+  "img": "icons/weapons/artillery/cannon-engraved-gold.webp",
+  "data": {
+    "name": "GAG Thunder Cannon",
+    "description": "A third-party weapon focused against robots in particular. Noteworth to mention that this was GAG's only notable foray into magical weaponry.",
+    "notes": "Deals electricity damage; Against robots and power armor deals additional +4 damage",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 6,
+          "damage": {
+            "base": 3,
+            "dice": 3
+          },
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 50,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 100,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 150,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 4
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 8,
+    "value": 9999,
+    "weight": 10
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000034"
 }

@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Alien Blaster
   - Baseball Bat
   - Buckington Automatic Rifle M18
+  - GAG Thunder Cannon
   - Gretta M28 MG "Pecker"
   - Gretta M33 MG "Predator"
   - Gretta M3 SMG "Greaser"
@@ -46,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Machete
   - Q-Same AEW-5 Arcane Pistol
   - Q-Same AEW-6 Arcane Revolver
+  - Q-Same AEW-21 Arcane Rifle
   - Silaha Plasma "Corona"
   - Silaha Plasma "Hestia"
   - Staff

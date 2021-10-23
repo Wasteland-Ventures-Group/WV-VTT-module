@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Action Points are no longer refreshed on defeated combatants
+  ([#10](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/10))
 
 ## [0.5.0] - 2021-10-03
 

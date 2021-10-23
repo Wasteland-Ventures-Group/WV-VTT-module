@@ -8,11 +8,12 @@ export default interface RuleElementSource {
   priority: number;
   /** The selector of the element */
   selector: string;
-  /** The type identifier of the element */
+  /**
+   * The type identifier of the element. This has to be a simple string instead
+   * of a union for now, because we would need to bundle AJV to support it
+   * otherwise.
+   */
   type: string;
   /** The value of the element */
   value: number;
 }
-
-/** Allowed type identifiers of RuleElements */
-export type RuleElementType = "WV.RuleElement.FlatModifier" | "NewRuleElement";

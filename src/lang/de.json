@@ -47,29 +47,11 @@
         "newName": "Neues Regelelement"
       },
       "errors": {
-        "messages": {
-          "changedToDefault": "Der Wert wurde zu \"{value}\" geändert."
-        },
         "semantic": {
-          "enabled": {
-            "wrongType": "Das enabled Feld war kein boolean."
-          },
-          "label": {
-            "wrongType": "Das label Feld war kein string."
-          },
-          "priority": {
-            "wrongType": "Das priority Feld war keine number."
-          },
-          "selector": {
-            "wrongType": "Das selector Feld war kein string."
-          },
-          "type": {
-            "notFound": "Der Regelelementtyp ist nicht bekannt.",
-            "wrongType": "Das type Feld war kein string."
-          },
-          "value": {
-            "wrongType": "Das value Feld war keine number."
-          }
+          "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
+          "unknown": "Ein unbekannter Fehler is aufgetreten.",
+          "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
+          "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
         },
         "syntax": "Syntaxfehler in Regelelementdefinition {number}: {message}"
       }

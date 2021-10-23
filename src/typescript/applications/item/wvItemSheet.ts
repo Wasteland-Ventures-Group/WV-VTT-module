@@ -2,8 +2,8 @@ import { CONSTANTS, HANDLEBARS } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
 import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
 import RuleElements from "../../ruleEngine/ruleElements.js";
-import WrongTypeWarning from "../../ruleEngine/warnings/wrongTypeWarning.js";
 import { LOG } from "../../systemLogger.js";
+import * as re from "../../ruleEngine/ruleElement.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet<
@@ -22,6 +22,9 @@ export default class WvItemSheet extends ItemSheet<
 
   override async getData(): Promise<SheetData> {
     const data = await super.getData();
+    const newLabel = getGame().i18n.localize(
+      "wv.ruleEngine.ruleElement.newName"
+    );
     data.sheet = {
       parts: {
         header: HANDLEBARS.partPaths.item.header,
@@ -30,21 +33,16 @@ export default class WvItemSheet extends ItemSheet<
       rules: {
         elements: data.data.data.rules.elements.map((rule) => {
           return {
-            errorKeys: rule.errorKeys,
-            warnings: rule.warnings.map((warning) => {
-              return warning instanceof WrongTypeWarning
-                ? ({
-                    messageKey: warning.messageKey,
-                    changeMessageKey: warning.changeMessageKey,
-                    changeValue: warning.changeValue
-                  } as SheetDataWarning)
-                : ({ messageKey: warning.messageKey } as SheetDataWarning);
-            }),
-            hasErrors: rule.hasErrors(),
-            hasWarnings: rule.hasWarnings(),
-            isNew: rule.isNew(),
+            hasErrors: re.hasErrors(rule),
+            hasWarnings: re.hasWarnings(rule),
+            label: rule.source.label || newLabel,
+            messages: rule.messages.map((message) => ({
+              cssClass: message.cssClass,
+              iconClass: message.iconClass,
+              message: message.message
+            })),
             source: rule.source
-          } as SheetDataRuleElement;
+          };
         })
       }
     };
@@ -162,18 +160,16 @@ export interface SheetData extends ItemSheet.Data {
 }
 
 export interface SheetDataRuleElement {
-  errorKeys?: string[];
-  warnings?: SheetDataWarning[];
+  messages?: SheetDataMessage[];
   hasErrors?: boolean;
   hasWarnings?: boolean;
-  isNew?: boolean;
-  source?: RuleElementSource;
+  source?: re.UnknownRuleElementSource;
 }
 
-export interface SheetDataWarning {
-  changeMessage?: string;
-  changeValue?: string | boolean | number;
-  warningMessage?: string;
+export interface SheetDataMessage {
+  cssClass?: string;
+  iconClass?: string;
+  message?: string;
 }
 
 type ClickEvent = JQuery.ClickEvent<

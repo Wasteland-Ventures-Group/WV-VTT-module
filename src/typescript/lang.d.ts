@@ -109,32 +109,26 @@ export interface LangSchema {
       };
       /** Labels for different errors */
       errors: {
-        /** Different messages related to errors */
-        messages: {
-          /**
-           * A message saying that the value of a field was changed to the
-           * default, containing a reference to the value with `value`.
-           * @pattern (?=.*\{value\})
-           */
-          changedToDefault: string;
-        };
         /** Various semantic errors */
         semantic: {
-          /** Error messages related to the enabled field */
-          enabled: RuleElementFieldErrors;
-          /** Error messages related to the label field */
-          label: RuleElementFieldErrors;
-          /** Error messages related to the priority field */
-          priority: RuleElementFieldErrors;
-          /** Error messages related to the selector field */
-          selector: RuleElementFieldErrors;
-          /** Error messages related to the type field */
-          type: RuleElementFieldErrors & {
-            /** The error message for unknown RuleElement types */
-            notFound: string;
-          };
-          /** Error messages related to the value field */
-          value: RuleElementFieldErrors;
+          /**
+           * An error message for fields that are missing, containing a
+           * reference to the instance path with `path` and the missing property
+           * with `property`.
+           * @pattern (?=.*\{path\})(?=.*\{property\})
+           */
+          missing: string;
+          /** An error message for an unknown error. */
+          unknown: string;
+          /** An error message for an unknown RuleElement type. */
+          unknownRuleElement: string;
+          /**
+           * An error message for fields that are of the wrong type, containing
+           * a reference to the instance path with `path` and to the name of the
+           * expected type with `type`.
+           * @pattern (?=.*\{path\})(?=.*\{type\})
+           */
+          wrongType: string;
         };
         /**
          * The description for the JSON syntax error, containing references to
@@ -461,12 +455,6 @@ export interface LangSchema {
 interface ItemType {
   /** The name of the Item type */
   name: string;
-}
-
-/** A schema for different error messages of RuleElement source fields */
-interface RuleElementFieldErrors {
-  /** The message when the field is of the wrong type */
-  wrongType: string;
 }
 
 /** A schema for system settings */

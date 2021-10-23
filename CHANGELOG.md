@@ -21,6 +21,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [#5]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/5
 
+### Changed
+
+- rule elements are no longer autocorrecting and save the source as-is, provided
+  it is parsable JSON ([#21])
+- rule elements are now validated against a schema instead of our own,
+  hand-written validation logic, which makes them easier to extend ([#21])
+
+[#21]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/21
+
 ## [0.5.0] - 2021-10-03
 
 ### Added

@@ -109,6 +109,22 @@ export interface LangSchema {
       };
       /** Labels for different errors */
       errors: {
+        /** Various logical errors */
+        logical: {
+          /**
+           * An error message when the target is set to "actor", but the item
+           * of the RuleElement has no actor.
+           */
+          noActor: string;
+          /**
+           * An error message when the selected property on the target is of the
+           * wrong type. It should contain a reference to the target name with
+           * `name`, to the property with `path` and the expected type with
+           * `type`.
+           * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{type\})
+           */
+          wrongSelectedType: string;
+        };
         /** Various semantic errors */
         semantic: {
           /**
@@ -122,6 +138,8 @@ export interface LangSchema {
           unknown: string;
           /** An error message for an unknown RuleElement type. */
           unknownRuleElement: string;
+          /** An error message for an unknown RuleElement target. */
+          unknownTarget: string;
           /**
            * An error message for fields that are of the wrong type, containing
            * a reference to the instance path with `path` and to the name of the

@@ -353,7 +353,7 @@ export default class WvActor extends Actor {
 
     rules
       .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onPrepareEmbeddedEntities(this));
+      .forEach((rule) => rule.onPrepareEmbeddedEntities());
   }
 
   // Computations after items {{{2

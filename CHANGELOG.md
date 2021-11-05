@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- rule elements can now modify an actor or an item each ([#22](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/22))
+
 ### Changed
 
 - rule elements are no longer autocorrecting and save the source as-is, provided

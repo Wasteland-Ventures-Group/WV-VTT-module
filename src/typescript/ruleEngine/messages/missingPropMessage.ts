@@ -1,6 +1,7 @@
 import { getGame } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
+/** An error about a missing property in a RuleElement source */
 export default class MissingPropMessage extends RuleElementMessage {
   constructor(
     /** The path to the property */

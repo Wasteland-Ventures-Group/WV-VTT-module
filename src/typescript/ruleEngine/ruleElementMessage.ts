@@ -1,19 +1,21 @@
 import { getGame } from "../foundryHelpers.js";
 
-/** A warning in a RuleElement. */
+/** A message in a RuleElement */
 export default class RuleElementMessage {
   constructor(
-    /** The message key for the actual warning */
+    /** The message key for the textual message */
     public messageKey: string,
 
     /** The type of the message. */
     public type: MessageType = "info"
   ) {}
 
+  /** Get the CSS class for this type of message. */
   get cssClass(): `rule-element-${MessageType}-message` {
     return `rule-element-${this.type}-message`;
   }
 
+  /** Get the icon class for this type of message. */
   get iconClass(): string {
     return {
       error: "fa-exclamation-circle",

@@ -1,7 +1,7 @@
 import { getGame } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
-/** A warning about a wrong field type with a replacement message */
+/** An error about a wrong property type in a RuleElement source */
 export default class WrongTypeMessage extends RuleElementMessage {
   constructor(
     /** The path to the property */

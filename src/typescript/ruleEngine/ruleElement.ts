@@ -1,40 +1,34 @@
 import type WvItem from "../item/wvItem.js";
 import type { RuleElementIds } from "./ruleElements.js";
-import type RuleElementWarning from "./ruleElementWarning.js";
+import type RuleElementSource from "./ruleElementSource.js";
+import type RuleElementMessage from "./ruleElementMessage.js";
 
 /**
  * A rule engine element, allowing the modification of a data point, specified
  * by a selector and a given value. How the data point is modified depends on
  * the type of the element.
  */
-export default class RuleElement {
+export default class RuleElement implements RuleElementLike {
   /**
    * Create a RuleElement from the given data and owning item.
-   * @param source      - the source data for the RuleElement
-   * @param item        - the owning item
-   * @param warnings    - potential warnings encountered when validating the
-   *                      source before creating the RuleElement
-   * @param errorKeys   - i18n keys of potential errors encountered when
-   *                      validating the source before creating the RuleElement
+   * @param source   - the source data for the RuleElement
+   * @param item     - the owning item
+   * @param messages - potential messages encountered when validating the source
+   *                   before creating the RuleElement
    */
   constructor(
     source: RuleElementSource,
     public item: WvItem,
-    warnings: RuleElementWarning[] = [],
-    errorKeys: string[] = []
+    messages: RuleElementMessage[] = []
   ) {
-    this.warnings = warnings;
-    this.errorKeys = errorKeys;
+    this.messages = messages;
     this.source = source;
 
     this.validateSource();
   }
 
-  /** Messages keys for warnings that were encountered in the source */
-  warnings: RuleElementWarning[];
-
-  /** Messages keys for errors that were encountered in the source */
-  errorKeys: string[];
+  /** Messages that were accumulated while validating the source */
+  messages: RuleElementMessage[];
 
   /** The data of the RuleElement */
   source: RuleElementSource;
@@ -56,17 +50,12 @@ export default class RuleElement {
 
   /** Whether the RuleElement has errors */
   hasErrors(): boolean {
-    return this.errorKeys.length > 0;
+    return hasErrors(this);
   }
 
   /** Whether the RuleElement has warnings */
   hasWarnings(): boolean {
-    return this.warnings.length > 0;
-  }
-
-  /** Whether the RuleElement is new */
-  isNew(): boolean {
-    return false;
+    return hasWarnings(this);
   }
 
   /** Whether something prevents this rule element from modifying the owner. */
@@ -103,21 +92,15 @@ export default class RuleElement {
   }
 }
 
-/** The RuleElement raw data layout */
-export type RuleElementSource = {
-  /** Whether this rule element is enabled */
-  enabled: boolean;
-  /** The label of the element */
-  label: string;
-  /** The place in the order of application, starting with lowest */
-  priority: number;
-  /** The selector of the element */
-  selector: string;
-  /** The type identifier of the element */
-  type: string;
-  /** The value of the element */
-  value: number;
-};
+/** Check whether the given RuleElementLike has errors */
+export function hasErrors(element: RuleElementLike): boolean {
+  return element.messages.some((message) => message.isError());
+}
+
+/** Check whether the given RuleElementLike has warnings */
+export function hasWarnings(element: RuleElementLike): boolean {
+  return element.messages.some((message) => message.isWarning());
+}
 
 /**
  * A version of the RuleElement raw data layout, where the type is definitely a
@@ -134,3 +117,9 @@ export type TypedRuleElementSource = RuleElementSource & {
 export type UnknownRuleElementSource = {
   [K in keyof RuleElementSource]?: unknown;
 };
+
+export interface RuleElementLike {
+  item: WvItem;
+  messages: RuleElementMessage[];
+  source: UnknownRuleElementSource;
+}

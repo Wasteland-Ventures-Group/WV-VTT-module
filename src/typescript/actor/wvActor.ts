@@ -18,7 +18,7 @@ import {
 } from "../constants.js";
 import Formulator from "../formulator.js";
 import WvI18n from "../wvI18n.js";
-import type RuleElement from "../ruleEngine/ruleElement.js";
+import RuleElement from "../ruleEngine/ruleElement.js";
 import type DragData from "../dragData.js";
 import {
   getSkillMaxPoints,
@@ -346,7 +346,9 @@ export default class WvActor extends Actor {
     const rules: RuleElement[] = [];
 
     this.data.items.forEach((item) => {
-      item.data.data.rules.elements.forEach((rule) => rules.push(rule));
+      item.data.data.rules.elements.forEach((rule) => {
+        if (rule instanceof RuleElement) rules.push(rule);
+      });
     });
 
     rules

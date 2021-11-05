@@ -47,29 +47,11 @@
         "newName": "New Rule Element"
       },
       "errors": {
-        "messages": {
-          "changedToDefault": "The value was changed to \"{value}\"."
-        },
         "semantic": {
-          "enabled": {
-            "wrongType": "The enabled field was not a boolean."
-          },
-          "label": {
-            "wrongType": "The label field was not a string."
-          },
-          "priority": {
-            "wrongType": "The priority field was not a number."
-          },
-          "selector": {
-            "wrongType": "The selector field was not a string."
-          },
-          "type": {
-            "notFound": "The type of RuleElement is unknown.",
-            "wrongType": "The type field was not a string."
-          },
-          "value": {
-            "wrongType": "The value field was not a number."
-          }
+          "missing": "The property \"{property}\" is missing at \"{path}\".",
+          "unknown": "An unknown error occurred.",
+          "unknownRuleElement": "The type of RuleElement is unknown.",
+          "wrongType": "The property \"{path}\" is not of type \"{type}\"."
         },
         "syntax": "Syntax error in rule element definition {number}: {message}"
       }

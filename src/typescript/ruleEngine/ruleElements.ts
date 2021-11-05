@@ -80,6 +80,7 @@ export default class RuleElements {
     return { item, messages, source };
   }
 
+  /** Translate an AJV ErrorObject to a RuleElementMessage. */
   protected static translateError(error: ErrorObject): RuleElementMessage {
     switch (error.keyword) {
       case "required":

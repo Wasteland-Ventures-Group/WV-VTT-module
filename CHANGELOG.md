@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- rule elements are no longer autocorrecting and save the source as-is, provided
+  it is parsable JSON ([#21])
+- rule elements are now validated against a schema instead of our own,
+  hand-written validation logic, which makes them easier to extend ([#21])
+
+[#21]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/21
+
 ## [0.5.1] - 2021-10-23
 
 ### Added
@@ -20,15 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - settings for AP enforcement via drag and drop and via ruler tool
 
 [#5]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/5
-
-### Changed
-
-- rule elements are no longer autocorrecting and save the source as-is, provided
-  it is parsable JSON ([#21])
-- rule elements are now validated against a schema instead of our own,
-  hand-written validation logic, which makes them easier to extend ([#21])
-
-[#21]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/21
 
 ### Fixed
 

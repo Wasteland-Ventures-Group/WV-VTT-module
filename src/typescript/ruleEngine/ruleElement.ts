@@ -1,5 +1,5 @@
 import type WvItem from "../item/wvItem.js";
-import type { RuleElementIds } from "./ruleElements.js";
+import type { RuleElementId } from "./ruleElements.js";
 import type RuleElementSource from "./ruleElementSource.js";
 import type RuleElementMessage from "./ruleElementMessage.js";
 
@@ -107,7 +107,7 @@ export function hasWarnings(element: RuleElementLike): boolean {
  * known ID.
  */
 export type TypedRuleElementSource = RuleElementSource & {
-  type: RuleElementIds;
+  type: RuleElementId;
 };
 
 /**

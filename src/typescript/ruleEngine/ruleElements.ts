@@ -18,14 +18,14 @@ export const RULE_ELEMENT_IDS = {
 } as const;
 
 /** A union type of RuleElement ID strings */
-export type RuleElementIds = ValueOf<typeof RULE_ELEMENT_IDS>;
+export type RuleElementId = ValueOf<typeof RULE_ELEMENT_IDS>;
 
-/** A mapping of RuleElement types to RuleElement constructors. */
+/** A mapping of RuleElement IDs to RuleElement constructors. */
 export const RULE_ELEMENTS = {
   [RULE_ELEMENT_IDS.FLAT_MODIFIER]: FlatModifier
 } as const;
 
-export type MappedRuleElementIds = keyof typeof RULE_ELEMENTS;
+export type MappedRuleElementId = keyof typeof RULE_ELEMENTS;
 
 /**
  * A factory class for RuleElements.
@@ -103,7 +103,7 @@ export default class RuleElements {
  */
 export function isMappedRuleElementType(
   type?: string
-): type is MappedRuleElementIds {
+): type is MappedRuleElementId {
   if (typeof type !== "string") return false;
   return Object.keys(RULE_ELEMENTS).includes(type);
 }

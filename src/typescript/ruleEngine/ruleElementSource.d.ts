@@ -21,6 +21,11 @@ export default interface RuleElementSource {
   selector: string;
 
   /**
+   * Whether the RuleElement applies to the the Document or the Owning document
+   */
+  target: string;
+
+  /**
    * The type identifier of the element. This has to be a simple string instead
    * of a union for now, because we would need to bundle AJV to support it
    * otherwise.

@@ -47,10 +47,15 @@
         "newName": "New Rule Element"
       },
       "errors": {
+        "logical": {
+          "noActor": "The target is set to \"actor\", but the item has no actor.",
+          "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\"."
+        },
         "semantic": {
           "missing": "The property \"{property}\" is missing at \"{path}\".",
           "unknown": "An unknown error occurred.",
           "unknownRuleElement": "The type of RuleElement is unknown.",
+          "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
           "wrongType": "The property \"{path}\" is not of type \"{type}\"."
         },
         "syntax": "Syntax error in rule element definition {number}: {message}"

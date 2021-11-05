@@ -2,8 +2,9 @@ import { getGame } from "../foundryHelpers.js";
 import type WvItem from "../item/wvItem.js";
 import type {
   RuleElementLike,
-  TypedRuleElementSource,
-  UnknownRuleElementSource
+  KnownRuleElementSource,
+  UnknownRuleElementSource,
+  RuleElementTarget
 } from "./ruleElement.js";
 import FlatModifier from "./ruleElements/flatModifier.js";
 import RuleElementMessage from "./ruleElementMessage.js";
@@ -11,6 +12,7 @@ import MissingPropMessage from "./messages/missingPropMessage.js";
 import WrongTypeMessage from "./messages/wrongTypeMessage.js";
 import validate from "../validators/ruleElementSource.js";
 import type { ErrorObject } from "ajv";
+import { isValidTarget } from "./ruleElement.js";
 
 /** RuleElement identifier strings */
 export const RULE_ELEMENT_IDS = {
@@ -35,12 +37,13 @@ export default class RuleElements {
    * Create a new RuleElementSource, suitable for when the user just added a
    * new effect and has not filled out the data yet.
    */
-  static newRuleElementSource(): TypedRuleElementSource {
+  static newRuleElementSource(): KnownRuleElementSource {
     return {
       enabled: true,
       label: getGame().i18n.localize("wv.ruleEngine.ruleElement.newName"),
       priority: 100,
       selector: "",
+      target: "item",
       type: RULE_ELEMENT_IDS.FLAT_MODIFIER,
       value: 0
     };
@@ -60,24 +63,49 @@ export default class RuleElements {
   ): RuleElementLike {
     const messages: RuleElementMessage[] = [];
 
-    if (validate(source)) {
-      if (isMappedRuleElementType(source.type)) {
-        return new RULE_ELEMENTS[source.type](source, item);
-      } else {
-        messages.push(
-          new RuleElementMessage(
-            "wv.ruleEngine.errors.semantic.unknownRuleElement",
-            "error"
-          )
-        );
-      }
-    } else {
+    // Check the passed JSON source against the schema. When it is invalid, only
+    // return a RuleElementLike.
+    if (!validate(source)) {
       validate.errors?.forEach((error) =>
         messages.push(this.translateError(error))
       );
+
+      return { item, messages, source };
     }
 
-    return { item, messages, source };
+    // Check if the target of the RuleElementSource is valid. If not, return a
+    // RuleElementLike.
+    let target: RuleElementTarget;
+    if (!isValidTarget(source.target)) {
+      messages.push(
+        new RuleElementMessage(
+          "wv.ruleEngine.errors.semantic.unknownTarget",
+          "error"
+        )
+      );
+
+      return { item, messages, source };
+    } else {
+      target = source.target;
+    }
+
+    // Check if the type of RuleElement is known. If not, return a
+    // RuleElementLike.
+    let type: MappedRuleElementId;
+    if (!isMappedRuleElementType(source.type)) {
+      messages.push(
+        new RuleElementMessage(
+          "wv.ruleEngine.errors.semantic.unknownRuleElement",
+          "error"
+        )
+      );
+
+      return { item, messages, source };
+    } else {
+      type = source.type;
+    }
+
+    return new RULE_ELEMENTS[type]({ ...source, target, type }, item, messages);
   }
 
   /** Translate an AJV ErrorObject to a RuleElementMessage. */

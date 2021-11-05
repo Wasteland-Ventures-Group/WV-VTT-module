@@ -47,10 +47,15 @@
         "newName": "Neues Regelelement"
       },
       "errors": {
+        "logical": {
+          "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
+          "wrongSelectedType": "Das Feld \"{path}\" von \"{name}\" hat nicht den benötigten Typ \"{type}\"."
+        },
         "semantic": {
           "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
           "unknown": "Ein unbekannter Fehler is aufgetreten.",
           "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
+          "unknownTarget": "Das Ziel ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
           "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
         },
         "syntax": "Syntaxfehler in Regelelementdefinition {number}: {message}"

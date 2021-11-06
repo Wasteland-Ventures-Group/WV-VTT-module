@@ -1,4 +1,4 @@
-import { configureFoundry } from "../config.js";
+import { configureFoundryOnInit } from "../config.js";
 import { registerSystemSettings } from "../settings.js";
 import * as handlebars from "../handlebars.js";
 
@@ -9,7 +9,7 @@ export default function registerForInit(): void {
 
 /** Run the necessary system initialization. */
 function init(): void {
-  configureFoundry();
+  configureFoundryOnInit();
   handlebars.registerHelpers();
   handlebars.preloadTemplates();
   registerSystemSettings();

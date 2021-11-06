@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   it is parsable JSON ([#21])
 - rule elements are now validated against a schema instead of our own,
   hand-written validation logic, which makes them easier to extend ([#21])
+- combats now track the Action Points resource by default and skip defeated
+  combatants ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
 
 [#21]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/21
 

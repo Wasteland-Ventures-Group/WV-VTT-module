@@ -14,7 +14,8 @@ import {
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
 
-export function configureFoundry(): void {
+/** The Foundry configuration function for the init hook */
+export function configureFoundryOnInit(): void {
   getGame().wv = {
     macros
   };
@@ -47,6 +48,25 @@ export function configureFoundry(): void {
     label: "wv.sheets.names.weaponSheet",
     types: [TYPES.ITEM.WEAPON]
   });
+}
+
+/** The Foundry configuration function for the ready hook */
+export function configureFoundryOnReady(): void {
+  configureCombatResource();
+}
+
+/**
+ * Configure the default combat resource setting, if it has not been configured
+ * already.
+ */
+function configureCombatResource(): void {
+  const setting = getGame().settings.get("core", Combat.CONFIG_SETTING);
+  if (!Object.keys(setting).length) {
+    getGame().settings.set("core", Combat.CONFIG_SETTING, {
+      resource: "vitals.actionPoints.value",
+      skipDefeated: true
+    });
+  }
 }
 
 declare global {

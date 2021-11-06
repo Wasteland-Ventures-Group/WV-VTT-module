@@ -13,6 +13,7 @@ import {
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
+import { initializedSettingName } from "./settings.js";
 
 /** The Foundry configuration function for the init hook */
 export function configureFoundryOnInit(): void {
@@ -52,21 +53,31 @@ export function configureFoundryOnInit(): void {
 
 /** The Foundry configuration function for the ready hook */
 export function configureFoundryOnReady(): void {
-  configureCombatResource();
+  configureDefaultResources();
 }
 
-/**
- * Configure the default combat resource setting, if it has not been configured
- * already.
- */
-function configureCombatResource(): void {
-  const setting = getGame().settings.get("core", Combat.CONFIG_SETTING);
-  if (!Object.keys(setting).length) {
-    getGame().settings.set("core", Combat.CONFIG_SETTING, {
-      resource: "vitals.actionPoints.value",
-      skipDefeated: true
-    });
+function configureDefaultResources(): void {
+  const settings = getGame().settings;
+  if (!settings.get(CONSTANTS.systemId, initializedSettingName)) {
+    configureCombatResource();
+    configureDefaultTokenBars();
   }
+}
+
+/** Configure the default prototype token resource bars. */
+function configureDefaultTokenBars(): void {
+  const setting = getGame().settings.get("core", "defaultToken");
+  setting.bar1 = { attribute: "vitals.hitPoints" };
+  setting.bar2 = { attribute: "vitals.actionPoints" };
+  getGame().settings.set("core", "defaultToken", setting);
+}
+
+/** Configure the default combat resource setting. */
+function configureCombatResource(): void {
+  getGame().settings.set("core", Combat.CONFIG_SETTING, {
+    resource: "vitals.actionPoints.value",
+    skipDefeated: true
+  });
 }
 
 declare global {

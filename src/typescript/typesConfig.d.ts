@@ -27,11 +27,19 @@ declare global {
 
   namespace ClientSettings {
     interface Values {
+      "wasteland-ventures.initialized": boolean;
       "wasteland-ventures.systemMigrationVersion": string;
       "wasteland-ventures.bounds.skills.points.min": number;
       "wasteland-ventures.bounds.special.points.min": number;
       "wasteland-ventures.enforceApDragDrop": settings.EnforceApSetting;
       "wasteland-ventures.enforceApRuler": settings.EnforceApSetting;
+
+      "core.defaultToken":
+        | {
+            bar1: { attribute: string };
+            bar2: { attribute: string };
+          }
+        | Record<string, never>;
     }
   }
 

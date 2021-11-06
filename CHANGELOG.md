@@ -20,8 +20,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   hand-written validation logic, which makes them easier to extend ([#21])
 - combats now track the Action Points resource by default and skip defeated
   combatants ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
+- the default resource for tokens are now set to hit points and action points
+  once on first start after world creation ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
 
 [#21]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/21
+
+### Fixed
+
+- migrations no longer run on newly created worlds on first start
 
 ## [0.5.1] - 2021-10-23
 

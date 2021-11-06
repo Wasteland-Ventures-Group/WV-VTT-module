@@ -1,6 +1,7 @@
 import { CONSTANTS } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 
+export const initializedSettingName = "initialized" as const;
 export const migrVerSettingName = "systemMigrationVersion" as const;
 export const boundsSettingNames = {
   skills: {
@@ -21,6 +22,15 @@ export function registerSystemSettings(): void {
   const game = getGame();
   const settings = game.settings;
   const i18n = game.i18n;
+
+  /** Track whether the world has been initialized with some system settings. */
+  settings.register(CONSTANTS.systemId, initializedSettingName, {
+    config: false,
+    default: false,
+    name: "System Initialization Flag",
+    scope: "world",
+    type: Boolean
+  });
 
   /** Track the system version of the last migration */
   settings.register(CONSTANTS.systemId, migrVerSettingName, {

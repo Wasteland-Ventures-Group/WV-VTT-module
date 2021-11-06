@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - migrations no longer run on newly created worlds on first start
+- actor hit and action points are now set to their initial default maximum on
+  creation ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
 
 ## [0.5.1] - 2021-10-23
 

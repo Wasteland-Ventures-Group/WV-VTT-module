@@ -37,13 +37,37 @@ compileCompendiumsWatchTask.description =
 
 async function compileCompendium(config: CompendiumConfig): Promise<void> {
   const fileNames = await glob(config.inputGlob);
+  const ids: IdTracker = {};
+
   const contents = await Promise.all(
-    fileNames.map(async (fileName) =>
-      JSON.stringify(JSON.parse((await fs.readFile(fileName)).toString()))
-    )
+    fileNames.map(async (fileName) => {
+      const entry = JSON.parse((await fs.readFile(fileName)).toString());
+
+      if (ids[entry["_id"]]) {
+        ids[entry["_id"]].push(fileName);
+      } else {
+        ids[entry["_id"]] = [fileName];
+      }
+
+      return JSON.stringify(entry);
+    })
   );
+
+  const duplicates = Object.entries(ids).filter((entry) => entry[1].length > 1);
+  if (duplicates.length) {
+    let errorMessage = `There were duplicate IDs in compendium "${config.outputPath}".`;
+
+    for (const [key, value] of duplicates) {
+      errorMessage += `\n${key} in ${value.join(", ")}`;
+    }
+
+    return Promise.reject(new Error(errorMessage));
+  }
+
   return fs.writeFile(config.outputPath, contents.join("\n"));
 }
+
+type IdTracker = Record<string, string[]>;
 
 interface CompendiumConfig {
   inputGlob: string;

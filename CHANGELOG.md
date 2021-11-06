@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - rule elements can now modify an actor or an item each ([#22](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/22))
+- a check for duplicate compendium IDs ([#61](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/61))
 
 ### Changed
 

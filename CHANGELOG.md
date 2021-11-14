@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - rule elements can now modify an actor or an item each ([#22](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/22))
 - a check for duplicate compendium IDs ([#61](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/61))
+- Quench intergration for integration testing
 
 ### Changed
 
@@ -22,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   combatants ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
 - the default resource for tokens are now set to hit points and action points
   once on first start after world creation ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
+- Prompt utitily application can now ask for multiple inputs
+  ([#56](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/56))
 
 [#21]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/21
 

@@ -44,7 +44,7 @@ export default class Attack {
       throw new Error("The owning actor's skills have not been calculated!");
 
     const range = await Prompt.getNumber({
-      description: getGame().i18n.localize("wv.prompt.descriptions.range"),
+      label: getGame().i18n.localize("wv.prompt.descriptions.range"),
       min: 0
     });
 

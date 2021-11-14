@@ -1,14 +1,12 @@
 <form>
-  <label class="contained-target-inline">
-    {{~#if description}}
-      {{description}}
-    {{else}}
-      {{localize "wv.prompt.defaults.description"}}
-    {{/if~}}
-    <input name="input" type="{{type}}" value="{{value}}"
-      {{~#if class}} class="{{class}}"{{/if~}}
-      {{~#if max includeZero=true}} max="{{max}}"{{/if~}}
-      {{~#if min includeZero=true}} min="{{min}}"{{/if}} />
-  </label>
+  {{#each inputs as |input|}}
+    <label class="contained-target-inline">
+      {{input.label}}
+      <input name="{{@key}}" type="{{input.type}}" value="{{input.value}}"
+        {{~#if class}} class="{{class}}"{{/if~}}
+        {{~#if input.max includeZero=true}} max="{{input.max}}"{{/if~}}
+        {{~#if input.min includeZero=true}} min="{{input.min}}"{{/if}} />
+    </label>
+  {{/each}}
   <button>{{localize "wv.prompt.buttonText"}}</button>
 </form>

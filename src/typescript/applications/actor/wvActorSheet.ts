@@ -193,7 +193,7 @@ export default class WvActorSheet extends ActorSheet<
     if (special && isSpecialName(special)) {
       if (event.shiftKey) {
         const modifier = await Prompt.getNumber({
-          description: WvI18n.getSpecialModifierDescription(special),
+          label: WvI18n.getSpecialModifierDescription(special),
           min: -100,
           max: 100
         });
@@ -219,7 +219,7 @@ export default class WvActorSheet extends ActorSheet<
     if (skill && isSkillName(skill)) {
       if (event.shiftKey) {
         const modifier = await Prompt.getNumber({
-          description: WvI18n.getSkillModifierDescription(skill),
+          label: WvI18n.getSkillModifierDescription(skill),
           min: -100,
           max: 100
         });

@@ -4,6 +4,7 @@ import type { Quench } from "../../integrations/quench/quench.js";
 
 const promptSelector = `.app.window-app.${CONSTANTS.systemId}.prompt form`;
 
+/** Register the Prompt application related tests. */
 export default function registerPromptTests(context: Quench.Context): void {
   const { describe, before, it, expect } = context;
 
@@ -83,6 +84,11 @@ export default function registerPromptTests(context: Quench.Context): void {
   });
 }
 
+/**
+ * Set the provided values in a currently open Prompt app and submit the form
+ * in the app.
+ * @param values - form names pointing to values to set
+ */
 function setAndSubmit(values: Record<string, string>) {
   const prompt = document.querySelector(promptSelector);
   if (!(prompt instanceof HTMLFormElement))

@@ -44,14 +44,16 @@ export interface LangSchema {
     /** Labels for migrations */
     migration: {
       /**
-       * The notification text for completed migrations, containing references to
-       * the system name with `systemName` and the system version with `version`
+       * The notification text for completed migrations, containing references
+       * to the system name with `systemName` and the system version with
+       * `version`
        * @pattern (?=.*\{systemName\})(?=.*\{version\})
        */
       completed: string;
       /**
        * The notification text for started migration, containing references to
-       * the system name with `systemName` and the system version with `version`s
+       * the system name with `systemName` and the system version with
+       * `version`s
        * @pattern (?=.*\{systemName\})(?=.*\{version\})
        */
       started: string;
@@ -69,7 +71,9 @@ export interface LangSchema {
       };
       /** Different descriptions for different use cases */
       descriptions: {
-        /** The label for a roll modifier dialog, when the target is not known */
+        /**
+         * The label for a roll modifier dialog, when the target is not known
+         */
         genericModifier: string;
         /**
          * The label for a roll modifier dialog, containing a reference to what
@@ -77,7 +81,7 @@ export interface LangSchema {
          * @pattern (?=.*\{what\})
          */
         modifier: string;
-        /** The description for entering a range */
+        /** The label for entering a range */
         range: string;
       };
     };

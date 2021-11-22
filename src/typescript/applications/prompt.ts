@@ -7,6 +7,22 @@ import { getGame } from "../foundryHelpers.js";
  */
 export default class Prompt<Specs extends InputSpecs> extends Application {
   /**
+   * Get data by prompting the user.
+   * @param spec - the input specification for the Prompt
+   * @param options - additional options for the Prompt
+   * @returns the user input data
+   * @typeParam I - the type of the input specs, the return type is derived off
+   */
+  static async get<I extends InputSpecs>(
+    spec: I,
+    options?: Partial<Application.Options>
+  ): Promise<InputSpecsReturnType<I>> {
+    return new Promise((resolve, reject) => {
+      new this(spec, (data) => resolve(data), reject, options).render(true);
+    });
+  }
+
+  /**
    * Get a number by prompting the user.
    * @param spec - the input specification for the Prompt
    * @param options - additional options for the Prompt

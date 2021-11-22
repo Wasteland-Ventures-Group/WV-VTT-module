@@ -182,13 +182,13 @@ type RenderSpec<Spec extends InputSpec> = Spec & {
 };
 
 /** The input specifications for the Prompt */
-type InputSpecs = Record<string, InputSpec>;
+export type InputSpecs = Record<string, InputSpec>;
 
 /** A single input specification for a Prompt */
-type InputSpec = NumberInputSpec | TextInputSpec;
+export type InputSpec = NumberInputSpec | TextInputSpec;
 
 /** A common input specification for a Prompt */
-interface CommonInputSpec {
+export interface CommonInputSpec {
   /** The label for the input */
   label: string;
 
@@ -200,7 +200,7 @@ interface CommonInputSpec {
 }
 
 /** A number input specification for a Prompt  */
-interface NumberInputSpec extends CommonInputSpec {
+export interface NumberInputSpec extends CommonInputSpec {
   type: "number";
 
   /** The maximum number */
@@ -213,7 +213,7 @@ interface NumberInputSpec extends CommonInputSpec {
 }
 
 /** An text input specification for a Prompt  */
-interface TextInputSpec extends CommonInputSpec {
+export interface TextInputSpec extends CommonInputSpec {
   type: "text";
 }
 

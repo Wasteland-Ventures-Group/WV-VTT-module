@@ -128,7 +128,10 @@ export default class Attack {
    * @param strength - the Strength of the owning actor
    * @returns the effective amount of damage dice
    */
-  getDamageDice(range: RangeBracket, strength?: number | undefined): number {
+  protected getDamageDice(
+    range: RangeBracket,
+    strength?: number | undefined
+  ): number {
     let dice = this.data.damage.dice;
 
     if (this.data.damage.diceRange && typeof strength === "number") {

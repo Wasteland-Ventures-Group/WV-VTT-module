@@ -122,7 +122,7 @@ export default class WeaponSheet extends WvItemSheet {
     if (event.shiftKey) {
       const modifier = await Prompt.getNumber({
         label: getGame().i18n.localize(
-          "wv.prompt.descriptions.genericModifier"
+          "wv.prompt.labels.genericModifier"
         ),
         min: -100,
         max: 100

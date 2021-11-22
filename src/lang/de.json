@@ -26,10 +26,9 @@
     "prompt": {
       "buttonText": "Abschicken",
       "defaults": {
-        "description": "Gib einen Wert ein:",
         "title": "Abfrage"
       },
-      "descriptions": {
+      "labels": {
         "genericModifier": "Gib einen Modifikator an:",
         "modifier": "Gib einen Modifikator für {what} an:",
         "range": "Gib die Distanz zum Ziel an:"

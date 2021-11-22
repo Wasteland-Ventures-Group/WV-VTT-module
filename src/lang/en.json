@@ -26,10 +26,9 @@
     "prompt": {
       "buttonText": "Submit",
       "defaults": {
-        "description": "Enter a value:",
         "title": "Prompt"
       },
-      "descriptions": {
+      "labels": {
         "genericModifier": "Enter a modifier:",
         "modifier": "Enter a modifier for {what}:",
         "range": "Enter the range to the target:"

@@ -64,13 +64,11 @@ export interface LangSchema {
       buttonText: string;
       /** Default labels for the prompt */
       defaults: {
-        /** The default description */
-        description: string;
         /** The default window title */
         title: string;
       };
-      /** Different descriptions for different use cases */
-      descriptions: {
+      /** Different labels for different use cases */
+      labels: {
         /**
          * The label for a roll modifier dialog, when the target is not known
          */

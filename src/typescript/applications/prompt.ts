@@ -16,10 +16,11 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     spec: Omit<NumberInputSpec, "type">,
     options?: Partial<Application.Options>
   ): Promise<number> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       new this(
         { value: { type: "number", ...spec } },
         (data) => resolve(data["value"]),
+        reject,
         options
       ).render(true);
     });
@@ -35,10 +36,11 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     spec: Omit<TextInputSpec, "type">,
     options?: Partial<Application.Options>
   ): Promise<string> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       new this(
         { value: { type: "text", ...spec } },
         (data) => resolve(data["value"]),
+        reject,
         options
       ).render(true);
     });
@@ -54,13 +56,16 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
 
   /**
    * @param specs - the input specs for the Prompt
-   * @param callback - the callback to be executed once the user submits the
+   * @param onSubmit - the callback to be executed once the user submits the
    *                   application's form
+   * @param onClose - the callback to be executed once the prompt is closed
+   *                  without being submitted
    * @param options - the options for the prompt
    */
   constructor(
     specs: Specs,
-    callback: Callback<Specs>,
+    onSubmit: Callback<Specs>,
+    onClose: () => void,
     options?: Partial<Application.Options>
   ) {
     super(options);
@@ -70,14 +75,18 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
       this.specs[key].class = this.getClass(this.specs[key]);
     });
 
-    this.callback = callback;
+    this.onSubmitCallback = onSubmit;
+    this.onCloseCallback = onClose;
   }
 
   /** The input specifications of the Prompt */
   protected specs: RenderSpecs<Specs>;
 
   /** The callback to run on submit */
-  protected callback: Callback<Specs>;
+  protected onSubmitCallback: Callback<Specs>;
+
+  /** The callback to run on close */
+  protected onCloseCallback: () => void;
 
   override activateListeners(html: JQuery<HTMLFormElement>): void {
     super.activateListeners(html);
@@ -88,6 +97,13 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
 
   override async getData(): Promise<RenderData<Specs>> {
     return { inputs: this.specs };
+  }
+
+  override async close(
+    options: CloseOptions = { runCallback: true }
+  ): Promise<void> {
+    if (options?.runCallback) this.onCloseCallback();
+    await super.close();
   }
 
   /** Get the css classes for the input element. */
@@ -144,8 +160,8 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
       }
     });
 
-    await this.close();
-    this.callback(values as InputSpecsReturnType<Specs>);
+    await this.close({ runCallback: false });
+    this.onSubmitCallback(values as InputSpecsReturnType<Specs>);
   }
 }
 
@@ -225,3 +241,9 @@ type SubmitEvent = JQuery.SubmitEvent<
   HTMLFormElement,
   HTMLFormElement
 >;
+
+/** Close options for the Prompt */
+interface CloseOptions extends Application.CloseOptions {
+  /** Whether to run the close callback */
+  runCallback?: boolean;
+}

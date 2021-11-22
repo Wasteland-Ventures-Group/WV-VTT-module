@@ -12,9 +12,11 @@ export default function registerPromptTests(context: Quench.Context): void {
     let result: number;
 
     before(async function () {
-      result = await new Promise((resolve) => {
-        new Prompt({ num: { label: "", type: "number" } }, (data) =>
-          resolve(data["num"])
+      result = await new Promise((resolve, reject) => {
+        new Prompt(
+          { num: { label: "", type: "number" } },
+          (data) => resolve(data["num"]),
+          reject
         )
           // @ts-expect-error We need to use this to use Promises.
           ._render(true)
@@ -35,9 +37,11 @@ export default function registerPromptTests(context: Quench.Context): void {
     let result: string;
 
     before(async function () {
-      result = await new Promise((resolve) => {
-        new Prompt({ tex: { label: "", type: "text" } }, (data) =>
-          resolve(data["tex"])
+      result = await new Promise((resolve, reject) => {
+        new Prompt(
+          { tex: { label: "", type: "text" } },
+          (data) => resolve(data["tex"]),
+          reject
         )
           // @ts-expect-error We need to use this to use Promises.
           ._render(true)
@@ -58,13 +62,14 @@ export default function registerPromptTests(context: Quench.Context): void {
     let result: Record<string, unknown>;
 
     before(async function () {
-      result = await new Promise((resolve) => {
+      result = await new Promise((resolve, reject) => {
         new Prompt(
           {
             tex: { label: "", type: "text" },
             num: { label: "", type: "number" }
           },
-          (data) => resolve(data)
+          (data) => resolve(data),
+          reject
         )
           // @ts-expect-error We need to use this to use Promises.
           ._render(true)

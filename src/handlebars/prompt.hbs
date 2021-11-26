@@ -2,7 +2,7 @@
   {{#each inputs as |input|}}
     <label class="contained-target-inline">
       {{input.label}}
-      <input name="{{@key}}" type="{{input.type}}" value="{{input.value}}"
+      <input required name="{{@key}}" type="{{input.type}}" value="{{input.value}}"
         {{~#if class}} class="{{class}}"{{/if~}}
         {{~#if input.max includeZero=true}} max="{{input.max}}"{{/if~}}
         {{~#if input.min includeZero=true}} min="{{input.min}}"{{/if}} />

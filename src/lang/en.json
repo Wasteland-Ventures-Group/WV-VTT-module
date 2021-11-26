@@ -29,13 +29,18 @@
         "title": "Prompt"
       },
       "labels": {
-        "genericModifier": "Enter a modifier:",
-        "modifier": "Enter a modifier for {what}:",
-        "range": "Enter the range to the target:"
+        "alias": "Speaker alias:",
+        "criticalFailure": "Critical failure rate:",
+        "criticalSuccess": "Critical success rate:",
+        "genericModifier": "Modifier:",
+        "modifier": "Modifier for {what}:",
+        "range": "Range to target:",
+        "skillTotal": "Skill:",
+        "special": "{special}:"
       }
     },
     "rolls": {
-      "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both",
+      "buttonTitle": "Ctrl-Click to whisper to the GM(s)",
       "flavor": "Rolling {what}",
       "roll": "Roll"
     },

@@ -69,18 +69,30 @@ export interface LangSchema {
       };
       /** Different labels for different use cases */
       labels: {
-        /**
-         * The label for a roll modifier dialog, when the target is not known
-         */
+        /** The label for a speaker alias */
+        alias: string;
+        /** The label for a critical failure chance */
+        criticalFailure: string;
+        /** The label for a critical success chance */
+        criticalSuccess: string;
+        /** The label for a modifier, when the target is not known */
         genericModifier: string;
         /**
-         * The label for a roll modifier dialog, containing a reference to what
-         * is modified with `what`
+         * The label for a modifier, containing a reference to what is modified
+         * with `what`.
          * @pattern (?=.*\{what\})
          */
         modifier: string;
         /** The label for entering a range */
         range: string;
+        /** The label for entering a skill total */
+        skillTotal: string;
+        /**
+         * The label for a SPECIAL, containing a reference to the SPECIAL with
+         * `special`.
+         * @pattern (?=.*\{special\})
+         */
+        special: string;
       };
     };
     /** Labels related to rolls */

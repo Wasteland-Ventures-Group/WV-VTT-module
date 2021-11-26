@@ -29,13 +29,18 @@
         "title": "Abfrage"
       },
       "labels": {
-        "genericModifier": "Gib einen Modifikator an:",
-        "modifier": "Gib einen Modifikator für {what} an:",
-        "range": "Gib die Distanz zum Ziel an:"
+        "alias": "Sprecheralias:",
+        "criticalFailure": "Kritische Fehlerchance:",
+        "criticalSuccess": "Kritische Erfolgschance:",
+        "genericModifier": "Modifikator:",
+        "modifier": "Modifikator für {what}:",
+        "range": "Distanz zum Ziel:",
+        "skillTotal": "Skill:",
+        "special": "{special}:"
       }
     },
     "rolls": {
-      "buttonTitle": "Strg-Klick zum flüstern zu GM(s)\nUmschalt-Klick zum Rollen mit Modifikator\nBeides für beides",
+      "buttonTitle": "Strg-Klick zum flüstern zu GM(s)",
       "flavor": "Rolle {what}",
       "roll": "Rollen"
     },

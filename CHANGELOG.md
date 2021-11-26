@@ -9,9 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- rule elements can now modify an actor or an item each ([#22](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/22))
-- a check for duplicate compendium IDs ([#61](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/61))
+- rule elements can now modify an actor or an item each
+  ([#22](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/22))
+- a check for duplicate compendium IDs
+  ([#61](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/61))
 - Quench intergration for integration testing
+- ability to execute attacks on unowned weapons
+  ([#57](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/57))
 
 ### Changed
 
@@ -20,11 +24,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - rule elements are now validated against a schema instead of our own,
   hand-written validation logic, which makes them easier to extend ([#21])
 - combats now track the Action Points resource by default and skip defeated
-  combatants ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
+  combatants
+  ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
 - the default resource for tokens are now set to hit points and action points
-  once on first start after world creation ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
+  once on first start after world creation
+  ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
 - Prompt utitily application can now ask for multiple inputs
   ([#56](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/56))
+- shift clicking a weapon attack button no longer does anything special, the
+  modifier input is always shown on the combined weapon attack prompt
 
 [#21]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/21
 
@@ -32,7 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - migrations no longer run on newly created worlds on first start
 - actor hit and action points are now set to their initial default maximum on
-  creation ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
+  creation
+  ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
 - rule elements being indented weirdly
   ([#69](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/69))
 - make all Prompt inputs required

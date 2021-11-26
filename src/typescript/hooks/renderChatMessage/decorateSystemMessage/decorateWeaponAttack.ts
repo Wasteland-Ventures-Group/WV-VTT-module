@@ -238,10 +238,11 @@ function createDiceRollDetail(
   return diceRollDiv;
 }
 
-export type WeaponAttackFlags = BaseWeaponAttackFlags &
-  (NotExecutedAttackFlags | ExecutedAttackFlags);
+/** A type representing the possible weapon attack chat message flags */
+export type WeaponAttackFlags = NotExecutedAttackFlags | ExecutedAttackFlags;
 
-export interface BaseWeaponAttackFlags {
+/** The common weapon attack chat message flags */
+interface CommonWeaponAttackFlags {
   type: "weaponAttack";
   weaponName: string;
   weaponImage: string | null;
@@ -249,14 +250,16 @@ export interface BaseWeaponAttackFlags {
   attackName: string;
 }
 
-export interface NotExecutedAttackFlags {
+/** The attack chat message flags for a unexecuted attack */
+export interface NotExecutedAttackFlags extends CommonWeaponAttackFlags {
   executed: false;
   reason?: "insufficientAp" | "outOfRange";
 }
 
-export interface ExecutedAttackFlags {
+/** The attack chat message flags for an executed attack */
+export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
   executed: true;
-  ownerSpecials?: Specials | undefined;
+  ownerSpecials?: Partial<Specials> | undefined;
   rolls: {
     damage: {
       formula: string;

@@ -1,14 +1,9 @@
 import { TYPES } from "../../constants.js";
-import {
-  getDisplayRangeDistance,
-  Range
-} from "../../data/item/weapon/ranges.js";
-import { getGame } from "../../foundryHelpers.js";
+import * as ranges from "../../data/item/weapon/ranges.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import WvI18n from "../../wvI18n.js";
-import Prompt from "../prompt.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 export default class WeaponSheet extends WvItemSheet {
@@ -119,18 +114,7 @@ export default class WeaponSheet extends WvItemSheet {
     const attack = this.item.systemData.attacks.attacks[attackKey];
     if (!attack) return;
 
-    if (event.shiftKey) {
-      const modifier = await Prompt.getNumber({
-        label: getGame().i18n.localize(
-          "wv.prompt.labels.genericModifier"
-        ),
-        min: -100,
-        max: 100
-      });
-      attack.execute({ modifier: modifier, whisperToGms: event.ctrlKey });
-    } else {
-      attack.execute({ whisperToGms: event.ctrlKey });
-    }
+    attack.execute({ whisperToGms: event.ctrlKey });
   }
 
   /**
@@ -138,11 +122,13 @@ export default class WeaponSheet extends WvItemSheet {
    * @param range - the Range to map
    * @returns a sheet displayable Range
    */
-  protected mapToSheetRange(range: Range | undefined): SheetRange | undefined {
+  protected mapToSheetRange(
+    range: ranges.Range | undefined
+  ): SheetRange | undefined {
     if (!range) return;
 
     return {
-      distance: getDisplayRangeDistance(
+      distance: ranges.getDisplayRangeDistance(
         range.distance,
         this.actor?.data.data.specials
       ),

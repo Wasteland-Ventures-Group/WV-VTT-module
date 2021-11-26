@@ -102,7 +102,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
   protected onSubmitCallback: Callback<Specs>;
 
   /** The callback to run on close */
-  protected onCloseCallback: () => void;
+  protected onCloseCallback: (reason: "closed") => void;
 
   override activateListeners(html: JQuery<HTMLFormElement>): void {
     super.activateListeners(html);
@@ -118,7 +118,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
   override async close(
     options: CloseOptions = { runCallback: true }
   ): Promise<void> {
-    if (options?.runCallback) this.onCloseCallback();
+    if (options?.runCallback) this.onCloseCallback("closed");
     await super.close();
   }
 
@@ -156,8 +156,8 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     const values: Partial<InputSpecsReturnType<Specs>> = {};
     const data = new FormData(event.target);
 
-    Object.keys(this.specs).forEach((key) => {
-      const inputValue = data.get(key);
+    Object.keys(this.specs).forEach((key: keyof Specs) => {
+      const inputValue = data.get(key as string);
       if (typeof inputValue !== "string")
         throw Error(`The value of input ${key} is missing!`);
 
@@ -166,13 +166,11 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
           const value = parseInt(inputValue);
           if (isNaN(value))
             throw Error(`The input of ${key} was not a number!`);
-          // @ts-expect-error TODO Fix later (string can't be used to index)
-          values[key] = value;
+          values[key] = value as InputSpecReturnType<Specs[typeof key]>;
           break;
         }
         default:
-          // @ts-expect-error TODO Fix later (string can't be used to index)
-          values[key] = inputValue;
+          values[key] = inputValue as InputSpecReturnType<Specs[typeof key]>;
       }
     });
 
@@ -187,12 +185,12 @@ type RenderData<Specs extends InputSpecs> = {
   inputs: RenderSpecs<Specs>;
 };
 
-/** An type that maps input specifications to render input specifications */
+/** A type that maps input specifications to render input specifications */
 type RenderSpecs<Specs extends InputSpecs> = {
   [Key in keyof Specs]: RenderSpec<Specs[Key]>;
 };
 
-/** An type that maps an input specification to a render input specification */
+/** A type that maps an input specification to a render input specification */
 type RenderSpec<Spec extends InputSpec> = Spec & {
   class?: string | undefined;
 };
@@ -212,7 +210,7 @@ export interface CommonInputSpec {
   type: string;
 
   /** The initial value of the input */
-  value?: string | number | undefined;
+  value?: string | number | null | undefined;
 }
 
 /** A number input specification for a Prompt  */
@@ -225,10 +223,10 @@ export interface NumberInputSpec extends CommonInputSpec {
   /** The minimum number */
   min?: number | undefined;
 
-  value?: number | undefined;
+  value?: number | null | undefined;
 }
 
-/** An text input specification for a Prompt  */
+/** A text input specification for a Prompt  */
 export interface TextInputSpec extends CommonInputSpec {
   type: "text";
 }

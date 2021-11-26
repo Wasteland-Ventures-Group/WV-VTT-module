@@ -155,7 +155,7 @@ export default abstract class RuleElement implements RuleElementLike {
       // This has to be accessed in this way, because `checkSelectedIsOfType()`
       // can end up being called when the `data` on an Actor or Item is not
       // initialized yet.
-      const targetName = this.targetDoc.data?.name || null;
+      const targetName = this.targetDoc.data?.name ?? null;
 
       this.messages.push(
         new WrongSelectedTypeMessage(targetName, this.selector, expectedType)

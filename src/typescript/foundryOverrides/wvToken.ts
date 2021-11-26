@@ -30,7 +30,7 @@ export default class WvToken extends Token {
 
     // Go over the token clones in the event data.
     const clones: ClonedToken[] = [];
-    for (const clone of event.data.clones || []) {
+    for (const clone of event.data.clones ?? []) {
       const original = clone._original;
 
       // When not in combat or the user is a GM, drag and drop movement is not

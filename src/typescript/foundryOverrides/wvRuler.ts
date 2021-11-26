@@ -51,7 +51,7 @@ export default class WvRuler extends Ruler {
     // Get the segments and calculate total distance.
     const segments = this._getRaysFromWaypoints(
       this.waypoints,
-      this.destination || undefined
+      this.destination ?? undefined
     ).map((ray) => ({ ray }));
     const distance = grid
       .measureDistances(segments, { gridSpaces: true })

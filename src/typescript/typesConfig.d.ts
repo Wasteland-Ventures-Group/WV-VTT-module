@@ -13,6 +13,7 @@ import type {
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
 import type * as settings from "./settings.js";
+import { macros } from "./macros/index.js";
 
 declare global {
   interface SourceConfig {
@@ -23,6 +24,20 @@ declare global {
   interface DataConfig {
     Actor: WvActorDataProperties;
     Item: WvItemDataProperties;
+  }
+
+  interface DocumentClassConfig {
+    Actor: typeof WvActor;
+    Combat: typeof WvCombat;
+    Item: typeof WvItem;
+  }
+
+  interface Game {
+    /** The Wasteland Ventures property */
+    wv: {
+      /** Wasteland Ventures macros */
+      macros: typeof macros;
+    };
   }
 
   namespace ClientSettings {
@@ -41,12 +56,6 @@ declare global {
           }
         | Record<string, never>;
     }
-  }
-
-  interface DocumentClassConfig {
-    Actor: typeof WvActor;
-    Combat: typeof WvCombat;
-    Item: typeof WvItem;
   }
 
   interface FlagConfig {

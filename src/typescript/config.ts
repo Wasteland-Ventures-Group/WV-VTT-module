@@ -70,13 +70,3 @@ function configureCombatResource(): void {
     skipDefeated: true
   });
 }
-
-declare global {
-  interface Game {
-    /** The Wasteland Ventures property */
-    wv: {
-      /** Wasteland Ventures macros */
-      macros: typeof macros;
-    };
-  }
-}

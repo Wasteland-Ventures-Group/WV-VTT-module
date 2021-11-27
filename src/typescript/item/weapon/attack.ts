@@ -3,7 +3,7 @@ import Prompt, {
   TextInputSpec
 } from "../../applications/prompt.js";
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
-import type WvActor from "../../actor/wvActor.js";
+import WvActor from "../../actor/wvActor.js";
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../weapon.js";
 import Formulator from "../../formulator.js";
@@ -12,7 +12,7 @@ import type DragData from "../../dragData.js";
 import { CONSTANTS, SpecialName } from "../../constants.js";
 import type { WeaponAttackFlags } from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import * as ranges from "../../data/item/weapon/ranges.js";
-import { getSpecialMaxPoints, getSpecialMinPoints } from "../../helpers.js";
+import * as helpers from "../../helpers.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 
 /**
@@ -36,7 +36,8 @@ export default class Attack {
    * @param options - options for the roll
    */
   async execute(options: RollOptions = {}): Promise<void> {
-    const actor = this.weapon.actor;
+    let actor = this.weapon.actor;
+    if (!(actor instanceof WvActor)) actor = helpers.getActor();
 
     let externalData: ExternalData;
     try {
@@ -115,11 +116,11 @@ export default class Attack {
       } else {
         const low = this.getDamageDice(
           ranges.RangeBracket.SHORT,
-          getSpecialMinPoints()
+          helpers.getSpecialMinPoints()
         );
         const high = this.getDamageDice(
           ranges.RangeBracket.SHORT,
-          getSpecialMaxPoints()
+          helpers.getSpecialMaxPoints()
         );
         dice = `${low}-${high}`;
       }

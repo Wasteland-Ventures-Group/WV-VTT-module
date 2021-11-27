@@ -8,6 +8,7 @@ import {
 } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 import { boundsSettingNames } from "./settings.js";
+import type WvActor from "./actor/wvActor.js";
 
 /**
  * A custom typeguard to check whether a value is not null or undefined.
@@ -87,4 +88,21 @@ export function getSkillMinPoints(): number {
     CONSTANTS.systemId,
     boundsSettingNames.skills.points.min
   );
+}
+
+/**
+ * Get an Actor for actions without explicit associated Actor. This first tries
+ * to get an actor from the controlled tokens. Afterwards it tries to get the
+ * impersonated actor of the user. If neither works, null is returned.
+ */
+export function getActor(): WvActor | null {
+  if (canvas?.ready) {
+    const controlled = canvas.tokens?.controlled;
+    if (controlled?.length) {
+      const token = controlled.shift();
+      if (token) return token.actor;
+    }
+  }
+
+  return getGame().user?.character ?? null;
 }

@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Quench intergration for integration testing
 - ability to execute attacks on unowned weapons
   ([#57](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/57))
+- helper method to get an actor for various actions
+  ([#66](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/66))
+- attacks on unowned weapons will now first use the selected token, then the
+  impersonated actor of the user to prepopulate their data
 
 ### Changed
 

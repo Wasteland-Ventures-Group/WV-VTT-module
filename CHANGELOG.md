@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ability to create macros from unowned weapons
 - ability to create weapon macros from source provided in a script macro
   ([#60](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/60))
+- a remaining AP on movement display to the ruler labels, when measuring from a
+  controllable token
+  ([#65](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/65))
 
 ### Changed
 

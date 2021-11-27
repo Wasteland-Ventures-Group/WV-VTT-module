@@ -10,7 +10,7 @@ export default class WvRuler extends Ruler {
     destination: Point,
     { gridSpaces }: { gridSpaces?: boolean } = {}
   ): Ruler.Segment[] {
-    return replaceLabels(super.measure(destination, { gridSpaces }));
+    return this.replaceLabels(super.measure(destination, { gridSpaces }));
   }
 
   override async moveToken(): Promise<false | undefined> {
@@ -80,49 +80,63 @@ export default class WvRuler extends Ruler {
 
     return super.moveToken();
   }
-}
 
-/**
- * Replace the labels and texts of the given Ruler segments with added movement
- * information.
- */
-export function replaceLabels(segments: Ruler.Segment[]): Ruler.Segment[] {
-  let totalDistance = 0;
-  for (const segment of segments) {
-    const distance = segment.distance;
-    totalDistance += distance;
+  /**
+   * Replace the labels and texts of the given Ruler segments with added movement
+   * information.
+   */
+  replaceLabels(segments: Ruler.Segment[]): Ruler.Segment[] {
+    let totalDistance = 0;
+    for (const segment of segments) {
+      const distance = segment.distance;
+      totalDistance += distance;
 
-    const text = getLabel(distance, totalDistance, segment.last);
+      const text = this.getLabel(distance, totalDistance, segment.last);
 
-    segment.text = text;
-    if (segment.label instanceof PreciseText) {
-      segment.label.text = text;
+      segment.text = text;
+      if (segment.label instanceof PreciseText) {
+        segment.label.text = text;
 
-      if (segment.label.style instanceof PIXI.TextStyle)
-        segment.label.style.align = "left";
+        if (segment.label.style instanceof PIXI.TextStyle)
+          segment.label.style.align = "left";
+      }
     }
+
+    return segments;
   }
 
-  return segments;
-}
+  /** Get the label for a segment. */
+  getLabel(
+    segmentDistance: number,
+    totalDistance: number,
+    isTotal: boolean
+  ): string {
+    if (!canvas?.scene) throw new Error("There was no canvas or scene!");
 
-/** Get the label for a segment. */
-function getLabel(
-  segmentDistance: number,
-  totalDistance: number,
-  isTotal: boolean
-): string {
-  if (!canvas?.scene) throw new Error("There was no canvas or scene!");
+    const units = canvas.scene.data.gridUnits;
+    const apUnit = getGame().i18n.localize("wv.ruler.apCostUnit");
+    const segmentApUse = getApUse(segmentDistance);
+    const totalApUse = getApUse(totalDistance);
 
-  const units = canvas.scene.data.gridUnits;
-  const apUnit = getGame().i18n.localize("wv.ruler.apCostUnit");
+    let label = `${Math.round(segmentDistance * 100) / 100} ${units}`;
+    if (isTotal)
+      label += ` [${Math.round(totalDistance * 100) / 100} ${units}]`;
 
-  let label = `${Math.round(segmentDistance * 100) / 100} ${units}`;
-  if (isTotal) label += ` [${Math.round(totalDistance * 100) / 100} ${units}]`;
+    label += "\n";
+    label += `${segmentApUse} ${apUnit}`;
+    if (isTotal) label += ` [${totalApUse} ${apUnit}]`;
 
-  label += "\n";
-  label += `${getApUse(segmentDistance)} ${apUnit}`;
-  if (isTotal) label += ` [${getApUse(totalDistance)} ${apUnit}]`;
+    const token = this._getMovementToken();
+    if (token?.actor instanceof WvActor) {
+      const currentAp = token.actor.actionPoints.value;
+      const segmentApRemaining = currentAp - segmentApUse;
+      const totalApRemaining = currentAp - totalApUse;
 
-  return label;
+      label += "\n";
+      label += `${segmentApRemaining} ${apUnit}`;
+      if (isTotal) label += ` [${totalApRemaining} ${apUnit}]`;
+    }
+
+    return label;
+  }
 }

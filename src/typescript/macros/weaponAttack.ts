@@ -1,6 +1,7 @@
 import { getGame } from "../foundryHelpers.js";
 import Weapon from "../item/weapon.js";
-import Attack, { WeaponAttackDragData } from "../item/weapon/attack.js";
+import * as attack from "../item/weapon/attack.js";
+import { LOG } from "../systemLogger.js";
 
 /**
  * Assign a Weapon Attack Macro to the user's hotbar. This will assign an
@@ -11,7 +12,7 @@ import Attack, { WeaponAttackDragData } from "../item/weapon/attack.js";
  */
 export default async function assignWeaponAttackMacro(
   slot: number,
-  data: WeaponAttackDragData
+  data: attack.WeaponAttackDragData
 ): Promise<void> {
   const macro = await getOrCreateWeaponAttackMacro(data);
   getGame().user?.assignHotbarMacro(macro ?? null, slot);
@@ -24,7 +25,7 @@ export default async function assignWeaponAttackMacro(
  * @returns a Weapon Attack Macro
  */
 async function getOrCreateWeaponAttackMacro(
-  data: WeaponAttackDragData
+  data: attack.WeaponAttackDragData
 ): Promise<Macro | undefined> {
   const actor = data.actorId ? getGame().actors?.get(data.actorId) : null;
 
@@ -75,7 +76,7 @@ function createMacroName(
  * @param data - the Weapon Attack drag data
  * @returns the Macro command
  */
-function createMacroCommand(data: WeaponAttackDragData): string {
+function createMacroCommand(data: attack.WeaponAttackDragData): string {
   const args = [data.weaponId, data.attackName];
   if (data.actorId) args.push(data.actorId);
 
@@ -105,8 +106,28 @@ export function executeWeaponAttack(
   }
   if (!(weapon instanceof Weapon)) return;
 
-  const attack = weapon.systemData.attacks.attacks[attackName];
-  if (!(attack instanceof Attack)) return;
+  const atk = weapon.systemData.attacks.attacks[attackName];
+  if (!(atk instanceof attack.default)) return;
 
-  attack.execute();
+  atk.execute();
+}
+
+/**
+ * Execute a Weapon Attack from the provided Weapon source.
+ * @param data - the source data of the weapon
+ * @param attackName - the name of the weapon attack in the source data
+ * @param options - additional roll options
+ */
+export function executeWeaponAttackFromSource(
+  data: ConstructorParameters<typeof Weapon>[0],
+  attackName: string,
+  options: attack.RollOptions = {}
+): void {
+  const weapon = new Weapon(data, {});
+  const attack = weapon.systemData.attacks.attacks[attackName];
+  if (attack) attack.execute(options);
+  else
+    LOG.error(
+      `The attack with name ${attackName} could not be found in the data.`
+    );
 }

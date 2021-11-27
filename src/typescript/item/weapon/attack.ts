@@ -463,7 +463,7 @@ type ExternalData = {
 /**
  * Options for modifying Attack rolls.
  */
-interface RollOptions {
+export interface RollOptions {
   /**
    * Whether to whisper the Attack to GMs.
    * @defaultValue `false`

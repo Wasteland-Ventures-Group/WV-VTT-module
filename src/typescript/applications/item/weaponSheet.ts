@@ -74,16 +74,16 @@ export default class WeaponSheet extends WvItemSheet {
   }
 
   override _onDragStart(event: DragEvent): void {
-    if (!this.item.actor?.id || !this.item.id) return super._onDragStart(event);
+    if (!this.item.id) return super._onDragStart(event);
 
-    const target = event.target;
+    const target = event.currentTarget;
     if (!(target instanceof HTMLElement)) return super._onDragStart(event);
 
     const attackKey = target.dataset.attack;
     if (!attackKey) return super._onDragStart(event);
 
     const dragData: WeaponAttackDragData = {
-      actorId: this.item.actor.id,
+      actorId: this.item.actor?.id,
       attackName: attackKey,
       type: "weaponAttack",
       weaponId: this.item.id

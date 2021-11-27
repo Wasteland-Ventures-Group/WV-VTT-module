@@ -400,7 +400,7 @@ type DamageFallOff = "shotgun";
 /** The drag data of a Weapon Attack */
 export interface WeaponAttackDragData extends DragData {
   /** The ID of the Actor, owning the Weapon */
-  actorId: string;
+  actorId?: string | null | undefined;
 
   /** The name of the Attack on the Weapon */
   attackName: string;
@@ -422,7 +422,6 @@ export function isWeaponAttackDragData(
 ): data is WeaponAttackDragData {
   return (
     data.type === "weaponAttack" &&
-    typeof data.actorId === "string" &&
     typeof data.attackName === "string" &&
     typeof data.weaponId === "string"
   );

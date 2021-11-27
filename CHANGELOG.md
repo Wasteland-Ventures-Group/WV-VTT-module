@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#66](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/66))
 - attacks on unowned weapons will now first use the selected token, then the
   impersonated actor of the user to prepopulate their data
+- ability to create macros from unowned weapons
 
 ### Changed
 

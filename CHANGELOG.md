@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - rule elements being indented weirdly
   ([#69](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/69))
 - make all Prompt inputs required
+- now rerenders item sheets on any SPECIAL change instead of just Strength
 
 ## [0.5.1] - 2021-10-23
 

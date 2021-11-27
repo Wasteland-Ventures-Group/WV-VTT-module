@@ -60,16 +60,7 @@ function configureDefaultResources(): void {
   const settings = getGame().settings;
   if (!settings.get(CONSTANTS.systemId, initializedSettingName)) {
     configureCombatResource();
-    configureDefaultTokenBars();
   }
-}
-
-/** Configure the default prototype token resource bars. */
-function configureDefaultTokenBars(): void {
-  const setting = getGame().settings.get("core", "defaultToken");
-  setting.bar1 = { attribute: "vitals.hitPoints" };
-  setting.bar2 = { attribute: "vitals.actionPoints" };
-  getGame().settings.set("core", "defaultToken", setting);
 }
 
 /** Configure the default combat resource setting. */

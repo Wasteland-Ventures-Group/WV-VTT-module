@@ -43,6 +43,8 @@
   ],
   "socket": false,
   "initiative": "1d10 + (@specials.perception)",
+  "primaryTokenAttribute": "vitals.hitPoints",
+  "secondaryTokenAttribute": "vitals.actionPoints",
   "gridDistance": 2,
   "gridUnits": "m",
   "url": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module",

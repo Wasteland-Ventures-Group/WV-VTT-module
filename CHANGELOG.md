@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- automatic range measuring when using targeting
+  ([#75](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/75))
+
 ## [0.6.0] - 2021-11-27
 
 ### Added

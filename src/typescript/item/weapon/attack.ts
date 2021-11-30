@@ -3,7 +3,7 @@ import Prompt, {
   TextInputSpec
 } from "../../applications/prompt.js";
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
-import WvActor from "../../actor/wvActor.js";
+import type WvActor from "../../actor/wvActor.js";
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../weapon.js";
 import Formulator from "../../formulator.js";
@@ -36,12 +36,14 @@ export default class Attack {
    * @param options - options for the roll
    */
   async execute(options: RollOptions = {}): Promise<void> {
-    let actor = this.weapon.actor;
-    if (!(actor instanceof WvActor)) actor = helpers.getActor();
+    let token = helpers.getFirstControlledToken();
+    const actor = this.weapon.actor ?? helpers.getActor(token);
+    token ??= helpers.getActorToken(actor);
+    const target = helpers.getFirstTarget();
 
     let externalData: ExternalData;
     try {
-      externalData = await this.getExternalData(actor);
+      externalData = await this.getExternalData(actor, token, target);
     } catch (e) {
       if (e === "closed") return;
       else throw e;
@@ -135,7 +137,9 @@ export default class Attack {
    * @throws If the potential Prompt is closed without submitting
    */
   protected async getExternalData(
-    actor: WvActor | null
+    actor: WvActor | null | undefined,
+    token: Token | null | undefined,
+    target: Token | null | undefined
   ): Promise<ExternalData> {
     const i18n = getGame().i18n;
     const specials = ranges.getRangesSpecials(this.weapon.systemData.ranges);
@@ -170,7 +174,7 @@ export default class Attack {
         range: {
           type: "number",
           label: i18n.localize("wv.prompt.labels.range"),
-          value: 0,
+          value: helpers.getRange(token, target) ?? 0,
           min: 0,
           max: 99999
         },

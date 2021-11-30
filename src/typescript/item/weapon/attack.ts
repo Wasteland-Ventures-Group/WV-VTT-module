@@ -12,6 +12,7 @@ import type DragData from "../../dragData.js";
 import { CONSTANTS, SpecialName } from "../../constants.js";
 import type { WeaponAttackFlags } from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import * as ranges from "../../data/item/weapon/ranges.js";
+import * as interact from "../../interaction.js";
 import * as helpers from "../../helpers.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 
@@ -36,10 +37,10 @@ export default class Attack {
    * @param options - options for the roll
    */
   async execute(options: RollOptions = {}): Promise<void> {
-    let token = helpers.getFirstControlledToken();
-    const actor = this.weapon.actor ?? helpers.getActor(token);
-    token ??= helpers.getActorToken(actor);
-    const target = helpers.getFirstTarget();
+    let token = interact.getFirstControlledToken();
+    const actor = this.weapon.actor ?? interact.getActor(token);
+    token ??= interact.getActorToken(actor);
+    const target = interact.getFirstTarget();
 
     let externalData: ExternalData;
     try {
@@ -174,7 +175,7 @@ export default class Attack {
         range: {
           type: "number",
           label: i18n.localize("wv.prompt.labels.range"),
-          value: helpers.getRange(token, target) ?? 0,
+          value: interact.getRange(token, target) ?? 0,
           min: 0,
           max: 99999
         },

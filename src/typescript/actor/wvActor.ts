@@ -14,7 +14,9 @@ import {
   SkillName,
   SkillNames,
   SpecialName,
-  SpecialNames
+  SpecialNames,
+  isSpecialName,
+  isSkillName
 } from "../constants.js";
 import Formulator from "../formulator.js";
 import WvI18n from "../wvI18n.js";
@@ -24,9 +26,7 @@ import {
   getSkillMaxPoints,
   getSkillMinPoints,
   getSpecialMaxPoints,
-  getSpecialMinPoints,
-  isSkillName,
-  isSpecialName
+  getSpecialMinPoints
 } from "../helpers.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 

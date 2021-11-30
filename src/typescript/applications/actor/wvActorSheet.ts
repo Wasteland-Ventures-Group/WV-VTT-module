@@ -6,15 +6,12 @@ import {
   SpecialName,
   SpecialNames,
   ThaumaturgySpecials,
-  TYPES
+  TYPES,
+  isSpecialName,
+  isSkillName
 } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
-import {
-  getSkillMinPoints,
-  getSpecialMinPoints,
-  isSkillName,
-  isSpecialName
-} from "../../helpers.js";
+import { getSkillMinPoints, getSpecialMinPoints } from "../../helpers.js";
 import WvI18n, { I18nSpecial } from "../../wvI18n.js";
 import { LOG } from "../../systemLogger.js";
 import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";

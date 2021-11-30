@@ -1,5 +1,4 @@
-import { TYPE_CONSTRUCTORS } from "../typeMappings.js";
-import { isMappedItemType } from "../helpers.js";
+import { TYPE_CONSTRUCTORS, isMappedItemType } from "../typeMappings.js";
 import RuleElements from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 

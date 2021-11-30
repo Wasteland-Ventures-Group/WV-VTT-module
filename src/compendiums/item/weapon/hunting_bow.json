@@ -1,3 +1,65 @@
 {
+  "name": "Hunting Bow",
+  "type": "weapon",
+  "img": "icons/weapons/bows/longbow-recurve-brown.webp",
+  "data": {
+    "name": "Hunting Bow",
+    "description": "A quiet killing machine",
+    "notes": "Silent after 10 meters (5 hexes): penalty on Sneak after Sneak Attack is -15 instead of -30",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 5,
+          "damage": {
+            "base": 2,
+            "dice": 2,
+            "diceRange": true
+          },
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": {
+          "base": 20,
+          "special": "strength",
+          "multiplier": 2
+        },
+        "modifier": 0
+      },
+      "medium": {
+        "distance": {
+          "base": 40,
+          "special": "strength",
+          "multiplier": 4
+        },
+        "modifier": -10
+      },
+      "long": {
+        "distance": {
+          "base": 60,
+          "special": "strength",
+          "multiplier": 6
+        },
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 1,
+      "caliber": "TODO",
+      "containerType": "internal",
+      "size": 1
+    },
+    "skill": "melee",
+    "strengthRequirement": 4,
+    "value": 150,
+    "weight": 1.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000066"
 }

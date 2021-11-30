@@ -1,3 +1,40 @@
 {
+  "name": "Ripper",
+  "type": "weapon",
+  "img": "icons/weapons/daggers/dagger-serrated-black.webp",
+  "data": {
+    "name": "Ripper",
+    "description": "A motorized saw of sharp teeth, designed for ripping and tearing through the guts of the fiendish terrors of the Wasteland.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Slash": {
+          "ap": 5,
+          "damage": {
+            "base": 4,
+            "dice": 2,
+            "diceRange": true
+          },
+          "dtReduction": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "melee",
+    "strengthRequirement": 3,
+    "value": 550,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000052"
 }

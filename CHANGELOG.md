@@ -38,19 +38,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Gretta M33 MG "Predator"
   - Gretta M3 SMG "Greaser"
   - H&K MGat-39 "Mini Gun"
+  - Hunting Bow
   - IF-44 "Angel Bunny"
   - IF-84 "Stampede"
   - IF-92 "Melrose"
-  - Improvised (small)
+  - Improvised Melee (small)
+  - Longbow
   - Lumber Axe
   - Mace
   - Machete
   - Q-Same AEW-5 Arcane Pistol
   - Q-Same AEW-6 Arcane Revolver
   - Q-Same AEW-21 Arcane Rifle
+  - Ripper
+  - Shishkebab
   - Silaha Plasma "Corona"
   - Silaha Plasma "Hestia"
   - Staff
+  - Warhammer
 - missing notes on weapons
   - IF-P39 "Troubleshoes"
   - Zebra Rifle
@@ -79,6 +84,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - updated the rendering of weapon attack messages, providing a more polished
   experience and only showing condensed info, that can be expanded on demand
   ([#58](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/58))
+- Item attribute changes
+  - Fire Axe: new price, Throw -attack and range
+  - Lumber Axe: Throw -attack and range
 
 ### Fixed
 

@@ -15,6 +15,15 @@
             "dice": 2,
             "diceRange": true
           }
+        },
+        "Throw": {
+          "ap": 6,
+          "damage": {
+            "base": 3,
+            "dice": 2,
+            "diceRange": true
+          },
+          "rounds": 1
         }
       }
     },
@@ -22,6 +31,14 @@
       "short": {
         "distance": "melee",
         "modifier": 0
+      },
+      "medium": {
+        "distance": {
+          "base": 0,
+          "multiplier": 2,
+          "special": "strength"
+        },
+        "modifier": -10
       }
     },
     "rules": {
@@ -29,7 +46,7 @@
     },
     "skill": "melee",
     "strengthRequirement": 5,
-    "value": 200,
+    "value": 550,
     "weight": 4
   },
   "effects": [],

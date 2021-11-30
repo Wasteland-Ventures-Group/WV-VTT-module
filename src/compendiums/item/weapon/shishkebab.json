@@ -1,3 +1,38 @@
 {
+  "name": "Shishkebab",
+  "type": "weapon",
+  "img": "icons/weapons/swords/greatsword-evil-green.webp",
+  "data": {
+    "name": "Shiskebab",
+    "description": "A sword, made of scrap with a flaming blade. Threatening, mysterious, and hot to boot.",
+    "notes": "Can inflict Burning- status effect with -1 END to resist",
+    "attacks": {
+      "sources": {
+        "Slash": {
+          "ap": 4,
+          "damage": {
+            "base": 2,
+            "dice": 1,
+            "diceRange": true
+          }
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "melee",
+    "strengthRequirement": 6,
+    "weight": 3.5,
+    "value": 9999
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000054"
 }

@@ -1,3 +1,62 @@
 {
+  "name": "Q-Same MLEM",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-gold.webp",
+  "data": {
+    "name": "Q-Same MLEM",
+    "description": "Many NCR troops favor this as their standard issue Automatic. Supposed favorite of a famous hippogriff Talon Mercenary.",
+    "notes": "Some weird griffon-pony invention...",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 3
+          },
+          "ap": 6,
+          "rounds": 1,
+          "dtReduction": 1
+        },
+        "Burst": {
+          "damage": {
+            "base": 2,
+            "dice": 4
+          },
+          "ap": 7,
+          "rounds": 3,
+          "dtReduction": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 50,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 100,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 150,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 50
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 5,
+    "value": 225,
+    "weight": 8,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000040"
 }

@@ -1,3 +1,38 @@
 {
+  "name": "Super Sledge",
+  "type": "weapon",
+  "img": "icons/weapons/hammers/hammer-double-sledge-engraved.webp",
+  "data": {
+    "name": "Super Sledge",
+    "description": "The souped up, hydraulically enhanced sledgehammer, for the time you really need to go through a wall or 3. It will also tenderize meat.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "ap": 8,
+          "damage": {
+            "base": 6,
+            "dice": 0,
+            "diceRange": true
+          }
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 8,
+    "value": 350,
+    "weight": 10,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000059"
 }

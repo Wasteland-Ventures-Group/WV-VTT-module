@@ -1,3 +1,38 @@
 {
+  "name": "Arcane Glove",
+  "type": "weapon",
+  "img": "icons/weapons/fist/fist-knuckles-stone.webp",
+  "data": {
+    "name": "Arcane Glove",
+    "description": "Sometimes, you just need a sprinkle of magic in your enemy's face.",
+    "notes": "Attacks are magical in nature; Magi-Strike can inflict any one status effect except Mind-Controlled and Unconscious",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 4,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 4
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "unarmed",
+    "strengthRequirement": 6,
+    "value": 300,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000084"
 }

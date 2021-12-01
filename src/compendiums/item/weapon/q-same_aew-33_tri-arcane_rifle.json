@@ -1,3 +1,54 @@
 {
+  "name": "Q-Same AEW-33 Tri-Arcane Rifle",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-gold.webp",
+  "data": {
+    "name": "Q-Same AEW-33 Tri-Arcane Rifle",
+    "description": "\"Sofas are half-off with the purchase of this gun\". Good grief, Quills and Sofas and Arcane Mechanics sure had strange ways to sell their guns! But, it is a fairly good for home defense.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 5,
+            "damageFallOff": "shotgun"
+          },
+          "ap": 6,
+          "dtReduction": 1,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 8
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 4,
+    "value": 250,
+    "weight": 4.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000036"
 }

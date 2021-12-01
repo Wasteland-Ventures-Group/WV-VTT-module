@@ -1,3 +1,39 @@
 {
+  "name": "Yao Guai Gauntlets",
+  "type": "weapon",
+  "img": "icons/weapons/fist/claws-engraved-grey.webp",
+  "data": {
+    "name": "Yao Guai Gauntlets",
+    "description": "Designed for hugging really, really hard.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 2,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 5
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "unarmed",
+    "strengthRequirement": 4,
+    "value": 150,
+    "weight": 3.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000087"
 }

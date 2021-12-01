@@ -1,3 +1,54 @@
 {
+  "name": "Silaha Plasma \"Fusion\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-gold.webp",
+  "data": {
+    "name": "Silaha Plasma \"Fusion\"",
+    "description": "They say Silaha decided to make this shotgun after some corporate espionage to Q-Same. However, be glad they did, as this is a reliable gun, often seen in use by unicorn caravaneers.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 2,
+            "dice": 6,
+            "damageFallOff": "shotgun"
+          },
+          "ap": 6,
+          "rounds": 1,
+          "dtReduction": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 16,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 32,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 64,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 8
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 5,
+    "value": 550,
+    "weight": 5.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000037"
 }

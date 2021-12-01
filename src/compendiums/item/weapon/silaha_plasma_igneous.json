@@ -1,3 +1,62 @@
 {
+  "name": "Silaha Plasma \"Igneous\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-gold.webp",
+  "data": {
+    "name": "Silaha Plasma \"Igneous\"",
+    "description": "Silaha's squad support weapon, sporting the latest -and now 200 years out of date- plasma technology: Plasma lenses focus the power better than a laser would.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 5
+          },
+          "ap": 5,
+          "rounds": 1,
+          "dtReduction": 1
+        },
+        "Burst": {
+          "damage": {
+            "base": 2,
+            "dice": 8
+          },
+          "ap": 7,
+          "rounds": 3,
+          "dtReduction": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 30,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 60,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 80,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 30
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 4,
+    "value": 500,
+    "weight": 4.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000041"
 }

@@ -1,3 +1,38 @@
 {
+  "name": "No Weapon",
+  "type": "weapon",
+  "img": "icons/commodities/claws/claws-white.webp",
+  "data": {
+    "name": "No Weapon",
+    "description": "Whether you kick, slash, bite, stomp, tackle, it's all technique, strength, and a bit of luck.",
+    "notes": "Standard Unarmed Attack",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 1,
+            "dice": 0,
+            "diceRange": true
+          },
+          "ap": 3
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "unarmed",
+    "strengthRequirement": 0,
+    "value": 0,
+    "weight": 0,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000081"
 }

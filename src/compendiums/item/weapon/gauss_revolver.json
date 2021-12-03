@@ -1,3 +1,53 @@
 {
+  "name": "Gauss Revolver",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-pistol-brown.webp",
+  "data": {
+    "name": "Gauss Revolver",
+    "description": "A fierce revolver built by MAS as a counter to robots used by the Zebra during the war. Also favored by Talons in the Wastes.",
+    "notes": "May use either Firearms or Magic Energy Weapons skill to shoot",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 5,
+            "dice": 3
+          },
+          "ap": 5,
+          "dtReduction": 1,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 40,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 80,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 120,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 6
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 2,
+    "value": 600,
+    "weight": 1,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000029"
 }

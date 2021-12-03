@@ -1,3 +1,45 @@
 {
+  "name": "Plasma Grenade",
+  "type": "weapon",
+  "img": "icons/weapons/thrown/bomb-gas-grey-purple.webp",
+  "data": {
+    "name": "Plasma Grenade",
+    "description": "Modified, it was a favorite of many unicornless pony troops.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Throw": {
+          "damage": {
+            "base": 4,
+            "dice": 3
+          },
+          "ap": 7,
+          "rounds": 1,
+          "dtReduction": 1,
+          "splash": "large"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": {
+          "base": 10,
+          "special": "strength",
+          "multiplier": 0
+        },
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "explosives",
+    "strengthRequirement": 2,
+    "value": 60,
+    "weight": 0.2,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000079"
 }

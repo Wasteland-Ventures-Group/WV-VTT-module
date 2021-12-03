@@ -1,3 +1,54 @@
 {
+  "name": "Gauss Shotgun",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-gold.webp",
+  "data": {
+    "name": "Gauss Shotgun",
+    "description": "This magical energy shotgun sports only the best, most outrageously pure crystals as its Exciter, giving it a considerable boost in power.",
+    "notes": "May use either Firearms or Magic Energy Weapons skill to shoot",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 3,
+            "dice": 7,
+            "damageFallOff": "shotgun"
+          },
+          "ap": 5,
+          "dtReduction": 1,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 5
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 5,
+    "value": 800,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000038"
 }

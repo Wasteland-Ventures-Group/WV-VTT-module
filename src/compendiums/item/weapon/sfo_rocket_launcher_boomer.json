@@ -1,3 +1,53 @@
 {
+  "name": "SFO Rocket Launcher \"Boomer\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-worn-gold.webp",
+  "data": {
+    "name": "SFO Rocket Launcher \"Boomer\"",
+    "description": "Apparently there's a group of groundborn pegasi with a penchant for heavy weaponry near Las Pegasus. Take a guess what they use?",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 6,
+            "dice": 2
+          },
+          "ap": 4,
+          "rounds": 1,
+          "splash": "large"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 100,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 200,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 300,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 8,
+      "caliber": "TODO",
+      "containerType": "internal",
+      "size": 1
+    },
+    "skill": "explosives",
+    "strengthRequirement": 7,
+    "value": 750,
+    "weight": 10,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000070"
 }

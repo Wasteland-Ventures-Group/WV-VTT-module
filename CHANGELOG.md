@@ -33,10 +33,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Alien Blaster
   - Arcane Glove
   - Auto-Axe
+  - Balefire Egg Launcher
   - Baseball Bat
   - Bladed Gauntlets
   - Buckington Automatic Rifle M18
+  - Buckscatter G-M7 Launcher
+  - Dynamite
+  - Frag Grenade
+  - GAG Incinerator
   - GAG Thunder Cannon
+  - Gauss Minigun
+  - Gauss Pistol
+  - Gauss Revolver
+  - Gauss Rifle
+  - Gauss Shotgun
+  - Gauss SMG
   - Gretta M28 MG "Pecker"
   - Gretta M33 MG "Predator"
   - Gretta M3 SMG "Greaser"
@@ -47,14 +58,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - IF-44 "Angel Bunny"
   - IF-84 "Stampede"
   - IF-92 "Melrose"
+  - IF-G12 "Champion"
   - Improvised Melee (small)
   - Longbow
   - Lumber Axe
   - Mace
   - Machete
   - Manticore Gauntlets
+  - Molotrot Cocktail
   - No Weapon
+  - Plasma Grenade
   - Power Glove
+  - Q-Same AEF-451 Flamer “Book Burner”
   - Q-Same AEW-5 Arcane Pistol
   - Q-Same AEW-6 Arcane Revolver
   - Q-Same AEW-21 Arcane Rifle
@@ -62,13 +77,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Q-Same Arcane Gatling
   - Q-Same MLEM
   - Ripper
+  - SFO Launcher "Thumper"
+  - SFO Rocket Launcher "Boomer"
   - Shishkebab
   - Silaha Plasma "Corona"
+  - Silaha Plasma "Death Star"
   - Silaha Plasma "Fusion"
   - Silaha Plasma "Hestia"
   - Silaha Plasma "Igneous"
   - Silaha Plasma "Vulcan"
   - Sledgehammer
+  - Sparkle-Nade
   - Spear
   - Staff
   - Super Sledge

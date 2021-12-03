@@ -1,3 +1,53 @@
 {
+  "name": "IF-G12 \"Champion\"",
+  "type": "weapon",
+  "img": "icons/weapons/artillery/cannon-engraved-gold.webp",
+  "data": {
+    "name": "IF-G12 \"Champion\"",
+    "description": "This grenade launcher has a penchant to go for the overkill. In fact, we're fairly certain this wasn't ever meant to be carried by a pony.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Burst": {
+          "damage": {
+            "base": 4,
+            "dice": 5
+          },
+          "ap": 6,
+          "rounds": 3,
+          "splash": "small"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 50,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 100,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 150,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 6,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 30
+    },
+    "skill": "explosives",
+    "strengthRequirement": 14,
+    "value": 9999,
+    "weight": 18,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000072"
 }

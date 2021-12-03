@@ -1,3 +1,53 @@
 {
+  "name": "SFO Launcher \"Thumper\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-worn-gold.webp",
+  "data": {
+    "name": "SFO Launcher \"Thumper\"",
+    "description": "A light, magically assisted grenade launcher for weak wussies who want to wreak a world of woe.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 2,
+            "dice": 2
+          },
+          "ap": 7,
+          "rounds": 1,
+          "splash": "small"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -40
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "internal",
+      "size": 1
+    },
+    "skill": "explosives",
+    "strengthRequirement": 3,
+    "value": 200,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000068"
 }

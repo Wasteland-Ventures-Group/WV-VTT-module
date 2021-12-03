@@ -1,3 +1,44 @@
 {
+  "name": "Dynamite",
+  "type": "weapon",
+  "img": "icons/weapons/thrown/dynamite-black.webp",
+  "data": {
+    "name": "Dynamite",
+    "description": "Moustache twirling and tying dames on train tracks is optional.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Throw": {
+          "damage": {
+            "base": 2,
+            "dice": 3
+          },
+          "ap": 7,
+          "rounds": 1,
+          "splash": "tiny"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": {
+          "base": 10,
+          "special": "strength",
+          "multiplier": 2
+        },
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "explosives",
+    "strengthRequirement": 1,
+    "value": 7,
+    "weight": 0.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000076"
 }

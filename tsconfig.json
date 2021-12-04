@@ -9,7 +9,10 @@
     "outDir": "dist/modules",
     "strict": true,
     "target": "ES2020",
-    "types": ["@league-of-foundry-developers/foundry-vtt-types"]
+    "types": [
+      "@ethaks/fvtt-quench",
+      "@league-of-foundry-developers/foundry-vtt-types"
+    ]
   },
   "include": ["./src/typescript/**/*.ts"]
 }

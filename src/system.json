@@ -14,7 +14,7 @@
       "twitter": "@kmoschcau"
     }
   ],
-  "version": "0.4.0",
+  "version": "0.6.0",
   "minimumCoreVersion": "0.8.8",
   "compatibleCoreVersion": "0.8.9",
   "scripts": [],
@@ -43,11 +43,13 @@
   ],
   "socket": false,
   "initiative": "1d10 + (@specials.perception)",
+  "primaryTokenAttribute": "vitals.hitPoints",
+  "secondaryTokenAttribute": "vitals.actionPoints",
   "gridDistance": 2,
   "gridUnits": "m",
   "url": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module",
   "manifest": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/system.json",
-  "download": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/download/v0.4.0/wasteland-ventures-0.4.0.zip",
+  "download": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/download/v0.6.0/wasteland-ventures-0.6.0.zip",
   "readme": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/README.md",
   "changelog": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/CHANGELOG.md"
 }

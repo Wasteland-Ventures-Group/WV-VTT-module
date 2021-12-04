@@ -15,7 +15,7 @@ export interface LangSchema {
       /**
        * The placeholder name for a new Item, containing a reference to the item
        * name with `what`.
-       * @pattern \{what\}
+       * @pattern (?=.*\{what\})
        */
       newName: string;
       /** Labels for different types of system Items */
@@ -24,18 +24,37 @@ export interface LangSchema {
         effects: ItemType;
       };
     };
+    /** Different system messages. */
+    messages: {
+      /** Messages related to movement */
+      movement: {
+        /**
+         * The message when a Token does not have an Actor to get AP from.
+         * @pattern (?=.*\{name\})
+         */
+        noActor: string;
+        /**
+         * The message when an actor does not have enough AP to move a specific
+         * distance.
+         * @pattern (?=.*\{needed\})(?=.*\{actual\})(?=.*\{name\})
+         */
+        notEnoughAp: string;
+      };
+    };
     /** Labels for migrations */
     migration: {
       /**
-       * The notification text for completed migrations, containing references to
-       * the system name with `systemName` and the system version with `version`
-       * @pattern (?:\{systemName\}.*\{version\})|(?:\{version\}.*\{systemName\})
+       * The notification text for completed migrations, containing references
+       * to the system name with `systemName` and the system version with
+       * `version`
+       * @pattern (?=.*\{systemName\})(?=.*\{version\})
        */
       completed: string;
       /**
        * The notification text for started migration, containing references to
-       * the system name with `systemName` and the system version with `version`s
-       * @pattern (?:\{systemName\}.*\{version\})|(?:\{version\}.*\{systemName\})
+       * the system name with `systemName` and the system version with
+       * `version`s
+       * @pattern (?=.*\{systemName\})(?=.*\{version\})
        */
       started: string;
     };
@@ -45,23 +64,35 @@ export interface LangSchema {
       buttonText: string;
       /** Default labels for the prompt */
       defaults: {
-        /** The default description */
-        description: string;
         /** The default window title */
         title: string;
       };
-      /** Different descriptions for different use cases */
-      descriptions: {
-        /** The label for a roll modifier dialog, when the target is not known */
+      /** Different labels for different use cases */
+      labels: {
+        /** The label for a speaker alias */
+        alias: string;
+        /** The label for a critical failure chance */
+        criticalFailure: string;
+        /** The label for a critical success chance */
+        criticalSuccess: string;
+        /** The label for a modifier, when the target is not known */
         genericModifier: string;
         /**
-         * The label for a roll modifier dialog, containing a reference to what
-         * is modified with `what`
-         * @pattern \{what\}
+         * The label for a modifier, containing a reference to what is modified
+         * with `what`.
+         * @pattern (?=.*\{what\})
          */
         modifier: string;
-        /** The description for entering a range */
+        /** The label for entering a range */
         range: string;
+        /** The label for entering a skill total */
+        skillTotal: string;
+        /**
+         * The label for a SPECIAL, containing a reference to the SPECIAL with
+         * `special`.
+         * @pattern (?=.*\{special\})
+         */
+        special: string;
       };
     };
     /** Labels related to rolls */
@@ -71,7 +102,7 @@ export interface LangSchema {
       /**
        * The flavor text for the chat messages, containing a reference to what
        * is rolled with `what`
-       * @pattern \{what\}
+       * @pattern (?=.*\{what\})
        */
       flavor: string;
       /**
@@ -92,41 +123,69 @@ export interface LangSchema {
       };
       /** Labels for different errors */
       errors: {
-        /** Different messages related to errors */
-        messages: {
+        /** Various logical errors */
+        logical: {
           /**
-           * A message saying that the value of a field was changed to the
-           * default, containing a reference to the value with `value`.
-           * @pattern \{value\}
+           * An error message when the target is set to "actor", but the item
+           * of the RuleElement has no actor.
            */
-          changedToDefault: string;
+          noActor: string;
+          /**
+           * An error message when the selected property on the target is of the
+           * wrong type. It should contain a reference to the target name with
+           * `name`, to the property with `path` and the expected type with
+           * `type`.
+           * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{type\})
+           */
+          wrongSelectedType: string;
         };
         /** Various semantic errors */
         semantic: {
-          /** Error messages related to the enabled field */
-          enabled: RuleElementFieldErrors;
-          /** Error messages related to the label field */
-          label: RuleElementFieldErrors;
-          /** Error messages related to the priority field */
-          priority: RuleElementFieldErrors;
-          /** Error messages related to the selector field */
-          selector: RuleElementFieldErrors;
-          /** Error messages related to the type field */
-          type: RuleElementFieldErrors & {
-            /** The error message for unknown RuleElement types */
-            notFound: string;
-          };
-          /** Error messages related to the value field */
-          value: RuleElementFieldErrors;
+          /**
+           * An error message for fields that are missing, containing a
+           * reference to the instance path with `path` and the missing property
+           * with `property`.
+           * @pattern (?=.*\{path\})(?=.*\{property\})
+           */
+          missing: string;
+          /** An error message for an unknown error. */
+          unknown: string;
+          /** An error message for an unknown RuleElement type. */
+          unknownRuleElement: string;
+          /** An error message for an unknown RuleElement target. */
+          unknownTarget: string;
+          /**
+           * An error message for fields that are of the wrong type, containing
+           * a reference to the instance path with `path` and to the name of the
+           * expected type with `type`.
+           * @pattern (?=.*\{path\})(?=.*\{type\})
+           */
+          wrongType: string;
         };
         /**
          * The description for the JSON syntax error, containing references to
          * the number of the rule element with `number` and the error message
          * with `message`
-         * @pattern (?:\{number\}.*\{message\})|(?:\{message\}.*\{number\})
+         * @pattern (?=.*\{number\})(?=.*\{message\})
          */
         syntax: string;
       };
+    };
+    /** Labels related to the measuring tool */
+    ruler: {
+      /** The unit for the AP cost for moving */
+      apCostUnit: string;
+    };
+    /** Labels related to settings. */
+    settings: {
+      /** The Skill Points minimum bounds setting */
+      skillPointsMinBounds: Setting;
+      /** The SPECIAL Points minimum bounds setting */
+      specialPointsMinBounds: Setting;
+      /** The enforce AP on drag and drop setting */
+      enforceApDragDrop: EnforceApSetting;
+      /** The enforce AP on ruler move setting */
+      enforceApRuler: EnforceApSetting;
     };
     /** Labels related to sheets */
     sheets: {
@@ -430,10 +489,25 @@ interface ItemType {
   name: string;
 }
 
-/** A schema for different error messages of RuleElement source fields */
-interface RuleElementFieldErrors {
-  /** The message when the field is of the wrong type */
-  wrongType: string;
+/** A schema for system settings */
+interface Setting {
+  /** The name of the setting */
+  name: string;
+  /** The hint for the setting */
+  hint: string;
+}
+
+/** A schema for enforce AP settings */
+interface EnforceApSetting extends Setting {
+  /** The setting choice labels */
+  choices: {
+    /** The label for the disabled state */
+    disabled: string;
+    /** The label for only enforcing on players state */
+    players: string;
+    /** The label for enforcing on players and GM state */
+    playersAndGameMaster: string;
+  };
 }
 
 /** A schema for SPECIALs */

@@ -12,6 +12,8 @@ import type {
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
+import type * as settings from "./settings.js";
+import { macros } from "./macros/index.js";
 
 declare global {
   interface SourceConfig {
@@ -28,6 +30,32 @@ declare global {
     Actor: typeof WvActor;
     Combat: typeof WvCombat;
     Item: typeof WvItem;
+  }
+
+  interface Game {
+    /** The Wasteland Ventures property */
+    wv: {
+      /** Wasteland Ventures macros */
+      macros: typeof macros;
+    };
+  }
+
+  namespace ClientSettings {
+    interface Values {
+      "wasteland-ventures.initialized": boolean;
+      "wasteland-ventures.systemMigrationVersion": string;
+      "wasteland-ventures.bounds.skills.points.min": number;
+      "wasteland-ventures.bounds.special.points.min": number;
+      "wasteland-ventures.enforceApDragDrop": settings.EnforceApSetting;
+      "wasteland-ventures.enforceApRuler": settings.EnforceApSetting;
+
+      "core.defaultToken":
+        | {
+            bar1: { attribute: string };
+            bar2: { attribute: string };
+          }
+        | Record<string, never>;
+    }
   }
 
   interface FlagConfig {

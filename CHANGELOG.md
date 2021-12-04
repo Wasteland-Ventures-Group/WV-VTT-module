@@ -9,6 +9,86 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- automatic range measuring when using targeting
+  ([#75](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/75))
+
+## [0.6.0] - 2021-11-27
+
+### Added
+
+- rule elements can now modify an actor or an item each
+  ([#22](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/22))
+- a check for duplicate compendium IDs
+  ([#61](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/61))
+- Quench integration for integration testing
+- ability to execute attacks on unowned weapons
+  ([#57](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/57))
+- helper method to get an actor for various actions
+  ([#66](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/66))
+- attacks on unowned weapons will now first use the selected token, then the
+  impersonated actor of the user to prepopulate their data
+- ability to create macros from unowned weapons
+- ability to create weapon macros from source provided in a script macro
+  ([#60](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/60))
+- a remaining AP on movement display to the ruler labels, when measuring from a
+  controllable token
+  ([#65](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/65))
+
+### Changed
+
+- rule elements are no longer autocorrecting and save the source as-is, provided
+  it is parsable JSON ([#21])
+- rule elements are now validated against a schema instead of our own,
+  hand-written validation logic, which makes them easier to extend ([#21])
+- combats now track the Action Points resource by default and skip defeated
+  combatants
+  ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
+- the default resource for tokens are now set to hit points and action points
+  once on first start after world creation
+  ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
+- Prompt utitily application can now ask for multiple inputs
+  ([#56](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/56))
+- shift clicking a weapon attack button no longer does anything special, the
+  modifier input is always shown on the combined weapon attack prompt
+
+[#21]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/21
+
+### Fixed
+
+- migrations no longer run on newly created worlds on first start
+- actor hit and action points are now set to their initial default maximum on
+  creation
+  ([#64](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/64))
+- rule elements being indented weirdly
+  ([#69](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/69))
+- make all Prompt inputs required
+- now rerenders item sheets on any SPECIAL change instead of just Strength
+
+## [0.5.1] - 2021-10-23
+
+### Added
+
+- the built-in ruler tool now shows the walk speed AP usage for the distance
+  measured (this is incompatible with DragRuler for now)
+- an AP check for Token drag/drop movement in combat (this is incompatible with
+  DragRuler for now) ([#5])
+- AP subtraction for Token drag/drop movement in combat ([#5])
+- an AP check and subtraction for Token Ruler movement in combat (this is
+  incompatible with DragRuler for now) ([#5])
+- translations for system settings
+- settings for AP enforcement via drag and drop and via ruler tool
+
+[#5]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/5
+
+### Fixed
+
+- Action Points are no longer refreshed on defeated combatants
+  ([#10](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/10))
+
+## [0.5.0] - 2021-10-03
+
+### Added
+
 - crit chance properties on actors and a display for them on the sheet
 - Dice So Nice! support for weapon attacks
 - dice roll modifiers for flagging criticals
@@ -138,7 +218,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - restricted width of weapon item range displays
 - correct name of rules tab on weapon item sheet
 
-### [0.4.0] - 2021-09-19
+## [0.4.0] - 2021-09-19
 
 ### Added
 
@@ -179,8 +259,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - back-end bounds validation for the roll modifier dialog
-- back-end bounds validation for the character sheet [#9]
-- front-end bounds validation for the character sheet [#9]
+- back-end bounds validation for the character sheet ([#9])
+- front-end bounds validation for the character sheet ([#9])
 
 [#9]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/9
 
@@ -272,7 +352,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - basic character Actor implementation with editable SPECIALs
 
-[Unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.6.0...HEAD
+[0.6.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.5.1...v0.6.0
+[0.5.1]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.5.0...v0.5.1
+[0.5.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.4.0...v0.5.0
 [0.4.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.3...v0.4.0
 [0.3.3]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.2...v0.3.3
 [0.3.2]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.1...v0.3.2

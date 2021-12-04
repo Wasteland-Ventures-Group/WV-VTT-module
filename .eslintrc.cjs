@@ -100,6 +100,16 @@ module.exports = {
     },
     {
       extends: ["plugin:@typescript-eslint/recommended"],
+      files: ["./test/typescript/tsd/**/*.test-d.ts"],
+      parser: "@typescript-eslint/parser",
+      parserOptions: {
+        project: "./test/typescript/tsd/tsconfig.json",
+        sourceType: "module"
+      },
+      plugins: ["@typescript-eslint", "eslint-plugin-tsdoc"]
+    },
+    {
+      extends: ["plugin:@typescript-eslint/recommended"],
       files: ["./gulpfile.ts", "./gulp/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {

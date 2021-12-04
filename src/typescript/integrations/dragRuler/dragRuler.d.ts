@@ -4,7 +4,7 @@
 import { RangeIds } from "./wvSpeedProvider.js";
 
 declare global {
-  let dragRuler: DragRuler.Global | undefined;
+  const dragRuler: DragRuler.Global | undefined;
 }
 
 export declare namespace DragRuler {

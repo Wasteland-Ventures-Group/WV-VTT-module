@@ -122,6 +122,8 @@ download will be in. Then commit all that and tag it with a version tag like so:
 `git tag v0.0.2`. After this run `./gulp.js buildZip`, push the commit and tag
 with `git push; git push --tags` and create a new release from the tag on
 GitHub. Then upload the packaged zip from the `dist` dir to the release.
+Afterwards log in to the [Foundty VTT admin interface][foundryAdmin], go to the
+wasteland-ventures package and add a new package version.
 
 ## Contributing
 
@@ -134,3 +136,4 @@ Issues and pull requests are welcome.
 [choco]: https://chocolatey.org/
 [ts]: https://www.typescriptlang.org/
 [sass]: https://sass-lang.com/
+[foundryAdmin]: https://foundryvtt.com/admin

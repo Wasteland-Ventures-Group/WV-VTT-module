@@ -14,20 +14,21 @@ import {
   SkillName,
   SkillNames,
   SpecialName,
-  SpecialNames
+  SpecialNames,
+  isSpecialName,
+  isSkillName
 } from "../constants.js";
 import Formulator from "../formulator.js";
 import WvI18n from "../wvI18n.js";
-import type RuleElement from "../ruleEngine/ruleElement.js";
+import RuleElement from "../ruleEngine/ruleElement.js";
 import type DragData from "../dragData.js";
 import {
   getSkillMaxPoints,
   getSkillMinPoints,
   getSpecialMaxPoints,
-  getSpecialMinPoints,
-  isSkillName,
-  isSpecialName
+  getSpecialMinPoints
 } from "../helpers.js";
+import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
@@ -107,15 +108,12 @@ export default class WvActor extends Actor {
 
   /** Get the ground movement range of the actor. */
   get groundMoveRange(): number {
-    return this.actionPoints.value * 2;
+    return getGroundMoveRange(this);
   }
 
   /** Get the ground sprint movement range of the actor. */
   get groundSprintMoveRange(): number {
-    const actionPoints =
-      this.actionPoints.value +
-      Math.floor(this.data.data.specials.endurance / 2);
-    return actionPoints * 2;
+    return getGroundSprintMoveRange(this);
   }
 
   // Rolls {{{1
@@ -348,12 +346,14 @@ export default class WvActor extends Actor {
     const rules: RuleElement[] = [];
 
     this.data.items.forEach((item) => {
-      item.data.data.rules.elements.forEach((rule) => rules.push(rule));
+      item.data.data.rules.elements.forEach((rule) => {
+        if (rule instanceof RuleElement) rules.push(rule);
+      });
     });
 
     rules
       .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onPrepareEmbeddedEntities(this));
+      .forEach((rule) => rule.onPrepareEmbeddedEntities());
   }
 
   // Computations after items {{{2

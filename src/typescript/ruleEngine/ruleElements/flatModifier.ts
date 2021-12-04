@@ -5,11 +5,34 @@ import RuleElement from "../ruleElement.js";
  * data point.
  */
 export default class FlatModifier extends RuleElement {
-  override _onPrepareEmbeddedEntities(doc: Actor | Item): void {
-    const oldValue = foundry.utils.getProperty(doc.data.data, this.selector);
-    if (typeof oldValue === "number") {
-      const newValue = oldValue + this.value;
-      foundry.utils.setProperty(doc.data.data, this.selector, newValue);
+  /**
+   * The expected primitive type of the selected property for this RuleElement
+   */
+  static readonly EXPECTED_TYPE = "number";
+
+  override validate(): void {
+    super.validate();
+
+    if (this.hasErrors()) return;
+
+    this.checkSelectedIsOfType(FlatModifier.EXPECTED_TYPE);
+  }
+
+  override _onPrepareEmbeddedEntities(): void {
+    const oldValue = foundry.utils.getProperty(
+      this.targetDoc.data.data,
+      this.selector
+    );
+
+    if (typeof oldValue !== FlatModifier.EXPECTED_TYPE) {
+      throw new Error("The selected property was not a number!");
     }
+
+    const newValue = oldValue + this.value;
+    foundry.utils.setProperty(
+      this.targetDoc.data.data,
+      this.selector,
+      newValue
+    );
   }
 }

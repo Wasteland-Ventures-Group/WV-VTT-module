@@ -1,5 +1,6 @@
 import { CONSTANTS, TYPES } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
+import WvItem from "../item/wvItem.js";
 import { LOG } from "../systemLogger.js";
 
 /**
@@ -88,7 +89,7 @@ async function getUpdateDataFromCompendium(
   if (!compendium) return {};
 
   const document = await compendium.getDocument(match[2]);
-  if (!document) return {};
+  if (!(document instanceof WvItem)) return {};
 
   const updateData = { data: document.toObject().data };
   updateData.data.notes = item.data.data.notes;

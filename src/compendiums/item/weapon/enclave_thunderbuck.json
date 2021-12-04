@@ -1,3 +1,45 @@
 {
+  "name": "Enclave Thunderbuck",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-pistol-brown.webp",
+  "data": {
+    "name": "Enclave Thunderbuck",
+    "description": "Though plans of this gun have been discovered from wartime era, the gun truly gained popularity after the war with Enclave's guards and police for peacekeeping. Holds in it a small storm cloud.",
+    "notes": "Does not need to reload. When firing, user can spend +2 AP to add +(1) to damage. Each +2 AP adds +5% to critical failure threshold. Up to +10 AP can be spent for a +(5) damage and +25% critical failure threshold. Fires a lightning bolt.",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 1
+          },
+          "ap": 6
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 16,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 32,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 48,
+        "modifier": -20
+      }
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 2,
+    "value": 9999,
+    "weight": 1,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
   "_id": "WVweapon00000026"
 }

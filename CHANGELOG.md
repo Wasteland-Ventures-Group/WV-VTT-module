@@ -39,6 +39,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Buckington Automatic Rifle M18
   - Buckscatter G-M7 Launcher
   - Dynamite
+  - Enclave Gale Blaster
+  - Enclave Hailgun
+  - Enclave Novasurge Rifle
+  - Enclave Rainmaker
+  - Enclave Thunderbuck
   - Frag Grenade
   - GAG Incinerator
   - GAG Thunder Cannon

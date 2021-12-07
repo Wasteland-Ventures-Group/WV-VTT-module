@@ -1,0 +1,53 @@
+{
+  "name": "Q-Same Arcane Gatling",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-green.webp",
+  "data": {
+    "name": "Q-Same Arcane Gatling",
+    "description": "It's heavy and kind of cumbersome. Some have affectionately nicknamed it the Disco Ball, due to the lightshow it gives upon firing.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Burst": {
+          "damage": {
+            "base": 1,
+            "dice": 8
+          },
+          "ap": 8,
+          "rounds": 10,
+          "dtReduction": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 50,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 100,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 150,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 200
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 8,
+    "value": 9999,
+    "weight": 9,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000044"
+}

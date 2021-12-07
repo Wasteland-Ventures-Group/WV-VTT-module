@@ -1,0 +1,63 @@
+{
+  "name": "Spear",
+  "type": "weapon",
+  "img": "icons/weapons/polearms/spear-flared-blue.webp",
+  "data": {
+    "name": "Spear",
+    "description": "A simple thrusting spear, meant to strike one from a decent distance away. Favored by Earth and Crystal ponies.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 3,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 7
+        },
+        "Throw": {
+          "damage": {
+            "base": 3,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 7,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 2,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": {
+          "base": 10,
+          "special": "strength",
+          "multiplier": 2
+        },
+        "modifier": -10
+      },
+      "long": {
+        "distance": {
+          "base": 20,
+          "special": "strength",
+          "multiplier": 4
+        },
+        "modifier": -20
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 5,
+    "value": 150,
+    "weight": 1,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000062"
+}

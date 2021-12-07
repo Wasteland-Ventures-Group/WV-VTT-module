@@ -1,0 +1,39 @@
+{
+  "name": "Bladed Gauntlets",
+  "type": "weapon",
+  "img": "icons/weapons/fist/claws-engraved-grey.webp",
+  "data": {
+    "name": "Bladed Gauntlets",
+    "description": "Useful when you want to go haunting some teenagers in their dreams.",
+    "notes": "Cripple chance 5%",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 1,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 4
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "unarmed",
+    "strengthRequirement": 5,
+    "value": 60,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000086"
+}

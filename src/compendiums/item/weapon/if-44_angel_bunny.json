@@ -1,0 +1,60 @@
+{
+  "name": "IF-44 \"Angel Bunny\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-brown.webp",
+  "data": {
+    "name": "IF-44 \"Angel Bunny\"",
+    "description": "Pony-manufactured submachinegun. Popular among police before war. Popular among raiders after war.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 5
+          },
+          "ap": 6,
+          "rounds": 1
+        },
+        "Burst": {
+          "damage": {
+            "base": 2,
+            "dice": 8
+          },
+          "ap": 8,
+          "rounds": 5
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 30,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 60,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 80,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 30
+    },
+    "skill": "firearms",
+    "strengthRequirement": 5,
+    "value": 450,
+    "weight": 2.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000016"
+}

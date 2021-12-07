@@ -11,6 +11,83 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - automatic range measuring when using targeting
   ([#75](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/75))
+- weapons
+  - Alien Blaster
+  - Arcane Glove
+  - Auto-Axe
+  - Balefire Egg Launcher
+  - Baseball Bat
+  - Bladed Gauntlets
+  - Buckington Automatic Rifle M18
+  - Buckscatter G-M7 Launcher
+  - Dynamite
+  - Enclave Gale Blaster
+  - Enclave Hailgun
+  - Enclave Novasurge Rifle
+  - Enclave Rainmaker
+  - Enclave Thunderbuck
+  - Frag Grenade
+  - GAG Incinerator
+  - GAG Thunder Cannon
+  - Gauss Minigun
+  - Gauss Pistol
+  - Gauss Revolver
+  - Gauss Rifle
+  - Gauss Shotgun
+  - Gauss SMG
+  - Gretta M28 MG "Pecker"
+  - Gretta M33 MG "Predator"
+  - Gretta M3 SMG "Greaser"
+  - H&K MGat-39 "Mini Gun"
+  - Hellhound Gauntlets
+  - Hoof of Goddess
+  - Hunting Bow
+  - IF-44 "Angel Bunny"
+  - IF-84 "Stampede"
+  - IF-92 "Melrose"
+  - IF-G12 "Champion"
+  - Improvised Melee (small)
+  - Longbow
+  - Lumber Axe
+  - Mace
+  - Manticore Gauntlets
+  - Molotrot Cocktail
+  - No Weapon
+  - Plasma Grenade
+  - Power Glove
+  - Q-Same AEF-451 Flamer “Book Burner”
+  - Q-Same AEW-5 Arcane Pistol
+  - Q-Same AEW-6 Arcane Revolver
+  - Q-Same AEW-21 Arcane Rifle
+  - Q-Same AEW-33 Tri-Arcane Rifle
+  - Q-Same Arcane Gatling
+  - Q-Same MLEM
+  - Ripper
+  - SFO Launcher "Thumper"
+  - SFO Rocket Launcher "Boomer"
+  - Shishkebab
+  - Silaha Plasma "Corona"
+  - Silaha Plasma "Death Star"
+  - Silaha Plasma "Fusion"
+  - Silaha Plasma "Hestia"
+  - Silaha Plasma "Igneous"
+  - Silaha Plasma "Vulcan"
+  - Sledgehammer
+  - Sparkle-Nade
+  - Spear
+  - Super Sledge
+  - Thermic Lance
+  - Warhammer
+  - Yao Guai Gauntlets
+- missing notes on weapons
+  - IF-P39 "Troubleshoes"
+  - Zebra Rifle
+- new attack "Throw" for weapons:
+  - Fire Axe
+  - Lumber Axe
+- attribute Ranges for weapons:
+  - Fire Axe
+  - Lumber Axe
 
 ## [0.6.0] - 2021-11-27
 
@@ -112,9 +189,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - weapons
   - Machete
   - Staff
-- missing notes on weapons
-  - IF-P39 "Troubleshoes"
-  - Zebra Rifle
 
 ### Changed
 

@@ -1,0 +1,52 @@
+{
+  "name": "Gretta M28 MG \"Pecker\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/rifle-brown.webp",
+  "data": {
+    "name": "Gretta M28 MG \"Pecker\"",
+    "description": "The griffins' take on machine guns; favored by those who want things dead without actually aiming, like Talon initiates on their first mission.",
+    "notes": "Point blank accuracy modifier -10",
+    "attacks": {
+      "sources": {
+        "Burst": {
+          "damage": {
+            "base": 1,
+            "dice": 5
+          },
+          "ap": 7,
+          "rounds": 5
+        }
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 100
+    },
+    "ranges": {
+      "short": {
+        "distance": 50,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 100,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 150,
+        "modifier": -20
+      }
+    },
+    "skill": "firearms",
+    "strengthRequirement": 5,
+    "value": 250,
+    "weight": 5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000018"
+}

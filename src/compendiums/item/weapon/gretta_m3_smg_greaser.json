@@ -1,0 +1,61 @@
+{
+  "name": "Gretta M3 SMG \"Greaser\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-brown.webp",
+  "data": {
+    "name": "Gretta M3 SMG \"Greaser\"",
+    "description": "Popular griffin-made submachine gun. It is cheap and easy to manufacture, and its grease gun -like look is the source of its monicker",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 3
+          },
+          "ap": 5,
+          "rounds": 1
+        },
+        "Burst": {
+          "damage": {
+            "base": 2,
+            "dice": 4
+          },
+          "ap": 6,
+          "rounds": 3
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 30
+    },
+    "holdout": true,
+    "skill": "firearms",
+    "strengthRequirement": 3,
+    "value": 200,
+    "weight": 2,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000015"
+}

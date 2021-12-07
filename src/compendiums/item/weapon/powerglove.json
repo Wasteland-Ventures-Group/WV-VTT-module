@@ -1,0 +1,39 @@
+{
+  "name": "Power Glove",
+  "type": "weapon",
+  "img": "icons/weapons/fist/fist-knuckles-stone.webp",
+  "data": {
+    "name": "Power Glove",
+    "description": "You don't have to be an interdimensional, genocidal being to enjoy the power this glove brings.",
+    "notes": "Cripple chance +10% on Head",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 3,
+            "dice": 0,
+            "diceRange": true
+          },
+          "ap": 5
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "unarmed",
+    "strengthRequirement": 5,
+    "value": 150,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000083"
+}

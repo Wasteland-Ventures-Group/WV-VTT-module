@@ -1,0 +1,38 @@
+{
+  "_id": "WVweapon00000051",
+  "name": "Mace",
+  "type": "weapon",
+  "img": "",
+  "data": {
+    "name": "Mace",
+    "description": "A simple and heavy metal lump at the end of a rod. Perfect for meeting mace to face.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 2,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 5
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 5,
+    "value": 150,
+    "weight": 2,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,53 @@
+{
+  "name": "GAG Incinerator",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-steel.webp",
+  "data": {
+    "name": "GAG Incinerator",
+    "description": "It feels a little cheap and plastic-y, but at least you can get off on the fumes?",
+    "notes": "Deals fire damage; inflicts Burning, Loses -(2) damage at Long Range.",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 3
+          },
+          "ap": 6,
+          "rounds": 1,
+          "splash": "single"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 20,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 40,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 60,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 20
+    },
+    "skill": "explosives",
+    "strengthRequirement": 6,
+    "value": 200,
+    "weight": 7.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000073"
+}

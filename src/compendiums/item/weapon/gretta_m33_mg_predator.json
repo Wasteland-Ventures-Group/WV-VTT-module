@@ -1,0 +1,52 @@
+{
+  "name": "Gretta M33 MG \"Predator\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/rifle-brown.webp",
+  "data": {
+    "name": "Gretta M33 MG \"Predator\"",
+    "description": "Two machineguns linked together, Predator packs both punch and heft above anything else readily available in the market. Used exclusively by elite Griffon mercs during the war.",
+    "notes": "Point blank accuracy modifier -10",
+    "attacks": {
+      "sources": {
+        "Burst": {
+          "damage": {
+            "base": 4,
+            "dice": 8
+          },
+          "ap": 7,
+          "rounds": 5
+        }
+      }
+    },
+    "reload": {
+      "ap": 8,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 60
+    },
+    "ranges": {
+      "short": {
+        "distance": 120,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 240,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 360,
+        "modifier": -20
+      }
+    },
+    "skill": "firearms",
+    "strengthRequirement": 10,
+    "value": 0,
+    "weight": 20,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000021"
+}

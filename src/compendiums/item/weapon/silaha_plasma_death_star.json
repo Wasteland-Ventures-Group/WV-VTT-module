@@ -1,0 +1,53 @@
+{
+  "name": "Silaha Plasma \"Death Star\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-steel.webp",
+  "data": {
+    "name": "Silaha Plasma \"Death Star\"",
+    "description": "Deals extra damage on Alderaan",
+    "notes": "Deals fire damage; inflicts Burning, Loses -(2) damage at Long Range.",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 3,
+            "dice": 5
+          },
+          "ap": 7,
+          "rounds": 1,
+          "splash": "single"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 30,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 60,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 90,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 20
+    },
+    "skill": "explosives",
+    "strengthRequirement": 8,
+    "value": 750,
+    "weight": 12,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000075"
+}

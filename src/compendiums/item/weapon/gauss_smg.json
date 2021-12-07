@@ -1,0 +1,62 @@
+{
+  "name": "Gauss SMG",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-gold.webp",
+  "data": {
+    "name": "Gauss SMG",
+    "description": "A hefty and strong SMG, potent enough to rival unicorns in firepower. Though we've yet to see this gun heal or bend nature to its whim, but it sure as Tartarus rends your enemies.",
+    "notes": "May use either Firearms or Magic Energy Weapons skill to shoot",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 2,
+            "dice": 5
+          },
+          "ap": 6,
+          "dtReduction": 1,
+          "rounds": 1
+        },
+        "Burst": {
+          "damage": {
+            "base": 3,
+            "dice": 10
+          },
+          "ap": 8,
+          "dtReduction": 1,
+          "rounds": 5
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 30,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 60,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 80,
+        "modifier": 0
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 30
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 6,
+    "value": 700,
+    "weight": 4.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000042"
+}

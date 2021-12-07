@@ -1,0 +1,38 @@
+{
+  "name": "Sledgehammer",
+  "type": "weapon",
+  "img": "icons/weapons/hammers/hammer-double-sledge-engraved.webp",
+  "data": {
+    "name": "Sledgehammer",
+    "description": "The good old-fashioned sledgehammer, humble in its design.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "ap": 7,
+          "damage": {
+            "base": 2,
+            "dice": 2,
+            "diceRange": true
+          }
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 7,
+    "value": 200,
+    "weight": 6,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000058"
+}

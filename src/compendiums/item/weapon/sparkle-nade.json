@@ -1,0 +1,44 @@
+{
+  "name": "Sparkle-Nade",
+  "type": "weapon",
+  "img": "icons/weapons/thrown/bomb-gas-grey-purple.webp",
+  "data": {
+    "name": "Sparkle-Nade",
+    "description": "Named after the Ministry mare, not the drink. How stupid do you need to be to blow up literal money?",
+    "notes": "Deals 2 radiation dmg tokens at 2x60%",
+    "attacks": {
+      "sources": {
+        "Throw": {
+          "damage": {
+            "base": 4,
+            "dice": 4
+          },
+          "ap": 7,
+          "rounds": 1,
+          "splash": "large"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": {
+          "base": 10,
+          "special": "strength",
+          "multiplier": 2
+        },
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "explosives",
+    "strengthRequirement": 2,
+    "value": 9999,
+    "weight": 0.2,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000080"
+}

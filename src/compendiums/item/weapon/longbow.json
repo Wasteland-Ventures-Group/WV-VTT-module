@@ -1,0 +1,64 @@
+{
+  "name": "Longbow",
+  "type": "weapon",
+  "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+  "data": {
+    "name": "Hunting Bow",
+    "description": "A quiet killing machine on steroids",
+    "notes": "Silent after 10 meters (5 hexes): penalty on Sneak after Sneak Attack is -15 instead of -30 | Collapsible (Mod) | Compound Limb (Mod) | Lethal Swordbuck (Perk) | Lightning Bruiser (Perk)",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 5,
+          "damage": {
+            "base": 4,
+            "dice": 2,
+            "diceRange": true
+          }
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": {
+          "base": 20,
+          "special": "strength",
+          "multiplier": 2
+        },
+        "modifier": 0
+      },
+      "medium": {
+        "distance": {
+          "base": 40,
+          "special": "strength",
+          "multiplier": 4
+        },
+        "modifier": -10
+      },
+      "long": {
+        "distance": {
+          "base": 60,
+          "special": "strength",
+          "multiplier": 6
+        },
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 1,
+      "caliber": "TODO",
+      "containerType": "internal",
+      "size": 1
+    },
+    "skill": "melee",
+    "strengthRequirement": 6,
+    "value": 300,
+    "weight": 2,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000067"
+}

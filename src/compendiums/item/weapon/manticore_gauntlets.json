@@ -1,0 +1,38 @@
+{
+  "name": "Manticore Gauntlets",
+  "type": "weapon",
+  "img": "icons/weapons/fist/claws-engraved-grey.webp",
+  "data": {
+    "name": "Manticore Gauntlets",
+    "description": "For the love of Sunbutt, don't lick it.",
+    "notes": "Cripple Chance 5%",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 3,
+            "dice": 2,
+            "diceRange": true
+          },
+          "ap": 6
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "unarmed",
+    "strengthRequirement": 4,
+    "value": 300,
+    "weight": 4,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000088"
+}

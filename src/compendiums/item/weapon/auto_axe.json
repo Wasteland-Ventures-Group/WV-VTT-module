@@ -1,0 +1,38 @@
+{
+  "name": "Auto-Axe",
+  "type": "weapon",
+  "img": "icons/weapons/axes/axe-battle-heavy-jagged.webp",
+  "data": {
+    "name": "Auto-Axe",
+    "description": "Auto-axe is what happens when mad scientists at MAS figure out axes.",
+    "notes": "Base Cripple chance 20%",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "ap": 7,
+          "damage": {
+            "base": 5,
+            "dice": 1,
+            "diceRange": true
+          }
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 7,
+    "value": 350,
+    "weight": 10,
+    "rules": {
+      "sources": []
+    }
+  },
+  "flags": {},
+  "effects": [],
+  "_id": "WVweapon00000060"
+}

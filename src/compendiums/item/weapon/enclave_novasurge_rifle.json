@@ -1,0 +1,53 @@
+{
+  "name": "Enclave Novasurge Rifle",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-red.webp",
+  "data": {
+    "name": "Enclave Novasurge Rifle",
+    "description": "There have been many before, and some since, but the Novasurge Rifle holds its No. 1 spot with its superior range and though lower in damage, it's reliability.",
+    "notes": "The projectile charges as it travels - each 10m of distance to the target grants the attack +(1), up to +(10) at 100 meters and beyond.",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 4,
+            "dice": 3
+          },
+          "ap": 4,
+          "rounds": 1,
+          "dtReduction": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 150,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 300,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 450,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 6,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 15
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 5,
+    "value": 9999,
+    "weight": 4,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000035"
+}

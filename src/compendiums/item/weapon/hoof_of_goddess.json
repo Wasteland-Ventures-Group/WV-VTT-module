@@ -1,0 +1,38 @@
+{
+  "name": "Hoof of Goddess",
+  "type": "weapon",
+  "img": "icons/weapons/fist/fist-knuckles-stone.webp",
+  "data": {
+    "name": "Hoof of Goddess",
+    "description": "In case it was ever in any doubt: it isn't required, but being insane is a bonus with this glove.",
+    "notes": "Attacks are magical in nature",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 3,
+            "dice": 2,
+            "diceRange": true
+          },
+          "ap": 5
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "unarmed",
+    "strengthRequirement": 6,
+    "value": 300,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000085"
+}

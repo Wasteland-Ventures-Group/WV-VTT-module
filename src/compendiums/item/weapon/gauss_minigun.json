@@ -1,0 +1,53 @@
+{
+  "name": "Gauss Minigun",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-green.webp",
+  "data": {
+    "name": "Gauss Minigun",
+    "description": "What can we say other than it is a minigun that usually stops the fight before it even began? With its superior range, your enemies head for the Rainbow Bridge before ever noticing you.",
+    "notes": "May use either Firearms or Magic Energy Weapons skill to shoot",
+    "attacks": {
+      "sources": {
+        "Burst": {
+          "damage": {
+            "base": 3,
+            "dice": 9
+          },
+          "ap": 8,
+          "dtReduction": 2,
+          "rounds": 10
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 100,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 200,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 300,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 200
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 10,
+    "value": 9999,
+    "weight": 20,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000046"
+}

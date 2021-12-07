@@ -1,0 +1,53 @@
+{
+  "name": "Balefire Egg Launcher",
+  "type": "weapon",
+  "img": "icons/weapons/artillery/cannon-engraved-gold.webp",
+  "data": {
+    "name": "Balefire Egg Launcher",
+    "description": "Most explosives are \"Buck you and your immediate area\" in damage. The BEL takes that a step further and salts the earth afterwards. Because buck you and city you live in.",
+    "notes": "Area of impact irradiated, deals 1 Rad for 1x50% chance.",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 10,
+            "dice": 20
+          },
+          "ap": 5,
+          "rounds": 1,
+          "splash": "huge"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 40,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 80,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 120,
+        "modifier": -40
+      }
+    },
+    "reload": {
+      "ap": 8,
+      "caliber": "TODO",
+      "containerType": "internal",
+      "size": 1
+    },
+    "skill": "explosives",
+    "strengthRequirement": 8,
+    "value": 9999,
+    "weight": 15,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000071"
+}

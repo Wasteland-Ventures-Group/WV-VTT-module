@@ -1,0 +1,39 @@
+{
+  "name": "Hellhound Gauntlets",
+  "type": "weapon",
+  "img": "icons/weapons/fist/claw-leather-black.webp",
+  "data": {
+    "name": "Hellhound Gauntlets",
+    "description": "Deals massive damage to both your enemies and your guilty conscience.",
+    "notes": "Cannot be bought, only crafted.",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 4,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 4,
+          "dtReduction": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "skill": "unarmed",
+    "strengthRequirement": 6,
+    "value": 9999,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000089"
+}

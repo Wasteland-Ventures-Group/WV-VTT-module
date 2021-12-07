@@ -1,0 +1,52 @@
+{
+  "name": "Enclave Rainmaker",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-pistol-brown.webp",
+  "data": {
+    "name": "Enclave Rainmaker",
+    "description": "Surprisingly popular sidearm in the Enclave, to the point that long service in the military is awarded with an engraved variant of the Rainmaker. The gun packs a surprising punch for its weight.",
+    "notes": "Can fire multiple shots in a single action, dealing additional +(1) damage per additional \"ammo\" used. Up to +(3) damage to the attack for firing the entire capacity at once. The next attack using this weapon after using this feature suffers a -10 to MEWs.",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 2,
+            "dice": 2
+          },
+          "ap": 5,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 16,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 32,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 48,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 4
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 2,
+    "value": 9999,
+    "weight": 1,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000030"
+}

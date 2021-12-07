@@ -1,0 +1,44 @@
+{
+  "name": "Frag Grenade",
+  "type": "weapon",
+  "img": "icons/weapons/thrown/bomb-gas-grey-purple.webp",
+  "data": {
+    "name": "Frag Grenade",
+    "description": "The humble frag grenade, a grenade to custom to your heart's content.",
+    "notes": "Inflicts Bleeding",
+    "attacks": {
+      "sources": {
+        "Throw": {
+          "damage": {
+            "base": 3,
+            "dice": 3
+          },
+          "ap": 7,
+          "rounds": 1,
+          "splash": "small"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": {
+          "base": 10,
+          "special": "strength",
+          "multiplier": 2
+        },
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "explosives",
+    "strengthRequirement": 2,
+    "value": 12,
+    "weight": 0.2,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000078"
+}

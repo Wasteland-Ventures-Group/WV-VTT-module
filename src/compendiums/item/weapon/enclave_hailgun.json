@@ -1,0 +1,46 @@
+{
+  "name": "Enclave Hailgun",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-gold.webp",
+  "data": {
+    "name": "Enclave Hailgun",
+    "description": "The Enclave's take on shotguns, making whoever its pointed at feel the chill of the winter winds.",
+    "notes": "Does not need to reload. When firing, user can spend +2 AP to add +(1) to damage. Each +2 AP adds a cumulative -5 MEW penalty to the attack. Up to +10 AP can be spent for a +(5) damage and -25 to MEWs for the attack. Fires ice projectiles",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 5,
+            "damageFallOff": "shotgun"
+          },
+          "ap": 6
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 6,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 12,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 18,
+        "modifier": -20
+      }
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 4,
+    "value": 9999,
+    "weight": 3,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000039"
+}

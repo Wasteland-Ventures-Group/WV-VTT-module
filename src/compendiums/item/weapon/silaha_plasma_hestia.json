@@ -1,0 +1,54 @@
+{
+  "name": "Silaha Plasma \"Hestia\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-pistol-brown.webp",
+  "data": {
+    "name": "Silaha Plasma \"Hestia\"",
+    "description": "Silaha Plasma's answer to complains about their pistol, the Hestia boasts an improved range and damage to their pistol variant.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "ap": 5,
+          "damage": {
+            "base": 3,
+            "dice": 2
+          },
+          "dtReduction": 1,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 30,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 60,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 90,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 4
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 2,
+    "value": 350,
+    "weight": 1.5,
+    "holdout": true
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000028"
+}

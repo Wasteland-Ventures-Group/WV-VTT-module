@@ -1,0 +1,52 @@
+{
+  "name": "Enclave Gale Blaster",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-gold.webp",
+  "data": {
+    "name": "Enclave Gale Blaster",
+    "description": "Gale Blaster is the gun for those pegasi who do not really care for aiming too much. However, the powerful gusts of wind this gun delivers is enough to knock targets off the sky.",
+    "notes": "Does not need to reload. Target rolls END or gets knocked back 2 meters. When firing, user can spend +2 AP to incur a -1 penalty to the target's END roll. Up to +10 AP can be spent for a -5 penalty to the target's END roll.",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 3
+          },
+          "ap": 5
+        },
+        "Burst": {
+          "damage": {
+            "base": 2,
+            "dice": 5
+          },
+          "ap": 7
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 50,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 100,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 150,
+        "modifier": -20
+      }
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 6,
+    "value": 9999,
+    "weight": 10,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000043"
+}

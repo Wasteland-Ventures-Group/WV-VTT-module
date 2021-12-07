@@ -1,0 +1,45 @@
+{
+  "name": "Enclave CB-Arcus",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-green.webp",
+  "data": {
+    "name": "Enclave CB-Arcus",
+    "description": "Despite being by far the most sleek machinegun in design, the CB-Arcus still packs a decent punch, enough to be the favorite of many Wonderbolts in the past.",
+    "notes": "Does not need to reload. When firing, user can spend +2 AP to add +(2) DMG. Each +2 AP adds +5% to critical failure threshold. Up to +10 AP can be spent for an additional +(10) DMG and +25% critical failure threshold.",
+    "attacks": {
+      "sources": {
+        "Burst": {
+          "damage": {
+            "base": 1,
+            "dice": 4
+          },
+          "ap": 7
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 50,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 100,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 150,
+        "modifier": -20
+      }
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 6,
+    "value": 9999,
+    "weight": 10,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000047"
+}

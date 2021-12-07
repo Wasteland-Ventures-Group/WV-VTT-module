@@ -1,28 +1,29 @@
 {
-  "name": "Fire Axe",
+  "_id": "WVweapon00000055",
+  "name": "Lumber Axe",
   "type": "weapon",
-  "img": "icons/weapons/axes/axe-battle-black.webp",
+  "img": "icons/weapons/staves/staff-simple.webp",
   "data": {
-    "name": "Fire Axe",
-    "description": "A firemare's axe, a heavier cousin to the lumber axe. It was meant to go through doors like butter, but it does also go through ribcages with similar ease.",
+    "name": "Lumber Axe",
+    "description": "A woodcutter's basic tool, now more used for slashing through the flesh.",
     "notes": "",
     "attacks": {
       "sources": {
         "Swipe": {
-          "ap": 6,
           "damage": {
-            "base": 3,
-            "dice": 2,
-            "diceRange": true
-          }
-        },
-        "Throw": {
-          "ap": 6,
-          "damage": {
-            "base": 3,
-            "dice": 2,
+            "base": 2,
+            "dice": 1,
             "diceRange": true
           },
+          "ap": 6
+        },
+        "Throw": {
+          "damage": {
+            "base": 2,
+            "dice": 1,
+            "diceRange": true
+          },
+          "ap": 6,
           "rounds": 1
         }
       }
@@ -41,15 +42,14 @@
         "modifier": -10
       }
     },
+    "skill": "melee",
+    "strengthRequirement": 6,
+    "value": 80,
+    "weight": 5,
     "rules": {
       "sources": []
-    },
-    "skill": "melee",
-    "strengthRequirement": 5,
-    "value": 200,
-    "weight": 4
+    }
   },
   "effects": [],
-  "flags": {},
-  "_id": "WVweapon00000057"
+  "flags": {}
 }

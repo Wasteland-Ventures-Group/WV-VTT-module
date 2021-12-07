@@ -1,0 +1,52 @@
+{
+  "name": "H&K MGat-39 \"Mini Gun\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/rifle-brown.webp",
+  "data": {
+    "name": "H&K MGat-39 \"Mini Gun\"",
+    "description": "A ferocious, but reliable machine gun developed by a late-war competitor to Ironshod.",
+    "notes": "Point blank accuracy modifier -10",
+    "attacks": {
+      "sources": {
+        "Burst": {
+          "damage": {
+            "base": 3,
+            "dice": 9
+          },
+          "ap": 9,
+          "rounds": 10
+        }
+      }
+    },
+    "reload": {
+      "ap": 11,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 240
+    },
+    "ranges": {
+      "short": {
+        "distance": 30,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 60,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 90,
+        "modifier": -20
+      }
+    },
+    "skill": "firearms",
+    "strengthRequirement": 9,
+    "value": 750,
+    "weight": 15,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000020"
+}

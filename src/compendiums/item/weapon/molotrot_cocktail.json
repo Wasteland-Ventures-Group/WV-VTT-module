@@ -1,0 +1,44 @@
+{
+  "name": "Molotrot Cocktail",
+  "type": "weapon",
+  "img": "icons/weapons/thrown/bomb-gas-grey-purple.webp",
+  "data": {
+    "name": "Molotrot Cocktail",
+    "description": "We're currently lacking breadbaskets, but I hope you'd settle for a cocktail?",
+    "notes": "Deals fire damage; inflicts Burning, and sets area hit on fire for 3 turns.",
+    "attacks": {
+      "sources": {
+        "Throw": {
+          "damage": {
+            "base": 1,
+            "dice": 4
+          },
+          "ap": 6,
+          "rounds": 1,
+          "splash": "small"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": {
+          "base": 6,
+          "special": "strength",
+          "multiplier": 2
+        },
+        "modifier": 0
+      }
+    },
+    "holdout": true,
+    "skill": "explosives",
+    "strengthRequirement": 2,
+    "value": 7,
+    "weight": 0.5,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000077"
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Warhammer",
+  "type": "weapon",
+  "img": "icons/weapons/hammers/hammer-war-rounding.webp",
+  "data": {
+    "name": "Warhammer",
+    "description": "The big brother of Mace, a Warhammer adds both weight and cruelty to its swings. Better for demolishing than building.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "ap": 6,
+          "damage": {
+            "base": 5,
+            "dice": 1,
+            "diceRange": true
+          }
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": "melee",
+        "modifier": 0
+      }
+    },
+    "rules": {
+      "sources": []
+    },
+    "skill": "melee",
+    "strengthRequirement": 4,
+    "value": 350,
+    "weight": 3.5
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000053"
+}

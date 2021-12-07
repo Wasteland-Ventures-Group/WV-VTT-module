@@ -1,0 +1,53 @@
+{
+  "name": "Q-Same AEF-451 Flamer \"Book Burner\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-blunderbuss-steel.webp",
+  "data": {
+    "name": "Q-Same AEF-451 Flamer \"Book Burner\"",
+    "description": "It has been said that the Ministry Mare of MAS found the name of this flamethrower absolutely horrendous. That being said, it does burn things exceptionally well.",
+    "notes": "Deals fire damage; inflicts Burning; Fires in line. Loses -(2)  damage at Long Range.",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 1,
+            "dice": 5
+          },
+          "ap": 7,
+          "rounds": 1,
+          "splash": "single"
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 6,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 12,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 18,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 5,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 60
+    },
+    "skill": "explosives",
+    "strengthRequirement": 7,
+    "value": 500,
+    "weight": 9,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000074"
+}

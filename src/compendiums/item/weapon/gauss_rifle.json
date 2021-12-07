@@ -1,0 +1,53 @@
+{
+  "name": "Gauss Rifle",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-red.webp",
+  "data": {
+    "name": "Gauss Rifle",
+    "description": "Long-range sniper rifle rumored to have been commissioned to MAW operatives especially. Often seen on Steel Rangers in the Wastes, instead.",
+    "notes": "May use either Firearms or Magic Energy Weapons skill to shoot",
+    "attacks": {
+      "sources": {
+        "Single": {
+          "damage": {
+            "base": 6,
+            "dice": 1
+          },
+          "ap": 7,
+          "dtReduction": 3,
+          "rounds": 1
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 250,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 500,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 750,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 4,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 5
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 6,
+    "value": 800,
+    "weight": 6,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000033"
+}

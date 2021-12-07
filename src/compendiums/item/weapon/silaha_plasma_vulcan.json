@@ -1,0 +1,53 @@
+{
+  "name": "Silaha Plasma \"Vulcan\"",
+  "type": "weapon",
+  "img": "icons/weapons/guns/gun-green.webp",
+  "data": {
+    "name": "Silaha Plasma \"Vulcan\"",
+    "description": "Though notably unreliable in the plasma's consistency, this surprisingly sleek, well-crafted gun has found its place in many a wastelander's heart.",
+    "notes": "",
+    "attacks": {
+      "sources": {
+        "Burst": {
+          "damage": {
+            "base": 2,
+            "dice": 8
+          },
+          "ap": 7,
+          "rounds": 10,
+          "dtReduction": 2
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 40,
+        "modifier": 0
+      },
+      "medium": {
+        "distance": 80,
+        "modifier": -10
+      },
+      "long": {
+        "distance": 120,
+        "modifier": -20
+      }
+    },
+    "reload": {
+      "ap": 6,
+      "caliber": "TODO",
+      "containerType": "magazine",
+      "size": 200
+    },
+    "skill": "magicalEnergyWeapons",
+    "strengthRequirement": 8,
+    "value": 9999,
+    "weight": 12,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000045"
+}

@@ -89,6 +89,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Fire Axe
   - Lumber Axe
 
+### Changed
+
+- the details section of weapon attack messages is listed first before hit and
+  damage roll
+  ([#76](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/76))
+
 ## [0.6.0] - 2021-11-27
 
 ### Added

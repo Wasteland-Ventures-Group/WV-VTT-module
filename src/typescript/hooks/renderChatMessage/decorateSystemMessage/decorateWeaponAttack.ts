@@ -36,9 +36,9 @@ export default function decorateWeaponAttack(
   }
 
   content.append(
+    getDetailsElement(flags),
     getHitRollElement(flags),
-    getDamageRollElement(flags),
-    getDetailsElement(flags)
+    getDamageRollElement(flags)
   );
 }
 

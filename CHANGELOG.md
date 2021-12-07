@@ -50,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Longbow
   - Lumber Axe
   - Mace
-    - Manticore Gauntlets
+  - Manticore Gauntlets
   - Molotrot Cocktail
   - No Weapon
   - Plasma Grenade
@@ -88,7 +88,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - attribute Ranges for weapons:
   - Fire Axe
   - Lumber Axe
-
 
 ## [0.6.0] - 2021-11-27
 
@@ -190,7 +189,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - weapons
   - Machete
   - Staff
-
 
 ### Changed
 

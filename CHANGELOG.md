@@ -102,6 +102,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - missing notes on weapons
   - IF-P39 "Troubleshoes"
   - Zebra Rifle
+- new attack "Throw" for weapons:
+  - Fire Axe
+  - Lumber Axe
+
 
 ### Changed
 

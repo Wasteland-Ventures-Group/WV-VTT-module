@@ -23,7 +23,7 @@ into the manifest URL bar and click install.
 ### Setup
 
 To develop this system and make use of the tooling in place, the minimum
-requirement is [Node.js][nodeJs]. Node.js usually has the package manager `npm`
+requirement is [Node.js][node-js]. Node.js usually has the package manager `npm`
 packaged with it. This is all you need to install the project's dependencies and
 get started developing.
 
@@ -50,11 +50,13 @@ in that case.
 #### Running gulp
 
 On Linux machines, you can easily run gulp with just this command:
+
 ```sh
 ./gulp.js
 ```
 
 On Windows machines, you likely have to run it this way:
+
 ```pwsh
 node gulp.js
 ```
@@ -65,6 +67,7 @@ in a similar way.
 #### Getting an overview over tasks
 
 For an overview of the tasks, run:
+
 ```sh
 ./gulp.js --tasks
 ```
@@ -75,6 +78,7 @@ Some tasks have a variant with the `Watch` suffix. Those tasks are meant to be
 run as a background task and will look for changes in the corresponding input
 files to run on their own. For example, one can run the following on a terminal
 to have the files be recompiled when changes are made to the input files:
+
 ```sh
 ./gulp.js watchAll &
 ```
@@ -93,6 +97,7 @@ available.
 Before you can start editing, the schemas have to be generated at least once and
 again, if changes are made to the system data types. To generate the schemas,
 run:
+
 ```sh
 ./gulp.js compSchemas
 ```
@@ -122,7 +127,7 @@ download will be in. Then commit all that and tag it with a version tag like so:
 `git tag v0.0.2`. After this run `./gulp.js buildZip`, push the commit and tag
 with `git push; git push --tags` and create a new release from the tag on
 GitHub. Then upload the packaged zip from the `dist` dir to the release.
-Afterwards log in to the [Foundty VTT admin interface][foundryAdmin], go to the
+Afterwards log in to the [Foundty VTT admin interface][foundry-admin], go to the
 wasteland-ventures package and add a new package version.
 
 ## Contributing
@@ -131,9 +136,9 @@ Issues and pull requests are welcome.
 
 [rules]: https://drive.google.com/drive/folders/0B9tzIuxnnTLrTzlsb3BMTlhpbFk?resourcekey=0-0eZ5HHuCDrAs8sYYkoOTLA
 [system]: https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/system.json
-[nodeJs]: https://nodejs.org/en/
+[node-js]: https://nodejs.org/en/
 [nodenv]: https://github.com/nodenv/nodenv
 [choco]: https://chocolatey.org/
 [ts]: https://www.typescriptlang.org/
 [sass]: https://sass-lang.com/
-[foundryAdmin]: https://foundryvtt.com/admin
+[foundry-admin]: https://foundryvtt.com/admin

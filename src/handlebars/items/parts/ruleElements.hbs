@@ -2,13 +2,10 @@
   <button type="button" class="control rule-element-control fas fa-plus" data-action="create" title="{{localize 'wv.ruleEngine.ruleElement.create'}}"></button>
   <ol class="rule-element-list">
     {{#each sheet.rules.elements as |element|}}
-      <li class="rule-element{{ternary element.isNew ' new-element' ''}}{{ternary element.hasErrors ' errornous-element' ''}}" data-index="{{@index}}">
+      <li class="rule-element{{ternary element.hasErrors ' errornous-element' ''}}" data-index="{{@index}}">
         <div class="rule-element-header">
           <h4>{{element.source.label}}</h4>
           <div class="rule-element-icons">
-            {{#if element.isNew}}
-              <span class="rule-element-new-icon fas fa-star-of-life"></span>
-            {{/if}}
             {{#if element.hasErrors}}
               <span class="rule-element-error-icon fas fa-exclamation-circle"></span>
             {{/if}}
@@ -20,34 +17,17 @@
             <button type="button" class="control rule-element-control fas fa-minus" data-action="delete" title="{{localize 'wv.ruleEngine.ruleElement.delete'}}"></button>
           </div>
         </div>
-        <textarea class="rule-element-source" name="sheet.rules.{{@index}}" required rows="7">{{jsonPretty element.source}}</textarea>
-        {{#if element.hasErrors}}
-          <ul class="rule-element-errors fa-ul">
-            {{#each element.errorKeys as |errorKey|}}
-              <li>
-                <span class="fa-li">
-                  <span class="fas fa-exclamation-circle"></span>
-                </span>
-                {{localize errorKey}}
-              </li>
-            {{/each}}
-          </ul>
-        {{/if}}
-        {{#if element.hasWarnings}}
-          <ul class="rule-element-warnings fa-ul">
-            {{#each element.warnings as |warning|}}
-              <li>
-                <span class="fa-li">
-                  <span class="fas fa-exclamation-triangle"></span>
-                </span>
-                {{localize warning.messageKey}}
-                {{#if warning.changeMessageKey}}
-                  {{localize warning.changeMessageKey value=warning.changeValue}}
-                {{/if}}
-              </li>
-            {{/each}}
-          </ul>
-        {{/if}}
+        <textarea class="rule-element-source" name="sheet.rules.{{@index}}" required rows="8">{{jsonPretty element.source}}</textarea>
+        <ul class="rule-element-messages fa-ul">
+          {{#each element.messages as |message|}}
+            <li class="{{message.cssClass}}">
+              <span class="fa-li">
+                <span class="fas {{message.iconClass}}"></span>
+              </span>
+              {{message.message}}
+            </li>
+          {{/each}}
+        </ul>
       </li>
     {{/each}}
   </ol>

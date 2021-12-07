@@ -1,14 +1,9 @@
 import { TYPES } from "../../constants.js";
-import {
-  getDisplayRangeDistance,
-  Range
-} from "../../data/item/weapon/ranges.js";
-import { getGame } from "../../foundryHelpers.js";
+import * as ranges from "../../data/item/weapon/ranges.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import WvI18n from "../../wvI18n.js";
-import Prompt from "../prompt.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 export default class WeaponSheet extends WvItemSheet {
@@ -79,16 +74,16 @@ export default class WeaponSheet extends WvItemSheet {
   }
 
   override _onDragStart(event: DragEvent): void {
-    if (!this.item.actor?.id || !this.item.id) return super._onDragStart(event);
+    if (!this.item.id) return super._onDragStart(event);
 
-    const target = event.target;
+    const target = event.currentTarget;
     if (!(target instanceof HTMLElement)) return super._onDragStart(event);
 
     const attackKey = target.dataset.attack;
     if (!attackKey) return super._onDragStart(event);
 
     const dragData: WeaponAttackDragData = {
-      actorId: this.item.actor.id,
+      actorId: this.item.actor?.id,
       attackName: attackKey,
       type: "weaponAttack",
       weaponId: this.item.id
@@ -119,18 +114,7 @@ export default class WeaponSheet extends WvItemSheet {
     const attack = this.item.systemData.attacks.attacks[attackKey];
     if (!attack) return;
 
-    if (event.shiftKey) {
-      const modifier = await Prompt.getNumber({
-        description: getGame().i18n.localize(
-          "wv.prompt.descriptions.genericModifier"
-        ),
-        min: -100,
-        max: 100
-      });
-      attack.execute({ modifier: modifier, whisperToGms: event.ctrlKey });
-    } else {
-      attack.execute({ whisperToGms: event.ctrlKey });
-    }
+    attack.execute({ whisperToGms: event.ctrlKey });
   }
 
   /**
@@ -138,11 +122,13 @@ export default class WeaponSheet extends WvItemSheet {
    * @param range - the Range to map
    * @returns a sheet displayable Range
    */
-  protected mapToSheetRange(range: Range | undefined): SheetRange | undefined {
+  protected mapToSheetRange(
+    range: ranges.Range | undefined
+  ): SheetRange | undefined {
     if (!range) return;
 
     return {
-      distance: getDisplayRangeDistance(
+      distance: ranges.getDisplayRangeDistance(
         range.distance,
         this.actor?.data.data.specials
       ),

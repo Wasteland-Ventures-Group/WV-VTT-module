@@ -1,7 +1,8 @@
 import { CONSTANTS } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 
-export const migrVerSettingName = "systemMigrationVersion";
+export const initializedSettingName = "initialized" as const;
+export const migrVerSettingName = "systemMigrationVersion" as const;
 export const boundsSettingNames = {
   skills: {
     points: {
@@ -13,10 +14,23 @@ export const boundsSettingNames = {
       min: "bounds.special.points.min"
     }
   }
-};
+} as const;
+export const enforceApDragDropSettingName = "enforceApDragDrop" as const;
+export const enforceApRulerSettingName = "enforceApRuler" as const;
 
 export function registerSystemSettings(): void {
-  const settings = getGame().settings;
+  const game = getGame();
+  const settings = game.settings;
+  const i18n = game.i18n;
+
+  /** Track whether the world has been initialized with some system settings. */
+  settings.register(CONSTANTS.systemId, initializedSettingName, {
+    config: false,
+    default: false,
+    name: "System Initialization Flag",
+    scope: "world",
+    type: Boolean
+  });
 
   /** Track the system version of the last migration */
   settings.register(CONSTANTS.systemId, migrVerSettingName, {
@@ -27,19 +41,71 @@ export function registerSystemSettings(): void {
     type: String
   });
 
+  let i18nPrefix = "wv.settings.skillPointsMinBounds";
   settings.register(CONSTANTS.systemId, boundsSettingNames.skills.points.min, {
     config: true,
     default: CONSTANTS.bounds.skills.points.min,
-    name: "Skill Points minimum bound",
+    hint: i18n.localize(`${i18nPrefix}.hint`),
+    name: i18n.localize(`${i18nPrefix}.name`),
     scope: "world",
     type: Number
   });
 
+  i18nPrefix = "wv.settings.specialPointsMinBounds";
   settings.register(CONSTANTS.systemId, boundsSettingNames.special.points.min, {
     config: true,
     default: CONSTANTS.bounds.special.points.min,
-    name: "SPECIAL Points minimum bound",
+    hint: i18n.localize(`${i18nPrefix}.hint`),
+    name: i18n.localize(`${i18nPrefix}.name`),
     scope: "world",
     type: Number
   });
+
+  i18nPrefix = "wv.settings.enforceApDragDrop";
+  settings.register(CONSTANTS.systemId, enforceApDragDropSettingName, {
+    choices: {
+      [EnforceApSetting.DISABLED]: i18n.localize(
+        `${i18nPrefix}.choices.disabled`
+      ),
+      [EnforceApSetting.PLAYERS]: i18n.localize(
+        `${i18nPrefix}.choices.players`
+      ),
+      [EnforceApSetting.PLAYERS_AND_GAMEMASTER]: i18n.localize(
+        `${i18nPrefix}.choices.playersAndGameMaster`
+      )
+    },
+    config: true,
+    default: EnforceApSetting.PLAYERS,
+    hint: i18n.localize(`${i18nPrefix}.hint`),
+    name: i18n.localize(`${i18nPrefix}.name`),
+    scope: "world",
+    type: Number
+  });
+
+  i18nPrefix = "wv.settings.enforceApRuler";
+  settings.register(CONSTANTS.systemId, enforceApRulerSettingName, {
+    choices: {
+      [EnforceApSetting.DISABLED]: i18n.localize(
+        `${i18nPrefix}.choices.disabled`
+      ),
+      [EnforceApSetting.PLAYERS]: i18n.localize(
+        `${i18nPrefix}.choices.players`
+      ),
+      [EnforceApSetting.PLAYERS_AND_GAMEMASTER]: i18n.localize(
+        `${i18nPrefix}.choices.playersAndGameMaster`
+      )
+    },
+    config: true,
+    default: EnforceApSetting.PLAYERS_AND_GAMEMASTER,
+    hint: i18n.localize(`${i18nPrefix}.hint`),
+    name: i18n.localize(`${i18nPrefix}.name`),
+    scope: "world",
+    type: Number
+  });
+}
+
+export enum EnforceApSetting {
+  DISABLED,
+  PLAYERS,
+  PLAYERS_AND_GAMEMASTER
 }

@@ -16,9 +16,7 @@ export default class Weapon extends WvItem {
     super(data, context);
   }
 
-  /**
-   * Get the system data of this weapon.
-   */
+  /** Get the system data of this weapon. */
   get systemData(): WeaponDataProperties["data"] {
     if (!this.data || this.data.type !== TYPES.ITEM.WEAPON)
       throw new Error(`This data's data type is not ${TYPES.ITEM.WEAPON}.`);
@@ -26,13 +24,11 @@ export default class Weapon extends WvItem {
     return this.data.data;
   }
 
-  /**
-   * Check whether this Weapon has any Strength based values.
-   */
-  hasSomeStrengthBasedValues(): boolean {
+  /** Check whether this Weapon has any SPECIAL based values. */
+  hasSomeSpecialBasedValues(): boolean {
     return (
       this.hasSomeStrengthBasedAttackDamage() ||
-      this.hasSomeStrengthBasedRangeDistance()
+      this.hasSomeSpecialBasedRangeDistance()
     );
   }
 
@@ -45,37 +41,24 @@ export default class Weapon extends WvItem {
     );
   }
 
-  /**
-   * Check whether some of this Weapon's Attacks are Strength based.
-   */
+  /** Check whether some of this Weapon's Attacks are Strength based. */
   protected hasSomeStrengthBasedAttackDamage(): boolean {
     return Object.values(this.systemData.attacks.sources).some(
       (attack) => attack.damage.diceRange
     );
   }
 
-  /**
-   * Check whether some of this Weapon's ranges are Strength based.
-   */
-  protected hasSomeStrengthBasedRangeDistance(): boolean {
-    const ranges = [
-      this.systemData.ranges.short,
-      this.systemData.ranges.medium,
-      this.systemData.ranges.long
-    ];
-
-    return ranges.some(
-      (range) =>
-        typeof range === "object" &&
-        typeof range.distance === "object" &&
-        range.distance.special === "strength"
-    );
+  /** Check whether some of this Weapon's ranges are SPECIAL based. */
+  protected hasSomeSpecialBasedRangeDistance(): boolean {
+    return [
+      this.systemData.ranges.short?.distance,
+      this.systemData.ranges.medium?.distance,
+      this.systemData.ranges.long?.distance
+    ].some((distance) => typeof distance === "object");
   }
 }
 
-/**
- * A custom type guard to check whether an Item is a Weapon.
- */
+/** A custom type guard to check whether an Item is a Weapon. */
 export function isWeaponItem(item: WvItem): item is Weapon {
   return item.data.type === TYPES.ITEM.WEAPON;
 }

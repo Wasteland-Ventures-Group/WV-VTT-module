@@ -1,38 +1,68 @@
 import { CONSTANTS } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 
-/** An application to prompt the user for input. */
-export default class Prompt extends Application<Options> {
+/**
+ * An application to prompt the user for input.
+ * @typeParam Specs - the type of the input specs
+ */
+export default class Prompt<Specs extends InputSpecs> extends Application {
+  /**
+   * Get data by prompting the user.
+   * @param spec - the input specification for the Prompt
+   * @param options - additional options for the Prompt
+   * @returns the user input data
+   * @typeParam I - the type of the input specs, the return type is derived off
+   */
+  static async get<I extends InputSpecs>(
+    spec: I,
+    options?: Partial<Application.Options>
+  ): Promise<InputSpecsReturnType<I>> {
+    return new Promise((resolve, reject) => {
+      new this(spec, (data) => resolve(data), reject, options).render(true);
+    });
+  }
+
   /**
    * Get a number by prompting the user.
+   * @param spec - the input specification for the Prompt
    * @param options - additional options for the Prompt
-   * @returns the number if resolved or an Error if rejected
+   * @returns the number if resolved or an error message if rejected
    */
-  static async getNumber(options?: Partial<Options>): Promise<number> {
+  static async getNumber(
+    spec: Omit<NumberInputSpec, "type">,
+    options?: Partial<Application.Options>
+  ): Promise<number> {
     return new Promise((resolve, reject) => {
-      const prompt = new this((value) => {
-        const number = parseInt(value);
-        isNaN(number) ? reject("The input was not a number!") : resolve(number);
-      }, foundry.utils.mergeObject(options ?? {}, { type: "number" } as const));
-      prompt.render(true);
+      new this(
+        { value: { type: "number", ...spec } },
+        (data) => resolve(data["value"]),
+        reject,
+        options
+      ).render(true);
     });
   }
 
   /**
    * Get a string by prompting the user.
+   * @param spec - the input specification for the Prompt
    * @param options - additional options for the Prompt
    * @returns the string when resolved
    */
-  static async getString(options?: Partial<Options>): Promise<string> {
-    return new Promise((resolve) => {
+  static async getString(
+    spec: Omit<TextInputSpec, "type">,
+    options?: Partial<Application.Options>
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
       new this(
-        (value) => resolve(value),
-        foundry.utils.mergeObject(options ?? {}, { type: "text" } as const)
+        { value: { type: "text", ...spec } },
+        (data) => resolve(data["value"]),
+        reject,
+        options
       ).render(true);
     });
   }
 
-  static override get defaultOptions(): Options {
+  static override get defaultOptions(): Application.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "prompt"],
       template: `${CONSTANTS.systemPath}/handlebars/prompt.hbs`,
@@ -41,17 +71,38 @@ export default class Prompt extends Application<Options> {
   }
 
   /**
-   * @param callback - the callback to be executed once the user submits the
+   * @param specs - the input specs for the Prompt
+   * @param onSubmit - the callback to be executed once the user submits the
    *                   application's form
+   * @param onClose - the callback to be executed once the prompt is closed
+   *                  without being submitted
    * @param options - the options for the prompt
    */
-  constructor(callback: Callback, options?: Partial<Options>) {
+  constructor(
+    specs: Specs,
+    onSubmit: Callback<Specs>,
+    onClose: () => void,
+    options?: Partial<Application.Options>
+  ) {
     super(options);
-    this.callback = callback;
+
+    this.specs = foundry.utils.deepClone(specs);
+    Object.keys(this.specs).forEach((key) => {
+      this.specs[key].class = this.getClass(this.specs[key]);
+    });
+
+    this.onSubmitCallback = onSubmit;
+    this.onCloseCallback = onClose;
   }
 
-  /** The callback to run on submit. */
-  private callback: Callback;
+  /** The input specifications of the Prompt */
+  protected specs: RenderSpecs<Specs>;
+
+  /** The callback to run on submit */
+  protected onSubmitCallback: Callback<Specs>;
+
+  /** The callback to run on close */
+  protected onCloseCallback: (reason: "closed") => void;
 
   override activateListeners(html: JQuery<HTMLFormElement>): void {
     super.activateListeners(html);
@@ -60,28 +111,26 @@ export default class Prompt extends Application<Options> {
     html.find("input")[0].select();
   }
 
-  override async getData(): Promise<DialogData> {
-    const type = this.options.type ?? "text";
+  override async getData(): Promise<RenderData<Specs>> {
+    return { inputs: this.specs };
+  }
 
-    return {
-      class: this.getClass(),
-      description: this.options.description,
-      max: this.options.max,
-      min: this.options.min,
-      type,
-      value: this.options.value ?? (type === "number" ? "0" : "")
-    };
+  override async close(
+    options: CloseOptions = { runCallback: true }
+  ): Promise<void> {
+    if (options?.runCallback) this.onCloseCallback("closed");
+    await super.close();
   }
 
   /** Get the css classes for the input element. */
-  protected getClass(): string | undefined {
+  protected getClass(spec: InputSpec): string | undefined {
     if (
-      this.options.type === "number" &&
-      typeof this.options.max === "number" &&
-      typeof this.options.min === "number"
+      spec.type === "number" &&
+      typeof spec.max === "number" &&
+      typeof spec.min === "number"
     ) {
-      const maxPlaces = this.getCharWidth(this.options.max);
-      const minPlaces = this.getCharWidth(this.options.min);
+      const maxPlaces = this.getCharWidth(spec.max);
+      const minPlaces = this.getCharWidth(spec.min);
       const places = Math.max(maxPlaces, minPlaces);
 
       if (places.between(0, 5)) return `size-${places}`;
@@ -101,66 +150,108 @@ export default class Prompt extends Application<Options> {
    * Handle the submit event of the application input.
    * @param event - the submit event of the form
    */
-  protected onSubmit(event: SubmitEvent): void {
+  protected async onSubmit(event: SubmitEvent): Promise<void> {
     event.preventDefault();
 
-    const input = event.target.elements.namedItem("input");
-    if (input instanceof HTMLInputElement) {
-      this.callback(input.value);
-      this.close();
-    } else {
-      throw new Error(`The modifier element is not an HTMLInputElement.`);
-    }
+    const values: Partial<InputSpecsReturnType<Specs>> = {};
+    const data = new FormData(event.target);
+
+    Object.keys(this.specs).forEach((key: keyof Specs) => {
+      const inputValue = data.get(key as string);
+      if (typeof inputValue !== "string")
+        throw Error(`The value of input ${key} is missing!`);
+
+      switch (this.specs[key]["type"]) {
+        case "number": {
+          const value = parseInt(inputValue);
+          if (isNaN(value))
+            throw Error(`The input of ${key} was not a number!`);
+          values[key] = value as InputSpecReturnType<Specs[typeof key]>;
+          break;
+        }
+        default:
+          values[key] = inputValue as InputSpecReturnType<Specs[typeof key]>;
+      }
+    });
+
+    await this.close({ runCallback: false });
+    this.onSubmitCallback(values as InputSpecsReturnType<Specs>);
   }
 }
 
-/** This is the data supplied to the handlebars template. */
-interface DialogData {
-  /** The classes for the input element */
-  class: string | undefined;
+/** The render data supplied to the Prompt's Handlebars template. */
+type RenderData<Specs extends InputSpecs> = {
+  /** The inputs of the Prompt */
+  inputs: RenderSpecs<Specs>;
+};
 
-  /**
-   * The description for the input of the dialog. When undefined, a generic
-   * description is used.
-   */
-  description: string | undefined;
+/** A type that maps input specifications to render input specifications */
+type RenderSpecs<Specs extends InputSpecs> = {
+  [Key in keyof Specs]: RenderSpec<Specs[Key]>;
+};
 
-  /** The maximum value for the input. */
-  max: number | undefined;
+/** A type that maps an input specification to a render input specification */
+type RenderSpec<Spec extends InputSpec> = Spec & {
+  class?: string | undefined;
+};
 
-  /** The minimum value for the input. */
-  min: number | undefined;
+/** The input specifications for the Prompt */
+export type InputSpecs = Record<string, InputSpec>;
 
-  /** The type of the input */
-  type: "text" | "number";
+/** A single input specification for a Prompt */
+export type InputSpec = NumberInputSpec | TextInputSpec;
 
-  /** The default value of the input */
-  value: string;
+/** A common input specification for a Prompt */
+export interface CommonInputSpec {
+  /** The label for the input */
+  label: string;
+
+  /** The HTML input type */
+  type: string;
+
+  /** The initial value of the input */
+  value?: string | number | null | undefined;
 }
 
-/** These are the options for the Prompt. */
-interface Options extends Application.Options {
-  /** An optional description for the dialog. */
-  description?: string;
+/** A number input specification for a Prompt  */
+export interface NumberInputSpec extends CommonInputSpec {
+  type: "number";
 
-  /** An optional max value for the modifier. */
-  max?: number;
+  /** The maximum number */
+  max?: number | undefined;
 
-  /** An optional min value for the modifier. */
-  min?: number;
+  /** The minimum number */
+  min?: number | undefined;
 
-  /** The type of the input */
-  type?: DialogData["type"];
-
-  /** The default value */
-  value?: string;
+  value?: number | null | undefined;
 }
+
+/** A text input specification for a Prompt  */
+export interface TextInputSpec extends CommonInputSpec {
+  type: "text";
+}
+
+/** A type that maps InputSpecs to their corresponding return types */
+export type InputSpecsReturnType<Specs extends InputSpecs> = {
+  [Key in keyof Specs]: InputSpecReturnType<Specs[Key]>;
+};
+
+/** A type that maps an InputSpec to its corresponding return type */
+export type InputSpecReturnType<Spec extends InputSpec | undefined> =
+  Spec extends undefined
+    ? InputSpecReturnType<NonNullable<Spec>> | undefined
+    : NonNullable<Spec>["type"] extends "number"
+    ? number
+    : string;
 
 /**
  * A type for the Callback of the Prompt Application.
- * @param value - the value of the input element
+ * @typeParam Specs - the specs of the Prompt
+ * @param data - the data gathered from the input elements
  */
-type Callback = (value: string) => void;
+export type Callback<Specs extends InputSpecs> = (
+  data: InputSpecsReturnType<Specs>
+) => void;
 
 type SubmitEvent = JQuery.SubmitEvent<
   HTMLFormElement,
@@ -168,3 +259,9 @@ type SubmitEvent = JQuery.SubmitEvent<
   HTMLFormElement,
   HTMLFormElement
 >;
+
+/** Close options for the Prompt */
+interface CloseOptions extends Application.CloseOptions {
+  /** Whether to run the close callback */
+  runCallback?: boolean;
+}

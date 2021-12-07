@@ -13,6 +13,12 @@
         }
       }
     },
+    "messages": {
+      "movement": {
+        "noActor": "{name} does not have an Actor!",
+        "notEnoughAp": "Not enough AP to move. {needed} were needed, {actual} were available to {name}."
+      }
+    },
     "migration": {
       "completed": "{systemName} system migration to version {version} completed!",
       "started": "Applying {systemName} system migration for version {version}. Please be patient and do not close your game or shut down your server."
@@ -20,17 +26,21 @@
     "prompt": {
       "buttonText": "Submit",
       "defaults": {
-        "description": "Enter a value:",
         "title": "Prompt"
       },
-      "descriptions": {
-        "genericModifier": "Enter a modifier:",
-        "modifier": "Enter a modifier for {what}:",
-        "range": "Enter the range to the target:"
+      "labels": {
+        "alias": "Speaker alias:",
+        "criticalFailure": "Critical failure rate:",
+        "criticalSuccess": "Critical success rate:",
+        "genericModifier": "Modifier:",
+        "modifier": "Modifier for {what}:",
+        "range": "Range to target:",
+        "skillTotal": "Skill:",
+        "special": "{special}:"
       }
     },
     "rolls": {
-      "buttonTitle": "Ctrl-Click to whisper to the GM(s)\nShift-Click to roll with modifier\nBoth for both",
+      "buttonTitle": "Ctrl-Click to whisper to the GM(s)",
       "flavor": "Rolling {what}",
       "roll": "Roll"
     },
@@ -41,31 +51,49 @@
         "newName": "New Rule Element"
       },
       "errors": {
-        "messages": {
-          "changedToDefault": "The value was changed to \"{value}\"."
+        "logical": {
+          "noActor": "The target is set to \"actor\", but the item has no actor.",
+          "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\"."
         },
         "semantic": {
-          "enabled": {
-            "wrongType": "The enabled field was not a boolean."
-          },
-          "label": {
-            "wrongType": "The label field was not a string."
-          },
-          "priority": {
-            "wrongType": "The priority field was not a number."
-          },
-          "selector": {
-            "wrongType": "The selector field was not a string."
-          },
-          "type": {
-            "notFound": "The type of RuleElement is unknown.",
-            "wrongType": "The type field was not a string."
-          },
-          "value": {
-            "wrongType": "The value field was not a number."
-          }
+          "missing": "The property \"{property}\" is missing at \"{path}\".",
+          "unknown": "An unknown error occurred.",
+          "unknownRuleElement": "The type of RuleElement is unknown.",
+          "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
+          "wrongType": "The property \"{path}\" is not of type \"{type}\"."
         },
         "syntax": "Syntax error in rule element definition {number}: {message}"
+      }
+    },
+    "ruler": {
+      "apCostUnit": "AP"
+    },
+    "settings": {
+      "enforceApDragDrop": {
+        "choices": {
+          "disabled": "Disabled",
+          "playersAndGameMaster": "Players and GameMaster",
+          "players": "Players only"
+        },
+        "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with Drag and Drop.",
+        "name": "Enforce AP for Drag and Drop movement"
+      },
+      "enforceApRuler": {
+        "choices": {
+          "disabled": "Disabled",
+          "playersAndGameMaster": "Players and GameMaster",
+          "players": "Players only"
+        },
+        "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with the Ruler tool.",
+        "name": "Enforce AP for Ruler movement"
+      },
+      "skillPointsMinBounds": {
+        "hint": "The minimum allowed amount of Skill points, that can be entered into an actor sheet.",
+        "name": "Skill Points minimum bound"
+      },
+      "specialPointsMinBounds": {
+        "hint": "The minimum allowed amount of SPECIAL points, that can be entered into an actor sheet.",
+        "name": "SPECIAL Points minimum bound"
       }
     },
     "sheets": {

@@ -65,7 +65,7 @@ export enum RangeBracket {
  */
 export function getDisplayRanges(
   weaponData: WeaponDataProperties["data"],
-  specials?: Specials
+  specials?: Partial<Specials>
 ): string {
   const ranges = [weaponData.ranges.short.distance];
   if (weaponData.ranges.medium) {
@@ -89,7 +89,7 @@ export function getDisplayRanges(
  */
 export function getDisplayRangeDistance(
   distance: Distance,
-  specials?: Specials | undefined
+  specials?: Partial<Specials> | undefined
 ): string {
   if (typeof distance === "number") return distance.toString();
   if (distance === "melee") return "0";
@@ -115,7 +115,7 @@ export function getDisplayRangeDistance(
  */
 export function getEffectiveRangeDistance(
   distance: Distance,
-  specials?: Specials
+  specials?: Partial<Specials>
 ): number {
   if (typeof distance === "number") return distance;
   if (distance === "melee") return 0;
@@ -134,7 +134,7 @@ export function getEffectiveRangeDistance(
 export function getRangeBracket(
   ranges: Ranges,
   range: number,
-  specials?: Specials
+  specials?: Partial<Specials>
 ): RangeBracket {
   if (range <= CONSTANTS.rules.pointBlank.distance)
     return RangeBracket.POINT_BLANK;
@@ -194,4 +194,19 @@ export function getSpecialRangeDistance(
   specialValue: number
 ): number {
   return distance.base + specialValue * distance.multiplier;
+}
+
+/** Get the names of SPECIALs used in the Ranges. */
+export function getRangesSpecials(ranges: Ranges): Set<SpecialName> {
+  const specialNames: Set<SpecialName> = new Set();
+
+  [
+    ranges.short.distance,
+    ranges.medium?.distance,
+    ranges.long?.distance
+  ].forEach((distance) => {
+    if (typeof distance === "object") specialNames.add(distance.special);
+  });
+
+  return specialNames;
 }

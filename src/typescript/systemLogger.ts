@@ -41,7 +41,7 @@ export default class SystemLogger {
 
   /** Get the context of this instance. */
   private getContext(): string {
-    return `${this.context} | `;
+    return `${this.context} |`;
   }
 }
 

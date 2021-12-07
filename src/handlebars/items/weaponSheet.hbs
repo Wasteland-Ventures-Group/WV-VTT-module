@@ -1,5 +1,5 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
-  {{> (get . "sheet.parts.header")}}
+{{> (get . "sheet.parts.header")}}
 
   <nav class="tabs flex-fixed" data-group="primary">
     <a class="item" data-tab="stats">{{localize "wv.sheets.common.tabs.stats"}}</a>
@@ -106,7 +106,7 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="rules">
-      {{> (get . "sheet.parts.rules")}}
+{{> (get . "sheet.parts.rules")}}
     </div>
   </section>
 </form>

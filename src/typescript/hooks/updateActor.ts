@@ -2,7 +2,7 @@ import { isWeaponItem } from "../item/weapon.js";
 
 /** Register system callbacks for the updateActor hook. */
 export default function registerForUpdateActor(): void {
-  Hooks.on("updateActor", reRenderWeaponSheetsWithStrength);
+  Hooks.on("updateActor", reRenderWeaponSheetsWithSpecial);
 }
 
 /**
@@ -11,15 +11,24 @@ export default function registerForUpdateActor(): void {
  * @param actor - the updeted Actor
  * @param change - the change data of the update
  */
-function reRenderWeaponSheetsWithStrength(
+function reRenderWeaponSheetsWithSpecial(
   actor: Parameters<Hooks.UpdateDocument<typeof Actor>>[0],
   change: Parameters<Hooks.UpdateDocument<typeof Actor>>[1]
 ): void {
-  if (typeof change?.data?.specials?.strength === "undefined") return;
+  if (!hasSpecialChange(change)) return;
 
   actor.items.forEach((item) => {
     if (!isWeaponItem(item)) return;
 
-    if (item.hasSomeStrengthBasedValues()) item.render(false);
+    if (item.hasSomeSpecialBasedValues()) item.render(false);
   });
+}
+
+/** Check whether the passed change data has any SPECIAL change. */
+function hasSpecialChange(
+  change: Parameters<Hooks.UpdateDocument<typeof Actor>>[1]
+): boolean {
+  if (typeof change?.data?.specials === "undefined") return false;
+
+  return Object.values(change.data.specials).length > 0;
 }

@@ -34,10 +34,10 @@ export class Specials implements Record<SpecialName, number> {
 /** An Actor vitals object for the database */
 export class Vitals {
   /** The current amount of hit points of an Actor */
-  hitPoints = new FoundryResource(10);
+  hitPoints = new FoundryResource(15);
 
   /** The current amount of action points of an Actor */
-  actionPoints = new FoundryResource(10);
+  actionPoints = new FoundryResource(12);
 
   /** The current insanity of an Actor */
   insanity = new FoundryResource(0);

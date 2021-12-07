@@ -1,7 +1,10 @@
-import type { SkillName, SpecialName } from "./constants";
-
+import {
+  SkillName,
+  SpecialName,
+  isSpecialName,
+  isSkillName
+} from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
-import { isSkillName, isSpecialName } from "./helpers.js";
 
 /** The internationalization structure of a single SPECIAL. */
 export interface I18nSpecial {
@@ -51,7 +54,7 @@ export default class WvI18n {
    * @returns the internationalized description
    */
   static getSpecialModifierDescription(name: string): string {
-    return getGame().i18n.format("wv.prompt.descriptions.modifier", {
+    return getGame().i18n.format("wv.prompt.labels.modifier", {
       what: this.getSpecialLongName(name)
     });
   }
@@ -73,7 +76,7 @@ export default class WvI18n {
    * @returns the internationalized description
    */
   static getSkillModifierDescription(name: string): string {
-    return getGame().i18n.format("wv.prompt.descriptions.modifier", {
+    return getGame().i18n.format("wv.prompt.labels.modifier", {
       what: this.getSkillName(name)
     });
   }

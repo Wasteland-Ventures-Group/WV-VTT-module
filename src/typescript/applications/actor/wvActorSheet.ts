@@ -6,15 +6,12 @@ import {
   SpecialName,
   SpecialNames,
   ThaumaturgySpecials,
-  TYPES
+  TYPES,
+  isSpecialName,
+  isSkillName
 } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
-import {
-  getSkillMinPoints,
-  getSpecialMinPoints,
-  isSkillName,
-  isSpecialName
-} from "../../helpers.js";
+import { getSkillMinPoints, getSpecialMinPoints } from "../../helpers.js";
 import WvI18n, { I18nSpecial } from "../../wvI18n.js";
 import { LOG } from "../../systemLogger.js";
 import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";
@@ -193,7 +190,7 @@ export default class WvActorSheet extends ActorSheet<
     if (special && isSpecialName(special)) {
       if (event.shiftKey) {
         const modifier = await Prompt.getNumber({
-          description: WvI18n.getSpecialModifierDescription(special),
+          label: WvI18n.getSpecialModifierDescription(special),
           min: -100,
           max: 100
         });
@@ -219,7 +216,7 @@ export default class WvActorSheet extends ActorSheet<
     if (skill && isSkillName(skill)) {
       if (event.shiftKey) {
         const modifier = await Prompt.getNumber({
-          description: WvI18n.getSkillModifierDescription(skill),
+          label: WvI18n.getSkillModifierDescription(skill),
           min: -100,
           max: 100
         });

@@ -50,6 +50,27 @@ jobs:
       - run: npm ci --cache .npm --prefer-offline
       - name: run eslint
         run: npm run lint
+  test:
+    name: test code base
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.node_version }}
+      - name: cache node.js modules
+        uses: actions/cache@v2
+        with:
+          path: .npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - run: npm ci --cache .npm --prefer-offline
+      - name: run tests
+        run: npm run test
   validateSchemas:
     name: validate JSON schemas
     runs-on: ubuntu-latest

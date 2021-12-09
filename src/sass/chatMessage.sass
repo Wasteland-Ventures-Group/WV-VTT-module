@@ -93,3 +93,18 @@
         &.success
           color: #18520b
           filter: sepia(0.5) hue-rotate(60deg)
+
+    .modifier-listing
+      grid-template-columns: auto, min-content
+
+      & > *
+        width: 100%
+
+      .listing-total
+        border:
+          bottom:
+            style: double
+            width: 3px
+          top:
+            style: solid
+            width: 1px

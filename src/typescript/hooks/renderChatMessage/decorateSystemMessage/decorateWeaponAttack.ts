@@ -1,7 +1,10 @@
 import { CONSTANTS } from "../../../constants.js";
 import type { Specials } from "../../../data/actor/properties.js";
 import type WeaponDataProperties from "../../../data/item/weapon/properties.js";
-import { getDisplayRanges } from "../../../data/item/weapon/ranges.js";
+import {
+  getDisplayRanges,
+  RangeBracket
+} from "../../../data/item/weapon/ranges.js";
 import { getGame } from "../../../foundryHelpers.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
 import type { HookParams } from "../index.js";
@@ -160,17 +163,85 @@ function getDetailsElement(flags: WeaponAttackFlags): HTMLElement {
     "wv.weapons.attacks.details"
   );
 
-  const detailsList = document.createElement("ul");
-
-  const rangesItem = document.createElement("li");
-  rangesItem.textContent =
-    getGame().i18n.localize("wv.weapons.attacks.range") +
+  const detailsDiv = document.createElement("div");
+  detailsDiv.textContent =
+    getGame().i18n.localize("wv.weapons.attacks.ranges") +
     ": " +
     getDisplayRanges(flags.weaponSystemData, flags.ownerSpecials);
 
-  detailsList.append(rangesItem);
+  detailsDiv.append(...createModifierListing(flags));
 
-  return createDetailSection(detailsTitleSpan, detailsList);
+  return createDetailSection(detailsTitleSpan, detailsDiv);
+}
+
+function createModifierListing(flags: WeaponAttackFlags): HTMLElement[] {
+  if (!flags.executed) throw new Error(NOT_EXECUTED_MESSAGE);
+  if (!flags.details) return [];
+
+  const modifierListingDiv = document.createElement("div");
+  modifierListingDiv.classList.add("modifier-listing", "grid-2cols");
+
+  const skillText = document.createElement("span");
+  skillText.textContent = getGame().i18n.localize(
+    "wv.sheets.item.weapon.skill"
+  );
+
+  const skillNumber = document.createElement("span");
+  skillNumber.classList.add("number-display");
+  skillNumber.textContent = flags.details.hit.base.toString();
+
+  modifierListingDiv.append(skillText, skillNumber);
+
+  let bracketKey;
+  switch (flags.details.range.bracket) {
+    case RangeBracket.LONG:
+      bracketKey = "wv.weapons.ranges.brackets.long";
+      break;
+    case RangeBracket.MEDIUM:
+      bracketKey = "wv.weapons.ranges.brackets.medium";
+      break;
+    case RangeBracket.SHORT:
+      bracketKey = "wv.weapons.ranges.brackets.short";
+      break;
+    case RangeBracket.POINT_BLANK:
+      bracketKey = "wv.weapons.ranges.brackets.pointBlank";
+  }
+  if (bracketKey) {
+    const distanceText = document.createElement("span");
+    distanceText.textContent =
+      getGame().i18n.localize("wv.weapons.modifiers.hit.range") +
+      ": " +
+      getGame().i18n.localize(bracketKey) +
+      ` (${flags.details.range.distance})`;
+
+    const distanceNumber = document.createElement("span");
+    distanceNumber.classList.add("number-display");
+    distanceNumber.textContent = flags.details.range.modifier.toString();
+
+    modifierListingDiv.append(distanceText, distanceNumber);
+  }
+  flags.details.hit.modifiers.forEach((modifier) => {
+    const modifierText = document.createElement("span");
+    modifierText.textContent = getGame().i18n.localize(modifier.key);
+
+    const modifierNumber = document.createElement("span");
+    modifierNumber.classList.add("number-display");
+    modifierNumber.textContent = modifier.amount.toString();
+
+    modifierListingDiv.append(modifierText, modifierNumber);
+  });
+
+  const totalText = document.createElement("span");
+  totalText.classList.add("listing-total");
+  totalText.textContent = getGame().i18n.localize("wv.weapons.modifiers.total");
+
+  const totalNumber = document.createElement("span");
+  totalNumber.classList.add("number-display", "listing-total");
+  totalNumber.textContent = flags.details.hit.total.toString();
+
+  modifierListingDiv.append(totalText, totalNumber);
+
+  return [document.createElement("hr"), modifierListingDiv];
 }
 
 /** Create a roll summary element. */
@@ -260,6 +331,18 @@ export interface NotExecutedAttackFlags extends CommonWeaponAttackFlags {
 export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
   executed: true;
   ownerSpecials?: Partial<Specials> | undefined;
+  details?: {
+    hit: {
+      base: number;
+      modifiers: ModifierFlags[];
+      total: number;
+    };
+    range: {
+      bracket: RangeBracket;
+      distance: number;
+      modifier: number;
+    };
+  };
   rolls: {
     damage: {
       formula: string;
@@ -273,4 +356,9 @@ export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
       total: number;
     };
   };
+}
+
+export interface ModifierFlags {
+  amount: number;
+  key: string;
 }

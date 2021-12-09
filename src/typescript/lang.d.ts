@@ -326,16 +326,10 @@ export interface LangSchema {
           ranges: {
             /** The name for the distance column */
             distance: string;
-            /** The name for the long range */
-            long: string;
-            /** The name for the medium range */
-            medium: string;
             /** The name for the modifier column */
             modifier: string;
             /** The name for the range column */
             range: string;
-            /** The name for the short range */
-            short: string;
             /** The heading for the ranges block */
             title: string;
           };
@@ -466,7 +460,7 @@ export interface LangSchema {
         /** The message when the target is out of range for the weapon */
         outOfRange: string;
         /** The label for the ranges of a weapon */
-        range: string;
+        ranges: string;
         /** Result labels for the attack */
         results: {
           /** The label for a hit */
@@ -477,6 +471,32 @@ export interface LangSchema {
           criticalHit: string;
           /** The label for a critical miss */
           criticalMiss: string;
+        };
+      };
+      /** Labels for different modifier sources */
+      modifiers: {
+        /** Labels for hit modifiers */
+        hit: {
+          /** The label for the interactive (prompted) modifier */
+          interactive: string;
+          /** The label for the range modifier */
+          range: string;
+        };
+        /** The label for a total modifier sum */
+        total: string;
+      };
+      /** Labels for weapon ranges */
+      ranges: {
+        /** Labels for range bracket names */
+        brackets: {
+          /** The name of the long range bracket */
+          long: string;
+          /** The name of the medium range bracket */
+          medium: string;
+          /** The name of the short range bracket */
+          short: string;
+          /** The name of the point-blank range bracket */
+          pointBlank: string;
         };
       };
     };

@@ -10,7 +10,7 @@ import Formulator from "../../formulator.js";
 import type { Specials } from "../../data/actor/properties.js";
 import type DragData from "../../dragData.js";
 import { CONSTANTS, SpecialName } from "../../constants.js";
-import type { WeaponAttackFlags } from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
+import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import * as ranges from "../../data/item/weapon/ranges.js";
 import * as interact from "../../interaction.js";
 import * as helpers from "../../helpers.js";
@@ -51,7 +51,7 @@ export default class Attack {
     }
     const {
       alias,
-      modifier,
+      modifier: promptHitModifier,
       range,
       skillTotal,
       critSuccess,
@@ -93,7 +93,7 @@ export default class Attack {
 
     const hitRoll = new Roll(
       Formulator.skill(skillTotal)
-        .modify(rangeModifier + (modifier ?? 0))
+        .modify(rangeModifier + (promptHitModifier ?? 0))
         .criticals({ success: critSuccess, failure: critFailure })
         .toString()
     ).evaluate({ async: false });
@@ -103,7 +103,37 @@ export default class Attack {
       Formulator.damage(this.data.damage.base, damageDice).toString()
     ).evaluate({ async: false });
 
-    this.createAttackMessage(speaker, specials, hitRoll, damageRoll, options);
+    let hitTotal = skillTotal + rangeModifier;
+    const hitModifiers = [];
+    if (promptHitModifier) {
+      hitTotal += promptHitModifier;
+      hitModifiers.push({
+        amount: promptHitModifier,
+        key: "wv.weapons.modifiers.hit.interactive"
+      });
+    }
+
+    const details: NonNullable<deco.ExecutedAttackFlags["details"]> = {
+      hit: {
+        base: skillTotal,
+        modifiers: hitModifiers,
+        total: hitTotal
+      },
+      range: {
+        bracket: rangeBracket,
+        distance: range,
+        modifier: rangeModifier
+      }
+    };
+
+    this.createAttackMessage(
+      speaker,
+      specials,
+      details,
+      hitRoll,
+      damageRoll,
+      options
+    );
   }
 
   /** Get the system formula representation of the damage of this attack. */
@@ -267,7 +297,7 @@ export default class Attack {
   }
 
   /** Get the default ChatMessage flags for this Weapon Attack. */
-  protected get defaultChatMessageFlags(): WeaponAttackFlags {
+  protected get defaultChatMessageFlags(): deco.WeaponAttackFlags {
     return {
       type: "weaponAttack",
       weaponName: this.weapon.data.name,
@@ -316,6 +346,7 @@ export default class Attack {
   protected async createAttackMessage(
     speaker: foundry.data.ChatMessageData["speaker"]["_source"],
     specials: Partial<Specials>,
+    details: NonNullable<deco.ExecutedAttackFlags["details"]>,
     hitRoll: Roll,
     damageRoll: Roll,
     options?: RollOptions
@@ -334,6 +365,7 @@ export default class Attack {
           ...this.defaultChatMessageFlags,
           executed: true,
           ownerSpecials: specials,
+          details: details,
           rolls: {
             damage: {
               formula: damageRoll.formula,

@@ -173,11 +173,8 @@
           "holdout": "Versteckbar",
           "ranges": {
             "distance": "Distanz",
-            "long": "Weit",
-            "medium": "Mittel",
             "modifier": "Modifikator",
             "range": "Reichweite",
-            "short": "Kurz",
             "title": "Reichweiten"
           },
           "reload": {
@@ -257,12 +254,27 @@
         "execute": "Ausführen",
         "notEnoughAp": "Nicht genug AP um das zu nutzen!",
         "outOfRange": "Das Ziel ist außer Reichweite!",
-        "range": "Reichweite",
+        "ranges": "Waffenreichweite",
         "results": {
           "criticalHit": "Volltreffer!",
           "criticalMiss": "Voll daneben!",
           "hit": "Treffer!",
           "miss": "Daneben!"
+        }
+      },
+      "modifiers": {
+        "hit": {
+          "interactive": "Interaktiv",
+          "range": "Distanz"
+        },
+        "total": "Gesamt"
+      },
+      "ranges": {
+        "brackets": {
+          "long": "Weit",
+          "medium": "Mittel",
+          "short": "Kurz",
+          "pointBlank": "Kürzeste"
         }
       }
     }

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - automatic range measuring when using targeting
   ([#75](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/75))
+- a listing of modifiers for hit changes in weapon attack system messages
+  ([#76](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/76))
 - weapons
   - Alien Blaster
   - Arcane Glove

@@ -173,11 +173,8 @@
           "holdout": "Holdout Weapon",
           "ranges": {
             "distance": "Distance",
-            "long": "Long",
-            "medium": "Medium",
             "modifier": "Modifier",
             "range": "Range",
-            "short": "Short",
             "title": "Ranges"
           },
           "reload": {
@@ -257,12 +254,27 @@
         "execute": "Execute",
         "notEnoughAp": "Not enough AP to use!",
         "outOfRange": "The target is out of range!",
-        "range": "Range",
+        "ranges": "Weapon Ranges",
         "results": {
           "criticalHit": "Critical Hit!",
           "criticalMiss": "Critical Miss!",
           "hit": "Hit!",
           "miss": "Miss!"
+        }
+      },
+      "modifiers": {
+        "hit": {
+          "interactive": "Interactive",
+          "range": "Range"
+        },
+        "total": "Total"
+      },
+      "ranges": {
+        "brackets": {
+          "long": "Long",
+          "medium": "Medium",
+          "short": "Short",
+          "pointBlank": "Point-Blank"
         }
       }
     }

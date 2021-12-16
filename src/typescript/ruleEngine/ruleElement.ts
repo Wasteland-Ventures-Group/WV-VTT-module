@@ -87,14 +87,14 @@ export default abstract class RuleElement implements RuleElementLike {
   }
 
   /**
-   * Modify the passed Document on the prepareEmbeddedEntities step, if the
+   * Modify the passed Document on the prepareEmbeddedDocuments step, if the
    * RuleElement does not have errors.
    * @param doc - the Document to modify
    */
-  onPrepareEmbeddedEntities(): void {
+  onPrepareEmbeddedDocuments(): void {
     if (this.shouldNotModify()) return;
 
-    this._onPrepareEmbeddedEntities();
+    this._onPrepareEmbeddedDocuments();
   }
 
   /** Validate the data and add any error messages to errors. */
@@ -109,14 +109,14 @@ export default abstract class RuleElement implements RuleElementLike {
   }
 
   /**
-   * Modify the passed Document on the prepareEmbeddedEntities step.
+   * Modify the passed Document on the prepareEmbeddedDocuments step.
    *
    * This is only called when the RuleElement has no errors and should be
    * overridden by subclasses.
    * @param doc - the Document to modify
    */
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected _onPrepareEmbeddedEntities(): void {
+  protected _onPrepareEmbeddedDocuments(): void {
     // NOOP
   }
 

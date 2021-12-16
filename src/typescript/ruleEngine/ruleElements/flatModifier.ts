@@ -18,7 +18,7 @@ export default class FlatModifier extends RuleElement {
     this.checkSelectedIsOfType(FlatModifier.EXPECTED_TYPE);
   }
 
-  override _onPrepareEmbeddedEntities(): void {
+  override _onPrepareEmbeddedDocuments(): void {
     const oldValue = foundry.utils.getProperty(
       this.targetDoc.data.data,
       this.selector

@@ -25,7 +25,7 @@
       "name": "weapons",
       "label": "Wasteland Ventures Weapons",
       "path": "compendiums/item/weapons.db",
-      "entity": "Item",
+      "type": "Item",
       "system": "wasteland-ventures"
     }
   ],

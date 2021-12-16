@@ -174,8 +174,8 @@ export default class WvActor extends Actor {
     this.computeBase();
   }
 
-  override prepareEmbeddedEntities(): void {
-    super.prepareEmbeddedEntities();
+  override prepareEmbeddedDocuments(): void {
+    super.prepareEmbeddedDocuments();
     this.applyItemEffects();
   }
 
@@ -353,7 +353,7 @@ export default class WvActor extends Actor {
 
     rules
       .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onPrepareEmbeddedEntities());
+      .forEach((rule) => rule.onPrepareEmbeddedDocuments());
   }
 
   // Computations after items {{{2

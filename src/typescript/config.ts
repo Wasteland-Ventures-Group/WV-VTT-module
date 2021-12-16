@@ -43,10 +43,12 @@ export function configureFoundryOnInit(): void {
 
   Items.registerSheet(CONSTANTS.systemId, EffectSheet, {
     label: "wv.sheets.common.names.effectSheet",
+    makeDefault: true,
     types: [TYPES.ITEM.EFFECT]
   });
   Items.registerSheet(CONSTANTS.systemId, WeaponSheet, {
-    label: "wv.sheets.names.weaponSheet",
+    label: "wv.sheets.common.names.weaponSheet",
+    makeDefault: true,
     types: [TYPES.ITEM.WEAPON]
   });
 }

@@ -98,6 +98,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#76](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/76))
 - lint markdown files with prettier
   ([#78](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/78))
+- change the weapon attack chat message decoration to using templates
 
 ## [0.6.0] - 2021-11-27
 

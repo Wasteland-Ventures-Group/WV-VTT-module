@@ -126,15 +126,18 @@ export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
   executed: true;
   ownerSpecials?: Partial<Specials> | undefined;
   details?: {
-    hit: {
-      base: number;
-      modifiers: ModifierFlags[];
-      total: number;
+    criticals: {
+      failure: number;
+      success: number;
     };
+    damage: {
+      base: DetailsListingInfo;
+      dice: DetailsListingInfo;
+    };
+    hit: DetailsListingInfo;
     range: {
       bracket: RangeBracket;
       distance: number;
-      modifier: number;
     };
   };
   rolls: {
@@ -155,6 +158,12 @@ export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
 export interface ModifierFlags {
   amount: number;
   key: string;
+}
+
+interface DetailsListingInfo {
+  base: number;
+  modifiers: ModifierFlags[];
+  total: number;
 }
 
 /** The data for rendering the not executed weapon attack template */

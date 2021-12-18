@@ -263,9 +263,21 @@
         }
       },
       "modifiers": {
+        "base": "Basiswert",
+        "damage": {
+          "dice": {
+            "range": "Distanz",
+            "strength": "Stärke"
+          }
+        },
         "hit": {
           "interactive": "Interaktiv",
           "range": "Distanz"
+        },
+        "listingTitles": {
+          "hit": "Trefferchanceberechnung",
+          "damageBase": "Grundschadenberechnung",
+          "damageDice": "Schadenswürfelberechnung"
         },
         "total": "Gesamt"
       },

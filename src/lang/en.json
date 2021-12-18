@@ -263,9 +263,21 @@
         }
       },
       "modifiers": {
+        "base": "Base",
+        "damage": {
+          "dice": {
+            "range": "Range",
+            "strength": "Strength"
+          }
+        },
         "hit": {
           "interactive": "Interactive",
           "range": "Range"
+        },
+        "listingTitles": {
+          "hit": "Hit chance calculation",
+          "damageBase": "Base damage calculation",
+          "damageDice": "Damage dice calculation"
         },
         "total": "Total"
       },

@@ -13,20 +13,63 @@
   <div class="detail-section">
     <span>{{localize "wv.weapons.attacks.details"}}</span>
     <div class="detail-content hide">
-      <span>{{localize "wv.weapons.attacks.ranges"}}: {{template.raw.displayRanges}}</span>
+      <div class="spacing-bottom">{{localize "wv.weapons.attacks.ranges"}}: {{template.raw.displayRanges}}</div>
       {{#if details}} {{!backward compatibility}}
-        <hr />
-        <div class="modifier-listing grid-2cols">
-          <span>{{localize "wv.sheets.item.weapon.skill"}}</span>
-          <span class="number-display">{{details.hit.base}}</span>
-          <span>{{localize "wv.weapons.modifiers.hit.range"}}: {{localize template.keys.rangebracket}} ({{details.range.distance}})</span>
-          <span class="number-display">{{details.range.modifier}}</span>
-          {{#each details.hit.modifiers as |modifier|}}
-            <span>{{localize modifier.key}}</span>
-            <span class="number-display">{{modifier.amount}}</span>
-          {{/each}}
-          <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
-          <span class="listing-total number-display">{{details.hit.total}}</span>
+        <div class="spacing-bottom">{{localize "wv.weapons.modifiers.hit.range"}}: {{localize template.keys.rangeBracket}} ({{details.range.distance}})</div>
+        <div class="spacing-bottom">
+          <div>{{localize "wv.sheets.actor.secondary.criticals.title"}}</div>
+          <ul class="no-margin">
+            <li>{{localize "wv.sheets.actor.secondary.criticals.success"}}: {{details.criticals.success}}</li>
+            <li>{{localize "wv.sheets.actor.secondary.criticals.failure"}}: {{details.criticals.failure}}</li>
+          </ul>
+        </div>
+        <div class="modifier-listing">
+          <div class="listing-heading">
+            <span>{{localize "wv.weapons.modifiers.listingTitles.hit"}}</span>
+            <hr />
+          </div>
+          <div class="listing-table grid-2cols">
+            <span>{{localize "wv.weapons.modifiers.base"}}</span>
+            <span class="number-display">{{details.hit.base}}</span>
+            {{#each details.hit.modifiers as |modifier|}}
+              <span>{{localize modifier.key}}</span>
+              <span class="number-display">{{modifier.amount}}</span>
+            {{/each}}
+            <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+            <span class="listing-total number-display">{{details.hit.total}}</span>
+          </div>
+        </div>
+        <div class="modifier-listing">
+          <div class="listing-heading">
+            <span>{{localize "wv.weapons.modifiers.listingTitles.damageBase"}}</span>
+            <hr />
+          </div>
+          <div class="listing-table grid-2cols">
+            <span>{{localize "wv.weapons.modifiers.base"}}</span>
+            <span class="number-display">{{details.damage.base.base}}</span>
+            {{#each details.damage.base.modifiers as |modifier|}}
+              <span>{{localize modifier.key}}</span>
+              <span class="number-display">{{modifier.amount}}</span>
+            {{/each}}
+            <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+            <span class="listing-total number-display">{{details.damage.base.total}}</span>
+          </div>
+        </div>
+        <div class="modifier-listing">
+          <div class="listing-heading">
+            <span>{{localize "wv.weapons.modifiers.listingTitles.damageDice"}}</span>
+            <hr />
+          </div>
+          <div class="listing-table grid-2cols">
+            <span>{{localize "wv.weapons.modifiers.base"}}</span>
+            <span class="number-display">{{details.damage.dice.base}}</span>
+            {{#each details.damage.dice.modifiers as |modifier|}}
+              <span>{{localize modifier.key}}</span>
+              <span class="number-display">{{modifier.amount}}</span>
+            {{/each}}
+            <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+            <span class="listing-total number-display">{{details.damage.dice.total}}</span>
+          </div>
         </div>
       {{/if}}
     </div>

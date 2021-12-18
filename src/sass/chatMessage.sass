@@ -52,6 +52,9 @@
         > :last-child
           margin-bottom: 0
 
+        .sub-section
+          margin-bottom: common.$spacing-distance
+
     .roll-details
 
       .dice-rolls
@@ -95,16 +98,33 @@
           filter: sepia(0.5) hue-rotate(60deg)
 
     .modifier-listing
-      grid-template-columns: auto, min-content
 
-      & > *
-        width: 100%
+      .listing-heading
+        display: flex
+        margin-top: calc(common.$spacing-distance * 2)
 
-      .listing-total
-        border:
-          bottom:
-            style: double
-            width: 3px
-          top:
+        > span
+
+        > hr
+          border-style: none
+          border-bottom:
+            color: common.$shade-darker
             style: solid
             width: 1px
+          flex-grow: 1
+          margin-left: common.$spacing-distance
+
+      .listing-table
+        grid-template-columns: auto, min-content
+
+        & > *
+          width: 100%
+
+        .listing-total
+          border:
+            bottom:
+              style: double
+              width: 3px
+            top:
+              style: solid
+              width: 1px

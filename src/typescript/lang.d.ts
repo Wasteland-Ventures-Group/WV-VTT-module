@@ -475,12 +475,33 @@ export interface LangSchema {
       };
       /** Labels for different modifier sources */
       modifiers: {
+        /** The label for the base value */
+        base: string;
+        /** Labels for damage modifiers */
+        damage: {
+          /** Labels for damage dice modifiers */
+          dice: {
+            /** The label for the range damage dice modifier */
+            range: string;
+            /** The label for the strength damage dice modifier */
+            strength: string;
+          };
+        };
         /** Labels for hit modifiers */
         hit: {
           /** The label for the interactive (prompted) modifier */
           interactive: string;
           /** The label for the range modifier */
           range: string;
+        };
+        /** Labels for modifier listing titles */
+        listingTitles: {
+          /** The title for the hit chance modifier listing */
+          hit: string;
+          /** The title for the base damage modifier listing */
+          damageBase: string;
+          /** The title for the damage dice modifier listing */
+          damageDice: string;
         };
         /** The label for a total modifier sum */
         total: string;

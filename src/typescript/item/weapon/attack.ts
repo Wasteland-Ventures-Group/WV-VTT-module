@@ -106,8 +106,7 @@ export default class Attack {
 
     // Hit roll ----------------------------------------------------------------
     const hitRoll = new Roll(
-      Formulator.skill(skillTotal)
-        .modify(rangeModifier + (promptHitModifier ?? 0))
+      Formulator.skill(hitTotal)
         .criticals({ success: critSuccess, failure: critFailure })
         .toString()
     ).evaluate({ async: false });
@@ -172,26 +171,25 @@ export default class Attack {
 
   /** Get the system formula representation of the damage of this attack. */
   get damageFormula(): string {
-    const base = this.data.damage.base;
-    let dice: string;
-    if (this.data.damage.diceRange) {
-      if (this.weapon.actor) {
-        dice = this.getStrengthDamageDiceMod(
+    if (!this.data.damage.diceRange)
+      return `${this.data.damage.base}+(${this.data.damage.dice})`;
+
+    if (this.weapon.actor) {
+      const dice =
+        this.data.damage.dice +
+        this.getStrengthDamageDiceMod(
           this.weapon.actor.data.data.specials.strength
-        ).toString();
-      } else {
-        const low = this.getStrengthDamageDiceMod(
-          helpers.getSpecialMinPoints()
         );
-        const high = this.getStrengthDamageDiceMod(
-          helpers.getSpecialMaxPoints()
-        );
-        dice = `${low}-${high}`;
-      }
-    } else {
-      dice = this.data.damage.dice.toString();
+      return `${this.data.damage.base}+(${dice})`;
     }
-    return `${base}+(${dice})`;
+
+    const low =
+      this.data.damage.dice +
+      this.getStrengthDamageDiceMod(helpers.getSpecialMinPoints());
+    const high =
+      this.data.damage.dice +
+      this.getStrengthDamageDiceMod(helpers.getSpecialMaxPoints());
+    return `${this.data.damage.base}+(${low}-${high})`;
   }
 
   /**

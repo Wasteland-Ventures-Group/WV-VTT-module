@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- the base damage dice amount not being considered when displaying the damage
+  formula on weapon sheets
+
 ## [0.7.0] - 2021-12-19
 
 ### Added

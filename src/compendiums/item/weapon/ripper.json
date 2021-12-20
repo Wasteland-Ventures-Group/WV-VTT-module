@@ -28,7 +28,7 @@
     "holdout": true,
     "skill": "melee",
     "strengthRequirement": 3,
-    "value": 300,
+    "value": 550,
     "weight": 3,
     "rules": {
       "sources": []

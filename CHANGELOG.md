@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased - WV 2.3.0]
+
+### Changed
+- Weapons
+  - Thermic Lance renamed Arcane Lance; price changed
+  - Auto-Axe price
+  - Fire Axe price
+  - Longbow price
+  - Ripper price
+  - Super Sledge price
+  - Warhammer price
+    
+
+
 ## [Unreleased]
 
 ### Added

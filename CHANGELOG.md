@@ -21,10 +21,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2021-12-19
+
+### Fixed
+
+- the base damage dice amount not being considered when displaying the damage
+  formula on weapon sheets
+
+## [0.7.0] - 2021-12-19
+
 ### Added
 
 - automatic range measuring when using targeting
   ([#75](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/75))
+- a listing of modifiers in weapon attack system messages
+  ([#76](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/76))
 - weapons
   - Alien Blaster
   - Arcane Glove
@@ -102,6 +113,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - attribute Ranges for weapons:
   - Fire Axe
   - Lumber Axe
+
+### Changed
+
+- the details section of weapon attack messages is listed first before hit and
+  damage roll
+  ([#76](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/76))
+- lint markdown files with prettier
+  ([#78](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/78))
+- change the weapon attack chat message decoration to using templates
 
 ## [0.6.0] - 2021-11-27
 
@@ -370,16 +390,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - basic character Actor implementation with editable SPECIALs
 
-[Unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.6.0...HEAD
-[0.6.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.5.1...v0.6.0
-[0.5.1]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.5.0...v0.5.1
-[0.5.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.4.0...v0.5.0
-[0.4.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.3...v0.4.0
-[0.3.3]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.2...v0.3.3
-[0.3.2]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.1...v0.3.2
-[0.3.1]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.0...v0.3.1
-[0.3.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.2.0...v0.3.0
-[0.2.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.1.0...v0.2.0
-[0.1.0]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.0.2...v0.1.0
-[0.0.2]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.0.1...v0.0.2
-[0.0.1]:      https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/tag/v0.0.1
+[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.7.1...HEAD
+[0.7.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.7.0...v0.7.1
+[0.7.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.5.1...v0.6.0
+[0.5.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.5.0...v0.5.1
+[0.5.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.3...v0.4.0
+[0.3.3]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.2...v0.3.3
+[0.3.2]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.1...v0.3.2
+[0.3.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.0.2...v0.1.0
+[0.0.2]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.0.1...v0.0.2
+[0.0.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/tag/v0.0.1

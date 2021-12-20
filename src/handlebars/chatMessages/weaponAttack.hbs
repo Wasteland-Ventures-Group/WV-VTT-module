@@ -1,0 +1,114 @@
+{{#if weaponImage}}
+  <img src="{{weaponImage}}" />
+{{/if}}
+<h3>{{template.raw.mainHeading}}</h3>
+<h4>{{template.raw.subHeading}}</h4>
+
+{{#if executed}}
+  {{#if weaponSystemData.notes}}
+    <p>{{weaponSystemData.notes}}</p>
+  {{/if}}
+
+  {{!attack details}}
+  <div class="detail-section">
+    <span>{{localize "wv.weapons.attacks.details"}}</span>
+    <div class="detail-content hide">
+      <div class="spacing-bottom">{{localize "wv.weapons.attacks.ranges"}}: {{template.raw.displayRanges}}</div>
+      {{#if details}} {{!backward compatibility}}
+        <div class="spacing-bottom">{{localize "wv.weapons.modifiers.hit.range"}}: {{localize template.keys.rangeBracket}} ({{details.range.distance}})</div>
+        <div class="spacing-bottom">
+          <div>{{localize "wv.sheets.actor.secondary.criticals.title"}}</div>
+          <ul class="no-margin">
+            <li>{{localize "wv.sheets.actor.secondary.criticals.success"}}: {{details.criticals.success}}</li>
+            <li>{{localize "wv.sheets.actor.secondary.criticals.failure"}}: {{details.criticals.failure}}</li>
+          </ul>
+        </div>
+        <div class="modifier-listing">
+          <div class="listing-heading">
+            <span>{{localize "wv.weapons.modifiers.listingTitles.hit"}}</span>
+            <hr />
+          </div>
+          <div class="listing-table grid-2cols">
+            <span>{{localize "wv.weapons.modifiers.base"}}</span>
+            <span class="number-display">{{details.hit.base}}</span>
+            {{#each details.hit.modifiers as |modifier|}}
+              <span>{{localize modifier.key}}</span>
+              <span class="number-display">{{modifier.amount}}</span>
+            {{/each}}
+            <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+            <span class="listing-total number-display">{{details.hit.total}}</span>
+          </div>
+        </div>
+        <div class="modifier-listing">
+          <div class="listing-heading">
+            <span>{{localize "wv.weapons.modifiers.listingTitles.damageBase"}}</span>
+            <hr />
+          </div>
+          <div class="listing-table grid-2cols">
+            <span>{{localize "wv.weapons.modifiers.base"}}</span>
+            <span class="number-display">{{details.damage.base.base}}</span>
+            {{#each details.damage.base.modifiers as |modifier|}}
+              <span>{{localize modifier.key}}</span>
+              <span class="number-display">{{modifier.amount}}</span>
+            {{/each}}
+            <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+            <span class="listing-total number-display">{{details.damage.base.total}}</span>
+          </div>
+        </div>
+        <div class="modifier-listing">
+          <div class="listing-heading">
+            <span>{{localize "wv.weapons.modifiers.listingTitles.damageDice"}}</span>
+            <hr />
+          </div>
+          <div class="listing-table grid-2cols">
+            <span>{{localize "wv.weapons.modifiers.base"}}</span>
+            <span class="number-display">{{details.damage.dice.base}}</span>
+            {{#each details.damage.dice.modifiers as |modifier|}}
+              <span>{{localize modifier.key}}</span>
+              <span class="number-display">{{modifier.amount}}</span>
+            {{/each}}
+            <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+            <span class="listing-total number-display">{{details.damage.dice.total}}</span>
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+
+  {{!hit roll}}
+  <div class="detail-section">
+    <div class="roll-summary">
+      <label class="roll-summary-label">{{localize template.keys.hit}}</label>
+      <div class="roll-summary-result">{{rolls.hit.result}}</div>
+    </div>
+    <div class="detail-content hide">
+      <div class="roll-details">
+        <div class="dice-formula">{{rolls.hit.formula}}</div>
+        <ul class="dice-rolls">
+          <li class="roll d100">{{rolls.hit.result}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {{!damage roll}}
+  <div class="detail-section">
+    <div class="roll-summary">
+      <label class="roll-summary-label">{{localize "wv.weapons.attacks.damageRoll"}}</label>
+      <div class="roll-summary-result">{{rolls.damage.total}}</div>
+    </div>
+    <div class="detail-content hide">
+      <div class="roll-details">
+        <div class="dice-formula">{{rolls.damage.formula}}</div>
+        <ul class="dice-rolls">
+          {{#each template.damage.results as |result|}}
+            <li class="roll d6 {{result.class}}">{{result.value}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+{{else}}
+  <span>{{localize template.keys.notExecutedReason}}</span>
+{{/if}}

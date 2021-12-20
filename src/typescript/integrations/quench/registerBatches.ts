@@ -3,7 +3,7 @@ import registerPromptTests from "../../tests/applications/prompt.js";
 
 /** Register the system test batches with Quench. */
 export default function registerTestBatches(): void {
-  if (quench) {
+  if (hasProperty(window, "quench")) {
     quench.registerBatch(
       `${CONSTANTS.systemId}.applications.prompt`,
       registerPromptTests,

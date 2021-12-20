@@ -27,14 +27,18 @@ export type I18nSkills = Record<SkillName, string>;
 export default class WvI18n {
   /** Get the internationalization of the SPECIALs. */
   static get specials(): I18nSpecials {
-    return getGame().i18n.localize(
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
       "wv.specials.names"
-    ) as unknown as I18nSpecials;
+    ) as I18nSpecials;
   }
 
   /** Get the internationalization of the skills. */
   static get skills(): I18nSkills {
-    return getGame().i18n.localize("wv.skills.names") as unknown as I18nSkills;
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.skills.names"
+    ) as I18nSkills;
   }
 
   /**

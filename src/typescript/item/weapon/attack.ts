@@ -10,7 +10,7 @@ import Formulator from "../../formulator.js";
 import type { Specials } from "../../data/actor/properties.js";
 import type DragData from "../../dragData.js";
 import { CONSTANTS, SpecialName } from "../../constants.js";
-import type { WeaponAttackFlags } from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
+import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import * as ranges from "../../data/item/weapon/ranges.js";
 import * as interact from "../../interaction.js";
 import * as helpers from "../../helpers.js";
@@ -37,11 +37,13 @@ export default class Attack {
    * @param options - options for the roll
    */
   async execute(options: RollOptions = {}): Promise<void> {
+    // Get owners and data -----------------------------------------------------
     let token = interact.getFirstControlledToken();
     const actor = this.weapon.actor ?? interact.getActor(token);
     token ??= interact.getActorToken(actor);
     const target = interact.getFirstTarget();
 
+    // Get needed external data ------------------------------------------------
     let externalData: ExternalData;
     try {
       externalData = await this.getExternalData(actor, token, target);
@@ -51,7 +53,7 @@ export default class Attack {
     }
     const {
       alias,
-      modifier,
+      modifier: promptHitModifier,
       range,
       skillTotal,
       critSuccess,
@@ -59,6 +61,7 @@ export default class Attack {
       ...specials
     } = externalData;
 
+    // Get speaker -------------------------------------------------------------
     const speaker = {
       scene: null,
       actor: actor?.id ?? null,
@@ -66,6 +69,7 @@ export default class Attack {
       alias
     };
 
+    // Get range bracket and check bracket -------------------------------------
     const rangeBracket = ranges.getRangeBracket(
       this.weapon.systemData.ranges,
       range,
@@ -76,6 +80,7 @@ export default class Attack {
       return;
     }
 
+    // Check AP and subtract in combat -----------------------------------------
     if (actor?.getActiveTokens(true).some((token) => token.inCombat)) {
       const currentAp = actor.data.data.vitals.actionPoints.value;
       const apUse = this.data.ap;
@@ -86,51 +91,105 @@ export default class Attack {
       actor.updateActionPoints(currentAp - apUse);
     }
 
+    // Calculate hit roll target -----------------------------------------------
     const rangeModifier = ranges.getRangeModifier(
       this.weapon.systemData.ranges,
       rangeBracket
     );
+    const hitTotal = this.getHitRollTarget(
+      skillTotal,
+      rangeModifier,
+      promptHitModifier,
+      critSuccess,
+      critFailure
+    );
 
+    // Hit roll ----------------------------------------------------------------
     const hitRoll = new Roll(
-      Formulator.skill(skillTotal)
-        .modify(rangeModifier + (modifier ?? 0))
+      Formulator.skill(hitTotal)
         .criticals({ success: critSuccess, failure: critFailure })
         .toString()
     ).evaluate({ async: false });
 
-    const damageDice = this.getDamageDice(rangeBracket, specials.strength);
+    // Calculate damage dice ---------------------------------------------------
+    const strengthDamageDiceMod = this.getStrengthDamageDiceMod(
+      specials.strength
+    );
+    const rangeDamageDiceMod = this.getRangeDamageDiceMod(rangeBracket);
+    const damageDice = this.getDamageDice(
+      strengthDamageDiceMod,
+      rangeDamageDiceMod
+    );
+
+    // Damage roll -------------------------------------------------------------
     const damageRoll = new Roll(
       Formulator.damage(this.data.damage.base, damageDice).toString()
     ).evaluate({ async: false });
 
-    this.createAttackMessage(speaker, specials, hitRoll, damageRoll, options);
+    // Compose details ---------------------------------------------------------
+    const details: NonNullable<deco.ExecutedAttackFlags["details"]> = {
+      criticals: {
+        failure: critFailure,
+        success: critSuccess
+      },
+      damage: {
+        base: {
+          base: this.data.damage.base,
+          modifiers: this.getDamageBaseModifierFlags(),
+          total: this.data.damage.base
+        },
+        dice: {
+          base: this.data.damage.dice,
+          modifiers: this.getDamageDiceModifierFlags(
+            strengthDamageDiceMod,
+            rangeDamageDiceMod
+          ),
+          total: damageDice
+        }
+      },
+      hit: {
+        base: skillTotal,
+        modifiers: this.getHitModifierFlags(rangeModifier, promptHitModifier),
+        total: hitTotal
+      },
+      range: {
+        bracket: rangeBracket,
+        distance: range
+      }
+    };
+
+    // Create attack message ---------------------------------------------------
+    this.createAttackMessage(
+      speaker,
+      specials,
+      details,
+      hitRoll,
+      damageRoll,
+      options
+    );
   }
 
   /** Get the system formula representation of the damage of this attack. */
   get damageFormula(): string {
-    const base = this.data.damage.base;
-    let dice: string;
-    if (this.data.damage.diceRange) {
-      if (this.weapon.actor) {
-        dice = this.getDamageDice(
-          ranges.RangeBracket.SHORT,
+    if (!this.data.damage.diceRange)
+      return `${this.data.damage.base}+(${this.data.damage.dice})`;
+
+    if (this.weapon.actor) {
+      const dice =
+        this.data.damage.dice +
+        this.getStrengthDamageDiceMod(
           this.weapon.actor.data.data.specials.strength
-        ).toString();
-      } else {
-        const low = this.getDamageDice(
-          ranges.RangeBracket.SHORT,
-          helpers.getSpecialMinPoints()
         );
-        const high = this.getDamageDice(
-          ranges.RangeBracket.SHORT,
-          helpers.getSpecialMaxPoints()
-        );
-        dice = `${low}-${high}`;
-      }
-    } else {
-      dice = this.getDamageDice(ranges.RangeBracket.SHORT).toString();
+      return `${this.data.damage.base}+(${dice})`;
     }
-    return `${base}+(${dice})`;
+
+    const low =
+      this.data.damage.dice +
+      this.getStrengthDamageDiceMod(helpers.getSpecialMinPoints());
+    const high =
+      this.data.damage.dice +
+      this.getStrengthDamageDiceMod(helpers.getSpecialMaxPoints());
+    return `${this.data.damage.base}+(${low}-${high})`;
   }
 
   /**
@@ -207,50 +266,106 @@ export default class Attack {
     );
   }
 
-  /**
-   * Get the amount of damage d6 of this attack. If the attack has a damage
-   * range, this includes the Strength based bonus dice of the owning actor. If
-   * the attack is made with a damage fall-off, this is also taken into account.
-   * @param range - the range to the target
-   * @param strength - the Strength of the owning actor
-   * @returns the effective amount of damage dice
-   */
-  protected getDamageDice(
-    range: ranges.RangeBracket,
-    strength?: number | undefined
-  ): number {
-    let dice = this.data.damage.dice;
+  /** Get the hit roll target. */
+  protected getHitRollTarget(
+    skillTotal: number,
+    rangeModifier: number,
+    promptHitModifier: number,
+    criticalSuccess: number,
+    criticalFailure: number
+  ) {
+    const hitTotal = skillTotal + rangeModifier + promptHitModifier;
+    return Math.clamped(hitTotal, criticalSuccess, criticalFailure);
+  }
 
-    if (this.data.damage.diceRange && typeof strength === "number") {
-      dice += this.getStrengthDice(strength);
-    }
-
-    if (this.data.damage.damageFallOff === "shotgun") {
-      switch (range) {
-        case ranges.RangeBracket.LONG:
-          dice -= 4;
-          break;
-
-        case ranges.RangeBracket.MEDIUM:
-          dice -= 2;
-          break;
-      }
-    }
-
+  /** Get the amount of damage d6 of this attack. */
+  protected getDamageDice(strengthMod: number, rangeMod: number): number {
+    const dice = this.data.damage.dice + strengthMod + rangeMod;
     return dice > 0 ? dice : 0;
   }
 
-  /** Get the Strength bonus dice for the given Strength value. */
-  protected getStrengthDice(strength: number): number {
+  /** Get the Strength damage modifier dice for the given Strength value. */
+  protected getStrengthDamageDiceMod(strength: number | undefined): number {
+    if (!this.data.damage.diceRange || typeof strength !== "number") {
+      return 0;
+    }
+
     if (strength > 10) {
       return 3;
     } else if (strength >= 8) {
       return 2;
     } else if (strength >= 4) {
       return 1;
-    } else {
-      return 0;
     }
+
+    return 0;
+  }
+
+  /** Get the range damage modifier dice for the given range bracket. */
+  protected getRangeDamageDiceMod(range: ranges.RangeBracket): number {
+    if (this.data.damage.damageFallOff === "shotgun") {
+      switch (range) {
+        case ranges.RangeBracket.LONG:
+          return -4;
+        case ranges.RangeBracket.MEDIUM:
+          return -2;
+      }
+    }
+
+    return 0;
+  }
+
+  /** Get the hit modifier flags. */
+  protected getHitModifierFlags(
+    rangeHitModifier: number,
+    promptHitModifier: number
+  ): deco.ModifierFlags[] {
+    const modifiers: deco.ModifierFlags[] = [];
+
+    if (rangeHitModifier) {
+      modifiers.push({
+        amount: rangeHitModifier,
+        key: "wv.weapons.modifiers.damage.dice.range"
+      });
+    }
+
+    if (promptHitModifier) {
+      modifiers.push({
+        amount: promptHitModifier,
+        key: "wv.weapons.modifiers.hit.interactive"
+      });
+    }
+
+    return modifiers;
+  }
+
+  /** Get the damage base value modifier flags. */
+  protected getDamageBaseModifierFlags(): deco.ModifierFlags[] {
+    return [];
+  }
+
+  /** Get the damage dice modifier flags. */
+  protected getDamageDiceModifierFlags(
+    strengthMod: number,
+    rangeMod: number
+  ): deco.ModifierFlags[] {
+    const modifiers: deco.ModifierFlags[] = [];
+
+    if (strengthMod) {
+      modifiers.push({
+        amount: strengthMod,
+        key: "wv.weapons.modifiers.damage.dice.strength"
+      });
+    }
+
+    if (rangeMod) {
+      modifiers.push({
+        amount: rangeMod,
+        key: "wv.weapons.modifiers.damage.dice.range"
+      });
+    }
+
+    return modifiers;
   }
 
   /** Create the default message data for weapon attack messages. */
@@ -267,7 +382,7 @@ export default class Attack {
   }
 
   /** Get the default ChatMessage flags for this Weapon Attack. */
-  protected get defaultChatMessageFlags(): WeaponAttackFlags {
+  protected get defaultChatMessageFlags(): deco.WeaponAttackFlags {
     return {
       type: "weaponAttack",
       weaponName: this.weapon.data.name,
@@ -316,6 +431,7 @@ export default class Attack {
   protected async createAttackMessage(
     speaker: foundry.data.ChatMessageData["speaker"]["_source"],
     specials: Partial<Specials>,
+    details: NonNullable<deco.ExecutedAttackFlags["details"]>,
     hitRoll: Roll,
     damageRoll: Roll,
     options?: RollOptions
@@ -334,6 +450,7 @@ export default class Attack {
           ...this.defaultChatMessageFlags,
           executed: true,
           ownerSpecials: specials,
+          details: details,
           rolls: {
             damage: {
               formula: damageRoll.formula,

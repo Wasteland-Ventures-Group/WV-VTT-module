@@ -1,0 +1,39 @@
+{
+  "name": "Arcane Lance",
+  "type": "weapon",
+  "img": "icons/weapons/polearms/spear-flared-purple.webp",
+  "data": {
+    "name": "Arcane Lance",
+    "description": "Glowing sharp gem on a stick",
+    "notes": "Can inflict Burning status on crit",
+    "attacks": {
+      "sources": {
+        "Strike": {
+          "damage": {
+            "base": 3,
+            "dice": 2,
+            "diceRange": true
+          },
+          "dtReduction": 2,
+          "ap": 7
+        }
+      }
+    },
+    "ranges": {
+      "short": {
+        "distance": 2,
+        "modifier": 0
+      }
+    },
+    "skill": "melee",
+    "strengthRequirement": 7,
+    "value": 700,
+    "weight": 8,
+    "rules": {
+      "sources": []
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_id": "WVweapon00000063"
+}

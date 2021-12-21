@@ -33,9 +33,8 @@ export default class WvToken extends Token {
     for (const clone of event.data.clones ?? []) {
       const original = clone._original;
 
-      // When not in combat or the user is a GM, drag and drop movement is not
-      // AP checked.
-      if (game.user?.isGM || !original.inCombat) {
+      // When not in combat, drag and drop movement is not AP checked.
+      if (!original.inCombat) {
         clones.push(clone);
         continue;
       }

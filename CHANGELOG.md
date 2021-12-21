@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- AP checks not working for GMs, even when the system settings were set up to do
+  so
+
 ## [0.7.1] - 2021-12-19
 
 ### Fixed

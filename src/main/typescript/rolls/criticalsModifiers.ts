@@ -13,8 +13,8 @@ export function flagCriticalFailure(
     if (
       DiceTerm.compareResult(
         result.result,
-        match[1] || ">=",
-        parseInt(match[2])
+        match[1] ?? ">=",
+        parseInt(match[2] ?? "95")
       )
     ) {
       result.critical = "failure";
@@ -49,8 +49,8 @@ export function flagCriticalSuccesses(
     if (
       DiceTerm.compareResult(
         result.result,
-        match[1] || "<=",
-        parseInt(match[2])
+        match[1] ?? "<=",
+        parseInt(match[2] ?? "5")
       )
     ) {
       result.critical = "success";

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - AP checks not working for GMs, even when the system settings were set up to do
   so
+- critical flagging now correctly works with just "fcs" or "fcf" given and uses
+  "&lt;=5" and "&gt;=95" by default
 
 ## [0.7.1] - 2021-12-19
 

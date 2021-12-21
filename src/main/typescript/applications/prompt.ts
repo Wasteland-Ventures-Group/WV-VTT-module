@@ -88,7 +88,9 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
 
     this.specs = foundry.utils.deepClone(specs);
     Object.keys(this.specs).forEach((key) => {
-      this.specs[key].class = this.getClass(this.specs[key]);
+      const spec = this.specs[key];
+      if (!spec) return;
+      spec.class = this.getClass(spec);
     });
 
     this.onSubmitCallback = onSubmit;
@@ -108,7 +110,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     super.activateListeners(html);
 
     html.on("submit", this.onSubmit.bind(this));
-    html.find("input")[0].select();
+    html.find("input")[0]?.select();
   }
 
   override async getData(): Promise<RenderData<Specs>> {

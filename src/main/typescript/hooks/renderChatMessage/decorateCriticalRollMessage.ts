@@ -29,23 +29,23 @@ export default function decorateCriticalRollMessage(
 /** Decorate for a critical failure. */
 function decorateHasCritFailure(html: HookParams[1]) {
   const resultElement = getResultElement(html);
-  resultElement.classList.add("critical-failure");
+  resultElement?.classList.add("critical-failure");
 }
 
 /** Decorate for a critical success. */
 function decorateHasCritSuccess(html: HookParams[1]) {
   const resultElement = getResultElement(html);
-  resultElement.classList.add("critical-success");
+  resultElement?.classList.add("critical-success");
 }
 
 /** Decorate for both types of criticals. */
 function decorateHasBothCriticals(html: HookParams[1]) {
   const resultElement = getResultElement(html);
-  resultElement.classList.add("criticals");
+  resultElement?.classList.add("criticals");
 }
 
 /** Get the dice total element. */
-function getResultElement(html: HookParams[1]): HTMLElement {
+function getResultElement(html: HookParams[1]): HTMLElement | undefined {
   return html.find(".dice-total")[0];
 }
 

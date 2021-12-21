@@ -65,7 +65,7 @@ export default class WvToken extends Token {
       // Get the two AP values.
       const ray = new Ray(origin, target);
       const apUse = getApUse(
-        grid.measureDistances([{ ray }], { gridSpaces: true })[0]
+        grid.measureDistances([{ ray }], { gridSpaces: true })[0] ?? 0
       );
       const currAp = clone.actor.actionPoints.value;
 

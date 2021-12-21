@@ -83,7 +83,7 @@ async function getUpdateDataFromCompendium(
     `^Compendium\\.(${CONSTANTS.systemId}\\.\\w+)\\.([a-zA-Z0-9]{16})$`
   );
   const match = regex.exec(sourceId);
-  if (!match) return {};
+  if (!match || !match[1] || !match[2]) return {};
 
   const compendium = getGame().packs.get(match[1]);
   if (!compendium) return {};

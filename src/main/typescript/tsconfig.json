@@ -6,6 +6,7 @@
     "lib": ["DOM", "ES2020"],
     "module": "ES2020",
     "moduleResolution": "Node",
+    "noUncheckedIndexedAccess": true,
     "outDir": "../../../dist/wasteland-ventures/modules",
     "strict": true,
     "target": "ES2020",

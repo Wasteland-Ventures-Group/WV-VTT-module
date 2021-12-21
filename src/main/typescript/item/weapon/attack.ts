@@ -456,15 +456,14 @@ export default class Attack {
           rolls: {
             damage: {
               formula: damageRoll.formula,
-              results: damageRoll.dice[0].results.map(
-                (result) => result.result
-              ),
-              total: damageRoll.total ?? 0
+              results:
+                damageRoll.dice[0]?.results.map((result) => result.result) ??
+                [],
+              total: damageRoll.total ?? this.data.damage.base
             },
             hit: {
-              critical: hitRoll.dice[0].results[0].critical,
+              critical: hitRoll.dice[0]?.results[0]?.critical,
               formula: hitRoll.formula,
-              result: hitRoll.dice[0].results[0].result,
               total: hitRoll.total ?? 0
             }
           }

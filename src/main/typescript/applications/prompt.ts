@@ -237,12 +237,8 @@ export type InputSpecsReturnType<Specs extends InputSpecs> = {
 };
 
 /** A type that maps an InputSpec to its corresponding return type */
-export type InputSpecReturnType<Spec extends InputSpec | undefined> =
-  Spec extends undefined
-    ? InputSpecReturnType<NonNullable<Spec>> | undefined
-    : NonNullable<Spec>["type"] extends "number"
-    ? number
-    : string;
+export type InputSpecReturnType<Spec extends InputSpec> =
+  Spec["type"] extends "number" ? number : string;
 
 /**
  * A type for the Callback of the Prompt Application.

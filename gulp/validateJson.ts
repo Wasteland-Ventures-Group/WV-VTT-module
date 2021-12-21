@@ -5,17 +5,17 @@ import log from "fancy-log";
 
 const ajv = new Ajv({ allErrors: true, strict: true });
 
-const baseSchemaPath = "./src/schemas";
+const baseSchemaPath = "./src/main/schemas";
 const langSchemaPath = `${baseSchemaPath}/lang.json`;
 const baseItemSchemaPath = `${baseSchemaPath}/item`;
 
 const validationConfigs: ValidationConfig[] = [
   {
-    dataGlob: "./src/lang/*.json",
+    dataGlob: "./src/main/lang/*.json",
     schemaPath: langSchemaPath
   },
   {
-    dataGlob: "./src/compendiums/item/weapon/*.json",
+    dataGlob: "./src/main/compendiums/item/weapon/*.json",
     schemaPath: `${baseItemSchemaPath}/weapon.json`
   }
 ];

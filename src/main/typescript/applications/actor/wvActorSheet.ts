@@ -5,6 +5,7 @@ import {
   SkillNames,
   SpecialName,
   SpecialNames,
+  ThaumaturgySpecial,
   ThaumaturgySpecials,
   TYPES,
   isSpecialName,
@@ -17,10 +18,7 @@ import { LOG } from "../../systemLogger.js";
 import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
-export default class WvActorSheet extends ActorSheet<
-  ActorSheet.Options,
-  SheetData
-> {
+export default class WvActorSheet extends ActorSheet {
   static override get defaultOptions(): ActorSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "document-sheet", "actor-sheet"],
@@ -63,55 +61,60 @@ export default class WvActorSheet extends ActorSheet<
   }
 
   override async getData(): Promise<SheetData> {
-    const data = await super.getData();
-    const actorProps = data.actor.data.data;
-    data.sheet = {};
-
-    data.sheet.bounds = CONSTANTS.bounds;
-    data.sheet.bounds.skills.points.min = getSkillMinPoints();
-    data.sheet.bounds.special.points.min = getSpecialMinPoints();
-
     const specialI18ns = WvI18n.specials;
-    data.sheet.specials = {};
-    for (const special of SpecialNames) {
-      data.sheet.specials[special] = {
-        long: specialI18ns[special].long,
-        short: specialI18ns[special].short,
-        value: actorProps.specials[special]
-      };
-    }
-
     const skillI18ns = WvI18n.skills;
-    data.sheet.skills = {};
-    for (const skill of SkillNames) {
-      const special: SpecialName =
-        skill === "thaumaturgy"
-          ? actorProps.magic.thaumSpecial
-          : CONSTANTS.skillSpecials[skill];
-      data.sheet.skills[skill] = {
-        name: skillI18ns[skill],
-        ranks: actorProps.leveling.skillRanks[skill],
-        special: specialI18ns[special].short,
-        total: actorProps.skills[skill]?.total
-      };
-    }
 
-    data.sheet.magic = {};
-    data.sheet.magic.thaumSpecials = {};
-    for (const thaumSpecial of ThaumaturgySpecials) {
-      data.sheet.magic.thaumSpecials[thaumSpecial] = {
-        name: specialI18ns[thaumSpecial].long,
-        selected: thaumSpecial === actorProps.magic.thaumSpecial
-      };
-    }
+    const sheetData: SheetData = {
+      ...(await super.getData()),
+      sheet: {
+        bounds: CONSTANTS.bounds,
+        specials: SpecialNames.reduce((specials, specialName) => {
+          specials[specialName] = {
+            long: specialI18ns[specialName].long,
+            short: specialI18ns[specialName].short,
+            value: this.actor.data.data.specials[specialName]
+          };
+          return specials;
+        }, {} as Record<SpecialName, SheetSpecial>),
+        skills: SkillNames.reduce((skills, skillName) => {
+          const specialName =
+            skillName === "thaumaturgy"
+              ? this.actor.data.data.magic.thaumSpecial
+              : CONSTANTS.skillSpecials[skillName];
+          skills[skillName] = {
+            name: skillI18ns[skillName],
+            ranks: this.actor.data.data.leveling.skillRanks[skillName],
+            special: specialI18ns[specialName].short,
+            total: this.actor.data.data.skills[skillName]?.total
+          };
+          return skills;
+        }, {} as Record<SkillName, SheetSkill>),
+        magic: {
+          thaumSpecials: ThaumaturgySpecials.reduce(
+            (thaumSpecials, thaumSpecialName) => {
+              thaumSpecials[thaumSpecialName] = {
+                name: specialI18ns[thaumSpecialName].long,
+                selected:
+                  thaumSpecialName === this.actor.data.data.magic.thaumSpecial
+              };
+              return thaumSpecials;
+            },
+            {} as Record<ThaumaturgySpecial, SheetThaumSpecial>
+          )
+        },
+        effects: [],
+        weapons: []
+      }
+    };
 
-    data.sheet.effects = [];
-    data.sheet.weapons = [];
+    sheetData.sheet.bounds.skills.points.min = getSkillMinPoints();
+    sheetData.sheet.bounds.special.points.min = getSpecialMinPoints();
+
     for (const item of this.actor.items) {
       if (!item.id) continue;
 
       if (TYPES.ITEM.EFFECT === item.data.type) {
-        data.sheet.effects.push({
+        sheetData.sheet.effects.push({
           id: item.id,
           img: item.img,
           name: item.name
@@ -119,7 +122,7 @@ export default class WvActorSheet extends ActorSheet<
       }
 
       if (TYPES.ITEM.WEAPON === item.data.type) {
-        data.sheet.weapons.push({
+        sheetData.sheet.weapons.push({
           id: item.id,
           img: item.img,
           name: item.name
@@ -127,7 +130,7 @@ export default class WvActorSheet extends ActorSheet<
       }
     }
 
-    return data;
+    return sheetData;
   }
 
   override _onDragStart(event: DragEvent): void {
@@ -306,36 +309,32 @@ interface SheetWeapon {
 }
 
 interface SheetThaumSpecial {
-  name?: string;
-  selected?: boolean;
+  name: string;
+  selected: boolean;
 }
 
-type SheetThaumSpecials = Partial<
-  Record<ThaumaturgySpecials, SheetThaumSpecial>
->;
-
 interface SheetMagic {
-  thaumSpecials?: SheetThaumSpecials;
+  thaumSpecials: Record<ThaumaturgySpecial, SheetThaumSpecial>;
 }
 
 interface SheetSpecial extends I18nSpecial {
-  value?: number;
+  value: number;
 }
 
 interface SheetSkill {
-  name?: string;
-  ranks?: number;
-  special?: string;
-  total?: number | undefined;
+  name: string;
+  ranks: number;
+  special: string;
+  total: number | undefined;
 }
 
 interface SheetData extends ActorSheet.Data {
-  sheet?: {
-    bounds?: SheetBounds;
-    effects?: SheetEffect[];
-    magic?: SheetMagic;
-    skills?: Partial<Record<SkillName, SheetSkill>>;
-    specials?: Partial<Record<SpecialName, SheetSpecial>>;
-    weapons?: SheetWeapon[];
+  sheet: {
+    bounds: SheetBounds;
+    effects: SheetEffect[];
+    magic: SheetMagic;
+    skills: Record<SkillName, SheetSkill>;
+    specials: Record<SpecialName, SheetSpecial>;
+    weapons: SheetWeapon[];
   };
 }

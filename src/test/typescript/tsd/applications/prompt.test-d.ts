@@ -1,5 +1,5 @@
 import { expectType } from "tsd";
-import type * as app from "../../../../src/typescript/applications/prompt";
+import type * as app from "../../../../main/typescript/applications/prompt";
 
 // InputSpecsReturnType ========================================================
 declare const singleNumberReturns: app.InputSpecsReturnType<{
@@ -34,14 +34,6 @@ declare const numberReturn: app.InputSpecReturnType<{
 expectType<number>(numberReturn);
 declare const textReturn: app.InputSpecReturnType<{ label: ""; type: "text" }>;
 expectType<string>(textReturn);
-declare const undefinedNumber: app.InputSpecReturnType<
-  { label: ""; type: "number" } | undefined
->;
-expectType<number | undefined>(undefinedNumber);
-declare const undefinedString: app.InputSpecReturnType<
-  { label: ""; type: "text" } | undefined
->;
-expectType<string | undefined>(undefinedString);
 
 // Callback ====================================================================
 declare const callback: app.Callback<{

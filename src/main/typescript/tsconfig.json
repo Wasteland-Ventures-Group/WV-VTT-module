@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "exactOptionalPropertyTypes": true,
+    "importsNotUsedAsValues": "error",
+    "lib": ["DOM", "ES2020"],
+    "module": "ES2020",
+    "moduleResolution": "Node",
+    "outDir": "../../../dist/wasteland-ventures/modules",
+    "strict": true,
+    "target": "ES2020",
+    "types": [
+      "@ethaks/fvtt-quench",
+      "@league-of-foundry-developers/foundry-vtt-types"
+    ]
+  }
+}

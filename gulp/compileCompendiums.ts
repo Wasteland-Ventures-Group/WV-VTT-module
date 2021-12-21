@@ -3,7 +3,7 @@ import glob from "glob-promise";
 import gulp from "gulp";
 import { logChange } from "../gulpfile.js";
 
-const inputBasePath = "./src/compendiums";
+const inputBasePath = "./src/main/compendiums";
 const itemInputBasePath = `${inputBasePath}/item`;
 const outputBasePath = "./dist/wasteland-ventures/compendiums";
 const itemOutputBasePath = `${outputBasePath}/item`;

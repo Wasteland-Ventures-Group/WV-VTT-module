@@ -202,20 +202,22 @@ export default class Attack {
     target: Token | null | undefined
   ): Promise<ExternalData> {
     const i18n = getGame().i18n;
-    const specials = ranges.getRangesSpecials(this.weapon.systemData.ranges);
-    if (this.data.damage.diceRange) specials.add("strength");
-    const specialSpecs: Partial<Record<SpecialName, NumberInputSpec>> = {};
-    for (const special of specials) {
-      specialSpecs[special] = {
+    const specialNames = ranges.getRangesSpecials(
+      this.weapon.systemData.ranges
+    );
+    if (this.data.damage.diceRange) specialNames.add("strength");
+    const specialSpecs = [...specialNames].reduce((specs, specialName) => {
+      specs[specialName] = {
         type: "number",
         label: i18n.format("wv.prompt.labels.special", {
-          special: i18n.localize(`wv.specials.names.${special}.long`)
+          special: i18n.localize(`wv.specials.names.${specialName}.long`)
         }),
-        value: actor?.data.data.specials[special] ?? 0,
+        value: actor?.data.data.specials[specialName] ?? 0,
         min: 0,
         max: 15
       };
-    }
+      return specs;
+    }, {} as Record<SpecialName, NumberInputSpec>);
 
     return Prompt.get<PromptSpec>(
       {
@@ -559,7 +561,7 @@ type PromptSpec = {
   skillTotal: NumberInputSpec;
   critSuccess: NumberInputSpec;
   critFailure: NumberInputSpec;
-} & Partial<Record<SpecialName, NumberInputSpec>>;
+} & Record<SpecialName, NumberInputSpec>;
 
 /** Data external to the attack, can have optional SPECIAL data */
 type ExternalData = {
@@ -580,7 +582,7 @@ type ExternalData = {
 
   /** The critical failure rate of the actor */
   critFailure: number;
-} & Partial<Record<SpecialName, number>>;
+} & Record<SpecialName, number>;
 
 /**
  * Options for modifying Attack rolls.

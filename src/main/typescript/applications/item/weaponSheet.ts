@@ -36,37 +36,31 @@ export default class WeaponSheet extends WvItemSheet {
   }
 
   override async getData(): Promise<SheetData> {
-    const data: SheetData = await super.getData();
-    if (!data.sheet) data.sheet = {};
-
-    data.sheet.attacks = Object.entries(
-      this.item.systemData.attacks.attacks
-    ).reduce<Record<string, SheetAttack>>((obj, [name, attack]) => {
-      obj[name] = {
-        ap: attack.data.ap,
-        damage: attack.damageFormula,
-        dtReduction: attack.data.dtReduction,
-        rounds: attack.data.rounds
-      };
-      return obj;
-    }, {});
-
-    data.sheet.ranges = {};
-    data.sheet.ranges.short = this.mapToSheetRange(
-      this.item.systemData.ranges.short
-    );
-    data.sheet.ranges.medium = this.mapToSheetRange(
-      this.item.systemData.ranges.medium
-    );
-    data.sheet.ranges.long = this.mapToSheetRange(
-      this.item.systemData.ranges.long
-    );
-
-    data.sheet.skill = WvI18n.skills[this.item.systemData.skill];
-
-    data.sheet.usesAmmo = this.item.systemData.reload !== undefined;
-
-    return data;
+    const data = await super.getData();
+    return {
+      ...data,
+      sheet: {
+        ...data.sheet,
+        attacks: Object.entries(this.item.systemData.attacks.attacks).reduce<
+          Record<string, SheetAttack>
+        >((obj, [name, attack]) => {
+          obj[name] = {
+            ap: attack.data.ap,
+            damage: attack.damageFormula,
+            dtReduction: attack.data.dtReduction,
+            rounds: attack.data.rounds
+          };
+          return obj;
+        }, {}),
+        ranges: {
+          short: this.mapToSheetRange(this.item.systemData.ranges.short),
+          medium: this.mapToSheetRange(this.item.systemData.ranges.medium),
+          long: this.mapToSheetRange(this.item.systemData.ranges.long)
+        },
+        skill: WvI18n.skills[this.item.systemData.skill],
+        usesAmmo: this.item.systemData.reload !== undefined
+      }
+    };
   }
 
   override _canDragStart(): boolean {
@@ -122,6 +116,11 @@ export default class WeaponSheet extends WvItemSheet {
    * @param range - the Range to map
    * @returns a sheet displayable Range
    */
+  protected mapToSheetRange(range: ranges.Range): SheetRange;
+  protected mapToSheetRange(range: undefined): undefined;
+  protected mapToSheetRange(
+    range: ranges.Range | undefined
+  ): SheetRange | undefined;
   protected mapToSheetRange(
     range: ranges.Range | undefined
   ): SheetRange | undefined {
@@ -147,8 +146,8 @@ type ClickEvent = JQuery.ClickEvent<
 interface SheetAttack {
   ap: number;
   damage: string;
-  dtReduction?: number;
-  rounds?: number;
+  dtReduction: number | undefined;
+  rounds: number | undefined;
 }
 
 interface SheetRange {
@@ -157,14 +156,14 @@ interface SheetRange {
 }
 
 export interface SheetData extends ItemSheetData {
-  sheet?: ItemSheetData["sheet"] & {
-    attacks?: Record<string, SheetAttack>;
-    ranges?: {
-      short?: SheetRange;
-      medium?: SheetRange;
-      long?: SheetRange;
+  sheet: ItemSheetData["sheet"] & {
+    attacks: Record<string, SheetAttack>;
+    ranges: {
+      short: SheetRange;
+      medium: SheetRange | undefined;
+      long: SheetRange | undefined;
     };
-    skill?: string;
-    usesAmmo?: boolean;
+    skill: string;
+    usesAmmo: boolean;
   };
 }

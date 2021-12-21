@@ -2,9 +2,9 @@ import { promises as fs } from "fs";
 import { createGenerator } from "ts-json-schema-generator";
 
 // The paths here are relative to the project root
-const sourcePath = "./src/typescript/lang.d.ts";
+const sourcePath = "./src/main/typescript/lang.d.ts";
 const tsConfigPath = "./tsconfig-langSchema.json";
-const outputBasePath = "./src/schemas";
+const outputBasePath = "./src/main/schemas";
 const outputPath = `${outputBasePath}/lang.json`;
 const rootType = "LangSchema";
 

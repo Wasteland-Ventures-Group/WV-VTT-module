@@ -2,7 +2,7 @@ import type { TemplateDocumentType } from "../common.js";
 import {
   SkillName,
   SpecialName,
-  ThaumaturgySpecials,
+  ThaumaturgySpecial,
   TYPES
 } from "../../constants.js";
 import { Resource as FoundryResource } from "../foundryCommon.js";
@@ -135,7 +135,7 @@ export class Background {
 /** An Actor magic object for the database */
 export class Magic {
   /** The SPECIAL associated with the Thaumaturgy skill */
-  thaumSpecial: ThaumaturgySpecials = "intelligence";
+  thaumSpecial: ThaumaturgySpecial = "intelligence";
 }
 
 /** The player character data-source data */

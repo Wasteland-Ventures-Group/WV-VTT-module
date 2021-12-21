@@ -14,7 +14,7 @@ const ajv = new Ajv({
 });
 
 // The paths here are relative to the project root
-const sourcePath = "./src/typescript/ruleEngine/ruleElementSource.d.ts";
+const sourcePath = "./src/main/typescript/ruleEngine/ruleElementSource.d.ts";
 const tsConfigPath = "./tsconfig-ruleElementSource.json";
 const outputBasePath = "./dist/wasteland-ventures/modules/validators";
 const outputPath = `${outputBasePath}/ruleElementSource.js`;

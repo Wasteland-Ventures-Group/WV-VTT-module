@@ -7,5 +7,5 @@
     "target": "ES2020",
     "types": ["@league-of-foundry-developers/foundry-vtt-types"]
   },
-  "files": ["./src/typescript/data/item/weapon/source.ts"]
+  "files": ["./src/main/typescript/data/item/weapon/source.ts"]
 }

@@ -6,10 +6,7 @@ import { LOG } from "../../systemLogger.js";
 import * as re from "../../ruleEngine/ruleElement.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
-export default class WvItemSheet extends ItemSheet<
-  ItemSheet.Options,
-  SheetData
-> {
+export default class WvItemSheet extends ItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"]
@@ -22,31 +19,32 @@ export default class WvItemSheet extends ItemSheet<
 
   override async getData(): Promise<SheetData> {
     const data = await super.getData();
-    const newLabel = getGame().i18n.localize(
-      "wv.ruleEngine.ruleElement.newName"
-    );
-    data.sheet = {
-      parts: {
-        header: HANDLEBARS.partPaths.item.header,
-        rules: HANDLEBARS.partPaths.item.rules
-      },
-      rules: {
-        elements: data.data.data.rules.elements.map((rule) => {
-          return {
-            hasErrors: re.hasErrors(rule),
-            hasWarnings: re.hasWarnings(rule),
-            label: rule.source.label || newLabel,
-            messages: rule.messages.map((message) => ({
-              cssClass: message.cssClass,
-              iconClass: message.iconClass,
-              message: message.message
-            })),
-            source: rule.source
-          };
-        })
+    return {
+      ...data,
+      sheet: {
+        parts: {
+          header: HANDLEBARS.partPaths.item.header,
+          rules: HANDLEBARS.partPaths.item.rules
+        },
+        rules: {
+          elements: data.data.data.rules.elements.map((rule) => {
+            return {
+              hasErrors: re.hasErrors(rule),
+              hasWarnings: re.hasWarnings(rule),
+              label:
+                rule.source.label ||
+                getGame().i18n.localize("wv.ruleEngine.ruleElement.newName"),
+              messages: rule.messages.map((message) => ({
+                cssClass: message.cssClass,
+                iconClass: message.iconClass,
+                message: message.message
+              })),
+              source: rule.source
+            };
+          })
+        }
       }
     };
-    return data;
   }
 
   override activateListeners(html: JQuery<HTMLFormElement>): void {
@@ -148,28 +146,28 @@ export default class WvItemSheet extends ItemSheet<
 }
 
 export interface SheetData extends ItemSheet.Data {
-  sheet?: {
-    parts?: {
-      header?: string;
-      rules?: string;
+  sheet: {
+    parts: {
+      header: string;
+      rules: string;
     };
-    rules?: {
-      elements?: SheetDataRuleElement[];
+    rules: {
+      elements: SheetDataRuleElement[] | undefined;
     };
   };
 }
 
 export interface SheetDataRuleElement {
-  messages?: SheetDataMessage[];
-  hasErrors?: boolean;
-  hasWarnings?: boolean;
-  source?: re.UnknownRuleElementSource;
+  messages: SheetDataMessage[];
+  hasErrors: boolean;
+  hasWarnings: boolean;
+  source: re.UnknownRuleElementSource;
 }
 
 export interface SheetDataMessage {
-  cssClass?: string;
-  iconClass?: string;
-  message?: string;
+  cssClass: string;
+  iconClass: string;
+  message: string;
 }
 
 type ClickEvent = JQuery.ClickEvent<

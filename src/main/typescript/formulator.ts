@@ -77,7 +77,7 @@ export default class Formulator {
   private count?: number;
 
   /** Whether the roll is for a SPECIAL */
-  private special?: boolean;
+  private special?: boolean | undefined;
 
   /** An optional modifier to the roll */
   private modifier?: number | undefined;

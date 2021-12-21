@@ -10,7 +10,9 @@ export default class WvRuler extends Ruler {
     destination: Point,
     { gridSpaces }: { gridSpaces?: boolean } = {}
   ): Ruler.Segment[] {
-    return this.replaceLabels(super.measure(destination, { gridSpaces }));
+    return this.replaceLabels(
+      super.measure(destination, { gridSpaces: gridSpaces ?? true })
+    );
   }
 
   override async moveToken(): Promise<false | undefined> {

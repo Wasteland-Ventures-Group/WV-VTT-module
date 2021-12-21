@@ -18,10 +18,10 @@ export function isSpecialName(name: string): name is SpecialName {
   return SpecialNames.includes(name as SpecialName);
 }
 
-export type ThaumaturgySpecials = Exclude<SpecialName, "luck">;
+export type ThaumaturgySpecial = Exclude<SpecialName, "luck">;
 export const ThaumaturgySpecials = SpecialNames.filter(
   (special) => special !== "luck"
-) as ThaumaturgySpecials[];
+) as ThaumaturgySpecial[];
 
 export type SkillName = typeof SkillNames[number];
 export const SkillNames = [

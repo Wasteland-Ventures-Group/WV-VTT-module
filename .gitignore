@@ -1,4 +1,4 @@
 # Dirs to ignore
 /dist/
 /node_modules/
-/src/schemas/
+/src/main/schemas/

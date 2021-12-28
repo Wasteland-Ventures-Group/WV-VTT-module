@@ -1,0 +1,55 @@
+{
+  "templateVersion": 2,
+  "manifestPlusVersion": "1.2.0",
+  "name": "wasteland-ventures",
+  "title": "Wasteland Ventures",
+  "description": "A system that adapts Wasteland Ventures to Foundry VTT",
+  "author": "Kai Moschcau",
+  "authors": [
+    {
+      "name": "Kai Moschcau",
+      "url": "https://kmoschcau.de",
+      "email": "mail@kmoschcau.de",
+      "discord": "f1r3w4rr10r#0733",
+      "twitter": "@kmoschcau"
+    }
+  ],
+  "version": "0.7.1",
+  "minimumCoreVersion": "0.8.8",
+  "compatibleCoreVersion": "0.8.9",
+  "scripts": [],
+  "esmodules": ["modules/wastelandVentures.js"],
+  "styles": ["css/wasteland-ventures.css"],
+  "packs": [
+    {
+      "name": "weapons",
+      "label": "Wasteland Ventures Weapons",
+      "path": "compendiums/item/weapons.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
+    }
+  ],
+  "socket": false,
+  "initiative": "1d10 + (@specials.perception)",
+  "primaryTokenAttribute": "vitals.hitPoints",
+  "secondaryTokenAttribute": "vitals.actionPoints",
+  "gridDistance": 2,
+  "gridUnits": "m",
+  "url": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module",
+  "manifest": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/system.json",
+  "download": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/download/v0.7.1/wasteland-ventures-0.7.1.zip",
+  "readme": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/README.md",
+  "changelog": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/CHANGELOG.md"
+}

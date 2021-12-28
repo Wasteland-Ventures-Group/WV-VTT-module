@@ -1,18 +1,22 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    // "exactOptionalPropertyTypes": true, // TODO: add this once dependencies support it (node and foundry types)
     "importsNotUsedAsValues": "error",
-    "lib": ["DOM", "ES2020"],
+    "lib": ["ES2020"],
     "module": "ES2020",
     "moduleResolution": "Node",
-    "outDir": "dist/modules",
+    "noEmit": true,
     "strict": true,
     "target": "ES2020",
-    "types": [
-      "@ethaks/fvtt-quench",
-      "@league-of-foundry-developers/foundry-vtt-types"
-    ]
+    "types": ["@league-of-foundry-developers/foundry-vtt-types"]
   },
-  "include": ["./src/typescript/**/*.ts"]
+  "files": [
+    "./gulpfile.ts",
+    "./src/main/typescript/constants.ts",
+    "./src/main/typescript/data/foundryCommon.ts",
+    "./src/main/typescript/data/common.ts",
+    "./src/main/typescript/data/actor/source.ts",
+    "./src/main/typescript/data/item/source.ts"
+  ],
+  "include": ["./gulp/**/*.ts"]
 }

@@ -12,10 +12,10 @@ module.exports = {
         browser: true
       },
       extends: ["plugin:@typescript-eslint/recommended"],
-      files: ["./src/typescript/**/*.ts"],
+      files: ["./src/main/typescript/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: "./tsconfig.json",
+        project: "./src/main/typescript/tsconfig.json",
         sourceType: "module"
       },
       plugins: ["@typescript-eslint", "eslint-plugin-tsdoc"],
@@ -85,13 +85,13 @@ module.exports = {
       },
       overrides: [
         {
-          files: ["./src/typescript/data/**/*.ts"],
+          files: ["./src/main/typescript/data/**/*.ts"],
           rules: {
             "@typescript-eslint/no-inferrable-types": "off"
           }
         },
         {
-          files: ["./src/typescript/lang.d.ts"],
+          files: ["./src/main/typescript/lang.d.ts"],
           rules: {
             "tsdoc/syntax": "off"
           }
@@ -100,10 +100,10 @@ module.exports = {
     },
     {
       extends: ["plugin:@typescript-eslint/recommended"],
-      files: ["./test/typescript/tsd/**/*.test-d.ts"],
+      files: ["./src/test/typescript/tsd/**/*.test-d.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: "./test/typescript/tsd/tsconfig.json",
+        project: "./src/test/typescript/tsd/tsconfig.json",
         sourceType: "module"
       },
       plugins: ["@typescript-eslint", "eslint-plugin-tsdoc"]
@@ -113,7 +113,7 @@ module.exports = {
       files: ["./gulpfile.ts", "./gulp/**/*.ts"],
       parser: "@typescript-eslint/parser",
       parserOptions: {
-        project: "./tsconfig-gulpfile.json",
+        project: "./tsconfig.json",
         sourceType: "module"
       },
       plugins: ["@typescript-eslint", "eslint-plugin-tsdoc"],

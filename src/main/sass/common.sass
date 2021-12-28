@@ -1,0 +1,124 @@
+$border-radius: 3px
+$input-height: 26px
+$max-input-chars: 5
+$spacing-distance: 0.5rem
+
+$icon-size-small: 24px
+$icon-size-medium: calc($icon-size-small * 2)
+
+$shade-lighter: #fff5
+$shade-darker: #0005
+
+$color-info: #08c
+$color-warning: #dc0
+$color-error: #e00
+
+$color-crit-fail-fg: #aa0200
+$color-crit-fail-bg: #d8b5ba
+$color-crit-succ-fg: #18520b
+$color-crit-succ-bg: #acc2a7
+$color-crits-fg: #52290b
+$color-crits-bg: #c2b4a7
+
+h5
+  margin: 0 0 0.5rem
+
+.wasteland-ventures
+
+  @for $i from 1 through $max-input-chars
+    .size-#{$i}
+      $width: #{$i}ch
+      flex-basis: $width
+      width: $width
+
+    input.size-#{$i}
+      $width: calc(#{$i}ch + 9px)
+      flex-basis: $width
+      width: $width
+
+  @for $i from 2 through 6
+    .grid-#{$i}cols
+      display: grid
+      grid-template-columns: repeat(#{$i}, auto)
+
+  .flex-center
+    align-items: center
+
+  .flex-fixed
+    flex-grow: 0
+    flex-shrink: 0
+
+  .spacing-bottom
+    margin-bottom: $spacing-distance
+
+  .spacing-top
+    margin-top: $spacing-distance
+
+  .no-margin
+    margin: 0
+
+  input[type=number]
+    justify-self: right
+    text-align: right
+
+  .number-display
+    justify-self: right
+    text-align: right
+
+  input:invalid
+    color: $color-error
+
+  label.contained-target-inline
+    align-items: baseline
+    display: flex
+    justify-content: space-between
+    white-space: nowrap
+
+    > :nth-child(1)
+      margin:
+        left: 1ch
+
+  .standard-grid-gaps
+    column-gap: calc(#{$spacing-distance} * 2)
+    row-gap: $spacing-distance
+
+  .standard-col-gaps
+    column-gap: calc(#{$spacing-distance} * 2)
+
+  $tab-border-width: 1px
+
+  .tabs
+    .item
+      border:
+        color: $shade-darker
+        style: solid
+        width: $tab-border-width
+        top:
+          left-radius: $border-radius
+          right-radius: $border-radius
+        left-width: 0
+      flex: 1
+      padding: 5px
+
+    .item:first-child
+      border-left-width: $tab-border-width
+
+    .item.active
+      border-bottom-width: 0
+
+  .content
+    border:
+      color: $shade-darker
+      style: solid
+      width: $tab-border-width
+      top-width: 0
+
+    .tab
+      padding: $spacing-distance
+
+  button.control
+    height: 26px
+    margin:
+      left: 0
+      right: 0
+    width: 26px

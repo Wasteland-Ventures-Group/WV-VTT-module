@@ -85,9 +85,9 @@ to have the files be recompiled when changes are made to the input files:
 
 ### Adding entries to compendiums
 
-The compendium sources are located under `src/compendiums`. They are grouped
-first by document type (Usually "actor" and "item") and then by their system sub
-types (for example "weapon").
+The compendium sources are located under `src/main/compendiums`. They are
+grouped first by document type (Usually "actor" and "item") and then by their
+system sub types (for example "weapon").
 
 It is recommended to edit the JSON files in those directories with an editor,
 that can supply additional information and checks via JSON schema. Currently
@@ -104,7 +104,7 @@ run:
 
 ### Adding translations
 
-The translation files are located in `src/lang` and have a ready made JSON
+The translation files are located in `src/main/lang` and have a ready made JSON
 schema in the repo. This schema is written by hand and changes every time the
 translations change.
 
@@ -135,7 +135,7 @@ wasteland-ventures package and add a new package version.
 Issues and pull requests are welcome.
 
 [rules]: https://drive.google.com/drive/folders/0B9tzIuxnnTLrTzlsb3BMTlhpbFk?resourcekey=0-0eZ5HHuCDrAs8sYYkoOTLA
-[system]: https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/system.json
+[system]: https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/main/system.json
 [node-js]: https://nodejs.org/en/
 [nodenv]: https://github.com/nodenv/nodenv
 [choco]: https://chocolatey.org/

@@ -11,10 +11,10 @@ import {
 import type { JSONSchema7 } from "json-schema";
 
 // The paths here are relative to the project root
-const sourceBasePath = "./src/typescript/data";
+const sourceBasePath = "./src/main/typescript/data";
 const itemSourceBasePath = `${sourceBasePath}/item`;
 const tsConfigPath = "./tsconfig-schemas.json";
-const outputBasePath = "./src/schemas";
+const outputBasePath = "./src/main/schemas";
 const itemOutputBasePath = `${outputBasePath}/item`;
 
 const schemaConfigs: SchemaConfig[] = [

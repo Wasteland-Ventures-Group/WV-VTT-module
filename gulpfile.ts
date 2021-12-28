@@ -3,7 +3,7 @@ import del from "del";
 import gulp from "gulp";
 import log from "fancy-log";
 import typescript from "gulp-typescript";
-import { CONSTANTS } from "./src/typescript/constants.js";
+import { CONSTANTS } from "./src/main/typescript/constants.js";
 import distZipTask from "./gulp/distZip.js";
 import templateTask from "./gulp/template.js";
 import compendiumSchemasTask from "./gulp/compendiumSchemas.js";
@@ -25,21 +25,24 @@ import ruleElementValidatorsTask from "./gulp/ruleElementValidators.js";
 export const distPrefix = "./dist";
 export const distWvPrefix = `${distPrefix}/${CONSTANTS.systemId}`;
 
-const handlebarsPath = "./src/handlebars/**/*.hbs";
+const handlebarsPath = "./src/main/handlebars/**/*.hbs";
 const handlebarsOutPath = `${distWvPrefix}/handlebars`;
 
-const langPath = "./src/lang/*.json";
+const langPath = "./src/main/lang/*.json";
 const langOutPath = `${distWvPrefix}/lang`;
 
-const sassRoot = `./src/sass/${CONSTANTS.systemId}.sass`;
-const sassPath = "./src/sass/**/*.sass";
+const sassRoot = `./src/main/sass/${CONSTANTS.systemId}.sass`;
+const sassPath = "./src/main/sass/**/*.sass";
 const cssOutPath = `${distWvPrefix}/css`;
 
-const tsProject = typescript.createProject("tsconfig.json");
+const tsProject = typescript.createProject(
+  "./src/main/typescript/tsconfig.json"
+);
+const tsPath = "./src/main/typescript/**/*.ts";
 const jsOutPath = `${distWvPrefix}/modules`;
 
-const systemPath = "./src/system.json";
-const systemWatchPath = "./src/[s-s]ystem.json";
+const systemPath = "./src/main/system.json";
+const systemWatchPath = "./src/main/[s-s]ystem.json";
 const systemOutPath = distWvPrefix;
 
 export const templateOutPath = `${distWvPrefix}/template.json`;
@@ -93,8 +96,7 @@ export function ts(): NodeJS.ReadWriteStream {
 ts.description = "Compile all Typescript files to Javascript";
 
 export function tsWatch(): void {
-  const includes = tsProject.config.include;
-  includes && gulp.watch(includes, ts).on("change", logChange);
+  gulp.watch(tsPath, ts).on("change", logChange);
 }
 tsWatch.description =
   "Watch the Typescript input files for changes and run the compile task";

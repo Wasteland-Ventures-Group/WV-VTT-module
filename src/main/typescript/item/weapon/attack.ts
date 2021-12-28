@@ -468,6 +468,7 @@ export default class Attack {
             hit: {
               critical: hitRoll.dice[0]?.results[0]?.critical,
               formula: hitRoll.formula,
+              result: hitRoll.dice[0]?.results[0]?.result ?? 0,
               total: hitRoll.total ?? 0
             }
           }

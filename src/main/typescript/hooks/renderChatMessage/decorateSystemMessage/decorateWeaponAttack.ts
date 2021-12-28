@@ -149,6 +149,7 @@ export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
     hit: {
       critical?: Critical | undefined;
       formula: string;
+      result: number;
       total: number;
     };
   };

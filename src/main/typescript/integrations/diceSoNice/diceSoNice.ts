@@ -1,4 +1,5 @@
 import { getGame } from "../../foundryHelpers.js";
+import { isDiceSoNiceActive } from "../index.js";
 
 /**
  * A wrapper for calling `game.dice3d.showForRoll`, if it is available. If it
@@ -11,6 +12,8 @@ export default async function diceSoNice(
   whisper: Parameters<Dice3D["showForRoll"]>[3],
   speaker: Parameters<Dice3D["showForRoll"]>[6]
 ): Promise<boolean | undefined> {
+  if (!isDiceSoNiceActive()) return;
+
   const dice3d = getGame().dice3d;
   if (dice3d) {
     return dice3d.showForRoll(

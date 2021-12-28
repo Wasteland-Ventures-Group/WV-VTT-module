@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking
+
+- This and future versions only support Foundry VTT v9 or higher
+
 ### Fixed
 
 - AP checks not working for GMs, even when the system settings were set up to do

@@ -3,7 +3,7 @@ import Prompt, {
   TextInputSpec
 } from "../../applications/prompt.js";
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
-import type WvActor from "../../actor/wvActor.js";
+import WvActor from "../../actor/wvActor.js";
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../weapon.js";
 import Formulator from "../../formulator.js";
@@ -439,10 +439,14 @@ export default class Attack {
     options?: RollOptions
   ): Promise<void> {
     const defaultData = this.createDefaultMessageData(speaker, options);
+    const actorId =
+      defaultData.speaker?.actor instanceof WvActor
+        ? defaultData.speaker.actor.id
+        : defaultData.speaker?.actor;
 
     await Promise.all([
-      diceSoNice(hitRoll, defaultData.whisper ?? null, defaultData.speaker),
-      diceSoNice(damageRoll, defaultData.whisper ?? null, defaultData.speaker)
+      diceSoNice(hitRoll, defaultData.whisper ?? null, { actor: actorId }),
+      diceSoNice(damageRoll, defaultData.whisper ?? null, { actor: actorId })
     ]);
 
     const data: ChatMessageDataConstructorData = {

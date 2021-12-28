@@ -41,18 +41,18 @@ declare class Dice3D {
    * @param whisper - list of users or userId who can see the roll, set it to null if everyone can see. Default: null
    * @param blind - if the roll is blind for the current user. Default: false
    * @param chatMessageID - A chatMessage ID to reveal when the roll ends. Default: null
-   * @param speaker - An object using the same data schema than ChatSpeakerData.
-   *                  Needed to hide NPCs roll when the GM enables this setting.
+   * @param speaker - Object based on the ChatSpeakerData data schema related to this roll.
+   *                  Useful to fully support DsN settings like "hide npc rolls". (Default: null)
    * @returns when resolved true if the animation was displayed, false if not.
    */
   showForRoll(
     roll: Roll,
-    user?: User,
-    synchronize?: boolean,
-    whisper?: Array<{ id: string } | string> | null,
-    blind?: boolean,
-    chatMessageID?: string | null,
-    speaker?: { actor?: string | null } | null
+    user?: User | undefined,
+    synchronize?: boolean | undefined,
+    whisper?: Array<{ id: string } | string> | null | undefined,
+    blind?: boolean | undefined,
+    chatMessageID?: string | null | undefined,
+    speaker?: { actor?: string | null | undefined } | null | undefined
   ): Promise<boolean>;
 
   /**
@@ -67,10 +67,10 @@ declare class Dice3D {
    */
   show(
     data: Dice3DShowData,
-    user?: User,
-    synchronize?: boolean,
-    whisper?: Array<{ id: string } | string> | null,
-    blind?: boolean
+    user?: User | undefined,
+    synchronize?: boolean | undefined,
+    whisper?: Array<{ id: string } | string> | null | undefined,
+    blind?: boolean | undefined
   ): Promise<boolean>;
 }
 

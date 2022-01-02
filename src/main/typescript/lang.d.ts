@@ -142,6 +142,13 @@ export interface LangSchema {
         /** Various semantic errors */
         semantic: {
           /**
+           * An error message for fields that are not allowed, containing a
+           * reference to the instance path with `path` and the additional
+           * property with `property`.
+           * @pattern (?=.*\{path\})(?=.*\{property\})
+           */
+          additional: string;
+          /**
            * An error message for fields that are missing, containing a
            * reference to the instance path with `path` and the missing property
            * with `property`.

@@ -5,10 +5,7 @@
 // this in Javascript allows us to stay independent of the system shell.
 //
 // The reason we need ts-node's ESM loader instead of the default one, is that
-// it allows us to specify import paths with `.js` file extensions and have
-// ts-node also look for the a module without the extension, then finding the
-// file with the `.ts` extension. This whole thing is needed for the dynamic
-// creation of the `template.json` file from Typescript types.
+// it allows us to specify ESModule import paths in our gulpfiles.
 // See also: https://github.com/TypeStrong/ts-node/issues/1007
 
 import { spawn } from "child_process";

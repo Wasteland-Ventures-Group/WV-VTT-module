@@ -56,6 +56,7 @@
           "wrongSelectedType": "Das Feld \"{path}\" von \"{name}\" hat nicht den benötigten Typ \"{type}\"."
         },
         "semantic": {
+          "additional": "Das Feld \"{property}\" ist nicht erlaubt an Stelle \"{path}\".",
           "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
           "unknown": "Ein unbekannter Fehler is aufgetreten.",
           "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",

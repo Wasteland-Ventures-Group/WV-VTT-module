@@ -1,5 +1,6 @@
 import dartSass from "gulp-dart-sass";
 import del from "del";
+import * as esbuild from "esbuild";
 import gulp from "gulp";
 import log from "fancy-log";
 import typescript from "gulp-typescript";
@@ -12,7 +13,6 @@ import compileCompendiumsTask, {
 } from "./gulp/compileCompendiums.js";
 import validateJsonTask from "./gulp/validateJson.js";
 import langSchemaTask from "./gulp/langSchema.js";
-import ruleElementValidatorsTask from "./gulp/ruleElementValidators.js";
 
 // = Path constants ============================================================
 
@@ -35,11 +35,12 @@ const sassRoot = `./src/main/sass/${CONSTANTS.systemId}.sass`;
 const sassPath = "./src/main/sass/**/*.sass";
 const cssOutPath = `${distWvPrefix}/css`;
 
-const tsProject = typescript.createProject(
-  "./src/main/typescript/tsconfig.json"
-);
+const tsProjectPath = "./src/main/typescript/tsconfig.json";
+const tsProject = typescript.createProject(tsProjectPath);
+const tsEntryPoint = "./src/main/typescript/wastelandVentures.ts";
 const tsPath = "./src/main/typescript/**/*.ts";
 const jsOutPath = `${distWvPrefix}/modules`;
+const jsOutFile = `${jsOutPath}/wastelandVentures.js`;
 
 const systemPath = "./src/main/system.json";
 const systemWatchPath = "./src/main/[s-s]ystem.json";
@@ -52,25 +53,27 @@ export const templateOutPath = `${distWvPrefix}/template.json`;
 export function hbs(): NodeJS.ReadWriteStream {
   return gulp.src(handlebarsPath).pipe(gulp.dest(handlebarsOutPath));
 }
-hbs.description = "Copy all handlebars files";
+hbs.description = "Copy all handlebars files.";
 
 export function hbsWatch(): void {
-  gulp.watch(handlebarsPath, hbs).on("change", logChange);
+  gulp
+    .watch(handlebarsPath, { ignoreInitial: false }, hbs)
+    .on("change", logChange);
 }
 hbsWatch.description =
-  "Watch the Handlebars input files for changes and copy them";
+  "Watch the Handlebars input files for changes and copy them.";
 
 // = Lang tasks ================================================================
 
 export function lang(): NodeJS.ReadWriteStream {
   return gulp.src(langPath).pipe(gulp.dest(langOutPath));
 }
-lang.description = "Copy all language files";
+lang.description = "Copy all language files.";
 
 export function langWatch(): void {
-  gulp.watch(langPath, lang).on("change", logChange);
+  gulp.watch(langPath, { ignoreInitial: false }, lang).on("change", logChange);
 }
-langWatch.description = "Watch the language files for changes and copy them";
+langWatch.description = "Watch the language files for changes and copy them.";
 
 // = Sass tasks ================================================================
 
@@ -80,38 +83,85 @@ export function sass(): NodeJS.ReadWriteStream {
     .pipe(dartSass().on("error", dartSass.logError))
     .pipe(gulp.dest(cssOutPath));
 }
-sass.description = "Compile all Sass files into CSS";
+sass.description = "Compile all Sass files into CSS.";
 
 export function sassWatch(): void {
-  gulp.watch(sassPath, sass).on("change", logChange);
+  gulp.watch(sassPath, { ignoreInitial: false }, sass).on("change", logChange);
 }
 sassWatch.description =
-  "Watch the Sass input files for changes and run the compile task";
+  "Watch the Sass input files for changes and run the compile task.";
 
 // = Typescript tasks ==========================================================
 
-export function ts(): NodeJS.ReadWriteStream {
-  return tsProject.src().pipe(tsProject()).js.pipe(gulp.dest(jsOutPath));
+export function typecheck() {
+  return tsProject.src().pipe(tsProject());
 }
-ts.description = "Compile all Typescript files to Javascript";
+typecheck.description = "Typecheck the typescript sources.";
+
+let tsBuildResult: esbuild.BuildResult | null = null;
+async function esBuild({
+  incremental = false,
+  prod = false
+} = {}): Promise<esbuild.BuildResult> {
+  if (incremental && tsBuildResult?.rebuild) {
+    tsBuildResult = await tsBuildResult.rebuild();
+  } else {
+    tsBuildResult = await esbuild.build({
+      bundle: true,
+      entryPoints: [tsEntryPoint],
+      format: "esm",
+      incremental: incremental,
+      keepNames: true,
+      legalComments: "none",
+      minify: prod,
+      outfile: jsOutFile,
+      sourcemap: true,
+      sourceRoot: `systems/${CONSTANTS.systemId}`
+    });
+  }
+  return tsBuildResult;
+}
+
+export function bundleTs() {
+  return esBuild();
+}
+bundleTs.description = "Bundle the typescript sources for development.";
+
+export function bundleTsProd() {
+  return esBuild({ prod: true });
+}
+bundleTsProd.description = "Bundle the typescript sources for production.";
+
+export const ts = gulp.series(typecheck, bundleTs);
+ts.description =
+  "Type check and bundle the typescript sources for development.";
+
+export const tsProd = gulp.series(typecheck, bundleTsProd);
+tsProd.description =
+  "Type check and bundle the typescript sources for production.";
 
 export function tsWatch(): void {
-  gulp.watch(tsPath, ts).on("change", logChange);
+  const bundleTs = () => esBuild({ incremental: true });
+  gulp
+    .watch(tsPath, { ignoreInitial: false }, bundleTs)
+    .on("change", logChange);
 }
 tsWatch.description =
-  "Watch the Typescript input files for changes and run the compile task";
+  "Watch the Typescript input files for changes and run the ts task.";
 
 // = system.json tasks =========================================================
 
 export function system(): NodeJS.ReadWriteStream {
   return gulp.src(systemPath).pipe(gulp.dest(systemOutPath));
 }
-system.description = "Copy the system.json file";
+system.description = "Copy the system.json file.";
 
 export function systemWatch(): void {
-  gulp.watch(systemWatchPath, system).on("change", logChange);
+  gulp
+    .watch(systemWatchPath, { ignoreInitial: false }, system)
+    .on("change", logChange);
 }
-systemWatch.description = "Watch system.json for changes and copy it";
+systemWatch.description = "Watch system.json for changes and copy it.";
 
 // = template.json tasks =======================================================
 
@@ -121,7 +171,6 @@ export const template = templateTask;
 
 export const compSchemas = compendiumSchemasTask;
 export const langSchema = langSchemaTask;
-export const ruleElementValidators = ruleElementValidatorsTask;
 export const validateJson = gulp.series(
   gulp.parallel(compSchemas, langSchema),
   validateJsonTask
@@ -139,13 +188,12 @@ export const pack = gulp.parallel(
   compileComps,
   hbs,
   lang,
-  ruleElementValidators,
   sass,
   system,
   ts,
   template
 );
-pack.description = "Copy and compile all relevant files to the dist dir";
+pack.description = "Copy and compile all relevant files to the dist dir.";
 
 export const watchAll = gulp.parallel(
   compileCompsWatch,
@@ -155,19 +203,23 @@ export const watchAll = gulp.parallel(
   tsWatch,
   systemWatch
 );
-watchAll.description = "Run all watch tasks";
+watchAll.description = "Run all watch tasks.";
 
 export function clean(): Promise<string[]> {
   return del(`${distPrefix}/**`, { force: true });
 }
-clean.description = "Clean the dist dir";
+clean.description = "Clean the dist dir.";
 
 // = Distribution tasks ========================================================
 
 export const distZip = distZipTask;
 
-export const buildZip = gulp.series(pack, distZip);
-buildZip.description = "Pack and zip the distribution files";
+export const buildZip = gulp.series(
+  clean,
+  gulp.parallel(compileComps, hbs, lang, sass, system, tsProd, template),
+  distZip
+);
+buildZip.description = "Clean, Pack and zip the distribution files.";
 
 // = Common functions ==========================================================
 

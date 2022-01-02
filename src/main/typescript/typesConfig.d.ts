@@ -14,6 +14,7 @@ import type {
 } from "./rolls/criticalsModifiers.js";
 import type * as settings from "./settings.js";
 import { macros } from "./macros/index.js";
+import type Ajv from "ajv/dist/jtd";
 
 declare global {
   interface SourceConfig {
@@ -35,6 +36,8 @@ declare global {
   interface Game {
     /** The Wasteland Ventures property */
     wv: {
+      /** A global Ajv instance for the system */
+      ajv: Ajv;
       /** Wasteland Ventures macros */
       macros: typeof macros;
     };

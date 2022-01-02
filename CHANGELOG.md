@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- use esbuild to package the system
+  ([#73](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/73))
+  - vastly improved system load times (down to less than 100ms from more than
+    2s)
+  - one bundled javascript file
+  - added sourcemaps for typescript sources
+
 ## [0.8.0] - 2021-12-28
 
 ### Breaking

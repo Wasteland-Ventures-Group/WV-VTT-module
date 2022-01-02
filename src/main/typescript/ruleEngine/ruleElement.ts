@@ -186,7 +186,7 @@ export interface KnownRuleElementSource extends RuleElementSource {
 }
 
 /** The valid values of a RuleElement target property */
-const RULE_ELEMENT_TARGETS = ["item", "actor"] as const;
+export const RULE_ELEMENT_TARGETS = ["item", "actor"] as const;
 
 /** The type of the valid values for a RuleElement target property */
 export type RuleElementTarget = typeof RULE_ELEMENT_TARGETS[number];

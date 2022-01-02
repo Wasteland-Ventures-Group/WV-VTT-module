@@ -56,6 +56,7 @@
           "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\"."
         },
         "semantic": {
+          "additional": "The property \"{property}\" is not allowed at \"{path}\".",
           "missing": "The property \"{property}\" is missing at \"{path}\".",
           "unknown": "An unknown error occurred.",
           "unknownRuleElement": "The type of RuleElement is unknown.",

@@ -1,3 +1,4 @@
+import Ajv from "ajv/dist/jtd";
 import WvActor from "./actor/wvActor.js";
 import WvActorSheet from "./applications/actor/wvActorSheet.js";
 import EffectSheet from "./applications/item/effectSheet.js";
@@ -18,6 +19,7 @@ import { initializedSettingName } from "./settings.js";
 /** The Foundry configuration function for the init hook */
 export function configureFoundryOnInit(): void {
   getGame().wv = {
+    ajv: new Ajv({ allErrors: true }),
     macros
   };
 

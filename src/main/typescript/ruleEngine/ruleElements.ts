@@ -1,5 +1,4 @@
-import type { ValidateFunction } from "ajv";
-import type { JTDErrorObject } from "ajv/dist/jtd";
+import type { DefinedError, ValidateFunction } from "ajv";
 import { getGame } from "../foundryHelpers.js";
 import type WvItem from "../item/wvItem.js";
 import AdditionalPropMessage from "./messages/additionalPropMessage.js";
@@ -12,12 +11,14 @@ import type {
 } from "./ruleElement.js";
 import RuleElementMessage from "./ruleElementMessage.js";
 import FlatModifier from "./ruleElements/flatModifier.js";
+import ReplaceValue from "./ruleElements/replaceValue.js";
 import type RuleElementSource from "./ruleElementSource.js";
-import { createValidator } from "./ruleElementSource.js";
+import { schema } from "./ruleElementSource.js";
 
 /** RuleElement identifier strings */
 export const RULE_ELEMENT_IDS = {
-  FLAT_MODIFIER: "WV.RuleElement.FlatModifier"
+  FLAT_MODIFIER: "WV.RuleElement.FlatModifier",
+  REPLACE_VALUE: "WV.RuleElement.ReplaceValue"
 } as const;
 
 /** A union type of RuleElement ID strings */
@@ -25,7 +26,8 @@ export type RuleElementId = ValueOf<typeof RULE_ELEMENT_IDS>;
 
 /** A mapping of RuleElement IDs to RuleElement constructors. */
 export const RULE_ELEMENTS = {
-  [RULE_ELEMENT_IDS.FLAT_MODIFIER]: FlatModifier
+  [RULE_ELEMENT_IDS.FLAT_MODIFIER]: FlatModifier,
+  [RULE_ELEMENT_IDS.REPLACE_VALUE]: ReplaceValue
 } as const;
 
 export type MappedRuleElementId = keyof typeof RULE_ELEMENTS;
@@ -73,7 +75,7 @@ export default class RuleElements {
     // Check the passed JSON source against the schema. When it is invalid, only
     // return a RuleElementLike.
     if (!validate(source)) {
-      for (const error of validate.errors as JTDErrorObject[]) {
+      for (const error of validate.errors as DefinedError[]) {
         messages.push(this.translateError(error));
       }
 
@@ -85,34 +87,32 @@ export default class RuleElements {
     return new RULE_ELEMENTS[type]({ ...source, target, type }, item, messages);
   }
 
-  /** Translate an AJV JTDErrorObject to a RuleElementMessage. */
-  protected static translateError(error: JTDErrorObject): RuleElementMessage {
+  /** Translate an AJV DefinedError to a RuleElementMessage. */
+  protected static translateError(error: DefinedError): RuleElementMessage {
+    console.dir(error);
     switch (error.keyword) {
-      case "properties":
-        if ("additionalProperty" in error.params) {
-          return new AdditionalPropMessage(
-            error.instancePath,
-            error.params.additionalProperty
-          );
-        } else if ("missingProperty" in error.params) {
-          return new MissingPropMessage(
-            error.instancePath,
-            error.params.missingProperty
-          );
-        }
-        break;
+      case "additionalProperties":
+        return new AdditionalPropMessage(
+          error.instancePath,
+          error.params.additionalProperty
+        );
+      case "required":
+        return new MissingPropMessage(
+          error.instancePath,
+          error.params.missingProperty
+        );
 
       case "type":
         return new WrongTypeMessage(error.instancePath, error.params.type);
 
       case "enum":
         switch (error.schemaPath) {
-          case "/properties/target/enum":
+          case "#/properties/target/enum":
             return new RuleElementMessage(
               "wv.ruleEngine.errors.semantic.unknownTarget",
               "error"
             );
-          case "/properties/type/enum":
+          case "#/properties/type/enum":
             return new RuleElementMessage(
               "wv.ruleEngine.errors.semantic.unknownRuleElement",
               "error"
@@ -129,7 +129,8 @@ export default class RuleElements {
     if (RuleElements.isValidRuleElementSource)
       return RuleElements.isValidRuleElementSource;
 
-    return (RuleElements.isValidRuleElementSource = createValidator());
+    return (RuleElements.isValidRuleElementSource =
+      getGame().wv.ajv.compile(schema));
   }
 }
 

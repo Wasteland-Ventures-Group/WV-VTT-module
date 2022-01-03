@@ -1,9 +1,6 @@
-import type { JTDSchemaType, ValidateFunction } from "ajv/dist/jtd";
-import { getGame } from "../foundryHelpers.js";
+import type { JSONSchemaType } from "ajv";
 import type { RuleElementTarget } from "./ruleElement.js";
-import { RULE_ELEMENT_TARGETS } from "./ruleElement.js";
 import type { MappedRuleElementId } from "./ruleElements.js";
-import { RULE_ELEMENTS } from "./ruleElements.js";
 
 /** The RuleElement raw data layout */
 export default interface RuleElementSource {
@@ -28,27 +25,31 @@ export default interface RuleElementSource {
   type: MappedRuleElementId;
 
   /** The value of the element */
-  value: number;
+  value: boolean | number | string;
 }
 
-/**
- * Create a validation function to check whether a JSON object is a valid
- * RuleElementSource. The function can serve as a type guard and errors can be
- * accessed with the `errors` property.
- * @see {@link Ajv#compile}
- */
-export function createValidator(): ValidateFunction<RuleElementSource> {
-  const schema: JTDSchemaType<RuleElementSource> = {
-    properties: {
-      enabled: { type: "boolean" },
-      label: { type: "string" },
-      priority: { type: "int32" },
-      selector: { type: "string" },
-      target: { enum: RULE_ELEMENT_TARGETS as unknown as RuleElementTarget[] },
-      type: { enum: Object.keys(RULE_ELEMENTS) as MappedRuleElementId[] },
-      value: { type: "int32" }
-    }
-  };
-
-  return getGame().wv.ajv.compile(schema);
-}
+export const schema: JSONSchemaType<RuleElementSource> = {
+  type: "object",
+  properties: {
+    enabled: { type: "boolean" },
+    label: { type: "string" },
+    priority: { type: "number" },
+    selector: { type: "string" },
+    target: { type: "string", enum: ["actor", "item"] },
+    type: {
+      type: "string",
+      enum: ["WV.RuleElement.FlatModifier", "WV.RuleElement.ReplaceValue"]
+    },
+    value: { type: ["boolean", "number", "string"] }
+  },
+  required: [
+    "enabled",
+    "label",
+    "priority",
+    "selector",
+    "target",
+    "type",
+    "value"
+  ],
+  additionalProperties: false
+};

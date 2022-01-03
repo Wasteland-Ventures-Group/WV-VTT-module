@@ -1,4 +1,4 @@
-import Ajv from "ajv/dist/jtd";
+import Ajv from "ajv";
 import WvActor from "./actor/wvActor.js";
 import WvActorSheet from "./applications/actor/wvActorSheet.js";
 import EffectSheet from "./applications/item/effectSheet.js";

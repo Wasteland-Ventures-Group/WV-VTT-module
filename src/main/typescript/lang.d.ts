@@ -131,6 +131,13 @@ export interface LangSchema {
            */
           noActor: string;
           /**
+           * An error messages when the selector does not match a property on
+           * the target. It should contain a reference to the target name with
+           * `name` and to the property with `path`.
+           * @pattern (?=.*\{name\})(?=.*\{path\})
+           */
+          notMatchingSelector: string;
+          /**
            * An error message when the selected property on the target is of the
            * wrong type. It should contain a reference to the target name with
            * `name`, to the property with `path` and the expected type with
@@ -138,6 +145,12 @@ export interface LangSchema {
            * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{type\})
            */
           wrongSelectedType: string;
+          /**
+           * An error message when the value of a rule is of the wrong type. It
+           * should contain a reference to the expected type with `type`.
+           * @pattern (?=.*\{type\})
+           */
+          wrongValueType: string;
         };
         /** Various semantic errors */
         semantic: {
@@ -176,6 +189,17 @@ export interface LangSchema {
          * @pattern (?=.*\{number\})(?=.*\{message\})
          */
         syntax: string;
+      };
+      /** Labels for different warnings */
+      warnings: {
+        /**
+         * A warning, stating that the type of a property was changed. It
+         * should contain a reference to the target name with `name`, to the
+         * property with `path`, the original type with `original` and the new
+         * type with `new`.
+         * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
+         */
+        changedType: string;
       };
     };
     /** Labels related to the measuring tool */

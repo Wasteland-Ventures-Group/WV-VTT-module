@@ -53,7 +53,9 @@
       "errors": {
         "logical": {
           "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
-          "wrongSelectedType": "Das Feld \"{path}\" von \"{name}\" hat nicht den benötigten Typ \"{type}\"."
+          "notMatchingSelector": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
+          "wrongSelectedType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
+          "wrongValueType": "Der Wert dieser Regel sollte vom Typ \"{type}\" sein."
         },
         "semantic": {
           "additional": "Das Feld \"{property}\" ist nicht erlaubt an Stelle \"{path}\".",
@@ -64,6 +66,9 @@
           "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
         },
         "syntax": "Syntaxfehler in Regelelementdefinition {number}: {message}"
+      },
+      "warnings": {
+        "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert."
       }
     },
     "ruler": {

@@ -3,6 +3,9 @@ import type { RuleElementId } from "./ruleElements.js";
 import type RuleElementSource from "./ruleElementSource.js";
 import RuleElementMessage from "./ruleElementMessage.js";
 import WrongSelectedTypeMessage from "./messages/wrongSelectedTypeMessage.js";
+import NotMatchingSelectorMessage from "./messages/notMatchingSelectorMessage.js";
+import WrongValueTypeMessage from "./messages/wrongValueTypeMessage.js";
+import ChangedTypeMessage from "./messages/changedTypeMessage.js";
 
 /**
  * A rule engine element, allowing the modification of a data point, specified
@@ -67,7 +70,7 @@ export default abstract class RuleElement implements RuleElementLike {
   }
 
   /** Get the value of the RuleElement. */
-  get value(): number {
+  get value(): boolean | number | string {
     return this.source.value;
   }
 
@@ -106,6 +109,8 @@ export default abstract class RuleElement implements RuleElementLike {
 
       return;
     }
+
+    this.checkIfSelectorIsValid();
   }
 
   /**
@@ -121,48 +126,107 @@ export default abstract class RuleElement implements RuleElementLike {
   }
 
   /**
-   * Check whether the selected property is of the given type.
+   * Check whether the selector selects a property.
    *
-   * If the type is incorrect, an error message is added to the RuleElement.
-   * @param expectedType - the type to check for
-   * @returns whether the type is correct
+   * If the selector does not match, an error message is added to the
+   * RuleElement.
    * @throws if anything else than a TypeError is thrown by
    *         `foundry.utils.getProperty()`
    */
-  protected checkSelectedIsOfType(expectedType: string) {
-    let wrongType = false;
+  protected checkIfSelectorIsValid(): void {
+    let invalidSelector = false;
 
     try {
-      const actualType = typeof foundry.utils.getProperty(
-        this.targetDoc.data.data,
-        this.selector
-      );
-      if (actualType !== expectedType) {
-        wrongType = true;
-      }
+      invalidSelector =
+        foundry.utils.getProperty(this.targetDoc.data.data, this.selector) ===
+        undefined;
     } catch (error) {
       if (error instanceof TypeError) {
         // This can happen, when the prefix part of a path finds a valid
         // property, which has a non-object value and the selector has further
         // parts.
-        wrongType = true;
+        invalidSelector = true;
       } else {
         throw error;
       }
     }
 
-    if (wrongType) {
-      // This has to be accessed in this way, because `checkSelectedIsOfType()`
-      // can end up being called when the `data` on an Actor or Item is not
-      // initialized yet.
-      const targetName = this.targetDoc.data?.name ?? null;
-
+    if (invalidSelector) {
       this.messages.push(
-        new WrongSelectedTypeMessage(targetName, this.selector, expectedType)
+        new NotMatchingSelectorMessage(this.targetName, this.selector)
       );
     }
+  }
 
-    return !wrongType;
+  /**
+   * Check whether the selected property is of the given type.
+   *
+   * If the type is incorrect, an error message is added to the RuleElement.
+   * @remarks When this is called, it should already be verified that the
+   *          selector actually matches a property.
+   * @param expectedType - the type to check for
+   */
+  protected checkSelectedIsOfType(
+    expectedType: "boolean" | "number" | "string"
+  ): void {
+    const actualType = typeof foundry.utils.getProperty(
+      this.targetDoc.data.data,
+      this.selector
+    );
+
+    if (actualType !== expectedType) {
+      this.messages.push(
+        new WrongSelectedTypeMessage(
+          this.targetName,
+          this.selector,
+          expectedType
+        )
+      );
+    }
+  }
+
+  /**
+   * Check whether the value is of the given type.
+   *
+   * If the type is incorrect, an error message is added to the RuleElement.
+   * @param expectedType - the type to check for
+   */
+  protected checkValueIsOfType(
+    expectedType: "boolean" | "number" | "string"
+  ): void {
+    if (typeof this.value !== expectedType)
+      this.messages.push(new WrongValueTypeMessage(expectedType));
+  }
+
+  /**
+   * Check whether the target property will change.
+   *
+   * If the type changes, a warning message is added to the RuleElement.
+   */
+  protected checkTypeChanged(): void {
+    const originalType = typeof foundry.utils.getProperty(
+      this.targetDoc.data.data,
+      this.selector
+    );
+    const newType = typeof this.value;
+
+    if (originalType !== newType) {
+      this.messages.push(
+        new ChangedTypeMessage(
+          this.targetName,
+          this.selector,
+          originalType,
+          newType
+        )
+      );
+    }
+  }
+
+  /** Get the name of the target document of this rule. */
+  protected get targetName(): string | null {
+    // This has to be accessed in this way, because this can end up being called
+    // when the `data` on an Actor or Item is not initialized yet.
+    return this.targetDoc.data?.name ?? null;
   }
 }
 

@@ -53,7 +53,9 @@
       "errors": {
         "logical": {
           "noActor": "The target is set to \"actor\", but the item has no actor.",
-          "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\"."
+          "notMatchingSelector": "The property \"{path}\" on \"{name}\" does not exist.",
+          "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\".",
+          "wrongValueType": "The value for this rule should be of type \"{type}\"."
         },
         "semantic": {
           "additional": "The property \"{property}\" is not allowed at \"{path}\".",
@@ -64,6 +66,9 @@
           "wrongType": "The property \"{path}\" is not of type \"{type}\"."
         },
         "syntax": "Syntax error in rule element definition {number}: {message}"
+      },
+      "warnings": {
+        "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\"."
       }
     },
     "ruler": {

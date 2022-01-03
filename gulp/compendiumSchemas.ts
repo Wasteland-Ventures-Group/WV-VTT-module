@@ -20,7 +20,7 @@ compendiumSchemasTask.description =
   "Generate the JSON schemas for the compendiums.";
 
 async function createSchema(config: SchemaConfig): Promise<void> {
-  await fs.mkdir(outputBasePath, { recursive: true });
+  await fs.mkdir(config.outputBasePath, { recursive: true });
   return fs.writeFile(
     `${config.outputBasePath}/${config.fileName}.json`,
     JSON.stringify({

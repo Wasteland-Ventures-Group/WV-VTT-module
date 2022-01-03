@@ -1,4 +1,4 @@
-import { Rules } from "../rules.js";
+import { Rules } from "../rules/properties.js";
 import EffectDataSource, { EffectDataSourceData } from "./source.js";
 
 /** The Effect Item data-properties */

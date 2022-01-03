@@ -1,10 +1,7 @@
 import { CONSTANTS } from "../../../constants.js";
 import type { Specials } from "../../../data/actor/properties.js";
 import type WeaponDataProperties from "../../../data/item/weapon/properties.js";
-import {
-  getDisplayRanges,
-  RangeBracket
-} from "../../../data/item/weapon/ranges.js";
+import { getDisplayRanges, RangeBracket } from "../../../item/weapon/ranges.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
 import type { HookParams } from "../index.js";
 import { getContentElement } from "./index.js";

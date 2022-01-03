@@ -1,20 +1,21 @@
+import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
+import WvActor from "../../actor/wvActor.js";
 import Prompt, {
   NumberInputSpec,
   TextInputSpec
 } from "../../applications/prompt.js";
-import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
-import WvActor from "../../actor/wvActor.js";
-import { getGame } from "../../foundryHelpers.js";
-import type Weapon from "../weapon.js";
-import Formulator from "../../formulator.js";
-import type { Specials } from "../../data/actor/properties.js";
-import type DragData from "../../dragData.js";
 import { CONSTANTS, SpecialName } from "../../constants.js";
-import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
-import * as ranges from "../../data/item/weapon/ranges.js";
-import * as interact from "../../interaction.js";
+import type { Specials } from "../../data/actor/properties.js";
+import type { AttackSource } from "../../data/item/weapon/attack/source.js";
+import type DragData from "../../dragData.js";
+import Formulator from "../../formulator.js";
+import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
+import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
+import * as interact from "../../interaction.js";
+import type Weapon from "../weapon.js";
+import * as ranges from "./ranges.js";
 
 /**
  * An attack of a Weapon Item.
@@ -479,51 +480,6 @@ export default class Attack {
     ChatMessage.create(data);
   }
 }
-
-/** The Attack raw data layout */
-export interface AttackSource {
-  /** The values related to the damage the weapon causes */
-  damage: {
-    /** The base damage amount */
-    base: number;
-
-    /** The number of d6 to throw for variable damage */
-    dice: number;
-
-    /**
-     * Whether the die property is the minimum value of a die range. By default
-     * this is false.
-     */
-    diceRange?: boolean;
-
-    /**
-     * The type of damage fall-off for the attack. By default the attack has no
-     * fall-off.
-     */
-    damageFallOff?: DamageFallOff;
-  };
-
-  /**
-   * The amount of rounds used with the attack. By default the attack does not
-   * consume rounds.
-   */
-  rounds?: number;
-
-  /**
-   * The damage threshold reduction of the attack. By default the attack has no
-   * DT reduction.
-   */
-  dtReduction?: number;
-
-  /** The splash radius. By default the attack has no splash. */
-  splash?: unknown; // TODO: implement an enum or similar
-
-  /** The amount of action points needed to attack */
-  ap: number;
-}
-
-/** A type representing different damage fall-off rules */
-type DamageFallOff = "shotgun";
 
 /** The drag data of a Weapon Attack */
 export interface WeaponAttackDragData extends DragData {

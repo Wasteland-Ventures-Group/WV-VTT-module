@@ -1,4 +1,4 @@
-import type { TYPES } from "../constants.js";
+import { TYPES } from "../constants.js";
 
 /**
  * A class for what Foundry VTT will automatically recognize as a "resource".
@@ -29,7 +29,31 @@ export interface FoundryCompendiumData<T> {
   /** The image of the entry */
   img: string;
   /** Foundry Active Effects on the entry */
-  effects: unknown[];
+  effects: object[];
   /** Custom flags on the entry */
   flags: Record<string, unknown>;
 }
+
+/**
+ * A JSON schema for Foundry compendium entries. The data property has to be
+ * defined by users.
+ */
+export const COMPENDIUM_JSON_SCHEMA = {
+  type: "object",
+  properties: {
+    _id: { type: "string", pattern: "^[a-zA-Z0-9]{16}$" },
+    name: { type: "string" },
+    type: {
+      type: "string",
+      enum: [...Object.values(TYPES.ACTOR), ...Object.values(TYPES.ITEM)]
+    },
+    img: { type: "string" },
+    effects: {
+      type: "array",
+      items: { type: "object" }
+    },
+    flags: { type: "object" }
+  },
+  required: ["_id", "name", "type", "data", "img", "effects", "flags"],
+  additionalProperties: false
+} as const;

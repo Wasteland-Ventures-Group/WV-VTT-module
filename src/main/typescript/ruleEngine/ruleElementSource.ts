@@ -28,7 +28,8 @@ export default interface RuleElementSource {
   value: boolean | number | string;
 }
 
-export const schema: JSONSchemaType<RuleElementSource> = {
+/** A JSON schema for RuleElementSource objects */
+export const JSON_SCHEMA: JSONSchemaType<RuleElementSource> = {
   type: "object",
   properties: {
     enabled: { type: "boolean" },
@@ -40,7 +41,9 @@ export const schema: JSONSchemaType<RuleElementSource> = {
       type: "string",
       enum: ["WV.RuleElement.FlatModifier", "WV.RuleElement.ReplaceValue"]
     },
-    value: { type: ["boolean", "number", "string"] }
+    value: {
+      oneOf: [{ type: "boolean" }, { type: "number" }, { type: "string" }]
+    }
   },
   required: [
     "enabled",

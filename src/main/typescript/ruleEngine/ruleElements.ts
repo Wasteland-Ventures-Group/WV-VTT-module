@@ -13,7 +13,7 @@ import RuleElementMessage from "./ruleElementMessage.js";
 import FlatModifier from "./ruleElements/flatModifier.js";
 import ReplaceValue from "./ruleElements/replaceValue.js";
 import type RuleElementSource from "./ruleElementSource.js";
-import { schema } from "./ruleElementSource.js";
+import { JSON_SCHEMA } from "./ruleElementSource.js";
 
 /** RuleElement identifier strings */
 export const RULE_ELEMENT_IDS = {
@@ -130,7 +130,7 @@ export default class RuleElements {
       return RuleElements.isValidRuleElementSource;
 
     return (RuleElements.isValidRuleElementSource =
-      getGame().wv.ajv.compile(schema));
+      getGame().wv.ajv.compile(JSON_SCHEMA));
   }
 }
 

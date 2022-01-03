@@ -1,5 +1,5 @@
-import { Attacks } from "./attack.js";
-import { Rules } from "../rules.js";
+import { Rules } from "../rules/properties.js";
+import { Attacks } from "./attack/properties.js";
 import WeaponDataSource, { WeaponDataSourceData } from "./source.js";
 
 /** The Weapon Item data-properties */

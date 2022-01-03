@@ -116,6 +116,22 @@ export default class WvActor extends Actor {
     return getGroundSprintMoveRange(this);
   }
 
+  // Other access {{{2
+
+  /** Get RuleElements that apply to this Actor. */
+  get applicableRuleElements(): RuleElement[] {
+    const rules: RuleElement[] = [];
+
+    this.data.items.forEach((item) => {
+      item.data.data.rules.elements.forEach((rule) => {
+        if (rule instanceof RuleElement && rule.target === "actor")
+          rules.push(rule);
+      });
+    });
+
+    return rules;
+  }
+
   // Rolls {{{1
 
   /**
@@ -176,7 +192,9 @@ export default class WvActor extends Actor {
 
   override prepareEmbeddedDocuments(): void {
     super.prepareEmbeddedDocuments();
-    this.applyItemEffects();
+    this.applicableRuleElements
+      .sort((a, b) => a.priority - b.priority)
+      .forEach((rule) => rule.onPrepareEmbeddedDocuments());
   }
 
   override prepareDerivedData(): void {
@@ -335,25 +353,6 @@ export default class WvActor extends Actor {
       this.data.data.specials[special] * 2 +
       Math.floor(this.data.data.specials.luck / 2)
     );
-  }
-
-  // Computations with items {{{2
-
-  /**
-   * Apply the RuleElements of Effect type Items.
-   */
-  protected applyItemEffects(): void {
-    const rules: RuleElement[] = [];
-
-    this.data.items.forEach((item) => {
-      item.data.data.rules.elements.forEach((rule) => {
-        if (rule instanceof RuleElement) rules.push(rule);
-      });
-    });
-
-    rules
-      .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onPrepareEmbeddedDocuments());
   }
 
   // Computations after items {{{2

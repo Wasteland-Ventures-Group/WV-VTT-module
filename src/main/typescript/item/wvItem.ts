@@ -1,6 +1,7 @@
 import { TYPE_CONSTRUCTORS, isMappedItemType } from "../typeMappings.js";
 import RuleElements from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
+import RuleElement from "../ruleEngine/ruleElement.js";
 
 /** The basic Wasteland Ventures Item. */
 export default class WvItem extends Item {
@@ -51,10 +52,23 @@ export default class WvItem extends Item {
     }
   }
 
+  /** Get RuleElements that apply to this Item. */
+  get applicableRuleElements(): RuleElement[] {
+    return this.data.data.rules.elements.flatMap((rule) =>
+      rule instanceof RuleElement && rule.target === "item" ? [rule] : []
+    );
+  }
+
   override prepareBaseData(): void {
     this.data.data.rules.elements = this.data.data.rules.sources.map((rule) =>
       RuleElements.fromOwningItem(rule, this)
     );
+  }
+
+  override prepareEmbeddedDocuments(): void {
+    this.applicableRuleElements
+      .sort((a, b) => a.priority - b.priority)
+      .forEach((rule) => rule.onPrepareEmbeddedDocuments());
   }
 
   /**

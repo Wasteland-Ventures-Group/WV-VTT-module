@@ -10,7 +10,7 @@ export default class FlatModifier extends RuleElement {
    */
   static readonly EXPECTED_TYPE = "number";
 
-  override validate(): void {
+  protected override validate(): void {
     super.validate();
 
     if (this.hasErrors()) return;
@@ -18,7 +18,7 @@ export default class FlatModifier extends RuleElement {
     this.checkSelectedIsOfType(FlatModifier.EXPECTED_TYPE);
   }
 
-  override _onPrepareEmbeddedDocuments(): void {
+  protected override _onPrepareEmbeddedDocuments(): void {
     const oldValue = foundry.utils.getProperty(
       this.targetDoc.data.data,
       this.selector

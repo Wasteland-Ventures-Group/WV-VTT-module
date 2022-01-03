@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - one bundled javascript file
   - added sourcemaps for typescript sources
 
+### Fixed
+
+- RuleElements not working on unowned items
+
 ## [0.8.0] - 2021-12-28
 
 ### Breaking

@@ -116,7 +116,8 @@ async function esBuild({
       minify: prod,
       outfile: jsOutFile,
       sourcemap: true,
-      sourceRoot: `systems/${CONSTANTS.systemId}`
+      sourceRoot: `systems/${CONSTANTS.systemId}`,
+      treeShaking: prod
     });
   }
   return tsBuildResult;

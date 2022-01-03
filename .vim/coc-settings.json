@@ -2,12 +2,12 @@
   "javascript.preferences.importModuleSpecifierEnding": "js",
   "json.schemas": [
     {
-      "fileMatch": ["/src/lang/*.json"],
-      "url": "./src/schemas/lang.json"
+      "fileMatch": ["/src/main/lang/*.json"],
+      "url": "./src/main/schemas/lang.json"
     },
     {
-      "fileMatch": ["/src/compendiums/item/weapon/*.json"],
-      "url": "./src/schemas/item/weapon.json"
+      "fileMatch": ["/src/main/compendiums/item/weapon/*.json"],
+      "url": "./src/main/schemas/item/weapon.json"
     }
   ]
 }

@@ -65,7 +65,7 @@
           "unknownTarget": "Das Ziel ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
           "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
         },
-        "syntax": "Syntaxfehler in Regelelementdefinition {number}: {message}"
+        "syntax": "Syntaxfehler: {message}"
       },
       "warnings": {
         "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert."

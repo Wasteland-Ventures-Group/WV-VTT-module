@@ -183,10 +183,9 @@ export interface LangSchema {
           wrongType: string;
         };
         /**
-         * The description for the JSON syntax error, containing references to
-         * the number of the rule element with `number` and the error message
-         * with `message`
-         * @pattern (?=.*\{number\})(?=.*\{message\})
+         * The description for the JSON syntax error, containing a reference to
+         * the error message with `message`
+         * @pattern (?=.*\{message\})
          */
         syntax: string;
       };

@@ -4,6 +4,8 @@ import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
 import RuleElements from "../../ruleEngine/ruleElements.js";
 import { LOG } from "../../systemLogger.js";
 import * as re from "../../ruleEngine/ruleElement.js";
+import SyntaxErrorMessage from "../../ruleEngine/messages/syntaxErrorMessage.js";
+import RuleElementMessage from "../../ruleEngine/ruleElementMessage.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet {
@@ -12,6 +14,15 @@ export default class WvItemSheet extends ItemSheet {
       classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"]
     } as typeof ItemSheet["defaultOptions"]);
   }
+
+  /**
+   * A list of rule element source syntax errors, with their indices
+   * corresponding to the rule elements.
+   */
+  protected ruleElementSyntaxErrors: [
+    message: SyntaxErrorMessage,
+    rawSource: string
+  ][] = [];
 
   override get template(): string {
     return `${CONSTANTS.systemPath}/handlebars/items/${this.item.data.type}Sheet.hbs`;
@@ -27,19 +38,22 @@ export default class WvItemSheet extends ItemSheet {
           rules: HANDLEBARS.partPaths.item.rules
         },
         rules: {
-          elements: data.data.data.rules.elements.map((rule) => {
+          elements: data.data.data.rules.elements.map((rule, index) => {
+            const syntaxErrorTuple = this.ruleElementSyntaxErrors[index] ?? [];
+            const syntaxError = syntaxErrorTuple[0];
+            const rawSource = syntaxErrorTuple[1] ?? "";
+            const hasSyntaxError = syntaxError instanceof RuleElementMessage;
+            const messages = hasSyntaxError ? [syntaxError] : rule.messages;
+            const source = hasSyntaxError ? rawSource : rule.source;
             return {
               hasErrors: re.hasErrors(rule),
+              hasSyntaxError,
               hasWarnings: re.hasWarnings(rule),
               label:
                 rule.source.label ||
                 getGame().i18n.localize("wv.ruleEngine.ruleElement.newName"),
-              messages: rule.messages.map((message) => ({
-                cssClass: message.cssClass,
-                iconClass: message.iconClass,
-                message: message.message
-              })),
-              source: rule.source
+              messages,
+              source
             };
           })
         }
@@ -94,6 +108,11 @@ export default class WvItemSheet extends ItemSheet {
     try {
       this.parseRuleElementSources(formData);
     } catch (error) {
+      if (error instanceof HandledSyntaxErrors) {
+        LOG.warn(error.message);
+      } else {
+        LOG.error(error);
+      }
       return;
     }
 
@@ -108,8 +127,9 @@ export default class WvItemSheet extends ItemSheet {
   private parseRuleElementSources(
     formData: Record<string, string | RuleElementSource[] | unknown>
   ) {
+    this.ruleElementSyntaxErrors = [];
     const rules: RuleElementSource[] = [];
-    Object.entries(formData).forEach(([key, value], index) => {
+    Object.entries(formData).forEach(([key, value]) => {
       if (!key.startsWith("sheet.rules.") || typeof value !== "string") return;
 
       try {
@@ -117,33 +137,48 @@ export default class WvItemSheet extends ItemSheet {
         delete formData[key];
       } catch (error) {
         if (error instanceof Error) {
-          this.communicateJsonParseError(index, error.message);
+          const index = parseInt(key.split(".")[2] ?? "");
+          if (isNaN(index)) {
+            throw new Error(
+              "Could not get the index of a rule element with syntax error"
+            );
+          }
+          this.handleJsonParseError(index, error.message, value);
         }
-        throw error;
       }
     });
+    if (this.ruleElementSyntaxErrors.length) {
+      this.render();
+      throw new HandledSyntaxErrors("There were syntax errors.");
+    }
+
     formData["data.rules.sources"] = rules;
   }
 
   /**
-   * Communicate a JSON parse error both via the notification system and the
-   * console.
+   * Handle a JSON parse error by adding it to the syntax error array.
    * @param index - the index of the rule element source, that caused the error
    * @param message - the error message
+   * @param rawSource - the raw source with syntax errors
    */
-  private communicateJsonParseError(index: number, message: string) {
-    if (ui.notifications) {
-      ui.notifications.error(
-        getGame().i18n.format("wv.ruleEngine.errors.syntax", {
-          message: message,
-          number: index
-        }),
-        { permanent: true }
-      );
-    }
-    LOG.warn(`Syntax error in rule element definition ${index}.`, message);
+  private handleJsonParseError(
+    index: number,
+    message: string,
+    rawSource: string
+  ) {
+    this.ruleElementSyntaxErrors[index] = [
+      new SyntaxErrorMessage(message),
+      rawSource
+    ];
+    LOG.warn(`Syntax error in rule element definition ${index + 1}.`, message);
   }
 }
+
+/**
+ * An error subclass to signal that the item should not be updated, but that
+ * rule element syntax errors have been successfully handled.
+ */
+class HandledSyntaxErrors extends Error {}
 
 export interface SheetData extends ItemSheet.Data {
   sheet: {
@@ -152,7 +187,7 @@ export interface SheetData extends ItemSheet.Data {
       rules: string;
     };
     rules: {
-      elements: SheetDataRuleElement[] | undefined;
+      elements: SheetDataRuleElement[];
     };
   };
 }
@@ -160,8 +195,9 @@ export interface SheetData extends ItemSheet.Data {
 export interface SheetDataRuleElement {
   messages: SheetDataMessage[];
   hasErrors: boolean;
+  hasSyntaxError: boolean;
   hasWarnings: boolean;
-  source: re.UnknownRuleElementSource;
+  source: string | re.UnknownRuleElementSource;
 }
 
 export interface SheetDataMessage {

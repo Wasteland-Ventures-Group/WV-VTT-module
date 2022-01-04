@@ -65,7 +65,7 @@
           "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
           "wrongType": "The property \"{path}\" is not of type \"{type}\"."
         },
-        "syntax": "Syntax error in rule element definition {number}: {message}"
+        "syntax": "Syntax error: {message}"
       },
       "warnings": {
         "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\"."

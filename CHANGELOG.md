@@ -20,6 +20,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     2s)
   - one bundled javascript file
   - added sourcemaps for typescript sources
+- syntax errors in rule elements are now handled more gracefully and allow
+  further editing instead of resetting to the previous state. Also syntax errors
+  are now communicated with other error messages for a rule element instead of
+  using the notification system
 
 ### Fixed
 

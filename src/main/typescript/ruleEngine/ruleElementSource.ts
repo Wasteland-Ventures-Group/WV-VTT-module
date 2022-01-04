@@ -30,19 +30,50 @@ export default interface RuleElementSource {
 
 /** A JSON schema for RuleElementSource objects */
 export const JSON_SCHEMA: JSONSchemaType<RuleElementSource> = {
+  description: "The RuleElement raw data layout",
   type: "object",
   properties: {
-    enabled: { type: "boolean" },
-    label: { type: "string" },
-    priority: { type: "number" },
-    selector: { type: "string" },
-    target: { type: "string", enum: ["actor", "item"] },
-    type: {
+    enabled: {
+      description: "Whether this rule element should take effect",
+      type: "boolean",
+      default: true
+    },
+    label: {
+      description: "A descriptive label for the rule element",
       type: "string",
-      enum: ["WV.RuleElement.FlatModifier", "WV.RuleElement.ReplaceValue"]
+      default: ""
+    },
+    priority: {
+      description:
+        "An absolute priority, used to order rule elements affecting the " +
+        "same target, lowest goes first",
+      type: "number",
+      default: 0
+    },
+    selector: {
+      description:
+        "A property selector to pick the property the rule element should be " +
+        "applied to",
+      type: "string",
+      default: ""
+    },
+    target: {
+      description:
+        "Whether the rule element applies to its own item or the owning actor",
+      type: "string",
+      enum: ["actor", "item"],
+      default: "item"
+    },
+    type: {
+      description: "The identifier of the type or rule element to use",
+      type: "string",
+      enum: ["WV.RuleElement.FlatModifier", "WV.RuleElement.ReplaceValue"],
+      default: "WV.RuleElement.FlatModifier"
     },
     value: {
-      oneOf: [{ type: "boolean" }, { type: "number" }, { type: "string" }]
+      description: "The value to use for the rule element",
+      oneOf: [{ type: "boolean" }, { type: "number" }, { type: "string" }],
+      default: 0
     }
   },
   required: [
@@ -54,5 +85,14 @@ export const JSON_SCHEMA: JSONSchemaType<RuleElementSource> = {
     "type",
     "value"
   ],
-  additionalProperties: false
+  additionalProperties: false,
+  default: {
+    enabled: true,
+    label: "New Rule Element",
+    priority: 100,
+    selector: "",
+    target: "item",
+    type: "WV.RuleElement.FlatModifier",
+    value: 0
+  }
 };

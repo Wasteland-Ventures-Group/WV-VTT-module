@@ -29,12 +29,7 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
   holdout?: boolean = false;
 
   /** The ranges of the weapon */
-  ranges: Ranges = {
-    short: {
-      distance: 20,
-      modifier: 0
-    }
-  };
+  ranges: Ranges = RANGES_JSON_SCHEMA.default;
 
   /**
    * The reload stats of the weapon. By default, the weapon does not support
@@ -53,30 +48,62 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
   }
 }
 
+/** The default object for weapon attacks */
+const ATTACKS_DEFAULT = { sources: {} };
+
 /** A JSON schema for weapon source objects */
 export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
+  description: "The system data for a weapon Item",
   type: "object",
   properties: {
     ...PHYS_BASE_ITEM_SCHEMA.properties,
     attacks: {
+      description: "Attack definitions for the the weapon",
       type: "object",
       properties: {
         sources: {
+          description:
+            "Attack source structures for the weapon. It should consist of " +
+            "attack identifying names unique per weapon, mapping to attack " +
+            "definitions.",
           type: "object",
-          additionalProperties: ATTACK_JSON_SCHEMA
+          additionalProperties: ATTACK_JSON_SCHEMA,
+          default: {}
         }
       },
       required: ["sources"],
-      additionalProperties: false
+      additionalProperties: false,
+      default: ATTACKS_DEFAULT
     },
-    holdout: { type: "boolean", default: false, nullable: true },
+    holdout: {
+      description:
+        "Whether this weapon is a holdout weapon. If this is not specified " +
+        "it defaults to `false`.",
+      type: "boolean",
+      nullable: true,
+      default: true
+    },
     ranges: {
-      ...RANGES_JSON_SCHEMA,
-      default: { short: { distance: 20, modifier: 0 } }
+      ...RANGES_JSON_SCHEMA
     },
-    reload: { ...RELOAD_JSON_SCHEMA, nullable: true },
-    skill: { type: "string", enum: SkillNames, default: "firearms" },
-    strengthRequirement: { type: "integer", default: 0 }
+    reload: {
+      ...RELOAD_JSON_SCHEMA,
+      description:
+        "The reload behavior of the weapon. If this is not specified the " +
+        "weapon does not support reloading.",
+      nullable: true
+    },
+    skill: {
+      description: "The Skill used for all actions of the weapon",
+      type: "string",
+      enum: SkillNames,
+      default: "firearms"
+    },
+    strengthRequirement: {
+      description: "The Strength requirement of the weapon",
+      type: "integer",
+      default: 0
+    }
   },
   required: [
     ...PHYS_BASE_ITEM_SCHEMA.required,
@@ -85,7 +112,14 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
     "skill",
     "strengthRequirement"
   ],
-  additionalProperties: false
+  additionalProperties: false,
+  default: {
+    ...PHYS_BASE_ITEM_SCHEMA.default,
+    attacks: ATTACKS_DEFAULT,
+    ranges: RANGES_JSON_SCHEMA.default,
+    skill: "firearms",
+    strengthRequirement: 0
+  }
 };
 
 export interface CompendiumWeapon
@@ -95,12 +129,23 @@ export interface CompendiumWeapon
 
 /** A JSON schema for compendium weapon objects */
 export const COMP_WEAPON_JSON_SCHEMA: JSONSchemaType<CompendiumWeapon> = {
+  description: "The compendium data for a weapon item",
   type: "object",
   properties: {
     ...COMPENDIUM_JSON_SCHEMA.properties,
-    type: { type: "string", const: "weapon" },
+    type: {
+      description: COMPENDIUM_JSON_SCHEMA.properties.type.description,
+      type: "string",
+      const: "weapon",
+      default: "weapon"
+    },
     data: WEAPON_SOURCE_JSON_SCHEMA
   },
   required: COMPENDIUM_JSON_SCHEMA.required,
-  additionalProperties: false
+  additionalProperties: false,
+  default: {
+    ...COMPENDIUM_JSON_SCHEMA.default,
+    type: "weapon",
+    data: WEAPON_SOURCE_JSON_SCHEMA.default
+  }
 };

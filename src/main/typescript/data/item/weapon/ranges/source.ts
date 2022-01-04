@@ -47,40 +47,106 @@ export interface SpecialBasedRange {
   special: SpecialName;
 }
 
+/** A default value for a SPECIAL based distance */
 /** A JSON schema for a single range object */
 const RANGE_JSON_SCHEMA: JSONSchemaType<Range> = {
+  description: "A range definition",
   type: "object",
   properties: {
     distance: {
+      description:
+        "The distance of the range. This can either be a number for a " +
+        'distance in meters, the word "melee" for melee range or an object ' +
+        "for a SPECIAL based distance.",
       oneOf: [
-        { type: "integer" },
-        { type: "string", const: "melee" },
         {
+          description: "A distance in meters",
+          type: "integer",
+          default: 0
+        },
+        {
+          description: "A distance in melee range",
+          type: "string",
+          const: "melee",
+          default: "melee"
+        },
+        {
+          description: "A SPECIAL based distance",
           type: "object",
           properties: {
-            base: { type: "integer" },
-            multiplier: { type: "integer" },
-            special: { type: "string", enum: SpecialNames }
+            base: {
+              description: "The flat base distance of the distance in meters",
+              type: "integer",
+              default: 0
+            },
+            multiplier: {
+              description: "The SPECIAL multiplier for the distance",
+              type: "integer",
+              default: 1
+            },
+            special: {
+              description:
+                "The SPECIAL to multiply and add to the base distance",
+              type: "string",
+              enum: SpecialNames,
+              default: "strength"
+            }
           },
           required: ["base", "multiplier", "special"],
-          additionalProperties: false
+          additionalProperties: false,
+          default: {
+            base: 0,
+            multiplier: 1,
+            special: "strength"
+          }
         }
       ]
     },
-    modifier: { type: "integer" }
+    modifier: {
+      description: "A hit chance modifier, active on this range",
+      type: "integer",
+      default: 0
+    }
   },
   required: ["distance", "modifier"],
-  additionalProperties: false
+  additionalProperties: false,
+  default: {
+    distance: 20,
+    modifier: 0
+  }
 };
 
 /** A JSON schema for ranges objects */
 export const RANGES_JSON_SCHEMA: JSONSchemaType<Ranges> = {
+  description: "Ranges definitions",
   type: "object",
   properties: {
-    short: { ...RANGE_JSON_SCHEMA },
-    medium: { ...RANGE_JSON_SCHEMA, nullable: true },
-    long: { ...RANGE_JSON_SCHEMA, nullable: true }
+    short: {
+      ...RANGE_JSON_SCHEMA,
+      description: "The short range specification"
+    },
+    medium: {
+      ...RANGE_JSON_SCHEMA,
+      description: "The medium range specification",
+      nullable: true,
+      default: {
+        distance: 40,
+        modifier: -10
+      }
+    },
+    long: {
+      ...RANGE_JSON_SCHEMA,
+      description: "The long range specification",
+      nullable: true,
+      default: {
+        distance: 60,
+        modifier: -20
+      }
+    }
   },
   required: ["short"],
-  additionalProperties: false
+  additionalProperties: false,
+  default: {
+    short: RANGE_JSON_SCHEMA.default
+  }
 };

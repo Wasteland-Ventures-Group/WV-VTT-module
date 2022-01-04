@@ -15,10 +15,7 @@ export class Resource {
 
 /** An interface to model Foundry's compendium layout. */
 export interface FoundryCompendiumData<T> {
-  /**
-   * The data base ID. It needs to be unique per compendium and should match the
-   * regular expression: `/^[a-zA-Z0-9]{16}$/`
-   */
+  /** The NeDB database ID of the entry */
   _id: string;
   /** The name of the entry in the compendium */
   name: string;
@@ -39,21 +36,68 @@ export interface FoundryCompendiumData<T> {
  * defined by users.
  */
 export const COMPENDIUM_JSON_SCHEMA = {
+  description: "An entry in a Foundry NeDB based compendium",
   type: "object",
   properties: {
-    _id: { type: "string", pattern: "^[a-zA-Z0-9]{16}$" },
-    name: { type: "string" },
-    type: {
+    _id: {
+      description:
+        "The database ID. It needs to be unique per compendium and should " +
+        "match the regular expression: `/^[a-zA-Z0-9]{16}$/`",
       type: "string",
-      enum: [...Object.values(TYPES.ACTOR), ...Object.values(TYPES.ITEM)]
+      pattern: "^[a-zA-Z0-9]{16}$",
+      default: ""
     },
-    img: { type: "string" },
+    name: {
+      description:
+        "The name of the entry in the compendium. This is also the name of " +
+        "the specific Document instance, that players can change to a custom " +
+        "one. A custom or unique Document should have it's unique name set " +
+        "here.",
+      type: "string",
+      default: ""
+    },
+    type: {
+      description:
+        "The type of the compendium entry. This should correspond to the " +
+        "type of the compendium itself and be one of the defined types of " +
+        "the system.",
+      type: "string",
+      enum: [...Object.values(TYPES.ACTOR), ...Object.values(TYPES.ITEM)],
+      default: ""
+    },
+    data: {
+      description: "The system data, specific to the type of the entry",
+      type: "object",
+      default: {}
+    },
+    img: {
+      description:
+        "An image path for the entry. This can be left blank. Otherwise it " +
+        "should be a path to an image file, that users can fetch from the " +
+        "game server.",
+      type: "string",
+      default: ""
+    },
     effects: {
+      description: "Foundry active effects on the entry",
       type: "array",
       items: { type: "object" }
     },
-    flags: { type: "object" }
+    flags: {
+      description: "Custom flags on the entry",
+      type: "object",
+      default: {}
+    }
   },
   required: ["_id", "name", "type", "data", "img", "effects", "flags"],
-  additionalProperties: false
+  additionalProperties: false,
+  default: {
+    _id: "",
+    name: "",
+    type: "",
+    data: {},
+    img: "",
+    effects: [],
+    flags: {}
+  }
 } as const;

@@ -26,26 +26,51 @@ export default abstract class BaseItem implements TemplateDocumentType {
 }
 
 /** A JSON schema for base item objects */
-export const JSON_SCHEMA: JSONSchemaType<BaseItem> = {
+export const JSON_SCHEMA: JSONSchemaType<Omit<BaseItem, "getTypeName">> = {
+  description: "Common system data for items",
   type: "object",
   properties: {
-    name: { type: "string", default: "" },
-    description: { type: "string", default: "" },
-    notes: { type: "string", default: "" },
+    name: {
+      description:
+        "The name of the item in the system wares list. This can not be " +
+        "easily changed by players. A custom or unique item should have the " +
+        "name of the normal, listed item it is based on set here.",
+      type: "string",
+      default: ""
+    },
+    description: {
+      description: "A description text for the item",
+      type: "string",
+      default: ""
+    },
+    notes: {
+      description:
+        "Notes for the item. This could for example be additional rules.",
+      type: "string",
+      default: ""
+    },
     rules: {
+      description: "The rule elements structure for the item",
       type: "object",
       properties: {
         sources: {
+          description: "The rule element sources for the item",
           type: "array",
           items: RULE_ELEMENT_SOURCE_SCHEMA,
           default: []
         }
       },
       required: ["sources"],
-      additionalProperties: false
-    },
-    getTypeName: { type: "object" }
+      additionalProperties: false,
+      default: { sources: [] }
+    }
   },
   required: ["name", "description", "notes", "rules"],
-  additionalProperties: false
+  additionalProperties: false,
+  default: {
+    name: "",
+    description: "",
+    notes: "",
+    rules: { sources: [] }
+  }
 };

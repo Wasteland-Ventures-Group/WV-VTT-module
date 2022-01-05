@@ -9,6 +9,12 @@ export default class SystemLogger {
 
   private context: string;
 
+  /** Use dir to log an object */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dir(...args: any[]): void {
+    console.dir(this.getContext(), ...args);
+  }
+
   /** Log a message in debug level. */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   trace(...args: any[]): void {

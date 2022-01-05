@@ -1,7 +1,8 @@
+import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import { getGame } from "../foundryHelpers.js";
 import Weapon from "../item/weapon.js";
 import * as attack from "../item/weapon/attack.js";
-import { LOG } from "../systemLogger.js";
+import SystemDataValidationError from "../systemDataValidationError.js";
 
 /**
  * Assign a Weapon Attack Macro to the user's hotbar. This will assign an
@@ -118,16 +119,35 @@ export function executeWeaponAttack(
  * @param attackName - the name of the weapon attack in the source data
  * @param options - additional roll options
  */
-export function executeWeaponAttackFromSource(
-  data: ConstructorParameters<typeof Weapon>[0],
+export async function executeWeaponAttackFromSource(
+  data: ItemDataConstructorData,
   attackName: string,
   options: attack.RollOptions = {}
-): void {
-  const weapon = new Weapon(data, {});
+): Promise<void> {
+  let weapon;
+  try {
+    weapon = await Weapon.create(data, { temporary: true });
+  } catch (error) {
+    if (error instanceof SystemDataValidationError) {
+      ui?.notifications?.error("wv.messages.macros.invalidSystemData", {
+        localize: true
+      });
+    }
+    throw error;
+  }
+
+  if (!(weapon instanceof Weapon)) {
+    ui?.notifications?.error("wv.messages.macros.couldNotCreate", {
+      localize: true
+    });
+    return;
+  }
   const attack = weapon.systemData.attacks.attacks[attackName];
   if (attack) attack.execute(options);
   else
-    LOG.error(
-      `The attack with name ${attackName} could not be found in the data.`
+    ui?.notifications?.error(
+      getGame().i18n.format("wv.messages.macros.attackNotFound", {
+        name: attackName
+      })
     );
 }

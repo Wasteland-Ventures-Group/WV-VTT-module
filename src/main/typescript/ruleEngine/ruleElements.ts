@@ -1,4 +1,4 @@
-import type { DefinedError, ValidateFunction } from "ajv";
+import type { DefinedError } from "ajv";
 import { getGame } from "../foundryHelpers.js";
 import type WvItem from "../item/wvItem.js";
 import AdditionalPropMessage from "./messages/additionalPropMessage.js";
@@ -12,8 +12,6 @@ import type {
 import RuleElementMessage from "./ruleElementMessage.js";
 import FlatModifier from "./ruleElements/flatModifier.js";
 import ReplaceValue from "./ruleElements/replaceValue.js";
-import type RuleElementSource from "./ruleElementSource.js";
-import { JSON_SCHEMA } from "./ruleElementSource.js";
 
 /** RuleElement identifier strings */
 export const RULE_ELEMENT_IDS = {
@@ -36,10 +34,6 @@ export type MappedRuleElementId = keyof typeof RULE_ELEMENTS;
  * A factory class for RuleElements.
  */
 export default class RuleElements {
-  /** A cached validator function for rule element sources. */
-  protected static isValidRuleElementSource: ValidateFunction<RuleElementSource> | null =
-    null;
-
   /**
    * Create a new RuleElementSource, suitable for when the user just added a
    * new effect and has not filled out the data yet.
@@ -70,7 +64,7 @@ export default class RuleElements {
   ): RuleElementLike {
     const messages: RuleElementMessage[] = [];
 
-    const validate = RuleElements.validate;
+    const validate = getGame().wv.validators.ruleElement;
 
     // Check the passed JSON source against the schema. When it is invalid, only
     // return a RuleElementLike.
@@ -122,15 +116,6 @@ export default class RuleElements {
 
     console.dir(error);
     return new RuleElementMessage("wv.ruleEngine.errors.semantic.unknown");
-  }
-
-  /** Get a possibly cached validation function. */
-  protected static get validate(): ValidateFunction<RuleElementSource> {
-    if (RuleElements.isValidRuleElementSource)
-      return RuleElements.isValidRuleElementSource;
-
-    return (RuleElements.isValidRuleElementSource =
-      getGame().wv.ajv.compile(JSON_SCHEMA));
   }
 }
 

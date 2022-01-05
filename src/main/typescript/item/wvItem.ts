@@ -1,7 +1,10 @@
-import { TYPE_CONSTRUCTORS, isMappedItemType } from "../typeMappings.js";
+import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
+import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
+import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
+import RuleElement from "../ruleEngine/ruleElement.js";
 import RuleElements from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
-import RuleElement from "../ruleEngine/ruleElement.js";
+import { isMappedItemType, TYPE_CONSTRUCTORS } from "../typeMappings.js";
 
 /** The basic Wasteland Ventures Item. */
 export default class WvItem extends Item {
@@ -81,6 +84,33 @@ export default class WvItem extends Item {
       data: { rules: { sources: sources } }
     });
   }
+
+  protected override async _preCreate(
+    data: ItemDataConstructorData,
+    options: DocumentModificationOptions,
+    user: BaseUser
+  ): Promise<void> {
+    super._preCreate(data, options, user);
+    this.validateSystemData(this.data._source.data);
+  }
+
+  protected override async _preUpdate(
+    changed: DeepPartial<ItemDataConstructorData>,
+    options: DocumentModificationOptions,
+    user: BaseUser
+  ): Promise<void> {
+    super._preUpdate(changed, options, user);
+    this.validateSystemData(
+      foundry.utils.mergeObject(this.data._source.data, changed.data ?? {}, {
+        recursive: options.recursive,
+        inplace: false
+      })
+    );
+  }
+
+  /** Validate passed source system data. */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
+  protected validateSystemData(data: unknown): void {}
 }
 
 /**

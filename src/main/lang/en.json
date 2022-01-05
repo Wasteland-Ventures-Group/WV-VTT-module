@@ -14,6 +14,11 @@
       }
     },
     "messages": {
+      "macros": {
+        "attackNotFound": "The attack with the name \"{name}\" could not be found in the data.",
+        "couldNotCreate": "Could not create a Document with the provided data.",
+        "invalidSystemData": "The macro you executed contained invalid system data, see the developer console for details."
+      },
       "movement": {
         "noActor": "{name} does not have an Actor!",
         "notEnoughAp": "Not enough AP to move. {needed} were needed, {actual} were available to {name}."

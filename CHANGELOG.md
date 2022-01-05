@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- notifications for errors in weapon macros created from source
 - a value replacing rule element
   ([#95](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/95))
 
@@ -24,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   further editing instead of resetting to the previous state. Also syntax errors
   are now communicated with other error messages for a rule element instead of
   using the notification system
+- creating or updating weapon items with invalid system data is now prevented
+  ([#117](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/117))
+- JSON validators are now globally available under `game.wv.validators`
 
 ### Fixed
 

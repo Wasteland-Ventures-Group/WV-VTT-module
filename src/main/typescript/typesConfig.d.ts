@@ -1,5 +1,5 @@
 import WvActor from "./actor/wvActor.js";
-import type { CONSTANTS } from "./constants.js";
+import type { CONSTANTS, TYPES } from "./constants.js";
 import { WvActorDataProperties } from "./data/actor/properties.js";
 import { WvActorDataSource } from "./data/actor/source.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
@@ -15,6 +15,10 @@ import type {
 import type * as settings from "./settings.js";
 import { macros } from "./macros/index.js";
 import type Ajv from "ajv";
+import type { ValidateFunction } from "ajv";
+import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
+import type BaseItem from "./data/item/baseItem.js";
+import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
 
 declare global {
   interface SourceConfig {
@@ -40,6 +44,14 @@ declare global {
       ajv: Ajv;
       /** Wasteland Ventures macros */
       macros: typeof macros;
+      /** Wasteland Ventures system data JSON validators */
+      validators: {
+        item: {
+          [TYPES.ITEM.EFFECT]: ValidateFunction<Omit<BaseItem, "getTypeName">>;
+          [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;
+        };
+        ruleElement: ValidateFunction<RuleElementSource>;
+      };
     };
   }
 

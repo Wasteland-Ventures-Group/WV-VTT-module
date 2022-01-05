@@ -26,6 +26,25 @@ export interface LangSchema {
     };
     /** Different system messages. */
     messages: {
+      /** Messages related to macros */
+      macros: {
+        /**
+         * The message when a specified attack could not be found on a weapon.
+         * It should have a reference to the name with `name`.
+         * @pattern (?=.*\{name\})
+         */
+        attackNotFound: string;
+        /**
+         * The message when an object attempted to be created in a macro could
+         * not be created
+         */
+        couldNotCreate: string;
+        /**
+         * The message when a macro tried to create an Actor or Item with
+         * invalid system data
+         */
+        invalidSystemData: string;
+      };
       /** Messages related to movement */
       movement: {
         /**

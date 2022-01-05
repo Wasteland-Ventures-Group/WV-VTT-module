@@ -118,12 +118,9 @@ export default abstract class RuleElement implements RuleElementLike {
    *
    * This is only called when the RuleElement has no errors and should be
    * overridden by subclasses.
-   * @param doc - the Document to modify
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected _onPrepareEmbeddedDocuments(): void {
-    // NOOP
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected _onPrepareEmbeddedDocuments(): void {}
 
   /**
    * Check whether the selector selects a property.

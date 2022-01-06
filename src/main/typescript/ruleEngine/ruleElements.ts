@@ -35,22 +35,6 @@ export type MappedRuleElementId = keyof typeof RULE_ELEMENTS;
  */
 export default class RuleElements {
   /**
-   * Create a new RuleElementSource, suitable for when the user just added a
-   * new effect and has not filled out the data yet.
-   */
-  static newRuleElementSource(): KnownRuleElementSource {
-    return {
-      enabled: true,
-      label: getGame().i18n.localize("wv.ruleEngine.ruleElement.newName"),
-      priority: 100,
-      selector: "",
-      target: "item",
-      type: RULE_ELEMENT_IDS.FLAT_MODIFIER,
-      value: 0
-    };
-  }
-
-  /**
    * Create a new RuleElement from an UnknownRuleElementSource. If invalid
    * entries are encountered in the source, they are either replaced, if they
    * are the wrong data type, or left as is and errors added to the RuleElement.

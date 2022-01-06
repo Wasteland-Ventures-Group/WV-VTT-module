@@ -1,11 +1,11 @@
 import { CONSTANTS, HANDLEBARS } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
-import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
-import RuleElements from "../../ruleEngine/ruleElements.js";
-import { LOG } from "../../systemLogger.js";
-import * as re from "../../ruleEngine/ruleElement.js";
 import SyntaxErrorMessage from "../../ruleEngine/messages/syntaxErrorMessage.js";
+import * as re from "../../ruleEngine/ruleElement.js";
 import RuleElementMessage from "../../ruleEngine/ruleElementMessage.js";
+import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
+import { JSON_SCHEMA as RULE_ELEMENT_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
+import { LOG } from "../../systemLogger.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet {
@@ -78,10 +78,10 @@ export default class WvItemSheet extends ItemSheet {
    */
   protected onClickCreateRuleElement(): void {
     const sources = this.item.data.data.rules.sources;
-    sources.push(RuleElements.newRuleElementSource());
+    sources.push(RULE_ELEMENT_JSON_SCHEMA.default);
     this.item.updateRuleSources(sources);
     LOG.debug(`Created RuleElement on item with id [${this.item.id}]`);
-    this.item.prepareBaseData();
+    this.item.prepareData();
     this.render(false);
   }
 
@@ -97,7 +97,7 @@ export default class WvItemSheet extends ItemSheet {
     sources.splice(index, 1);
     this.item.updateRuleSources(sources);
     LOG.debug(`Deleted RuleElement on item with id [${this.item.id}]`);
-    this.item.prepareBaseData();
+    this.item.prepareData();
     this.render(false);
   }
 

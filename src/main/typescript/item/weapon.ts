@@ -1,8 +1,5 @@
 import { TYPES } from "../constants.js";
 import type WeaponDataProperties from "../data/item/weapon/properties.js";
-import type { WeaponDataSourceData } from "../data/item/weapon/source.js";
-import { getGame } from "../foundryHelpers.js";
-import validateSystemData from "../validation/validateSystemData.js";
 import Attack from "./weapon/attack.js";
 import WvItem from "./wvItem.js";
 
@@ -42,12 +39,6 @@ export default class Weapon extends WvItem {
       ([name, source]) =>
         (this.systemData.attacks.attacks[name] = new Attack(name, source, this))
     );
-  }
-
-  protected override validateSystemData(
-    data: DeepPartial<WeaponDataSourceData>
-  ): void {
-    validateSystemData(data, getGame().wv.validators.item.weapon);
   }
 
   /** Check whether some of this Weapon's Attacks are Strength based. */

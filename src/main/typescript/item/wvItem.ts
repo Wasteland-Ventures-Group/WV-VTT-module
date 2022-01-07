@@ -1,10 +1,12 @@
 import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
 import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
+import { getGame } from "../foundryHelpers.js";
 import RuleElement from "../ruleEngine/ruleElement.js";
 import RuleElements from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import { isMappedItemType, TYPE_CONSTRUCTORS } from "../typeMappings.js";
+import validateSystemData from "../validation/validateSystemData.js";
 
 /** The basic Wasteland Ventures Item. */
 export default class WvItem extends Item {
@@ -109,8 +111,9 @@ export default class WvItem extends Item {
   }
 
   /** Validate passed source system data. */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
-  protected validateSystemData(data: unknown): void {}
+  protected validateSystemData(data: unknown): void {
+    validateSystemData(data, getGame().wv.validators.item[this.data.type]);
+  }
 }
 
 /**

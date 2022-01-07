@@ -1,6 +1,5 @@
 import type { JSONSchemaType } from "ajv";
-import type { RuleElementTarget } from "./ruleElement.js";
-import type { MappedRuleElementId } from "./ruleElements.js";
+import { RuleElementId, RULE_ELEMENTS } from "./ruleElements.js";
 
 /** The RuleElement raw data layout */
 export default interface RuleElementSource {
@@ -22,11 +21,17 @@ export default interface RuleElementSource {
   target: RuleElementTarget;
 
   /** The type identifier of the element. */
-  type: MappedRuleElementId;
+  type: RuleElementId;
 
   /** The value of the element */
   value: boolean | number | string;
 }
+
+/** The valid values of a RuleElement target property */
+export const RULE_ELEMENT_TARGETS = ["item", "actor"] as const;
+
+/** The type of the valid values for a RuleElement target property */
+export type RuleElementTarget = typeof RULE_ELEMENT_TARGETS[number];
 
 /** A JSON schema for RuleElementSource objects */
 export const JSON_SCHEMA: JSONSchemaType<RuleElementSource> = {
@@ -61,13 +66,13 @@ export const JSON_SCHEMA: JSONSchemaType<RuleElementSource> = {
       description:
         "Whether the rule element applies to its own item or the owning actor",
       type: "string",
-      enum: ["actor", "item"],
+      enum: RULE_ELEMENT_TARGETS,
       default: "item"
     },
     type: {
       description: "The identifier of the type or rule element to use",
       type: "string",
-      enum: ["WV.RuleElement.FlatModifier", "WV.RuleElement.ReplaceValue"],
+      enum: Object.keys(RULE_ELEMENTS) as RuleElementId[],
       default: "WV.RuleElement.FlatModifier"
     },
     value: {

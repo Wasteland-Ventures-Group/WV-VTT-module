@@ -1,7 +1,14 @@
 // vim: foldmethod=marker
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
-import type { PlayerCharacterDataSource } from "./../data/actor/source.js";
-import type { Resource } from "../data/foundryCommon.js";
+import {
+  CONSTANTS,
+  isSkillName,
+  isSpecialName,
+  SkillName,
+  SkillNames,
+  SpecialName,
+  SpecialNames
+} from "../constants.js";
 import {
   Criticals,
   Resistances,
@@ -9,19 +16,9 @@ import {
   Skill,
   Skills
 } from "../data/actor/properties.js";
-import {
-  CONSTANTS,
-  SkillName,
-  SkillNames,
-  SpecialName,
-  SpecialNames,
-  isSpecialName,
-  isSkillName
-} from "../constants.js";
-import Formulator from "../formulator.js";
-import WvI18n from "../wvI18n.js";
-import RuleElement from "../ruleEngine/ruleElement.js";
+import type { Resource } from "../data/foundryCommon.js";
 import type DragData from "../dragData.js";
+import Formulator from "../formulator.js";
 import {
   getSkillMaxPoints,
   getSkillMinPoints,
@@ -29,6 +26,9 @@ import {
   getSpecialMinPoints
 } from "../helpers.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
+import type RuleElement from "../ruleEngine/ruleElement.js";
+import WvI18n from "../wvI18n.js";
+import type { PlayerCharacterDataSource } from "./../data/actor/source.js";
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
@@ -124,8 +124,7 @@ export default class WvActor extends Actor {
 
     this.data.items.forEach((item) => {
       item.data.data.rules.elements.forEach((rule) => {
-        if (rule instanceof RuleElement && rule.target === "actor")
-          rules.push(rule);
+        if (rule.target === "actor") rules.push(rule);
       });
     });
 

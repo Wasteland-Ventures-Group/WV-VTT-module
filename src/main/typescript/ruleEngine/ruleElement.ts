@@ -1,17 +1,18 @@
 import type WvItem from "../item/wvItem.js";
-import type RuleElementSource from "./ruleElementSource.js";
-import RuleElementMessage from "./ruleElementMessage.js";
-import WrongSelectedTypeMessage from "./messages/wrongSelectedTypeMessage.js";
-import NotMatchingSelectorMessage from "./messages/notMatchingSelectorMessage.js";
-import WrongValueTypeMessage from "./messages/wrongValueTypeMessage.js";
 import ChangedTypeMessage from "./messages/changedTypeMessage.js";
+import NotMatchingSelectorMessage from "./messages/notMatchingSelectorMessage.js";
+import WrongSelectedTypeMessage from "./messages/wrongSelectedTypeMessage.js";
+import WrongValueTypeMessage from "./messages/wrongValueTypeMessage.js";
+import RuleElementMessage from "./ruleElementMessage.js";
+import type RuleElementSource from "./ruleElementSource.js";
+import type { RuleElementTarget } from "./ruleElementSource.js";
 
 /**
  * A rule engine element, allowing the modification of a data point, specified
  * by a selector and a given value. How the data point is modified depends on
  * the type of the element.
  */
-export default abstract class RuleElement implements RuleElementLike {
+export default abstract class RuleElement {
   /**
    * Create a RuleElement from the given data and owning item.
    * @param source   - the source data for the RuleElement
@@ -234,38 +235,4 @@ export function hasErrors(messages: RuleElementMessage[]): boolean {
 /** Check whether the given messages contain warnings. */
 export function hasWarnings(messages: RuleElementMessage[]): boolean {
   return messages.some((message) => message.isWarning());
-}
-
-/** The valid values of a RuleElement target property */
-export const RULE_ELEMENT_TARGETS = ["item", "actor"] as const;
-
-/** The type of the valid values for a RuleElement target property */
-export type RuleElementTarget = typeof RULE_ELEMENT_TARGETS[number];
-
-/**
- * A custom typeguard to check whether a given RuleElement target string has a
- * valid value.
- * @param target - the target string to check
- * @returns whether the target string is valid
- */
-export function isValidTarget(target?: string): target is RuleElementTarget {
-  return RULE_ELEMENT_TARGETS.includes(target as RuleElementTarget);
-}
-
-/**
- * An unknown version of the RuleElement raw data layout, where each key might
- * not exist and is of an unknown type.
- */
-export type UnknownRuleElementSource = {
-  [K in keyof RuleElementSource]?: unknown;
-};
-
-/**
- * An interface that can be used to pass data around, when no RuleElement could
- * be created.
- */
-export interface RuleElementLike {
-  item: WvItem;
-  messages: RuleElementMessage[];
-  source: UnknownRuleElementSource;
 }

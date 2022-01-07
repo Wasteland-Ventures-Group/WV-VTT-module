@@ -270,7 +270,7 @@ export default class WvItemSheet extends ItemSheet {
   private handleRuleElementSchemaErrors(
     index: number,
     errors: DefinedError[],
-    ruleSource: re.UnknownRuleElementSource
+    ruleSource: object
   ): void {
     const messages = errors.map(this.translateError);
     this.ruleElementSchemaErrors[index] = [messages, ruleSource];

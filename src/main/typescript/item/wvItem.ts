@@ -2,7 +2,7 @@ import type { DocumentModificationOptions } from "@league-of-foundry-developers/
 import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
 import { getGame } from "../foundryHelpers.js";
-import RuleElement from "../ruleEngine/ruleElement.js";
+import type RuleElement from "../ruleEngine/ruleElement.js";
 import { RULE_ELEMENTS } from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import { isMappedItemType, TYPE_CONSTRUCTORS } from "../typeMappings.js";
@@ -59,8 +59,8 @@ export default class WvItem extends Item {
 
   /** Get RuleElements that apply to this Item. */
   get applicableRuleElements(): RuleElement[] {
-    return this.data.data.rules.elements.flatMap((rule) =>
-      rule instanceof RuleElement && rule.target === "item" ? [rule] : []
+    return this.data.data.rules.elements.filter(
+      (rule) => rule.target === "item"
     );
   }
 

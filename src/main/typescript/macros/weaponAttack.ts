@@ -2,7 +2,7 @@ import type { ItemDataConstructorData } from "@league-of-foundry-developers/foun
 import { getGame } from "../foundryHelpers.js";
 import Weapon from "../item/weapon.js";
 import * as attack from "../item/weapon/attack.js";
-import SystemDataValidationError from "../systemDataValidationError.js";
+import SystemDataSchemaError from "../systemDataSchemaError.js";
 
 /**
  * Assign a Weapon Attack Macro to the user's hotbar. This will assign an
@@ -128,7 +128,7 @@ export async function executeWeaponAttackFromSource(
   try {
     weapon = await Weapon.create(data, { temporary: true });
   } catch (error) {
-    if (error instanceof SystemDataValidationError) {
+    if (error instanceof SystemDataSchemaError) {
       ui?.notifications?.error("wv.messages.macros.invalidSystemData", {
         localize: true
       });

@@ -2,9 +2,9 @@
   <button type="button" class="control rule-element-control fas fa-plus" data-action="create" title="{{localize 'wv.ruleEngine.ruleElement.create'}}"></button>
   <ol class="rule-element-list">
     {{#each sheet.rules.elements as |element|}}
-      <li class="rule-element{{ternary element.hasErrors ' errornous-element' ''}}" data-index="{{@index}}">
+      <li class="rule-element" data-index="{{@index}}">
         <div class="rule-element-header">
-          <h4>{{element.source.label}}</h4>
+          <h4>{{element.label}}</h4>
           <div class="rule-element-icons">
             {{#if element.hasErrors}}
               <span class="rule-element-error-icon fas fa-exclamation-circle"></span>
@@ -17,11 +17,7 @@
             <button type="button" class="control rule-element-control fas fa-minus" data-action="delete" title="{{localize 'wv.ruleEngine.ruleElement.delete'}}"></button>
           </div>
         </div>
-        {{#if element.hasSyntaxError}}
-          <textarea class="rule-element-source" name="sheet.rules.{{@index}}" required rows="8">{{element.source}}</textarea>
-        {{else}}
-          <textarea class="rule-element-source" name="sheet.rules.{{@index}}" required rows="8">{{jsonPretty element.source}}</textarea>
-        {{/if}}
+        <textarea class="rule-element-source" name="sheet.rules.{{@index}}" required rows="8">{{element.source}}</textarea>
         <ul class="rule-element-messages fa-ul">
           {{#each element.messages as |message|}}
             <li class="{{message.cssClass}}">

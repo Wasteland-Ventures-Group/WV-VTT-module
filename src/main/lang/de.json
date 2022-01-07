@@ -52,8 +52,7 @@
     "ruleEngine": {
       "ruleElement": {
         "create": "Erstellen",
-        "delete": "Löschen",
-        "newName": "Neues Regelelement"
+        "delete": "Löschen"
       },
       "errors": {
         "logical": {
@@ -73,7 +72,8 @@
         "syntax": "Syntaxfehler: {message}"
       },
       "warnings": {
-        "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert."
+        "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert.",
+        "notSaved": "Die Änderungen wurden wegen Fehlern nicht gespeichert. Du kannst dieses Foundry Fenster schließen und die Fehler später beheben. Die Änderungen gehen verloren, wenn Foundry neu geladen wird."
       }
     },
     "ruler": {

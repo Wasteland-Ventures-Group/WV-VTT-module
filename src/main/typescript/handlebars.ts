@@ -10,11 +10,6 @@ export function registerHelpers(): void {
     const result = testValue instanceof Function ? testValue() : testValue;
     return result ? results[0] : results[1];
   });
-
-  Handlebars.registerHelper("json", (data) => JSON.stringify(data));
-  Handlebars.registerHelper("jsonPretty", (data) =>
-    JSON.stringify(data, null, 2)
-  );
 }
 
 /**

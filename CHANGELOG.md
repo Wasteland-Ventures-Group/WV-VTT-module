@@ -21,10 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     2s)
   - one bundled javascript file
   - added sourcemaps for typescript sources
-- syntax errors in rule elements are now handled more gracefully and allow
-  further editing instead of resetting to the previous state. Also syntax errors
-  are now communicated with other error messages for a rule element instead of
-  using the notification system
+- syntax and schema errors in rule elements are now handled more gracefully and
+  allow further editing instead of resetting to the previous state. Also syntax
+  errors are now communicated with other error messages for a rule element
+  instead of using the notification system. Both syntax errors and schema errors
+  now prevent saving of a particular rule element only and no longer block
+  saving the entire item. The changes are kept until foundry is reloaded or the
+  errors are fixed and the rule element could be saved.
 - creating or updating weapon items with invalid system data is now prevented
   ([#117](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/117))
 - JSON validators are now globally available under `game.wv.validators`

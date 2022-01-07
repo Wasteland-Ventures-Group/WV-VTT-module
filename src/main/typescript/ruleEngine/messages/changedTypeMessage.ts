@@ -1,6 +1,7 @@
 import { getGame } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
+/** A warning about a rule element changing the type of a property. */
 export default class ChangedTypeMessage extends RuleElementMessage {
   constructor(
     /** The name of the target document */

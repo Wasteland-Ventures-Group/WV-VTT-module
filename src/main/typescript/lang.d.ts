@@ -137,8 +137,6 @@ export interface LangSchema {
         create: string;
         /** The label for deleting a RuleElement */
         delete: string;
-        /** The default label for a new RuleElement */
-        newName: string;
       };
       /** Labels for different errors */
       errors: {
@@ -218,6 +216,11 @@ export interface LangSchema {
          * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
          */
         changedType: string;
+        /**
+         * A warning for when a rule element was not saved because of errors,
+         * explaining that changes will be lost if foundry is reloaded.
+         */
+        notSaved: string;
       };
     };
     /** Labels related to the measuring tool */

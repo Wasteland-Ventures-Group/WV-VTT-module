@@ -1,5 +1,4 @@
 import type WvItem from "../item/wvItem.js";
-import type { RuleElementId } from "./ruleElements.js";
 import type RuleElementSource from "./ruleElementSource.js";
 import RuleElementMessage from "./ruleElementMessage.js";
 import WrongSelectedTypeMessage from "./messages/wrongSelectedTypeMessage.js";
@@ -21,7 +20,7 @@ export default abstract class RuleElement implements RuleElementLike {
    *                   before creating the RuleElement
    */
   constructor(
-    source: KnownRuleElementSource,
+    source: RuleElementSource,
     public item: WvItem,
     messages: RuleElementMessage[] = []
   ) {
@@ -35,7 +34,7 @@ export default abstract class RuleElement implements RuleElementLike {
   messages: RuleElementMessage[];
 
   /** The data of the RuleElement */
-  source: KnownRuleElementSource;
+  source: RuleElementSource;
 
   /** Get the priority number of the RuleElement. */
   get priority(): number {
@@ -76,12 +75,12 @@ export default abstract class RuleElement implements RuleElementLike {
 
   /** Whether the RuleElement has errors */
   hasErrors(): boolean {
-    return hasErrors(this);
+    return hasErrors(this.messages);
   }
 
   /** Whether the RuleElement has warnings */
   hasWarnings(): boolean {
-    return hasWarnings(this);
+    return hasWarnings(this.messages);
   }
 
   /** Whether something prevents this rule element from modifying the owner. */
@@ -227,23 +226,14 @@ export default abstract class RuleElement implements RuleElementLike {
   }
 }
 
-/** Check whether the given RuleElementLike has errors */
-export function hasErrors(element: RuleElementLike): boolean {
-  return element.messages.some((message) => message.isError());
+/** Check whether the given messages contain errors. */
+export function hasErrors(messages: RuleElementMessage[]): boolean {
+  return messages.some((message) => message.isError());
 }
 
-/** Check whether the given RuleElementLike has warnings */
-export function hasWarnings(element: RuleElementLike): boolean {
-  return element.messages.some((message) => message.isWarning());
-}
-
-/**
- * A version of the RuleElement raw data layout, where the more complex types of
- * each member are known to be correct.
- */
-export interface KnownRuleElementSource extends RuleElementSource {
-  target: RuleElementTarget;
-  type: RuleElementId;
+/** Check whether the given messages contain warnings. */
+export function hasWarnings(messages: RuleElementMessage[]): boolean {
+  return messages.some((message) => message.isWarning());
 }
 
 /** The valid values of a RuleElement target property */

@@ -52,8 +52,7 @@
     "ruleEngine": {
       "ruleElement": {
         "create": "Create",
-        "delete": "Delete",
-        "newName": "New Rule Element"
+        "delete": "Delete"
       },
       "errors": {
         "logical": {
@@ -73,7 +72,8 @@
         "syntax": "Syntax error: {message}"
       },
       "warnings": {
-        "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\"."
+        "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\".",
+        "notSaved": "This rule element was not saved due to errors. It is save to close this Foundry window and fix this later. Though the changes will be lost once Foundry is reloaded."
       }
     },
     "ruler": {

@@ -1,15 +1,3 @@
-import type { DefinedError } from "ajv";
-import { getGame } from "../foundryHelpers.js";
-import type WvItem from "../item/wvItem.js";
-import AdditionalPropMessage from "./messages/additionalPropMessage.js";
-import MissingPropMessage from "./messages/missingPropMessage.js";
-import WrongTypeMessage from "./messages/wrongTypeMessage.js";
-import type {
-  KnownRuleElementSource,
-  RuleElementLike,
-  UnknownRuleElementSource
-} from "./ruleElement.js";
-import RuleElementMessage from "./ruleElementMessage.js";
 import FlatModifier from "./ruleElements/flatModifier.js";
 import ReplaceValue from "./ruleElements/replaceValue.js";
 
@@ -29,79 +17,6 @@ export const RULE_ELEMENTS = {
 } as const;
 
 export type MappedRuleElementId = keyof typeof RULE_ELEMENTS;
-
-/**
- * A factory class for RuleElements.
- */
-export default class RuleElements {
-  /**
-   * Create a new RuleElement from an UnknownRuleElementSource. If invalid
-   * entries are encountered in the source, they are either replaced, if they
-   * are the wrong data type, or left as is and errors added to the RuleElement.
-   * @param source - the unknown data source
-   * @param item - the item owning the effect
-   * @returns a RuleElement with some source properties replaced if needed
-   */
-  static fromOwningItem(
-    source: UnknownRuleElementSource,
-    item: WvItem
-  ): RuleElementLike {
-    const messages: RuleElementMessage[] = [];
-
-    const validate = getGame().wv.validators.ruleElement;
-
-    // Check the passed JSON source against the schema. When it is invalid, only
-    // return a RuleElementLike.
-    if (!validate(source)) {
-      for (const error of validate.errors as DefinedError[]) {
-        messages.push(this.translateError(error));
-      }
-
-      return { item, messages, source };
-    }
-
-    const target = source.target;
-    const type = source.type;
-    return new RULE_ELEMENTS[type]({ ...source, target, type }, item, messages);
-  }
-
-  /** Translate an AJV DefinedError to a RuleElementMessage. */
-  protected static translateError(error: DefinedError): RuleElementMessage {
-    console.dir(error);
-    switch (error.keyword) {
-      case "additionalProperties":
-        return new AdditionalPropMessage(
-          error.instancePath,
-          error.params.additionalProperty
-        );
-      case "required":
-        return new MissingPropMessage(
-          error.instancePath,
-          error.params.missingProperty
-        );
-
-      case "type":
-        return new WrongTypeMessage(error.instancePath, error.params.type);
-
-      case "enum":
-        switch (error.schemaPath) {
-          case "#/properties/target/enum":
-            return new RuleElementMessage(
-              "wv.ruleEngine.errors.semantic.unknownTarget",
-              "error"
-            );
-          case "#/properties/type/enum":
-            return new RuleElementMessage(
-              "wv.ruleEngine.errors.semantic.unknownRuleElement",
-              "error"
-            );
-        }
-    }
-
-    console.dir(error);
-    return new RuleElementMessage("wv.ruleEngine.errors.semantic.unknown");
-  }
-}
 
 /**
  * A custom typeguard to check whether a given RuleElement type string is one of

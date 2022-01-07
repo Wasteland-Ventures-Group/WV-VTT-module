@@ -1,6 +1,7 @@
 import { getGame } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
+/** An error about a not matching selector. */
 export default class NotMatchingSelectorMessage extends RuleElementMessage {
   constructor(
     /** The name of the target document */

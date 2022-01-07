@@ -3,7 +3,7 @@ import type { ItemDataConstructorData } from "@league-of-foundry-developers/foun
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
 import { getGame } from "../foundryHelpers.js";
 import RuleElement from "../ruleEngine/ruleElement.js";
-import RuleElements from "../ruleEngine/ruleElements.js";
+import { RULE_ELEMENTS } from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import { isMappedItemType, TYPE_CONSTRUCTORS } from "../typeMappings.js";
 import validateSystemData from "../validation/validateSystemData.js";
@@ -65,8 +65,8 @@ export default class WvItem extends Item {
   }
 
   override prepareBaseData(): void {
-    this.data.data.rules.elements = this.data.data.rules.sources.map((rule) =>
-      RuleElements.fromOwningItem(rule, this)
+    this.data.data.rules.elements = this.data.data.rules.sources.map(
+      (ruleSource) => new RULE_ELEMENTS[ruleSource.type](ruleSource, this)
     );
   }
 

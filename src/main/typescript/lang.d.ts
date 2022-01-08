@@ -90,6 +90,8 @@ export interface LangSchema {
       labels: {
         /** The label for a speaker alias */
         alias: string;
+        /** The label for actor action points */
+        actionPoints: string;
         /** The label for a critical failure chance */
         criticalFailure: string;
         /** The label for a critical success chance */
@@ -498,6 +500,17 @@ export interface LangSchema {
     weapons: {
       /** Labels related to Weapon Attacks */
       attacks: {
+        /** Labels related to the AP cost of an attack */
+        ap: {
+          /** The label for the AP cost of the attack */
+          cost: string;
+          /** The label for the current AP of the actor (before the attack) */
+          previous: string;
+          /** The label for the remaining AP of the actor (after the attack) */
+          remaining: string;
+          /** The title label for the AP section */
+          title: string;
+        };
         /** The label for the damage roll of an attack */
         damageRoll: string;
         /** The label for the details list of an attack */

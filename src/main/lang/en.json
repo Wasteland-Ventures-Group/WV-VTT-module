@@ -35,6 +35,7 @@
       },
       "labels": {
         "alias": "Speaker alias:",
+        "actionPoints": "Action points:",
         "criticalFailure": "Critical failure rate:",
         "criticalSuccess": "Critical success rate:",
         "genericModifier": "Modifier:",
@@ -260,6 +261,12 @@
     },
     "weapons": {
       "attacks": {
+        "ap": {
+          "cost": "Cost",
+          "previous": "Previous",
+          "remaining": "Remaining",
+          "title": "AP"
+        },
         "damageRoll": "Damage",
         "details": "Details",
         "execute": "Execute",

@@ -16,6 +16,14 @@
     {{#if details}} {{!backward compatibility}}
       <div class="spacing-bottom">{{localize "wv.weapons.modifiers.hit.range"}}: {{localize template.keys.rangeBracket}} ({{details.range.distance}})</div>
       <div class="spacing-bottom">
+        <div>{{localize "wv.weapons.attacks.ap.title"}}</div>
+        <ul class="no-margin">
+          <li>{{localize "wv.weapons.attacks.ap.previous"}}: {{details.ap.previous}}</li>
+          <li>{{localize "wv.weapons.attacks.ap.cost"}}: {{details.ap.cost}}</li>
+          <li>{{localize "wv.weapons.attacks.ap.remaining"}}: {{details.ap.remaining}}</li>
+        </ul>
+      </div>
+      <div class="spacing-bottom">
         <div>{{localize "wv.sheets.actor.secondary.criticals.title"}}</div>
         <ul class="no-margin">
           <li>{{localize "wv.sheets.actor.secondary.criticals.success"}}: {{details.criticals.success}}</li>

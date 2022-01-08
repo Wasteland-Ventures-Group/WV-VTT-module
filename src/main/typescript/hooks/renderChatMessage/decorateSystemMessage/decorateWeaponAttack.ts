@@ -125,7 +125,12 @@ export type WeaponAttackFlags = NotExecutedAttackFlags | ExecutedAttackFlags;
 export interface CommonWeaponAttackFlags {
   type: "weaponAttack";
   attackName: string;
-  details?: {
+  details: {
+    ap: {
+      previous: number;
+      cost: number;
+      remaining: number;
+    };
     criticals: {
       failure: number;
       success: number;

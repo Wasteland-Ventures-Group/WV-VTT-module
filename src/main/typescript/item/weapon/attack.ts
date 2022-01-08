@@ -5,7 +5,6 @@ import Prompt, {
   TextInputSpec
 } from "../../applications/prompt.js";
 import { CONSTANTS, SpecialName } from "../../constants.js";
-import type { Specials } from "../../data/actor/properties.js";
 import type { AttackSource } from "../../data/item/weapon/attack/source.js";
 import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";
@@ -54,6 +53,7 @@ export default class Attack {
     }
     const {
       alias,
+      ap: previousAp,
       modifier: promptHitModifier,
       range,
       skillTotal,
@@ -80,6 +80,7 @@ export default class Attack {
       range,
       specials
     );
+    const outOfRange = ranges.RangeBracket.OUT_OF_RANGE === rangeBracket;
 
     // Calculate damage dice ---------------------------------------------------
     const strengthDamageDiceMod = this.getStrengthDamageDiceMod(
@@ -104,38 +105,72 @@ export default class Attack {
       critFailure
     );
 
+    // Calculate AP ------------------------------------------------------------
+    const remainingAp = outOfRange
+      ? previousAp
+      : token?.inCombat
+      ? previousAp - this.data.ap
+      : previousAp;
+    const notEnoughAp = 0 > remainingAp;
+
     // Create common attack flags ----------------------------------------------
-    const commonFlags: deco.CommonWeaponAttackFlags =
-      this.createCommonWeaponAttackFlags(
-        critFailure,
-        critSuccess,
-        strengthDamageDiceMod,
-        rangeDamageDiceMod,
-        damageDice,
-        skillTotal,
-        rangeModifier,
-        promptHitModifier,
-        hitTotal,
-        rangeBracket,
-        range,
-        specials
-      );
+    const commonFlags: Required<deco.CommonWeaponAttackFlags> = {
+      type: "weaponAttack",
+      attackName: this.name,
+      details: {
+        ap: {
+          cost: this.data.ap,
+          previous: previousAp,
+          remaining: remainingAp
+        },
+        criticals: {
+          failure: critFailure,
+          success: critSuccess
+        },
+        damage: {
+          base: {
+            base: this.data.damage.base,
+            modifiers: this.getDamageBaseModifierFlags(),
+            total: this.data.damage.base
+          },
+          dice: {
+            base: this.data.damage.dice,
+            modifiers: this.getDamageDiceModifierFlags(
+              strengthDamageDiceMod,
+              rangeDamageDiceMod
+            ),
+            total: damageDice
+          }
+        },
+        hit: {
+          base: skillTotal,
+          modifiers: this.getHitModifierFlags(rangeModifier, promptHitModifier),
+          total: hitTotal
+        },
+        range: {
+          bracket: rangeBracket,
+          distance: range
+        }
+      },
+      ownerSpecials: specials,
+      weaponImage: this.weapon.img,
+      weaponName: this.weapon.data.name,
+      weaponSystemData: this.weapon.systemData
+    };
 
     // Check range -------------------------------------------------------------
-    if (rangeBracket === ranges.RangeBracket.OUT_OF_RANGE) {
+    if (outOfRange) {
       this.createOutOfRangeMessage(commonData, commonFlags);
       return;
     }
 
     // Check AP and subtract in combat -----------------------------------------
-    if (actor?.getActiveTokens(true).some((token) => token.inCombat)) {
-      const currentAp = actor.data.data.vitals.actionPoints.value;
-      const apUse = this.data.ap;
-      if (currentAp < apUse) {
+    if (token?.inCombat) {
+      if (notEnoughAp) {
         this.createNotEnoughApMessage(commonData, commonFlags);
         return;
       }
-      actor.updateActionPoints(currentAp - apUse);
+      actor?.updateActionPoints(remainingAp);
     }
 
     // Hit roll ----------------------------------------------------------------
@@ -210,6 +245,13 @@ export default class Attack {
           type: "text",
           label: i18n.localize("wv.prompt.labels.alias"),
           value: actor?.name
+        },
+        ap: {
+          type: "number",
+          label: i18n.localize("wv.prompt.labels.actionPoints"),
+          value: actor?.actionPoints.value,
+          min: 0,
+          max: actor?.actionPoints.max ?? 20
         },
         modifier: {
           type: "number",
@@ -368,61 +410,6 @@ export default class Attack {
     };
   }
 
-  /** Get the default ChatMessage flags for this Weapon Attack. */
-  protected createCommonWeaponAttackFlags(
-    critFailure: number,
-    critSuccess: number,
-    strengthDamageDiceMod: number,
-    rangeDamageDiceMod: number,
-    damageDice: number,
-    skillTotal: number,
-    rangeModifier: number,
-    promptHitModifier: number,
-    hitTotal: number,
-    rangeBracket: ranges.RangeBracket,
-    range: number,
-    ownerSpecials: Partial<Specials>
-  ): Required<deco.CommonWeaponAttackFlags> {
-    return {
-      type: "weaponAttack",
-      attackName: this.name,
-      details: {
-        criticals: {
-          failure: critFailure,
-          success: critSuccess
-        },
-        damage: {
-          base: {
-            base: this.data.damage.base,
-            modifiers: this.getDamageBaseModifierFlags(),
-            total: this.data.damage.base
-          },
-          dice: {
-            base: this.data.damage.dice,
-            modifiers: this.getDamageDiceModifierFlags(
-              strengthDamageDiceMod,
-              rangeDamageDiceMod
-            ),
-            total: damageDice
-          }
-        },
-        hit: {
-          base: skillTotal,
-          modifiers: this.getHitModifierFlags(rangeModifier, promptHitModifier),
-          total: hitTotal
-        },
-        range: {
-          bracket: rangeBracket,
-          distance: range
-        }
-      },
-      ownerSpecials,
-      weaponImage: this.weapon.img,
-      weaponName: this.weapon.data.name,
-      weaponSystemData: this.weapon.systemData
-    };
-  }
-
   /** Create a weapon attack message, signaling out of range. */
   protected createOutOfRangeMessage(
     commonData: ChatMessageDataConstructorData,
@@ -535,6 +522,7 @@ export function isWeaponAttackDragData(
  */
 type PromptSpec = {
   alias: TextInputSpec;
+  ap: NumberInputSpec;
   modifier: NumberInputSpec;
   range: NumberInputSpec;
   skillTotal: NumberInputSpec;
@@ -546,6 +534,9 @@ type PromptSpec = {
 type ExternalData = {
   /** The chat message alias of the executing actor */
   alias: string;
+
+  /** The current action points of the actor */
+  ap: number;
 
   /** A possible modifier for the attack */
   modifier: number;

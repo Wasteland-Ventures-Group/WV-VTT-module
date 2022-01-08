@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking
+
+- old weapon attack messages might display incorrectly
+
 ### Added
 
 - notifications for errors in weapon macros created from source
@@ -14,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#95](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/95))
 - weapon attack details on not executed attacks
   ([#111](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/111))
+- action point details on weapon attack messages
+  ([#110](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/110))
 
 ### Changed
 

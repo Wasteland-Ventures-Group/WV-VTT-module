@@ -20,6 +20,7 @@
       }
     },
     "ranges": {
+      "pointBlank": true,
       "short": {
         "distance": 30,
         "modifier": 0

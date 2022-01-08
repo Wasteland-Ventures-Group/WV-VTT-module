@@ -1,4 +1,4 @@
-import { TYPES } from "../../constants.js";
+import { CONSTANTS, TYPES } from "../../constants.js";
 import type { Range } from "../../data/item/weapon/ranges/source.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
@@ -54,6 +54,11 @@ export default class WeaponSheet extends WvItemSheet {
           return obj;
         }, {}),
         ranges: {
+          pointBlank: this.mapToSheetRange(
+            this.item.systemData.ranges.pointBlank
+              ? CONSTANTS.rules.pointBlank
+              : undefined
+          ),
           short: this.mapToSheetRange(this.item.systemData.ranges.short),
           medium: this.mapToSheetRange(this.item.systemData.ranges.medium),
           long: this.mapToSheetRange(this.item.systemData.ranges.long)
@@ -156,6 +161,7 @@ export interface SheetData extends ItemSheetData {
   sheet: ItemSheetData["sheet"] & {
     attacks: Record<string, SheetAttack>;
     ranges: {
+      pointBlank: SheetRange | undefined;
       short: SheetRange;
       medium: SheetRange | undefined;
       long: SheetRange | undefined;

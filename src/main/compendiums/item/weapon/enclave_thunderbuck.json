@@ -18,6 +18,7 @@
       }
     },
     "ranges": {
+      "pointBlank": true,
       "short": {
         "distance": 16,
         "modifier": 0

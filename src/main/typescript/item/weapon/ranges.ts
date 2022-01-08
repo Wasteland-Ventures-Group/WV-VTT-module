@@ -27,12 +27,14 @@ export function getDisplayRanges(
   specials?: Partial<Specials>
 ): string {
   const ranges = [weaponData.ranges.short.distance];
-  if (weaponData.ranges.medium) {
-    ranges.push(weaponData.ranges.medium.distance);
-  }
-  if (weaponData.ranges.long) {
-    ranges.push(weaponData.ranges.long.distance);
-  }
+
+  if (weaponData.ranges.pointBlank)
+    ranges.unshift(CONSTANTS.rules.pointBlank.distance);
+
+  if (weaponData.ranges.medium) ranges.push(weaponData.ranges.medium.distance);
+
+  if (weaponData.ranges.long) ranges.push(weaponData.ranges.long.distance);
+
   return ranges
     .map((range) => getDisplayRangeDistance(range, specials))
     .join("/");
@@ -51,7 +53,7 @@ export function getDisplayRangeDistance(
   specials?: Partial<Specials> | undefined
 ): string {
   if (typeof distance === "number") return distance.toString();
-  if (distance === "melee") return "0";
+  if (distance === "melee") return CONSTANTS.rules.melee.distance.toString();
 
   const specialValue = (specials ?? {})[distance.special];
   if (typeof specialValue === "number") {
@@ -77,7 +79,7 @@ export function getEffectiveRangeDistance(
   specials?: Partial<Specials>
 ): number {
   if (typeof distance === "number") return distance;
-  if (distance === "melee") return 0;
+  if (distance === "melee") return CONSTANTS.rules.melee.distance;
 
   const specialValue = (specials ?? {})[distance.special] ?? 0;
   return getSpecialRangeDistance(distance, specialValue);
@@ -95,7 +97,7 @@ export function getRangeBracket(
   range: number,
   specials?: Partial<Specials>
 ): RangeBracket {
-  if (range <= CONSTANTS.rules.pointBlank.distance)
+  if (ranges.pointBlank && range <= CONSTANTS.rules.pointBlank.distance)
     return RangeBracket.POINT_BLANK;
 
   if (range <= getEffectiveRangeDistance(ranges.short.distance, specials))
@@ -120,15 +122,13 @@ export function getRangeBracket(
  * Get the modifier for the given range bracket.
  * @param ranges - the ranges to consult
  * @param rangeBracket - the range bracket to get the modifier for
- * @param usesPointBlank - whether the weapon uses the point-blank range
  * @returns the modifier for the range (0, if out of range)
  */
 export function getRangeModifier(
   ranges: Ranges,
-  rangeBracket: RangeBracket,
-  usesPointBlank = false
+  rangeBracket: RangeBracket
 ): number {
-  if (usesPointBlank && rangeBracket <= RangeBracket.POINT_BLANK)
+  if (ranges.pointBlank && rangeBracket <= RangeBracket.POINT_BLANK)
     return CONSTANTS.rules.pointBlank.modifier;
 
   if (rangeBracket <= RangeBracket.SHORT) return ranges.short.modifier;

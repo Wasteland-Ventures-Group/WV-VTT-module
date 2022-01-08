@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - RuleElements not working on unowned items
+- Point Blank rules applying to every weapon
 
 ## [0.8.0] - 2021-12-28
 

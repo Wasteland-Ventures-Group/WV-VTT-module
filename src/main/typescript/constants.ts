@@ -120,6 +120,12 @@ export const CONSTANTS = {
       dieTarget: 5
     },
 
+    /** Rule constants related to melee */
+    melee: {
+      /** The melee maximum distance */
+      distance: 2
+    },
+
     /** Rule constants related to movement */
     movement: {
       /**

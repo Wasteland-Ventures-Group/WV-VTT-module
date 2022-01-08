@@ -113,8 +113,6 @@ function getRangeBracketKey(
       return "wv.weapons.ranges.brackets.medium";
     case RangeBracket.SHORT:
       return "wv.weapons.ranges.brackets.short";
-    case RangeBracket.POINT_BLANK:
-      return "wv.weapons.ranges.brackets.pointBlank";
   }
 }
 

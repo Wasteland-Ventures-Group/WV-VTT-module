@@ -304,8 +304,7 @@
           "outOfRange": "Out of range",
           "long": "Long",
           "medium": "Medium",
-          "short": "Short",
-          "pointBlank": "Point-Blank"
+          "short": "Short"
         }
       }
     }

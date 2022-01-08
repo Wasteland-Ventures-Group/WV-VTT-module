@@ -304,8 +304,7 @@
           "outOfRange": "Außer Reichweite",
           "long": "Weit",
           "medium": "Mittel",
-          "short": "Kurz",
-          "pointBlank": "Kürzeste"
+          "short": "Kurz"
         }
       }
     }

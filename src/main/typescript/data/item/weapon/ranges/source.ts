@@ -3,9 +3,6 @@ import { SpecialName, SpecialNames } from "../../../../constants.js";
 
 /** An interface that represents the source ranges of a weapon. */
 export default interface Ranges {
-  /** Whether the weapon uses Point Blank rules */
-  pointBlank?: boolean;
-
   /** The short range of the weapon */
   short: Range;
 
@@ -119,14 +116,6 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<Ranges> = {
   description: "Ranges definitions",
   type: "object",
   properties: {
-    pointBlank: {
-      type: "boolean",
-      description:
-        "Whether this weapon is eligible for the Point Blank range rule. If " +
-        "this is not specified, it defaults to `false`.",
-      nullable: true,
-      default: true
-    },
     short: {
       ...RANGE_JSON_SCHEMA,
       description: "The short range specification"

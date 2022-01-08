@@ -583,8 +583,6 @@ export interface LangSchema {
           medium: string;
           /** The name of the short range bracket */
           short: string;
-          /** The name of the point-blank range bracket */
-          pointBlank: string;
         };
       };
     };

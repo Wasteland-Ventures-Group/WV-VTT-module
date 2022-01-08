@@ -10,7 +10,6 @@ import { getSpecialMaxPoints, getSpecialMinPoints } from "../../helpers.js";
 
 /** A type representing the different range brackets */
 export enum RangeBracket {
-  POINT_BLANK,
   SHORT,
   MEDIUM,
   LONG,
@@ -27,9 +26,6 @@ export function getDisplayRanges(
   specials?: Partial<Specials>
 ): string {
   const ranges = [weaponData.ranges.short.distance];
-
-  if (weaponData.ranges.pointBlank)
-    ranges.unshift(CONSTANTS.rules.pointBlank.distance);
 
   if (weaponData.ranges.medium) ranges.push(weaponData.ranges.medium.distance);
 
@@ -97,9 +93,6 @@ export function getRangeBracket(
   range: number,
   specials?: Partial<Specials>
 ): RangeBracket {
-  if (ranges.pointBlank && range <= CONSTANTS.rules.pointBlank.distance)
-    return RangeBracket.POINT_BLANK;
-
   if (range <= getEffectiveRangeDistance(ranges.short.distance, specials))
     return RangeBracket.SHORT;
 
@@ -128,9 +121,6 @@ export function getRangeModifier(
   ranges: Ranges,
   rangeBracket: RangeBracket
 ): number {
-  if (ranges.pointBlank && rangeBracket <= RangeBracket.POINT_BLANK)
-    return CONSTANTS.rules.pointBlank.modifier;
-
   if (rangeBracket <= RangeBracket.SHORT) return ranges.short.modifier;
 
   if (ranges.medium && rangeBracket <= RangeBracket.MEDIUM)

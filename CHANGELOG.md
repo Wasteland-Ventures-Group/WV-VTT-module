@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.1] - 2022-01-08
+
+## Changed
+
+- removed Point Blank entirely, as it is no longer a range, but a malus negator
+
 ## [0.9.0] - 2022-01-08
 
 ### Breaking

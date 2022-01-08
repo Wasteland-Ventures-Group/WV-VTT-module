@@ -107,7 +107,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.9.0",
+  needsMigrationVersion: "0.9.1",
 
   /** Miscellaneous rules constants */
   rules: {
@@ -133,15 +133,6 @@ export const CONSTANTS = {
        * default.
        */
       metersPerAp: 2
-    },
-
-    /** The special, point-blank range for some ranged weapons */
-    pointBlank: {
-      /** The point-blank maximum distance */
-      distance: 4,
-
-      /** The point-blank modifier */
-      modifier: 10
     }
   },
 

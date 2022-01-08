@@ -251,7 +251,7 @@ export default class Attack {
           label: i18n.localize("wv.prompt.labels.actionPoints"),
           value: actor?.actionPoints.value,
           min: 0,
-          max: actor?.actionPoints.max ?? 20
+          max: actor?.actionPoints.max ?? 99
         },
         modifier: {
           type: "number",

@@ -70,27 +70,26 @@ export default class Attack {
       alias
     };
 
-    // Get range bracket and check bracket -------------------------------------
+    // Create common chat message data -----------------------------------------
+    const commonData: ChatMessageDataConstructorData =
+      this.createDefaultMessageData(speaker, options);
+
+    // Get range bracket -------------------------------------------------------
     const rangeBracket = ranges.getRangeBracket(
       this.weapon.systemData.ranges,
       range,
       specials
     );
-    if (rangeBracket === ranges.RangeBracket.OUT_OF_RANGE) {
-      this.createOutOfRangeMessage(speaker, options);
-      return;
-    }
 
-    // Check AP and subtract in combat -----------------------------------------
-    if (actor?.getActiveTokens(true).some((token) => token.inCombat)) {
-      const currentAp = actor.data.data.vitals.actionPoints.value;
-      const apUse = this.data.ap;
-      if (currentAp < apUse) {
-        this.createNotEnoughApMessage(speaker, options);
-        return;
-      }
-      actor.updateActionPoints(currentAp - apUse);
-    }
+    // Calculate damage dice ---------------------------------------------------
+    const strengthDamageDiceMod = this.getStrengthDamageDiceMod(
+      specials.strength
+    );
+    const rangeDamageDiceMod = this.getRangeDamageDiceMod(rangeBracket);
+    const damageDice = this.getDamageDice(
+      strengthDamageDiceMod,
+      rangeDamageDiceMod
+    );
 
     // Calculate hit roll target -----------------------------------------------
     const rangeModifier = ranges.getRangeModifier(
@@ -105,6 +104,40 @@ export default class Attack {
       critFailure
     );
 
+    // Create common attack flags ----------------------------------------------
+    const commonFlags: deco.CommonWeaponAttackFlags =
+      this.createCommonWeaponAttackFlags(
+        critFailure,
+        critSuccess,
+        strengthDamageDiceMod,
+        rangeDamageDiceMod,
+        damageDice,
+        skillTotal,
+        rangeModifier,
+        promptHitModifier,
+        hitTotal,
+        rangeBracket,
+        range,
+        specials
+      );
+
+    // Check range -------------------------------------------------------------
+    if (rangeBracket === ranges.RangeBracket.OUT_OF_RANGE) {
+      this.createOutOfRangeMessage(commonData, commonFlags);
+      return;
+    }
+
+    // Check AP and subtract in combat -----------------------------------------
+    if (actor?.getActiveTokens(true).some((token) => token.inCombat)) {
+      const currentAp = actor.data.data.vitals.actionPoints.value;
+      const apUse = this.data.ap;
+      if (currentAp < apUse) {
+        this.createNotEnoughApMessage(commonData, commonFlags);
+        return;
+      }
+      actor.updateActionPoints(currentAp - apUse);
+    }
+
     // Hit roll ----------------------------------------------------------------
     const hitRoll = new Roll(
       Formulator.skill(hitTotal)
@@ -112,62 +145,13 @@ export default class Attack {
         .toString()
     ).evaluate({ async: false });
 
-    // Calculate damage dice ---------------------------------------------------
-    const strengthDamageDiceMod = this.getStrengthDamageDiceMod(
-      specials.strength
-    );
-    const rangeDamageDiceMod = this.getRangeDamageDiceMod(rangeBracket);
-    const damageDice = this.getDamageDice(
-      strengthDamageDiceMod,
-      rangeDamageDiceMod
-    );
-
     // Damage roll -------------------------------------------------------------
     const damageRoll = new Roll(
       Formulator.damage(this.data.damage.base, damageDice).toString()
     ).evaluate({ async: false });
 
-    // Compose details ---------------------------------------------------------
-    const details: NonNullable<deco.ExecutedAttackFlags["details"]> = {
-      criticals: {
-        failure: critFailure,
-        success: critSuccess
-      },
-      damage: {
-        base: {
-          base: this.data.damage.base,
-          modifiers: this.getDamageBaseModifierFlags(),
-          total: this.data.damage.base
-        },
-        dice: {
-          base: this.data.damage.dice,
-          modifiers: this.getDamageDiceModifierFlags(
-            strengthDamageDiceMod,
-            rangeDamageDiceMod
-          ),
-          total: damageDice
-        }
-      },
-      hit: {
-        base: skillTotal,
-        modifiers: this.getHitModifierFlags(rangeModifier, promptHitModifier),
-        total: hitTotal
-      },
-      range: {
-        bracket: rangeBracket,
-        distance: range
-      }
-    };
-
     // Create attack message ---------------------------------------------------
-    this.createAttackMessage(
-      speaker,
-      specials,
-      details,
-      hitRoll,
-      damageRoll,
-      options
-    );
+    this.createAttackMessage(commonData, commonFlags, hitRoll, damageRoll);
   }
 
   /** Get the system formula representation of the damage of this attack. */
@@ -385,99 +369,134 @@ export default class Attack {
   }
 
   /** Get the default ChatMessage flags for this Weapon Attack. */
-  protected get defaultChatMessageFlags(): deco.WeaponAttackFlags {
+  protected createCommonWeaponAttackFlags(
+    critFailure: number,
+    critSuccess: number,
+    strengthDamageDiceMod: number,
+    rangeDamageDiceMod: number,
+    damageDice: number,
+    skillTotal: number,
+    rangeModifier: number,
+    promptHitModifier: number,
+    hitTotal: number,
+    rangeBracket: ranges.RangeBracket,
+    range: number,
+    ownerSpecials: Partial<Specials>
+  ): Required<deco.CommonWeaponAttackFlags> {
     return {
       type: "weaponAttack",
-      weaponName: this.weapon.data.name,
-      weaponImage: this.weapon.img,
-      weaponSystemData: this.weapon.systemData,
       attackName: this.name,
-      executed: false
+      details: {
+        criticals: {
+          failure: critFailure,
+          success: critSuccess
+        },
+        damage: {
+          base: {
+            base: this.data.damage.base,
+            modifiers: this.getDamageBaseModifierFlags(),
+            total: this.data.damage.base
+          },
+          dice: {
+            base: this.data.damage.dice,
+            modifiers: this.getDamageDiceModifierFlags(
+              strengthDamageDiceMod,
+              rangeDamageDiceMod
+            ),
+            total: damageDice
+          }
+        },
+        hit: {
+          base: skillTotal,
+          modifiers: this.getHitModifierFlags(rangeModifier, promptHitModifier),
+          total: hitTotal
+        },
+        range: {
+          bracket: rangeBracket,
+          distance: range
+        }
+      },
+      ownerSpecials,
+      weaponImage: this.weapon.img,
+      weaponName: this.weapon.data.name,
+      weaponSystemData: this.weapon.systemData
     };
   }
 
   /** Create a weapon attack message, signaling out of range. */
   protected createOutOfRangeMessage(
-    speaker: foundry.data.ChatMessageData["speaker"]["_source"],
-    options?: RollOptions
+    commonData: ChatMessageDataConstructorData,
+    commonFlags: deco.CommonWeaponAttackFlags
   ): void {
+    const flags: deco.NotExecutedAttackFlags = {
+      ...commonFlags,
+      executed: false,
+      reason: "outOfRange"
+    };
+
     ChatMessage.create({
-      ...this.createDefaultMessageData(speaker, options),
-      flags: {
-        [CONSTANTS.systemId]: {
-          ...this.defaultChatMessageFlags,
-          executed: false,
-          reason: "outOfRange"
-        }
-      }
+      ...commonData,
+      flags: { [CONSTANTS.systemId]: flags }
     });
   }
 
   /** Create a weapon attack message, signaling insufficient AP. */
   protected createNotEnoughApMessage(
-    speaker: foundry.data.ChatMessageData["speaker"]["_source"],
-    options?: RollOptions
+    commonData: ChatMessageDataConstructorData,
+    commonFlags: deco.CommonWeaponAttackFlags
   ): void {
+    const flags: deco.NotExecutedAttackFlags = {
+      ...commonFlags,
+      executed: false,
+      reason: "insufficientAp"
+    };
+
     ChatMessage.create({
-      ...this.createDefaultMessageData(speaker, options),
-      flags: {
-        [CONSTANTS.systemId]: {
-          ...this.defaultChatMessageFlags,
-          executed: false,
-          reason: "insufficientAp"
-        }
-      }
+      ...commonData,
+      flags: { [CONSTANTS.systemId]: flags }
     });
   }
 
   /** Create a chat message for an executed attack. */
   protected async createAttackMessage(
-    speaker: foundry.data.ChatMessageData["speaker"]["_source"],
-    specials: Partial<Specials>,
-    details: NonNullable<deco.ExecutedAttackFlags["details"]>,
+    commonData: ChatMessageDataConstructorData,
+    commonFlags: deco.CommonWeaponAttackFlags,
     hitRoll: Roll,
-    damageRoll: Roll,
-    options?: RollOptions
+    damageRoll: Roll
   ): Promise<void> {
-    const defaultData = this.createDefaultMessageData(speaker, options);
     const actorId =
-      defaultData.speaker?.actor instanceof WvActor
-        ? defaultData.speaker.actor.id
-        : defaultData.speaker?.actor;
+      commonData.speaker?.actor instanceof WvActor
+        ? commonData.speaker.actor.id
+        : commonData.speaker?.actor;
 
     await Promise.all([
-      diceSoNice(hitRoll, defaultData.whisper ?? null, { actor: actorId }),
-      diceSoNice(damageRoll, defaultData.whisper ?? null, { actor: actorId })
+      diceSoNice(hitRoll, commonData.whisper ?? null, { actor: actorId }),
+      diceSoNice(damageRoll, commonData.whisper ?? null, { actor: actorId })
     ]);
 
-    const data: ChatMessageDataConstructorData = {
-      ...defaultData,
-      flags: {
-        [CONSTANTS.systemId]: {
-          ...this.defaultChatMessageFlags,
-          executed: true,
-          ownerSpecials: specials,
-          details: details,
-          rolls: {
-            damage: {
-              formula: damageRoll.formula,
-              results:
-                damageRoll.dice[0]?.results.map((result) => result.result) ??
-                [],
-              total: damageRoll.total ?? this.data.damage.base
-            },
-            hit: {
-              critical: hitRoll.dice[0]?.results[0]?.critical,
-              formula: hitRoll.formula,
-              result: hitRoll.dice[0]?.results[0]?.result ?? 0,
-              total: hitRoll.total ?? 0
-            }
-          }
+    const flags: deco.ExecutedAttackFlags = {
+      ...commonFlags,
+      executed: true,
+      rolls: {
+        damage: {
+          formula: damageRoll.formula,
+          results:
+            damageRoll.dice[0]?.results.map((result) => result.result) ?? [],
+          total: damageRoll.total ?? this.data.damage.base
+        },
+        hit: {
+          critical: hitRoll.dice[0]?.results[0]?.critical,
+          formula: hitRoll.formula,
+          result: hitRoll.dice[0]?.results[0]?.result ?? 0,
+          total: hitRoll.total ?? 0
         }
       }
     };
 
-    ChatMessage.create(data);
+    ChatMessage.create({
+      ...commonData,
+      flags: { [CONSTANTS.systemId]: flags }
+    });
   }
 }
 

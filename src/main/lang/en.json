@@ -294,6 +294,7 @@
       },
       "ranges": {
         "brackets": {
+          "outOfRange": "Out of range",
           "long": "Long",
           "medium": "Medium",
           "short": "Short",

@@ -562,6 +562,8 @@ export interface LangSchema {
       ranges: {
         /** Labels for range bracket names */
         brackets: {
+          /** The name of the out of range range bracket */
+          outOfRange: string;
           /** The name of the long range bracket */
           long: string;
           /** The name of the medium range bracket */

@@ -294,6 +294,7 @@
       },
       "ranges": {
         "brackets": {
+          "outOfRange": "Außer Reichweite",
           "long": "Weit",
           "medium": "Mittel",
           "short": "Kurz",

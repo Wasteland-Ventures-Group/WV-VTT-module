@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - notifications for errors in weapon macros created from source
 - a value replacing rule element
   ([#95](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/95))
+- weapon attack details on not executed attacks
+  ([#111](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/111))
 
 ### Changed
 

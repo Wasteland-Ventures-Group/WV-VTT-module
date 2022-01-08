@@ -17,32 +17,10 @@ export default async function decorateWeaponAttack(
 
   const content = getContentElement(html);
 
-  if (!flags.executed) {
-    const data: NotExecutedAttackTemplateData = {
-      ...flags,
-      template: {
-        keys: {
-          notExecutedReason: getNotExecutedReasonKey(flags)
-        }
-      }
-    };
-    content.append(await renderTemplate(TEMPLATE, data));
-    return;
-  }
-
-  const data: ExecutedAttackTemplateData = {
+  const commonData: CommonWeaponAttackTemplateData = {
     ...flags,
     template: {
-      damage: {
-        results: flags.rolls.damage.results.map((result) => {
-          return {
-            class: result >= CONSTANTS.rules.damage.dieTarget ? "success" : "",
-            value: result
-          };
-        })
-      },
       keys: {
-        hit: getHitResultKey(flags),
         rangeBracket: getRangeBracketKey(flags)
       },
       raw: {
@@ -58,6 +36,42 @@ export default async function decorateWeaponAttack(
           flags.weaponName !== flags.weaponSystemData.name
             ? `${flags.weaponSystemData.name} - ${flags.attackName}`
             : flags.attackName
+      }
+    }
+  };
+
+  if (!flags.executed) {
+    const data: NotExecutedAttackTemplateData = {
+      ...flags,
+      ...commonData,
+      template: {
+        ...commonData.template,
+        keys: {
+          ...commonData.template.keys,
+          notExecutedReason: getNotExecutedReasonKey(flags)
+        }
+      }
+    };
+    content.append(await renderTemplate(TEMPLATE, data));
+    return;
+  }
+
+  const data: ExecutedAttackTemplateData = {
+    ...flags,
+    ...commonData,
+    template: {
+      ...commonData.template,
+      damage: {
+        results: flags.rolls.damage.results.map((result) => {
+          return {
+            class: result >= CONSTANTS.rules.damage.dieTarget ? "success" : "",
+            value: result
+          };
+        })
+      },
+      keys: {
+        ...commonData.template.keys,
+        hit: getHitResultKey(flags)
       }
     }
   };
@@ -87,8 +101,12 @@ function getHitResultKey(flags: ExecutedAttackFlags): string {
 }
 
 /** Get the i18n key for the range bracket. */
-function getRangeBracketKey(flags: ExecutedAttackFlags): string | undefined {
+function getRangeBracketKey(
+  flags: CommonWeaponAttackFlags
+): string | undefined {
   switch (flags.details?.range.bracket) {
+    case RangeBracket.OUT_OF_RANGE:
+      return "wv.weapons.ranges.brackets.outOfRange";
     case RangeBracket.LONG:
       return "wv.weapons.ranges.brackets.long";
     case RangeBracket.MEDIUM:
@@ -104,24 +122,9 @@ function getRangeBracketKey(flags: ExecutedAttackFlags): string | undefined {
 export type WeaponAttackFlags = NotExecutedAttackFlags | ExecutedAttackFlags;
 
 /** The common weapon attack chat message flags */
-interface CommonWeaponAttackFlags {
+export interface CommonWeaponAttackFlags {
   type: "weaponAttack";
-  weaponName: string;
-  weaponImage: string | null;
-  weaponSystemData: WeaponDataProperties["data"];
   attackName: string;
-}
-
-/** The attack chat message flags for a unexecuted attack */
-export interface NotExecutedAttackFlags extends CommonWeaponAttackFlags {
-  executed: false;
-  reason?: "insufficientAp" | "outOfRange";
-}
-
-/** The attack chat message flags for an executed attack */
-export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
-  executed: true;
-  ownerSpecials?: Partial<Specials> | undefined;
   details?: {
     criticals: {
       failure: number;
@@ -137,6 +140,21 @@ export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
       distance: number;
     };
   };
+  ownerSpecials?: Partial<Specials> | undefined;
+  weaponImage: string | null;
+  weaponName: string;
+  weaponSystemData: WeaponDataProperties["data"];
+}
+
+/** The attack chat message flags for a unexecuted attack */
+export type NotExecutedAttackFlags = CommonWeaponAttackFlags & {
+  executed: false;
+  reason?: "insufficientAp" | "outOfRange";
+};
+
+/** The attack chat message flags for an executed attack */
+export type ExecutedAttackFlags = CommonWeaponAttackFlags & {
+  executed: true;
   rolls: {
     damage: {
       formula: string;
@@ -150,7 +168,7 @@ export interface ExecutedAttackFlags extends CommonWeaponAttackFlags {
       total: number;
     };
   };
-}
+};
 
 export interface ModifierFlags {
   amount: number;
@@ -163,26 +181,10 @@ interface DetailsListingInfo {
   total: number;
 }
 
-/** The data for rendering the not executed weapon attack template */
-interface NotExecutedAttackTemplateData extends NotExecutedAttackFlags {
+/** The template data common for both executed and not executed attacks. */
+type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
   template: {
     keys: {
-      notExecutedReason: string;
-    };
-  };
-}
-
-/** The data for rendering the executed weapon attack template */
-interface ExecutedAttackTemplateData extends ExecutedAttackFlags {
-  template: {
-    damage: {
-      results: {
-        class: string;
-        value: number;
-      }[];
-    };
-    keys: {
-      hit: string;
       rangeBracket: string | undefined;
     };
     raw: {
@@ -191,4 +193,30 @@ interface ExecutedAttackTemplateData extends ExecutedAttackFlags {
       subHeading: string;
     };
   };
-}
+};
+
+/** The data for rendering the not executed weapon attack template */
+type NotExecutedAttackTemplateData = CommonWeaponAttackTemplateData &
+  NotExecutedAttackFlags & {
+    template: {
+      keys: {
+        notExecutedReason: string;
+      };
+    };
+  };
+
+/** The data for rendering the executed weapon attack template */
+type ExecutedAttackTemplateData = CommonWeaponAttackTemplateData &
+  ExecutedAttackFlags & {
+    template: {
+      damage: {
+        results: {
+          class: string;
+          value: number;
+        }[];
+      };
+      keys: {
+        hit: string;
+      };
+    };
+  };

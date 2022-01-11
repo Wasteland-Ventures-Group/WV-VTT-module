@@ -1,5 +1,12 @@
 # Wasteland Ventures Foundry VTT System
 
+<div align="center">
+
+[![Supported Foundry
+Version](https://img.shields.io/endpoint?url=https://foundryshields.com/version?url=https%3A%2F%2Fraw.githubusercontent.com%2FWasteland-Ventures-Group%2FWV-VTT-module%2Fmain%2Fsrc%2Fmain%2Fsystem.json)](https://foundryvtt.com/packages/wasteland-ventures)
+
+</div>
+
 This is an implementation of the Wasteland Ventures pen and paper RPG system for
 the Foundry Virtual Tabletop (Foundry VTT or FVTT) tool.
 

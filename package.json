@@ -42,7 +42,7 @@
     "husky": "^7.0.1",
     "lint-staged": "^12.1.7",
     "prettier": "^2.5.1",
-    "sass": "^1.47.0",
+    "sass": "^1.48.0",
     "ts-json-schema-generator": "^0.97.0",
     "ts-node": "^10.4.0",
     "tsd": "^0.19.1",

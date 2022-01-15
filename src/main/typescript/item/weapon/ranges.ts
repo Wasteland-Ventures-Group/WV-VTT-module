@@ -25,13 +25,11 @@ export function getDisplayRanges(
   weaponData: WeaponDataProperties["data"],
   specials?: Partial<Specials>
 ): string {
-  const ranges = [weaponData.ranges.short.distance];
-
-  if (weaponData.ranges.medium) ranges.push(weaponData.ranges.medium.distance);
-
-  if (weaponData.ranges.long) ranges.push(weaponData.ranges.long.distance);
-
-  return ranges
+  return [
+    weaponData.ranges.short.distance,
+    weaponData.ranges.medium?.distance,
+    weaponData.ranges.long?.distance
+  ]
     .map((range) => getDisplayRangeDistance(range, specials))
     .join("/");
 }
@@ -45,9 +43,10 @@ export function getDisplayRanges(
  * @returns the displayable distance
  */
 export function getDisplayRangeDistance(
-  distance: Distance,
+  distance: Distance | undefined,
   specials?: Partial<Specials> | undefined
 ): string {
+  if (distance === undefined) return "-";
   if (typeof distance === "number") return distance.toString();
   if (distance === "melee") return CONSTANTS.rules.melee.distance.toString();
 

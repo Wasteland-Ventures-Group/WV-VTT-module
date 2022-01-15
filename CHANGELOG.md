@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- weapon attack messages now show non-existent ranges as "-" instead of omitting
+  them
+
 ## [0.9.1] - 2022-01-08
 
-## Changed
+### Changed
 
 - removed Point Blank entirely, as it is no longer a range, but a malus negator
 

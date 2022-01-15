@@ -7,7 +7,7 @@ export default class WrongValueTypeMessage extends RuleElementMessage {
     /** The name of the type, the value should be */
     public typeName: string
   ) {
-    super("wv.ruleEngine.errors.logical.wrongValueType", "error");
+    super("wv.system.ruleEngine.errors.logical.wrongValueType", "error");
   }
 
   override get message(): string {

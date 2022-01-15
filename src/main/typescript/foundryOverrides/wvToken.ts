@@ -44,9 +44,7 @@ export default class WvToken extends Token {
         if (preview) original.updateSource({ noUpdateFog: true });
         if (ui.notifications)
           ui.notifications.error(
-            game.i18n.format("wv.messages.movement.noActor", {
-              name: clone.name
-            })
+            game.i18n.format("wv.system.messages.noActor", { name: clone.name })
           );
         LOG.error(`The token has no associated actor! id="${clone.id}"`);
         continue;
@@ -80,7 +78,7 @@ export default class WvToken extends Token {
         if (preview) original.updateSource({ noUpdateFog: true });
         if (ui.notifications)
           ui.notifications.info(
-            game.i18n.format("wv.messages.movement.notEnoughAp", {
+            game.i18n.format("wv.system.messages.notEnoughApToMove", {
               actual: currAp,
               name: clone.name,
               needed: apUse

@@ -10,7 +10,7 @@ export default class MissingPropMessage extends RuleElementMessage {
     /** The name of the missing property */
     public propertyName: string
   ) {
-    super("wv.ruleEngine.errors.semantic.missing", "error");
+    super("wv.system.ruleEngine.errors.semantic.missing", "error");
   }
 
   override get message(): string {

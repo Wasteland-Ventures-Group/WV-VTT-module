@@ -50,17 +50,17 @@ export function configureFoundryOnInit(): void {
 
   Actors.unregisterSheet("core", ActorSheet);
   Actors.registerSheet(CONSTANTS.systemId, WvActorSheet, {
-    label: "wv.sheets.common.names.actorSheet",
+    label: "wv.system.sheets.names.actorSheet",
     makeDefault: true
   });
 
   Items.registerSheet(CONSTANTS.systemId, EffectSheet, {
-    label: "wv.sheets.common.names.effectSheet",
+    label: "wv.system.sheets.names.effectSheet",
     makeDefault: true,
     types: [TYPES.ITEM.EFFECT]
   });
   Items.registerSheet(CONSTANTS.systemId, WeaponSheet, {
-    label: "wv.sheets.common.names.weaponSheet",
+    label: "wv.system.sheets.names.weaponSheet",
     makeDefault: true,
     types: [TYPES.ITEM.WEAPON]
   });

@@ -229,9 +229,7 @@ export default class Attack {
     const specialSpecs = [...specialNames].reduce((specs, specialName) => {
       specs[specialName] = {
         type: "number",
-        label: i18n.format("wv.prompt.labels.special", {
-          special: i18n.localize(`wv.specials.names.${specialName}.long`)
-        }),
+        label: i18n.localize(`wv.rules.special.names.${specialName}.long`),
         value: actor?.data.data.specials[specialName] ?? 0,
         min: 0,
         max: 15
@@ -243,26 +241,26 @@ export default class Attack {
       {
         alias: {
           type: "text",
-          label: i18n.localize("wv.prompt.labels.alias"),
+          label: i18n.localize("wv.system.misc.speakerAlias"),
           value: actor?.name
         },
         ap: {
           type: "number",
-          label: i18n.localize("wv.prompt.labels.actionPoints"),
+          label: i18n.localize("wv.rules.actionPoints.long"),
           value: actor?.actionPoints.value,
           min: 0,
           max: actor?.actionPoints.max ?? 99
         },
         modifier: {
           type: "number",
-          label: i18n.localize("wv.prompt.labels.genericModifier"),
+          label: i18n.localize("wv.system.misc.modifier"),
           value: 0,
           min: -100,
           max: 100
         },
         range: {
           type: "number",
-          label: i18n.localize("wv.prompt.labels.range"),
+          label: i18n.localize("wv.rules.range.distance"),
           value: interact.getRange(token, target) ?? 0,
           min: 0,
           max: 99999
@@ -270,7 +268,7 @@ export default class Attack {
         ...specialSpecs,
         skillTotal: {
           type: "number",
-          label: i18n.localize("wv.prompt.labels.skillTotal"),
+          label: i18n.localize("wv.rules.skills.singular"),
           value:
             actor?.data.data.skills[this.weapon.systemData.skill]?.total ?? 0,
           min: 0,
@@ -278,14 +276,14 @@ export default class Attack {
         },
         critSuccess: {
           type: "number",
-          label: i18n.localize("wv.prompt.labels.criticalSuccess"),
+          label: i18n.localize("wv.rules.criticals.successChance"),
           value: actor?.data.data.secondary.criticals.success ?? 5,
           min: 0,
           max: 100
         },
         critFailure: {
           type: "number",
-          label: i18n.localize("wv.prompt.labels.criticalFailure"),
+          label: i18n.localize("wv.rules.criticals.failureChance"),
           value: actor?.data.data.secondary.criticals.failure ?? 96,
           min: 0,
           max: 100
@@ -354,14 +352,14 @@ export default class Attack {
     if (rangeHitModifier) {
       modifiers.push({
         amount: rangeHitModifier,
-        key: "wv.weapons.modifiers.damage.dice.range"
+        key: "wv.rules.range.singular"
       });
     }
 
     if (promptHitModifier) {
       modifiers.push({
         amount: promptHitModifier,
-        key: "wv.weapons.modifiers.hit.interactive"
+        key: "wv.system.misc.modifier"
       });
     }
 
@@ -383,14 +381,14 @@ export default class Attack {
     if (strengthMod) {
       modifiers.push({
         amount: strengthMod,
-        key: "wv.weapons.modifiers.damage.dice.strength"
+        key: "wv.rules.special.names.strength.long"
       });
     }
 
     if (rangeMod) {
       modifiers.push({
         amount: rangeMod,
-        key: "wv.weapons.modifiers.damage.dice.range"
+        key: "wv.rules.range.singular"
       });
     }
 

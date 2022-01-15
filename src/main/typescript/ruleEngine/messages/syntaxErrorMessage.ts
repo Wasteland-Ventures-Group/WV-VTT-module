@@ -7,7 +7,7 @@ export default class SyntaxErrorMessage extends RuleElementMessage {
     /** The original message from JSON.parse */
     public errorMessage: string
   ) {
-    super("wv.ruleEngine.errors.syntax", "error");
+    super("wv.system.ruleEngine.errors.syntax", "error");
   }
 
   override get message(): string {

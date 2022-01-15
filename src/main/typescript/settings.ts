@@ -41,7 +41,7 @@ export function registerSystemSettings(): void {
     type: String
   });
 
-  let i18nPrefix = "wv.settings.skillPointsMinBounds";
+  let i18nPrefix = "wv.system.settings.skillPointsMinBounds";
   settings.register(CONSTANTS.systemId, boundsSettingNames.skills.points.min, {
     config: true,
     default: CONSTANTS.bounds.skills.points.min,
@@ -51,7 +51,7 @@ export function registerSystemSettings(): void {
     type: Number
   });
 
-  i18nPrefix = "wv.settings.specialPointsMinBounds";
+  i18nPrefix = "wv.system.settings.specialPointsMinBounds";
   settings.register(CONSTANTS.systemId, boundsSettingNames.special.points.min, {
     config: true,
     default: CONSTANTS.bounds.special.points.min,
@@ -61,7 +61,7 @@ export function registerSystemSettings(): void {
     type: Number
   });
 
-  i18nPrefix = "wv.settings.enforceApDragDrop";
+  i18nPrefix = "wv.system.settings.enforceApDragDrop";
   settings.register(CONSTANTS.systemId, enforceApDragDropSettingName, {
     choices: {
       [EnforceApSetting.DISABLED]: i18n.localize(
@@ -82,7 +82,7 @@ export function registerSystemSettings(): void {
     type: Number
   });
 
-  i18nPrefix = "wv.settings.enforceApRuler";
+  i18nPrefix = "wv.system.settings.enforceApRuler";
   settings.register(CONSTANTS.systemId, enforceApRulerSettingName, {
     choices: {
       [EnforceApSetting.DISABLED]: i18n.localize(

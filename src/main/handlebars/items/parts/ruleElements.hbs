@@ -1,5 +1,5 @@
 <section class="rule-elements">
-  <button type="button" class="control rule-element-control fas fa-plus" data-action="create" title="{{localize 'wv.ruleEngine.ruleElement.create'}}"></button>
+  <button type="button" class="control rule-element-control fas fa-plus" data-action="create" title="{{localize 'wv.system.actions.create'}}"></button>
   <ol class="rule-element-list">
     {{#each sheet.rules.elements as |element|}}
       <li class="rule-element" data-index="{{@index}}">
@@ -14,7 +14,7 @@
             {{/if}}
           </div>
           <div class="rule-element-controls">
-            <button type="button" class="control rule-element-control fas fa-minus" data-action="delete" title="{{localize 'wv.ruleEngine.ruleElement.delete'}}"></button>
+            <button type="button" class="control rule-element-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
           </div>
         </div>
         <textarea class="rule-element-source" name="sheet.rules.{{@index}}" required rows="8">{{element.source}}</textarea>

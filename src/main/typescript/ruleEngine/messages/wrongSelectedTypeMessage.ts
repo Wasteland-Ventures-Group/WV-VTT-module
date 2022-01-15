@@ -13,7 +13,7 @@ export default class WrongSelectedTypeMessage extends RuleElementMessage {
     /** The name of the type, the property should be */
     public typeName: string
   ) {
-    super("wv.ruleEngine.errors.logical.wrongSelectedType", "error");
+    super("wv.system.ruleEngine.errors.logical.wrongSelectedType", "error");
   }
 
   override get message(): string {

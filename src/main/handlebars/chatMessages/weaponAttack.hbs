@@ -10,76 +10,76 @@
 
 {{!attack details}}
 <div class="detail-section">
-  <span>{{localize "wv.weapons.attacks.details"}}</span>
+  <span>{{localize "wv.system.misc.details"}}</span>
   <div class="detail-content hide">
     <div class="spacing-bottom">
-      <span>{{localize "wv.sheets.item.weapon.ranges.title"}}</span>
+      <span>{{localize "wv.rules.range.singular"}}</span>
       <ul class="no-margin">
-        <li>{{localize "wv.weapons.attacks.ranges"}}: {{template.raw.displayRanges}}</li>
-        <li>{{localize "wv.weapons.modifiers.hit.range"}}: {{localize template.keys.rangeBracket}}</li>
-        <li>{{localize "wv.sheets.item.weapon.ranges.distance"}}: {{details.range.distance}}</li>
+        <li>{{localize "wv.rules.range.plural"}}: {{template.raw.displayRanges}}</li>
+        <li>{{localize "wv.rules.range.singular"}}: {{localize template.keys.rangeBracket}}</li>
+        <li>{{localize "wv.rules.range.distance"}}: {{details.range.distance}}</li>
       </ul>
     </div>
     <div class="spacing-bottom">
-      <span>{{localize "wv.weapons.attacks.ap.title"}}</span>
+      <span>{{localize "wv.rules.actionPoints.long"}}</span>
       <ul class="no-margin">
-        <li>{{localize "wv.weapons.attacks.ap.previous"}}: {{details.ap.previous}}</li>
-        <li>{{localize "wv.weapons.attacks.ap.cost"}}: {{details.ap.cost}}</li>
-        <li>{{localize "wv.weapons.attacks.ap.remaining"}}: {{details.ap.remaining}}</li>
+        <li>{{localize "wv.system.values.previous"}}: {{details.ap.previous}}</li>
+        <li>{{localize "wv.system.values.cost"}}: {{details.ap.cost}}</li>
+        <li>{{localize "wv.system.values.remaining"}}: {{details.ap.remaining}}</li>
       </ul>
     </div>
     <div class="spacing-bottom">
-      <span>{{localize "wv.sheets.actor.secondary.criticals.title"}}</span>
+      <span>{{localize "wv.rules.criticals.title"}}</span>
       <ul class="no-margin">
-        <li>{{localize "wv.sheets.actor.secondary.criticals.success"}}: {{details.criticals.success}}</li>
-        <li>{{localize "wv.sheets.actor.secondary.criticals.failure"}}: {{details.criticals.failure}}</li>
+        <li>{{localize "wv.rules.criticals.success"}}: {{details.criticals.success}}</li>
+        <li>{{localize "wv.rules.criticals.failure"}}: {{details.criticals.failure}}</li>
       </ul>
     </div>
     <div class="modifier-listing">
       <div class="listing-heading">
-        <span>{{localize "wv.weapons.modifiers.listingTitles.hit"}}</span>
+        <span>{{localize "wv.rules.rolls.targets.hitChance"}}</span>
         <hr />
       </div>
       <div class="listing-table grid-2cols">
-        <span>{{localize "wv.weapons.modifiers.base"}}</span>
+        <span>{{localize "wv.system.values.base"}}</span>
         <span class="number-display">{{details.hit.base}}</span>
         {{#each details.hit.modifiers as |modifier|}}
           <span>{{localize modifier.key}}</span>
           <span class="number-display">{{modifier.amount}}</span>
         {{/each}}
-        <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+        <span class="listing-total">{{localize "wv.system.values.total"}}</span>
         <span class="listing-total number-display">{{details.hit.total}}</span>
       </div>
     </div>
     <div class="modifier-listing">
       <div class="listing-heading">
-        <span>{{localize "wv.weapons.modifiers.listingTitles.damageBase"}}</span>
+        <span>{{localize "wv.rules.damage.baseDamage"}}</span>
         <hr />
       </div>
       <div class="listing-table grid-2cols">
-        <span>{{localize "wv.weapons.modifiers.base"}}</span>
+        <span>{{localize "wv.system.values.base"}}</span>
         <span class="number-display">{{details.damage.base.base}}</span>
         {{#each details.damage.base.modifiers as |modifier|}}
           <span>{{localize modifier.key}}</span>
           <span class="number-display">{{modifier.amount}}</span>
         {{/each}}
-        <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+        <span class="listing-total">{{localize "wv.system.values.total"}}</span>
         <span class="listing-total number-display">{{details.damage.base.total}}</span>
       </div>
     </div>
     <div class="modifier-listing">
       <div class="listing-heading">
-        <span>{{localize "wv.weapons.modifiers.listingTitles.damageDice"}}</span>
+        <span>{{localize "wv.rules.damage.damageDice"}}</span>
         <hr />
       </div>
       <div class="listing-table grid-2cols">
-        <span>{{localize "wv.weapons.modifiers.base"}}</span>
+        <span>{{localize "wv.system.values.base"}}</span>
         <span class="number-display">{{details.damage.dice.base}}</span>
         {{#each details.damage.dice.modifiers as |modifier|}}
           <span>{{localize modifier.key}}</span>
           <span class="number-display">{{modifier.amount}}</span>
         {{/each}}
-        <span class="listing-total">{{localize "wv.weapons.modifiers.total"}}</span>
+        <span class="listing-total">{{localize "wv.system.values.total"}}</span>
         <span class="listing-total number-display">{{details.damage.dice.total}}</span>
       </div>
     </div>
@@ -107,7 +107,7 @@
   {{!damage roll}}
   <div class="detail-section">
     <div class="roll-summary">
-      <label class="roll-summary-label">{{localize "wv.weapons.attacks.damageRoll"}}</label>
+      <label class="roll-summary-label">{{localize "wv.rules.damage.long"}}</label>
       <div class="roll-summary-result">{{rolls.damage.total}}</div>
     </div>
     <div class="detail-content hide">

@@ -92,14 +92,11 @@ export default class WvActorSheet extends ActorSheet {
         magic: {
           thaumSpecials: ThaumaturgySpecials.reduce(
             (thaumSpecials, thaumSpecialName) => {
-              thaumSpecials[thaumSpecialName] = {
-                name: specialI18ns[thaumSpecialName].long,
-                selected:
-                  thaumSpecialName === this.actor.data.data.magic.thaumSpecial
-              };
+              thaumSpecials[thaumSpecialName] =
+                specialI18ns[thaumSpecialName].long;
               return thaumSpecials;
             },
-            {} as Record<ThaumaturgySpecial, SheetThaumSpecial>
+            {} as Record<ThaumaturgySpecial, string>
           )
         },
         effects: [],
@@ -238,16 +235,17 @@ export default class WvActorSheet extends ActorSheet {
   /**
    * Handle a click event on a create item button.
    */
-  protected onClickCreateItem(event: ClickEvent): void {
+  protected async onClickCreateItem(event: ClickEvent): Promise<void> {
     if (event.target.dataset.type !== TYPES.ITEM.EFFECT) return;
 
     const data: ConstructorParameters<typeof Item>[0] = {
-      name: getGame().i18n.format("wv.fvttItems.newName", {
-        what: getGame().i18n.localize("wv.fvttItems.types.effects.name")
+      name: getGame().i18n.format("wv.system.misc.newName", {
+        what: getGame().i18n.localize("wv.system.effect.singular")
       }),
       type: event.target.dataset.type
     };
-    Item.create(data, { parent: this.actor });
+    const item = await Item.create(data, { parent: this.actor });
+    item?.sheet?.render(true);
   }
 
   /**
@@ -308,13 +306,8 @@ interface SheetWeapon {
   name: string | null;
 }
 
-interface SheetThaumSpecial {
-  name: string;
-  selected: boolean;
-}
-
 interface SheetMagic {
-  thaumSpecials: Record<ThaumaturgySpecial, SheetThaumSpecial>;
+  thaumSpecials: Record<ThaumaturgySpecial, string>;
 }
 
 interface SheetSpecial extends I18nSpecial {

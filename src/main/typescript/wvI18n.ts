@@ -15,10 +15,10 @@ export interface I18nSpecial {
   short: string;
 }
 
-/** The internationalization structure of the SPECIALs. */
+/** The internationalization structure of the SPECIALs */
 export type I18nSpecials = Record<SpecialName, I18nSpecial>;
 
-/** The internationalization structure of the SPECIALs. */
+/** The internationalization structure of the Skills */
 export type I18nSkills = Record<SkillName, string>;
 
 /**
@@ -29,15 +29,15 @@ export default class WvI18n {
   static get specials(): I18nSpecials {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
-      "wv.specials.names"
+      "wv.rules.special.names"
     ) as I18nSpecials;
   }
 
-  /** Get the internationalization of the skills. */
+  /** Get the internationalization of the Skills. */
   static get skills(): I18nSkills {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
-      "wv.skills.names"
+      "wv.rules.skills.names"
     ) as I18nSkills;
   }
 
@@ -47,7 +47,7 @@ export default class WvI18n {
    * @returns the internationalized flavor text
    */
   static getSpecialRollFlavor(name: string): string {
-    return getGame().i18n.format("wv.rolls.flavor", {
+    return getGame().i18n.format("wv.system.rolls.descriptive", {
       what: this.getSpecialLongName(name)
     });
   }
@@ -58,7 +58,7 @@ export default class WvI18n {
    * @returns the internationalized description
    */
   static getSpecialModifierDescription(name: string): string {
-    return getGame().i18n.format("wv.prompt.labels.modifier", {
+    return getGame().i18n.format("wv.system.misc.modifierFor", {
       what: this.getSpecialLongName(name)
     });
   }
@@ -69,7 +69,7 @@ export default class WvI18n {
    * @returns the internationalized flavor text
    */
   static getSkillRollFlavor(name: string): string {
-    return getGame().i18n.format("wv.rolls.flavor", {
+    return getGame().i18n.format("wv.system.rolls.descriptive", {
       what: this.getSkillName(name)
     });
   }
@@ -80,7 +80,7 @@ export default class WvI18n {
    * @returns the internationalized description
    */
   static getSkillModifierDescription(name: string): string {
-    return getGame().i18n.format("wv.prompt.labels.modifier", {
+    return getGame().i18n.format("wv.system.misc.modifierFor", {
       what: this.getSkillName(name)
     });
   }
@@ -93,7 +93,7 @@ export default class WvI18n {
   private static getSpecialLongName(name: string): string {
     return isSpecialName(name)
       ? this.specials[name].long
-      : getGame().i18n.localize("wv.specials.errors.unknownSpecial");
+      : getGame().i18n.localize("wv.rules.special.unknown");
   }
 
   /**
@@ -104,6 +104,6 @@ export default class WvI18n {
   private static getSkillName(name: string): string {
     return isSkillName(name)
       ? this.skills[name]
-      : getGame().i18n.localize("wv.skills.errors.unknownSkill");
+      : getGame().i18n.localize("wv.rules.skills.unknown");
   }
 }

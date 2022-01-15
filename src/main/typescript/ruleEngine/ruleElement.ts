@@ -104,7 +104,10 @@ export default abstract class RuleElement {
   protected validate(): void {
     if (this.target === "actor" && this.item.actor === null) {
       this.messages.push(
-        new RuleElementMessage("wv.ruleEngine.errors.logical.noActor", "error")
+        new RuleElementMessage(
+          "wv.system.ruleEngine.errors.logical.noActor",
+          "error"
+        )
       );
 
       return;

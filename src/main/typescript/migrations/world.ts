@@ -35,7 +35,7 @@ export function isNewerVersionThanLast(version: string): boolean {
 export async function migrateWorld(): Promise<void> {
   if (ui.notifications) {
     ui.notifications.info(
-      getGame().i18n.format("wv.migration.started", {
+      getGame().i18n.format("wv.system.messages.migrationStarted", {
         systemName: CONSTANTS.systemName,
         version: getGame().system.data.version
       }),
@@ -50,7 +50,7 @@ export async function migrateWorld(): Promise<void> {
 
   if (ui.notifications) {
     ui.notifications.info(
-      getGame().i18n.format("wv.migration.completed", {
+      getGame().i18n.format("wv.system.messages.migrationCompleted", {
         systemName: CONSTANTS.systemName,
         version: getGame().system.data.version
       }),

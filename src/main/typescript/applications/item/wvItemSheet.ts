@@ -301,19 +301,21 @@ export default class WvItemSheet extends ItemSheet {
         switch (error.schemaPath) {
           case "#/properties/target/enum":
             return new RuleElementMessage(
-              "wv.ruleEngine.errors.semantic.unknownTarget",
+              "wv.system.ruleEngine.errors.semantic.unknownTarget",
               "error"
             );
           case "#/properties/type/enum":
             return new RuleElementMessage(
-              "wv.ruleEngine.errors.semantic.unknownRuleElement",
+              "wv.system.ruleEngine.errors.semantic.unknownRuleElement",
               "error"
             );
         }
     }
 
     console.dir(error);
-    return new RuleElementMessage("wv.ruleEngine.errors.semantic.unknown");
+    return new RuleElementMessage(
+      "wv.system.ruleEngine.errors.semantic.unknown"
+    );
   }
 }
 

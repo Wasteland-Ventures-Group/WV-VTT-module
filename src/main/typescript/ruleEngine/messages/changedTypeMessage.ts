@@ -16,7 +16,7 @@ export default class ChangedTypeMessage extends RuleElementMessage {
     /** The name of the new type */
     public newType: string
   ) {
-    super("wv.ruleEngine.warnings.changedType", "warning");
+    super("wv.system.ruleEngine.warnings.changedType", "warning");
   }
 
   override get message(): string {

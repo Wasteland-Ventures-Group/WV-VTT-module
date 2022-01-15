@@ -2,69 +2,69 @@
 {{> (get . "sheet.parts.header")}}
 
   <nav class="tabs flex-fixed" data-group="primary">
-    <a class="item" data-tab="stats">{{localize "wv.sheets.common.tabs.stats"}}</a>
-    <a class="item" data-tab="rules">{{localize "wv.sheets.common.tabs.rules"}}</a>
+    <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
+    <a class="item" data-tab="rules">{{localize "wv.system.ruleEngine.ruleElement.plural"}}</a>
   </nav>
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
       <div class="resource-block flex-fixed">
         <label>
-          {{localize "wv.sheets.item.common.notes"}}
+          {{localize "wv.system.misc.notes"}}
           <textarea name="data.notes">{{data.data.notes}}</textarea>
         </label>
       </div>
       <div class="resource-block resource-block-line flex-fixed">
         <label class="contained-target-inline">
-          {{localize "wv.sheets.item.weapon.skill"}}
+          {{localize "wv.rules.skills.singular"}}
           <span class="resource-display">{{sheet.skill}}</span>
         </label>
       </div>
       <div class="resource-block flex-fixed">
-        <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.attacks.title"}}</h4>
+        <h4 class="resource-block-line">{{localize "wv.rules.equipment.weapon.attack.plural"}}</h4>
         {{#each sheet.attacks as |attack|}}
           <div class="resource-block flex-fixed weapon-attack">
             <h5 class="resource-block-line">{{@key}}</h5>
             <label class="resource-block-line contained-target-inline">
-              {{localize "wv.sheets.item.weapon.attacks.damage"}}
+              {{localize "wv.rules.damage.long"}}
               <span>{{attack.damage}}</span>
             </label>
             {{#if attack.rounds}}
               <label class="resource-block-line contained-target-inline">
-                {{localize "wv.sheets.item.weapon.attacks.rounds"}}
+                {{localize "wv.rules.equipment.weapon.shots"}}
                 <span>{{attack.rounds}}</span>
               </label>
             {{/if}}
             {{#if attack.dtReduction}}
               <label class="resource-block-line contained-target-inline">
-                {{localize "wv.sheets.item.weapon.attacks.dtReduction"}}
+                {{localize "wv.rules.damage.threshold.reduction.long"}}
                 <span>{{attack.dtReduction}}</span>
               </label>
             {{/if}}
             <label class="resource-block-line contained-target-inline">
-              {{localize "wv.sheets.item.weapon.attacks.ap"}}
+              {{localize "wv.rules.actionPoints.use"}}
               <span>{{attack.ap}}</span>
             </label>
-            <button type="button" title="{{localize 'wv.rolls.buttonTitle'}}" data-attack={{@key}}>{{localize "wv.weapons.attacks.execute"}}</button>
+            <button type="button" title="{{localize 'wv.system.rolls.modifierExplanation'}}" data-attack={{@key}}>{{localize "wv.system.actions.execute"}}</button>
           </div>
         {{/each}}
       </div>
       <div class="resource-block flex-fixed">
-        <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.ranges.title"}}</h4>
+        <h4 class="resource-block-line">{{localize "wv.rules.range.plural"}}</h4>
         <div class="grid-3cols standard-col-gaps flex-center">
-          <label>{{localize "wv.sheets.item.weapon.ranges.range"}}</label>
-          <label>{{localize "wv.sheets.item.weapon.ranges.distance"}}</label>
-          <label>{{localize "wv.sheets.item.weapon.ranges.modifier"}}</label>
-          <label>{{localize "wv.weapons.ranges.brackets.short"}}</label>
+          <label>{{localize "wv.rules.range.singular"}}</label>
+          <label>{{localize "wv.rules.range.distance"}}</label>
+          <label>{{localize "wv.system.misc.modifier"}}</label>
+          <label>{{localize "wv.rules.range.ranges.short"}}</label>
           <span class="resource-display">{{sheet.ranges.short.distance}}</span>
           <span class="resource-display">{{sheet.ranges.short.modifier}}</span>
           {{#if sheet.ranges.medium}}
-            <label>{{localize "wv.weapons.ranges.brackets.medium"}}</label>
+            <label>{{localize "wv.rules.range.ranges.medium"}}</label>
             <span class="resource-display">{{sheet.ranges.medium.distance}}</span>
             <span class="resource-display">{{sheet.ranges.medium.modifier}}</span>
           {{/if}}
           {{#if sheet.ranges.long}}
-            <label>{{localize "wv.weapons.ranges.brackets.long"}}</label>
+            <label>{{localize "wv.rules.range.ranges.long"}}</label>
             <span class="resource-display">{{sheet.ranges.long.distance}}</span>
             <span class="resource-display">{{sheet.ranges.long.modifier}}</span>
           {{/if}}
@@ -72,34 +72,34 @@
       </div>
       {{#if sheet.usesAmmo}}
         <div class="resource-block flex-fixed">
-          <h4 class="resource-block-line">{{localize "wv.sheets.item.weapon.reload.title"}}</h4>
+          <h4 class="resource-block-line">{{localize "wv.rules.equipment.weapon.reload.name"}}</h4>
           <label class="resource-block-line contained-target-inline">
-            {{localize "wv.sheets.item.weapon.reload.ap"}}
+            {{localize "wv.rules.actionPoints.use"}}
             <span class="resource-display size-2">{{data.data.reload.ap}}</span>
           </label>
           <label class="resource-block-line contained-target-inline">
-            {{localize "wv.sheets.item.weapon.reload.caliber"}}
+            {{localize "wv.rules.equipment.ammo.caliber"}}
             <span class="resource-display">{{data.data.reload.caliber}}</span>
           </label>
           <label class="resource-block-line contained-target-inline">
-            {{localize "wv.sheets.item.weapon.reload.containerType"}}
+            {{localize "wv.rules.equipment.weapon.reload.containerType"}}
             <span class="resource-display">{{data.data.reload.containerType}}</span>
           </label>
           <label class="resource-block-line contained-target-inline">
-            {{localize "wv.sheets.item.weapon.reload.size"}}
+            {{localize "wv.rules.equipment.weapon.reload.containerSize"}}
             <span class="resource-display size-2">{{data.data.reload.size}}</span>
           </label>
         </div>
       {{/if}}
       <div class="resource-block resource-block-line flex-fixed">
         <label class="contained-target-inline">
-          {{localize "wv.sheets.item.weapon.strengthRequirement"}}
+          {{localize "wv.rules.equipment.weapon.strengthRequirement"}}
           <span class="resource-display size-2">{{data.data.strengthRequirement}}</span>
         </label>
       </div>
       <div class="resource-block resource-block-line flex-fixed">
         <label class="contained-target-inline">
-          {{localize "wv.sheets.item.weapon.holdout"}}
+          {{localize "wv.rules.equipment.weapon.holdout"}}
           <span class="resource-display far {{ternary data.data.holdout 'fa-check-square' 'fa-square'}}"></span>
         </label>
       </div>

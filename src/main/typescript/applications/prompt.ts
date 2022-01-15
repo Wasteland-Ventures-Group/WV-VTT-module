@@ -66,7 +66,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "prompt"],
       template: `${CONSTANTS.systemPath}/handlebars/prompt.hbs`,
-      title: getGame().i18n.localize("wv.prompt.defaults.title")
+      title: getGame().i18n.localize("wv.system.prompt.defaults.title")
     } as typeof ActorSheet["defaultOptions"]);
   }
 

@@ -129,7 +129,7 @@ export async function executeWeaponAttackFromSource(
     weapon = await Weapon.create(data, { temporary: true });
   } catch (error) {
     if (error instanceof SystemDataSchemaError) {
-      ui?.notifications?.error("wv.messages.macros.invalidSystemData", {
+      ui?.notifications?.error("wv.system.messages.invalidSystemDataInMacro", {
         localize: true
       });
     }
@@ -137,7 +137,7 @@ export async function executeWeaponAttackFromSource(
   }
 
   if (!(weapon instanceof Weapon)) {
-    ui?.notifications?.error("wv.messages.macros.couldNotCreate", {
+    ui?.notifications?.error("wv.system.messages.couldNotCreateDocument", {
       localize: true
     });
     return;
@@ -146,7 +146,7 @@ export async function executeWeaponAttackFromSource(
   if (attack) attack.execute(options);
   else
     ui?.notifications?.error(
-      getGame().i18n.format("wv.messages.macros.attackNotFound", {
+      getGame().i18n.format("wv.system.messages.attackNotFound", {
         name: attackName
       })
     );

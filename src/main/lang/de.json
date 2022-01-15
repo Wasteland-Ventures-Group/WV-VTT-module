@@ -1,311 +1,275 @@
 {
   "wv": {
-    "fvttItems": {
-      "actions": {
-        "create": "Erstellen",
-        "delete": "Löschen",
-        "edit": "Bearbeiten"
+    "rules": {
+      "actionPoints": {
+        "long": "Aktionspunkte",
+        "short": "AP",
+        "use": "AP-Kosten"
       },
-      "newName": "{what} (Neu)",
-      "types": {
-        "effects": {
-          "name": "Effekt"
-        }
-      }
-    },
-    "messages": {
-      "macros": {
-        "attackNotFound": "Die Attacke mit namen \"{name}\" konnte in den Daten nicht gefunden werden.",
-        "couldNotCreate": "Konnte kein Dokument mit den gegebenen Daten erstellen.",
-        "invalidSystemData": "Das Macro, das du ausgeführt hast, beinhaltet invalide Systemdaten, sieh in der Entwicklerkonsole für Details nach."
+      "background": {
+        "background": "Hintergrund",
+        "history": "Geschichte",
+        "fears": "Ängste",
+        "dreams": "Ambitionen"
       },
-      "movement": {
-        "noActor": "{name} hat keinen Aktor!",
-        "notEnoughAp": "Nicht genug AP zum bewegen. {needed} waren nötig, {actual} hatte {name} zur Verfügung."
-      }
-    },
-    "migration": {
-      "completed": "{systemName} Systemmigration zu Version {version} abgeschlossen!",
-      "started": "Wende {systemName} Systemmigration nach Version {version} an. Bitte habe Geduld und schließe weder das Spiel, noch beende den Server."
-    },
-    "prompt": {
-      "buttonText": "Abschicken",
-      "defaults": {
-        "title": "Abfrage"
-      },
-      "labels": {
-        "alias": "Sprecheralias:",
-        "actionPoints": "Aktionspunkte:",
-        "criticalFailure": "Kritische Fehlerchance:",
-        "criticalSuccess": "Kritische Erfolgschance:",
-        "genericModifier": "Modifikator:",
-        "modifier": "Modifikator für {what}:",
-        "range": "Distanz zum Ziel:",
-        "skillTotal": "Skill:",
-        "special": "{special}:"
-      }
-    },
-    "rolls": {
-      "buttonTitle": "Strg-Klick zum flüstern zu GM(s)",
-      "flavor": "Rolle {what}",
-      "roll": "Rollen"
-    },
-    "ruleEngine": {
-      "ruleElement": {
-        "create": "Erstellen",
-        "delete": "Löschen"
-      },
-      "errors": {
-        "logical": {
-          "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
-          "notMatchingSelector": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
-          "wrongSelectedType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
-          "wrongValueType": "Der Wert dieser Regel sollte vom Typ \"{type}\" sein."
+      "equipment": {
+        "ammo": {
+          "caliber": "Kaliber",
+          "name": "Munition"
         },
-        "semantic": {
-          "additional": "Das Feld \"{property}\" ist nicht erlaubt an Stelle \"{path}\".",
-          "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
-          "unknown": "Ein unbekannter Fehler is aufgetreten.",
-          "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
-          "unknownTarget": "Das Ziel ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
-          "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
-        },
-        "syntax": "Syntaxfehler: {message}"
-      },
-      "warnings": {
-        "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert.",
-        "notSaved": "Die Änderungen wurden wegen Fehlern nicht gespeichert. Du kannst dieses Foundry Fenster schließen und die Fehler später beheben. Die Änderungen gehen verloren, wenn Foundry neu geladen wird."
-      }
-    },
-    "ruler": {
-      "apCostUnit": "AP"
-    },
-    "settings": {
-      "enforceApDragDrop": {
-        "choices": {
-          "disabled": "Deaktiviert",
-          "playersAndGameMaster": "Spieler und Spielleiter",
-          "players": "Spieler"
-        },
-        "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit Drag and Drop bewegt werden.",
-        "name": "Erzwinge AP für Drag and Drop Bewegungen"
-      },
-      "enforceApRuler": {
-        "choices": {
-          "disabled": "Deaktiviert",
-          "playersAndGameMaster": "Spieler und Spielleiter",
-          "players": "Spieler"
-        },
-        "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit dem Messwerkzeug bewegt werden.",
-        "name": "Erzwinge AP für Messwerkzeug Bewegungen"
-      },
-      "skillPointsMinBounds": {
-        "hint": "Das Minimum für Skillpunkte, die in einen Aktorbogen eingegeben werden können.",
-        "name": "Minimum für Skillpunkte"
-      },
-      "specialPointsMinBounds": {
-        "hint": "Das Minimum für SPECIAL-Punkte, die in einen Aktorbogen eingegeben werden können.",
-        "name": "Minimum für SPECIAL-Punkte"
-      }
-    },
-    "sheets": {
-      "actor": {
-        "background": {
-          "background": "Hintergrund",
-          "history": "Geschichte",
-          "fears": "Ängste",
-          "dreams": "Ambitionen",
-          "karma": "Karma"
-        },
-        "inventory": {
-          "headings": {
-            "weapons": "Waffen"
-          }
-        },
-        "magic": {
-          "thaumSpecial": "SPECIA für Thaumaturgie"
-        },
-        "secondary": {
-          "actionPoints": "Aktionspunkte",
-          "criticals": {
-            "failure": "Versagen",
-            "success": "Erfolg",
-            "title": "Kritische Resultate"
-          },
-          "experience": "Erfahrung",
-          "healingRate": "Heilungsrate",
-          "health": "Gesundheit",
-          "initiative": "Initiative",
-          "level": "Level",
-          "strain": "Anstrengung"
-        },
-        "skills": {
-          "name": "Skill",
-          "ranks": "Ränge",
-          "roll": "Rollen",
-          "special": "SPECIAL",
-          "total": "Gesamt"
-        },
-        "special": {
-          "name": "SPECIAL",
-          "roll": "Rollen",
-          "value": "Wert"
-        }
-      },
-      "common": {
-        "names": {
-          "actorSheet": "Aktorbogen",
-          "effectSheet": "Effektbogen",
-          "weaponSheet": "Waffenbogen"
-        },
-        "placeholders": {
-          "documentName": "Name"
-        },
-        "tabs": {
-          "background": "Hintergrund",
-          "effects": "Effekte",
-          "inventory": "Inventar",
-          "magic": "Magie",
-          "rules": "Regeln",
-          "stats": "Statistiken"
-        }
-      },
-      "item": {
-        "common": {
-          "notes": "Notizen"
-        },
+        "inventory": "Inventar",
         "weapon": {
-          "attacks": {
-            "ap": "AP-Kosten",
-            "damage": "Schaden",
-            "dtReduction": "DT Reduktion",
-            "rounds": "Schüße",
-            "title": "Angriffe"
+          "attack": {
+            "singular": "Angriff",
+            "plural": "Angriffe"
           },
           "holdout": "Versteckbar",
-          "ranges": {
-            "distance": "Distanz",
-            "modifier": "Modifikator",
-            "range": "Reichweite",
-            "title": "Reichweiten"
-          },
+          "plural": "Waffen",
           "reload": {
-            "ap": "AP-Kosten",
-            "caliber": "Kaliber",
+            "containerSize": "Kontainergröße",
             "containerType": "Kontainertyp",
-            "size": "Größe",
-            "title": "Nachladen"
+            "name": "Nachladen"
           },
-          "skill": "Skill",
-          "strengthRequirement": "Nötige Stärke"
-        }
-      }
-    },
-    "skills": {
-      "errors": {
-        "unknownSkill": "unbekannter Skill"
-      },
-      "names": {
-        "barter": "Feilschen",
-        "diplomacy": "Diplomatie",
-        "explosives": "Sprengstoffe",
-        "firearms": "Feuerwaffen",
-        "intimidation": "Einschüchtern",
-        "lockpick": "Schlossknacken",
-        "magicalEnergyWeapons": "Magiewaffen",
-        "mechanics": "Mechanik",
-        "medicine": "Medizin",
-        "melee": "Nahkampf",
-        "science": "Wissenschaft",
-        "sleight": "Fingerfertigkeit",
-        "sneak": "Schleichen",
-        "survival": "Überlebensfähigkeit",
-        "thaumaturgy": "Thaumaturgie",
-        "unarmed": "Unbewaffnet"
-      }
-    },
-    "specials": {
-      "errors": {
-        "unknownSpecial": "unbekanntes SPECIAL"
-      },
-      "names": {
-        "agility": {
-          "long": "Geschicklichkeit",
-          "short": "AGI"
-        },
-        "charisma": {
-          "long": "Ausstrahlung",
-          "short": "CHA"
-        },
-        "endurance": {
-          "long": "Ausdauer",
-          "short": "END"
-        },
-        "intelligence": {
-          "long": "Intelligenz",
-          "short": "INT"
-        },
-        "luck": {
-          "long": "Glück",
-          "short": "LCK"
-        },
-        "perception": {
-          "long": "Wahrnehmung",
-          "short": "PER"
-        },
-        "strength": {
-          "long": "Stärke",
-          "short": "STR"
-        }
-      }
-    },
-    "weapons": {
-      "attacks": {
-        "ap": {
-          "cost": "Kosten",
-          "previous": "Vorher",
-          "remaining": "Übrig",
-          "title": "AP"
-        },
-        "damageRoll": "Schaden",
-        "details": "Details",
-        "execute": "Ausführen",
-        "notEnoughAp": "Nicht genug AP um das zu nutzen!",
-        "outOfRange": "Das Ziel ist außer Reichweite!",
-        "ranges": "Waffenreichweite",
-        "results": {
-          "criticalHit": "Volltreffer!",
-          "criticalMiss": "Voll daneben!",
-          "hit": "Treffer!",
-          "miss": "Daneben!"
+          "shots": "Schüße",
+          "singular": "Waffe",
+          "strengthRequirement": "Stärkevorraussetzung"
         }
       },
-      "modifiers": {
-        "base": "Basiswert",
-        "damage": {
-          "dice": {
-            "range": "Distanz",
-            "strength": "Stärke"
-          }
-        },
-        "hit": {
-          "interactive": "Interaktiv",
-          "range": "Distanz"
-        },
-        "listingTitles": {
-          "hit": "Trefferchanceberechnung",
-          "damageBase": "Grundschadenberechnung",
-          "damageDice": "Schadenswürfelberechnung"
-        },
-        "total": "Gesamt"
+      "criticals": {
+        "title": "Kritische Resultate",
+        "failure": "Versagen",
+        "success": "Erfolg",
+        "failureChance": "Kritische Fehlschlagschance",
+        "successChance": "Kritische Erfolgschance"
       },
-      "ranges": {
-        "brackets": {
+      "damage": {
+        "baseDamage": "Grundschaden",
+        "damageDice": "Schadenswürfel",
+        "long": "Schaden",
+        "short": "DMG",
+        "threshold": {
+          "long": "Schadensschwelle",
+          "reduction": {
+            "long": "Schadensschwellenreduktion",
+            "short": "DT-Reduktion"
+          },
+          "short": "DT"
+        }
+      },
+      "health": {
+        "health": "Gesundheit",
+        "healingRate": "Heilungsrate"
+      },
+      "karma": "Karma",
+      "leveling": {
+        "level": "Level",
+        "experience": "Erfahrung"
+      },
+      "magic": {
+        "magic": "Magie",
+        "strain": "Anstrengung"
+      },
+      "range": {
+        "distance": "Distanz",
+        "plural": "Reichweiten",
+        "ranges": {
           "outOfRange": "Außer Reichweite",
           "long": "Weit",
           "medium": "Mittel",
           "short": "Kurz"
+        },
+        "singular": "Reichweite"
+      },
+      "rolls": {
+        "results": {
+          "criticalFailure": "Kritischer Fehlschlag",
+          "criticalHit": "Volltreffer",
+          "criticalMiss": "Voll daneben",
+          "criticalSuccess": "Kritischer Erfolg",
+          "failure": "Fehlschlag",
+          "hit": "Treffer",
+          "miss": "Daneben",
+          "success": "Erfolg"
+        },
+        "targets": {
+          "hitChance": "Trefferchance"
         }
+      },
+      "skills": {
+        "singular": "Fertigkeit",
+        "plural": "Fertigkeiten",
+        "points": {
+          "long": "Fertigkeitspunkte",
+          "short": "Punkte"
+        },
+        "names": {
+          "barter": "Feilschen",
+          "diplomacy": "Diplomatie",
+          "explosives": "Sprengstoffe",
+          "firearms": "Feuerwaffen",
+          "intimidation": "Einschüchtern",
+          "lockpick": "Schlossknacken",
+          "magicalEnergyWeapons": "Magieenergiewaffen",
+          "mechanics": "Mechanik",
+          "medicine": "Medizin",
+          "melee": "Nahkampf",
+          "science": "Wissenschaft",
+          "sleight": "Fingerfertigkeit",
+          "sneak": "Schleichen",
+          "survival": "Überlebensfähigkeit",
+          "thaumaturgy": "Thaumaturgie",
+          "unarmed": "Unbewaffnet"
+        },
+        "unknown": "unbekannte Fertigkeit"
+      },
+      "special": {
+        "singular": "SPECIAL",
+        "plural": "SPECIALs",
+        "names": {
+          "strength": {
+            "long": "Stärke",
+            "short": "STR"
+          },
+          "perception": {
+            "long": "Wahrnehmung",
+            "short": "PER"
+          },
+          "endurance": {
+            "long": "Ausdauer",
+            "short": "END"
+          },
+          "charisma": {
+            "long": "Ausstrahlung",
+            "short": "CHA"
+          },
+          "intelligence": {
+            "long": "Intelligenz",
+            "short": "INT"
+          },
+          "agility": {
+            "long": "Geschicklichkeit",
+            "short": "AGI"
+          },
+          "luck": {
+            "long": "Glück",
+            "short": "LCK"
+          }
+        },
+        "unknown": "unbekanntes SPECIAL"
+      }
+    },
+    "system": {
+      "actions": {
+        "create": "Erstellen",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "execute": "Ausführen",
+        "submit": "Abschicken"
+      },
+      "effect": {
+        "singular": "Effekt",
+        "plural": "Effekte"
+      },
+      "messages": {
+        "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte in der Waffe nicht gefunden werden.",
+        "couldNotCreateDocument": "Konnte kein Dokument mit den gegebenen Daten erstellen.",
+        "invalidSystemDataInMacro": "Das Macro, das du ausgeführt hast, beinhaltet invalide Systemdaten, sieh in der Entwicklerkonsole für Details nach.",
+        "migrationCompleted": "{systemName} Systemmigration zu Version {version} abgeschlossen!",
+        "migrationStarted": "Wende {systemName} Systemmigration nach Version {version} an. Bitte habe Geduld und schließe weder das Spiel, noch beende den Server.",
+        "noActor": "{name} hat keinen Aktor.",
+        "notEnoughAp": "Nicht genug Aktionspunkte um das zu tun!",
+        "notEnoughApToMove": "Nicht genug Aktionspunkte zum Bewegen. {needed} waren nötig, {actual} hatte {name} zur Verfügung.",
+        "targetOutOfRange": "Das Ziel ist außer Reichweite!"
+      },
+      "misc": {
+        "details": "Details",
+        "modifier": "Modifikator",
+        "modifierFor": "Modifikator für {what}",
+        "name": "Name",
+        "newName": "{what} (Neu)",
+        "notes": "Notizen",
+        "speakerAlias": "Sprecheralias",
+        "statistics": "Statistiken"
+      },
+      "prompt": {
+        "defaults": {
+          "title": "Abfrage"
+        }
+      },
+      "rolls": {
+        "descriptive": "Rolle {what}",
+        "imperative": "Rolle",
+        "modifierExplanation": "Strg-Klick um an Spielleiter zu Flüstern"
+      },
+      "ruleEngine": {
+        "errors": {
+          "logical": {
+            "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
+            "notMatchingSelector": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
+            "wrongSelectedType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
+            "wrongValueType": "Der Wert dieser Regel sollte vom Typ \"{type}\" sein."
+          },
+          "semantic": {
+            "additional": "Das Feld \"{property}\" ist nicht erlaubt an Stelle \"{path}\".",
+            "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
+            "unknown": "Ein unbekannter Fehler is aufgetreten.",
+            "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
+            "unknownTarget": "Das Ziel ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
+            "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
+          },
+          "syntax": "Syntaxfehler: {message}"
+        },
+        "ruleElement": {
+          "singular": "Regelelement",
+          "plural": "Regelelemente"
+        },
+        "warnings": {
+          "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert.",
+          "notSaved": "Die Änderungen wurden wegen Fehlern nicht gespeichert. Du kannst dieses Foundry Fenster schließen und die Fehler später beheben. Die Änderungen gehen verloren, wenn Foundry neu geladen wird."
+        }
+      },
+      "settings": {
+        "enforceApDragDrop": {
+          "choices": {
+            "disabled": "Deaktiviert",
+            "playersAndGameMaster": "Spieler und Spielleiter",
+            "players": "Spieler"
+          },
+          "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit Drag and Drop bewegt werden.",
+          "name": "Erzwinge AP für Drag and Drop Bewegungen"
+        },
+        "enforceApRuler": {
+          "choices": {
+            "disabled": "Deaktiviert",
+            "playersAndGameMaster": "Spieler und Spielleiter",
+            "players": "Spieler"
+          },
+          "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit dem Messwerkzeug bewegt werden.",
+          "name": "Erzwinge AP für Messwerkzeug Bewegungen"
+        },
+        "skillPointsMinBounds": {
+          "hint": "Das Minimum für Skillpunkte, die in einen Aktorbogen eingegeben werden können.",
+          "name": "Minimum für Skillpunkte"
+        },
+        "specialPointsMinBounds": {
+          "hint": "Das Minimum für SPECIAL-Punkte, die in einen Aktorbogen eingegeben werden können.",
+          "name": "Minimum für SPECIAL-Punkte"
+        }
+      },
+      "sheets": {
+        "names": {
+          "actorSheet": "Aktorbogen",
+          "effectSheet": "Effektbogen",
+          "weaponSheet": "Waffenbogen"
+        }
+      },
+      "thaumSpecial": "SPECIA für Thaumaturgie",
+      "values": {
+        "base": "Basiswert",
+        "cost": "Kosten",
+        "previous": "Vorher",
+        "remaining": "Übrig",
+        "total": "Summe"
       }
     }
   }

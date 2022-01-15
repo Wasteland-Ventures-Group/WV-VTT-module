@@ -1,311 +1,275 @@
 {
   "wv": {
-    "fvttItems": {
-      "actions": {
-        "create": "Create",
-        "delete": "Delete",
-        "edit": "Edit"
+    "rules": {
+      "actionPoints": {
+        "long": "Action Points",
+        "short": "AP",
+        "use": "AP use"
       },
-      "newName": "New {what}",
-      "types": {
-        "effects": {
-          "name": "Effect"
-        }
-      }
-    },
-    "messages": {
-      "macros": {
-        "attackNotFound": "The attack with the name \"{name}\" could not be found in the data.",
-        "couldNotCreate": "Could not create a Document with the provided data.",
-        "invalidSystemData": "The macro you executed contained invalid system data, see the developer console for details."
+      "background": {
+        "background": "Background",
+        "history": "History",
+        "fears": "Fears",
+        "dreams": "Dreams"
       },
-      "movement": {
-        "noActor": "{name} does not have an Actor!",
-        "notEnoughAp": "Not enough AP to move. {needed} were needed, {actual} were available to {name}."
-      }
-    },
-    "migration": {
-      "completed": "{systemName} system migration to version {version} completed!",
-      "started": "Applying {systemName} system migration for version {version}. Please be patient and do not close your game or shut down your server."
-    },
-    "prompt": {
-      "buttonText": "Submit",
-      "defaults": {
-        "title": "Prompt"
+      "criticals": {
+        "title": "Criticals",
+        "failure": "Failure",
+        "success": "Success",
+        "failureChance": "Critical Failure chance",
+        "successChance": "Critical Success chance"
       },
-      "labels": {
-        "alias": "Speaker alias:",
-        "actionPoints": "Action points:",
-        "criticalFailure": "Critical failure rate:",
-        "criticalSuccess": "Critical success rate:",
-        "genericModifier": "Modifier:",
-        "modifier": "Modifier for {what}:",
-        "range": "Range to target:",
-        "skillTotal": "Skill:",
-        "special": "{special}:"
-      }
-    },
-    "rolls": {
-      "buttonTitle": "Ctrl-Click to whisper to the GM(s)",
-      "flavor": "Rolling {what}",
-      "roll": "Roll"
-    },
-    "ruleEngine": {
-      "ruleElement": {
-        "create": "Create",
-        "delete": "Delete"
-      },
-      "errors": {
-        "logical": {
-          "noActor": "The target is set to \"actor\", but the item has no actor.",
-          "notMatchingSelector": "The property \"{path}\" on \"{name}\" does not exist.",
-          "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\".",
-          "wrongValueType": "The value for this rule should be of type \"{type}\"."
-        },
-        "semantic": {
-          "additional": "The property \"{property}\" is not allowed at \"{path}\".",
-          "missing": "The property \"{property}\" is missing at \"{path}\".",
-          "unknown": "An unknown error occurred.",
-          "unknownRuleElement": "The type of RuleElement is unknown.",
-          "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
-          "wrongType": "The property \"{path}\" is not of type \"{type}\"."
-        },
-        "syntax": "Syntax error: {message}"
-      },
-      "warnings": {
-        "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\".",
-        "notSaved": "This rule element was not saved due to errors. It is save to close this Foundry window and fix this later. Though the changes will be lost once Foundry is reloaded."
-      }
-    },
-    "ruler": {
-      "apCostUnit": "AP"
-    },
-    "settings": {
-      "enforceApDragDrop": {
-        "choices": {
-          "disabled": "Disabled",
-          "playersAndGameMaster": "Players and GameMaster",
-          "players": "Players only"
-        },
-        "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with Drag and Drop.",
-        "name": "Enforce AP for Drag and Drop movement"
-      },
-      "enforceApRuler": {
-        "choices": {
-          "disabled": "Disabled",
-          "playersAndGameMaster": "Players and GameMaster",
-          "players": "Players only"
-        },
-        "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with the Ruler tool.",
-        "name": "Enforce AP for Ruler movement"
-      },
-      "skillPointsMinBounds": {
-        "hint": "The minimum allowed amount of Skill points, that can be entered into an actor sheet.",
-        "name": "Skill Points minimum bound"
-      },
-      "specialPointsMinBounds": {
-        "hint": "The minimum allowed amount of SPECIAL points, that can be entered into an actor sheet.",
-        "name": "SPECIAL Points minimum bound"
-      }
-    },
-    "sheets": {
-      "actor": {
-        "background": {
-          "background": "Background",
-          "history": "History",
-          "fears": "Fears",
-          "dreams": "Dreams",
-          "karma": "Karma"
-        },
-        "inventory": {
-          "headings": {
-            "weapons": "Weapons"
-          }
-        },
-        "magic": {
-          "thaumSpecial": "SPECIA for Thaumaturgy"
-        },
-        "secondary": {
-          "actionPoints": "Action Points",
-          "criticals": {
-            "failure": "Failure",
-            "success": "Success",
-            "title": "Criticals"
+      "damage": {
+        "baseDamage": "Base Damage",
+        "damageDice": "Damage Dice",
+        "long": "Damage",
+        "short": "DMG",
+        "threshold": {
+          "long": "Damage Threshold",
+          "reduction": {
+            "long": "Damage Threshold Reduction",
+            "short": "DT Reduction"
           },
-          "experience": "Experience",
-          "healingRate": "Healing Rate",
-          "health": "Health",
-          "initiative": "Initiative",
-          "level": "Level",
-          "strain": "Strain"
-        },
-        "skills": {
-          "name": "Skill",
-          "ranks": "Ranks",
-          "roll": "Roll",
-          "special": "SPECIAL",
-          "total": "Total"
-        },
-        "special": {
-          "name": "SPECIAL",
-          "roll": "Roll",
-          "value": "Value"
+          "short": "DT"
         }
       },
-      "common": {
-        "names": {
-          "actorSheet": "Actor Sheet",
-          "effectSheet": "Effect Sheet",
-          "weaponSheet": "Weapon Sheet"
+      "equipment": {
+        "ammo": {
+          "caliber": "Caliber",
+          "name": "Ammo"
         },
-        "placeholders": {
-          "documentName": "Name"
-        },
-        "tabs": {
-          "background": "Background",
-          "effects": "Effects",
-          "inventory": "Inventory",
-          "magic": "Magic",
-          "rules": "Rules",
-          "stats": "Stats"
-        }
-      },
-      "item": {
-        "common": {
-          "notes": "Notes"
-        },
+        "inventory": "Inventory",
         "weapon": {
-          "attacks": {
-            "ap": "AP Cost",
-            "damage": "Damage",
-            "dtReduction": "DT Reduction",
-            "rounds": "Rounds",
-            "title": "Attacks"
+          "attack": {
+            "singular": "Attack",
+            "plural": "Attacks"
           },
-          "holdout": "Holdout Weapon",
-          "ranges": {
-            "distance": "Distance",
-            "modifier": "Modifier",
-            "range": "Range",
-            "title": "Ranges"
-          },
+          "holdout": "Holdout",
+          "plural": "Weapons",
           "reload": {
-            "ap": "AP Cost",
-            "caliber": "Caliber",
+            "containerSize": "Container Size",
             "containerType": "Container Type",
-            "size": "Size",
-            "title": "Reload"
+            "name": "Reload"
           },
-          "skill": "Skill",
-          "strengthRequirement": "Strength required"
-        }
-      }
-    },
-    "skills": {
-      "errors": {
-        "unknownSkill": "unknown Skill"
-      },
-      "names": {
-        "barter": "Barter",
-        "diplomacy": "Diplomacy",
-        "explosives": "Explosives",
-        "firearms": "Firearms",
-        "intimidation": "Intimidation",
-        "lockpick": "Lockpick",
-        "magicalEnergyWeapons": "Magical Energy Weapons",
-        "mechanics": "Mechanics",
-        "medicine": "Medicine",
-        "melee": "Melee",
-        "science": "Science",
-        "sleight": "Sleight",
-        "sneak": "Sneak",
-        "survival": "Survival",
-        "thaumaturgy": "Thaumaturgy",
-        "unarmed": "Unarmed"
-      }
-    },
-    "specials": {
-      "errors": {
-        "unknownSpecial": "unknown SPECIAL"
-      },
-      "names": {
-        "agility": {
-          "long": "Agility",
-          "short": "AGI"
-        },
-        "charisma": {
-          "long": "Charisma",
-          "short": "CHA"
-        },
-        "endurance": {
-          "long": "Endurance",
-          "short": "END"
-        },
-        "intelligence": {
-          "long": "Intelligence",
-          "short": "INT"
-        },
-        "luck": {
-          "long": "Luck",
-          "short": "LCK"
-        },
-        "perception": {
-          "long": "Perception",
-          "short": "PER"
-        },
-        "strength": {
-          "long": "Strength",
-          "short": "STR"
-        }
-      }
-    },
-    "weapons": {
-      "attacks": {
-        "ap": {
-          "cost": "Cost",
-          "previous": "Previous",
-          "remaining": "Remaining",
-          "title": "AP"
-        },
-        "damageRoll": "Damage",
-        "details": "Details",
-        "execute": "Execute",
-        "notEnoughAp": "Not enough AP to use!",
-        "outOfRange": "The target is out of range!",
-        "ranges": "Weapon Ranges",
-        "results": {
-          "criticalHit": "Critical Hit!",
-          "criticalMiss": "Critical Miss!",
-          "hit": "Hit!",
-          "miss": "Miss!"
+          "shots": "Shots",
+          "singular": "Weapon",
+          "strengthRequirement": "Strength Requirement"
         }
       },
-      "modifiers": {
-        "base": "Base",
-        "damage": {
-          "dice": {
-            "range": "Range",
-            "strength": "Strength"
-          }
-        },
-        "hit": {
-          "interactive": "Interactive",
-          "range": "Range"
-        },
-        "listingTitles": {
-          "hit": "Hit chance calculation",
-          "damageBase": "Base damage calculation",
-          "damageDice": "Damage dice calculation"
-        },
-        "total": "Total"
+      "health": {
+        "health": "Health",
+        "healingRate": "Healing Rate"
       },
-      "ranges": {
-        "brackets": {
+      "karma": "Karma",
+      "leveling": {
+        "level": "Level",
+        "experience": "Experience"
+      },
+      "magic": {
+        "magic": "Magic",
+        "strain": "Strain"
+      },
+      "range": {
+        "distance": "Distance",
+        "plural": "Ranges",
+        "ranges": {
           "outOfRange": "Out of range",
           "long": "Long",
           "medium": "Medium",
           "short": "Short"
+        },
+        "singular": "Range"
+      },
+      "rolls": {
+        "results": {
+          "criticalFailure": "Critical Failure",
+          "criticalHit": "Critical Hit",
+          "criticalMiss": "Critical Miss",
+          "criticalSuccess": "Critical Success",
+          "failure": "Failure",
+          "hit": "Hit",
+          "miss": "Miss",
+          "success": "Success"
+        },
+        "targets": {
+          "hitChance": "Hit chance"
         }
+      },
+      "skills": {
+        "singular": "Skill",
+        "plural": "Skills",
+        "points": {
+          "long": "Skill Points",
+          "short": "Points"
+        },
+        "names": {
+          "barter": "Barter",
+          "diplomacy": "Diplomacy",
+          "explosives": "Explosives",
+          "firearms": "Firearms",
+          "intimidation": "Intimidation",
+          "lockpick": "Lockpick",
+          "magicalEnergyWeapons": "Magical Energy Weapons",
+          "mechanics": "Mechanics",
+          "medicine": "Medicine",
+          "melee": "Melee",
+          "science": "Science",
+          "sleight": "Sleight",
+          "sneak": "Sneak",
+          "survival": "Survival",
+          "thaumaturgy": "Thaumaturgy",
+          "unarmed": "Unarmed"
+        },
+        "unknown": "unknown Skill"
+      },
+      "special": {
+        "singular": "SPECIAL",
+        "plural": "SPECIALs",
+        "names": {
+          "strength": {
+            "long": "Strength",
+            "short": "STR"
+          },
+          "perception": {
+            "long": "Perception",
+            "short": "PER"
+          },
+          "endurance": {
+            "long": "Endurance",
+            "short": "END"
+          },
+          "charisma": {
+            "long": "Charisma",
+            "short": "CHA"
+          },
+          "intelligence": {
+            "long": "Intelligence",
+            "short": "INT"
+          },
+          "agility": {
+            "long": "Agility",
+            "short": "AGI"
+          },
+          "luck": {
+            "long": "Luck",
+            "short": "LCK"
+          }
+        },
+        "unknown": "unknown SPECIAL"
+      }
+    },
+    "system": {
+      "actions": {
+        "create": "Create",
+        "delete": "Delete",
+        "edit": "Edit",
+        "execute": "Execute",
+        "submit": "Submit"
+      },
+      "effect": {
+        "singular": "Effect",
+        "plural": "Effects"
+      },
+      "messages": {
+        "attackNotFound": "The attack with the name \"{name}\" could not be found in the Weapon.",
+        "couldNotCreateDocument": "Could not create a Document with the provided data.",
+        "invalidSystemDataInMacro": "The macro you executed contained invalid system data, see the developer console for details.",
+        "migrationCompleted": "{systemName} system migration to version {version} completed!",
+        "migrationStarted": "Applying {systemName} system migration for version {version}. Please be patient and do not close your game or shut down your server.",
+        "noActor": "{name} does not have an Actor.",
+        "notEnoughAp": "Not enough Action Points to do that!",
+        "notEnoughApToMove": "Not enough Action Points to move. {needed} were needed, {actual} were available to {name}.",
+        "targetOutOfRange": "The target is out of range!"
+      },
+      "misc": {
+        "details": "Details",
+        "modifier": "Modifier",
+        "modifierFor": "Modifier for {what}",
+        "name": "Name",
+        "newName": "New {what}",
+        "notes": "Notes",
+        "speakerAlias": "Speaker alias",
+        "statistics": "Statistics"
+      },
+      "prompt": {
+        "defaults": {
+          "title": "Prompt"
+        }
+      },
+      "rolls": {
+        "descriptive": "Rolling {what}",
+        "imperative": "Roll",
+        "modifierExplanation": "Ctrl-Click to whisper to game masters"
+      },
+      "ruleEngine": {
+        "errors": {
+          "logical": {
+            "noActor": "The target is set to \"actor\", but the item has no actor.",
+            "notMatchingSelector": "The property \"{path}\" on \"{name}\" does not exist.",
+            "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\".",
+            "wrongValueType": "The value for this rule should be of type \"{type}\"."
+          },
+          "semantic": {
+            "additional": "The property \"{property}\" is not allowed at \"{path}\".",
+            "missing": "The property \"{property}\" is missing at \"{path}\".",
+            "unknown": "An unknown error occurred.",
+            "unknownRuleElement": "The type of RuleElement is unknown.",
+            "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
+            "wrongType": "The property \"{path}\" is not of type \"{type}\"."
+          },
+          "syntax": "Syntax error: {message}"
+        },
+        "ruleElement": {
+          "singular": "Rule Element",
+          "plural": "Rule Elements"
+        },
+        "warnings": {
+          "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\".",
+          "notSaved": "This rule element was not saved due to errors. It is save to close this Foundry window and fix this later. Though the changes will be lost once Foundry is reloaded."
+        }
+      },
+      "settings": {
+        "enforceApDragDrop": {
+          "choices": {
+            "disabled": "Disabled",
+            "playersAndGameMaster": "Players and game masters",
+            "players": "Players only"
+          },
+          "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with Drag and Drop.",
+          "name": "Enforce AP for Drag and Drop movement"
+        },
+        "enforceApRuler": {
+          "choices": {
+            "disabled": "Disabled",
+            "playersAndGameMaster": "Players and game masters",
+            "players": "Players only"
+          },
+          "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with the Ruler tool.",
+          "name": "Enforce AP for Ruler movement"
+        },
+        "skillPointsMinBounds": {
+          "hint": "The minimum allowed amount of Skill points, that can be entered into an actor sheet.",
+          "name": "Skill Points minimum bound"
+        },
+        "specialPointsMinBounds": {
+          "hint": "The minimum allowed amount of SPECIAL points, that can be entered into an actor sheet.",
+          "name": "SPECIAL Points minimum bound"
+        }
+      },
+      "sheets": {
+        "names": {
+          "actorSheet": "Actor Sheet",
+          "effectSheet": "Effect Sheet",
+          "weaponSheet": "Weapon Sheet"
+        }
+      },
+      "thaumSpecial": "SPECIA for Thaumaturgy",
+      "values": {
+        "base": "Base",
+        "cost": "Cost",
+        "previous": "Previous",
+        "remaining": "Remaining",
+        "total": "Total"
       }
     }
   }

@@ -10,7 +10,7 @@ export default class NotMatchingSelectorMessage extends RuleElementMessage {
     /** The path to the property */
     public propertyPath: string
   ) {
-    super("wv.ruleEngine.errors.logical.notMatchingSelector", "error");
+    super("wv.system.ruleEngine.errors.logical.notMatchingSelector", "error");
   }
 
   override get message(): string {

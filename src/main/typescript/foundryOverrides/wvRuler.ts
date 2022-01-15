@@ -39,9 +39,7 @@ export default class WvRuler extends Ruler {
     if (!(token.actor instanceof WvActor)) {
       if (ui.notifications)
         ui.notifications.error(
-          game.i18n.format("wv.messages.movement.noActor", {
-            name: token.name
-          })
+          game.i18n.format("wv.system.messages.noActor", { name: token.name })
         );
       LOG.error(`The token has no associated actor! id="${token.id}"`);
       return false;
@@ -71,7 +69,7 @@ export default class WvRuler extends Ruler {
       // Warn the user when there are not enough AP to move.
       if (ui.notifications)
         ui.notifications.info(
-          game.i18n.format("wv.messages.movement.notEnoughAp", {
+          game.i18n.format("wv.system.messages.notEnoughApToMove", {
             actual: currAp,
             name: token.name,
             needed: apUse
@@ -116,7 +114,7 @@ export default class WvRuler extends Ruler {
     if (!canvas?.scene) throw new Error("There was no canvas or scene!");
 
     const units = canvas.scene.data.gridUnits;
-    const apUnit = getGame().i18n.localize("wv.ruler.apCostUnit");
+    const apUnit = getGame().i18n.localize("wv.rules.actionPoints.short");
     const segmentApUse = getApUse(segmentDistance);
     const totalApUse = getApUse(totalDistance);
 

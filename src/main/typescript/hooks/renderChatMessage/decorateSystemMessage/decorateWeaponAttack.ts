@@ -82,9 +82,9 @@ export default async function decorateWeaponAttack(
 function getNotExecutedReasonKey(flags: NotExecutedAttackFlags): string {
   switch (flags.reason) {
     case "insufficientAp":
-      return "wv.weapons.attacks.notEnoughAp";
+      return "wv.system.messages.notEnoughAp";
     case "outOfRange":
-      return "wv.weapons.attacks.outOfRange";
+      return "wv.system.messages.targetOutOfRange";
     default:
       return "wv.weapons.attacks.unknownReason";
   }
@@ -92,7 +92,7 @@ function getNotExecutedReasonKey(flags: NotExecutedAttackFlags): string {
 
 /** Get the hit result i18n key. */
 function getHitResultKey(flags: ExecutedAttackFlags): string {
-  let key = "wv.weapons.attacks.results.";
+  let key = "wv.rules.rolls.results.";
   if (flags.rolls.hit.critical === "success") key += "criticalHit";
   else if (flags.rolls.hit.critical === "failure") key += "criticalMiss";
   else if (flags.rolls.hit.total === 1) key += "hit";
@@ -106,13 +106,13 @@ function getRangeBracketKey(
 ): string | undefined {
   switch (flags.details?.range.bracket) {
     case RangeBracket.OUT_OF_RANGE:
-      return "wv.weapons.ranges.brackets.outOfRange";
+      return "wv.rules.range.ranges.outOfRange";
     case RangeBracket.LONG:
-      return "wv.weapons.ranges.brackets.long";
+      return "wv.rules.range.ranges.long";
     case RangeBracket.MEDIUM:
-      return "wv.weapons.ranges.brackets.medium";
+      return "wv.rules.range.ranges.medium";
     case RangeBracket.SHORT:
-      return "wv.weapons.ranges.brackets.short";
+      return "wv.rules.range.ranges.short";
   }
 }
 

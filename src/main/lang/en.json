@@ -7,10 +7,13 @@
         "use": "AP use"
       },
       "background": {
+        "age": "Age",
+        "appearance": "Appearance",
         "background": "Background",
-        "history": "History",
+        "cutieMark": "Cutie Mark",
+        "dreams": "Dreams",
         "fears": "Fears",
-        "dreams": "Dreams"
+        "gender": "Gender"
       },
       "criticals": {
         "title": "Criticals",
@@ -68,6 +71,31 @@
       "magic": {
         "magic": "Magic",
         "strain": "Strain"
+      },
+      "race": {
+        "names": {
+          "earthPony": "Earth Pony",
+          "pegasus": "Pegasus",
+          "unicorn": "Unicorn",
+          "griffon": "Griffon",
+          "zebra": "Zebra",
+          "abyssinian": "Abyssinian",
+          "batPony": "Bat Pony",
+          "brahmin": "Brahmin",
+          "buffalo": "Buffalo",
+          "changeling": "Changeling",
+          "crystalPony": "Crystal Pony",
+          "deer": "Deer",
+          "diamondDog": "Diamond Dog",
+          "donkey": "Donkey",
+          "harpy": "Harpy",
+          "hippogriff": "Hippogriff",
+          "kirin": "Kirin",
+          "minotaur": "Minotaur",
+          "yak": "Yak"
+        },
+        "plural": "Races",
+        "singular": "Race"
       },
       "range": {
         "distance": "Distance",

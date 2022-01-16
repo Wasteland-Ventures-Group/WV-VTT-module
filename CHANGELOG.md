@@ -7,12 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- race, gender, age, appearance and cutie mark fields for actors
+
 ### Changed
 
 - weapon attack messages now show non-existent ranges as "-" instead of omitting
   them
 - translations have been refactored and most keys changed, deduplicated and made
   more consistent
+
+### Removed
+
+- history field from actors
 
 ## [0.9.1] - 2022-01-08
 

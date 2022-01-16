@@ -46,6 +46,12 @@
 
   .background
 
-    > section:not(:last-child)
+    > :first-child
+
+      > :not(:first-child)
+        margin:
+          left: common.$spacing-distance * 2
+
+    > :not(:first-child)
       margin:
         top: common.$spacing-distance

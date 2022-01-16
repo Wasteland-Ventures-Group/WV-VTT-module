@@ -7,10 +7,13 @@
         "use": "AP-Kosten"
       },
       "background": {
+        "age": "Alter",
+        "appearance": "Aussehen",
         "background": "Hintergrund",
-        "history": "Geschichte",
+        "cutieMark": "Schönheitsfleck",
+        "dreams": "Ambitionen",
         "fears": "Ängste",
-        "dreams": "Ambitionen"
+        "gender": "Geschlecht"
       },
       "equipment": {
         "ammo": {
@@ -68,6 +71,31 @@
       "magic": {
         "magic": "Magie",
         "strain": "Anstrengung"
+      },
+      "race": {
+        "names": {
+          "earthPony": "Erdpony",
+          "pegasus": "Pegasuspony",
+          "unicorn": "Einhornpony",
+          "griffon": "Greif",
+          "zebra": "Zebra",
+          "abyssinian": "Abyssinian",
+          "batPony": "Fledermauspony",
+          "brahmin": "Brahmin",
+          "buffalo": "Büffel",
+          "changeling": "Wechselpony",
+          "crystalPony": "Kristallpony",
+          "deer": "Hirsch",
+          "diamondDog": "Diamanthund",
+          "donkey": "Esel",
+          "harpy": "Harpyie",
+          "hippogriff": "Hippogreif",
+          "kirin": "Kirin",
+          "minotaur": "Minotaurus",
+          "yak": "Yak"
+        },
+        "plural": "Rassen",
+        "singular": "Rasse"
       },
       "range": {
         "distance": "Distanz",

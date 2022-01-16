@@ -51,6 +51,7 @@ function migrateActorData(
   const updateData = {};
 
   migrateTo_0_2_0(oldActorData, updateData);
+  migrateTo_0_10_0(updateData);
 
   return updateData;
 }
@@ -76,6 +77,14 @@ function migrateTo_0_2_0(
   if (typeof oldVitals?.strain === "number") {
     updateData["data.vitals.strain.value"] = oldVitals.strain;
   }
+}
+
+function migrateTo_0_10_0(updateData: Record<string, unknown>): void {
+  if (!isLastMigrationOlderThan("0.10.0")) return;
+
+  LOG.info(`Migrating to 0.10.0`);
+
+  updateData["data.background.-=history"] = null;
 }
 
 interface ActorPre_0_2_0 {

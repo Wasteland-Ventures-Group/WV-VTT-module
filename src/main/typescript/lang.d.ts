@@ -1,4 +1,4 @@
-import type { I18nSkills, I18nSpecials } from "./wvI18n.js";
+import type { I18nRaces, I18nSkills, I18nSpecials } from "./wvI18n.js";
 
 export interface LangSchema {
   /** The root element for the Wasteland Ventures system localization */
@@ -12,14 +12,20 @@ export interface LangSchema {
       };
       /** Labels for the background */
       background: {
-        /** Label for the background text area */
+        /** Label for the age */
+        age: string;
+        /** Label for the appearance */
+        appearance: string;
+        /** Label for the background */
         background: string;
-        /** Label for the history text area */
-        history: string;
-        /** Label for the fears text area */
-        fears: string;
-        /** Label for the dreams text area */
+        /** Label for the cutie mark */
+        cutieMark: string;
+        /** Label for the dreams */
         dreams: string;
+        /** Label for the fears */
+        fears: string;
+        /** Label for the gender */
+        gender: string;
       };
       /** Labels relating to criticals */
       criticals: {
@@ -99,6 +105,9 @@ export interface LangSchema {
         magic: string;
         /** The label for the strain */
         strain: string;
+      };
+      race: QuantityNames & {
+        names: I18nRaces;
       };
       /** Labels related to range */
       range: QuantityNames & {

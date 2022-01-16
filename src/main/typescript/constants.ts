@@ -1,3 +1,26 @@
+export type Race = typeof Races[number];
+export const Races = [
+  "earthPony",
+  "pegasus",
+  "unicorn",
+  "griffon",
+  "zebra",
+  "abyssinian",
+  "batPony",
+  "brahmin",
+  "buffalo",
+  "changeling",
+  "crystalPony",
+  "deer",
+  "diamondDog",
+  "donkey",
+  "harpy",
+  "hippogriff",
+  "kirin",
+  "minotaur",
+  "yak"
+] as const;
+
 export type SpecialName = typeof SpecialNames[number];
 export const SpecialNames = [
   "strength",
@@ -107,7 +130,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.9.1",
+  needsMigrationVersion: "0.10.0",
 
   /** Miscellaneous rules constants */
   rules: {

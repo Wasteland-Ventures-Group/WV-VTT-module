@@ -1,21 +1,22 @@
-import Prompt from "../prompt.js";
+import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";
 import {
   CONSTANTS,
+  isSkillName,
+  isSpecialName,
+  Race,
   SkillName,
   SkillNames,
   SpecialName,
   SpecialNames,
   ThaumaturgySpecial,
   ThaumaturgySpecials,
-  TYPES,
-  isSpecialName,
-  isSkillName
+  TYPES
 } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
 import { getSkillMinPoints, getSpecialMinPoints } from "../../helpers.js";
-import WvI18n, { I18nSpecial } from "../../wvI18n.js";
 import { LOG } from "../../systemLogger.js";
-import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";
+import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
+import Prompt from "../prompt.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
@@ -67,6 +68,14 @@ export default class WvActorSheet extends ActorSheet {
     const sheetData: SheetData = {
       ...(await super.getData()),
       sheet: {
+        background: {
+          races: Object.entries(WvI18n.races)
+            .sort((a, b) => a[1].localeCompare(b[1]))
+            .reduce((races, [race, name]) => {
+              races[race as Race] = name;
+              return races;
+            }, {} as I18nRaces)
+        },
         bounds: CONSTANTS.bounds,
         specials: SpecialNames.reduce((specials, specialName) => {
           specials[specialName] = {
@@ -283,6 +292,10 @@ type ClickEvent = JQuery.ClickEvent<
   HTMLElement
 >;
 
+interface SheetBackground {
+  races: I18nRaces;
+}
+
 interface SheetBound {
   points: {
     min: number;
@@ -323,6 +336,7 @@ interface SheetSkill {
 
 interface SheetData extends ActorSheet.Data {
   sheet: {
+    background: SheetBackground;
     bounds: SheetBounds;
     effects: SheetEffect[];
     magic: SheetMagic;

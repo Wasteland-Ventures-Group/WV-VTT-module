@@ -2,7 +2,8 @@ import {
   SkillName,
   SpecialName,
   isSpecialName,
-  isSkillName
+  isSkillName,
+  Race
 } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 
@@ -15,6 +16,9 @@ export interface I18nSpecial {
   short: string;
 }
 
+/** The internationalization structure of the Races */
+export type I18nRaces = Record<Race, string>;
+
 /** The internationalization structure of the SPECIALs */
 export type I18nSpecials = Record<SpecialName, I18nSpecial>;
 
@@ -25,6 +29,14 @@ export type I18nSkills = Record<SkillName, string>;
  * A helper class to serve Wasteland Ventures internationalization structures.
  */
 export default class WvI18n {
+  /** Get the internationalization of the Races. */
+  static get races(): I18nRaces {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.race.names"
+    ) as I18nRaces;
+  }
+
   /** Get the internationalization of the SPECIALs. */
   static get specials(): I18nSpecials {
     return foundry.utils.getProperty(

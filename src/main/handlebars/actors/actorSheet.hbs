@@ -171,16 +171,38 @@
 
     <div class="tab" data-group="primary" data-tab="background">
       <section class="background">
-        <section>
-          <label>
-            {{localize "wv.rules.background.background"}}
-            <textarea name="data.background.background">{{data.data.background.background}}</textarea>
+        <section class="flexrow">
+          <label class="contained-target-inline flex-fixed">
+            {{localize "wv.rules.race.singular"}}
+            <select name="data.background.race">
+              {{selectOptions sheet.background.races selected=data.data.background.race}}
+            </select>
+          </label>
+          <label class="contained-target-inline">
+            {{localize "wv.rules.background.gender"}}
+            <input type="text" name="data.background.gender" value="{{data.data.background.gender}}" />
+          </label>
+          <label class="contained-target-inline">
+            {{localize "wv.rules.background.age"}}
+            <input type="text" name="data.background.age" value="{{data.data.background.age}}" />
           </label>
         </section>
         <section>
           <label>
-            {{localize "wv.rules.background.history"}}
-            <textarea name="data.background.history">{{data.data.background.history}}</textarea>
+            {{localize "wv.rules.background.appearance"}}
+            <textarea name="data.background.appearance">{{data.data.background.appearance}}</textarea>
+          </label>
+        </section>
+        <section>
+          <label>
+            {{localize "wv.rules.background.cutieMark"}}
+            <textarea name="data.background.cutieMark">{{data.data.background.cutieMark}}</textarea>
+          </label>
+        </section>
+        <section>
+          <label>
+            {{localize "wv.rules.background.background"}}
+            <textarea name="data.background.background">{{data.data.background.background}}</textarea>
           </label>
         </section>
         <section>

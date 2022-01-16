@@ -1,5 +1,6 @@
 import type { TemplateDocumentType } from "../common.js";
 import {
+  Race,
   SkillName,
   SpecialName,
   ThaumaturgySpecial,
@@ -113,11 +114,23 @@ export class SkillRanks implements Record<SkillName, number> {
 
 /** An Actor background object for the database */
 export class Background {
+  /** The race of an Actor */
+  race: Race = "earthPony";
+
+  /** The age of an Actor */
+  age = "";
+
+  /** The gender of an Actor */
+  gender = "";
+
+  /** The cutie mark of an Actor */
+  cutieMark = "";
+
+  /** The appearance of an Actor */
+  appearance = "";
+
   /** The background of an Actor */
   background = "";
-
-  /** The history of an Actor */
-  history = "";
 
   /** The fears of an Actor */
   fears = "";

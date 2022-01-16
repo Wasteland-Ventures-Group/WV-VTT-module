@@ -1,6 +1,7 @@
 import { CONSTANTS } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 import { initializedSettingName, migrVerSettingName } from "../settings.js";
+import { LOG } from "../systemLogger.js";
 import migrateActors from "./actors.js";
 import migrateItems from "./items.js";
 
@@ -12,11 +13,11 @@ export function migrationNeeded(): boolean {
   if (!game.user) return false;
   if (!game.user.isGM) return false;
 
-  return isNewerVersionThanLast(CONSTANTS.needsMigrationVersion);
+  return isLastMigrationOlderThan(CONSTANTS.needsMigrationVersion);
 }
 
-/** Check if the given version is newer than the version in the setting. */
-export function isNewerVersionThanLast(version: string): boolean {
+/** Check if the last migration version is older than the given version. */
+export function isLastMigrationOlderThan(version: string): boolean {
   const lastMigrVersion = getGame().settings.get(
     CONSTANTS.systemId,
     migrVerSettingName
@@ -33,6 +34,12 @@ export function isNewerVersionThanLast(version: string): boolean {
  * @returns A Promise which resolves once the migration completed
  */
 export async function migrateWorld(): Promise<void> {
+  const currentVersion = getGame().system.data.version;
+  const lastMigrVersion = getGame().settings.get(
+    CONSTANTS.systemId,
+    migrVerSettingName
+  );
+
   if (ui.notifications) {
     ui.notifications.info(
       getGame().i18n.format("wv.system.messages.migrationStarted", {
@@ -42,6 +49,9 @@ export async function migrateWorld(): Promise<void> {
       { permanent: true }
     );
   }
+  LOG.info(
+    `Migrating this world to ${currentVersion}. Last migration was ${lastMigrVersion}`
+  );
 
   await migrateActors();
   await migrateItems();
@@ -57,6 +67,7 @@ export async function migrateWorld(): Promise<void> {
       { permanent: true }
     );
   }
+  LOG.info(`Migrated this world to ${currentVersion}.`);
 }
 
 /** Set the migration version current system version. */

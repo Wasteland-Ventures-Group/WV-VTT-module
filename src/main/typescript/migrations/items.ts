@@ -59,14 +59,14 @@ async function migrateItem(item: foundry.documents.BaseItem): Promise<void> {
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    LOG.error(`Failed migration for Actor ${item.id}: ${message}`);
+    LOG.error(`Failed migration for Item [${item.id}]: ${message}`);
   }
 }
 
 async function migrateFromCompendium(
   item: foundry.documents.BaseItem
 ): Promise<void> {
-  LOG.info(`Migrating Item ${item.name}. id=${item.id}`);
+  LOG.info(`Updating Item from Compendium [${item.id}] "${item.name}"`);
   await item.update(await getUpdateDataFromCompendium(item), {
     recursive: false,
     diff: false

@@ -1,0 +1,17 @@
+<form class="{{cssClass}} limited" autocomplete="off">
+  <img class="document-img" src="{{actor.img}}" title="{{actor.name}}" />
+  <div class="document-info">
+    <h1 class="document-name">{{actor.name}}</h1>
+    <section class="flexrow">
+      <p>{{localize "wv.rules.race.singular"}}: {{sheet.background.race}}</p>
+      <p>{{localize "wv.rules.background.gender"}}: {{data.data.background.gender}}</p>
+      <p>{{localize "wv.rules.background.age"}}: {{data.data.background.age}}</p>
+    </section>
+    <section>
+      <h2>{{localize "wv.rules.background.appearance"}}</h2>
+      <p>{{data.data.background.appearance}}</p>
+      <h2>{{localize "wv.rules.background.cutieMark"}}</h2>
+      <p>{{data.data.background.cutieMark}}</p>
+    </section>
+  </div>
+</form>

@@ -31,9 +31,13 @@ export default class WvActorSheet extends ActorSheet {
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
       ],
-      template: `${CONSTANTS.systemPath}/handlebars/actors/actorSheet.hbs`,
       width: 700
     } as typeof ActorSheet["defaultOptions"]);
+  }
+
+  override get template(): string {
+    const sheetName = (this.actor.limited ? "limitedA" : "a") + "ctorSheet.hbs";
+    return `${CONSTANTS.systemPath}/handlebars/actors/${sheetName}`;
   }
 
   override activateListeners(html: JQuery<HTMLFormElement>): void {
@@ -62,6 +66,7 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   override async getData(): Promise<SheetData> {
+    const racesI18ns = WvI18n.races;
     const specialI18ns = WvI18n.specials;
     const skillI18ns = WvI18n.skills;
 
@@ -69,7 +74,8 @@ export default class WvActorSheet extends ActorSheet {
       ...(await super.getData()),
       sheet: {
         background: {
-          races: Object.entries(WvI18n.races)
+          race: racesI18ns[this.actor.data.data.background.race],
+          races: Object.entries(racesI18ns)
             .sort((a, b) => a[1].localeCompare(b[1]))
             .reduce((races, [race, name]) => {
               races[race as Race] = name;
@@ -293,6 +299,7 @@ type ClickEvent = JQuery.ClickEvent<
 >;
 
 interface SheetBackground {
+  race: string;
   races: I18nRaces;
 }
 

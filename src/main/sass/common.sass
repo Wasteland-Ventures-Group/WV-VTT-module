@@ -4,7 +4,7 @@ $max-input-chars: 5
 $spacing-distance: 0.5rem
 
 $icon-size-small: 24px
-$icon-size-medium: calc($icon-size-small * 2)
+$icon-size-medium: $icon-size-small * 2
 
 $shade-lighter: #fff5
 $shade-darker: #0005
@@ -43,7 +43,7 @@ h5
   @for $i from 2 through 6
     .grid-#{$i}cols
       display: grid
-      grid-template-columns: repeat(#{$i}, auto)
+      grid-template-columns: repeat($i, auto)
 
   .flex-center
     align-items: center
@@ -78,16 +78,15 @@ h5
     justify-content: space-between
     white-space: nowrap
 
-    > :nth-child(1)
-      margin:
-        left: 1ch
+    > :first-child
+      margin-left: 1ch
 
   .standard-grid-gaps
-    column-gap: calc(#{$spacing-distance} * 2)
+    column-gap: $spacing-distance * 2
     row-gap: $spacing-distance
 
   .standard-col-gaps
-    column-gap: calc(#{$spacing-distance} * 2)
+    column-gap: $spacing-distance * 2
 
   $tab-border-width: 1px
 

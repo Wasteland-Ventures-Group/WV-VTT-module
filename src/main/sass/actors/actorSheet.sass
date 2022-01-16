@@ -15,10 +15,8 @@
               style: solid
               width: 1px
           justify-content: space-between
-          margin:
-            bottom: common.$spacing-distance
-          padding:
-            bottom: common.$spacing-distance
+          margin-bottom: common.$spacing-distance
+          padding-bottom: common.$spacing-distance
 
           > :not(:last-child)
             margin-right: common.$spacing-distance
@@ -34,7 +32,7 @@
     display: flex
     justify-content: space-between
 
-    > :nth-child(1)
+    > :first-child
       display: flex
       flex-direction: column
       justify-content: space-between
@@ -47,11 +45,11 @@
   .background
 
     > :first-child
-
-      > :not(:first-child)
-        margin:
-          left: common.$spacing-distance * 2
+      display: grid
+      grid-column-gap: common.$spacing-distance * 2
+      grid-row-gap: common.$spacing-distance
+      grid-template-columns: repeat(auto-fit, 30ch)
+      justify-content: space-between
 
     > :not(:first-child)
-      margin:
-        top: common.$spacing-distance
+      margin-top: common.$spacing-distance

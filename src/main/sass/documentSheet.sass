@@ -3,20 +3,23 @@
 .wasteland-ventures.document-sheet
 
   .sheet-header
-    margin-bottom: common.$spacing-distance
 
     .document-img
       align-self: start
+      margin:
+        bottom: common.$spacing-distance
+        right: common.$spacing-distance
       max-height: 200px
 
     .document-info
       align-self: start
-      margin:
-        left: common.$spacing-distance
 
       .document-name > input
         height: unset
         width: 100%
+
+  .sheet-header + *
+    margin-top: common.$spacing-distance
 
   .resource-block
     $padding: 3px
@@ -30,12 +33,10 @@
     padding: $padding
 
     &.resource-block-line > *
-      margin:
-        left: $padding * 2
+      margin-left: $padding * 2
 
       > .resource-display
-        margin:
-          right: $padding * 2
+        margin-right: $padding * 2
 
     > .resource-block-line
       margin:

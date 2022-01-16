@@ -13,7 +13,8 @@
         "cutieMark": "Cutie Mark",
         "dreams": "Dreams",
         "fears": "Fears",
-        "gender": "Gender"
+        "gender": "Gender",
+        "virtue": "Virtue"
       },
       "criticals": {
         "title": "Criticals",

@@ -26,6 +26,8 @@ export interface LangSchema {
         fears: string;
         /** Label for the gender */
         gender: string;
+        /** Label for the virtue */
+        virtue: string;
       };
       /** Labels relating to criticals */
       criticals: {

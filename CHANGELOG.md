@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - race, gender, age, appearance and cutie mark fields for actors
 - a limited character sheet for limited access to a character
   ([#11](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/11))
+- a virtue field for actors
+  ([#128](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/128))
 
 ### Changed
 

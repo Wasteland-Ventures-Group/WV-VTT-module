@@ -143,6 +143,9 @@ export class Background {
 
   /** The current size of an Actor */
   size = 0;
+
+  /** The virtue of an Actor */
+  virtue = "";
 }
 
 /** An Actor magic object for the database */

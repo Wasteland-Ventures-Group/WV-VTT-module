@@ -141,8 +141,17 @@ export class Background {
   /** The current karma of an Actor */
   karma = 0;
 
+  /** The personality of an Actor */
+  personality = "";
+
   /** The current size of an Actor */
   size = 0;
+
+  /** The social contacts of an Actor */
+  socialContacts = "";
+
+  /** The special talent of an Actor */
+  specialTalent = "";
 
   /** The virtue of an Actor */
   virtue = "";

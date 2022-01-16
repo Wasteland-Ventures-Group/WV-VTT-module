@@ -26,6 +26,12 @@ export interface LangSchema {
         fears: string;
         /** Label for the gender */
         gender: string;
+        /** Label for the personality */
+        personality: string;
+        /** Label for the social contacts */
+        socialContacts: string;
+        /** Label for the special talent */
+        specialTalent: string;
         /** Label for the virtue */
         virtue: string;
       };

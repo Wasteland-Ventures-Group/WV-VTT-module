@@ -14,6 +14,9 @@
         "dreams": "Dreams",
         "fears": "Fears",
         "gender": "Gender",
+        "personality": "Personality",
+        "socialContacts": "Social Contacts",
+        "specialTalent": "Special Talent",
         "virtue": "Virtue"
       },
       "criticals": {

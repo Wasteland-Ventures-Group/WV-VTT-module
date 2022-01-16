@@ -77,13 +77,17 @@
     <div class="tab active" data-group="primary" data-tab="stats">
       <section class="stats">
         <div>
-          <div class="resource-block grid-3cols standard-grid-gaps flex-center">
+          <div class="resource-block grid-5cols standard-grid-gaps flex-center">
             <label>{{localize "wv.rules.special.singular"}}</label>
-            <label>{{localize "wv.system.values.total"}}</label>
+            <label>{{localize "wv.rules.special.tempTotal"}}</label>
+            <label>{{localize "wv.rules.special.permTotal"}}</label>
+            <label>{{localize "wv.rules.special.points.short"}}</label>
             <label>{{localize "wv.system.rolls.imperative"}}</label>
-            {{#each sheet.specials as | spec |}}
-              <label>{{spec.long}}</label>
-              <input class="size-2" type="number" name="data.specials.{{@key}}" value="{{spec.value}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
+            {{#each sheet.specials as |special|}}
+              <label>{{special.long}}</label>
+              <span class="resource-display size-2">{{special.tempTotal}}</span>
+              <span class="resource-display size-2">{{special.permTotal}}</span>
+              <input class="size-2" type="number" name="data.leveling.specialPoints.{{@key}}" value="{{special.base}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
               <button data-special="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
             {{/each}}
           </div>

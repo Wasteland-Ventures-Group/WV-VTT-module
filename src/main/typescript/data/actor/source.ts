@@ -8,30 +8,6 @@ import {
 } from "../../constants.js";
 import { Resource as FoundryResource } from "../foundryCommon.js";
 
-/** An Actor SPECIALs object for the database */
-export class Specials implements Record<SpecialName, number> {
-  /** The current base Strength of an Actor */
-  strength = 5;
-
-  /** The current base Perception of an Actor */
-  perception = 5;
-
-  /** The current base Endurance of an Actor */
-  endurance = 5;
-
-  /** The current base Charisma of an Actor */
-  charisma = 5;
-
-  /** The current base Intelligence of an Actor */
-  intelligence = 5;
-
-  /** The current base Agility of an Actor */
-  agility = 5;
-
-  /** The current base Luck of an Actor */
-  luck = 5;
-}
-
 /** An Actor vitals object for the database */
 export class Vitals {
   /** The current amount of hit points of an Actor */
@@ -59,6 +35,8 @@ export class Leveling {
 
   /** The skill ranks added for an Actor */
   skillRanks = new SkillRanks();
+
+  specialPoints = new SpecialsPoints();
 }
 
 /** An Actor invested skill points object for the database */
@@ -110,6 +88,30 @@ export class SkillRanks implements Record<SkillName, number> {
 
   /** The invested Unarmed skill points of an Actor */
   unarmed = 0;
+}
+
+/** An Actor SPECIALs object for the database */
+export class SpecialsPoints implements Record<SpecialName, number> {
+  /** The invested Strength SPECIAL points of an Actor */
+  strength = 5;
+
+  /** The invested Perception SPECIAL points of an Actor */
+  perception = 5;
+
+  /** The invested Endurance SPECIAL points of an Actor */
+  endurance = 5;
+
+  /** The invested Charisma SPECIAL points of an Actor */
+  charisma = 5;
+
+  /** The invested Intelligence SPECIAL points of an Actor */
+  intelligence = 5;
+
+  /** The invested Agility SPECIAL points of an Actor */
+  agility = 5;
+
+  /** The invested Luck SPECIAL points of an Actor */
+  luck = 5;
 }
 
 /** An Actor background object for the database */
@@ -165,9 +167,6 @@ export class Magic {
 
 /** The player character data-source data */
 export class PlayerCharacterDataSourceData implements TemplateDocumentType {
-  /** The SPECIALs of an Actor */
-  specials = new Specials();
-
   /** The vitals of an Actor */
   vitals = new Vitals();
 

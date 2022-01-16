@@ -45,15 +45,24 @@ async function migrateActor(actor: foundry.documents.BaseActor): Promise<void> {
   }
 }
 
-function migrateActorData(
-  oldActorData: foundry.data.ActorData["_source"]
-): Record<string, unknown> {
+function migrateActorData(oldActorData: {
+  data: object;
+}): Record<string, unknown> {
   const updateData = {};
 
   migrateTo_0_2_0(oldActorData, updateData);
-  migrateTo_0_10_0(updateData);
+  migrateTo_0_10_0(oldActorData, updateData);
 
   return updateData;
+}
+
+interface ActorPre_0_2_0 {
+  vitals?: {
+    actionPoints?: number;
+    hitPoints?: number;
+    insanity?: number;
+    strain?: number;
+  };
 }
 
 function migrateTo_0_2_0(
@@ -79,19 +88,42 @@ function migrateTo_0_2_0(
   }
 }
 
-function migrateTo_0_10_0(updateData: Record<string, unknown>): void {
+interface ActorPre_0_10_0 {
+  specials?: {
+    strength?: number;
+    perception?: number;
+    endurance?: number;
+    charisma?: number;
+    intelligence?: number;
+    agility?: number;
+    luck?: number;
+  };
+}
+
+function migrateTo_0_10_0(
+  oldActorData: { data: ActorPre_0_10_0 },
+  updateData: Record<string, unknown>
+): void {
   if (!isLastMigrationOlderThan("0.10.0")) return;
 
   LOG.info(`Migrating to 0.10.0`);
 
   updateData["data.background.-=history"] = null;
-}
 
-interface ActorPre_0_2_0 {
-  vitals?: {
-    actionPoints?: number;
-    hitPoints?: number;
-    insanity?: number;
-    strain?: number;
-  };
+  const oldSpecial = oldActorData.data.specials;
+  for (const special of [
+    "strength",
+    "perception",
+    "endurance",
+    "charisma",
+    "intelligence",
+    "agility",
+    "luck"
+  ] as const) {
+    if (typeof oldSpecial?.[special] === "number") {
+      updateData[`data.leveling.specialPoints.${special}`] =
+        oldSpecial[special];
+      updateData[`data.specials.-=${special}`] = null;
+    }
+  }
 }

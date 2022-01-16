@@ -4,7 +4,8 @@ import Prompt, {
   NumberInputSpec,
   TextInputSpec
 } from "../../applications/prompt.js";
-import { CONSTANTS, SpecialName } from "../../constants.js";
+import { CONSTANTS, SpecialName, SpecialNames } from "../../constants.js";
+import { Special } from "../../data/actor/properties.js";
 import type { AttackSource } from "../../data/item/weapon/attack/source.js";
 import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";
@@ -59,8 +60,10 @@ export default class Attack {
       skillTotal,
       critSuccess,
       critFailure,
-      ...specials
+      ...promptSpecialValues
     } = externalData;
+
+    const specials = this.getSpecialsFromPromptSpecials(promptSpecialValues);
 
     // Get speaker -------------------------------------------------------------
     const speaker = {
@@ -84,7 +87,7 @@ export default class Attack {
 
     // Calculate damage dice ---------------------------------------------------
     const strengthDamageDiceMod = this.getStrengthDamageDiceMod(
-      specials.strength
+      specials.strength?.tempTotal ?? 0
     );
     const rangeDamageDiceMod = this.getRangeDamageDiceMod(rangeBracket);
     const damageDice = this.getDamageDice(
@@ -198,7 +201,7 @@ export default class Attack {
       const dice =
         this.data.damage.dice +
         this.getStrengthDamageDiceMod(
-          this.weapon.actor.data.data.specials.strength
+          this.weapon.actor.getSpecial("strength").tempTotal
         );
       return `${this.data.damage.base}+(${dice})`;
     }
@@ -222,20 +225,6 @@ export default class Attack {
     target: Token | null | undefined
   ): Promise<ExternalData> {
     const i18n = getGame().i18n;
-    const specialNames = ranges.getRangesSpecials(
-      this.weapon.systemData.ranges
-    );
-    if (this.data.damage.diceRange) specialNames.add("strength");
-    const specialSpecs = [...specialNames].reduce((specs, specialName) => {
-      specs[specialName] = {
-        type: "number",
-        label: i18n.localize(`wv.rules.special.names.${specialName}.long`),
-        value: actor?.data.data.specials[specialName] ?? 0,
-        min: 0,
-        max: 15
-      };
-      return specs;
-    }, {} as Record<SpecialName, NumberInputSpec>);
 
     return Prompt.get<PromptSpec>(
       {
@@ -265,7 +254,7 @@ export default class Attack {
           min: 0,
           max: 99999
         },
-        ...specialSpecs,
+        ...this.getSpecialPromptSpecs(actor),
         skillTotal: {
           type: "number",
           label: i18n.localize("wv.rules.skills.singular"),
@@ -291,6 +280,68 @@ export default class Attack {
       },
       { title: `${this.weapon.data.name} - ${this.name}` }
     );
+  }
+
+  /** Get the number input specs for the SPECIALs. */
+  protected getSpecialPromptSpecs(
+    actor: WvActor | null | undefined
+  ): Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, NumberInputSpec> {
+    const i18n = getGame().i18n;
+    const i18nBase = i18n.localize("wv.system.values.base");
+    const i18nTemp = i18n.localize("wv.rules.special.tempTotal");
+    const i18nPerm = i18n.localize("wv.rules.special.permTotal");
+
+    const specialNames = ranges.getRangesSpecials(
+      this.weapon.systemData.ranges
+    );
+    if (this.data.damage.diceRange) specialNames.add("strength");
+
+    return [...specialNames].reduce((specs, specialName) => {
+      const i18nSpecial = i18n.localize(
+        `wv.rules.special.names.${specialName}.long`
+      );
+      specs[`${specialName}Base`] = {
+        type: "number",
+        label: `${i18nSpecial} (${i18nBase})`,
+        value: actor?.data.data.specials[specialName]?.base ?? 0,
+        min: 0,
+        max: 15
+      };
+
+      specs[`${specialName}Temp`] = {
+        type: "number",
+        label: `${i18nSpecial} (${i18nTemp})`,
+        value: actor?.data.data.specials[specialName]?.tempTotal ?? 0,
+        min: 0,
+        max: 15
+      };
+
+      specs[`${specialName}Perm`] = {
+        type: "number",
+        label: `${i18nSpecial} (${i18nPerm})`,
+        value: actor?.data.data.specials[specialName]?.permTotal ?? 0,
+        min: 0,
+        max: 15
+      };
+
+      return specs;
+    }, {} as Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, NumberInputSpec>);
+  }
+
+  /** Transform the results of prompting for SPECIALs back to Specials. */
+  protected getSpecialsFromPromptSpecials(
+    promptValues: Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, number>
+  ): Record<SpecialName, Special> {
+    return SpecialNames.reduce((specials, specialName) => {
+      if (promptValues[`${specialName}Base`]) {
+        specials[specialName] = new Special(
+          promptValues[`${specialName}Base`],
+          promptValues[`${specialName}Perm`],
+          promptValues[`${specialName}Temp`]
+        );
+      }
+      return specials;
+    }, {} as Record<SpecialName, Special>);
   }
 
   /** Get the hit roll target. */
@@ -526,7 +577,7 @@ type PromptSpec = {
   skillTotal: NumberInputSpec;
   critSuccess: NumberInputSpec;
   critFailure: NumberInputSpec;
-} & Record<SpecialName, NumberInputSpec>;
+} & Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, NumberInputSpec>;
 
 /** Data external to the attack, can have optional SPECIAL data */
 type ExternalData = {
@@ -550,7 +601,7 @@ type ExternalData = {
 
   /** The critical failure rate of the actor */
   critFailure: number;
-} & Record<SpecialName, number>;
+} & Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, number>;
 
 /**
  * Options for modifying Attack rolls.

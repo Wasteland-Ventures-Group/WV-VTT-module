@@ -12,6 +12,7 @@ import {
   ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
+import type { Special } from "../../data/actor/properties.js";
 import { getGame } from "../../foundryHelpers.js";
 import { getSkillMinPoints, getSpecialMinPoints } from "../../helpers.js";
 import { LOG } from "../../systemLogger.js";
@@ -85,9 +86,9 @@ export default class WvActorSheet extends ActorSheet {
         bounds: CONSTANTS.bounds,
         specials: SpecialNames.reduce((specials, specialName) => {
           specials[specialName] = {
+            ...this.actor.getSpecial(specialName),
             long: specialI18ns[specialName].long,
-            short: specialI18ns[specialName].short,
-            value: this.actor.data.data.specials[specialName]
+            short: specialI18ns[specialName].short
           };
           return specials;
         }, {} as Record<SpecialName, SheetSpecial>),
@@ -202,22 +203,23 @@ export default class WvActorSheet extends ActorSheet {
     event.preventDefault();
 
     const special = event.target.dataset.special;
-    if (special && isSpecialName(special)) {
-      if (event.shiftKey) {
-        const modifier = await Prompt.getNumber({
-          label: WvI18n.getSpecialModifierDescription(special),
-          min: -100,
-          max: 100
-        });
-        this.actor.rollSpecial(special, {
-          modifier: modifier,
-          whisperToGms: event.ctrlKey
-        });
-      } else {
-        this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
-      }
-    } else {
+    if (!special || !isSpecialName(special)) {
       LOG.warn(`Could not get the SPECIAL name for a roll.`);
+      return;
+    }
+
+    if (event.shiftKey) {
+      const modifier = await Prompt.getNumber({
+        label: WvI18n.getSpecialModifierDescription(special),
+        min: -100,
+        max: 100
+      });
+      this.actor.rollSpecial(special, {
+        modifier: modifier,
+        whisperToGms: event.ctrlKey
+      });
+    } else {
+      this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
     }
   }
 
@@ -228,22 +230,23 @@ export default class WvActorSheet extends ActorSheet {
     event.preventDefault();
 
     const skill = event.target.dataset.skill;
-    if (skill && isSkillName(skill)) {
-      if (event.shiftKey) {
-        const modifier = await Prompt.getNumber({
-          label: WvI18n.getSkillModifierDescription(skill),
-          min: -100,
-          max: 100
-        });
-        this.actor.rollSkill(skill, {
-          modifier: modifier,
-          whisperToGms: event.ctrlKey
-        });
-      } else {
-        this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
-      }
-    } else {
+    if (!skill || !isSkillName(skill)) {
       LOG.warn("Could not get the Skill name for a Skill roll.");
+      return;
+    }
+
+    if (event.shiftKey) {
+      const modifier = await Prompt.getNumber({
+        label: WvI18n.getSkillModifierDescription(skill),
+        min: -100,
+        max: 100
+      });
+      this.actor.rollSkill(skill, {
+        modifier: modifier,
+        whisperToGms: event.ctrlKey
+      });
+    } else {
+      this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
     }
   }
 
@@ -330,9 +333,7 @@ interface SheetMagic {
   thaumSpecials: Record<ThaumaturgySpecial, string>;
 }
 
-interface SheetSpecial extends I18nSpecial {
-  value: number;
-}
+type SheetSpecial = I18nSpecial & Special;
 
 interface SheetSkill {
   name: string;

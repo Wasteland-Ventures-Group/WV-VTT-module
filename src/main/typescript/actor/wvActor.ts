@@ -11,10 +11,10 @@ import {
 } from "../constants.js";
 import {
   Criticals,
-  Resistances,
   SecondaryStatistics,
   Skill,
-  Skills
+  Skills,
+  Special
 } from "../data/actor/properties.js";
 import type { Resource } from "../data/foundryCommon.js";
 import type DragData from "../dragData.js";
@@ -53,6 +53,30 @@ export default class WvActor extends Actor {
   /** A convenience getter for the Actor's strain. */
   get strain(): Resource {
     return this.data.data.vitals.strain;
+  }
+
+  /**
+   * Get a SPECIAL from this actor.
+   * @throws If the SPECIALS have not been calculated yet.
+   */
+  getSpecial(name: SpecialName): Special {
+    const special = this.data.data.specials[name];
+    if (special === undefined)
+      throw new Error("The SPECIALs have not been calculated yet!");
+
+    return special;
+  }
+
+  /**
+   * Get a Skill from this actor.
+   * @throws If the Skills have not been calculated yet.
+   */
+  getSkill(name: SkillName): Skill {
+    const skill = this.data.data.skills[name];
+    if (skill === undefined)
+      throw new Error("The Skills have not been calculated yet!");
+
+    return skill;
   }
 
   // Update methods {{{3
@@ -135,11 +159,11 @@ export default class WvActor extends Actor {
 
   /**
    * Roll a SPECIAL for this Actor.
-   * @param special - the name of the SPECIAL to roll
+   * @param name - the name of the SPECIAL to roll
    */
-  rollSpecial(special: SpecialName, options?: RollOptions): void {
+  rollSpecial(name: SpecialName, options?: RollOptions): void {
     const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
-      flavor: WvI18n.getSpecialRollFlavor(special),
+      flavor: WvI18n.getSpecialRollFlavor(name),
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
     if (options?.whisperToGms) {
@@ -147,7 +171,7 @@ export default class WvActor extends Actor {
     }
 
     new Roll(
-      Formulator.special(this.data.data.specials[special])
+      Formulator.special(this.getSpecial(name).tempTotal)
         .modify(options?.modifier)
         .criticals(this.data.data.secondary.criticals)
         .toString()
@@ -158,15 +182,11 @@ export default class WvActor extends Actor {
 
   /**
    * Roll a Skill for this Actor.
-   * @param skill - the name of the Skill to roll
+   * @param name - the name of the Skill to roll
    */
-  rollSkill(skill: SkillName, options?: RollOptions): void {
-    const skillTotal = this.data.data.skills[skill]?.total;
-    if (!skillTotal)
-      throw new Error("The skills have not been calculated yet!");
-
+  rollSkill(name: SkillName, options?: RollOptions): void {
     const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
-      flavor: WvI18n.getSkillRollFlavor(skill),
+      flavor: WvI18n.getSkillRollFlavor(name),
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
     if (options?.whisperToGms) {
@@ -174,7 +194,7 @@ export default class WvActor extends Actor {
     }
 
     new Roll(
-      Formulator.skill(skillTotal)
+      Formulator.skill(this.getSkill(name).total)
         .modify(options?.modifier)
         .criticals(this.data.data.secondary.criticals)
         .toString()
@@ -197,6 +217,9 @@ export default class WvActor extends Actor {
   }
 
   override prepareDerivedData(): void {
+    this.computeBaseVitals();
+    this.computeBaseSecondary();
+    this.computeBaseSkills();
     this.applySizeModifiers();
   }
 
@@ -205,10 +228,7 @@ export default class WvActor extends Actor {
   /** Compute and set the Actor's derived statistics. */
   protected computeBase(): void {
     this.computeBaseLeveling();
-    this.computeBaseVitals();
-    this.computeBaseSecondary();
-    this.data.data.resistances = new Resistances();
-    this.computeBaseSkills();
+    this.computeBaseSpecials();
   }
 
   // Leveling {{{3
@@ -236,6 +256,18 @@ export default class WvActor extends Actor {
     );
   }
 
+  // SPECIALs {{{3
+
+  protected computeBaseSpecials(): void {
+    const specials = this.data.data.specials;
+    for (const special of SpecialNames) {
+      const points = this.data.data.leveling.specialPoints[special];
+      specials[special] = new Special(points, points, points);
+    }
+  }
+
+  // Computations after items {{{2
+
   // Vitals {{{3
 
   /** Compute and set the Actor's derived vitals statistics. */
@@ -250,9 +282,10 @@ export default class WvActor extends Actor {
 
   /** Compute the base healing rate of the actor. */
   protected computeBaseHealingRate(): number {
-    if (this.data.data.specials.endurance >= 8) {
+    const endurance = this.getSpecial("endurance");
+    if (endurance.tempTotal >= 8) {
       return 3;
-    } else if (this.data.data.specials.endurance >= 4) {
+    } else if (endurance.tempTotal >= 4) {
       return 2;
     } else {
       return 1;
@@ -261,17 +294,17 @@ export default class WvActor extends Actor {
 
   /** Compute the base maximum action points of the Actor. */
   protected computeBaseMaxActionPoints(): number {
-    return Math.floor(this.data.data.specials.agility / 2) + 10;
+    return Math.floor(this.getSpecial("agility").tempTotal / 2) + 10;
   }
 
   /** Compute the base maximum health of the Actor. */
   protected computeBaseMaxHitPoints(): number {
-    return this.data.data.specials.endurance + 10;
+    return this.getSpecial("endurance").permTotal + 10;
   }
 
   /** Compute the base maximum insanity of the Actor. */
   protected computeBaseMaxInsanity(): number {
-    return Math.floor(this.data.data.specials.intelligence / 2) + 5;
+    return Math.floor(this.getSpecial("intelligence").tempTotal / 2) + 5;
   }
 
   /**
@@ -279,9 +312,11 @@ export default class WvActor extends Actor {
    * the level of the Actor has been computed.
    */
   protected computeBaseMaxStrain(): number {
-    if (this.data.data.leveling.level === undefined)
+    const level = this.data.data.leveling.level;
+    if (level === undefined)
       throw new Error("The level should be computed before computing strain.");
-    return 20 + Math.floor(this.data.data.leveling.level / 5) * 5;
+
+    return 20 + Math.floor(level / 5) * 5;
   }
 
   // Secondary {{{3
@@ -296,15 +331,13 @@ export default class WvActor extends Actor {
 
   /** Compute the base critical stats of the Actor. */
   protected computeBaseCriticals(): Criticals {
-    const criticals = new Criticals();
-    criticals.failure = Math.min(100, 90 + this.data.data.specials.luck);
-    criticals.success = Math.max(1, this.data.data.specials.luck);
-    return criticals;
+    const luck = this.getSpecial("luck").tempTotal;
+    return new Criticals(Math.max(1, luck), Math.min(100, 90 + luck));
   }
 
   /** Compute the base maximum carry weight of the Actor in kg. */
   protected computeBaseMaxCarryWeight(): number {
-    return this.data.data.specials.strength * 5 + 10;
+    return this.getSpecial("strength").tempTotal * 5 + 10;
   }
 
   // Skills {{{3
@@ -349,12 +382,10 @@ export default class WvActor extends Actor {
         ? this.data.data.magic.thaumSpecial
         : CONSTANTS.skillSpecials[skill];
     return (
-      this.data.data.specials[special] * 2 +
-      Math.floor(this.data.data.specials.luck / 2)
+      this.getSpecial(special).permTotal * 2 +
+      Math.floor(this.getSpecial("luck").permTotal / 2)
     );
   }
-
-  // Computations after items {{{2
 
   /**
    * Apply the stat modifiers, based on the size category of the Actor.
@@ -528,11 +559,11 @@ export default class WvActor extends Actor {
   ): boolean {
     if (!change?.data) return true;
 
-    if (change.data.specials) {
+    if (change.data?.leveling?.specialPoints) {
       const max = getSpecialMaxPoints();
       const min = getSpecialMinPoints();
       for (const special of SpecialNames) {
-        const value = change.data.specials[special];
+        const value = change.data.leveling.specialPoints[special];
         if (value && !value.between(min, max)) return false;
       }
     }

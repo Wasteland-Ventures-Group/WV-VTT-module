@@ -28,6 +28,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   them
 - translations have been refactored and most keys changed, deduplicated and made
   more consistent
+- SPECIALs are no longer one flat value, but track the points invested, their
+  base value, permanent and temporary total
+  ([#129](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/129))
 
 ### Removed
 

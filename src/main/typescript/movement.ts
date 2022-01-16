@@ -15,6 +15,6 @@ export function getGroundMoveRange(actor: WvActor): number {
 export function getGroundSprintMoveRange(actor: WvActor): number {
   const actionPoints =
     actor.actionPoints.value +
-    Math.floor(actor.data.data.specials.endurance / 2);
+    Math.floor(actor.getSpecial("endurance").permTotal / 2);
   return actionPoints * CONSTANTS.rules.movement.metersPerAp;
 }

@@ -173,6 +173,12 @@ export interface LangSchema {
       special: QuantityNames & {
         /** The names of SPECIALs */
         names: I18nSpecials;
+        /** The label for the permanent total of a SPECIAL */
+        permTotal: string;
+        /** Labels for SPECIAL points */
+        points: ShortLongNames;
+        /** The label for the temporary total of a SPECIAL */
+        tempTotal: string;
         /** The label for an unknown SPECIAL */
         unknown: string;
       };

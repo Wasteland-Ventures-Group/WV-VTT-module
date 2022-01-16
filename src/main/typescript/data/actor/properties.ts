@@ -1,13 +1,57 @@
-import type { SkillName, TYPES } from "../../constants.js";
+import type { SkillName, SpecialName, TYPES } from "../../constants.js";
 import {
   Leveling as DbLeveling,
-  Specials as DbSpecials,
   Vitals as DbVitals,
   PlayerCharacterDataSourceData
 } from "./source.js";
 
 /** Derived SPECIALs related data */
-export class Specials extends DbSpecials {}
+export class Specials implements Partial<Record<SpecialName, Special>> {
+  /** The Strength SPECIAL value of an Actor */
+  strength?: Special;
+
+  /** The Perception SPECIAL value of an Actor */
+  perception?: Special;
+
+  /** The Endurance SPECIAL value of an Actor */
+  endurance?: Special;
+
+  /** The Charisma SPECIAL value of an Actor */
+  charisma?: Special;
+
+  /** The Intelligence SPECIAL value of an Actor */
+  intelligence?: Special;
+
+  /** The Agility SPECIAL value of an Actor */
+  agility?: Special;
+
+  /** The Luck SPECIAL value of an Actor */
+  luck?: Special;
+}
+
+/** A SPECIAL, holding all intermediary steps for the final result */
+export class Special {
+  /**
+   * Create a new SPECIAL.
+   * @param base - the base value of the SPECIAL, from invested points only
+   * @param permTotal - the permanent total of the SPECIAL
+   * @param tempTotal - the temporary total of the SPECIAL
+   */
+  constructor(base = 0, permTotal = 0, tempTotal = 0) {
+    this.base = base;
+    this.permTotal = permTotal;
+    this.tempTotal = tempTotal;
+  }
+
+  /** The base value of the SPECIAL, from invested points only */
+  base: number;
+
+  /** The permanent SPECIAL total */
+  permTotal: number;
+
+  /** The temporary SPECIAL total */
+  tempTotal: number;
+}
 
 /** Derived skill values */
 export class Skills implements Partial<Record<SkillName, Skill>> {
@@ -67,16 +111,16 @@ export class Skill {
    * @param base - the base value of the skill, derived from SPECIAL
    * @param total - the total value of the skill, base plus skill points
    */
-  constructor(base: number, total: number) {
+  constructor(base = 0, total = 0) {
     this.base = base;
     this.total = total;
   }
 
   /** The base value of the skill, from SPECIAL only */
-  base?: number;
+  base: number;
 
   /** The final value of the skill with all modifiers applied */
-  total?: number;
+  total: number;
 }
 
 /** Derived vitals data */
@@ -105,11 +149,21 @@ export class Resistances {
 
 /** Stats related to critical success and failure */
 export class Criticals {
-  /** The critical failure chance */
-  failure: number = 100;
+  /**
+   * Create a new Criticals.
+   * @param success - the critical success chance
+   * @param failure - the critical failure chance
+   */
+  constructor(success = 1, failure = 100) {
+    this.success = success;
+    this.failure = failure;
+  }
 
   /** The critical success chance */
   success: number = 1;
+
+  /** The critical failure chance */
+  failure: number = 100;
 }
 
 /** Derived secondary statistics */
@@ -123,7 +177,7 @@ export class SecondaryStatistics {
 
 /** The player character data-properties data */
 export class PlayerCharacterDataPropertiesData extends PlayerCharacterDataSourceData {
-  override specials: Specials = new Specials();
+  specials: Specials = new Specials();
 
   /** The skills of an Actor */
   skills: Skills = new Skills();

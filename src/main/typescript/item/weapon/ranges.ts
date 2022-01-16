@@ -50,7 +50,7 @@ export function getDisplayRangeDistance(
   if (typeof distance === "number") return distance.toString();
   if (distance === "melee") return CONSTANTS.rules.melee.distance.toString();
 
-  const specialValue = (specials ?? {})[distance.special];
+  const specialValue = (specials ?? {})[distance.special]?.tempTotal;
   if (typeof specialValue === "number") {
     return getSpecialRangeDistance(distance, specialValue).toString();
   } else {
@@ -76,7 +76,7 @@ export function getEffectiveRangeDistance(
   if (typeof distance === "number") return distance;
   if (distance === "melee") return CONSTANTS.rules.melee.distance;
 
-  const specialValue = (specials ?? {})[distance.special] ?? 0;
+  const specialValue = (specials ?? {})[distance.special]?.tempTotal ?? 0;
   return getSpecialRangeDistance(distance, specialValue);
 }
 

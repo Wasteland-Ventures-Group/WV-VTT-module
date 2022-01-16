@@ -24,14 +24,6 @@ export default class Weapon extends WvItem {
     return this.data.data;
   }
 
-  /** Check whether this Weapon has any SPECIAL based values. */
-  hasSomeSpecialBasedValues(): boolean {
-    return (
-      this.hasSomeStrengthBasedAttackDamage() ||
-      this.hasSomeSpecialBasedRangeDistance()
-    );
-  }
-
   override prepareBaseData(): void {
     super.prepareBaseData();
     this.systemData.attacks.attacks = {};
@@ -40,25 +32,4 @@ export default class Weapon extends WvItem {
         (this.systemData.attacks.attacks[name] = new Attack(name, source, this))
     );
   }
-
-  /** Check whether some of this Weapon's Attacks are Strength based. */
-  protected hasSomeStrengthBasedAttackDamage(): boolean {
-    return Object.values(this.systemData.attacks.sources).some(
-      (attack) => attack.damage.diceRange
-    );
-  }
-
-  /** Check whether some of this Weapon's ranges are SPECIAL based. */
-  protected hasSomeSpecialBasedRangeDistance(): boolean {
-    return [
-      this.systemData.ranges.short?.distance,
-      this.systemData.ranges.medium?.distance,
-      this.systemData.ranges.long?.distance
-    ].some((distance) => typeof distance === "object");
-  }
-}
-
-/** A custom type guard to check whether an Item is a Weapon. */
-export function isWeaponItem(item: WvItem): item is Weapon {
-  return item.data.type === TYPES.ITEM.WEAPON;
 }

@@ -1,4 +1,4 @@
-import { CONSTANTS, TYPES } from "../../constants.js";
+import { TYPES } from "../../constants.js";
 import type { Range } from "../../data/item/weapon/ranges/source.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";

@@ -187,6 +187,12 @@
             "short": "LCK"
           }
         },
+        "permTotal": "Perm",
+        "points": {
+          "long": "SPECIAL-Punkte",
+          "short": "Punkte"
+        },
+        "tempTotal": "Temp",
         "unknown": "unbekanntes SPECIAL"
       }
     },

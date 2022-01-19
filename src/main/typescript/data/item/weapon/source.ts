@@ -3,16 +3,13 @@ import { SkillName, SkillNames, TYPES } from "../../../constants.js";
 import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import { COMPENDIUM_JSON_SCHEMA } from "../../foundryCommon.js";
 import PhysicalBaseItem, {
-  JSON_SCHEMA as PHYS_BASE_ITEM_SCHEMA
+  PHYS_BASE_ITEM_JSON_SCHEMA
 } from "../physicalBaseItem.js";
-import {
-  AttacksSource,
-  JSON_SCHEMA as ATTACK_JSON_SCHEMA
-} from "./attack/source.js";
-import type Ranges from "./ranges/source.js";
+import AttacksSource, { ATTACK_JSON_SCHEMA } from "./attack/source.js";
+import type RangesSource from "./ranges/source.js";
 import { RANGES_JSON_SCHEMA } from "./ranges/source.js";
-import type { Reload } from "./reload.js";
-import { JSON_SCHEMA as RELOAD_JSON_SCHEMA } from "./reload.js";
+import type ReloadSource from "./reload/source.js";
+import { RELOAD_JSON_SCHEMA } from "./reload/source.js";
 
 /** The Weapon Item data-source */
 export default interface WeaponDataSource {
@@ -29,13 +26,13 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
   holdout?: boolean = false;
 
   /** The ranges of the weapon */
-  ranges: Ranges = RANGES_JSON_SCHEMA.default;
+  ranges: RangesSource = RANGES_JSON_SCHEMA.default;
 
   /**
    * The reload stats of the weapon. By default, the weapon does not support
    * reloading.
    */
-  reload?: Reload;
+  reload?: ReloadSource;
 
   /** The skill associated with the weapon attacks */
   skill: SkillName = "firearms";
@@ -56,7 +53,7 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
   description: "The system data for a weapon Item",
   type: "object",
   properties: {
-    ...PHYS_BASE_ITEM_SCHEMA.properties,
+    ...PHYS_BASE_ITEM_JSON_SCHEMA.properties,
     attacks: {
       description: "Attack definitions for the the weapon",
       type: "object",
@@ -106,7 +103,7 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
     }
   },
   required: [
-    ...PHYS_BASE_ITEM_SCHEMA.required,
+    ...PHYS_BASE_ITEM_JSON_SCHEMA.required,
     "attacks",
     "ranges",
     "skill",
@@ -114,7 +111,7 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
   ],
   additionalProperties: false,
   default: {
-    ...PHYS_BASE_ITEM_SCHEMA.default,
+    ...PHYS_BASE_ITEM_JSON_SCHEMA.default,
     attacks: ATTACKS_DEFAULT,
     ranges: RANGES_JSON_SCHEMA.default,
     skill: "firearms",

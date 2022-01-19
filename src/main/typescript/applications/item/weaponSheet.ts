@@ -1,5 +1,5 @@
 import { TYPES } from "../../constants.js";
-import type { Range } from "../../data/item/weapon/ranges/source.js";
+import type { RangeSource } from "../../data/item/weapon/ranges/source.js";
 import { isOfItemType } from "../../helpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
@@ -117,10 +117,14 @@ export default class WeaponSheet extends WvItemSheet {
    * @param range - the Range to map
    * @returns a sheet displayable Range
    */
-  protected mapToSheetRange(range: Range): SheetRange;
+  protected mapToSheetRange(range: RangeSource): SheetRange;
   protected mapToSheetRange(range: undefined): undefined;
-  protected mapToSheetRange(range: Range | undefined): SheetRange | undefined;
-  protected mapToSheetRange(range: Range | undefined): SheetRange | undefined {
+  protected mapToSheetRange(
+    range: RangeSource | undefined
+  ): SheetRange | undefined;
+  protected mapToSheetRange(
+    range: RangeSource | undefined
+  ): SheetRange | undefined {
     if (!range) return;
 
     return {

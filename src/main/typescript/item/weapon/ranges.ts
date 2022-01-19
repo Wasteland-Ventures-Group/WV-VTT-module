@@ -1,10 +1,10 @@
 import { CONSTANTS, SpecialName } from "../../constants.js";
 import type { Specials } from "../../data/actor/character/properties.js";
 import type WeaponDataProperties from "../../data/item/weapon/properties.js";
-import type Ranges from "../../data/item/weapon/ranges/source.js";
+import type RangesSource from "../../data/item/weapon/ranges/source.js";
 import type {
-  Distance,
-  SpecialBasedRange
+  DistanceSource,
+  SpecialBasedRangeSource
 } from "../../data/item/weapon/ranges/source.js";
 import { getSpecialMaxPoints, getSpecialMinPoints } from "../../helpers.js";
 
@@ -43,7 +43,7 @@ export function getDisplayRanges(
  * @returns the displayable distance
  */
 export function getDisplayRangeDistance(
-  distance: Distance | undefined,
+  distance: DistanceSource | undefined,
   specials?: Partial<Specials> | undefined
 ): string {
   if (distance === undefined) return "-";
@@ -70,7 +70,7 @@ export function getDisplayRangeDistance(
  * @returns the effective distance
  */
 export function getEffectiveRangeDistance(
-  distance: Distance,
+  distance: DistanceSource,
   specials?: Partial<Specials>
 ): number {
   if (typeof distance === "number") return distance;
@@ -88,7 +88,7 @@ export function getEffectiveRangeDistance(
  * @returns the range bracket
  */
 export function getRangeBracket(
-  ranges: Ranges,
+  ranges: RangesSource,
   range: number,
   specials?: Partial<Specials>
 ): RangeBracket {
@@ -117,7 +117,7 @@ export function getRangeBracket(
  * @returns the modifier for the range (0, if out of range)
  */
 export function getRangeModifier(
-  ranges: Ranges,
+  ranges: RangesSource,
   rangeBracket: RangeBracket
 ): number {
   if (rangeBracket <= RangeBracket.SHORT) return ranges.short.modifier;
@@ -138,14 +138,14 @@ export function getRangeModifier(
  * @returns the effective distance
  */
 export function getSpecialRangeDistance(
-  distance: SpecialBasedRange,
+  distance: SpecialBasedRangeSource,
   specialValue: number
 ): number {
   return distance.base + specialValue * distance.multiplier;
 }
 
 /** Get the names of SPECIALs used in the Ranges. */
-export function getRangesSpecials(ranges: Ranges): Set<SpecialName> {
+export function getRangesSpecials(ranges: RangesSource): Set<SpecialName> {
   const specialNames: Set<SpecialName> = new Set();
 
   [

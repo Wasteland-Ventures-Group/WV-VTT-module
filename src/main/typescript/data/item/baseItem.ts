@@ -1,7 +1,7 @@
 import type { JSONSchemaType } from "ajv";
-import { JSON_SCHEMA as RULE_ELEMENT_SOURCE_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
+import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
 import type { TemplateDocumentType } from "../common.js";
-import { DbRules } from "./rules/source.js";
+import RulesSource from "./rules/source.js";
 
 /** This holds the base values that all items have in common. */
 export default abstract class BaseItem implements TemplateDocumentType {
@@ -19,14 +19,16 @@ export default abstract class BaseItem implements TemplateDocumentType {
   notes: string = "";
 
   /** The rules of the item. */
-  rules: DbRules = new DbRules();
+  rules: RulesSource = new RulesSource();
 
   /** @override */
   abstract getTypeName(): string;
 }
 
 /** A JSON schema for base item objects */
-export const JSON_SCHEMA: JSONSchemaType<Omit<BaseItem, "getTypeName">> = {
+export const BASE_ITEM_JSON_SCHEMA: JSONSchemaType<
+  Omit<BaseItem, "getTypeName">
+> = {
   description: "Common system data for items",
   type: "object",
   properties: {
@@ -56,7 +58,7 @@ export const JSON_SCHEMA: JSONSchemaType<Omit<BaseItem, "getTypeName">> = {
         sources: {
           description: "The rule element sources for the item",
           type: "array",
-          items: RULE_ELEMENT_SOURCE_SCHEMA,
+          items: RULE_ELEMENT_SOURCE_JSON_SCHEMA,
           default: []
         }
       },

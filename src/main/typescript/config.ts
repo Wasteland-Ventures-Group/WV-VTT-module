@@ -4,7 +4,7 @@ import WvActorSheet from "./applications/actor/wvActorSheet.js";
 import EffectSheet from "./applications/item/effectSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
 import { CONSTANTS, TYPES } from "./constants.js";
-import { JSON_SCHEMA as BASE_ITEM_JSON_SCHEMA } from "./data/item/baseItem.js";
+import { BASE_ITEM_JSON_SCHEMA } from "./data/item/baseItem.js";
 import { WEAPON_SOURCE_JSON_SCHEMA } from "./data/item/weapon/source.js";
 import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
@@ -16,7 +16,7 @@ import {
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
-import { JSON_SCHEMA as RULE_ELEMENT_JSON_SCHEMA } from "./ruleEngine/ruleElementSource.js";
+import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "./ruleEngine/ruleElementSource.js";
 import { initializedSettingName } from "./settings.js";
 
 /** The Foundry configuration function for the init hook */
@@ -30,7 +30,7 @@ export function configureFoundryOnInit(): void {
         effect: ajv.compile(BASE_ITEM_JSON_SCHEMA),
         weapon: ajv.compile(WEAPON_SOURCE_JSON_SCHEMA)
       },
-      ruleElement: ajv.compile(RULE_ELEMENT_JSON_SCHEMA)
+      ruleElement: ajv.compile(RULE_ELEMENT_SOURCE_JSON_SCHEMA)
     }
   };
 

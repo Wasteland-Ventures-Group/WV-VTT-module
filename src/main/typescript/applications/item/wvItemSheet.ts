@@ -9,7 +9,7 @@ import WrongTypeMessage from "../../ruleEngine/messages/wrongTypeMessage.js";
 import RuleElement, * as re from "../../ruleEngine/ruleElement.js";
 import RuleElementMessage from "../../ruleEngine/ruleElementMessage.js";
 import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
-import { JSON_SCHEMA as RULE_ELEMENT_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
+import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
 import { LOG } from "../../systemLogger.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
@@ -77,7 +77,7 @@ export default class WvItemSheet extends ItemSheet {
   /** Handle a click event on a create rule element button. */
   protected onClickCreateRuleElement(): void {
     const sources = this.item.data.data.rules.sources;
-    sources.push(RULE_ELEMENT_JSON_SCHEMA.default);
+    sources.push(RULE_ELEMENT_SOURCE_JSON_SCHEMA.default);
     this.item.updateRuleSources(sources);
     LOG.debug(`Created RuleElement on item with id [${this.item.id}]`);
     this.item.prepareData();

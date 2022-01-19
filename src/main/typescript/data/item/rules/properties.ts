@@ -1,8 +1,8 @@
 import type RuleElement from "../../../ruleEngine/ruleElement.js";
-import { DbRules } from "./source.js";
+import RulesSource from "./source.js";
 
 /** A RuleElements container, that can be used in different Items. */
-export class Rules extends DbRules {
+export default class Rules extends RulesSource {
   /** The RuleElements, created from the sources */
   elements: RuleElement[] = [];
 }

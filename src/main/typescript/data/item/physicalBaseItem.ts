@@ -1,5 +1,5 @@
 import type { JSONSchemaType } from "ajv";
-import BaseItem, { JSON_SCHEMA as BASE_ITEM_JSON_SCHEMA } from "./baseItem.js";
+import BaseItem, { BASE_ITEM_JSON_SCHEMA } from "./baseItem.js";
 
 /** This holds the base values that all physical items have in common. */
 export default abstract class PhysicalBaseItem extends BaseItem {
@@ -11,7 +11,7 @@ export default abstract class PhysicalBaseItem extends BaseItem {
 }
 
 /** A JSOn schema for physical base item objects */
-export const JSON_SCHEMA: JSONSchemaType<PhysicalBaseItem> = {
+export const PHYS_BASE_ITEM_JSON_SCHEMA: JSONSchemaType<PhysicalBaseItem> = {
   description: "Commmon system data for a physical Item",
   type: "object",
   properties: {

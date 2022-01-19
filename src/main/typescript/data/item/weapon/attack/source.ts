@@ -1,7 +1,7 @@
 import type { JSONSchemaType } from "ajv";
 
 /** A Weapon Attacks DB container */
-export class AttacksSource {
+export default class AttacksSource {
   /** The source objects for the Attacks */
   sources: Record<string, AttackSource> = {};
 }
@@ -20,7 +20,7 @@ export interface AttackSource {
     diceRange?: boolean;
 
     /** The optional damage fall-off type of the attack */
-    damageFallOff?: DamageFallOff;
+    damageFallOff?: DamageFallOffSource;
   };
 
   /** The amount of rounds used with the attack */
@@ -40,13 +40,13 @@ export interface AttackSource {
 }
 
 /** A type representing different damage fall-off rules */
-type DamageFallOff = "shotgun";
+type DamageFallOffSource = "shotgun";
 
 /** The default value for the damage object */
 const DAMAGE_DEFAULT = { base: 0, dice: 0 };
 
 /** A JSON schema for attack source objects */
-export const JSON_SCHEMA: JSONSchemaType<AttackSource> = {
+export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
   description: "A single attack definition",
   type: "object",
   properties: {

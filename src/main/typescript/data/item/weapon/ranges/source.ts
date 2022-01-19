@@ -2,37 +2,37 @@ import type { JSONSchemaType } from "ajv";
 import { SpecialName, SpecialNames } from "../../../../constants.js";
 
 /** An interface that represents the source ranges of a weapon. */
-export default interface Ranges {
+export default interface RangesSource {
   /** The short range of the weapon */
-  short: Range;
+  short: RangeSource;
 
   /**
    * The medium range of the weapon. By default the weapon has no medium range.
    */
-  medium?: Range;
+  medium?: RangeSource;
 
   /** The long range of the weapon. By default the weapon has no long range. */
-  long?: Range;
+  long?: RangeSource;
 }
 
 /** An interface to represent values needed for an weapon's range */
-export interface Range {
+export interface RangeSource {
   /**
    * The maximum distance of this range in meters. It can either be a number,
    * which represents a distance in meters, "melee" or a SPECIAL based range,
    * with a base range, a multiplier and a SPECIAL name.
    */
-  distance: Distance;
+  distance: DistanceSource;
 
   /** The skill check modifier associated with this range */
   modifier: number;
 }
 
 /** A distance specifier for a weapon range. */
-export type Distance = number | "melee" | SpecialBasedRange;
+export type DistanceSource = number | "melee" | SpecialBasedRangeSource;
 
 /** A SPECIAL based range */
-export interface SpecialBasedRange {
+export interface SpecialBasedRangeSource {
   /** The base range of the range in meters */
   base: number;
 
@@ -44,7 +44,7 @@ export interface SpecialBasedRange {
 }
 
 /** A JSON schema for a single range object */
-const RANGE_JSON_SCHEMA: JSONSchemaType<Range> = {
+const RANGE_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
   description: "A range definition",
   type: "object",
   properties: {
@@ -112,7 +112,7 @@ const RANGE_JSON_SCHEMA: JSONSchemaType<Range> = {
 };
 
 /** A JSON schema for ranges objects */
-export const RANGES_JSON_SCHEMA: JSONSchemaType<Ranges> = {
+export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
   description: "Ranges definitions",
   type: "object",
   properties: {

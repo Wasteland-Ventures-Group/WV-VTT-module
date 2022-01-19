@@ -14,7 +14,8 @@ import {
   Skill,
   Skills,
   Special
-} from "../data/actor/properties.js";
+} from "../data/actor/playerCharacter/properties.js";
+import type PlayerCharacterDataSource from "../data/actor/playerCharacter/source.js";
 import type { Resource } from "../data/foundryCommon.js";
 import type DragData from "../dragData.js";
 import Formulator from "../formulator.js";
@@ -27,7 +28,6 @@ import {
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import WvI18n from "../wvI18n.js";
-import type { PlayerCharacterDataSource } from "./../data/actor/source.js";
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {

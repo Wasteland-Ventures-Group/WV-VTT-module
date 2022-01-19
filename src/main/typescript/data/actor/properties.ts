@@ -1,4 +1,4 @@
-import type PlayerCharacterDataProperties from "./playerCharacter/properties.js";
+import type CharacterDataProperties from "./character/properties.js";
 
 /** A union for the data properties of all Actor types */
-export type WvActorDataProperties = PlayerCharacterDataProperties;
+export type WvActorDataProperties = CharacterDataProperties;

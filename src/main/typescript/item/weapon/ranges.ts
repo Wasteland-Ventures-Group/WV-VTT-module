@@ -1,5 +1,5 @@
 import { CONSTANTS, SpecialName } from "../../constants.js";
-import type { Specials } from "../../data/actor/playerCharacter/properties.js";
+import type { Specials } from "../../data/actor/character/properties.js";
 import type WeaponDataProperties from "../../data/item/weapon/properties.js";
 import type Ranges from "../../data/item/weapon/ranges/source.js";
 import type {

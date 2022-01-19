@@ -5,7 +5,7 @@ import Prompt, {
   TextInputSpec
 } from "../../applications/prompt.js";
 import { CONSTANTS, SpecialName, SpecialNames } from "../../constants.js";
-import { Special } from "../../data/actor/playerCharacter/properties.js";
+import { Special } from "../../data/actor/character/properties.js";
 import type { AttackSource } from "../../data/item/weapon/attack/source.js";
 import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";

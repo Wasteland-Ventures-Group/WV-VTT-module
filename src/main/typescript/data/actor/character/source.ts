@@ -8,10 +8,10 @@ import {
 import type { TemplateDocumentType } from "../../common.js";
 import { Resource as FoundryResource } from "../../foundryCommon.js";
 
-/** The player character data-source */
-export default interface PlayerCharacterDataSource {
-  type: typeof TYPES.ACTOR.PLAYER_CHARACTER;
-  data: PlayerCharacterDataSourceData;
+/** The character data-source */
+export default interface CharacterDataSource {
+  type: typeof TYPES.ACTOR.CHARACTER;
+  data: CharacterDataSourceData;
 }
 
 /** An Actor vitals object for the database */
@@ -171,8 +171,8 @@ export class Magic {
   thaumSpecial: ThaumaturgySpecial = "intelligence";
 }
 
-/** The player character data-source data */
-export class PlayerCharacterDataSourceData implements TemplateDocumentType {
+/** The character data-source data */
+export class CharacterDataSourceData implements TemplateDocumentType {
   /** The vitals of an Actor */
   vitals = new Vitals();
 
@@ -187,6 +187,6 @@ export class PlayerCharacterDataSourceData implements TemplateDocumentType {
 
   /** @override */
   getTypeName(): string {
-    return TYPES.ACTOR.PLAYER_CHARACTER;
+    return TYPES.ACTOR.CHARACTER;
   }
 }

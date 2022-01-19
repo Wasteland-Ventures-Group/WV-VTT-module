@@ -1,14 +1,14 @@
 import type { SkillName, SpecialName, TYPES } from "../../../constants.js";
 import {
   Leveling as DbLeveling,
-  PlayerCharacterDataSourceData,
+  CharacterDataSourceData,
   Vitals as DbVitals
 } from "./source.js";
 
-/** The player character data-properties */
-export default interface PlayerCharacterDataProperties {
-  type: typeof TYPES.ACTOR.PLAYER_CHARACTER;
-  data: PlayerCharacterDataPropertiesData;
+/** The character data-properties */
+export default interface CharacterDataProperties {
+  type: typeof TYPES.ACTOR.CHARACTER;
+  data: CharacterDataPropertiesData;
 }
 
 /** Derived SPECIALs related data */
@@ -181,8 +181,8 @@ export class SecondaryStatistics {
   maxCarryWeight?: number;
 }
 
-/** The player character data-properties data */
-export class PlayerCharacterDataPropertiesData extends PlayerCharacterDataSourceData {
+/** The character data-properties data */
+export class CharacterDataPropertiesData extends CharacterDataSourceData {
   specials: Specials = new Specials();
 
   /** The skills of an Actor */

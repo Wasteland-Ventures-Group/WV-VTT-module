@@ -46,6 +46,7 @@ async function migrateActor(actor: foundry.documents.BaseActor): Promise<void> {
 }
 
 function migrateActorData(oldActorData: {
+  type: string;
   data: object;
 }): Record<string, unknown> {
   const updateData = {};
@@ -101,12 +102,14 @@ interface ActorPre_0_10_0 {
 }
 
 function migrateTo_0_10_0(
-  oldActorData: { data: ActorPre_0_10_0 },
+  oldActorData: { type: string; data: ActorPre_0_10_0 },
   updateData: Record<string, unknown>
 ): void {
   if (!isLastMigrationOlderThan("0.10.0")) return;
 
   LOG.info(`Migrating to 0.10.0`);
+
+  if (oldActorData.type === "playerCharacter") updateData["type"] = "character";
 
   updateData["data.background.-=history"] = null;
 

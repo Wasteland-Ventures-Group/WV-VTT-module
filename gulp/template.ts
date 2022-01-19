@@ -6,14 +6,22 @@ export default async function templateTask(): Promise<void> {
   // We somehow have to get TS to reimport the files each time. Currently they
   // are only loaded the first time and then cached.
   const imports = Promise.all([
-    import("../src/main/typescript/data/actor/playerCharacter/source.js"),
+    import("../src/main/typescript/data/actor/character/source.js"),
     import("../src/main/typescript/data/item/effect/source.js"),
     import("../src/main/typescript/data/item/weapon/source.js")
   ]);
   await fs.mkdir(distWvPrefix, { recursive: true });
   const [actorDbData, effectSource, weaponSource] = await imports;
 
-  const actorDocumentTypes = [new actorDbData.PlayerCharacterDataSourceData()];
+  // FIXME: Remove (compat to be able to migrate)
+  const characterDocumentType = new actorDbData.CharacterDataSourceData();
+  const playerCharacterDocumentType = new actorDbData.CharacterDataSourceData();
+  playerCharacterDocumentType.getTypeName = () => "playerCharacter";
+
+  const actorDocumentTypes = [
+    characterDocumentType,
+    playerCharacterDocumentType
+  ];
   const itemDocumentTypes = [
     new effectSource.EffectDataSourceData(),
     new weaponSource.WeaponDataSourceData()

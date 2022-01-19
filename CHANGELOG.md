@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SPECIALs are no longer one flat value, but track the points invested, their
   base value, permanent and temporary total
   ([#129](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/129))
+- the type name of characters is changed from "playerCharacter" to "character"
 
 ### Removed
 

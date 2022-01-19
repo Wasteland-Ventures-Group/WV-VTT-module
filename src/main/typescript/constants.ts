@@ -79,7 +79,7 @@ export function isSkillName(name: string): name is SkillName {
 export const TYPES = {
   /** Type names for Actor types */
   ACTOR: {
-    PLAYER_CHARACTER: "playerCharacter"
+    CHARACTER: "character"
   },
   /** Type names for Item types */
   ITEM: {

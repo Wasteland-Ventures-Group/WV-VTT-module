@@ -14,8 +14,8 @@ import {
   Skill,
   Skills,
   Special
-} from "../data/actor/playerCharacter/properties.js";
-import type PlayerCharacterDataSource from "../data/actor/playerCharacter/source.js";
+} from "../data/actor/character/properties.js";
+import type CharacterDataSource from "../data/actor/character/source.js";
 import type { Resource } from "../data/foundryCommon.js";
 import type DragData from "../dragData.js";
 import Formulator from "../formulator.js";
@@ -531,6 +531,6 @@ interface RollOptions {
 }
 
 /** The type of the update data for WvActors. */
-export type UpdateData = DeepPartial<PlayerCharacterDataSource> & {
+export type UpdateData = DeepPartial<CharacterDataSource> & {
   _id: string | null;
 };

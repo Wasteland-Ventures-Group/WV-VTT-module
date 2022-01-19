@@ -1,4 +1,3 @@
-// vim: foldmethod=marker
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import {
   CONSTANTS,
@@ -30,16 +29,8 @@ import type RuleElement from "../ruleEngine/ruleElement.js";
 import WvI18n from "../wvI18n.js";
 import type { PlayerCharacterDataSource } from "./../data/actor/source.js";
 
-/* eslint-disable @typescript-eslint/member-ordering */
-
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
-  // Data access {{{1
-
-  // Main stats access {{{2
-
-  // Getters {{{3
-
   /** A convenience getter for the Actor's hit points. */
   get hitPoints(): Resource {
     return this.data.data.vitals.hitPoints;
@@ -53,6 +44,16 @@ export default class WvActor extends Actor {
   /** A convenience getter for the Actor's strain. */
   get strain(): Resource {
     return this.data.data.vitals.strain;
+  }
+
+  /** Get the ground movement range of the actor. */
+  get groundMoveRange(): number {
+    return getGroundMoveRange(this);
+  }
+
+  /** Get the ground sprint movement range of the actor. */
+  get groundSprintMoveRange(): number {
+    return getGroundSprintMoveRange(this);
   }
 
   /**
@@ -78,8 +79,6 @@ export default class WvActor extends Actor {
 
     return skill;
   }
-
-  // Update methods {{{3
 
   /**
    * Create update data for updating the hit points and optionally update the
@@ -128,35 +127,6 @@ export default class WvActor extends Actor {
     return updateData;
   }
 
-  // Misc stats access {{{2
-
-  /** Get the ground movement range of the actor. */
-  get groundMoveRange(): number {
-    return getGroundMoveRange(this);
-  }
-
-  /** Get the ground sprint movement range of the actor. */
-  get groundSprintMoveRange(): number {
-    return getGroundSprintMoveRange(this);
-  }
-
-  // Other access {{{2
-
-  /** Get RuleElements that apply to this Actor. */
-  get applicableRuleElements(): RuleElement[] {
-    const rules: RuleElement[] = [];
-
-    this.data.items.forEach((item) => {
-      item.data.data.rules.elements.forEach((rule) => {
-        if (rule.target === "actor") rules.push(rule);
-      });
-    });
-
-    return rules;
-  }
-
-  // Rolls {{{1
-
   /**
    * Roll a SPECIAL for this Actor.
    * @param name - the name of the SPECIAL to roll
@@ -203,10 +173,26 @@ export default class WvActor extends Actor {
       .then((r) => r.toMessage(msgOptions));
   }
 
-  // Data computation {{{1
-
   override prepareBaseData(): void {
-    this.computeBase();
+    const data = this.data.data;
+
+    // Compute the level -------------------------------------------------------
+    data.leveling.level = Math.floor(
+      (1 + Math.sqrt(data.leveling.experience / 12.5 + 1)) / 2
+    );
+
+    // Compute the maximum skill points to spend -------------------------------
+    data.leveling.maxSkillPoints = data.leveling.levelIntelligences.reduce(
+      (skillPoints, intelligence) =>
+        skillPoints + Math.floor(intelligence / 2) + 10,
+      0
+    );
+
+    // Compute the SPECIALs ----------------------------------------------------
+    for (const special of SpecialNames) {
+      const points = data.leveling.specialPoints[special];
+      data.specials[special] = new Special(points, points, points);
+    }
   }
 
   override prepareEmbeddedDocuments(): void {
@@ -217,228 +203,95 @@ export default class WvActor extends Actor {
   }
 
   override prepareDerivedData(): void {
-    this.computeBaseVitals();
-    this.computeBaseSecondary();
-    this.computeBaseSkills();
-    this.applySizeModifiers();
-  }
+    const data = this.data.data;
 
-  // Computations before items {{{2
+    // Compute the maximum hit points ------------------------------------------
+    data.vitals.hitPoints.max = this.getSpecial("endurance").permTotal + 10;
 
-  /** Compute and set the Actor's derived statistics. */
-  protected computeBase(): void {
-    this.computeBaseLeveling();
-    this.computeBaseSpecials();
-  }
-
-  // Leveling {{{3
-
-  /** Compute and set the Actor's derived leveling statistics. */
-  protected computeBaseLeveling(): void {
-    const leveling = this.data.data.leveling;
-    leveling.level = this.computeLevel();
-    leveling.maxSkillPoints = this.computeBaseMaxSkillPoints();
-  }
-
-  /** Compute the level of the Actor. */
-  protected computeLevel(): number {
-    return Math.floor(
-      (1 + Math.sqrt(this.data.data.leveling.experience / 12.5 + 1)) / 2
-    );
-  }
-
-  /** Compute the base maximum skill points of the Actor. */
-  protected computeBaseMaxSkillPoints(): number {
-    return this.data.data.leveling.levelIntelligences.reduce(
-      (skillPoints, intelligence) =>
-        skillPoints + Math.floor(intelligence / 2) + 10,
-      0
-    );
-  }
-
-  // SPECIALs {{{3
-
-  protected computeBaseSpecials(): void {
-    const specials = this.data.data.specials;
-    for (const special of SpecialNames) {
-      const points = this.data.data.leveling.specialPoints[special];
-      specials[special] = new Special(points, points, points);
-    }
-  }
-
-  // Computations after items {{{2
-
-  // Vitals {{{3
-
-  /** Compute and set the Actor's derived vitals statistics. */
-  protected computeBaseVitals(): void {
-    const vitals = this.data.data.vitals;
-    vitals.hitPoints.max = this.computeBaseMaxHitPoints();
-    vitals.healingRate = this.computeBaseHealingRate();
-    vitals.actionPoints.max = this.computeBaseMaxActionPoints();
-    vitals.strain.max = this.computeBaseMaxStrain();
-    vitals.insanity.max = this.computeBaseMaxInsanity();
-  }
-
-  /** Compute the base healing rate of the actor. */
-  protected computeBaseHealingRate(): number {
+    // Compute the maximum healing rate ----------------------------------------
     const endurance = this.getSpecial("endurance");
     if (endurance.tempTotal >= 8) {
-      return 3;
+      data.vitals.healingRate = 3;
     } else if (endurance.tempTotal >= 4) {
-      return 2;
+      data.vitals.healingRate = 2;
     } else {
-      return 1;
+      data.vitals.healingRate = 1;
     }
-  }
 
-  /** Compute the base maximum action points of the Actor. */
-  protected computeBaseMaxActionPoints(): number {
-    return Math.floor(this.getSpecial("agility").tempTotal / 2) + 10;
-  }
+    // Compute the maximum action points ---------------------------------------
+    data.vitals.actionPoints.max =
+      Math.floor(this.getSpecial("agility").tempTotal / 2) + 10;
 
-  /** Compute the base maximum health of the Actor. */
-  protected computeBaseMaxHitPoints(): number {
-    return this.getSpecial("endurance").permTotal + 10;
-  }
-
-  /** Compute the base maximum insanity of the Actor. */
-  protected computeBaseMaxInsanity(): number {
-    return Math.floor(this.getSpecial("intelligence").tempTotal / 2) + 5;
-  }
-
-  /**
-   * Compute the base maximum strain of the Actor. This should be called after
-   * the level of the Actor has been computed.
-   */
-  protected computeBaseMaxStrain(): number {
-    const level = this.data.data.leveling.level;
+    // Compute the maximum strain ----------------------------------------------
+    const level = data.leveling.level;
     if (level === undefined)
       throw new Error("The level should be computed before computing strain.");
+    data.vitals.strain.max = 20 + Math.floor(level / 5) * 5;
 
-    return 20 + Math.floor(level / 5) * 5;
-  }
+    // Compute the maximum insanity --------------------------------------------
+    data.vitals.insanity.max =
+      Math.floor(this.getSpecial("intelligence").tempTotal / 2) + 5;
 
-  // Secondary {{{3
+    // Init the secondary statistics -------------------------------------------
+    data.secondary = new SecondaryStatistics();
 
-  /** Compute and set the Actor's derived secondary statistics. */
-  protected computeBaseSecondary(): void {
-    const secondary = new SecondaryStatistics();
-    secondary.criticals = this.computeBaseCriticals();
-    secondary.maxCarryWeight = this.computeBaseMaxCarryWeight();
-    this.data.data.secondary = secondary;
-  }
-
-  /** Compute the base critical stats of the Actor. */
-  protected computeBaseCriticals(): Criticals {
+    // Compute the critical values ---------------------------------------------
     const luck = this.getSpecial("luck").tempTotal;
-    return new Criticals(Math.max(1, luck), Math.min(100, 90 + luck));
-  }
+    data.secondary.criticals = new Criticals(
+      Math.max(1, luck),
+      Math.min(100, 90 + luck)
+    );
 
-  /** Compute the base maximum carry weight of the Actor in kg. */
-  protected computeBaseMaxCarryWeight(): number {
-    return this.getSpecial("strength").tempTotal * 5 + 10;
-  }
+    // Compute the maximum carry weight ----------------------------------------
+    data.secondary.maxCarryWeight =
+      this.getSpecial("strength").tempTotal * 5 + 10;
 
-  // Skills {{{3
-
-  /** Compute and set the skill values of an actor. */
-  protected computeBaseSkills(): void {
-    this.data.data.skills = this.computeBaseSkillValues();
-  }
-
-  /** Compute the base skill values of an Actor. */
-  protected computeBaseSkillValues(): Skills {
+    // Compute the skills ------------------------------------------------------
     const skills = new Skills();
     let skill: SkillName;
     for (skill in CONSTANTS.skillSpecials) {
       skills[skill] = this.computeBaseSkill(skill);
     }
     skills["thaumaturgy"] = this.computeBaseSkill("thaumaturgy");
-    return skills;
-  }
+    data.skills = skills;
 
-  /**
-   * Compute the initial Skill for the given skill name. This includes the
-   * SPECIAL derived starting value and the final value only increased by skill
-   * point ranks.
-   * @param skill - the name of the skill
-   */
-  protected computeBaseSkill(skill: SkillName): Skill {
-    const baseSkill = this.computeSpecialSkillValue(skill);
-    return new Skill(
-      baseSkill,
-      baseSkill + this.data.data.leveling.skillRanks[skill]
-    );
-  }
-
-  /**
-   * Compute the base skill value of an Actor, derived from SPECIAL.
-   * @param skill - the name of the skill
-   */
-  protected computeSpecialSkillValue(skill: SkillName): number {
-    const special: SpecialName =
-      skill === "thaumaturgy"
-        ? this.data.data.magic.thaumSpecial
-        : CONSTANTS.skillSpecials[skill];
-    return (
-      this.getSpecial(special).permTotal * 2 +
-      Math.floor(this.getSpecial("luck").permTotal / 2)
-    );
-  }
-
-  /**
-   * Apply the stat modifiers, based on the size category of the Actor.
-   * @throws if max hit points or max carry weight are not defined
-   */
-  protected applySizeModifiers(): void {
-    if (
-      this.data.data.vitals.hitPoints.max === undefined ||
-      this.data.data.secondary === undefined ||
-      this.data.data.secondary.maxCarryWeight === undefined
-    )
-      throw new Error(
-        "Max hit points and carry weight should be computed before size modifiers"
-      );
-
+    // Modify values based on the size -----------------------------------------
     // TODO: hit chance, reach, combat trick mods
-    switch (this.data.data.background.size) {
+    switch (data.background.size) {
       case 4:
-        this.data.data.vitals.hitPoints.max += 4;
-        this.data.data.secondary.maxCarryWeight += 60;
+        data.vitals.hitPoints.max += 4;
+        data.secondary.maxCarryWeight += 60;
         break;
       case 3:
-        this.data.data.vitals.hitPoints.max += 2;
-        this.data.data.secondary.maxCarryWeight += 40;
+        data.vitals.hitPoints.max += 2;
+        data.secondary.maxCarryWeight += 40;
         break;
       case 2:
-        this.data.data.vitals.hitPoints.max += 1;
-        this.data.data.secondary.maxCarryWeight += 10;
+        data.vitals.hitPoints.max += 1;
+        data.secondary.maxCarryWeight += 10;
         break;
       case 1:
-        this.data.data.secondary.maxCarryWeight += 5;
+        data.secondary.maxCarryWeight += 5;
         break;
       case -1:
-        this.data.data.secondary.maxCarryWeight -= 5;
+        data.secondary.maxCarryWeight -= 5;
         break;
       case -2:
-        this.data.data.vitals.hitPoints.max -= 1;
-        this.data.data.secondary.maxCarryWeight -= 10;
+        data.vitals.hitPoints.max -= 1;
+        data.secondary.maxCarryWeight -= 10;
         break;
       case -3:
-        this.data.data.vitals.hitPoints.max -= 2;
-        this.data.data.secondary.maxCarryWeight -= 40;
+        data.vitals.hitPoints.max -= 2;
+        data.secondary.maxCarryWeight -= 40;
         break;
       case -4:
-        this.data.data.vitals.hitPoints.max -= 4;
-        this.data.data.secondary.maxCarryWeight -= 60;
+        data.vitals.hitPoints.max -= 4;
+        data.secondary.maxCarryWeight -= 60;
         break;
       case 0:
       default:
     }
   }
-
-  // Data Validation {{{1
 
   /**
    * Check whether the passed change data is valid.
@@ -454,6 +307,40 @@ export default class WvActor extends Actor {
     if (!this.validSpecials(change)) return false;
 
     return true;
+  }
+
+  /** Get RuleElements that apply to this Actor. */
+  protected get applicableRuleElements(): RuleElement[] {
+    const rules: RuleElement[] = [];
+
+    this.data.items.forEach((item) => {
+      item.data.data.rules.elements.forEach((rule) => {
+        if (rule.target === "actor") rules.push(rule);
+      });
+    });
+
+    return rules;
+  }
+
+  /**
+   * Compute the initial Skill for the given skill name. This includes the
+   * SPECIAL derived starting value and the final value only increased by skill
+   * point ranks.
+   * @param skill - the name of the skill
+   */
+  protected computeBaseSkill(skill: SkillName): Skill {
+    const baseSkill =
+      this.getSpecial(
+        skill === "thaumaturgy"
+          ? this.data.data.magic.thaumSpecial
+          : CONSTANTS.skillSpecials[skill]
+      ).permTotal *
+        2 +
+      Math.floor(this.getSpecial("luck").permTotal / 2);
+    return new Skill(
+      baseSkill,
+      baseSkill + this.data.data.leveling.skillRanks[skill]
+    );
   }
 
   /**
@@ -570,10 +457,7 @@ export default class WvActor extends Actor {
 
     return true;
   }
-  // }}}1
 }
-
-/* eslint-enable @typescript-eslint/member-ordering */
 
 /** The drag data of an Actor SPECIAL */
 export interface SpecialDragData extends DragData {

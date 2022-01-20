@@ -10,7 +10,6 @@ import type { AttackSource } from "../../data/item/weapon/attack/source.js";
 import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";
 import { getGame } from "../../foundryHelpers.js";
-import * as helpers from "../../helpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 import * as interact from "../../interaction.js";
@@ -208,10 +207,10 @@ export default class Attack {
 
     const low =
       this.data.damage.dice +
-      this.getStrengthDamageDiceMod(helpers.getSpecialMinPoints());
+      this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.min);
     const high =
       this.data.damage.dice +
-      this.getStrengthDamageDiceMod(helpers.getSpecialMaxPoints());
+      this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.max);
     return `${this.data.damage.base}+(${low}-${high})`;
   }
 

@@ -1,6 +1,6 @@
 import type Effect from "../../item/effect.js";
 import { TYPES } from "../../constants.js";
-import { isOfItemType } from "../../helpers.js";
+import { isOfItemType } from "../../item/wvItem.js";
 import WvItemSheet from "./wvItemSheet.js";
 
 /** An Item Sheet for Effect items. */

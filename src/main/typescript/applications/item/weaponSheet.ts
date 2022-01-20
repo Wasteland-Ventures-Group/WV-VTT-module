@@ -1,6 +1,6 @@
 import { TYPES } from "../../constants.js";
 import type { RangeSource } from "../../data/item/weapon/ranges/source.js";
-import { isOfItemType } from "../../helpers.js";
+import { isOfItemType } from "../../item/wvItem.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import * as ranges from "../../item/weapon/ranges.js";

@@ -11,6 +11,8 @@ import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvRuler from "./foundryOverrides/wvRuler.js";
 import WvToken from "./foundryOverrides/wvToken.js";
+import Effect from "./item/effect.js";
+import Weapon from "./item/weapon.js";
 import WvItem from "./item/wvItem.js";
 import { macros } from "./macros/index.js";
 import {
@@ -26,6 +28,15 @@ export function configureFoundryOnInit(): void {
   getGame().wv = {
     ajv,
     macros,
+    typeConstructors: {
+      actor: {
+        character: WvActor
+      },
+      item: {
+        effect: Effect,
+        weapon: Weapon
+      }
+    },
     validators: {
       actor: {
         character: ajv.compile(CHARACTER_JSON_SCHEMA)

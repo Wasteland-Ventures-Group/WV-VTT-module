@@ -6,7 +6,6 @@ import type {
   DistanceSource,
   SpecialBasedRangeSource
 } from "../../data/item/weapon/ranges/source.js";
-import { getSpecialMaxPoints, getSpecialMinPoints } from "../../helpers.js";
 
 /** A type representing the different range brackets */
 export enum RangeBracket {
@@ -55,8 +54,8 @@ export function getDisplayRangeDistance(
     return getSpecialRangeDistance(distance, specialValue).toString();
   } else {
     return [
-      getSpecialRangeDistance(distance, getSpecialMinPoints()),
-      getSpecialRangeDistance(distance, getSpecialMaxPoints())
+      getSpecialRangeDistance(distance, CONSTANTS.bounds.special.points.min),
+      getSpecialRangeDistance(distance, CONSTANTS.bounds.special.points.max)
     ].join("-");
   }
 }

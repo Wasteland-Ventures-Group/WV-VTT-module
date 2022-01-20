@@ -5,7 +5,6 @@ import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import { RULE_ELEMENTS } from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
-import { isMappedItemType, TYPE_CONSTRUCTORS } from "../typeMappings.js";
 import validateSystemData from "../validation/validateSystemData.js";
 
 /** The basic Wasteland Ventures Item. */
@@ -45,7 +44,7 @@ export default class WvItem extends Item {
         // If we are able to find a mapped constructor, then use that one
         // instead and instantiate a subclass of WvItem with the readied
         // context to break out of the recursion.
-        return new TYPE_CONSTRUCTORS.ITEM[data.type](
+        return new (getGame().wv.typeConstructors.item[data.type])(
           data,
           WvItem.readyContext(context)
         );
@@ -124,3 +123,30 @@ type ItemContext = ConstructorParameters<typeof Item>[1] & {
     ready?: boolean;
   };
 };
+
+/**
+ * A custom typeguard to check whether a string is a mapped type identifier.
+ * @param type - the type name to check
+ * @returns whether the type name is mapped
+ */
+export function isMappedItemType(
+  type: string
+): type is keyof Game["wv"]["typeConstructors"]["item"] {
+  return Object.keys(getGame().wv.typeConstructors.item).includes(type);
+}
+
+/**
+ * A custom typeguard to check whether an Item is of the type, mapped from the
+ * type name.
+ * @param item - the item to check
+ * @param type - the type name to check
+ * @returns whether the Item is of the mapped type
+ */
+export function isOfItemType<
+  T extends keyof Game["wv"]["typeConstructors"]["item"]
+>(
+  item: Item,
+  type: T
+): item is InstanceType<Game["wv"]["typeConstructors"]["item"][T]> {
+  return item instanceof getGame().wv.typeConstructors.item[type];
+}

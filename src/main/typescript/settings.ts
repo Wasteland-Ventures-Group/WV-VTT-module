@@ -3,18 +3,6 @@ import { getGame } from "./foundryHelpers.js";
 
 export const initializedSettingName = "initialized" as const;
 export const migrVerSettingName = "systemMigrationVersion" as const;
-export const boundsSettingNames = {
-  skills: {
-    points: {
-      min: "bounds.skills.points.min"
-    }
-  },
-  special: {
-    points: {
-      min: "bounds.special.points.min"
-    }
-  }
-} as const;
 export const enforceApDragDropSettingName = "enforceApDragDrop" as const;
 export const enforceApRulerSettingName = "enforceApRuler" as const;
 
@@ -41,27 +29,7 @@ export function registerSystemSettings(): void {
     type: String
   });
 
-  let i18nPrefix = "wv.system.settings.skillPointsMinBounds";
-  settings.register(CONSTANTS.systemId, boundsSettingNames.skills.points.min, {
-    config: true,
-    default: CONSTANTS.bounds.skills.points.min,
-    hint: i18n.localize(`${i18nPrefix}.hint`),
-    name: i18n.localize(`${i18nPrefix}.name`),
-    scope: "world",
-    type: Number
-  });
-
-  i18nPrefix = "wv.system.settings.specialPointsMinBounds";
-  settings.register(CONSTANTS.systemId, boundsSettingNames.special.points.min, {
-    config: true,
-    default: CONSTANTS.bounds.special.points.min,
-    hint: i18n.localize(`${i18nPrefix}.hint`),
-    name: i18n.localize(`${i18nPrefix}.name`),
-    scope: "world",
-    type: Number
-  });
-
-  i18nPrefix = "wv.system.settings.enforceApDragDrop";
+  let i18nPrefix = "wv.system.settings.enforceApDragDrop";
   settings.register(CONSTANTS.systemId, enforceApDragDropSettingName, {
     choices: {
       [EnforceApSetting.DISABLED]: i18n.localize(

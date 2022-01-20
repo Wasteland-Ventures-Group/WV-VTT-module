@@ -14,7 +14,6 @@ import {
 } from "../../constants.js";
 import type { Special } from "../../data/actor/character/specials/properties.js";
 import { getGame } from "../../foundryHelpers.js";
-import { getSkillMinPoints, getSpecialMinPoints } from "../../helpers.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
 import Prompt from "../prompt.js";
@@ -119,9 +118,6 @@ export default class WvActorSheet extends ActorSheet {
         weapons: []
       }
     };
-
-    sheetData.sheet.bounds.skills.points.min = getSkillMinPoints();
-    sheetData.sheet.bounds.special.points.min = getSpecialMinPoints();
 
     for (const item of this.actor.items) {
       if (!item.id) continue;

@@ -83,17 +83,7 @@ export const TYPES = {
   },
   /** Type names for Item types */
   ITEM: {
-    AERIAL_MANEUVER: "aerialManeuver",
     EFFECT: "effect",
-    ITEM: "item",
-    MARK: "mark",
-    PAST: "past",
-    PERK: "perk",
-    QUIRK: "quirk",
-    RANGED_WEAPON: "rangedWeapon",
-    SCHEMATIC: "schematic",
-    SPELL: "spell",
-    TRAIT: "trait",
     WEAPON: "weapon"
   }
 } as const;

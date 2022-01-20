@@ -20,6 +20,8 @@ import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import type BaseItem from "./data/item/baseItem.js";
 import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
 import type { CharacterDataSourceData } from "./data/actor/character/source.js";
+import type Effect from "./item/effect.js";
+import type Weapon from "./item/weapon.js";
 
 declare global {
   interface SourceConfig {
@@ -45,6 +47,15 @@ declare global {
       ajv: Ajv;
       /** Wasteland Ventures macros */
       macros: typeof macros;
+      typeConstructors: {
+        actor: {
+          character: typeof WvActor;
+        };
+        item: {
+          effect: typeof Effect;
+          weapon: typeof Weapon;
+        };
+      };
       /** Wasteland Ventures system data JSON validators */
       validators: {
         actor: {

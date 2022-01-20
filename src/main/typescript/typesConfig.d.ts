@@ -19,6 +19,7 @@ import type { ValidateFunction } from "ajv";
 import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import type BaseItem from "./data/item/baseItem.js";
 import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
+import type { CharacterDataSourceData } from "./data/actor/character/source.js";
 
 declare global {
   interface SourceConfig {
@@ -46,6 +47,11 @@ declare global {
       macros: typeof macros;
       /** Wasteland Ventures system data JSON validators */
       validators: {
+        actor: {
+          [TYPES.ACTOR.CHARACTER]: ValidateFunction<
+            Omit<CharacterDataSourceData, "getTypeName">
+          >;
+        };
         item: {
           [TYPES.ITEM.EFFECT]: ValidateFunction<Omit<BaseItem, "getTypeName">>;
           [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;

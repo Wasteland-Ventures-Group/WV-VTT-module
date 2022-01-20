@@ -129,4 +129,5 @@ function migrateTo_0_10_0(
       updateData[`data.specials.-=${special}`] = null;
     }
   }
+  updateData["data.-=specials"] = null;
 }

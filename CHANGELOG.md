@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - social contacts
 - a limited character sheet for limited access to a character
   ([#11](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/11))
+- JSON schema validation for character system data at runtime
 
 ### Changed
 

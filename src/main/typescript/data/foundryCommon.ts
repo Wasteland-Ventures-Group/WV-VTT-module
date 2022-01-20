@@ -1,3 +1,4 @@
+import type { JSONSchemaType } from "ajv";
 import { TYPES } from "../constants.js";
 
 /**
@@ -12,6 +13,17 @@ export class Resource {
     public max?: number
   ) {}
 }
+
+export const RESOURCE_JSON_SCHEMA: JSONSchemaType<Resource> = {
+  description: "A schema for a Foundry resource",
+  type: "object",
+  properties: {
+    value: { type: "number", minimum: 0 },
+    max: { type: "number", nullable: true }
+  },
+  required: ["value"],
+  additionalProperties: false
+};
 
 /** An interface to model Foundry's compendium layout. */
 export interface FoundryCompendiumData<T> {

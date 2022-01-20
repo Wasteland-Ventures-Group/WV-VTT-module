@@ -1,32 +1,32 @@
+import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
+import type { ActorDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
+import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import {
   CONSTANTS,
   isSkillName,
   isSpecialName,
   SkillName,
-  SkillNames,
   SpecialName,
   SpecialNames
 } from "../constants.js";
 import {
   Criticals,
-  SecondaryStatistics,
-  Skill,
-  Skills,
-  Special
+  SecondaryStatistics
 } from "../data/actor/character/properties.js";
+import Skills, { Skill } from "../data/actor/character/skills/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
+import Specials, {
+  Special
+} from "../data/actor/character/specials/properties.js";
 import type { Resource } from "../data/foundryCommon.js";
 import type DragData from "../dragData.js";
 import Formulator from "../formulator.js";
-import {
-  getSkillMaxPoints,
-  getSkillMinPoints,
-  getSpecialMaxPoints,
-  getSpecialMinPoints
-} from "../helpers.js";
+import { getGame } from "../foundryHelpers.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
+import SystemDataSchemaError from "../systemDataSchemaError.js";
+import { LOG } from "../systemLogger.js";
 import WvI18n from "../wvI18n.js";
 
 /** The basic Wasteland Ventures Actor. */
@@ -189,6 +189,7 @@ export default class WvActor extends Actor {
     );
 
     // Compute the SPECIALs ----------------------------------------------------
+    data.specials = new Specials();
     for (const special of SpecialNames) {
       const points = data.leveling.specialPoints[special];
       data.specials[special] = new Special(points, points, points);
@@ -247,13 +248,12 @@ export default class WvActor extends Actor {
       this.getSpecial("strength").tempTotal * 5 + 10;
 
     // Compute the skills ------------------------------------------------------
-    const skills = new Skills();
+    data.skills = new Skills();
     let skill: SkillName;
     for (skill in CONSTANTS.skillSpecials) {
-      skills[skill] = this.computeBaseSkill(skill);
+      data.skills[skill] = this.computeBaseSkill(skill);
     }
-    skills["thaumaturgy"] = this.computeBaseSkill("thaumaturgy");
-    data.skills = skills;
+    data.skills["thaumaturgy"] = this.computeBaseSkill("thaumaturgy");
 
     // Modify values based on the size -----------------------------------------
     // TODO: hit chance, reach, combat trick mods
@@ -293,20 +293,27 @@ export default class WvActor extends Actor {
     }
   }
 
-  /**
-   * Check whether the passed change data is valid.
-   * @param change - the change data to validate
-   * @returns whether the data is valid
-   */
-  validChangeData(
-    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): boolean {
-    if (!this.validVitals(change)) return false;
-    if (!this.validBackground(change)) return false;
-    if (!this.validLeveling(change)) return false;
-    if (!this.validSpecials(change)) return false;
+  protected override async _preCreate(
+    data: ActorDataConstructorData,
+    options: DocumentModificationOptions,
+    user: BaseUser
+  ): Promise<void> {
+    super._preCreate(data, options, user);
+    this.validateSystemData(this.data._source.data);
+  }
 
-    return true;
+  protected override async _preUpdate(
+    changed: DeepPartial<ActorDataConstructorData>,
+    options: DocumentModificationOptions,
+    user: BaseUser
+  ): Promise<void> {
+    super._preUpdate(changed, options, user);
+    this.validateSystemData(
+      foundry.utils.mergeObject(this.data._source.data, changed.data ?? {}, {
+        recursive: options.recursive,
+        inplace: false
+      })
+    );
   }
 
   /** Get RuleElements that apply to this Actor. */
@@ -343,119 +350,33 @@ export default class WvActor extends Actor {
     );
   }
 
-  /**
-   * Validate the vitals update data.
-   * @param change - the change data to validate
-   * @returns whether the data is valid
-   */
-  protected validVitals(
-    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): boolean {
-    if (!change?.data) return true;
+  /** Validate passed source system data. */
+  protected validateSystemData(data: unknown): void {
+    const validator = getGame().wv.validators.actor[this.data.type];
+    if (validator(data)) {
+      if (
+        this.hitPoints.max &&
+        data.vitals.hitPoints.value > this.hitPoints.max
+      )
+        throw new Error("The hit points value exceeds the maximum.");
 
-    if (change.data.vitals) {
-      const vitals = change.data.vitals;
-      const min = 0;
+      if (
+        this.actionPoints.max &&
+        data.vitals.actionPoints.value > this.actionPoints.max
+      )
+        throw new Error("The action points value exceeds the maximum.");
 
-      if (vitals.hitPoints?.value && this.hitPoints.max) {
-        const value = vitals.hitPoints.value;
-        const max = this.hitPoints.max;
-        if (!value.between(min, max)) return false;
-      }
+      if (this.strain.max && data.vitals.strain.value > this.strain.max)
+        throw new Error("The strain value exceeds the maximum.");
 
-      if (vitals.actionPoints?.value && this.actionPoints.max) {
-        const value = vitals.actionPoints.value;
-        const max = this.actionPoints.max;
-        if (!value.between(min, max)) return false;
-      }
-
-      if (vitals.strain?.value && this.strain.max) {
-        const value = vitals.strain.value;
-        const max = this.strain.max;
-        if (!value.between(min, max)) return false;
-      }
+      return;
     }
 
-    return true;
-  }
-
-  /**
-   * Validate the background update data.
-   * @param change - the change data to validate
-   * @returns whether the data is valid
-   */
-  protected validBackground(
-    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): boolean {
-    if (!change?.data) return true;
-
-    if (change.data.background) {
-      const background = change.data.background;
-
-      if (background.karma) {
-        const value = background.karma;
-        const max = CONSTANTS.bounds.karma.max;
-        const min = CONSTANTS.bounds.karma.min;
-        if (!value.between(min, max)) return false;
-      }
+    for (const error of validator.errors ?? []) {
+      LOG.error(error);
     }
 
-    return true;
-  }
-
-  /**
-   * Validate the leveling update data.
-   * @param change - the change data to validate
-   * @returns whether the data is valid
-   */
-  protected validLeveling(
-    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): boolean {
-    if (!change?.data) return true;
-
-    if (change.data.leveling) {
-      const leveling = change.data.leveling;
-
-      if (leveling.experience) {
-        const value = leveling.experience;
-        const max = CONSTANTS.bounds.experience.max;
-        const min = CONSTANTS.bounds.experience.min;
-        if (!value.between(min, max)) return false;
-      }
-
-      if (leveling.skillRanks) {
-        const max = getSkillMaxPoints();
-        const min = getSkillMinPoints();
-        for (const skill of SkillNames) {
-          const value = leveling.skillRanks[skill];
-          if (value && !value.between(min, max)) return false;
-        }
-      }
-    }
-
-    return true;
-  }
-
-  /**
-   * Validate the vitals update data.
-   * @param change - the change data to validate
-   * @returns whether the data is valid
-   */
-  protected validSpecials(
-    change: DeepPartial<ConstructorParameters<typeof Actor>[0]>
-  ): boolean {
-    if (!change?.data) return true;
-
-    if (change.data?.leveling?.specialPoints) {
-      const max = getSpecialMaxPoints();
-      const min = getSpecialMinPoints();
-      for (const special of SpecialNames) {
-        const value = change.data.leveling.specialPoints[special];
-        if (value && !value.between(min, max)) return false;
-      }
-    }
-
-    return true;
+    throw new SystemDataSchemaError(validator.errors ?? []);
   }
 }
 

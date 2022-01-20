@@ -12,7 +12,7 @@ import {
   ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
-import type { Special } from "../../data/actor/character/properties.js";
+import type { Special } from "../../data/actor/character/specials/properties.js";
 import { getGame } from "../../foundryHelpers.js";
 import { getSkillMinPoints, getSpecialMinPoints } from "../../helpers.js";
 import { LOG } from "../../systemLogger.js";

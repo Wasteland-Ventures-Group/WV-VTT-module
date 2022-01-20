@@ -111,6 +111,11 @@ export const CONSTANTS = {
       max: 100,
       min: -100
     },
+    /** Bounds for the size category */
+    size: {
+      max: 4,
+      min: -4
+    },
     /** Bounds related to SPECIAL values. */
     special: {
       /** The bounds for points invested in a SPECIAL. */

@@ -1,27 +1,27 @@
+import type Ajv from "ajv";
+import type { ValidateFunction } from "ajv";
 import WvActor from "./actor/wvActor.js";
 import type { CONSTANTS, TYPES } from "./constants.js";
+import type { CharacterDataSourceData } from "./data/actor/character/source.js";
 import { WvActorDataProperties } from "./data/actor/properties.js";
 import { WvActorDataSource } from "./data/actor/source.js";
+import type BaseItem from "./data/item/baseItem.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
 import { WvItemDataSource } from "./data/item/source.js";
+import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage/index.js";
+import type Effect from "./item/effect.js";
+import type Weapon from "./item/weapon.js";
 import WvItem from "./item/wvItem.js";
+import { macros } from "./macros/index.js";
 import type {
   Critical,
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
-import type * as settings from "./settings.js";
-import { macros } from "./macros/index.js";
-import type Ajv from "ajv";
-import type { ValidateFunction } from "ajv";
-import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
-import type BaseItem from "./data/item/baseItem.js";
 import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
-import type { CharacterDataSourceData } from "./data/actor/character/source.js";
-import type Effect from "./item/effect.js";
-import type Weapon from "./item/weapon.js";
+import type * as settings from "./settings.js";
 
 declare global {
   interface SourceConfig {
@@ -59,12 +59,10 @@ declare global {
       /** Wasteland Ventures system data JSON validators */
       validators: {
         actor: {
-          [TYPES.ACTOR.CHARACTER]: ValidateFunction<
-            Omit<CharacterDataSourceData, "getTypeName">
-          >;
+          [TYPES.ACTOR.CHARACTER]: ValidateFunction<CharacterDataSourceData>;
         };
         item: {
-          [TYPES.ITEM.EFFECT]: ValidateFunction<Omit<BaseItem, "getTypeName">>;
+          [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItem>;
           [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;
         };
         ruleElement: ValidateFunction<RuleElementSource>;

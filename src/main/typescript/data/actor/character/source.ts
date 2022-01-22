@@ -1,6 +1,5 @@
 import type { JSONSchemaType } from "ajv";
-import { TYPES } from "../../../constants.js";
-import type { TemplateDocumentType } from "../../common.js";
+import type { TYPES } from "../../../constants.js";
 import BackgroundSource, {
   BACKGROUND_JSON_SCHEMA
 } from "./background/source.js";
@@ -15,7 +14,7 @@ export default interface CharacterDataSource {
 }
 
 /** The character data-source data */
-export class CharacterDataSourceData implements TemplateDocumentType {
+export class CharacterDataSourceData {
   /** The vitals of an Actor */
   vitals = new VitalsSource();
 
@@ -27,16 +26,9 @@ export class CharacterDataSourceData implements TemplateDocumentType {
 
   /** The background of an Actor */
   background = new BackgroundSource();
-
-  /** @override */
-  getTypeName(): string {
-    return TYPES.ACTOR.CHARACTER;
-  }
 }
 
-export const CHARACTER_JSON_SCHEMA: JSONSchemaType<
-  Omit<CharacterDataSourceData, "getTypeName">
-> = {
+export const CHARACTER_JSON_SCHEMA: JSONSchemaType<CharacterDataSourceData> = {
   description: "The system data for a character Actor",
   type: "object",
   properties: {

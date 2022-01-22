@@ -1,10 +1,9 @@
 import type { JSONSchemaType } from "ajv";
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
-import type { TemplateDocumentType } from "../common.js";
 import RulesSource from "./rules/source.js";
 
 /** This holds the base values that all items have in common. */
-export default abstract class BaseItem implements TemplateDocumentType {
+export default abstract class BaseItem {
   /**
    * The name of the item in the Wasteland Wares list. This is not the name a
    * player can give their specific instance of an item, but rather the name of
@@ -20,15 +19,10 @@ export default abstract class BaseItem implements TemplateDocumentType {
 
   /** The rules of the item. */
   rules: RulesSource = new RulesSource();
-
-  /** @override */
-  abstract getTypeName(): string;
 }
 
 /** A JSON schema for base item objects */
-export const BASE_ITEM_JSON_SCHEMA: JSONSchemaType<
-  Omit<BaseItem, "getTypeName">
-> = {
+export const BASE_ITEM_JSON_SCHEMA: JSONSchemaType<BaseItem> = {
   description: "Common system data for items",
   type: "object",
   properties: {

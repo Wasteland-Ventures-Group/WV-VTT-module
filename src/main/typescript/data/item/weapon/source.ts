@@ -39,10 +39,6 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
 
   /** The strength requirement for this weapon to be equipped */
   strengthRequirement: number = 0;
-
-  override getTypeName(): string {
-    return TYPES.ITEM.WEAPON;
-  }
 }
 
 /** The default object for weapon attacks */

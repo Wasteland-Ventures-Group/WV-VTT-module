@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import { distWvPrefix, templateOutPath } from "../gulpfile.js";
-import type { TemplateDocumentType } from "../src/main/typescript/data/common.js";
+import { TYPES } from "../src/main/typescript/constants.js";
 
 export default async function templateTask(): Promise<void> {
   // We somehow have to get TS to reimport the files each time. Currently they
@@ -13,18 +13,14 @@ export default async function templateTask(): Promise<void> {
   await fs.mkdir(distWvPrefix, { recursive: true });
   const [actorDbData, effectSource, weaponSource] = await imports;
 
-  // FIXME: Remove (compat to be able to migrate)
-  const characterDocumentType = new actorDbData.CharacterDataSourceData();
-  const playerCharacterDocumentType = new actorDbData.CharacterDataSourceData();
-  playerCharacterDocumentType.getTypeName = () => "playerCharacter";
-
-  const actorDocumentTypes = [
-    characterDocumentType,
-    playerCharacterDocumentType
+  const actorDocumentTypes: TemplateDocumentType[] = [
+    [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()],
+    // FIXME: Remove later
+    ["playerCharacter", new actorDbData.CharacterDataSourceData()]
   ];
-  const itemDocumentTypes = [
-    new effectSource.EffectDataSourceData(),
-    new weaponSource.WeaponDataSourceData()
+  const itemDocumentTypes: TemplateDocumentType[] = [
+    [TYPES.ITEM.EFFECT, new effectSource.EffectDataSourceData()],
+    [TYPES.ITEM.WEAPON, new weaponSource.WeaponDataSourceData()]
   ];
   return fs.writeFile(
     templateOutPath,
@@ -46,15 +42,17 @@ function createTemplateObject(
     }
   };
   actorDocumentTypes.forEach((actorDocumentType) => {
-    template.Actor.types.push(actorDocumentType.getTypeName());
-    template.Actor[actorDocumentType.getTypeName()] = actorDocumentType;
+    template.Actor.types.push(actorDocumentType[0]);
+    template.Actor[actorDocumentType[0]] = actorDocumentType[1];
   });
   itemDocumentTypes.forEach((itemDocumentType) => {
-    template.Item.types.push(itemDocumentType.getTypeName());
-    template.Item[itemDocumentType.getTypeName()] = itemDocumentType;
+    template.Item.types.push(itemDocumentType[0]);
+    template.Item[itemDocumentType[0]] = itemDocumentType[1];
   });
   return template;
 }
+
+type TemplateDocumentType = [string, object];
 
 interface Template {
   Actor: DocumentTemplates;

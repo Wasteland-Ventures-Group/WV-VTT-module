@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking
+
+Please upgrade to this version once, if you are upgrading from an earlier
+version, then continue with upgrading to the next version.
+
 ### Added
 
 - added background fields for actors

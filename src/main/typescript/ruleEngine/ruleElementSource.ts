@@ -98,6 +98,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
     },
     required: [
       "enabled",
+      "hook",
       "label",
       "priority",
       "selector",

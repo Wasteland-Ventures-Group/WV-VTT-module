@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- rule element hooks not being required
+
 ## [0.11.1] - 2022-01-22
 
 ### Added

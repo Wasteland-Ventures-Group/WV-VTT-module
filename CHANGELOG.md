@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.1] - 2022-01-22
+
 ### Added
 
 - rule elements can now modify documents at different places in the data

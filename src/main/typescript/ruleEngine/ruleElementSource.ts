@@ -6,6 +6,9 @@ export default interface RuleElementSource {
   /** Whether this rule element is enabled */
   enabled: boolean;
 
+  /** Where in the data preparation chain the rule element applies */
+  hook: RuleElementHook;
+
   /** The label of the element */
   label: string;
 
@@ -27,6 +30,10 @@ export default interface RuleElementSource {
   value: boolean | number | string;
 }
 
+export const RULE_ELEMENT_HOOKS = ["afterSpecial", "afterSkills"] as const;
+
+export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
+
 /** The valid values of a RuleElement target property */
 export const RULE_ELEMENT_TARGETS = ["item", "actor"] as const;
 
@@ -43,6 +50,13 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
         description: "Whether this rule element should take effect",
         type: "boolean",
         default: true
+      },
+      hook: {
+        description:
+          "Where in the data preparation chain the rule element applies",
+        type: "string",
+        enum: RULE_ELEMENT_HOOKS,
+        default: "afterSpecial"
       },
       label: {
         description: "A descriptive label for the rule element",
@@ -94,6 +108,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
     additionalProperties: false,
     default: {
       enabled: true,
+      hook: "afterSpecial",
       label: "New Rule Element",
       priority: 100,
       selector: "",

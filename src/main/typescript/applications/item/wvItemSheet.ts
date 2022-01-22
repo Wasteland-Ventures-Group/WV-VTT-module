@@ -299,6 +299,11 @@ export default class WvItemSheet extends ItemSheet {
 
       case "enum":
         switch (error.schemaPath) {
+          case "#/properties/hook/enum":
+            return new RuleElementMessage(
+              "wv.system.ruleEngine.errors.semantic.unknownHook",
+              "error"
+            );
           case "#/properties/target/enum":
             return new RuleElementMessage(
               "wv.system.ruleEngine.errors.semantic.unknownTarget",

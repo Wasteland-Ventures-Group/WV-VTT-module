@@ -376,6 +376,8 @@ export interface LangSchema {
             missing: string;
             /** An error message for an unknown error. */
             unknown: string;
+            /** An error message for an unknown RuleElement hook. */
+            unknownHook: string;
             /** An error message for an unknown RuleElement type. */
             unknownRuleElement: string;
             /** An error message for an unknown RuleElement target. */

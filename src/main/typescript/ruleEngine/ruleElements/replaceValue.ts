@@ -12,7 +12,16 @@ export default class ReplaceValue extends RuleElement {
     this.checkTypeChanged();
   }
 
-  protected override _onPrepareEmbeddedDocuments(): void {
+  protected override _onAfterSpecial(): void {
+    this.apply();
+  }
+
+  protected override _onAfterSkills(): void {
+    this.apply();
+  }
+
+  /** Apply the rule element to the target Document. */
+  protected apply(): void {
     foundry.utils.setProperty(
       this.targetDoc.data.data,
       this.selector,

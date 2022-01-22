@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- rule elements can now modify documents at different places in the data
+  preparation chain
+
 ## [0.11.0] - 2022-01-22
 
 ### Breaking

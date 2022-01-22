@@ -14,7 +14,16 @@ export default class FlatModifier extends RuleElement {
     this.checkValueIsOfType("number");
   }
 
-  protected override _onPrepareEmbeddedDocuments(): void {
+  protected override _onAfterSpecial(): void {
+    this.apply();
+  }
+
+  protected override _onAfterSkills(): void {
+    this.apply();
+  }
+
+  /** Apply the rule element to the target Document. */
+  protected apply(): void {
     if (typeof this.value !== "number") return;
 
     const oldValue: number = foundry.utils.getProperty(

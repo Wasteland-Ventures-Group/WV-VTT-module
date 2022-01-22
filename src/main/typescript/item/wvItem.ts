@@ -72,7 +72,7 @@ export default class WvItem extends Item {
   override prepareEmbeddedDocuments(): void {
     this.applicableRuleElements
       .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onPrepareEmbeddedDocuments());
+      .forEach((rule) => rule.onAfterSpecial());
   }
 
   /**

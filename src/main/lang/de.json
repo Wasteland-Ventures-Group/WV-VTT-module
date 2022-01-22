@@ -251,6 +251,7 @@
             "additional": "Das Feld \"{property}\" ist nicht erlaubt an Stelle \"{path}\".",
             "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
             "unknown": "Ein unbekannter Fehler is aufgetreten.",
+            "unknownHook": "Der Typ des Hooks ist nicht bekannt.",
             "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
             "unknownTarget": "Das Ziel ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
             "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."

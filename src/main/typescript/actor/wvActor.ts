@@ -199,7 +199,7 @@ export default class WvActor extends Actor {
     super.prepareEmbeddedDocuments();
     this.applicableRuleElements
       .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onPrepareEmbeddedDocuments());
+      .forEach((rule) => rule.onAfterSpecial());
   }
 
   override prepareDerivedData(): void {
@@ -253,6 +253,10 @@ export default class WvActor extends Actor {
       data.skills[skill] = this.computeBaseSkill(skill);
     }
     data.skills["thaumaturgy"] = this.computeBaseSkill("thaumaturgy");
+
+    this.applicableRuleElements
+      .sort((a, b) => a.priority - b.priority)
+      .forEach((rule) => rule.onAfterSkills());
 
     // Modify values based on the size -----------------------------------------
     // TODO: hit chance, reach, combat trick mods

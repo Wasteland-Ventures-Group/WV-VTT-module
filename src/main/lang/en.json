@@ -251,6 +251,7 @@
             "additional": "The property \"{property}\" is not allowed at \"{path}\".",
             "missing": "The property \"{property}\" is missing at \"{path}\".",
             "unknown": "An unknown error occurred.",
+            "unknownHook": "The type of hook is unknown.",
             "unknownRuleElement": "The type of RuleElement is unknown.",
             "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
             "wrongType": "The property \"{path}\" is not of type \"{type}\"."

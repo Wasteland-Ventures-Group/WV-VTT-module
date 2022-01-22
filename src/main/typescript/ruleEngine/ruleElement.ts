@@ -27,8 +27,6 @@ export default abstract class RuleElement {
   ) {
     this.messages = messages;
     this.source = source;
-
-    this.validate();
   }
 
   /** Messages that were accumulated while validating the source */
@@ -90,14 +88,29 @@ export default abstract class RuleElement {
   }
 
   /**
-   * Modify the passed Document on the prepareEmbeddedDocuments step, if the
-   * RuleElement does not have errors.
+   * Modify the Document after the SPECIAL calculation step, if the RuleElement
+   * does not have errors.
    * @param doc - the Document to modify
    */
-  onPrepareEmbeddedDocuments(): void {
+  onAfterSpecial(): void {
+    if (this.source.hook !== "afterSpecial") return;
+    this.validate();
     if (this.shouldNotModify()) return;
 
-    this._onPrepareEmbeddedDocuments();
+    this._onAfterSpecial();
+  }
+
+  /**
+   * Modify the Document after the Skills calculation step, if the RuleElement
+   * does not have errors.
+   * @param doc - the Document to modify
+   */
+  onAfterSkills(): void {
+    if (this.source.hook !== "afterSkills") return;
+    this.validate();
+    if (this.shouldNotModify()) return;
+
+    this._onAfterSkills();
   }
 
   /** Validate the data and add any error messages to errors. */
@@ -117,13 +130,22 @@ export default abstract class RuleElement {
   }
 
   /**
-   * Modify the passed Document on the prepareEmbeddedDocuments step.
+   * Modify the Document after the SPECIAL calculation step.
    *
    * This is only called when the RuleElement has no errors and should be
    * overridden by subclasses.
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected _onPrepareEmbeddedDocuments(): void {}
+  protected _onAfterSpecial(): void {}
+
+  /**
+   * Modify the Document after the Skills calculation step.
+   *
+   * This is only called when the RuleElement has no errors and should be
+   * overridden by subclasses.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected _onAfterSkills(): void {}
 
   /**
    * Check whether the selector selects a property.

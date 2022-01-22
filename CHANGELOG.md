@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] - 2022-01-22
+
+### Breaking
+
+"playerCharacter" is removed as a possible actor type. Please use the previous
+version to migrate your worlds, then upgrade to this version.
+
 ## [0.10.0] - 2022-01-22
 
 ### Breaking

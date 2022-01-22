@@ -14,9 +14,7 @@ export default async function templateTask(): Promise<void> {
   const [actorDbData, effectSource, weaponSource] = await imports;
 
   const actorDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()],
-    // FIXME: Remove later
-    ["playerCharacter", new actorDbData.CharacterDataSourceData()]
+    [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()]
   ];
   const itemDocumentTypes: TemplateDocumentType[] = [
     [TYPES.ITEM.EFFECT, new effectSource.EffectDataSourceData()],

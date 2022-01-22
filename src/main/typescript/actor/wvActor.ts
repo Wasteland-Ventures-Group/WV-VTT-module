@@ -352,7 +352,7 @@ export default class WvActor extends Actor {
 
   /** Validate passed source system data. */
   protected validateSystemData(data: unknown): void {
-    const validator = getGame().wv.validators.actor[this.data.type];
+    const validator = getGame().wv.validators.actor["character"];
     if (validator(data)) {
       if (
         this.hitPoints.max &&

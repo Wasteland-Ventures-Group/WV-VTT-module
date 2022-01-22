@@ -25,8 +25,7 @@ import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
-import SystemDataSchemaError from "../systemDataSchemaError.js";
-import { LOG } from "../systemLogger.js";
+import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n from "../wvI18n.js";
 
 /** The basic Wasteland Ventures Actor. */
@@ -352,31 +351,7 @@ export default class WvActor extends Actor {
 
   /** Validate passed source system data. */
   protected validateSystemData(data: unknown): void {
-    const validator = getGame().wv.validators.actor["character"];
-    if (validator(data)) {
-      if (
-        this.hitPoints.max &&
-        data.vitals.hitPoints.value > this.hitPoints.max
-      )
-        throw new Error("The hit points value exceeds the maximum.");
-
-      if (
-        this.actionPoints.max &&
-        data.vitals.actionPoints.value > this.actionPoints.max
-      )
-        throw new Error("The action points value exceeds the maximum.");
-
-      if (this.strain.max && data.vitals.strain.value > this.strain.max)
-        throw new Error("The strain value exceeds the maximum.");
-
-      return;
-    }
-
-    for (const error of validator.errors ?? []) {
-      LOG.error(error);
-    }
-
-    throw new SystemDataSchemaError(validator.errors ?? []);
+    validateSystemData(data, getGame().wv.validators.actor["character"]);
   }
 }
 

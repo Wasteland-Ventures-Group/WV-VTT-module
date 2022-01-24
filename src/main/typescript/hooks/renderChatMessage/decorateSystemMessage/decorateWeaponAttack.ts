@@ -1,6 +1,7 @@
 import { CONSTANTS } from "../../../constants.js";
 import type Specials from "../../../data/actor/character/specials/properties.js";
 import type WeaponDataProperties from "../../../data/item/weapon/properties.js";
+import { scrollChatToBottom } from "../../../foundryHelpers.js";
 import { getDisplayRanges, RangeBracket } from "../../../item/weapon/ranges.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
 import type { HookParams } from "../index.js";
@@ -53,6 +54,7 @@ export default async function decorateWeaponAttack(
       }
     };
     content.append(await renderTemplate(TEMPLATE, data));
+    scrollChatToBottom();
     return;
   }
 
@@ -76,6 +78,7 @@ export default async function decorateWeaponAttack(
     }
   };
   content.append(await renderTemplate(TEMPLATE, data));
+  scrollChatToBottom();
 }
 
 /** Get the i18n key for the not executed reason. */

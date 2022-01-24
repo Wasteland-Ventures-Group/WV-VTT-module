@@ -18,3 +18,11 @@ export function getCanvas(): Canvas {
 
   return canvas;
 }
+
+/** Scroll the chat log to the bottom. */
+export function scrollChatToBottom() {
+  const sidebarChatLog = document.querySelector("#sidebar #chat-log");
+  if (sidebarChatLog) sidebarChatLog.scrollTop = sidebarChatLog.scrollHeight;
+  const popoutChatLog = document.querySelector("#chat-popout #chat-log");
+  if (popoutChatLog) popoutChatLog.scrollTop = popoutChatLog.scrollHeight;
+}

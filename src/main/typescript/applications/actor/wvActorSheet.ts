@@ -36,7 +36,9 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   override get template(): string {
-    const sheetName = (this.actor.limited ? "limitedA" : "a") + "ctorSheet.hbs";
+    const isGm = getGame().user?.isGM ?? false;
+    const showLimited = !isGm && this.actor.limited;
+    const sheetName = (showLimited ? "limitedA" : "a") + "ctorSheet.hbs";
     return `${CONSTANTS.systemPath}/handlebars/actors/${sheetName}`;
   }
 

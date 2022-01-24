@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- GMs who did not create an Actor were only seeing the limited view, if that
+  Actor's default permissions were set to "Limited"
+  ([#147](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/147))
+
 ## [0.11.2] - 2022-01-22
 
 ### Fixed

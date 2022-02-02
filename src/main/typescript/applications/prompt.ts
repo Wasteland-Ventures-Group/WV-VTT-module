@@ -15,7 +15,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
    */
   static async get<I extends InputSpecs>(
     spec: I,
-    options?: Partial<Application.Options>
+    options?: Partial<ApplicationOptions>
   ): Promise<InputSpecsReturnType<I>> {
     return new Promise((resolve, reject) => {
       new this(spec, (data) => resolve(data), reject, options).render(true);
@@ -30,7 +30,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
    */
   static async getNumber(
     spec: Omit<NumberInputSpec, "type">,
-    options?: Partial<Application.Options>
+    options?: Partial<ApplicationOptions>
   ): Promise<number> {
     return new Promise((resolve, reject) => {
       new this(
@@ -50,7 +50,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
    */
   static async getString(
     spec: Omit<TextInputSpec, "type">,
-    options?: Partial<Application.Options>
+    options?: Partial<ApplicationOptions>
   ): Promise<string> {
     return new Promise((resolve, reject) => {
       new this(
@@ -62,7 +62,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     });
   }
 
-  static override get defaultOptions(): Application.Options {
+  static override get defaultOptions(): ApplicationOptions {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "prompt"],
       template: `${CONSTANTS.systemPath}/handlebars/prompt.hbs`,
@@ -82,7 +82,7 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     specs: Specs,
     onSubmit: Callback<Specs>,
     onClose: () => void,
-    options?: Partial<Application.Options>
+    options?: Partial<ApplicationOptions>
   ) {
     super(options);
 

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.3] - 2022-02-06
+
 ### Fixed
 
 - GMs who did not create an Actor were only seeing the limited view, if that

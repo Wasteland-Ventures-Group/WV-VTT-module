@@ -83,6 +83,7 @@ export const TYPES = {
   },
   /** Type names for Item types */
   ITEM: {
+    AMMO: "ammo",
     EFFECT: "effect",
     WEAPON: "weapon"
   }
@@ -90,6 +91,29 @@ export const TYPES = {
 
 export type Rarity = typeof Rarities[number];
 export const Rarities = ["common", "uncommon", "rare"];
+
+export type Caliber = typeof Calibers[number];
+export const Calibers = [
+  ".308cal",
+  ".44cal",
+  ".50cal",
+  "5mm",
+  "5.56mm",
+  "9mm",
+  "10mm",
+  "12.7mm",
+  "20mm",
+  "shotgunShells",
+  "alienGemPack",
+  "gemPack",
+  "magicFusionCell",
+  "energizedCrystalPack",
+  "flamerFuel",
+  "arrow",
+  "riflegrenade",
+  "balefireEgg",
+  "missile"
+] as const;
 
 /** This object holds common constants for the Wasteland Ventures system. */
 export const CONSTANTS = {

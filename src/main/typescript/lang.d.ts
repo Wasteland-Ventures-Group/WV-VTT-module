@@ -65,8 +65,58 @@ export interface LangSchema {
         ammo: {
           /** The label for the caliber */
           caliber: string;
+          /** Names for different calibers */
+          calibers: {
+            ".308cal": string;
+            ".44cal": string;
+            ".50cal": string;
+            "5mm": string;
+            "5.56mm": string;
+            "9mm": string;
+            "10mm": string;
+            "12.7mm": string;
+            "20mm": string;
+            shotgunShells: string;
+            alienGemPack: string;
+            gemPack: string;
+            magicFusionCell: string;
+            energizedCrystalPack: string;
+            flamerFuel: string;
+            arrow: string;
+            rifleGrenade: string;
+            balefireEgg: string;
+            missile: string;
+          };
           /** The name of ammunition */
           name: string;
+          subTypes: {
+            standard: string;
+            armorPiercing: string;
+            hollowPoint: string;
+            incendiary: string;
+            explosive: string;
+            buckshot: string;
+            magnum: string;
+            slug: string;
+            pulseSlug: string;
+            flechette: string;
+            dragonsBreath: string;
+            overcharge: string;
+            maxCharge: string;
+            optimized: string;
+            drakeOil: string;
+            causticSludge: string;
+            cryoFluid: string;
+            arcane: string;
+            lightweight: string;
+            piercing: string;
+            broadhead: string;
+            highExplosive: string;
+            plasma: string;
+            pulse: string;
+            timed: string;
+            highVelocity: string;
+          };
         };
         /** The name for the inventory */
         inventory: string;

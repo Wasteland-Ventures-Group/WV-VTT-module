@@ -6,6 +6,10 @@
       "url": "./src/main/schemas/lang.json"
     },
     {
+      "fileMatch": ["/src/main/compendiums/item/ammo/*.json"],
+      "url": "./src/main/schemas/item/ammo.json"
+    },
+    {
       "fileMatch": ["/src/main/compendiums/item/weapon/*.json"],
       "url": "./src/main/schemas/item/weapon.json"
     }

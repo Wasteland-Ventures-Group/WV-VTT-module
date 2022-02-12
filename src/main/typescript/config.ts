@@ -5,6 +5,7 @@ import EffectSheet from "./applications/item/effectSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
 import { CONSTANTS, TYPES } from "./constants.js";
 import { CHARACTER_JSON_SCHEMA } from "./data/actor/character/source.js";
+import { AMMO_SOURCE_JSON_SCHEMA } from "./data/item/ammo/source.js";
 import { BASE_ITEM_JSON_SCHEMA } from "./data/item/baseItem.js";
 import { WEAPON_SOURCE_JSON_SCHEMA } from "./data/item/weapon/source.js";
 import { getGame } from "./foundryHelpers.js";
@@ -42,6 +43,7 @@ export function configureFoundryOnInit(): void {
         character: ajv.compile(CHARACTER_JSON_SCHEMA)
       },
       item: {
+        ammo: ajv.compile(AMMO_SOURCE_JSON_SCHEMA),
         effect: ajv.compile(BASE_ITEM_JSON_SCHEMA),
         weapon: ajv.compile(WEAPON_SOURCE_JSON_SCHEMA)
       },

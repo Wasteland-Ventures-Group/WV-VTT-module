@@ -3,7 +3,8 @@ import {
   SpecialName,
   isSpecialName,
   isSkillName,
-  Race
+  Race,
+  Caliber
 } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 
@@ -15,6 +16,9 @@ export interface I18nSpecial {
   /** The short name of the SPECIAL stat. */
   short: string;
 }
+
+/** The internationalization structure for calibers */
+export type I18nCalibers = Record<Caliber, string>;
 
 /** The internationalization structure of the Races */
 export type I18nRaces = Record<Race, string>;
@@ -29,6 +33,13 @@ export type I18nSkills = Record<SkillName, string>;
  * A helper class to serve Wasteland Ventures internationalization structures.
  */
 export default class WvI18n {
+  static get calibers(): I18nCalibers {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.equipment.ammo.calibers"
+    ) as I18nCalibers;
+  }
+
   /** Get the internationalization of the Races. */
   static get races(): I18nRaces {
     return foundry.utils.getProperty(

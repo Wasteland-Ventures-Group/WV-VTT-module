@@ -1,0 +1,21 @@
+{
+  "_id": "WVAmmo0000000002",
+  "name": ".308 cal (Armor Piercing)",
+  "type": "ammo",
+  "data": {
+    "name": ".308 cal (Armor Piercing)",
+    "description": "Uncommon battle rifle round, used for hunting by Gryphons and ranged support units as well as for sporting events.",
+    "notes": "Armored targets: DT Reduction 1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 1.2,
+    "weight": 0,
+    "caliber": ".308cal",
+    "type": "armorPiercing"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

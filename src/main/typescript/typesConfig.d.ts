@@ -5,6 +5,7 @@ import type { CONSTANTS, TYPES } from "./constants.js";
 import type { CharacterDataSourceData } from "./data/actor/character/source.js";
 import { WvActorDataProperties } from "./data/actor/properties.js";
 import { WvActorDataSource } from "./data/actor/source.js";
+import type { AmmoDataSourceData } from "./data/item/ammo/source.js";
 import type BaseItem from "./data/item/baseItem.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
 import { WvItemDataSource } from "./data/item/source.js";
@@ -62,6 +63,7 @@ declare global {
           [TYPES.ACTOR.CHARACTER]: ValidateFunction<CharacterDataSourceData>;
         };
         item: {
+          [TYPES.ITEM.AMMO]: ValidateFunction<AmmoDataSourceData>;
           [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItem>;
           [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;
         };

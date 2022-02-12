@@ -1,4 +1,5 @@
 import { promises as fs } from "fs";
+import { COMP_AMMO_JSON_SCHEMA } from "../src/main/typescript/data/item/ammo/source.js";
 import { COMP_WEAPON_JSON_SCHEMA } from "../src/main/typescript/data/item/weapon/source.js";
 
 // The paths here are relative to the project root
@@ -6,6 +7,11 @@ const outputBasePath = "./src/main/schemas";
 const itemOutputBasePath = `${outputBasePath}/item`;
 
 const schemaConfigs: SchemaConfig[] = [
+  {
+    fileName: "ammo",
+    outputBasePath: itemOutputBasePath,
+    schema: COMP_AMMO_JSON_SCHEMA
+  },
   {
     fileName: "weapon",
     outputBasePath: itemOutputBasePath,

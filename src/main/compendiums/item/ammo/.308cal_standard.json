@@ -1,0 +1,21 @@
+{
+  "_id": "WVAmmo0000000001",
+  "name": ".308 cal (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": ".308 cal (Standard)",
+    "description": "Uncommon battle rifle round, used for hunting by Gryphons and ranged support units as well as for sporting events.",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 0.6,
+    "weight": 0,
+    "caliber": ".308cal",
+    "type": "standard"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

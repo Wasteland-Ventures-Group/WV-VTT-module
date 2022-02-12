@@ -28,7 +28,7 @@ export const PHYS_BASE_ITEM_JSON_SCHEMA: JSONSchemaType<PhysicalBaseItem> = {
     },
     value: {
       description: "The value of the item in caps",
-      type: "integer",
+      type: "number",
       default: 0
     },
     weight: {

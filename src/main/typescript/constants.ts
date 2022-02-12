@@ -90,7 +90,7 @@ export const TYPES = {
 } as const;
 
 export type Rarity = typeof Rarities[number];
-export const Rarities = ["common", "uncommon", "rare"];
+export const Rarities = ["common", "uncommon", "rare", "exotic"];
 
 export type Caliber = typeof Calibers[number];
 export const Calibers = [

@@ -117,20 +117,20 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
 
 export interface CompendiumWeapon
   extends FoundryCompendiumData<WeaponDataSourceData> {
-  type: "weapon";
+  type: typeof TYPES.ITEM.WEAPON;
 }
 
 /** A JSON schema for compendium weapon objects */
 export const COMP_WEAPON_JSON_SCHEMA: JSONSchemaType<CompendiumWeapon> = {
-  description: "The compendium data for a weapon item",
+  description: "The compendium data for a weapon Item",
   type: "object",
   properties: {
     ...COMPENDIUM_JSON_SCHEMA.properties,
     type: {
       description: COMPENDIUM_JSON_SCHEMA.properties.type.description,
       type: "string",
-      const: "weapon",
-      default: "weapon"
+      const: TYPES.ITEM.WEAPON,
+      default: TYPES.ITEM.WEAPON
     },
     data: WEAPON_SOURCE_JSON_SCHEMA
   },
@@ -138,7 +138,7 @@ export const COMP_WEAPON_JSON_SCHEMA: JSONSchemaType<CompendiumWeapon> = {
   additionalProperties: false,
   default: {
     ...COMPENDIUM_JSON_SCHEMA.default,
-    type: "weapon",
+    type: TYPES.ITEM.WEAPON,
     data: WEAPON_SOURCE_JSON_SCHEMA.default
   }
 };

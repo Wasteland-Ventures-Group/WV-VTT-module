@@ -88,6 +88,9 @@ export const TYPES = {
   }
 } as const;
 
+export type Rarity = typeof Rarities[number];
+export const Rarities = ["common", "uncommon", "rare"];
+
 /** This object holds common constants for the Wasteland Ventures system. */
 export const CONSTANTS = {
   /** This holds various min/max values for stats. */

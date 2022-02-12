@@ -1,8 +1,12 @@
 import type { JSONSchemaType } from "ajv";
+import { Rarities, Rarity } from "../../constants.js";
 import BaseItem, { BASE_ITEM_JSON_SCHEMA } from "./baseItem.js";
 
 /** This holds the base values that all physical items have in common. */
 export default abstract class PhysicalBaseItem extends BaseItem {
+  /** The rarity of the item */
+  rarity: Rarity = "common";
+
   /** The value of the item in caps */
   value: number = 0;
 
@@ -16,6 +20,12 @@ export const PHYS_BASE_ITEM_JSON_SCHEMA: JSONSchemaType<PhysicalBaseItem> = {
   type: "object",
   properties: {
     ...BASE_ITEM_JSON_SCHEMA.properties,
+    rarity: {
+      description: "The rarity of the item",
+      type: "string",
+      default: "common",
+      enum: Rarities
+    },
     value: {
       description: "The value of the item in caps",
       type: "integer",
@@ -31,6 +41,7 @@ export const PHYS_BASE_ITEM_JSON_SCHEMA: JSONSchemaType<PhysicalBaseItem> = {
   additionalProperties: false,
   default: {
     ...BASE_ITEM_JSON_SCHEMA.default,
+    rarity: "common",
     value: 0,
     weight: 0
   }

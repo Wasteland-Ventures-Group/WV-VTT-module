@@ -103,16 +103,18 @@ export const Calibers = [
   "10mm",
   "12.7mm",
   "20mm",
-  "shotgunShells",
+  "shotgunShell",
   "alienGemPack",
   "gemPack",
   "magicFusionCell",
   "energizedCrystalPack",
   "flamerFuel",
   "arrow",
-  "riflegrenade",
+  "rifleGrenade",
   "balefireEgg",
-  "missile"
+  "missile",
+  "cloud",
+  "improvised"
 ] as const;
 
 /** This object holds common constants for the Wasteland Ventures system. */

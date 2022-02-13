@@ -44,7 +44,7 @@
     },
     "reload": {
       "ap": 4,
-      "caliber": "TODO",
+      "caliber": "gemPack",
       "containerType": "magazine",
       "size": 50
     },

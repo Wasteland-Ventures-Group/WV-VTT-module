@@ -44,7 +44,7 @@
     },
     "reload": {
       "ap": 4,
-      "caliber": "TODO",
+      "caliber": "magicFusionCell",
       "containerType": "magazine",
       "size": 30
     },

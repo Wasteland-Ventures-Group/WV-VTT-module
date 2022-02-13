@@ -44,7 +44,7 @@
     },
     "reload": {
       "ap": 5,
-      "caliber": "TODO",
+      "caliber": "energizedCrystalPack",
       "containerType": "magazine",
       "size": 30
     },

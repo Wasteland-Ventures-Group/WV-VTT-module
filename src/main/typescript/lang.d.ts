@@ -76,7 +76,7 @@ export interface LangSchema {
             "10mm": string;
             "12.7mm": string;
             "20mm": string;
-            shotgunShells: string;
+            shotgunShell: string;
             alienGemPack: string;
             gemPack: string;
             magicFusionCell: string;
@@ -86,6 +86,8 @@ export interface LangSchema {
             rifleGrenade: string;
             balefireEgg: string;
             missile: string;
+            cloud: string;
+            improvised: string;
           };
           /** The name of ammunition */
           name: string;

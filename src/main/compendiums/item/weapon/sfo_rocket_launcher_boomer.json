@@ -35,7 +35,7 @@
     },
     "reload": {
       "ap": 8,
-      "caliber": "TODO",
+      "caliber": "missile",
       "containerType": "internal",
       "size": 1
     },

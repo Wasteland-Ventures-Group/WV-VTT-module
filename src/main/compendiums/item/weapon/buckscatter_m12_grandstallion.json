@@ -44,7 +44,7 @@
     },
     "reload": {
       "ap": 3,
-      "caliber": "TODO",
+      "caliber": "shotgunShell",
       "containerType": "internal",
       "size": 2
     },

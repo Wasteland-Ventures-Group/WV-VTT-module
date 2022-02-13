@@ -21,7 +21,7 @@
     },
     "reload": {
       "ap": 4,
-      "caliber": "TODO",
+      "caliber": "shotgunShell",
       "containerType": "magazine",
       "size": 15
     },

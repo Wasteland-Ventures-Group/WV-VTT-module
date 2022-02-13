@@ -34,7 +34,7 @@
     },
     "reload": {
       "ap": 5,
-      "caliber": "TODO",
+      "caliber": "20mm",
       "containerType": "internal",
       "size": 1
     },

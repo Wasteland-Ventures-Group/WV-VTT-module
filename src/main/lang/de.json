@@ -32,7 +32,7 @@
             "10mm": "10mm",
             "12.7mm": "12.7mm",
             "20mm": "20mm",
-            "shotgunShells": "Flintenmunition",
+            "shotgunShell": "Flintenmunition",
             "alienGemPack": "Alien Edelsteinbatterie",
             "gemPack": "Edelsteinbatterie",
             "magicFusionCell": "Magiefusionszelle (MFZ)",
@@ -41,7 +41,9 @@
             "arrow": "Pfeil",
             "rifleGrenade": "Gewehrgranate",
             "balefireEgg": "Unheilsfeuer Drachen-Ei",
-            "missile": "Rakete"
+            "missile": "Rakete",
+            "cloud": "Wolke",
+            "improvised": "Improvisiert"
           },
           "name": "Munition",
           "subTypes": {

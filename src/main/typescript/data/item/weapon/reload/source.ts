@@ -1,4 +1,5 @@
 import type { JSONSchemaType } from "ajv";
+import { Caliber, Calibers } from "../../../../constants.js";
 
 /** A type specifying the way a weapon is reloaded */
 export default interface ReloadSource {
@@ -6,7 +7,7 @@ export default interface ReloadSource {
   ap: number;
 
   /** The caliber, used by the weapon */
-  caliber: "TODO"; // TODO: maybe make caliber a different item type?
+  caliber: Caliber;
 
   /** The ammon container type of the weapon */
   containerType: AmmoContainerSource;
@@ -29,11 +30,10 @@ export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
       default: 0
     },
     caliber: {
-      description:
-        "The caliber used by the weapon. This is still work in progress and " +
-        "no effect.",
+      description: "The caliber used by the weapon.",
       type: "string",
-      default: "TODO"
+      default: ".308cal",
+      enum: Calibers
     },
     containerType: {
       description: "The type of the ammo container used by the weapon",
@@ -51,7 +51,7 @@ export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
   additionalProperties: false,
   default: {
     ap: 0,
-    caliber: "TODO",
+    caliber: ".308cal",
     containerType: "magazine",
     size: 0
   }

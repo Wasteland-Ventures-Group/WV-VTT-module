@@ -47,7 +47,7 @@
     },
     "reload": {
       "ap": 1,
-      "caliber": "TODO",
+      "caliber": "arrow",
       "containerType": "internal",
       "size": 1
     },

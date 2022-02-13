@@ -35,7 +35,7 @@
     },
     "reload": {
       "ap": 5,
-      "caliber": "TODO",
+      "caliber": "rifleGrenade",
       "containerType": "internal",
       "size": 1
     },

@@ -53,7 +53,7 @@
             "10mm": "10mm",
             "12.7mm": "12.7mm",
             "20mm": "20mm",
-            "shotgunShells": "Shotgun Shells",
+            "shotgunShell": "Shotgun Shell",
             "alienGemPack": "Alien Gem Pack",
             "gemPack": "Gem Pack",
             "magicFusionCell": "Magic Fusion Cell (MFC)",
@@ -62,7 +62,9 @@
             "arrow": "Arrow",
             "rifleGrenade": "Rifle Grenade",
             "balefireEgg": "Balefire Egg",
-            "missile": "Missile"
+            "missile": "Missile",
+            "cloud": "Cloud",
+            "improvised": "Improvised"
           },
           "name": "Ammo",
           "subTypes": {

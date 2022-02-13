@@ -35,7 +35,7 @@
     },
     "reload": {
       "ap": 5,
-      "caliber": "TODO",
+      "caliber": "flamerFuel",
       "containerType": "magazine",
       "size": 20
     },

@@ -35,7 +35,7 @@
     },
     "reload": {
       "ap": 6,
-      "caliber": "TODO",
+      "caliber": "rifleGrenade",
       "containerType": "magazine",
       "size": 30
     },

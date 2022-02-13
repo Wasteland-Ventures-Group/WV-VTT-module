@@ -20,7 +20,7 @@
     },
     "reload": {
       "ap": 11,
-      "caliber": "TODO",
+      "caliber": "5mm",
       "containerType": "magazine",
       "size": 240
     },

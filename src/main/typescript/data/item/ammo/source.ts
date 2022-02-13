@@ -4,9 +4,9 @@ import {
   COMPENDIUM_JSON_SCHEMA,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
-import PhysicalBaseItem, {
-  PHYS_BASE_ITEM_JSON_SCHEMA
-} from "../physicalBaseItem.js";
+import StackableBaseItem, {
+  STACK_BASE_ITEM_JSON_SCHEMA
+} from "../stackableBaseItem.js";
 
 /** The Ammo Item data-source */
 export default interface AmmoDataSource {
@@ -15,7 +15,7 @@ export default interface AmmoDataSource {
 }
 
 /** The Ammo Item data-source data */
-export class AmmoDataSourceData extends PhysicalBaseItem {
+export class AmmoDataSourceData extends StackableBaseItem {
   /** The caliber of the ammo */
   caliber: Caliber = ".308cal";
 
@@ -27,7 +27,7 @@ export const AMMO_SOURCE_JSON_SCHEMA: JSONSchemaType<AmmoDataSourceData> = {
   description: "The system data for an ammo Item",
   type: "object",
   properties: {
-    ...PHYS_BASE_ITEM_JSON_SCHEMA.properties,
+    ...STACK_BASE_ITEM_JSON_SCHEMA.properties,
     caliber: {
       description: "The caliber of the ammo",
       type: "string",
@@ -39,10 +39,10 @@ export const AMMO_SOURCE_JSON_SCHEMA: JSONSchemaType<AmmoDataSourceData> = {
       type: "string"
     }
   },
-  required: [...PHYS_BASE_ITEM_JSON_SCHEMA.required, "caliber", "type"],
+  required: [...STACK_BASE_ITEM_JSON_SCHEMA.required, "caliber", "type"],
   additionalProperties: false,
   default: {
-    ...PHYS_BASE_ITEM_JSON_SCHEMA.default,
+    ...STACK_BASE_ITEM_JSON_SCHEMA.default,
     caliber: ".308cal",
     type: ""
   }

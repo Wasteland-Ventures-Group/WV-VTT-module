@@ -107,6 +107,10 @@
           "reload": {
             "containerSize": "Container Size",
             "containerType": "Container Type",
+            "containerTypes": {
+              "internal": "Internal",
+              "magazine": "Magazine"
+            },
             "name": "Reload"
           },
           "shots": "Shots",

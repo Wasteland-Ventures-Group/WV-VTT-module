@@ -6,6 +6,7 @@ import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import * as ranges from "../../item/weapon/ranges.js";
 import WvI18n from "../../wvI18n.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
+import { getGame } from "../../foundryHelpers.js";
 
 export default class WeaponSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
@@ -38,6 +39,7 @@ export default class WeaponSheet extends WvItemSheet {
 
   override async getData(): Promise<SheetData> {
     const data = await super.getData();
+
     return {
       ...data,
       sheet: {
@@ -57,6 +59,17 @@ export default class WeaponSheet extends WvItemSheet {
           short: this.mapToSheetRange(this.item.systemData.ranges.short),
           medium: this.mapToSheetRange(this.item.systemData.ranges.medium),
           long: this.mapToSheetRange(this.item.systemData.ranges.long)
+        },
+        reload: {
+          caliber: this.item.systemData.reload
+            ? WvI18n.calibers[this.item.systemData.reload.caliber]
+            : undefined,
+          containerType: this.item.systemData.reload
+            ? getGame().i18n.localize(
+                `wv.rules.equipment.weapon.reload.containerTypes.` +
+                  this.item.systemData.reload.containerType
+              )
+            : undefined
         },
         skill: WvI18n.skills[this.item.systemData.skill],
         usesAmmo: this.item.systemData.reload !== undefined
@@ -163,6 +176,10 @@ export interface SheetData extends ItemSheetData {
       short: SheetRange;
       medium: SheetRange | undefined;
       long: SheetRange | undefined;
+    };
+    reload: {
+      caliber: string | undefined;
+      containerType: string | undefined;
     };
     skill: string;
     usesAmmo: boolean;

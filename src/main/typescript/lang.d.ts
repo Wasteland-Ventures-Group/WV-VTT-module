@@ -134,6 +134,11 @@ export interface LangSchema {
             containerSize: string;
             /** The label for the container type */
             containerType: string;
+            /** Labels for the different container types */
+            containerTypes: {
+              internal: string;
+              magazine: string;
+            };
             /** The noun for reload */
             name: string;
           };

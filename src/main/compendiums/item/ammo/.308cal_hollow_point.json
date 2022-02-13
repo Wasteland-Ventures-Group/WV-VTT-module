@@ -12,6 +12,7 @@
     "rarity": "uncommon",
     "value": 1.2,
     "weight": 0,
+    "amount": 10,
     "caliber": ".308cal",
     "type": "hollowPoint"
   },

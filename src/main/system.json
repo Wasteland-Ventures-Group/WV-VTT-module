@@ -27,6 +27,13 @@
       "path": "compendiums/item/weapons.db",
       "type": "Item",
       "system": "wasteland-ventures"
+    },
+    {
+      "name": "ammo",
+      "label": "Wasteland Ventures Ammunition",
+      "path": "compendiums/item/ammo.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
     }
   ],
   "languages": [

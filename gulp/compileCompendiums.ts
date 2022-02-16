@@ -14,6 +14,10 @@ const compendiumConfigs: CompendiumConfig[] = [
   {
     inputGlob: `${itemInputBasePath}/weapon/*.json`,
     outputPath: `${itemOutputBasePath}/weapons.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/ammo/*.json`,
+    outputPath: `${itemOutputBasePath}/ammo.db`
   }
 ];
 
@@ -36,7 +40,7 @@ compileCompendiumsWatchTask.description =
   "Watch the compendium input files for changes and trigger the compile task.";
 
 async function compileCompendium(config: CompendiumConfig): Promise<void> {
-  const fileNames = await glob(config.inputGlob);
+  const fileNames = await glob(config.inputGlob, { dot: true });
   const ids: IdTracker = {};
 
   const contents = await Promise.all(

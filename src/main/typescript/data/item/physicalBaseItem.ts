@@ -37,7 +37,7 @@ export const PHYS_BASE_ITEM_JSON_SCHEMA: JSONSchemaType<PhysicalBaseItem> = {
       default: 0
     }
   },
-  required: [...BASE_ITEM_JSON_SCHEMA.required, "value", "weight"],
+  required: [...BASE_ITEM_JSON_SCHEMA.required, "rarity", "value", "weight"],
   additionalProperties: false,
   default: {
     ...BASE_ITEM_JSON_SCHEMA.default,

@@ -11,6 +11,7 @@ import RuleElementMessage from "../../ruleEngine/ruleElementMessage.js";
 import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
 import { LOG } from "../../systemLogger.js";
+import WvI18n from "../../wvI18n.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet {
@@ -49,6 +50,10 @@ export default class WvItemSheet extends ItemSheet {
     return {
       ...data,
       sheet: {
+        rarity:
+          "rarity" in data.data.data
+            ? WvI18n.rarities[data.data.data.rarity]
+            : undefined,
         parts: {
           header: HANDLEBARS.partPaths.item.header,
           rules: HANDLEBARS.partPaths.item.rules
@@ -326,6 +331,7 @@ export default class WvItemSheet extends ItemSheet {
 
 export interface SheetData extends ItemSheet.Data {
   sheet: {
+    rarity: string | undefined;
     parts: {
       header: string;
       rules: string;

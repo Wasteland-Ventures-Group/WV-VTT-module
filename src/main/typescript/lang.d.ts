@@ -122,6 +122,16 @@ export interface LangSchema {
         };
         /** The name for the inventory */
         inventory: string;
+        /** Labels relating to rarity */
+        rarity: {
+          /** Names for the rarity levels */
+          names: {
+            common: string;
+            uncommon: string;
+            rare: string;
+            exotic: string;
+          };
+        };
         /** Labels related to weapons */
         weapon: QuantityNames & {
           /** Names for attacks */

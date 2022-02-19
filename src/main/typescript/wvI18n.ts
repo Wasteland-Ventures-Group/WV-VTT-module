@@ -4,7 +4,8 @@ import {
   isSpecialName,
   isSkillName,
   Race,
-  Caliber
+  Caliber,
+  Rarity
 } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 
@@ -22,6 +23,9 @@ export type I18nCalibers = Record<Caliber, string>;
 
 /** The internationalization structure of the Races */
 export type I18nRaces = Record<Race, string>;
+
+/** The internationalization structure for rarities */
+export type I18nRarities = Record<Rarity, string>;
 
 /** The internationalization structure of the SPECIALs */
 export type I18nSpecials = Record<SpecialName, I18nSpecial>;
@@ -45,6 +49,13 @@ export default class WvI18n {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
       "wv.rules.race.names"
+    ) as I18nRaces;
+  }
+
+  static get rarities(): I18nRarities {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.equipment.rarity.names"
     ) as I18nRaces;
   }
 

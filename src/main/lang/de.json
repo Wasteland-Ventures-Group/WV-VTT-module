@@ -76,6 +76,14 @@
           }
         },
         "inventory": "Inventar",
+        "rarity": {
+          "names": {
+            "common": "Gewöhnlich",
+            "uncommon": "Ungewöhnlich",
+            "rare": "Selten",
+            "exotic": "Exotisch"
+          }
+        },
         "weapon": {
           "attack": {
             "singular": "Angriff",

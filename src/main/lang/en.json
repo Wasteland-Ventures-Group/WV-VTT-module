@@ -97,6 +97,14 @@
           }
         },
         "inventory": "Inventory",
+        "rarity": {
+          "names": {
+            "common": "Common",
+            "uncommon": "Uncommon",
+            "rare": "Rare",
+            "exotic": "Exotic"
+          }
+        },
         "weapon": {
           "attack": {
             "singular": "Attack",

@@ -7,6 +7,11 @@
         {{#if data.data.name~}}
           <h3 class="proto-name">{{data.data.name}}</h3>
         {{~/if}}
+        {{#if sheet.rarity~}}
+          <span class="general-info-element flex-fixed">
+            <span class="fas fa-gem"></span><span>{{sheet.rarity}}</span>
+          </span>
+        {{~/if}}
         {{#if data.data.value~}}
           <span class="general-info-element flex-fixed">
             <span class="fas fa-coins"></span><span>{{data.data.value}}</span>

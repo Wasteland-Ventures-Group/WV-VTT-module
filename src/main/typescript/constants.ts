@@ -154,7 +154,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.10.0",
+  needsMigrationVersion: "0.12.0",
 
   /** Miscellaneous rules constants */
   rules: {

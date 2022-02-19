@@ -42,6 +42,7 @@
         "modifier": -20
       }
     },
+    "rarity": "uncommon",
     "reload": {
       "ap": 3,
       "caliber": "shotgunShell",

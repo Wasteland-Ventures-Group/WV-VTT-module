@@ -32,6 +32,7 @@
         "modifier": -20
       }
     },
+    "rarity": "rare",
     "reload": {
       "ap": 4,
       "caliber": ".44cal",

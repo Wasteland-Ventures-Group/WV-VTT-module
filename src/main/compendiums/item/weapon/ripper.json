@@ -25,6 +25,7 @@
         "modifier": 0
       }
     },
+    "rarity": "rare",
     "holdout": true,
     "skill": "melee",
     "strengthRequirement": 3,

@@ -45,6 +45,7 @@
         "modifier": -20
       }
     },
+    "rarity": "uncommon",
     "reload": {
       "ap": 1,
       "caliber": "arrow",

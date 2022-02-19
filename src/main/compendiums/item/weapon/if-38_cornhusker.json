@@ -33,6 +33,7 @@
         "modifier": -20
       }
     },
+    "rarity": "common",
     "reload": {
       "ap": 4,
       "caliber": "10mm",

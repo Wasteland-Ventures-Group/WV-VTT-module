@@ -49,6 +49,7 @@
         "modifier": -20
       }
     },
+    "rarity": "common",
     "skill": "melee",
     "strengthRequirement": 5,
     "value": 150,

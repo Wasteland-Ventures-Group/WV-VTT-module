@@ -33,6 +33,7 @@
         "modifier": -40
       }
     },
+    "rarity": "rare",
     "reload": {
       "ap": 5,
       "caliber": "rifleGrenade",

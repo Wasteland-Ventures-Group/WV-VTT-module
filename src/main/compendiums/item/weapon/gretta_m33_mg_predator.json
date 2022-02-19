@@ -18,12 +18,6 @@
         }
       }
     },
-    "reload": {
-      "ap": 8,
-      "caliber": ".50cal",
-      "containerType": "magazine",
-      "size": 60
-    },
     "ranges": {
       "short": {
         "distance": 120,
@@ -37,6 +31,13 @@
         "distance": 360,
         "modifier": -20
       }
+    },
+    "rarity": "exotic",
+    "reload": {
+      "ap": 8,
+      "caliber": ".50cal",
+      "containerType": "magazine",
+      "size": 60
     },
     "skill": "firearms",
     "strengthRequirement": 10,

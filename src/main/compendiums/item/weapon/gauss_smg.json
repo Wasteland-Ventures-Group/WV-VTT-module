@@ -42,6 +42,7 @@
         "modifier": 0
       }
     },
+    "rarity": "rare",
     "reload": {
       "ap": 5,
       "caliber": "energizedCrystalPack",

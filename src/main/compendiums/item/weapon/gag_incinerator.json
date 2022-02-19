@@ -33,6 +33,7 @@
         "modifier": -20
       }
     },
+    "rarity": "uncommon",
     "reload": {
       "ap": 5,
       "caliber": "flamerFuel",

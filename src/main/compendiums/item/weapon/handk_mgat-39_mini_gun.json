@@ -18,12 +18,6 @@
         }
       }
     },
-    "reload": {
-      "ap": 11,
-      "caliber": "5mm",
-      "containerType": "magazine",
-      "size": 240
-    },
     "ranges": {
       "short": {
         "distance": 30,
@@ -37,6 +31,13 @@
         "distance": 90,
         "modifier": -20
       }
+    },
+    "rarity": "rare",
+    "reload": {
+      "ap": 11,
+      "caliber": "5mm",
+      "containerType": "magazine",
+      "size": 240
     },
     "skill": "firearms",
     "strengthRequirement": 9,

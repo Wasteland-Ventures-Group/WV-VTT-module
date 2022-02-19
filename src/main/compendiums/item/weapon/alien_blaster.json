@@ -33,6 +33,7 @@
         "modifier": -20
       }
     },
+    "rarity": "exotic",
     "reload": {
       "ap": 4,
       "caliber": "alienGemPack",

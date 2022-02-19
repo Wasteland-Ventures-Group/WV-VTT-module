@@ -135,9 +135,6 @@ export default class WvActor extends Actor {
       flavor: WvI18n.getSpecialRollFlavor(name),
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
-    if (options?.whisperToGms) {
-      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm");
-    }
 
     new Roll(
       Formulator.special(this.getSpecial(name).tempTotal)
@@ -146,7 +143,11 @@ export default class WvActor extends Actor {
         .toString()
     )
       .roll({ async: true })
-      .then((r) => r.toMessage(msgOptions));
+      .then((r) =>
+        r.toMessage(msgOptions, {
+          rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
+        })
+      );
   }
 
   /**
@@ -158,9 +159,6 @@ export default class WvActor extends Actor {
       flavor: WvI18n.getSkillRollFlavor(name),
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
-    if (options?.whisperToGms) {
-      msgOptions["whisper"] = ChatMessage.getWhisperRecipients("gm");
-    }
 
     new Roll(
       Formulator.skill(this.getSkill(name).total)
@@ -169,7 +167,11 @@ export default class WvActor extends Actor {
         .toString()
     )
       .roll({ async: true })
-      .then((r) => r.toMessage(msgOptions));
+      .then((r) =>
+        r.toMessage(msgOptions, {
+          rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
+        })
+      );
   }
 
   override prepareBaseData(): void {

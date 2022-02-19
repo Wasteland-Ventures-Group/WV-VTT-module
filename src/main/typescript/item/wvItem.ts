@@ -56,11 +56,46 @@ export default class WvItem extends Item {
     }
   }
 
+  /** Get the amount of the item, if it has any. */
+  get amount(): number | undefined {
+    return "amount" in this.data.data ? this.data.data.amount : undefined;
+  }
+
   /** Get RuleElements that apply to this Item. */
   get applicableRuleElements(): RuleElement[] {
     return this.data.data.rules.elements.filter(
       (rule) => rule.target === "item"
     );
+  }
+
+  /**
+   * Get the total value of the item, if it has a value. If the amount is
+   * undefined, 1 is used.
+   */
+  get totalValue(): number | undefined {
+    if (typeof this.value === "undefined") return undefined;
+
+    return this.value * (this.amount ?? 1);
+  }
+
+  /**
+   * Get the total weight of the item, if it has a weight. If the amount is
+   * undefined, 1 is used.
+   */
+  get totalWeight(): number | undefined {
+    if (typeof this.weight === "undefined") return undefined;
+
+    return this.weight * (this.amount ?? 1);
+  }
+
+  /** Get the value of the item, if it has any. */
+  get value(): number | undefined {
+    return "value" in this.data.data ? this.data.data.value : undefined;
+  }
+
+  /** Get the weight of the item, if it has any. */
+  get weight(): number | undefined {
+    return "weight" in this.data.data ? this.data.data.weight : undefined;
   }
 
   override prepareBaseData(): void {

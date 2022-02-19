@@ -156,6 +156,9 @@ export const CONSTANTS = {
   /** The version number where the last migration was needed */
   needsMigrationVersion: "0.12.0",
 
+  /** The number of fixed decimals to round floating point numbers to. */
+  fixedDecimals: 2,
+
   /** Miscellaneous rules constants */
   rules: {
     /** Rule constants related to damage */

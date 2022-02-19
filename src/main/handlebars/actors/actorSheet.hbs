@@ -68,181 +68,224 @@
   <nav class="tabs flex-fixed" data-group="primary">
     <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
     <a class="item" data-tab="effects">{{localize "wv.system.effect.plural"}}</a>
+    <a class="item" data-tab="equipment">{{localize "wv.rules.equipment.name"}}</a>
     <a class="item" data-tab="inventory">{{localize "wv.rules.equipment.inventory"}}</a>
     <a class="item" data-tab="magic">{{localize "wv.rules.magic.magic"}}</a>
     <a class="item" data-tab="background">{{localize "wv.rules.background.background"}}</a>
   </nav>
 
   <section class="content">
-    <div class="tab active" data-group="primary" data-tab="stats">
-      <section class="stats">
-        <div>
-          <div class="resource-block grid-5cols standard-grid-gaps flex-center">
-            <label>{{localize "wv.rules.special.singular"}}</label>
-            <label>{{localize "wv.rules.special.tempTotal"}}</label>
-            <label>{{localize "wv.rules.special.permTotal"}}</label>
-            <label>{{localize "wv.rules.special.points.short"}}</label>
-            <label>{{localize "wv.system.rolls.imperative"}}</label>
-            {{#each sheet.specials as |special|}}
-              <label>{{special.long}}</label>
-              <span class="resource-display size-2">{{special.tempTotal}}</span>
-              <span class="resource-display size-2">{{special.permTotal}}</span>
-              <input class="size-2" type="number" name="data.leveling.specialPoints.{{@key}}" value="{{special.base}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
-              <button data-special="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
-            {{/each}}
-          </div>
-          <div class="resource-block flex-fixed">
-            <h4 class="resource-block-line">{{localize "wv.rules.criticals.title"}}</h4>
-            <label class="contained-target-inline resource-block-line">
-              {{localize "wv.rules.criticals.success"}}
-              <span class="resource-display size-2">{{data.data.secondary.criticals.success}}</span>
-            </label>
-            <label class="contained-target-inline resource-block-line">
-              {{localize "wv.rules.criticals.failure"}}
-              <span class="resource-display size-3">{{data.data.secondary.criticals.failure}}</span>
-            </label>
-          </div>
-        </div>
+    <section class="tab active stats" data-group="primary" data-tab="stats">
+      <div>
         <div class="resource-block grid-5cols standard-grid-gaps flex-center">
-          <label>{{localize "wv.rules.skills.singular"}}</label>
           <label>{{localize "wv.rules.special.singular"}}</label>
-          <label>{{localize "wv.system.values.total"}}</label>
-          <label>{{localize "wv.rules.skills.points.short"}}</label>
+          <label>{{localize "wv.rules.special.tempTotal"}}</label>
+          <label>{{localize "wv.rules.special.permTotal"}}</label>
+          <label>{{localize "wv.rules.special.points.short"}}</label>
           <label>{{localize "wv.system.rolls.imperative"}}</label>
-          {{#each sheet.skills as | skill |}}
-            <label>{{skill.name}}</label>
-            <label>{{skill.special}}</label>
-            <span class="resource-display size-3">{{skill.total}}</span>
-            <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
-            <button data-skill="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
+          {{#each sheet.specials as |special|}}
+            <label>{{special.long}}</label>
+            <span class="resource-display size-2">{{special.tempTotal}}</span>
+            <span class="resource-display size-2">{{special.permTotal}}</span>
+            <input class="size-2" type="number" name="data.leveling.specialPoints.{{@key}}" value="{{special.base}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
+            <button data-special="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
           {{/each}}
         </div>
-      </section>
-    </div>
+        <div class="resource-block flex-fixed">
+          <h4 class="resource-block-line">{{localize "wv.rules.criticals.title"}}</h4>
+          <label class="contained-target-inline resource-block-line">
+            {{~localize "wv.rules.criticals.success"~}}
+            <span class="resource-display size-2">{{data.data.secondary.criticals.success}}</span>
+          </label>
+          <label class="contained-target-inline resource-block-line">
+            {{~localize "wv.rules.criticals.failure"~}}
+            <span class="resource-display size-3">{{data.data.secondary.criticals.failure}}</span>
+          </label>
+        </div>
+      </div>
+      <div class="resource-block grid-5cols standard-grid-gaps flex-center">
+        <label>{{localize "wv.rules.skills.singular"}}</label>
+        <label>{{localize "wv.rules.special.singular"}}</label>
+        <label>{{localize "wv.system.values.total"}}</label>
+        <label>{{localize "wv.rules.skills.points.short"}}</label>
+        <label>{{localize "wv.system.rolls.imperative"}}</label>
+        {{#each sheet.skills as | skill |}}
+          <label>{{skill.name}}</label>
+          <label>{{skill.special}}</label>
+          <span class="resource-display size-3">{{skill.total}}</span>
+          <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
+          <button data-skill="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
+        {{/each}}
+      </div>
+    </section>
 
-    <div class="tab" data-group="primary" data-tab="effects">
-      <section class="effects">
-        <button type="button" class="control effect-control fas fa-plus" data-action="create" data-type="effect" title="{{localize 'wv.system.actions.create'}}"></button>
+    <section class="tab" data-group="primary" data-tab="effects">
+      <button type="button" class="control effect-control fas fa-plus" data-action="create" data-type="effect" title="{{localize 'wv.system.actions.create'}}"></button>
+      <ol class="fvtt-item-list">
+        {{#each sheet.effects as |effect|}}
+          <li class="fvtt-item effect" data-id="{{effect.id}}">
+            {{#if effect.img}}
+              <img src="{{effect.img}}" />
+            {{/if}}
+            <h4>{{effect.name}}</h4>
+            <div class="fvtt-item-controls flexrow">
+              <button type="button" class="control effect-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+              <button type="button" class="control effect-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
+            </div>
+          </li>
+        {{/each}}
+      </ol>
+    </section>
+
+    <section class="tab" data-group="primary" data-tab="equipment">
+      <section class="weapons">
+        <h3>{{localize "wv.rules.equipment.weapon.plural"}}</h3>
         <ol class="fvtt-item-list">
-          {{#each sheet.effects as |effect|}}
-            <li class="fvtt-item effect" data-id="{{effect.id}}">
-              {{#if effect.img}}
-                <img src="{{effect.img}}" />
-              {{/if}}
-              <h4>{{effect.name}}</h4>
+          {{#each sheet.weapons as |weapon|}}
+            <li class="fvtt-item weapon" data-id="{{weapon.id}}">
+              {{~#if weapon.img~}}
+                <img src="{{weapon.img}}" />
+              {{~/if~}}
+              <h4>{{weapon.name}}</h4>
               <div class="fvtt-item-controls flexrow">
-                <button type="button" class="control effect-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
-                <button type="button" class="control effect-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
+                <button type="button" class="control weapon-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+                <button type="button" class="control weapon-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
               </div>
             </li>
           {{/each}}
         </ol>
       </section>
-    </div>
+    </section>
 
-    <div class="tab" data-group="primary" data-tab="inventory">
-      <section class="inventory">
-        <h3>{{localize "wv.rules.equipment.weapon.plural"}}</h3>
-        <section class="weapons">
-          <ol class="fvtt-item-list">
-            {{#each sheet.weapons as |weapon|}}
-              <li class="fvtt-item weapon" data-id="{{weapon.id}}">
-                {{#if weapon.img}}
-                  <img src="{{weapon.img}}" />
-                {{/if}}
-                <h4>{{weapon.name}}</h4>
+    <section class="tab" data-group="primary" data-tab="inventory">
+      <table class="fvtt-item-table">
+        <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">{{localize "wv.system.misc.name"}}</th>
+            <th scope="col">{{localize "wv.rules.equipment.value.name"}}</th>
+            <th scope="col">{{localize "wv.rules.equipment.weight.name"}}</th>
+            <th scope="col">{{localize "wv.system.values.amount"}}</th>
+            <th scope="col">{{localize "wv.rules.equipment.value.name"}}<br />({{localize "wv.system.values.total"}})</th>
+            <th scope="col">{{localize "wv.rules.equipment.weight.name"}}<br />({{localize "wv.system.values.total"}})</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each sheet.inventory.items as |item|~}}
+            <tr class="fvtt-item" data-id="{{item.id}}">
+              <td class="min-width">
+                {{~#if item.img~}}
+                  <img src="{{item.img}}" />
+                {{~/if~}}
+              </td>
+              <td>{{item.name}}</td>
+              <td class="align-right min-width">{{item.value}}</td>
+              <td class="align-right min-width">{{item.weight}}</td>
+              <td class="align-right min-width">
+                {{#if item.amount~}}
+                  <input type="number" data-action="edit-amount" value="{{item.amount}}" />
+                {{~/if}}
+              </td>
+              <td class="align-right min-width">{{item.totalValue}}</td>
+              <td class="align-right min-width">{{item.totalWeight}}</td>
+              <td class="min-width">
                 <div class="fvtt-item-controls flexrow">
-                  <button type="button" class="control weapon-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
-                  <button type="button" class="control weapon-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
+                  <button type="button" class="control item-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+                  <button type="button" class="control item-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
                 </div>
-              </li>
-            {{/each}}
-          </ol>
-        </section>
-      </section>
-    </div>
+              </td>
+            </tr>
+          {{~/each}}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th class="align-right" colspan="5" scope="row">{{localize "wv.system.values.total"}}</th>
+            <td class="align-right">{{sheet.inventory.totalValue}}</td>
+            <td class="align-right">{{sheet.inventory.totalWeight}}</td>
+            <td colspan="2"></td>
+          </tr>
+        </tfoot>
+      </table>
+    </section>
 
-    <div class="tab" data-group="primary" data-tab="magic">
-      <section class="magic">
-        <label class="contained-target-inline thaum-special">
-          {{localize "wv.system.thaumSpecial"}}
-          <select name="data.magic.thaumSpecial">
-            {{selectOptions sheet.magic.thaumSpecials selected=data.data.magic.thaumSpecial}}
+    <section class="tab magic" data-group="primary" data-tab="magic">
+      <label class="contained-target-inline thaum-special">
+        {{~localize "wv.system.thaumSpecial"~}}
+        <select name="data.magic.thaumSpecial">
+          {{selectOptions sheet.magic.thaumSpecials selected=data.data.magic.thaumSpecial}}
+        </select>
+      </label>
+    </section>
+
+    <section class="tab background" data-group="primary" data-tab="background">
+      <section>
+        <label class="contained-target-inline">
+          {{~localize "wv.rules.race.singular"~}}
+          <select name="data.background.race">
+            {{selectOptions sheet.background.races selected=data.data.background.race}}
           </select>
         </label>
+        <label class="contained-target-inline">
+          {{~localize "wv.rules.background.gender"~}}
+          <input type="text" name="data.background.gender" value="{{data.data.background.gender}}" />
+        </label>
+        <label class="contained-target-inline">
+          {{~localize "wv.rules.background.age"~}}
+          <input type="text" name="data.background.age" value="{{data.data.background.age}}" />
+        </label>
+        <label class="contained-target-inline">
+          {{~localize "wv.rules.background.virtue"~}}
+          <input type="text" name="data.background.virtue" value="{{data.data.background.virtue}}" />
+        </label>
+        <label class="contained-target-inline">
+          {{~localize "wv.rules.background.specialTalent"~}}
+          <input type="text" name="data.background.specialTalent" value="{{data.data.background.specialTalent}}" />
+        </label>
       </section>
-    </div>
-
-    <div class="tab" data-group="primary" data-tab="background">
-      <section class="background">
-        <section>
-          <label class="contained-target-inline">
-            {{localize "wv.rules.race.singular"}}
-            <select name="data.background.race">
-              {{selectOptions sheet.background.races selected=data.data.background.race}}
-            </select>
-          </label>
-          <label class="contained-target-inline">
-            {{localize "wv.rules.background.gender"}}
-            <input type="text" name="data.background.gender" value="{{data.data.background.gender}}" />
-          </label>
-          <label class="contained-target-inline">
-            {{localize "wv.rules.background.age"}}
-            <input type="text" name="data.background.age" value="{{data.data.background.age}}" />
-          </label>
-          <label class="contained-target-inline">
-            {{localize "wv.rules.background.virtue"}}
-            <input type="text" name="data.background.virtue" value="{{data.data.background.virtue}}" />
-          </label>
-          <label class="contained-target-inline">
-            {{localize "wv.rules.background.specialTalent"}}
-            <input type="text" name="data.background.specialTalent" value="{{data.data.background.specialTalent}}" />
-          </label>
-        </section>
-        <section>
-          <label>
-            {{localize "wv.rules.background.appearance"}}
-            <textarea name="data.background.appearance">{{data.data.background.appearance}}</textarea>
-          </label>
-        </section>
-        <section>
-          <label>
-            {{localize "wv.rules.background.cutieMark"}}
-            <textarea name="data.background.cutieMark">{{data.data.background.cutieMark}}</textarea>
-          </label>
-        </section>
-        <section>
-          <label>
-            {{localize "wv.rules.background.background"}}
-            <textarea name="data.background.background">{{data.data.background.background}}</textarea>
-          </label>
-        </section>
-        <section>
-          <label>
-            {{localize "wv.rules.background.personality"}}
-            <textarea name="data.background.personality">{{data.data.background.personality}}</textarea>
-          </label>
-        </section>
-        <section>
-          <label>
-            {{localize "wv.rules.background.fears"}}
-            <textarea name="data.background.fears">{{data.data.background.fears}}</textarea>
-          </label>
-        </section>
-        <section>
-          <label>
-            {{localize "wv.rules.background.dreams"}}
-            <textarea name="data.background.dreams">{{data.data.background.dreams}}</textarea>
-          </label>
-        </section>
-        <section>
-          <label>
-            {{localize "wv.rules.background.socialContacts"}}
-            <textarea name="data.background.socialContacts">{{data.data.background.socialContacts}}</textarea>
-          </label>
-        </section>
+      <section>
+        <label>
+          {{~localize "wv.rules.background.appearance"~}}
+          <textarea name="data.background.appearance">{{data.data.background.appearance}}</textarea>
+        </label>
       </section>
-    </div>
+      <section>
+        <label>
+          {{~localize "wv.rules.background.cutieMark"~}}
+          <textarea name="data.background.cutieMark">{{data.data.background.cutieMark}}</textarea>
+        </label>
+      </section>
+      <section>
+        <label>
+          {{~localize "wv.rules.background.background"~}}
+          <textarea name="data.background.background">{{data.data.background.background}}</textarea>
+        </label>
+      </section>
+      <section>
+        <label>
+          {{~localize "wv.rules.background.personality"~}}
+          <textarea name="data.background.personality">{{data.data.background.personality}}</textarea>
+        </label>
+      </section>
+      <section>
+        <label>
+          {{~localize "wv.rules.background.fears"~}}
+          <textarea name="data.background.fears">{{data.data.background.fears}}</textarea>
+        </label>
+      </section>
+      <section>
+        <label>
+          {{~localize "wv.rules.background.dreams"~}}
+          <textarea name="data.background.dreams">{{data.data.background.dreams}}</textarea>
+        </label>
+      </section>
+      <section>
+        <label>
+          {{~localize "wv.rules.background.socialContacts"~}}
+          <textarea name="data.background.socialContacts">{{data.data.background.socialContacts}}</textarea>
+        </label>
+      </section>
+    </section>
   </section>
 
 </form>

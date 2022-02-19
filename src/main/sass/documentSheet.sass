@@ -79,3 +79,27 @@
         float: left
         margin-right: common.$spacing-distance
         max-width: common.$icon-size-medium
+
+  .fvtt-item-table
+    margin: 0
+
+    thead
+      vertical-align: baseline
+
+    th,td
+      &:not(:last-child)
+        padding-right: common.$spacing-distance
+
+    .min-width
+      width: 0%
+
+    .fvtt-item
+      min-height: 2em
+
+      img
+        max-height: common.$icon-size-small
+        max-width: common.$icon-size-small
+        vertical-align: middle
+
+      .fvtt-item-controls
+        flex-wrap: nowrap

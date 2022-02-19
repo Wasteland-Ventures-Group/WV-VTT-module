@@ -96,14 +96,19 @@
             "highVelocity": "High Velocity"
           }
         },
+        "name": "Equipment",
         "inventory": "Inventory",
         "rarity": {
+          "name": "Rarity",
           "names": {
             "common": "Common",
             "uncommon": "Uncommon",
             "rare": "Rare",
             "exotic": "Exotic"
           }
+        },
+        "value": {
+          "name": "Value"
         },
         "weapon": {
           "attack": {
@@ -124,6 +129,9 @@
           "shots": "Shots",
           "singular": "Weapon",
           "strengthRequirement": "Strength Requirement"
+        },
+        "weight": {
+          "name": "Weight"
         }
       },
       "health": {
@@ -367,6 +375,7 @@
       },
       "thaumSpecial": "SPECIA for Thaumaturgy",
       "values": {
+        "amount": "Amount",
         "base": "Base",
         "cost": "Cost",
         "previous": "Previous",

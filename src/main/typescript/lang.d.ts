@@ -122,8 +122,12 @@ export interface LangSchema {
         };
         /** The name for the inventory */
         inventory: string;
+        /** The name for equipment */
+        name: string;
         /** Labels relating to rarity */
         rarity: {
+          /** The name for the concept of rarity */
+          name: string;
           /** Names for the rarity levels */
           names: {
             common: string;
@@ -131,6 +135,11 @@ export interface LangSchema {
             rare: string;
             exotic: string;
           };
+        };
+        /** Labels for the concept of value */
+        value: {
+          /** The name of the value concept */
+          name: string;
         };
         /** Labels related to weapons */
         weapon: QuantityNames & {
@@ -156,6 +165,11 @@ export interface LangSchema {
           shots: string;
           /** The name for the strength requirement */
           strengthRequirement: string;
+        };
+        /** Labels relating to the concept of weight */
+        weight: {
+          /** The name of the concept of weight */
+          name: string;
         };
       };
       /** Labels relating to health */
@@ -517,6 +531,8 @@ export interface LangSchema {
       thaumSpecial: string;
       /** Labels for describing different values */
       values: {
+        /** Label for an amount of something */
+        amount: string;
         /** Label for a base value */
         base: string;
         /** Label for a cost */

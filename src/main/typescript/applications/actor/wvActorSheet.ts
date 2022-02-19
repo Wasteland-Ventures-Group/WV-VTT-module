@@ -14,6 +14,7 @@ import {
 } from "../../constants.js";
 import type { Special } from "../../data/actor/character/specials/properties.js";
 import { getGame } from "../../foundryHelpers.js";
+import { parent } from "../../helpers.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
 import Prompt from "../prompt.js";
@@ -45,26 +46,65 @@ export default class WvActorSheet extends ActorSheet {
   override activateListeners(html: JQuery<HTMLFormElement>): void {
     super.activateListeners(html);
 
-    html.on("change submit", (event) => event.target.reportValidity());
+    const sheetForm = html[0];
+    if (!(sheetForm instanceof HTMLFormElement))
+      throw new Error("The element passed was not a form element!");
+
+    ["change", "submit"].forEach((eventType) => {
+      sheetForm.addEventListener(eventType, () => sheetForm.reportValidity());
+    });
 
     // stat rolls
-    html
-      .find("button[data-special]")
-      .on("click", this.onClickRollSpecial.bind(this));
-    html
-      .find("button[data-skill]")
-      .on("click", this.onClickRollSkill.bind(this));
+    sheetForm.querySelectorAll("button[data-special]").forEach((element) => {
+      element.addEventListener("click", (event) => {
+        if (!(event instanceof MouseEvent))
+          throw new Error("This should not happen!");
+        this.onClickRollSpecial(event);
+      });
+    });
+    sheetForm.querySelectorAll("button[data-skill]").forEach((element) => {
+      element.addEventListener("click", (event) => {
+        if (!(event instanceof MouseEvent))
+          throw new Error("This should not happen!");
+        this.onClickRollSkill(event);
+      });
+    });
 
     // item handling
-    html
-      .find(".control[data-action=create]")
-      .on("click", this.onClickCreateItem.bind(this));
-    html
-      .find(".control[data-action=edit]")
-      .on("click", this.onClickEditItem.bind(this));
-    html
-      .find(".control[data-action=delete]")
-      .on("click", this.onClickDeleteItem.bind(this));
+    sheetForm
+      .querySelectorAll("button[data-action=create]")
+      .forEach((element) => {
+        element.addEventListener("click", (event) => {
+          if (!(event instanceof MouseEvent))
+            throw new Error("This should not happen!");
+          this.onClickCreateItem(event);
+        });
+      });
+    sheetForm
+      .querySelectorAll("button[data-action=edit]")
+      .forEach((element) => {
+        element.addEventListener("click", (event) => {
+          if (!(event instanceof MouseEvent))
+            throw new Error("This should not happen!");
+          this.onClickEditItem(event);
+        });
+      });
+    sheetForm
+      .querySelectorAll("button[data-action=delete]")
+      .forEach((element) => {
+        element.addEventListener("click", (event) => {
+          if (!(event instanceof MouseEvent))
+            throw new Error("This should not happen!");
+          this.onClickDeleteItem(event);
+        });
+      });
+    sheetForm
+      .querySelectorAll("input[data-action=edit-amount]")
+      .forEach((element) => {
+        element.addEventListener("change", (event) => {
+          this.onChangeItemAmount(event);
+        });
+      });
   }
 
   override async getData(): Promise<SheetData> {
@@ -85,6 +125,11 @@ export default class WvActorSheet extends ActorSheet {
             }, {} as I18nRaces)
         },
         bounds: CONSTANTS.bounds,
+        inventory: {
+          items: [],
+          totalValue: 0,
+          totalWeight: 0
+        },
         specials: SpecialNames.reduce((specials, specialName) => {
           specials[specialName] = {
             ...this.actor.getSpecial(specialName),
@@ -130,6 +175,8 @@ export default class WvActorSheet extends ActorSheet {
           img: item.img,
           name: item.name
         });
+
+        continue;
       }
 
       if (TYPES.ITEM.WEAPON === item.data.type) {
@@ -139,6 +186,20 @@ export default class WvActorSheet extends ActorSheet {
           name: item.name
         });
       }
+
+      sheetData.sheet.inventory.items.push({
+        id: item.id,
+        img: item.img,
+        name: item.name,
+        value: item.value,
+        weight: item.weight,
+        amount: item.amount,
+        totalValue: this.getFixedTotal(item.value, item.totalValue),
+        totalWeight: this.getFixedTotal(item.weight, item.totalWeight)
+      });
+
+      sheetData.sheet.inventory.totalValue += item.totalValue ?? 0;
+      sheetData.sheet.inventory.totalWeight += item.totalWeight ?? 0;
     }
 
     return sheetData;
@@ -160,9 +221,7 @@ export default class WvActorSheet extends ActorSheet {
     }
   }
 
-  /**
-   * Handle a drag start event on the SPECIAL roll buttons.
-   */
+  /** Handle a drag start event on the SPECIAL roll buttons. */
   protected onDragSpecial(
     event: DragEvent,
     actorId: string,
@@ -177,9 +236,7 @@ export default class WvActorSheet extends ActorSheet {
     event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
   }
 
-  /**
-   * Handle a drag start event on the Skill roll buttons.
-   */
+  /** Handle a drag start event on the Skill roll buttons. */
   protected onDragSkill(
     event: DragEvent,
     actorId: string,
@@ -194,11 +251,12 @@ export default class WvActorSheet extends ActorSheet {
     event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
   }
 
-  /**
-   * Handle a click event on the SPECIAL roll buttons.
-   */
-  protected async onClickRollSpecial(event: ClickEvent): Promise<void> {
+  /** Handle a click event on the SPECIAL roll buttons. */
+  protected async onClickRollSpecial(event: MouseEvent): Promise<void> {
     event.preventDefault();
+
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
 
     const special = event.target.dataset.special;
     if (!special || !isSpecialName(special)) {
@@ -221,11 +279,12 @@ export default class WvActorSheet extends ActorSheet {
     }
   }
 
-  /**
-   * Handle a click event on the Skill roll buttons.
-   */
-  protected async onClickRollSkill(event: ClickEvent): Promise<void> {
+  /** Handle a click event on the Skill roll buttons. */
+  protected async onClickRollSkill(event: MouseEvent): Promise<void> {
     event.preventDefault();
+
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
 
     const skill = event.target.dataset.skill;
     if (!skill || !isSkillName(skill)) {
@@ -248,10 +307,11 @@ export default class WvActorSheet extends ActorSheet {
     }
   }
 
-  /**
-   * Handle a click event on a create item button.
-   */
-  protected async onClickCreateItem(event: ClickEvent): Promise<void> {
+  /** Handle a click event on a create item button. */
+  protected async onClickCreateItem(event: MouseEvent): Promise<void> {
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
     if (event.target.dataset.type !== TYPES.ITEM.EFFECT) return;
 
     const data: ConstructorParameters<typeof Item>[0] = {
@@ -264,11 +324,12 @@ export default class WvActorSheet extends ActorSheet {
     item?.sheet?.render(true);
   }
 
-  /**
-   * Handle a click event on an edit item button.
-   */
-  protected onClickEditItem(event: ClickEvent): void {
-    const id = $(event.target).parents(".fvtt-item").data("id");
+  /** Handle a click event on an edit item button. */
+  protected onClickEditItem(event: MouseEvent): void {
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const id = parent(event.target, ".fvtt-item")?.dataset.id;
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
@@ -277,11 +338,12 @@ export default class WvActorSheet extends ActorSheet {
     }
   }
 
-  /**
-   * Handle a click event on a delete item button.
-   */
-  protected onClickDeleteItem(event: ClickEvent): void {
-    const id = $(event.target).parents(".fvtt-item").data("id");
+  /** Handle a click event on a delete item button. */
+  protected onClickDeleteItem(event: MouseEvent): void {
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const id = parent(event.target, ".fvtt-item")?.dataset.id;
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
@@ -290,14 +352,42 @@ export default class WvActorSheet extends ActorSheet {
       this.render(false);
     }
   }
-}
 
-type ClickEvent = JQuery.ClickEvent<
-  HTMLElement,
-  unknown,
-  HTMLElement,
-  HTMLElement
->;
+  /** Handle change events for chaning an item's amount. */
+  protected onChangeItemAmount(event: Event): void {
+    if (!(event.target instanceof HTMLInputElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const id = parent(event.target, ".fvtt-item")?.dataset.id;
+    if (!(typeof id === "string") || !id) return;
+
+    const amount = parseInt(event.target.value);
+    if (isNaN(amount)) throw new Error("The value was not a number.");
+
+    const item = this.actor.items.get(id);
+    if (item) {
+      item.update({ data: { amount } });
+      item.render(false);
+      this.render(false);
+    }
+  }
+
+  /**
+   * Get the fixed total number if both inputs are numbers. If the base is an
+   * integer, the number is returned as is.
+   */
+  protected getFixedTotal(
+    base: number | undefined,
+    number: number | undefined
+  ): string | undefined {
+    if (typeof base === "undefined" || typeof number === "undefined")
+      return undefined;
+
+    if (Number.isInteger(base)) return number.toString();
+
+    return number.toFixed(CONSTANTS.fixedDecimals);
+  }
+}
 
 interface SheetBackground {
   race: string;
@@ -327,6 +417,23 @@ interface SheetWeapon {
   name: string | null;
 }
 
+interface SheetItem {
+  id: string;
+  img: string | null;
+  name: string | null;
+  value: number | undefined;
+  weight: number | undefined;
+  amount: number | undefined;
+  totalValue: string | undefined;
+  totalWeight: string | undefined;
+}
+
+interface SheetInventory {
+  items: SheetItem[];
+  totalValue: number;
+  totalWeight: number;
+}
+
 interface SheetMagic {
   thaumSpecials: Record<ThaumaturgySpecial, string>;
 }
@@ -345,6 +452,7 @@ interface SheetData extends ActorSheet.Data {
     background: SheetBackground;
     bounds: SheetBounds;
     effects: SheetEffect[];
+    inventory: SheetInventory;
     magic: SheetMagic;
     skills: Record<SkillName, SheetSkill>;
     specials: Record<SpecialName, SheetSpecial>;

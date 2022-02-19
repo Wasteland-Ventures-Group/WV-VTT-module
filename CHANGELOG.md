@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - physical items now have a rarity property
 - add basic support for ammo items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+- add a basic inventory tab to actors
 
 ### Fixed
 

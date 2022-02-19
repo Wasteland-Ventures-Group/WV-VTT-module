@@ -42,13 +42,13 @@
       </div>
       <div class="listing-table grid-2cols">
         <span>{{localize "wv.system.values.base"}}</span>
-        <span class="number-display">{{details.hit.base}}</span>
+        <span class="align-right">{{details.hit.base}}</span>
         {{#each details.hit.modifiers as |modifier|~}}
           <span>{{localize modifier.key}}</span>
-          <span class="number-display">{{modifier.amount}}</span>
+          <span class="align-right">{{modifier.amount}}</span>
         {{~/each}}
         <span class="listing-total">{{localize "wv.system.values.total"}}</span>
-        <span class="listing-total number-display">{{details.hit.total}}</span>
+        <span class="listing-total align-right">{{details.hit.total}}</span>
       </div>
     </div>
     <div class="modifier-listing">
@@ -58,13 +58,13 @@
       </div>
       <div class="listing-table grid-2cols">
         <span>{{localize "wv.system.values.base"}}</span>
-        <span class="number-display">{{details.damage.base.base}}</span>
+        <span class="align-right">{{details.damage.base.base}}</span>
         {{#each details.damage.base.modifiers as |modifier|~}}
           <span>{{localize modifier.key}}</span>
-          <span class="number-display">{{modifier.amount}}</span>
+          <span class="align-right">{{modifier.amount}}</span>
         {{~/each}}
         <span class="listing-total">{{localize "wv.system.values.total"}}</span>
-        <span class="listing-total number-display">{{details.damage.base.total}}</span>
+        <span class="listing-total align-right">{{details.damage.base.total}}</span>
       </div>
     </div>
     <div class="modifier-listing">
@@ -74,13 +74,13 @@
       </div>
       <div class="listing-table grid-2cols">
         <span>{{localize "wv.system.values.base"}}</span>
-        <span class="number-display">{{details.damage.dice.base}}</span>
+        <span class="align-right">{{details.damage.dice.base}}</span>
         {{#each details.damage.dice.modifiers as |modifier|~}}
           <span>{{localize modifier.key}}</span>
-          <span class="number-display">{{modifier.amount}}</span>
+          <span class="align-right">{{modifier.amount}}</span>
         {{~/each}}
         <span class="listing-total">{{localize "wv.system.values.total"}}</span>
-        <span class="listing-total number-display">{{details.damage.dice.total}}</span>
+        <span class="listing-total align-right">{{details.damage.dice.total}}</span>
       </div>
     </div>
   </div>

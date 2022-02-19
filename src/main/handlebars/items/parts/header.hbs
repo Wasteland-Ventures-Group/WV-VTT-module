@@ -8,17 +8,17 @@
           <h3 class="proto-name">{{data.data.name}}</h3>
         {{~/if}}
         {{#if sheet.rarity~}}
-          <span class="general-info-element flex-fixed">
+          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.rarity.name"}}">
             <span class="fas fa-gem"></span><span>{{sheet.rarity}}</span>
           </span>
         {{~/if}}
         {{#if data.data.value~}}
-          <span class="general-info-element flex-fixed">
+          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.value.name"}}">
             <span class="fas fa-coins"></span><span>{{data.data.value}}</span>
           </span>
         {{~/if}}
         {{#if data.data.weight~}}
-          <span class="general-info-element flex-fixed">
+          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.weight.name"}}">
             <span class="fas fa-weight"></span><span>{{data.data.weight}}</span>
           </span>
         {{~/if}}

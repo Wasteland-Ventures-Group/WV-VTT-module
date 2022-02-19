@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add basic support for ammo items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
 
+### Fixed
+
+- chat message details not expanding
+
 ## [0.11.3] - 2022-02-06
 
 ### Fixed

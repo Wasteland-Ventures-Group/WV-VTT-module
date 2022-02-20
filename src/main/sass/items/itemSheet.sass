@@ -12,17 +12,22 @@
       .header-fields
 
         .general-info
-          align-items: baseline
-          margin-bottom: 0.5rem
 
-          :not(:last-child)
+          > :not(:last-child)
             margin-right: common.$spacing-distance * 5
 
-          .proto-name
-            margin-bottom: 0
+        .proto-name
+          margin-bottom: 0
 
-          .general-info-element
-            white-space: nowrap
+  .general-info
+    align-items: baseline
+    margin-bottom: 0.5rem
 
-            .fas
-              margin-right: common.$spacing-distance
+    > :not(:last-child)
+      margin-right: common.$spacing-distance * 2
+
+    .general-info-element
+      white-space: nowrap
+
+      .fas
+        margin-right: common.$spacing-distance

@@ -9,6 +9,7 @@ import type { AmmoDataSourceData } from "./data/item/ammo/source.js";
 import type BaseItem from "./data/item/baseItem.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
 import { WvItemDataSource } from "./data/item/source.js";
+import type StackableBaseItem from "./data/item/stackableBaseItem.js";
 import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage/index.js";
@@ -65,6 +66,7 @@ declare global {
         item: {
           [TYPES.ITEM.AMMO]: ValidateFunction<AmmoDataSourceData>;
           [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItem>;
+          [TYPES.ITEM.MISC]: ValidateFunction<StackableBaseItem>;
           [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;
         };
         ruleElement: ValidateFunction<RuleElementSource>;

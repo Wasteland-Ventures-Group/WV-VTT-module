@@ -13,12 +13,7 @@ export default class WeaponSheet extends WvItemSheet {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("weapon-sheet");
     return foundry.utils.mergeObject(defaultOptions, {
-      height: 500,
-      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }],
-      tabs: [
-        { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
-      ],
-      width: 670
+      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }]
     } as typeof ItemSheet["defaultOptions"]);
   }
 

@@ -8,10 +8,8 @@ export default class EffectSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("effect-sheet");
-    return foundry.utils.mergeObject(defaultOptions, {
-      height: 500,
-      width: 670
-    } as typeof ItemSheet["defaultOptions"]);
+    defaultOptions.tabs = [];
+    return defaultOptions;
   }
 
   override get item(): Effect {

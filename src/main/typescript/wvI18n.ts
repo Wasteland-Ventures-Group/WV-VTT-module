@@ -56,7 +56,7 @@ export default class WvI18n {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
       "wv.rules.equipment.rarity.names"
-    ) as I18nRaces;
+    ) as I18nRarities;
   }
 
   /** Get the internationalization of the SPECIALs. */

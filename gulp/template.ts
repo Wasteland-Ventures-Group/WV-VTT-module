@@ -9,10 +9,12 @@ export default async function templateTask(): Promise<void> {
     import("../src/main/typescript/data/actor/character/source.js"),
     import("../src/main/typescript/data/item/ammo/source.js"),
     import("../src/main/typescript/data/item/effect/source.js"),
+    import("../src/main/typescript/data/item/misc/source.js"),
     import("../src/main/typescript/data/item/weapon/source.js")
   ]);
   await fs.mkdir(distWvPrefix, { recursive: true });
-  const [actorDbData, ammoSource, effectSource, weaponSource] = await imports;
+  const [actorDbData, ammoSource, effectSource, miscSource, weaponSource] =
+    await imports;
 
   const actorDocumentTypes: TemplateDocumentType[] = [
     [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()]
@@ -20,6 +22,7 @@ export default async function templateTask(): Promise<void> {
   const itemDocumentTypes: TemplateDocumentType[] = [
     [TYPES.ITEM.AMMO, new ammoSource.AmmoDataSourceData()],
     [TYPES.ITEM.EFFECT, new effectSource.EffectDataSourceData()],
+    [TYPES.ITEM.MISC, new miscSource.MiscDataSourceData()],
     [TYPES.ITEM.WEAPON, new weaponSource.WeaponDataSourceData()]
   ];
   return fs.writeFile(

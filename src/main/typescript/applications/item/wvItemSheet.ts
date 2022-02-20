@@ -1,5 +1,5 @@
 import type { DefinedError } from "ajv";
-import { CONSTANTS, HANDLEBARS } from "../../constants.js";
+import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
 import AdditionalPropMessage from "../../ruleEngine/messages/additionalPropMessage.js";
 import MissingPropMessage from "../../ruleEngine/messages/missingPropMessage.js";
@@ -17,7 +17,12 @@ import WvI18n from "../../wvI18n.js";
 export default class WvItemSheet extends ItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"]
+      classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"],
+      height: 500,
+      tabs: [
+        { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
+      ],
+      width: 670
     } as typeof ItemSheet["defaultOptions"]);
   }
 
@@ -42,18 +47,36 @@ export default class WvItemSheet extends ItemSheet {
   ][] = [];
 
   override get template(): string {
-    return `${CONSTANTS.systemPath}/handlebars/items/${this.item.data.type}Sheet.hbs`;
+    const root = `${CONSTANTS.systemPath}/handlebars/items/`;
+    switch (this.item.data.type) {
+      case "effect":
+        return root + "effectSheet.hbs";
+      case "weapon":
+        return root + "weaponSheet.hbs";
+      default:
+        return root + "itemSheet.hbs";
+    }
   }
 
   override async getData(): Promise<SheetData> {
     const data = await super.getData();
+
+    let rarity: SheetDataRarity | undefined = undefined;
+    if ("rarity" in data.data.data) {
+      const i18nRarities = WvI18n.rarities;
+      rarity = {
+        selectedName: i18nRarities[data.data.data.rarity],
+        rarities: Rarities.reduce((rarities, rarityName) => {
+          rarities[rarityName] = i18nRarities[rarityName];
+          return rarities;
+        }, {} as Record<Rarity, string>)
+      };
+    }
+
     return {
       ...data,
       sheet: {
-        rarity:
-          "rarity" in data.data.data
-            ? WvI18n.rarities[data.data.data.rarity]
-            : undefined,
+        rarity,
         parts: {
           header: HANDLEBARS.partPaths.item.header,
           rules: HANDLEBARS.partPaths.item.rules
@@ -331,7 +354,7 @@ export default class WvItemSheet extends ItemSheet {
 
 export interface SheetData extends ItemSheet.Data {
   sheet: {
-    rarity: string | undefined;
+    rarity: SheetDataRarity | undefined;
     parts: {
       header: string;
       rules: string;
@@ -340,6 +363,11 @@ export interface SheetData extends ItemSheet.Data {
       elements: SheetDataRuleElement[];
     };
   };
+}
+
+export interface SheetDataRarity {
+  selectedName: string;
+  rarities: Record<Rarity, string>;
 }
 
 export interface SheetDataRuleElement {

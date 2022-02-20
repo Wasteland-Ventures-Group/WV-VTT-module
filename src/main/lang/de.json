@@ -279,6 +279,10 @@
         "singular": "Effekt",
         "plural": "Effekte"
       },
+      "item": {
+        "singular": "Gegenstand",
+        "plural": "Gegenstände"
+      },
       "messages": {
         "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte in der Waffe nicht gefunden werden.",
         "couldNotCreateDocument": "Konnte kein Dokument mit den gegebenen Daten erstellen.",
@@ -291,6 +295,7 @@
         "targetOutOfRange": "Das Ziel ist außer Reichweite!"
       },
       "misc": {
+        "description": "Beschreibung",
         "details": "Details",
         "modifier": "Modifikator",
         "modifierFor": "Modifikator für {what}",
@@ -370,6 +375,7 @@
         "names": {
           "actorSheet": "Aktorbogen",
           "effectSheet": "Effektbogen",
+          "itemSheet": "Gegenstandsbogen",
           "weaponSheet": "Waffenbogen"
         }
       },

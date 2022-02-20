@@ -276,6 +276,8 @@ export interface LangSchema {
       };
       /** Labels related to Effect Items */
       effect: QuantityNames;
+      /** Labels related to generic Misc Items */
+      item: QuantityNames;
       /** Different system messages. */
       messages: {
         /**
@@ -342,6 +344,8 @@ export interface LangSchema {
       };
       /** Miscellaneous labels not fitting anywhere else */
       misc: {
+        /** Label for a description */
+        description: string;
         /** Label for details */
         details: string;
         /** The label for a modifier, when the target is not known */
@@ -523,6 +527,8 @@ export interface LangSchema {
           actorSheet: string;
           /** The label for the Effect sheet */
           effectSheet: string;
+          /** The label for the generic Item Sheet */
+          itemSheet: string;
           /** The label for the Weapon sheet */
           weaponSheet: string;
         };

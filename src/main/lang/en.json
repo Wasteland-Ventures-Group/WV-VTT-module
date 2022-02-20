@@ -279,6 +279,10 @@
         "singular": "Effect",
         "plural": "Effects"
       },
+      "item": {
+        "singular": "Item",
+        "plural": "Items"
+      },
       "messages": {
         "attackNotFound": "The attack with the name \"{name}\" could not be found in the Weapon.",
         "couldNotCreateDocument": "Could not create a Document with the provided data.",
@@ -291,6 +295,7 @@
         "targetOutOfRange": "The target is out of range!"
       },
       "misc": {
+        "description": "Description",
         "details": "Details",
         "modifier": "Modifier",
         "modifierFor": "Modifier for {what}",
@@ -370,6 +375,7 @@
         "names": {
           "actorSheet": "Actor Sheet",
           "effectSheet": "Effect Sheet",
+          "itemSheet": "Item Sheet",
           "weaponSheet": "Weapon Sheet"
         }
       },

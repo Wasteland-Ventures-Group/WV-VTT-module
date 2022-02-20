@@ -10,9 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - physical items now have a rarity property
-- add basic support for ammo items
+- basic support for ammo items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
-- add a basic inventory tab to actors
+- a basic inventory tab to actors
+- misscellaneous items
+  ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+- ability to add misc items to an actor from the actor sheet
 
 ### Fixed
 

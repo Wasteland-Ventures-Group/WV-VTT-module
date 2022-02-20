@@ -85,12 +85,13 @@ export const TYPES = {
   ITEM: {
     AMMO: "ammo",
     EFFECT: "effect",
+    MISC: "misc",
     WEAPON: "weapon"
   }
 } as const;
 
 export type Rarity = typeof Rarities[number];
-export const Rarities = ["common", "uncommon", "rare", "exotic"];
+export const Rarities = ["common", "uncommon", "rare", "exotic"] as const;
 
 export type Caliber = typeof Calibers[number];
 export const Calibers = [

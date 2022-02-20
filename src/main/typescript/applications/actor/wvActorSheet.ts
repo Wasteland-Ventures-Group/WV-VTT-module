@@ -312,14 +312,23 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    if (event.target.dataset.type !== TYPES.ITEM.EFFECT) return;
+    let data: ConstructorParameters<typeof Item>[0];
+    if (event.target.dataset.type === TYPES.ITEM.EFFECT) {
+      data = {
+        name: getGame().i18n.format("wv.system.misc.newName", {
+          what: getGame().i18n.localize("wv.system.effect.singular")
+        }),
+        type: event.target.dataset.type
+      };
+    } else if (event.target.dataset.type === TYPES.ITEM.MISC) {
+      data = {
+        name: getGame().i18n.format("wv.system.misc.newName", {
+          what: getGame().i18n.localize("wv.system.item.singular")
+        }),
+        type: event.target.dataset.type
+      };
+    } else return;
 
-    const data: ConstructorParameters<typeof Item>[0] = {
-      name: getGame().i18n.format("wv.system.misc.newName", {
-        what: getGame().i18n.localize("wv.system.effect.singular")
-      }),
-      type: event.target.dataset.type
-    };
     const item = await Item.create(data, { parent: this.actor });
     item?.sheet?.render(true);
   }

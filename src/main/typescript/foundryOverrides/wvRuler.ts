@@ -62,10 +62,7 @@ export default class WvRuler extends Ruler {
     const currAp = token.actor.actionPoints.value;
 
     // Check if there are enough AP for the movement.
-    if (currAp >= apUse) {
-      // Update the AP on the actor
-      token.actor.updateActionPoints(currAp - apUse);
-    } else {
+    if (currAp < apUse) {
       // Warn the user when there are not enough AP to move.
       if (ui.notifications)
         ui.notifications.info(
@@ -78,7 +75,12 @@ export default class WvRuler extends Ruler {
       return false;
     }
 
-    return super.moveToken();
+    // Check whether the movement succeeds and stop, if it does not.
+    const success = await super.moveToken();
+    if (success === false) return success;
+
+    // Update the AP on the actor
+    token.actor.updateActionPoints(currAp - apUse);
   }
 
   /**

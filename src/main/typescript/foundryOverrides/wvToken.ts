@@ -22,9 +22,11 @@ export default class WvToken extends Token {
       return super._onDragLeftDrop(event);
 
     const canvas = getCanvas();
+
     const grid = canvas.grid;
     if (!(grid instanceof GridLayer))
       throw new Error("The canvas has no grid!");
+
     const { originalEvent } = event.data;
     const preview = game.settings.get("core", "tokenDragPreview");
 
@@ -68,11 +70,7 @@ export default class WvToken extends Token {
       const currAp = clone.actor.actionPoints.value;
 
       // Check if there are enough AP for the movement.
-      if (currAp >= apUse) {
-        // Update the AP on the actor, then hand it off to the super method.
-        clone.actor.updateActionPoints(currAp - apUse);
-        clones.push(clone);
-      } else {
+      if (currAp < apUse) {
         // Reset the vision and warn the user when there are not enough AP to
         // move.
         if (preview) original.updateSource({ noUpdateFog: true });
@@ -84,7 +82,19 @@ export default class WvToken extends Token {
               needed: apUse
             })
           );
+        continue;
       }
+
+      // If the token collides with a wall, do not subtract AP and let the super
+      // method deal with the collission.
+      if (clone.checkCollision(clone.getCenter(target.x, target.y))) {
+        clones.push(clone);
+        continue;
+      }
+
+      // Update the AP on the actor, then hand it off to the super method.
+      clone.actor.updateActionPoints(currAp - apUse);
+      clones.push(clone);
     }
 
     event.data.clones = clones;

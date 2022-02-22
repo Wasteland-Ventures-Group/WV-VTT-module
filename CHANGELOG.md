@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - actor sheets now only scroll their tabbed content instead of the entire sheet.
   This means that the stats header is always visible.
+- further condensed the actor sheet item table
 
 ### Fixed
 

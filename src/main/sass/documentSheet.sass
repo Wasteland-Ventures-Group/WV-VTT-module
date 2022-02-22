@@ -94,12 +94,20 @@
       width: 0%
 
     .fvtt-item
-      min-height: 2em
+
+      button,img,input
+        box-sizing: content-box
+        max-height: 1em
+        max-width: 1em
+
+      button
+        padding: 0
 
       img
-        max-height: common.$icon-size-small
-        max-width: common.$icon-size-small
         vertical-align: middle
+
+      input
+        max-width: unset
 
       .fvtt-item-controls
         flex-wrap: nowrap

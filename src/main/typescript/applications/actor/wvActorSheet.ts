@@ -14,6 +14,7 @@ import {
 } from "../../constants.js";
 import type { Special } from "../../data/actor/character/specials/properties.js";
 import { getGame } from "../../foundryHelpers.js";
+import * as helpers from "../../helpers.js";
 import type WvItem from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
@@ -114,6 +115,30 @@ export default class WvActorSheet extends ActorSheet {
     const specialI18ns = WvI18n.specials;
     const skillI18ns = WvI18n.skills;
 
+    let totalValue = 0;
+    let totalWeight = 0;
+    const items = this.actor.items
+      .filter(
+        (item): item is StoredDocument<WvItem> =>
+          typeof item.id === "string" && item.type !== TYPES.ITEM.EFFECT
+      )
+      .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
+      .map((item) => {
+        totalValue += item.totalValue ?? 0;
+        totalWeight += item.totalWeight ?? 0;
+
+        return {
+          id: item.id,
+          img: item.img,
+          name: item.name,
+          value: item.value,
+          weight: item.weight,
+          amount: item.amount,
+          totalValue: helpers.toFixed(item.totalValue),
+          totalWeight: helpers.toFixed(item.totalWeight)
+        };
+      });
+
     const sheetData: SheetData = {
       ...(await super.getData()),
       sheet: {
@@ -128,9 +153,9 @@ export default class WvActorSheet extends ActorSheet {
         },
         bounds: CONSTANTS.bounds,
         inventory: {
-          items: [],
-          totalValue: 0,
-          totalWeight: 0
+          items,
+          totalValue: helpers.toFixed(totalValue),
+          totalWeight: helpers.toFixed(totalWeight)
         },
         specials: SpecialNames.reduce((specials, specialName) => {
           specials[specialName] = {
@@ -185,28 +210,6 @@ export default class WvActorSheet extends ActorSheet {
           }))
       }
     };
-
-    this.actor.items
-      .filter(
-        (item): item is StoredDocument<WvItem> =>
-          typeof item.id === "string" && item.type !== TYPES.ITEM.EFFECT
-      )
-      .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
-      .forEach((item) => {
-        sheetData.sheet.inventory.items.push({
-          id: item.id,
-          img: item.img,
-          name: item.name,
-          value: item.value,
-          weight: item.weight,
-          amount: item.amount,
-          totalValue: this.getFixedTotal(item.value, item.totalValue),
-          totalWeight: this.getFixedTotal(item.weight, item.totalWeight)
-        });
-
-        sheetData.sheet.inventory.totalValue += item.totalValue ?? 0;
-        sheetData.sheet.inventory.totalWeight += item.totalWeight ?? 0;
-      });
 
     return sheetData;
   }
@@ -444,22 +447,6 @@ export default class WvActorSheet extends ActorSheet {
       this.render(false);
     }
   }
-
-  /**
-   * Get the fixed total number if both inputs are numbers. If the base is an
-   * integer, the number is returned as is.
-   */
-  protected getFixedTotal(
-    base: number | undefined,
-    number: number | undefined
-  ): string | undefined {
-    if (typeof base === "undefined" || typeof number === "undefined")
-      return undefined;
-
-    if (Number.isInteger(base)) return number.toString();
-
-    return number.toFixed(CONSTANTS.fixedDecimals);
-  }
 }
 
 interface SheetBackground {
@@ -503,8 +490,8 @@ interface SheetItem {
 
 interface SheetInventory {
   items: SheetItem[];
-  totalValue: number;
-  totalWeight: number;
+  totalValue: string;
+  totalWeight: string;
 }
 
 interface SheetMagic {

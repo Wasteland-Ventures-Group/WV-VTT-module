@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ability to drag items from actor sheets
   - allows copying items to the global directory or other actors
   - allows sorting items in the inventory
+- mocha and chai testing framework
 
 ### Changed
 
@@ -24,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - AP being subtracted for token movement, if the token is kept from moving due
   to wall collission
   ([#192](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/192))
+- inventory total value and total weight in the inventory no longer have
+  floating point imprecision errors
+  ([#191](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/191))
 
 ## [0.12.0] - 2022-02-20
 

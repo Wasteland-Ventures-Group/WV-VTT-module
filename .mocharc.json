@@ -1,0 +1,6 @@
+{
+  "extension": ["ts"],
+  "loader": "ts-node/esm",
+  "spec": "src/test/typescript/mocha/**/*.ts",
+  "require": "ts-node/register"
+}

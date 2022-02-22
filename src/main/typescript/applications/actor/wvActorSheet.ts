@@ -15,6 +15,7 @@ import {
 import type { Special } from "../../data/actor/character/specials/properties.js";
 import { getGame } from "../../foundryHelpers.js";
 import { parent } from "../../helpers.js";
+import type WvItem from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
 import Prompt from "../prompt.js";
@@ -26,7 +27,8 @@ export default class WvActorSheet extends ActorSheet {
       classes: [CONSTANTS.systemId, "document-sheet", "actor-sheet"],
       dragDrop: [
         { dragSelector: "button[data-special]" },
-        { dragSelector: "button[data-skill]" }
+        { dragSelector: "button[data-skill]" },
+        { dragSelector: ".fvtt-item-table .fvtt-item" }
       ],
       height: 1000,
       tabs: [
@@ -161,46 +163,50 @@ export default class WvActorSheet extends ActorSheet {
             {} as Record<ThaumaturgySpecial, string>
           )
         },
-        effects: [],
-        weapons: []
+        effects: this.actor.items
+          .filter(
+            (item): item is StoredDocument<WvItem> =>
+              typeof item.id === "string" && item.type === TYPES.ITEM.EFFECT
+          )
+          .map((item) => ({
+            id: item.id,
+            img: item.img,
+            name: item.name
+          })),
+        weapons: this.actor.items
+          .filter(
+            (item): item is StoredDocument<WvItem> =>
+              typeof item.id === "string" && item.type === TYPES.ITEM.WEAPON
+          )
+          .map((item) => ({
+            id: item.id,
+            img: item.img,
+            name: item.name
+          }))
       }
     };
 
-    for (const item of this.actor.items) {
-      if (!item.id) continue;
-
-      if (TYPES.ITEM.EFFECT === item.data.type) {
-        sheetData.sheet.effects.push({
+    this.actor.items
+      .filter(
+        (item): item is StoredDocument<WvItem> =>
+          typeof item.id === "string" && item.type !== TYPES.ITEM.EFFECT
+      )
+      .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
+      .forEach((item) => {
+        sheetData.sheet.inventory.items.push({
           id: item.id,
           img: item.img,
-          name: item.name
+          name: item.name,
+          value: item.value,
+          weight: item.weight,
+          amount: item.amount,
+          totalValue: this.getFixedTotal(item.value, item.totalValue),
+          totalWeight: this.getFixedTotal(item.weight, item.totalWeight)
         });
 
-        continue;
-      }
-
-      if (TYPES.ITEM.WEAPON === item.data.type) {
-        sheetData.sheet.weapons.push({
-          id: item.id,
-          img: item.img,
-          name: item.name
-        });
-      }
-
-      sheetData.sheet.inventory.items.push({
-        id: item.id,
-        img: item.img,
-        name: item.name,
-        value: item.value,
-        weight: item.weight,
-        amount: item.amount,
-        totalValue: this.getFixedTotal(item.value, item.totalValue),
-        totalWeight: this.getFixedTotal(item.weight, item.totalWeight)
+        sheetData.sheet.inventory.totalValue += item.totalValue ?? 0;
+        sheetData.sheet.inventory.totalWeight += item.totalWeight ?? 0;
       });
-
-      sheetData.sheet.inventory.totalValue += item.totalValue ?? 0;
-      sheetData.sheet.inventory.totalWeight += item.totalWeight ?? 0;
-    }
 
     return sheetData;
   }
@@ -218,7 +224,53 @@ export default class WvActorSheet extends ActorSheet {
       this.onDragSpecial(event, this.actor.id, specialName);
     } else if (isSkillName(skillName)) {
       this.onDragSkill(event, this.actor.id, skillName);
+    } else {
+      super._onDragStart(event);
     }
+  }
+
+  // @ts-expect-error It is really hard to get the return sig right, so we just
+  // ignore this. The return value isn't used anyway.
+  override _onSortItem(
+    event: DragEvent,
+    itemData: foundry.data.ItemData["_source"]
+  ): unknown {
+    if (itemData._id === null) throw new Error("The ID was null.");
+
+    // Get the drag source and its siblings
+    const source = this.actor.items.get(itemData._id);
+    if (source === undefined)
+      throw new Error(`There is no Item with ID [${itemData._id}]`);
+
+    const siblings = this.actor.items.filter(
+      (i) => i.data._id !== source.data._id
+    );
+
+    // Get the drop target
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const dropTarget = event.target?.closest("[data-item-id]");
+    if (!(dropTarget instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const targetId = dropTarget ? dropTarget.dataset.itemId : null;
+    const target = siblings.find((s) => s.data._id === targetId);
+
+    // Perform the sort
+    const sortUpdates = SortingHelpers.performIntegerSort(source, {
+      target: target,
+      siblings
+    });
+    const updateData = sortUpdates.map((u) => {
+      const update: { sort: number; _id?: string | null | undefined } =
+        u.update;
+      update._id = u.target?.data._id;
+      return update;
+    });
+
+    // Perform the update
+    return this.actor.updateEmbeddedDocuments("Item", updateData);
   }
 
   /** Handle a drag start event on the SPECIAL roll buttons. */
@@ -338,7 +390,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const id = parent(event.target, ".fvtt-item")?.dataset.id;
+    const id = parent(event.target, ".fvtt-item")?.dataset.itemId;
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
@@ -352,7 +404,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const id = parent(event.target, ".fvtt-item")?.dataset.id;
+    const id = parent(event.target, ".fvtt-item")?.dataset.itemId;
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
@@ -367,7 +419,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLInputElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const id = parent(event.target, ".fvtt-item")?.dataset.id;
+    const id = parent(event.target, ".fvtt-item")?.dataset.itemId;
     if (!(typeof id === "string") || !id) return;
 
     const amount = parseInt(event.target.value);

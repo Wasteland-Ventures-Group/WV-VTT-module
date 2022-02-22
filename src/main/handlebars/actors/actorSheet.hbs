@@ -123,7 +123,7 @@
       <button type="button" class="control effect-control fas fa-plus" data-action="create" data-type="effect" title="{{localize 'wv.system.actions.create'}}"></button>
       <ol class="fvtt-item-list">
         {{#each sheet.effects as |effect|}}
-          <li class="fvtt-item effect" data-id="{{effect.id}}">
+          <li class="fvtt-item effect" data-item-id="{{effect.id}}">
             {{#if effect.img}}
               <img src="{{effect.img}}" />
             {{/if}}
@@ -142,7 +142,7 @@
         <h3>{{localize "wv.rules.equipment.weapon.plural"}}</h3>
         <ol class="fvtt-item-list">
           {{#each sheet.weapons as |weapon|}}
-            <li class="fvtt-item weapon" data-id="{{weapon.id}}">
+            <li class="fvtt-item weapon" data-item-id="{{weapon.id}}">
               {{~#if weapon.img~}}
                 <img src="{{weapon.img}}" />
               {{~/if~}}
@@ -174,7 +174,7 @@
         </thead>
         <tbody>
           {{#each sheet.inventory.items as |item|~}}
-            <tr class="fvtt-item" data-id="{{item.id}}">
+            <tr class="fvtt-item" data-item-id="{{item.id}}">
               <td class="min-width">
                 {{~#if item.img~}}
                   <img src="{{item.img}}" />

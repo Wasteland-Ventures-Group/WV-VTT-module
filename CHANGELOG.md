@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- ability to drag items from actor sheets
+  - allows copying items to the global directory or other actors
+  - allows sorting items in the inventory
+
 ### Fixed
 
 - AP being subtracted for token movement, if the token is kept from moving due

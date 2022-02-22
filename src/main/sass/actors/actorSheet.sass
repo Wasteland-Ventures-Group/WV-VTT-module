@@ -2,6 +2,9 @@
 
 .wasteland-ventures.document-sheet.actor-sheet
 
+  form
+    overflow-y: hidden
+
   .sheet-header
 
     .document-info
@@ -27,6 +30,9 @@
 
           > :not(:last-child)
             margin-right: common.$spacing-distance
+
+  .content
+    overflow-y: auto
 
   .stats.active
     display: flex

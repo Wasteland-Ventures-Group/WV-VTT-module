@@ -30,6 +30,7 @@ export default class WvActorSheet extends ActorSheet {
         { dragSelector: ".fvtt-item-table .fvtt-item" }
       ],
       height: 1000,
+      scrollY: [".content"],
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
       ],

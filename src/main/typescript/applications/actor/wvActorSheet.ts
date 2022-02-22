@@ -14,7 +14,6 @@ import {
 } from "../../constants.js";
 import type { Special } from "../../data/actor/character/specials/properties.js";
 import { getGame } from "../../foundryHelpers.js";
-import { parent } from "../../helpers.js";
 import type WvItem from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
@@ -390,7 +389,11 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const id = parent(event.target, ".fvtt-item")?.dataset.itemId;
+    const itemElement = event.target.closest(".fvtt-item");
+    if (!(itemElement instanceof HTMLElement))
+      throw new Error("The item element parent is not an HTMLElement.");
+
+    const id = itemElement.dataset.itemId;
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
@@ -404,7 +407,11 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const id = parent(event.target, ".fvtt-item")?.dataset.itemId;
+    const itemElement = event.target.closest(".fvtt-item");
+    if (!(itemElement instanceof HTMLElement))
+      throw new Error("The item element parent is not an HTMLElement.");
+
+    const id = itemElement.dataset.itemId;
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
@@ -419,7 +426,11 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLInputElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const id = parent(event.target, ".fvtt-item")?.dataset.itemId;
+    const itemElement = event.target.closest(".fvtt-item");
+    if (!(itemElement instanceof HTMLElement))
+      throw new Error("The item element parent is not an HTMLElement.");
+
+    const id = itemElement.dataset.itemId;
     if (!(typeof id === "string") || !id) return;
 
     const amount = parseInt(event.target.value);

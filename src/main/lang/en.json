@@ -96,6 +96,10 @@
             "highVelocity": "High Velocity"
           }
         },
+        "caps": {
+          "singular": "Cap",
+          "plural": "Caps"
+        },
         "name": "Equipment",
         "inventory": "Inventory",
         "rarity": {

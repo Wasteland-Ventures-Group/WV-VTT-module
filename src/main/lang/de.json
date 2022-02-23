@@ -75,6 +75,10 @@
             "highVelocity": "Hochgeschwindigkeit"
           }
         },
+        "caps": {
+          "singular": "Kronkorken",
+          "plural": "Kronkorken"
+        },
         "name": "Ausrüstung",
         "inventory": "Inventar",
         "rarity": {

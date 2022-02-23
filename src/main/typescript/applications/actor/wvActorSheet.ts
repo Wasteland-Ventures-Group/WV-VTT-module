@@ -155,7 +155,9 @@ export default class WvActorSheet extends ActorSheet {
         bounds: CONSTANTS.bounds,
         inventory: {
           items,
-          totalValue: helpers.toFixed(totalValue),
+          totalValue: helpers.toFixed(
+            totalValue + this.actor.data.data.equipment.caps
+          ),
           totalWeight: helpers.toFixed(totalWeight)
         },
         parts: {

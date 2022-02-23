@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - allows copying items to the global directory or other actors
   - allows sorting items in the inventory
 - mocha and chai testing framework
+- a dedicated caps field for actors
+  ([#193](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/193))
 
 ### Changed
 

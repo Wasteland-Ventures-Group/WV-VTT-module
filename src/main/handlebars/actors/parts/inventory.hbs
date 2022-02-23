@@ -1,4 +1,10 @@
-<button type="button" class="control item-control fas fa-plus" data-action="create" data-type="misc" title="{{localize 'wv.system.actions.create'}}"></button>
+<div class="flexrow controls-and-caps">
+  <button type="button" class="control item-control fas fa-plus" data-action="create" data-type="misc" title="{{localize 'wv.system.actions.create'}}"></button>
+  <label class="contained-target-inline flex-fixed">
+    {{~localize "wv.rules.equipment.caps.plural"~}}
+    <input class="size-5" type="number" name="data.equipment.caps" value="{{data.data.equipment.caps}}" />
+  </label>
+</div>
 <table class="fvtt-item-table">
   <thead>
     <tr>

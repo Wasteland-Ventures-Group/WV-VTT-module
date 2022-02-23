@@ -120,6 +120,8 @@ export interface LangSchema {
             highVelocity: string;
           };
         };
+        /** Labels relating to the concept of bottle caps */
+        caps: QuantityNames;
         /** The name for the inventory */
         inventory: string;
         /** The name for equipment */

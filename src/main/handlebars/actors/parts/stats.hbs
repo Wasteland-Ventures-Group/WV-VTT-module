@@ -1,0 +1,41 @@
+<div>
+  <div class="resource-block grid-5cols standard-grid-gaps flex-center">
+    <label>{{localize "wv.rules.special.singular"}}</label>
+    <label>{{localize "wv.rules.special.tempTotal"}}</label>
+    <label>{{localize "wv.rules.special.permTotal"}}</label>
+    <label>{{localize "wv.rules.special.points.short"}}</label>
+    <label>{{localize "wv.system.rolls.imperative"}}</label>
+    {{#each sheet.specials as |special|}}
+      <label>{{special.long}}</label>
+      <span class="resource-display size-2">{{special.tempTotal}}</span>
+      <span class="resource-display size-2">{{special.permTotal}}</span>
+      <input class="size-2" type="number" name="data.leveling.specialPoints.{{@key}}" value="{{special.base}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
+      <button data-special="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
+    {{/each}}
+  </div>
+  <div class="resource-block flex-fixed">
+    <h4 class="resource-block-line">{{localize "wv.rules.criticals.title"}}</h4>
+    <label class="contained-target-inline resource-block-line">
+      {{~localize "wv.rules.criticals.success"~}}
+      <span class="resource-display size-2">{{data.data.secondary.criticals.success}}</span>
+    </label>
+    <label class="contained-target-inline resource-block-line">
+      {{~localize "wv.rules.criticals.failure"~}}
+      <span class="resource-display size-3">{{data.data.secondary.criticals.failure}}</span>
+    </label>
+  </div>
+</div>
+<div class="resource-block grid-5cols standard-grid-gaps flex-center">
+  <label>{{localize "wv.rules.skills.singular"}}</label>
+  <label>{{localize "wv.rules.special.singular"}}</label>
+  <label>{{localize "wv.system.values.total"}}</label>
+  <label>{{localize "wv.rules.skills.points.short"}}</label>
+  <label>{{localize "wv.system.rolls.imperative"}}</label>
+  {{#each sheet.skills as | skill |}}
+    <label>{{skill.name}}</label>
+    <label>{{skill.special}}</label>
+    <span class="resource-display size-3">{{skill.total}}</span>
+    <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
+    <button data-skill="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
+  {{/each}}
+</div>

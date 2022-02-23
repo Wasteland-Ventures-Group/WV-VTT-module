@@ -1,6 +1,7 @@
 import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";
 import {
   CONSTANTS,
+  HANDLEBARS,
   isSkillName,
   isSpecialName,
   Race,
@@ -156,6 +157,15 @@ export default class WvActorSheet extends ActorSheet {
           items,
           totalValue: helpers.toFixed(totalValue),
           totalWeight: helpers.toFixed(totalWeight)
+        },
+        parts: {
+          background: HANDLEBARS.partPaths.actor.background,
+          effects: HANDLEBARS.partPaths.actor.effects,
+          equipment: HANDLEBARS.partPaths.actor.equipment,
+          header: HANDLEBARS.partPaths.actor.header,
+          inventory: HANDLEBARS.partPaths.actor.inventory,
+          magic: HANDLEBARS.partPaths.actor.magic,
+          stats: HANDLEBARS.partPaths.actor.stats
         },
         specials: SpecialNames.reduce((specials, specialName) => {
           specials[specialName] = {
@@ -514,6 +524,15 @@ interface SheetData extends ActorSheet.Data {
     effects: SheetEffect[];
     inventory: SheetInventory;
     magic: SheetMagic;
+    parts: {
+      background: string;
+      effects: string;
+      equipment: string;
+      header: string;
+      inventory: string;
+      magic: string;
+      stats: string;
+    };
     skills: Record<SkillName, SheetSkill>;
     specials: Record<SpecialName, SheetSpecial>;
     weapons: SheetWeapon[];

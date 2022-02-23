@@ -221,6 +221,15 @@ export const CONSTANTS = {
 
 export const HANDLEBARS = {
   partPaths: {
+    actor: {
+      background: `${CONSTANTS.systemPath}/handlebars/actors/parts/background.hbs`,
+      effects: `${CONSTANTS.systemPath}/handlebars/actors/parts/effects.hbs`,
+      equipment: `${CONSTANTS.systemPath}/handlebars/actors/parts/equipment.hbs`,
+      header: `${CONSTANTS.systemPath}/handlebars/actors/parts/header.hbs`,
+      inventory: `${CONSTANTS.systemPath}/handlebars/actors/parts/inventory.hbs`,
+      magic: `${CONSTANTS.systemPath}/handlebars/actors/parts/magic.hbs`,
+      stats: `${CONSTANTS.systemPath}/handlebars/actors/parts/stats.hbs`
+    },
     item: {
       header: `${CONSTANTS.systemPath}/handlebars/items/parts/header.hbs`,
       rules: `${CONSTANTS.systemPath}/handlebars/items/parts/ruleElements.hbs`

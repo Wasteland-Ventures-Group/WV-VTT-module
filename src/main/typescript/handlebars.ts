@@ -18,6 +18,13 @@ export function registerHelpers(): void {
  */
 export function preloadTemplates(): void {
   loadTemplates([
+    HANDLEBARS.partPaths.actor.background,
+    HANDLEBARS.partPaths.actor.effects,
+    HANDLEBARS.partPaths.actor.equipment,
+    HANDLEBARS.partPaths.actor.header,
+    HANDLEBARS.partPaths.actor.inventory,
+    HANDLEBARS.partPaths.actor.magic,
+    HANDLEBARS.partPaths.actor.stats,
     HANDLEBARS.partPaths.item.header,
     HANDLEBARS.partPaths.item.rules
   ]);

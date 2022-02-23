@@ -325,8 +325,8 @@ export default class WvActor extends Actor {
   protected get applicableRuleElements(): RuleElement[] {
     const rules: RuleElement[] = [];
 
-    this.data.items.forEach((item) => {
-      item.data.data.rules.elements.forEach((rule) => {
+    this.itemTypes.effect.forEach((effect) => {
+      effect.data.data.rules.elements.forEach((rule) => {
         if (rule.target === "actor") rules.push(rule);
       });
     });

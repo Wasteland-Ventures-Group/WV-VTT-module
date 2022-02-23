@@ -91,6 +91,25 @@ export const TYPES = {
   }
 } as const;
 
+export type PhysicalItemType = typeof PhysicalItemTypes[number];
+export const PhysicalItemTypes = [
+  TYPES.ITEM.AMMO,
+  TYPES.ITEM.APPAREL,
+  TYPES.ITEM.MISC,
+  TYPES.ITEM.WEAPON
+] as const;
+
+/**
+ * A custom typeguard to check whether an item type is a physical item type.
+ * @param type - the item type to test
+ * @returns whether the type is a physical item type
+ */
+export function isPhysicalItemType(
+  type: ValueOf<typeof TYPES["ITEM"]>
+): type is PhysicalItemType {
+  return PhysicalItemTypes.includes(type as PhysicalItemType);
+}
+
 export type Rarity = typeof Rarities[number];
 export const Rarities = ["common", "uncommon", "rare", "exotic"] as const;
 

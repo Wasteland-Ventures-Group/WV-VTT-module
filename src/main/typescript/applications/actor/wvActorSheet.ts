@@ -2,6 +2,7 @@ import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";
 import {
   CONSTANTS,
   HANDLEBARS,
+  isPhysicalItemType,
   isSkillName,
   isSpecialName,
   Race,
@@ -121,7 +122,7 @@ export default class WvActorSheet extends ActorSheet {
     const items = this.actor.items
       .filter(
         (item): item is StoredDocument<WvItem> =>
-          typeof item.id === "string" && item.type !== TYPES.ITEM.EFFECT
+          typeof item.id === "string" && isPhysicalItemType(item.type)
       )
       .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
       .map((item) => {

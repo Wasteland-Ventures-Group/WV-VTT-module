@@ -8,7 +8,6 @@
     "moduleResolution": "Node",
     "noEmit": true,
     "noUncheckedIndexedAccess": true,
-    "skipLibCheck": true, // FIXME: This should be removed once Quench is updated
     "strict": true,
     "target": "ES2020",
     "types": [

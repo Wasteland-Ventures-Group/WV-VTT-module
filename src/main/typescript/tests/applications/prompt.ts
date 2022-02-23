@@ -1,11 +1,13 @@
 import Prompt from "../../applications/prompt.js";
 import { CONSTANTS } from "../../constants.js";
-import type { QuenchTestContext } from "quench";
+import type * as quench from "@ethaks/fvtt-quench";
 
 const promptSelector = `.app.window-app.${CONSTANTS.systemId}.prompt form`;
 
 /** Register the Prompt application related tests. */
-export default function registerPromptTests(context: QuenchTestContext): void {
+export default function registerPromptTests(
+  context: quench.QuenchBatchContext
+): void {
   const { describe, before, it, expect } = context;
 
   describe("When prompting for a number", function () {

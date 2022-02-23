@@ -53,77 +53,63 @@ export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
     race: {
       description: "The race of the character",
       type: "string",
-      enum: Races,
-      nullable: true
+      enum: Races
     },
     age: {
       description: "The age of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     gender: {
       description: "The gender of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     cutieMark: {
       description: "The cutie mark description of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     appearance: {
       description: "The appearance of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     background: {
       description: "The background of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     fears: {
       description: "The fears of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     dreams: {
       description: "The dreams of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     karma: {
       description: "The karma of the character",
       type: "integer",
-      nullable: true,
       maximum: CONSTANTS.bounds.karma.max,
       minimum: CONSTANTS.bounds.karma.min
     },
     personality: {
       description: "The personality of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     size: {
       description: "The size of the character",
       type: "integer",
-      nullable: true,
       maximum: CONSTANTS.bounds.size.max,
       minimum: CONSTANTS.bounds.size.min
     },
     socialContacts: {
       description: "The social contacts of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     specialTalent: {
       description: "The special talent description of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     },
     virtue: {
       description: "The virtue of the character",
-      type: "string",
-      nullable: true
+      type: "string"
     }
   },
   required: ["race", "karma", "size"],

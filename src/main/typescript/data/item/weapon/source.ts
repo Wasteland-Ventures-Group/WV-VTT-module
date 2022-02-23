@@ -73,7 +73,6 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
         "Whether this weapon is a holdout weapon. If this is not specified " +
         "it defaults to `false`.",
       type: "boolean",
-      nullable: true,
       default: true
     },
     ranges: {
@@ -83,8 +82,7 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
       ...RELOAD_JSON_SCHEMA,
       description:
         "The reload behavior of the weapon. If this is not specified the " +
-        "weapon does not support reloading.",
-      nullable: true
+        "weapon does not support reloading."
     },
     skill: {
       description: "The Skill used for all actions of the weapon",

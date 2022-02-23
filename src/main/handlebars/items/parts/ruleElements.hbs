@@ -17,7 +17,7 @@
             <button type="button" class="control rule-element-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
           </div>
         </div>
-        <textarea class="rule-element-source" name="sheet.rules.{{@index}}" required rows="9">{{element.source}}</textarea>
+        <textarea class="rule-element-source" name="sheet.rules.{{@index}}" required rows="10">{{element.source}}</textarea>
         <ul class="rule-element-messages fa-ul">
           {{#each element.messages as |message|~}}
             <li class="{{message.cssClass}}">

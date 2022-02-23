@@ -23,6 +23,7 @@ export class AmmoDataSourceData extends StackableBaseItem {
   type: string = "";
 }
 
+/** A JSON schema for ammo source objects */
 export const AMMO_SOURCE_JSON_SCHEMA: JSONSchemaType<AmmoDataSourceData> = {
   description: "The system data for an ammo Item",
   type: "object",

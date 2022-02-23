@@ -1,0 +1,34 @@
+{
+  "_id": "WvApparel0000002",
+  "name": "Used Suit",
+  "type": "apparel",
+  "data": {
+    "name": "Used Suit",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Diplomacy bonus",
+          "priority": 100,
+          "selector": "skills.diplomacy.total",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        }
+      ]
+    },
+    "rarity": "common",
+    "value": 40,
+    "weight": 0.5,
+    "quickSlots": 1,
+    "modSlots": 2,
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

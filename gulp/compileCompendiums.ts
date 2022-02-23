@@ -12,12 +12,16 @@ const watchPath = `${inputBasePath}/**/*.json`;
 
 const compendiumConfigs: CompendiumConfig[] = [
   {
-    inputGlob: `${itemInputBasePath}/weapon/*.json`,
-    outputPath: `${itemOutputBasePath}/weapons.db`
-  },
-  {
     inputGlob: `${itemInputBasePath}/ammo/*.json`,
     outputPath: `${itemOutputBasePath}/ammo.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/apparel/*.json`,
+    outputPath: `${itemOutputBasePath}/apparel.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/weapon/*.json`,
+    outputPath: `${itemOutputBasePath}/weapons.db`
   }
 ];
 

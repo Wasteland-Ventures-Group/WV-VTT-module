@@ -6,6 +6,7 @@ import type { CharacterDataSourceData } from "./data/actor/character/source.js";
 import { WvActorDataProperties } from "./data/actor/properties.js";
 import { WvActorDataSource } from "./data/actor/source.js";
 import type { AmmoDataSourceData } from "./data/item/ammo/source.js";
+import type { ApparelDataSourceData } from "./data/item/apparel/source.js";
 import type BaseItem from "./data/item/baseItem.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
 import { WvItemDataSource } from "./data/item/source.js";
@@ -65,6 +66,7 @@ declare global {
         };
         item: {
           [TYPES.ITEM.AMMO]: ValidateFunction<AmmoDataSourceData>;
+          [TYPES.ITEM.APPAREL]: ValidateFunction<ApparelDataSourceData>;
           [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItem>;
           [TYPES.ITEM.MISC]: ValidateFunction<StackableBaseItem>;
           [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;

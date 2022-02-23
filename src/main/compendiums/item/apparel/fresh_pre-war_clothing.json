@@ -1,0 +1,34 @@
+{
+  "_id": "WvApparel0000009",
+  "name": "Fresh Pre-War clothing",
+  "type": "apparel",
+  "data": {
+    "name": "Fresh Pre-War clothing",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Agility bonus",
+          "priority": 100,
+          "selector": "specials.agility.tempTotal",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        }
+      ]
+    },
+    "rarity": "common",
+    "value": 80,
+    "weight": 0.5,
+    "quickSlots": 2,
+    "modSlots": 2,
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

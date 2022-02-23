@@ -22,16 +22,23 @@
   "styles": ["css/wasteland-ventures.css"],
   "packs": [
     {
-      "name": "weapons",
-      "label": "Wasteland Ventures Weapons",
-      "path": "compendiums/item/weapons.db",
+      "name": "ammo",
+      "label": "Wasteland Ventures Ammunition",
+      "path": "compendiums/item/ammo.db",
       "type": "Item",
       "system": "wasteland-ventures"
     },
     {
-      "name": "ammo",
-      "label": "Wasteland Ventures Ammunition",
-      "path": "compendiums/item/ammo.db",
+      "name": "apparel",
+      "label": "Wasteland Ventures Apparel",
+      "path": "compendiums/item/apparel.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "weapons",
+      "label": "Wasteland Ventures Weapons",
+      "path": "compendiums/item/weapons.db",
       "type": "Item",
       "system": "wasteland-ventures"
     }

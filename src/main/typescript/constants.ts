@@ -84,6 +84,7 @@ export const TYPES = {
   /** Type names for Item types */
   ITEM: {
     AMMO: "ammo",
+    APPAREL: "apparel",
     EFFECT: "effect",
     MISC: "misc",
     WEAPON: "weapon"
@@ -92,6 +93,25 @@ export const TYPES = {
 
 export type Rarity = typeof Rarities[number];
 export const Rarities = ["common", "uncommon", "rare", "exotic"] as const;
+
+export type ApparelType = typeof ApparelTypes[number];
+export const ApparelTypes = [
+  "clothing",
+  "lightArmor",
+  "heavyArmor",
+  "premiumArmor",
+  "powerArmor",
+  "accessory"
+] as const;
+
+export type ApparelSlot = typeof ApparelSlots[number];
+export const ApparelSlots = [
+  "armor",
+  "belt",
+  "clothing",
+  "eyes",
+  "mouth"
+] as const;
 
 export type Caliber = typeof Calibers[number];
 export const Calibers = [

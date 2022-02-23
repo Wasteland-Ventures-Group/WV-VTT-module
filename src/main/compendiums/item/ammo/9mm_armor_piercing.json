@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000018",
+  "name": "9mm (Armor Piercing)",
+  "type": "ammo",
+  "data": {
+    "name": "9mm (Armor Piercing)",
+    "description": "Common, Lipstick buddy",
+    "notes": "Armored targets: DT Reduction 1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 0.2,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "9mm",
+    "type": "armorPiercing"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

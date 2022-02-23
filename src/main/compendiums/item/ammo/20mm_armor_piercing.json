@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000026",
+  "name": "20mm (Armor Piercing)",
+  "type": "ammo",
+  "data": {
+    "name": "20mm (Armor Piercing)",
+    "description": "Rare, Standard Issue Steel Ranger, semicommon army position busters",
+    "notes": "Armored targets: DT Reduction 3",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "exotic",
+    "value": 3,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "20mm",
+    "type": "armorPiercing"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

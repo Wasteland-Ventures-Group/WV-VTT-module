@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000009",
+  "name": ".50 cal (Incendiary)",
+  "type": "ammo",
+  "data": {
+    "name": ".50 cal (Incendiary)",
+    "description": "Uncommon round, used in AMR's for putting down robots, lightly armored vehicles, and anything armored short of a bunker or tank.",
+    "notes": "Deals extra +(2) fire damage, can set Burning - status effect on target",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 6,
+    "weight": 0,
+    "amount": 5,
+    "caliber": ".50cal",
+    "type": "incendiary"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

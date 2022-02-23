@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000010",
+  "name": ".50 cal (Explosive)",
+  "type": "ammo",
+  "data": {
+    "name": ".50 cal (Explosive)",
+    "description": "Uncommon round, used in AMR's for putting down robots, lightly armored vehicles, and anything armored short of a bunker or tank.",
+    "notes": "Damage dealt to Tiny Splash Template, Behaves like an explosive ",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 8,
+    "weight": 0,
+    "amount": 5,
+    "caliber": ".50cal",
+    "type": "explosive"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

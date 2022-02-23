@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000019",
+  "name": "9mm (Hollow Point)",
+  "type": "ammo",
+  "data": {
+    "name": "9mm (Hollow Point)",
+    "description": "Common, Lipstick buddy",
+    "notes": "Unarmored targets: Gain (1) for each 1 base damage.",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 0.5,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "9mm",
+    "type": "hollowPoint"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

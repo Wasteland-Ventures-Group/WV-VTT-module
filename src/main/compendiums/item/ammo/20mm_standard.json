@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000025",
+  "name": "20mm (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": "20mm (Standard)",
+    "description": "Rare, Standard Issue Steel Ranger, semicommon army position busters",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "exotic",
+    "value": 1,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "20mm",
+    "type": "standard"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

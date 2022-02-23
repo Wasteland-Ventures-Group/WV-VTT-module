@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000028",
+  "name": "20mm (Explosive)",
+  "type": "ammo",
+  "data": {
+    "name": "20mm (Explosive)",
+    "description": "Rare, Standard Issue Steel Ranger, semicommon army position busters",
+    "notes": "Damage dealt to Tiny Splash Template, Behaves like an explosive",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "exotic",
+    "value": 12,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "20mm",
+    "type": "explosive"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000017",
+  "name": "9mm (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": "9mm (Standard)",
+    "description": "Common, Lipstick buddy",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 0.1,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "9mm",
+    "type": "standard"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

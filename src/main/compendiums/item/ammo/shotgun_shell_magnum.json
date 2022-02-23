@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000030",
+  "name": "Shotgun Shell (Magnum)",
+  "type": "ammo",
+  "data": {
+    "name": "Shotgun Shell (Magnum)",
+    "description": "Shell with heavier load",
+    "notes": "Damage +(2)",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 0.7,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "shotgunShell",
+    "type": "magnum"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

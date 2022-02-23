@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000015",
+  "name": "5.56mm (Armor Piercing)",
+  "type": "ammo",
+  "data": {
+    "name": "5.56mm (Armor Piercing)",
+    "description": "Common military issued round.",
+    "notes": "Armored targets: DT Reduction 1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 0.8,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "5.56mm",
+    "type": "armorPiercing"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

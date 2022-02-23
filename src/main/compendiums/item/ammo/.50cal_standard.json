@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000007",
+  "name": ".50 cal (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": ".50 cal (Standard)",
+    "description": "Uncommon round, used in AMR's for putting down robots, lightly armored vehicles, and anything armored short of a bunker or tank.",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 1,
+    "weight": 0,
+    "amount": 10,
+    "caliber": ".50cal",
+    "type": "standard"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000032",
+  "name": "Shotgun Shell (Pulse Slug)",
+  "type": "ammo",
+  "data": {
+    "name": "Shotgun Shell (Pulse Slug)",
+    "description": "Magically charged shell, designed to be used against machines",
+    "notes": "'+4 damage against robots, +2 vs. power armor and other electrical equipment, Suffers no drop in damage dice from Range Thresholds, -(4) damage against any other target.",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 2.4,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "shotgunShell",
+    "type": "pulseSlug"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

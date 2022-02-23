@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000013",
+  "name": "5mm (Hollow Point)",
+  "type": "ammo",
+  "data": {
+    "name": "5mm (Hollow Point)",
+    "description": "Common varmint hunting round, also military miniguns.",
+    "notes": "Unarmored targets: Gain (1) for each 1 base damage.",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 0.5,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "5mm",
+    "type": "hollowPoint"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000034",
+  "name": "Shotgun Shell (Dragon's Breath)",
+  "type": "ammo",
+  "data": {
+    "name": "Shotgun Shell (Dragon's Breath)",
+    "description": "Magical shell that engulfs your enemies in flames",
+    "notes": "Additional +(2) fire damage at Short range, can set Burning - status effect on target",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 2.4,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "shotgunShell",
+    "type": "dragonsBreath"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

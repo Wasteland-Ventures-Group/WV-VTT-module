@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000031",
+  "name": "Shotgun Shell (Slug)",
+  "type": "ammo",
+  "data": {
+    "name": "Shotgun Shell (Slug)",
+    "description": "A shell loaded with a single, hefty bullet-like pellet",
+    "notes": "Damage -(2), Suffers no drop in damage dice from Range Thresholds",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 1,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "shotgunShell",
+    "type": "slug"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

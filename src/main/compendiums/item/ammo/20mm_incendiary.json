@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000027",
+  "name": "20mm (Incendiary)",
+  "type": "ammo",
+  "data": {
+    "name": "20mm (Incendiary)",
+    "description": "Rare, Standard Issue Steel Ranger, semicommon army position busters",
+    "notes": "Deals extra +(2) fire damage, can set Burning - status effect on target",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "exotic",
+    "value": 10,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "20mm",
+    "type": "incendiary"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

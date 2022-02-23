@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000029",
+  "name": "Shotgun Shell (Buckshot)",
+  "type": "ammo",
+  "data": {
+    "name": "Shotgun Shell (Buckshot)",
+    "description": "Common, a shell full of pellets",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 0.3,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "shotgunShell",
+    "type": "buckshot"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

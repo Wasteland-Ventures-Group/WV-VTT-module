@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000033",
+  "name": "Shotgun Shell (Flechette)",
+  "type": "ammo",
+  "data": {
+    "name": "Shotgun Shell (Flechette)",
+    "description": "Shell packed with tiny needles",
+    "notes": "DT reduction 1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 2,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "shotgunShell",
+    "type": "flechette"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

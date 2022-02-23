@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000008",
+  "name": ".50 cal (Armor Piercing)",
+  "type": "ammo",
+  "data": {
+    "name": ".50 cal (Armor Piercing)",
+    "description": "Uncommon round, used in AMR's for putting down robots, lightly armored vehicles, and anything armored short of a bunker or tank.",
+    "notes": "Armored targets: DT Reduction 3",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 2,
+    "weight": 0,
+    "amount": 10,
+    "caliber": ".50cal",
+    "type": "armorPiercing"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

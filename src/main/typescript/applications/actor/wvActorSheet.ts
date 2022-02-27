@@ -253,16 +253,10 @@ export default class WvActorSheet extends ActorSheet {
   ): unknown {
     if (itemData._id === null) throw new Error("The ID was null.");
 
-    // Get the drag source and its siblings
-    const source = this.actor.items.get(itemData._id);
-    if (source === undefined)
-      throw new Error(`There is no Item with ID [${itemData._id}]`);
+    // Get the drag source and drop target
+    const items = this.actor.items;
+    const source = items.get(itemData._id, { strict: true });
 
-    const siblings = this.actor.items.filter(
-      (i) => i.data._id !== source.data._id
-    );
-
-    // Get the drop target
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
@@ -270,12 +264,32 @@ export default class WvActorSheet extends ActorSheet {
     if (!(dropTarget instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const targetId = dropTarget ? dropTarget.dataset.itemId : null;
-    const target = siblings.find((s) => s.data._id === targetId);
+    if (typeof dropTarget.dataset.itemId !== "string")
+      throw new Error("The target did not have an Item ID.");
+
+    const target = items.get(dropTarget.dataset.itemId, { strict: true });
+
+    // Don't sort on yourself
+    if (source.id === target.id) return;
+
+    if (!(dropTarget.parentElement instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    // Identify sibling items based on adjacent HTML elements
+    const siblings: WvItem[] = [];
+    for (let i = 0; i < dropTarget.parentElement.children.length; i++) {
+      const el = dropTarget.parentElement.children.item(i);
+      if (!(el instanceof HTMLElement))
+        throw new Error("The el was not an HTMLElement.");
+
+      const siblingId = el.dataset.itemId;
+      if (siblingId && siblingId !== source.id)
+        siblings.push(items.get(siblingId, { strict: true }));
+    }
 
     // Perform the sort
     const sortUpdates = SortingHelpers.performIntegerSort(source, {
-      target: target,
+      target,
       siblings
     });
     const updateData = sortUpdates.map((u) => {

@@ -31,7 +31,7 @@
     "chai": "^4.3.6",
     "del": "^6.0.0",
     "esbuild": "^0.14.22",
-    "eslint": "^8.8.0",
+    "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-tsdoc": "^0.2.11",

@@ -32,7 +32,7 @@
     "del": "^6.0.0",
     "esbuild": "^0.14.22",
     "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-tsdoc": "^0.2.11",
     "fancy-log": "^2.0.0",

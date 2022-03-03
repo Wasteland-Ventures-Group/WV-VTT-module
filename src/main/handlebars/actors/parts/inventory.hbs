@@ -1,56 +1,87 @@
-<div class="flexrow controls-and-caps">
-  <button type="button" class="control item-control fas fa-plus" data-action="create" data-type="misc" title="{{localize 'wv.system.actions.create'}}"></button>
-  <label class="contained-target-inline flex-fixed">
-    {{~localize "wv.rules.equipment.caps.plural"~}}
-    <input class="size-5" type="number" name="data.equipment.caps" value="{{data.data.equipment.caps}}" />
-  </label>
+<div class="flexrow">
+  <section class="flex-fixed equip-targets">
+    <h4>Equipment Slots</h4>
+    <div class="resource-block" data-equipment-slot="readiedItem">
+      <span>Readied Item</span><br /><span>{{sheet.equipment.readiedItem.name}}</span>
+    </div>
+    <div class="resource-block" data-equipment-slot="weaponSlot1">
+      <span>Weapon Slot 1</span><br /><span>{{sheet.equipment.weaponSlots.[0].name}}</span>
+    </div>
+    <div class="resource-block" data-equipment-slot="weaponSlot2">
+      <span>Weapon Slot 2</span><br /><span>{{sheet.equipment.weaponSlots.[1].name}}</span>
+    </div>
+    <div class="resource-block" data-equipment-slot="armor">
+      <span>Armor</span>
+    </div>
+    <div class="resource-block" data-equipment-slot="clothing">
+      <span>Clothing</span>
+    </div>
+    <div class="resource-block" data-equipment-slot="eyes">
+      <span>Eyes</span>
+    </div>
+    <div class="resource-block" data-equipment-slot="mouth">
+      <span>Mouth</span>
+    </div>
+    <div class="resource-block" data-equipment-slot="belt">
+      <span>Belt</span>
+    </div>
+  </section>
+  <div>
+    <div class="flexrow controls-and-caps">
+      <button type="button" class="control item-control fas fa-plus" data-action="create" data-type="misc" title="{{localize 'wv.system.actions.create'}}"></button>
+      <label class="contained-target-inline flex-fixed">
+        {{~localize "wv.rules.equipment.caps.plural"~}}
+        <input class="size-5" type="number" name="data.equipment.caps" value="{{data.data.equipment.caps}}" />
+      </label>
+    </div>
+    <table class="fvtt-item-table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.equipment.value.name"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.equipment.weight.name"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.system.values.amount"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.equipment.value.name"}}<br />({{localize "wv.system.values.total"}})</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.equipment.weight.name"}}<br />({{localize "wv.system.values.total"}})</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each sheet.inventory.items as |item|~}}
+          <tr class="fvtt-item" data-item-id="{{item.id}}">
+            <td class="min-width">
+              {{~#if item.img~}}
+                <img src="{{item.img}}" />
+              {{~/if~}}
+            </td>
+            <td>{{item.name}}</td>
+            <td class="align-right min-width">{{item.value}}</td>
+            <td class="align-right min-width">{{item.weight}}</td>
+            <td class="align-right min-width">
+              {{#if item.amount~}}
+                <input type="number" data-action="edit-amount" value="{{item.amount}}" />
+              {{~/if}}
+            </td>
+            <td class="align-right min-width">{{item.totalValue}}</td>
+            <td class="align-right min-width">{{item.totalWeight}}</td>
+            <td class="min-width">
+              <div class="fvtt-item-controls flexrow">
+                <button type="button" class="control item-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+                <button type="button" class="control item-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
+              </div>
+            </td>
+          </tr>
+        {{~/each}}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row" colspan="5" class="align-right">{{localize "wv.system.values.total"}}</th>
+          <td class="align-right">{{sheet.inventory.totalValue}}</td>
+          <td class="align-right">{{sheet.inventory.totalWeight}}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 </div>
-<table class="fvtt-item-table">
-  <thead>
-    <tr>
-      <th scope="col"></th>
-      <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
-      <th scope="col" class="align-right">{{localize "wv.rules.equipment.value.name"}}</th>
-      <th scope="col" class="align-right">{{localize "wv.rules.equipment.weight.name"}}</th>
-      <th scope="col" class="align-right">{{localize "wv.system.values.amount"}}</th>
-      <th scope="col" class="align-right">{{localize "wv.rules.equipment.value.name"}}<br />({{localize "wv.system.values.total"}})</th>
-      <th scope="col" class="align-right">{{localize "wv.rules.equipment.weight.name"}}<br />({{localize "wv.system.values.total"}})</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each sheet.inventory.items as |item|~}}
-      <tr class="fvtt-item" data-item-id="{{item.id}}">
-        <td class="min-width">
-          {{~#if item.img~}}
-            <img src="{{item.img}}" />
-          {{~/if~}}
-        </td>
-        <td>{{item.name}}</td>
-        <td class="align-right min-width">{{item.value}}</td>
-        <td class="align-right min-width">{{item.weight}}</td>
-        <td class="align-right min-width">
-          {{#if item.amount~}}
-            <input type="number" data-action="edit-amount" value="{{item.amount}}" />
-          {{~/if}}
-        </td>
-        <td class="align-right min-width">{{item.totalValue}}</td>
-        <td class="align-right min-width">{{item.totalWeight}}</td>
-        <td class="min-width">
-          <div class="fvtt-item-controls flexrow">
-            <button type="button" class="control item-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
-            <button type="button" class="control item-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
-          </div>
-        </td>
-      </tr>
-    {{~/each}}
-  </tbody>
-  <tfoot>
-    <tr>
-      <th scope="row" colspan="5" class="align-right">{{localize "wv.system.values.total"}}</th>
-      <td class="align-right">{{sheet.inventory.totalValue}}</td>
-      <td class="align-right">{{sheet.inventory.totalWeight}}</td>
-      <td></td>
-    </tr>
-  </tfoot>
-</table>

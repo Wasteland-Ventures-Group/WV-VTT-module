@@ -289,6 +289,7 @@
       },
       "messages": {
         "attackNotFound": "The attack with the name \"{name}\" could not be found in the Weapon.",
+        "canNotDoInCombat": "This can not be done in combat.",
         "couldNotCreateDocument": "Could not create a Document with the provided data.",
         "invalidSystemDataInMacro": "The macro you executed contained invalid system data, see the developer console for details.",
         "migrationCompleted": "{systemName} system migration to version {version} completed!",

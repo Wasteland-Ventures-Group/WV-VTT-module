@@ -132,6 +132,24 @@ export const ApparelSlots = [
   "mouth"
 ] as const;
 
+export type EquipmentSlot = typeof EquipmentSlots[number];
+export const EquipmentSlots = [
+  "readiedItem",
+  "weaponSlot1",
+  "weaponSlot2",
+  ...ApparelSlots
+] as const;
+
+/**
+ * A custom typeguard to check whether a given strings is an equipment slot
+ * name.
+ * @param slot - the name of the slot to test
+ * @returns whether the given name is a slot name
+ */
+export function isEquipmentSlot(slot: string): slot is EquipmentSlot {
+  return EquipmentSlots.includes(slot as EquipmentSlot);
+}
+
 export type Caliber = typeof Calibers[number];
 export const Calibers = [
   ".308cal",
@@ -208,6 +226,17 @@ export const CONSTANTS = {
        * higher or equal.
        */
       dieTarget: 5
+    },
+
+    /** Rule constants relating to equipment */
+    equipment: {
+      /** Costs to ready an item */
+      readyItemCost: {
+        /** The ready item cost for readying directly from the inventory. */
+        direct: 8 as number,
+        /** The ready item cost for readying from a weapon or quick slot. */
+        fromSlot: 3 as number
+      }
     },
 
     /** Rule constants related to melee */

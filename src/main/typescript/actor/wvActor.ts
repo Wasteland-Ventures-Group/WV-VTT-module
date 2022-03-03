@@ -23,8 +23,11 @@ import type { Resource } from "../data/foundryCommon.js";
 import type DragData from "../dragData.js";
 import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
+import Weapon from "../item/weapon.js";
+import type WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
+import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n from "../wvI18n.js";
 
@@ -55,6 +58,24 @@ export default class WvActor extends Actor {
     return getGroundSprintMoveRange(this);
   }
 
+  /** Check whether the actor is in combat in any scene. */
+  get inCombat(): boolean {
+    const combats = getGame().combats;
+    if (!combats) return false;
+
+    return combats.some((combat) =>
+      combat.combatants.some((combatant) => combatant.actor === this)
+    );
+  }
+
+  /** Get the readied Item of this actor, if it exists. */
+  get readiedItem(): WvItem | null {
+    const itemId = this.data.data.equipment.readiedItemId;
+    if (itemId === null) return null;
+
+    return this.items.get(itemId) ?? null;
+  }
+
   /**
    * Get a SPECIAL from this actor.
    * @throws If the SPECIALS have not been calculated yet.
@@ -77,6 +98,106 @@ export default class WvActor extends Actor {
       throw new Error("The Skills have not been calculated yet!");
 
     return skill;
+  }
+
+  /** Get the weapon of the given weapon slot. */
+  getWeaponSlotWeapon(slot: 1 | 2): Weapon | null {
+    const itemId = this.data.data.equipment.weaponSlotIds[slot - 1];
+    if (typeof itemId !== "string") return null;
+
+    const item = this.items.get(itemId);
+    if (!(item instanceof Weapon)) return null;
+
+    return item;
+  }
+
+  /** Get the weapon slot weapons. */
+  getWeaponSlotWeapons(): [Weapon | null, Weapon | null] {
+    return [this.getWeaponSlotWeapon(1), this.getWeaponSlotWeapon(2)];
+  }
+
+  /**
+   * Ready a weapon on the actor. No update is made in the following cases:
+   * - the given ID is null
+   * - the actor has no item with the given ID
+   * - the designated item is not an item that can be readied
+   * - the readied slot already has the given ID
+   *
+   * @param id - the ID of the actor owned item to ready
+   * @param useQuickSlot - whether to use a quick slot charge when in combat and
+   *   it applies to the item
+   * @returns a promise that resolves once the update is done
+   */
+  async readyItem(
+    id: string | null,
+    { useQuickSlot } = { useQuickSlot: false }
+  ): Promise<void> {
+    if (id === null) return;
+
+    const item = this.items.get(id);
+    if (item?.type !== "weapon" && item?.type !== "misc") return;
+
+    if (this.data.data.equipment.readiedItemId === id) return;
+
+    if (!this.inCombat) {
+      await this.update({ data: { equipment: { readiedItemId: id } } });
+      return;
+    }
+
+    let apCost = CONSTANTS.rules.equipment.readyItemCost.direct;
+    if (item.type === "weapon") {
+      if (this.data.data.equipment.weaponSlotIds.includes(id)) {
+        apCost = CONSTANTS.rules.equipment.readyItemCost.fromSlot;
+      }
+    } else if (useQuickSlot) {
+      apCost = CONSTANTS.rules.equipment.readyItemCost.fromSlot;
+    }
+
+    if (this.actionPoints.value < apCost) {
+      throw new SystemRulesError(
+        "Not enough action points!",
+        "wv.system.messages.notEnoughAp"
+      );
+    }
+
+    await this.update({
+      data: {
+        equipment: { readiedItemId: id },
+        vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
+      }
+    });
+  }
+
+  /**
+   * Slot a weapon into a weapon slot. No update is made in the following cases:
+   * - the given ID is null
+   * - the actor has no item with the given ID
+   * - the designated item is not a weapon
+   * - the given weapon slot already has the given ID
+   *
+   * @param id - the ID of the actor owned weapon to slot
+   * @param slot - the number of the weapon slot
+   * @returns a promise that resolves once the update is done, rejects if this
+   *   is attempted in combat
+   */
+  async slotWeapon(id: string | null, slot: 1 | 2): Promise<void> {
+    if (this.inCombat)
+      throw new SystemRulesError(
+        "Can not slot a weapon in combat!",
+        "wv.system.messages.canNotDoInCombat"
+      );
+
+    if (id === null) return;
+
+    const item = this.items.get(id);
+    if (item?.type !== "weapon") return;
+
+    const index = slot - 1;
+    const slots = this.data.data.equipment.weaponSlotIds;
+    if (slots[index] === id) return;
+
+    slots[index] = id;
+    await this.update({ data: { equipment: { weaponSlotIds: slots } } });
   }
 
   /**
@@ -359,60 +480,6 @@ export default class WvActor extends Actor {
   protected validateSystemData(data: unknown): void {
     validateSystemData(data, getGame().wv.validators.actor[this.data.type]);
   }
-}
-
-/** The drag data of an Actor SPECIAL */
-export interface SpecialDragData extends DragData {
-  /** The ID of the Actor, the SPECIAL belongs to */
-  actorId: string;
-
-  /** The name of the SPECIAL on the Actor */
-  specialName: SpecialName;
-
-  type: "special";
-}
-
-/**
- * A custom typeguard, to check whether an unknown object is a SpecialDragData.
- * @param data - the unknown object
- * @returns whether it is a SpecialDragData
- */
-export function isSpecialDragData(
-  data: Record<string, unknown>
-): data is SpecialDragData {
-  return (
-    data.type === "special" &&
-    typeof data.actorId === "string" &&
-    typeof data.specialName === "string" &&
-    isSpecialName(data.specialName)
-  );
-}
-
-/** The drag data of an Actor Skill */
-export interface SkillDragData extends DragData {
-  /** The ID of the Actor, the Skill belongs to */
-  actorId: string;
-
-  /** The name of the Skill on the Actor */
-  skillName: SkillName;
-
-  type: "skill";
-}
-
-/**
- * A custom typeguard, to check whether an unknown object is a SkillDragData.
- * @param data - the unknown object
- * @returns whether it is a SkillDragData
- */
-export function isSkillDragData(
-  data: Record<string, unknown>
-): data is SkillDragData {
-  return (
-    data.type === "skill" &&
-    typeof data.actorId === "string" &&
-    typeof data.skillName === "string" &&
-    isSkillName(data.skillName)
-  );
 }
 
 /**

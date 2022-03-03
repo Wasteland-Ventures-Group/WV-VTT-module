@@ -1,4 +1,4 @@
-import type { SkillDragData } from "../actor/wvActor.js";
+import type { SkillDragData } from "../dragData.js";
 import type { SkillName } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 

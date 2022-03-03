@@ -289,6 +289,7 @@
       },
       "messages": {
         "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte in der Waffe nicht gefunden werden.",
+        "canNotDoInCombat": "Dies kann nicht im Kampf getan werden.",
         "couldNotCreateDocument": "Konnte kein Dokument mit den gegebenen Daten erstellen.",
         "invalidSystemDataInMacro": "Das Macro, das du ausgeführt hast, beinhaltet invalide Systemdaten, sieh in der Entwicklerkonsole für Details nach.",
         "migrationCompleted": "{systemName} Systemmigration zu Version {version} abgeschlossen!",

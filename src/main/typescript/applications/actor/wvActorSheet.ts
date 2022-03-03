@@ -1,7 +1,9 @@
-import type { SkillDragData, SpecialDragData } from "../../actor/wvActor.js";
 import {
   CONSTANTS,
+  EquipmentSlot,
+  EquipmentSlots,
   HANDLEBARS,
+  isEquipmentSlot,
   isPhysicalItemType,
   isSkillName,
   isSpecialName,
@@ -15,10 +17,18 @@ import {
   TYPES
 } from "../../constants.js";
 import type { Special } from "../../data/actor/character/specials/properties.js";
+import type DragData from "../../dragData.js";
+import {
+  isApparelItemDragData,
+  isMiscItemDragData,
+  isWeaponItemDragData
+} from "../../dragData.js";
 import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
-import type WvItem from "../../item/wvItem.js";
+import type Weapon from "../../item/weapon.js";
+import WvItem from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
+import SystemRulesError from "../../systemRulesError.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
 import Prompt from "../prompt.js";
 
@@ -58,6 +68,8 @@ export default class WvActorSheet extends ActorSheet {
     ["change", "submit"].forEach((eventType) => {
       sheetForm.addEventListener(eventType, () => sheetForm.reportValidity());
     });
+
+    sheetForm.addEventListener("dragend", () => this.resetEquipmentSlots());
 
     // stat rolls
     sheetForm.querySelectorAll("button[data-special]").forEach((element) => {
@@ -154,6 +166,10 @@ export default class WvActorSheet extends ActorSheet {
             }, {} as I18nRaces)
         },
         bounds: CONSTANTS.bounds,
+        equipment: {
+          readiedItem: this.actor.readiedItem,
+          weaponSlots: this.actor.getWeaponSlotWeapons()
+        },
         inventory: {
           items,
           totalValue: helpers.toFixed(
@@ -228,21 +244,100 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   override _onDragStart(event: DragEvent): void {
-    if (!this.actor.id) return super._onDragStart(event);
+    const listenerElement = event.currentTarget;
+    if (!(listenerElement instanceof HTMLElement))
+      throw new Error("The listener was not an HTMLElement!");
 
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) return super._onDragStart(event);
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement!");
 
-    const specialName = target.dataset.special ?? "";
-    const skillName = target.dataset.skill ?? "";
+    if (event.target.classList.contains("content-link")) return;
 
-    if (isSpecialName(specialName)) {
-      this.onDragSpecial(event, this.actor.id, specialName);
-    } else if (isSkillName(skillName)) {
-      this.onDragSkill(event, this.actor.id, skillName);
-    } else {
-      super._onDragStart(event);
+    let dragData: DragData | null = null;
+    const baseDragData = {
+      actorId: this.actor.id,
+      sceneId: this.actor.isToken ? canvas?.scene?.id : null,
+      tokenId: this.actor.isToken ? this.actor.token?.id : null,
+      pack: this.actor.pack
+    };
+
+    if (
+      listenerElement.dataset.special &&
+      isSpecialName(listenerElement.dataset.special)
+    ) {
+      dragData = {
+        ...baseDragData,
+        type: "special",
+        specialName: listenerElement.dataset.special
+      };
     }
+
+    if (
+      listenerElement.dataset.skill &&
+      isSkillName(listenerElement.dataset.skill)
+    ) {
+      dragData = {
+        ...baseDragData,
+        type: "skill",
+        specialName: listenerElement.dataset.skill
+      };
+    }
+
+    if (listenerElement.dataset.itemId) {
+      const item = this.actor.items.get(listenerElement.dataset.itemId);
+      if (item) {
+        dragData = {
+          ...baseDragData,
+          type: "Item",
+          data: item.data
+        };
+      }
+    }
+
+    if (listenerElement.dataset.effectId) {
+      const effect = this.actor.effects.get(listenerElement.dataset.effectId);
+      if (effect) {
+        dragData = {
+          ...baseDragData,
+          type: "ActiveEffect",
+          data: effect.data
+        };
+      }
+    }
+
+    if (dragData) {
+      this.prepareEquipmentSlots(dragData);
+      event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
+    }
+  }
+
+  override async _onDropItem(
+    event: DragEvent,
+    data: ActorSheet.DropData.Item
+  ): Promise<unknown> {
+    if (!this.actor.isOwner) return false;
+
+    const item = await WvItem.fromDropData(data);
+    if (!(item instanceof WvItem))
+      throw new Error("The item was not created successfully.");
+
+    const itemData = item.toObject();
+
+    // Handle item sorting within the same Actor
+    // @ts-expect-error this isn't typed yet
+    if (await this._isFromSameActor(data)) {
+      const equipmentSlot = this.getDropEquipmentSlot(event.target);
+
+      if (equipmentSlot) {
+        this.onDropEquipmentSlot(equipmentSlot, itemData);
+        return;
+      }
+
+      return this._onSortItem(event, itemData);
+    }
+
+    // Create the owned item
+    return this._onDropItemCreate(itemData);
   }
 
   // @ts-expect-error It is really hard to get the return sig right, so we just
@@ -260,9 +355,11 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const dropTarget = event.target?.closest("[data-item-id]");
-    if (!(dropTarget instanceof HTMLElement))
-      throw new Error("The target was not an HTMLElement.");
+    const dropTarget = event.target.closest("[data-item-id]");
+    if (!(dropTarget instanceof HTMLElement)) {
+      LOG.debug("Could not find a parent with data-item-id.");
+      return;
+    }
 
     if (typeof dropTarget.dataset.itemId !== "string")
       throw new Error("The target did not have an Item ID.");
@@ -301,36 +398,6 @@ export default class WvActorSheet extends ActorSheet {
 
     // Perform the update
     return this.actor.updateEmbeddedDocuments("Item", updateData);
-  }
-
-  /** Handle a drag start event on the SPECIAL roll buttons. */
-  protected onDragSpecial(
-    event: DragEvent,
-    actorId: string,
-    specialName: SpecialName
-  ): void {
-    const dragData: SpecialDragData = {
-      actorId,
-      specialName,
-      type: "special"
-    };
-
-    event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
-  }
-
-  /** Handle a drag start event on the Skill roll buttons. */
-  protected onDragSkill(
-    event: DragEvent,
-    actorId: string,
-    skillName: SkillName
-  ): void {
-    const dragData: SkillDragData = {
-      actorId,
-      skillName,
-      type: "skill"
-    };
-
-    event.dataTransfer?.setData("text/plain", JSON.stringify(dragData));
   }
 
   /** Handle a click event on the SPECIAL roll buttons. */
@@ -474,6 +541,105 @@ export default class WvActorSheet extends ActorSheet {
       this.render(false);
     }
   }
+
+  /** Handle Item drops onto equipment slots. */
+  protected async onDropEquipmentSlot(
+    slot: EquipmentSlot,
+    data: foundry.data.ItemData["_source"]
+  ): Promise<void> {
+    try {
+      switch (slot) {
+        case "readiedItem":
+          await this.actor.readyItem(data._id);
+          break;
+        case "weaponSlot1":
+          await this.actor.slotWeapon(data._id, 1);
+          break;
+        case "weaponSlot2":
+          await this.actor.slotWeapon(data._id, 2);
+          break;
+        case "armor":
+          break;
+        case "clothing":
+          break;
+        case "eyes":
+          break;
+        case "mouth":
+          break;
+        case "belt":
+      }
+    } catch (e) {
+      if (e instanceof SystemRulesError && e.key) {
+        ui.notifications?.error(e.key, { localize: true });
+      }
+    }
+  }
+
+  /**
+   * Get the equipment slot name of a drop target, null if it couldn't be
+   * determined.
+   */
+  protected getDropEquipmentSlot(
+    target: EventTarget | null
+  ): EquipmentSlot | null {
+    if (!(target instanceof HTMLElement)) return null;
+
+    const slotElement = target.closest("[data-equipment-slot]");
+    if (!(slotElement instanceof HTMLElement)) return null;
+
+    const slotName = slotElement.dataset.equipmentSlot;
+    if (typeof slotName !== "string") return null;
+
+    if (isEquipmentSlot(slotName)) return slotName;
+
+    return null;
+  }
+
+  /** Prepare the equipment slots depending on the drag data. */
+  protected prepareEquipmentSlots(dragData: DragData): void {
+    const slotsToAllow: EquipmentSlot[] = [];
+
+    if (isWeaponItemDragData(dragData)) {
+      slotsToAllow.push("readiedItem");
+      if (!this.actor.inCombat) {
+        slotsToAllow.push("weaponSlot1", "weaponSlot2");
+      }
+    } else if (isMiscItemDragData(dragData)) {
+      slotsToAllow.push("readiedItem");
+    } else if (isApparelItemDragData(dragData) && !this.actor.inCombat) {
+      slotsToAllow.push(dragData.data.data.slot);
+    }
+
+    this.disableEquipmentSlots(
+      ...[...EquipmentSlots].filter((value) => !slotsToAllow.includes(value))
+    );
+  }
+
+  /** Disable the given equipment slots visually. */
+  protected disableEquipmentSlots(...slots: EquipmentSlot[]): void {
+    const form = this._element ? this._element[0] : null;
+    if (!form) return;
+
+    form.querySelectorAll(`[data-equipment-slot]`).forEach((slotElement) => {
+      if (!(slotElement instanceof HTMLElement)) return;
+      if (!slots.includes(slotElement.dataset.equipmentSlot as EquipmentSlot))
+        return;
+
+      slotElement.classList.add("disabled");
+    });
+  }
+
+  /** Reset alterations to equipment slots. */
+  protected resetEquipmentSlots(): void {
+    const form = this._element ? this._element[0] : null;
+    if (!form) return;
+
+    form.querySelectorAll(`[data-equipment-slot]`).forEach((slotElement) => {
+      if (!(slotElement instanceof HTMLElement)) return;
+
+      slotElement.classList.remove("disabled");
+    });
+  }
 }
 
 interface SheetBackground {
@@ -515,6 +681,11 @@ interface SheetItem {
   totalWeight: string | undefined;
 }
 
+interface SheetEquipment {
+  readiedItem: WvItem | null;
+  weaponSlots: [Weapon | null, Weapon | null];
+}
+
 interface SheetInventory {
   items: SheetItem[];
   totalValue: string;
@@ -539,6 +710,7 @@ interface SheetData extends ActorSheet.Data {
     background: SheetBackground;
     bounds: SheetBounds;
     effects: SheetEffect[];
+    equipment: SheetEquipment;
     inventory: SheetInventory;
     magic: SheetMagic;
     parts: {

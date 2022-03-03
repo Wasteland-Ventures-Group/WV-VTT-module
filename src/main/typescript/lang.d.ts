@@ -290,6 +290,8 @@ export interface LangSchema {
          * @pattern (?=.*\{name\})
          */
         attackNotFound: string;
+        /** A general message that something can not be done in combat. */
+        canNotDoInCombat: string;
         /**
          * The message when an object attempted to be created could not be
          * created

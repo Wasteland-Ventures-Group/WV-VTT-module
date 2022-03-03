@@ -1,4 +1,4 @@
-import type { SpecialDragData } from "../actor/wvActor.js";
+import type { SpecialDragData } from "../dragData.js";
 import type { SpecialName } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 

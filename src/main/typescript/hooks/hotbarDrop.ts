@@ -1,4 +1,4 @@
-import { isSkillDragData, isSpecialDragData } from "../actor/wvActor.js";
+import { isSkillDragData, isSpecialDragData } from "../dragData.js";
 import { isWeaponAttackDragData } from "../item/weapon/attack.js";
 import assignSkillRollMacro from "../macros/skillRoll.js";
 import assignSpecialRollMacro from "../macros/specialRoll.js";

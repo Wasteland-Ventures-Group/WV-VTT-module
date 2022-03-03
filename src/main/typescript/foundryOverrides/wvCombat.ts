@@ -26,12 +26,7 @@ export default class WvCombat extends Combat {
       }
       if (combatant.data.defeated) return;
 
-      combatant.actor.update({
-        _id: combatant.actor.id,
-        data: {
-          vitals: { actionPoints: { value: combatant.actor.actionPoints.max } }
-        }
-      });
+      combatant.actor.updateActionPoints(combatant.actor.actionPoints.max);
     });
   }
 }

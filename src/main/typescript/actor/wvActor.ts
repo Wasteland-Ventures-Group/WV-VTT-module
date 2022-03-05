@@ -20,7 +20,6 @@ import Specials, {
   Special
 } from "../data/actor/character/specials/properties.js";
 import type { Resource } from "../data/foundryCommon.js";
-import type DragData from "../dragData.js";
 import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Weapon from "../item/weapon.js";

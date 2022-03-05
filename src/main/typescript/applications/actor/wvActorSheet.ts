@@ -628,7 +628,20 @@ export default class WvActorSheet extends ActorSheet {
       }
 
       if (!this.actor.inCombat) {
-        slotsToAllow.push("weaponSlot1", "weaponSlot2");
+        if (dragData.data._id !== null) {
+          if (
+            this.actor.data.data.equipment.weaponSlotIds[0] !==
+            dragData.data._id
+          ) {
+            slotsToAllow.push("weaponSlot1");
+          }
+          if (
+            this.actor.data.data.equipment.weaponSlotIds[1] !==
+            dragData.data._id
+          ) {
+            slotsToAllow.push("weaponSlot2");
+          }
+        }
       }
     } else if (isMiscItemDragData(dragData)) {
       if (dragData.data._id !== this.actor.readiedItem?.id) {

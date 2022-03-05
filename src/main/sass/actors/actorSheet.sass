@@ -45,26 +45,85 @@
 
   .inventory
 
-    .equip-targets
+    .equipment-slots
       border:
         right:
           color: common.$shade-darker
           style: solid
           width: 1px
+      flex-basis: 150px
       margin-right: common.$spacing-distance
       padding-right: common.$spacing-distance
 
-      [data-equipment-slot]
-        height: 50px
+      .equipment-slot
+        background-color: common.$shade-lighter
+        border:
+          color: common.$shade-darker
+          radius: common.$border-radius
+          style: solid
+          width: 1px
+        box-sizing: content-box
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        min-height: 3em
+        padding: 3px
         text-align: center
-        vertical-align: middle
-        width: 100px
+
+        &[data-equipment-slot=readiedItem]
+          min-height: 4em
 
         &:not(:last-child)
           margin-bottom: common.$spacing-distance
 
-        &.disabled
+        .equipment-slot-target
+          align-items: baseline
+          display: none
+          flex-wrap: nowrap
+          justify-content: center
+
+        .ready-item-cost
+          display: none
+
+        .ready-item-cost.quick-slot
+          background-color: common.$shade-lighter
+          border:
+            color: common.$shade-darker
+            radius: common.$border-radius
+            style: solid
+            width: 1px
+          margin-left: common.$spacing-distance
+          padding: 3px
+          text-align: center
+
+        &.not-slotable
           background-color: common.$shade-darker
+
+        &.slotable
+
+          .equipment-slot-status
+            display: none
+
+          .equipment-slot-target
+            display: flex
+
+          &.in-combat
+
+            .ready-item-cost.direct
+              display: block
+
+        &.quick-slotable.in-combat
+
+          .ready-item-cost.quick-slot
+            display: block
+
+        &.weapon-slotable.in-combat
+
+          .ready-item-cost.direct
+            display: none
+
+          .ready-item-cost.weapon-slot
+            display: block
 
     .controls-and-caps
       justify-content: space-between

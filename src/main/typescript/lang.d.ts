@@ -138,6 +138,24 @@ export interface LangSchema {
             exotic: string;
           };
         };
+        /** Labels for different equipment slots */
+        slots: QuantityNames & {
+          /** The overall name of a quick slot */
+          quickSlot: string;
+          /** The overall name of a weapon slot */
+          weaponSlot: string;
+          /** Names for different equipment slots */
+          names: {
+            readiedItem: string;
+            weaponSlot1: string;
+            weaponSlot2: string;
+            armor: string;
+            clothing: string;
+            eyes: string;
+            mouth: string;
+            belt: string;
+          };
+        };
         /** Labels for the concept of value */
         value: {
           /** The name of the value concept */

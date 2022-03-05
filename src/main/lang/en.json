@@ -111,6 +111,22 @@
             "exotic": "Exotic"
           }
         },
+        "slots": {
+          "singular": "Equipment Slot",
+          "plural": "Equipment Slots",
+          "quickSlot": "Quick Slot",
+          "weaponSlot": "Weapon Slot",
+          "names": {
+            "readiedItem": "Readied Item",
+            "weaponSlot1": "Weapon Slot 1",
+            "weaponSlot2": "Weapon Slot 2",
+            "armor": "Armor",
+            "clothing": "Clothing",
+            "eyes": "Eyes",
+            "mouth": "Mouth",
+            "belt": "Belt"
+          }
+        },
         "value": {
           "name": "Value"
         },

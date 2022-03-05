@@ -76,6 +76,11 @@ export default class WvActor extends Actor {
     return this.items.get(itemId) ?? null;
   }
 
+  /** Get the weapon slot weapons. */
+  get weaponSlotWeapons(): [Weapon | null, Weapon | null] {
+    return [this.getWeaponSlotWeapon(1), this.getWeaponSlotWeapon(2)];
+  }
+
   /**
    * Get a SPECIAL from this actor.
    * @throws If the SPECIALS have not been calculated yet.
@@ -109,11 +114,6 @@ export default class WvActor extends Actor {
     if (!(item instanceof Weapon)) return null;
 
     return item;
-  }
-
-  /** Get the weapon slot weapons. */
-  getWeaponSlotWeapons(): [Weapon | null, Weapon | null] {
-    return [this.getWeaponSlotWeapon(1), this.getWeaponSlotWeapon(2)];
   }
 
   /**

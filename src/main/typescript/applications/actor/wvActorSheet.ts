@@ -1,7 +1,6 @@
 import {
   CONSTANTS,
   EquipmentSlot,
-  EquipmentSlots,
   HANDLEBARS,
   isEquipmentSlot,
   isPhysicalItemType,
@@ -167,8 +166,9 @@ export default class WvActorSheet extends ActorSheet {
         },
         bounds: CONSTANTS.bounds,
         equipment: {
+          readyItemCost: CONSTANTS.rules.equipment.readyItemCost,
           readiedItem: this.actor.readiedItem,
-          weaponSlots: this.actor.getWeaponSlotWeapons()
+          weaponSlots: this.actor.weaponSlotWeapons
         },
         inventory: {
           items,
@@ -329,7 +329,11 @@ export default class WvActorSheet extends ActorSheet {
       const equipmentSlot = this.getDropEquipmentSlot(event.target);
 
       if (equipmentSlot) {
-        this.onDropEquipmentSlot(equipmentSlot, itemData);
+        this.onDropEquipmentSlot(
+          equipmentSlot,
+          itemData,
+          this.isDropOnQuickSlot(event.target)
+        );
         return;
       }
 
@@ -545,12 +549,13 @@ export default class WvActorSheet extends ActorSheet {
   /** Handle Item drops onto equipment slots. */
   protected async onDropEquipmentSlot(
     slot: EquipmentSlot,
-    data: foundry.data.ItemData["_source"]
+    data: foundry.data.ItemData["_source"],
+    useQuickSlot = false
   ): Promise<void> {
     try {
       switch (slot) {
         case "readiedItem":
-          await this.actor.readyItem(data._id);
+          await this.actor.readyItem(data._id, { useQuickSlot });
           break;
         case "weaponSlot1":
           await this.actor.slotWeapon(data._id, 1);
@@ -595,38 +600,90 @@ export default class WvActorSheet extends ActorSheet {
     return null;
   }
 
+  /** Whether the drop target was the quick slot use slot. */
+  protected isDropOnQuickSlot(target: EventTarget | null): boolean {
+    if (!(target instanceof HTMLElement)) return false;
+
+    const slotElement = target.closest("[data-equipment-slot-extra=quickSlot]");
+    return slotElement !== null;
+  }
+
   /** Prepare the equipment slots depending on the drag data. */
   protected prepareEquipmentSlots(dragData: DragData): void {
     const slotsToAllow: EquipmentSlot[] = [];
 
     if (isWeaponItemDragData(dragData)) {
-      slotsToAllow.push("readiedItem");
+      if (dragData.data._id !== this.actor.readiedItem?.id) {
+        slotsToAllow.push("readiedItem");
+
+        if (
+          this.actor.inCombat &&
+          dragData.data._id !== null &&
+          this.actor.data.data.equipment.weaponSlotIds
+            .filter((id): id is string => typeof id === "string")
+            .includes(dragData.data._id)
+        ) {
+          this.markReadySlot("weapon-slotable");
+        }
+      }
+
       if (!this.actor.inCombat) {
         slotsToAllow.push("weaponSlot1", "weaponSlot2");
       }
     } else if (isMiscItemDragData(dragData)) {
-      slotsToAllow.push("readiedItem");
+      if (dragData.data._id !== this.actor.readiedItem?.id) {
+        slotsToAllow.push("readiedItem");
+
+        if (this.actor.inCombat) {
+          this.markReadySlot("quick-slotable");
+        }
+      }
     } else if (isApparelItemDragData(dragData) && !this.actor.inCombat) {
+      // TODO: do not allow slot when item is already in there
       slotsToAllow.push(dragData.data.data.slot);
     }
 
-    this.disableEquipmentSlots(
-      ...[...EquipmentSlots].filter((value) => !slotsToAllow.includes(value))
-    );
+    this.markEquipmentSlots(...slotsToAllow);
   }
 
-  /** Disable the given equipment slots visually. */
-  protected disableEquipmentSlots(...slots: EquipmentSlot[]): void {
+  /**
+   * Mark the equipment slots as slotable or not. The given slots are marked as
+   * slotable, the rest is marked as non-slotable.
+   * @param slots - the slots to mark as slotable
+   */
+  protected markEquipmentSlots(...slots: EquipmentSlot[]): void {
     const form = this._element ? this._element[0] : null;
     if (!form) return;
 
     form.querySelectorAll(`[data-equipment-slot]`).forEach((slotElement) => {
       if (!(slotElement instanceof HTMLElement)) return;
-      if (!slots.includes(slotElement.dataset.equipmentSlot as EquipmentSlot))
-        return;
-
-      slotElement.classList.add("disabled");
+      if (slots.includes(slotElement.dataset.equipmentSlot as EquipmentSlot)) {
+        slotElement.classList.add("slotable");
+        if (this.actor.inCombat) slotElement.classList.add("in-combat");
+      } else {
+        slotElement.classList.add("not-slotable");
+      }
     });
+  }
+
+  /**
+   * Mark the readied item slot with the given types, removing any already set.
+   */
+  protected markReadySlot(
+    ...types: ("slotable" | "quick-slotable" | "weapon-slotable")[]
+  ): void {
+    const form = this._element ? this._element[0] : null;
+    if (!form) return;
+
+    const slotElement = form.querySelector("[data-equipment-slot=readiedItem]");
+    if (!(slotElement instanceof HTMLElement)) return;
+
+    slotElement.classList.remove(
+      "slotable",
+      "quick-slotable",
+      "weapon-slotable"
+    );
+    slotElement.classList.add(...types);
   }
 
   /** Reset alterations to equipment slots. */
@@ -637,7 +694,13 @@ export default class WvActorSheet extends ActorSheet {
     form.querySelectorAll(`[data-equipment-slot]`).forEach((slotElement) => {
       if (!(slotElement instanceof HTMLElement)) return;
 
-      slotElement.classList.remove("disabled");
+      slotElement.classList.remove(
+        "in-combat",
+        "not-slotable",
+        "slotable",
+        "quick-slotable",
+        "weapon-slotable"
+      );
     });
   }
 }
@@ -682,6 +745,10 @@ interface SheetItem {
 }
 
 interface SheetEquipment {
+  readyItemCost: {
+    direct: number;
+    fromSlot: number;
+  };
   readiedItem: WvItem | null;
   weaponSlots: [Weapon | null, Weapon | null];
 }

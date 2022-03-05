@@ -1,29 +1,45 @@
 <div class="flexrow">
-  <section class="flex-fixed equip-targets">
-    <h4>Equipment Slots</h4>
-    <div class="resource-block" data-equipment-slot="readiedItem">
-      <span>Readied Item</span><br /><span>{{sheet.equipment.readiedItem.name}}</span>
+  <section class="flex-fixed equipment-slots">
+    <h4>{{localize "wv.rules.equipment.slots.plural"}}</h4>
+    <div class="equipment-slot" data-equipment-slot="readiedItem">
+      <div>{{localize "wv.rules.equipment.slots.names.readiedItem"}}</div>
+      <div class="equipment-slot-status">
+        <span>{{sheet.equipment.readiedItem.name}}</span>
+      </div>
+      <div class="equipment-slot-target">
+        <div class="ready-item-cost direct">{{sheet.equipment.readyItemCost.direct}} {{localize "wv.rules.actionPoints.short"}}</div>
+        <div class="ready-item-cost quick-slot" data-equipment-slot-extra="quickSlot">
+          <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
+          <div>({{localize "wv.rules.equipment.slots.quickSlot"}})</div>
+        </div>
+        <div class="ready-item-cost weapon-slot">
+          <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
+          <div>({{localize "wv.rules.equipment.slots.weaponSlot"}})</div>
+        </div>
+      </div>
     </div>
-    <div class="resource-block" data-equipment-slot="weaponSlot1">
-      <span>Weapon Slot 1</span><br /><span>{{sheet.equipment.weaponSlots.[0].name}}</span>
+    <div class="equipment-slot" data-equipment-slot="weaponSlot1">
+      <div>{{localize "wv.rules.equipment.slots.names.weaponSlot1"}}</div>
+      <div>{{sheet.equipment.weaponSlots.[0].name}}</div>
     </div>
-    <div class="resource-block" data-equipment-slot="weaponSlot2">
-      <span>Weapon Slot 2</span><br /><span>{{sheet.equipment.weaponSlots.[1].name}}</span>
+    <div class="equipment-slot" data-equipment-slot="weaponSlot2">
+      <div>{{localize "wv.rules.equipment.slots.names.weaponSlot2"}}</div>
+      <div>{{sheet.equipment.weaponSlots.[1].name}}</div>
     </div>
-    <div class="resource-block" data-equipment-slot="armor">
-      <span>Armor</span>
+    <div class="equipment-slot" data-equipment-slot="armor">
+      <div>{{localize "wv.rules.equipment.slots.names.armor"}}</div>
     </div>
-    <div class="resource-block" data-equipment-slot="clothing">
-      <span>Clothing</span>
+    <div class="equipment-slot" data-equipment-slot="clothing">
+      <div>{{localize "wv.rules.equipment.slots.names.clothing"}}</div>
     </div>
-    <div class="resource-block" data-equipment-slot="eyes">
-      <span>Eyes</span>
+    <div class="equipment-slot" data-equipment-slot="eyes">
+      <div>{{localize "wv.rules.equipment.slots.names.eyes"}}</div>
     </div>
-    <div class="resource-block" data-equipment-slot="mouth">
-      <span>Mouth</span>
+    <div class="equipment-slot" data-equipment-slot="mouth">
+      <div>{{localize "wv.rules.equipment.slots.names.mouth"}}</div>
     </div>
-    <div class="resource-block" data-equipment-slot="belt">
-      <span>Belt</span>
+    <div class="equipment-slot" data-equipment-slot="belt">
+      <div>{{localize "wv.rules.equipment.slots.names.belt"}}</div>
     </div>
   </section>
   <div>

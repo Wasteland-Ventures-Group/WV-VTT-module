@@ -90,6 +90,22 @@
             "exotic": "Exotisch"
           }
         },
+        "slots": {
+          "singular": "Ausrüstungplatz",
+          "plural": "Ausrüstungsplätze",
+          "quickSlot": "Schnellplatz",
+          "weaponSlot": "Waffenplatz",
+          "names": {
+            "readiedItem": "Bereiter Gegenstand",
+            "weaponSlot1": "Waffenplatz 1",
+            "weaponSlot2": "Waffenplatz 2",
+            "armor": "Rüstung",
+            "clothing": "Kleidung",
+            "eyes": "Augen",
+            "mouth": "Mund",
+            "belt": "Gürtel"
+          }
+        },
         "value": {
           "name": "Wert"
         },

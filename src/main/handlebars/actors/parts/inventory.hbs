@@ -14,7 +14,7 @@
         </div>
         <div class="ready-item-cost weapon-slot">
           <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
-          <div>({{localize "wv.rules.equipment.slots.weaponSlot"}})</div>
+          <div>({{localize "wv.rules.equipment.slots.weaponSlot.singular"}})</div>
         </div>
       </div>
     </div>
@@ -74,7 +74,7 @@
             <td>{{item.name}}</td>
             <td class="align-right min-width">{{item.value}}</td>
             <td class="align-right min-width">{{item.weight}}</td>
-            <td class="align-right min-width">
+            <td class="align-right min-width zero-width">
               {{#if item.amount~}}
                 <input type="number" data-action="edit-amount" value="{{item.amount}}" />
               {{~/if}}

@@ -94,7 +94,10 @@
           "singular": "Ausrüstungplatz",
           "plural": "Ausrüstungsplätze",
           "quickSlot": "Schnellplatz",
-          "weaponSlot": "Waffenplatz",
+          "weaponSlot": {
+            "singular": "Waffenplatz",
+            "plural": "Waffenplätze"
+          },
           "names": {
             "readiedItem": "Bereiter Gegenstand",
             "weaponSlot1": "Waffenplatz 1",
@@ -127,7 +130,10 @@
           },
           "shots": "Schüße",
           "singular": "Waffe",
-          "strengthRequirement": "Stärkevorraussetzung"
+          "strengthRequirement": {
+            "short": "STR Vorr",
+            "long": "Stärkevorraussetzung"
+          }
         },
         "weight": {
           "name": "Gewicht"

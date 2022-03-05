@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#193](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/193))
 - basic support for apparel items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+- rework equpment page to show weapon slots and readied item
+  ([#192](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/192))
 
 ### Changed
 

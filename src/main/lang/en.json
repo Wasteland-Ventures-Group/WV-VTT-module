@@ -115,7 +115,10 @@
           "singular": "Equipment Slot",
           "plural": "Equipment Slots",
           "quickSlot": "Quick Slot",
-          "weaponSlot": "Weapon Slot",
+          "weaponSlot": {
+            "singular": "Weapon Slot",
+            "plural": "Weapon Slots"
+          },
           "names": {
             "readiedItem": "Readied Item",
             "weaponSlot1": "Weapon Slot 1",
@@ -148,7 +151,10 @@
           },
           "shots": "Shots",
           "singular": "Weapon",
-          "strengthRequirement": "Strength Requirement"
+          "strengthRequirement": {
+            "short": "STR Req",
+            "long": "Strength Requirement"
+          }
         },
         "weight": {
           "name": "Weight"

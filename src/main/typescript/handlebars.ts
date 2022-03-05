@@ -25,6 +25,7 @@ export function preloadTemplates(): void {
     HANDLEBARS.partPaths.actor.inventory,
     HANDLEBARS.partPaths.actor.magic,
     HANDLEBARS.partPaths.actor.stats,
+    HANDLEBARS.partPaths.actor.weaponSlot,
     HANDLEBARS.partPaths.item.header,
     HANDLEBARS.partPaths.item.rules
   ]);

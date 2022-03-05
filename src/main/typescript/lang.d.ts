@@ -143,7 +143,7 @@ export interface LangSchema {
           /** The overall name of a quick slot */
           quickSlot: string;
           /** The overall name of a weapon slot */
-          weaponSlot: string;
+          weaponSlot: QuantityNames;
           /** Names for different equipment slots */
           names: {
             readiedItem: string;
@@ -184,7 +184,7 @@ export interface LangSchema {
           /** The name for the number of shots per attack */
           shots: string;
           /** The name for the strength requirement */
-          strengthRequirement: string;
+          strengthRequirement: ShortLongNames;
         };
         /** Labels relating to the concept of weight */
         weight: {

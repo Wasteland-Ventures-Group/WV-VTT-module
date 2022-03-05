@@ -24,11 +24,14 @@ import {
 } from "../../dragData.js";
 import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
-import type Weapon from "../../item/weapon.js";
+import Weapon from "../../item/weapon.js";
+import Attack from "../../item/weapon/attack.js";
 import WvItem from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
+import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
+import WeaponSheet from "../item/weaponSheet.js";
 import Prompt from "../prompt.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
@@ -115,6 +118,15 @@ export default class WvActorSheet extends ActorSheet {
         });
       });
     sheetForm
+      .querySelectorAll("button[data-weapon-attack-name]")
+      .forEach((element) => {
+        element.addEventListener("click", (event) => {
+          if (!(event instanceof MouseEvent))
+            throw new Error("This should not happen!");
+          this.onClickAttackExecute(event);
+        });
+      });
+    sheetForm
       .querySelectorAll("input[data-action=edit-amount]")
       .forEach((element) => {
         element.addEventListener("change", (event) => {
@@ -127,6 +139,12 @@ export default class WvActorSheet extends ActorSheet {
     const racesI18ns = WvI18n.races;
     const specialI18ns = WvI18n.specials;
     const skillI18ns = WvI18n.skills;
+
+    const actorReadiedItem = this.actor.readiedItem;
+    const readiedItem =
+      actorReadiedItem instanceof Weapon
+        ? this.toSheetWeapon(actorReadiedItem)
+        : actorReadiedItem?.toJSON() ?? null;
 
     let totalValue = 0;
     let totalWeight = 0;
@@ -167,8 +185,10 @@ export default class WvActorSheet extends ActorSheet {
         bounds: CONSTANTS.bounds,
         equipment: {
           readyItemCost: CONSTANTS.rules.equipment.readyItemCost,
-          readiedItem: this.actor.readiedItem,
-          weaponSlots: this.actor.weaponSlotWeapons
+          readiedItem,
+          weaponSlots: this.actor.weaponSlotWeapons.map((weapon) =>
+            weapon ? this.toSheetWeapon(weapon) : null
+          )
         },
         inventory: {
           items,
@@ -184,7 +204,8 @@ export default class WvActorSheet extends ActorSheet {
           header: HANDLEBARS.partPaths.actor.header,
           inventory: HANDLEBARS.partPaths.actor.inventory,
           magic: HANDLEBARS.partPaths.actor.magic,
-          stats: HANDLEBARS.partPaths.actor.stats
+          stats: HANDLEBARS.partPaths.actor.stats,
+          weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
         },
         specials: SpecialNames.reduce((specials, specialName) => {
           specials[specialName] = {
@@ -221,16 +242,6 @@ export default class WvActorSheet extends ActorSheet {
           .filter(
             (item): item is StoredDocument<WvItem> =>
               typeof item.id === "string" && item.type === TYPES.ITEM.EFFECT
-          )
-          .map((item) => ({
-            id: item.id,
-            img: item.img,
-            name: item.name
-          })),
-        weapons: this.actor.items
-          .filter(
-            (item): item is StoredDocument<WvItem> =>
-              typeof item.id === "string" && item.type === TYPES.ITEM.WEAPON
           )
           .map((item) => ({
             id: item.id,
@@ -404,6 +415,14 @@ export default class WvActorSheet extends ActorSheet {
     return this.actor.updateEmbeddedDocuments("Item", updateData);
   }
 
+  /** Transform a Weapon into a sheet weapon. */
+  protected toSheetWeapon(weapon: Weapon): SheetWeapon {
+    return {
+      ...weapon.toJSON(),
+      sheet: WeaponSheet.getWeaponSheetData(weapon)
+    };
+  }
+
   /** Handle a click event on the SPECIAL roll buttons. */
   protected async onClickRollSpecial(event: MouseEvent): Promise<void> {
     event.preventDefault();
@@ -458,6 +477,57 @@ export default class WvActorSheet extends ActorSheet {
     } else {
       this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
     }
+  }
+
+  /** Handle a click event on an Attack execute button. */
+  protected async onClickAttackExecute(event: MouseEvent): Promise<void> {
+    if (!(event.target instanceof HTMLElement)) {
+      LOG.warn("The target was not an HTMLElement.");
+      return;
+    }
+
+    const attackElement = event.target.closest("[data-weapon-attack-name]");
+    if (!(attackElement instanceof HTMLElement)) {
+      LOG.warn("Could not get the attack element.");
+      return;
+    }
+
+    const weaponElement = event.target.closest("[data-weapon-id]");
+    if (!(weaponElement instanceof HTMLElement)) {
+      LOG.warn("Could not get the weapon element.");
+      return;
+    }
+
+    const attackKey = attackElement.dataset.weaponAttackName;
+    if (!attackKey) {
+      LOG.warn("Could not get the attack name.");
+      return;
+    }
+
+    const weaponId = weaponElement.dataset.weaponId;
+    if (!weaponId) {
+      LOG.warn("Could not get the weapon ID.");
+      return;
+    }
+
+    if (weaponId !== this.actor.data.data.equipment.readiedItemId) {
+      LOG.warn("The weapon was not readied!");
+      return;
+    }
+
+    const weapon = this.actor.items.get(weaponId);
+    if (!(weapon instanceof Weapon)) {
+      LOG.warn("Could not find the weapon on the actor.");
+      return;
+    }
+
+    const attack = weapon.systemData.attacks.attacks[attackKey];
+    if (!(attack instanceof Attack)) {
+      LOG.warn("Could not find the attack on the weapon.");
+      return;
+    }
+
+    attack.execute({ whisperToGms: event.ctrlKey });
   }
 
   /** Handle a click event on a create item button. */
@@ -740,12 +810,6 @@ interface SheetEffect {
   name: string | null;
 }
 
-interface SheetWeapon {
-  id: string;
-  img: string | null;
-  name: string | null;
-}
-
 interface SheetItem {
   id: string;
   img: string | null;
@@ -762,9 +826,15 @@ interface SheetEquipment {
     direct: number;
     fromSlot: number;
   };
-  readiedItem: WvItem | null;
-  weaponSlots: [Weapon | null, Weapon | null];
+  readiedItem: ReadiedItem | null;
+  weaponSlots: (SheetWeapon | null)[];
 }
+
+type ReadiedItem = ReturnType<WvItem["toJSON"]> | SheetWeapon;
+
+type SheetWeapon = ReturnType<Weapon["toJSON"]> & {
+  sheet: SheetWeaponData;
+};
 
 interface SheetInventory {
   items: SheetItem[];
@@ -801,9 +871,9 @@ interface SheetData extends ActorSheet.Data {
       inventory: string;
       magic: string;
       stats: string;
+      weaponSlot: string;
     };
     skills: Record<SkillName, SheetSkill>;
     specials: Record<SpecialName, SheetSpecial>;
-    weapons: SheetWeapon[];
   };
 }

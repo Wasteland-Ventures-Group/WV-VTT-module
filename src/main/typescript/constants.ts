@@ -296,7 +296,8 @@ export const HANDLEBARS = {
       header: `${CONSTANTS.systemPath}/handlebars/actors/parts/header.hbs`,
       inventory: `${CONSTANTS.systemPath}/handlebars/actors/parts/inventory.hbs`,
       magic: `${CONSTANTS.systemPath}/handlebars/actors/parts/magic.hbs`,
-      stats: `${CONSTANTS.systemPath}/handlebars/actors/parts/stats.hbs`
+      stats: `${CONSTANTS.systemPath}/handlebars/actors/parts/stats.hbs`,
+      weaponSlot: `${CONSTANTS.systemPath}/handlebars/actors/parts/weaponSlot.hbs`
     },
     item: {
       header: `${CONSTANTS.systemPath}/handlebars/items/parts/header.hbs`,

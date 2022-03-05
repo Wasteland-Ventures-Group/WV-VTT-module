@@ -1,6 +1,6 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
 
-{{> (get . "sheet.parts.header")}}
+{{>(get . "sheet.parts.header")}}
 
   <nav class="tabs flex-fixed" data-group="primary">
     <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
@@ -13,27 +13,27 @@
 
   <section class="content">
     <section class="tab active stats" data-group="primary" data-tab="stats">
-{{> (get . "sheet.parts.stats")}}
+{{>(get . "sheet.parts.stats")}}
     </section>
 
     <section class="tab effects" data-group="primary" data-tab="effects">
-{{> (get . "sheet.parts.effects")}}
+{{>(get . "sheet.parts.effects")}}
     </section>
 
     <section class="tab equipment" data-group="primary" data-tab="equipment">
-{{> (get . "sheet.parts.equipment")}}
+{{>(get . "sheet.parts.equipment")}}
     </section>
 
     <section class="tab inventory" data-group="primary" data-tab="inventory">
-{{> (get . "sheet.parts.inventory")}}
+{{>(get . "sheet.parts.inventory")}}
     </section>
 
     <section class="tab magic" data-group="primary" data-tab="magic">
-{{> (get . "sheet.parts.magic")}}
+{{>(get . "sheet.parts.magic")}}
     </section>
 
     <section class="tab background" data-group="primary" data-tab="background">
-{{> (get . "sheet.parts.background")}}
+{{>(get . "sheet.parts.background")}}
     </section>
   </section>
 

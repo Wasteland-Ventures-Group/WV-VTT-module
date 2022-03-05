@@ -7,6 +7,7 @@ import * as ranges from "../../item/weapon/ranges.js";
 import WvI18n from "../../wvI18n.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 import { getGame } from "../../foundryHelpers.js";
+import type WvActor from "../../actor/wvActor.js";
 
 export default class WeaponSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
@@ -15,6 +16,79 @@ export default class WeaponSheet extends WvItemSheet {
     return foundry.utils.mergeObject(defaultOptions, {
       dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }]
     } as typeof ItemSheet["defaultOptions"]);
+  }
+
+  /** Get the weapon sheet data for a weapon. */
+  static getWeaponSheetData(weapon: Weapon): SheetWeapon {
+    return {
+      attacks: Object.entries(weapon.systemData.attacks.attacks).reduce<
+        Record<string, SheetAttack>
+      >((obj, [name, attack]) => {
+        obj[name] = {
+          ap: attack.data.ap,
+          damage: attack.damageFormula,
+          dtReduction: attack.data.dtReduction,
+          rounds: attack.data.rounds
+        };
+        return obj;
+      }, {}),
+      ranges: {
+        short: this.mapToSheetRange(
+          weapon.systemData.ranges.short,
+          weapon.actor
+        ),
+        medium: this.mapToSheetRange(
+          weapon.systemData.ranges.medium,
+          weapon.actor
+        ),
+        long: this.mapToSheetRange(weapon.systemData.ranges.long, weapon.actor)
+      },
+      reload: {
+        caliber: weapon.systemData.reload
+          ? WvI18n.calibers[weapon.systemData.reload.caliber]
+          : undefined,
+        containerType: weapon.systemData.reload
+          ? getGame().i18n.localize(
+              `wv.rules.equipment.weapon.reload.containerTypes.` +
+                weapon.systemData.reload.containerType
+            )
+          : undefined
+      },
+      skill: WvI18n.skills[weapon.systemData.skill],
+      usesAmmo: weapon.systemData.reload !== undefined
+    };
+  }
+
+  /**
+   * Map a Range to a sheet displayable Range
+   * @param range - the Range to map
+   * @returns a sheet displayable Range
+   */
+  protected static mapToSheetRange(
+    range: RangeSource,
+    actor: WvActor | null
+  ): SheetRange;
+  protected static mapToSheetRange(
+    range: undefined,
+    actor: WvActor | null
+  ): undefined;
+  protected static mapToSheetRange(
+    range: RangeSource | undefined,
+    actor: WvActor | null
+  ): SheetRange | undefined;
+  protected static mapToSheetRange(
+    range: RangeSource | undefined,
+    actor: WvActor | null
+  ): SheetRange | undefined {
+    if (!range) return;
+
+    return {
+      distance: ranges.getDisplayRangeDistance(
+        range.distance,
+        actor?.data.data.specials
+      ),
+      modifier: range.modifier
+    };
   }
 
   override get item(): Weapon {
@@ -27,9 +101,19 @@ export default class WeaponSheet extends WvItemSheet {
   override activateListeners(html: JQuery<HTMLFormElement>): void {
     super.activateListeners(html);
 
-    html
-      .find(".weapon-attack > button[data-attack]")
-      .on("click", this.onClickAttackExecute.bind(this));
+    const sheetForm = html[0];
+    if (!(sheetForm instanceof HTMLFormElement))
+      throw new Error("The element passed was not a form element!");
+
+    sheetForm
+      .querySelectorAll(".weapon-attack > button[data-attack]")
+      .forEach((element) => {
+        element.addEventListener("click", (event) => {
+          if (!(event instanceof MouseEvent))
+            throw new Error("This should not happen!");
+          this.onClickAttackExecute(event);
+        });
+      });
   }
 
   override async getData(): Promise<SheetData> {
@@ -39,35 +123,7 @@ export default class WeaponSheet extends WvItemSheet {
       ...data,
       sheet: {
         ...data.sheet,
-        attacks: Object.entries(this.item.systemData.attacks.attacks).reduce<
-          Record<string, SheetAttack>
-        >((obj, [name, attack]) => {
-          obj[name] = {
-            ap: attack.data.ap,
-            damage: attack.damageFormula,
-            dtReduction: attack.data.dtReduction,
-            rounds: attack.data.rounds
-          };
-          return obj;
-        }, {}),
-        ranges: {
-          short: this.mapToSheetRange(this.item.systemData.ranges.short),
-          medium: this.mapToSheetRange(this.item.systemData.ranges.medium),
-          long: this.mapToSheetRange(this.item.systemData.ranges.long)
-        },
-        reload: {
-          caliber: this.item.systemData.reload
-            ? WvI18n.calibers[this.item.systemData.reload.caliber]
-            : undefined,
-          containerType: this.item.systemData.reload
-            ? getGame().i18n.localize(
-                `wv.rules.equipment.weapon.reload.containerTypes.` +
-                  this.item.systemData.reload.containerType
-              )
-            : undefined
-        },
-        skill: WvI18n.skills[this.item.systemData.skill],
-        usesAmmo: this.item.systemData.reload !== undefined
+        ...WeaponSheet.getWeaponSheetData(this.item)
       }
     };
   }
@@ -107,10 +163,11 @@ export default class WeaponSheet extends WvItemSheet {
     }
   }
 
-  /**
-   * Handle a click event on an Attack execute button.
-   */
-  protected async onClickAttackExecute(event: ClickEvent): Promise<void> {
+  /** Handle a click event on an Attack execute button. */
+  protected async onClickAttackExecute(event: MouseEvent): Promise<void> {
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
     const attackKey = event.target.dataset.attack;
     if (!attackKey) return;
 
@@ -119,38 +176,7 @@ export default class WeaponSheet extends WvItemSheet {
 
     attack.execute({ whisperToGms: event.ctrlKey });
   }
-
-  /**
-   * Map a Range to a sheet displayable Range
-   * @param range - the Range to map
-   * @returns a sheet displayable Range
-   */
-  protected mapToSheetRange(range: RangeSource): SheetRange;
-  protected mapToSheetRange(range: undefined): undefined;
-  protected mapToSheetRange(
-    range: RangeSource | undefined
-  ): SheetRange | undefined;
-  protected mapToSheetRange(
-    range: RangeSource | undefined
-  ): SheetRange | undefined {
-    if (!range) return;
-
-    return {
-      distance: ranges.getDisplayRangeDistance(
-        range.distance,
-        this.actor?.data.data.specials
-      ),
-      modifier: range.modifier
-    };
-  }
 }
-
-type ClickEvent = JQuery.ClickEvent<
-  HTMLElement,
-  unknown,
-  HTMLElement,
-  HTMLElement
->;
 
 interface SheetAttack {
   ap: number;
@@ -164,19 +190,21 @@ interface SheetRange {
   modifier: number;
 }
 
-export interface SheetData extends ItemSheetData {
-  sheet: ItemSheetData["sheet"] & {
-    attacks: Record<string, SheetAttack>;
-    ranges: {
-      short: SheetRange;
-      medium: SheetRange | undefined;
-      long: SheetRange | undefined;
-    };
-    reload: {
-      caliber: string | undefined;
-      containerType: string | undefined;
-    };
-    skill: string;
-    usesAmmo: boolean;
+export interface SheetWeapon {
+  attacks: Record<string, SheetAttack>;
+  ranges: {
+    short: SheetRange;
+    medium: SheetRange | undefined;
+    long: SheetRange | undefined;
   };
+  reload: {
+    caliber: string | undefined;
+    containerType: string | undefined;
+  };
+  skill: string;
+  usesAmmo: boolean;
+}
+
+export interface SheetData extends ItemSheetData {
+  sheet: ItemSheetData["sheet"] & SheetWeapon;
 }

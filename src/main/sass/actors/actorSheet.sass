@@ -43,6 +43,45 @@
       flex-direction: column
       justify-content: space-between
 
+  .equipment
+
+    > *:not(:last-child)
+      margin-bottom: common.$spacing-distance * 2
+
+    .weapon-slot
+      background-color: common.$shade-lighter
+      border:
+        color: common.$shade-darker
+        radius: common.$border-radius
+        style: solid
+        width: 1px
+      padding: 3px
+
+      &:not(:last-child)
+        margin-right: common.$spacing-distance
+
+      button[data-weapon-attack-name]
+        box-sizing: content-box
+        line-height: unset
+        max-height: 1em
+        padding: 3px
+
+      .detail-groups > *:not(:last-child)
+        border-bottom:
+          color: common.$shade-darker
+          style: solid
+          width: 1px
+        margin-bottom: 5px
+        padding-bottom: 5px
+
+      .details > *:not(:last-child)
+        border-right:
+          color: common.$shade-darker
+          style: solid
+          width: 1px
+        margin-right: 5px
+        padding-right: 5px
+
   .inventory
 
     .equipment-slots
@@ -71,7 +110,7 @@
         text-align: center
 
         &[data-equipment-slot=readiedItem]
-          min-height: 4em
+          min-height: 5em
 
         &:not(:last-child)
           margin-bottom: common.$spacing-distance

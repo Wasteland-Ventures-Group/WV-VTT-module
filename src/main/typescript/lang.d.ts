@@ -225,13 +225,13 @@ export interface LangSchema {
         /** Names for different ranges */
         ranges: {
           /** The name for out of range */
-          outOfRange: string;
+          outOfRange: ShortLongNames;
           /** The name for long range */
-          long: string;
+          long: ShortLongNames;
           /** The name for medium range */
-          medium: string;
+          medium: ShortLongNames;
           /** The name for short range */
-          short: string;
+          short: ShortLongNames;
         };
       };
       /** Rules labels related to rolls */

@@ -202,10 +202,22 @@
         "distance": "Distance",
         "plural": "Ranges",
         "ranges": {
-          "outOfRange": "Out of range",
-          "long": "Long",
-          "medium": "Medium",
-          "short": "Short"
+          "outOfRange": {
+            "short": "OOR",
+            "long": "Out of range"
+          },
+          "long": {
+            "short": "L",
+            "long": "Long"
+          },
+          "medium": {
+            "short": "M",
+            "long": "Medium"
+          },
+          "short": {
+            "short": "S",
+            "long": "Short"
+          }
         },
         "singular": "Range"
       },

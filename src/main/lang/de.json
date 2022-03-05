@@ -202,10 +202,22 @@
         "distance": "Distanz",
         "plural": "Reichweiten",
         "ranges": {
-          "outOfRange": "Außer Reichweite",
-          "long": "Weit",
-          "medium": "Mittel",
-          "short": "Kurz"
+          "outOfRange": {
+            "short": "ARW",
+            "long": "Außer Reichweite"
+          },
+          "long": {
+            "short": "W",
+            "long": "Weit"
+          },
+          "medium": {
+            "short": "M",
+            "long": "Mittel"
+          },
+          "short": {
+            "short": "K",
+            "long": "Kurz"
+          }
         },
         "singular": "Reichweite"
       },

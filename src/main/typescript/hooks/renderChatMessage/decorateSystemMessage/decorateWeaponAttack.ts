@@ -109,13 +109,13 @@ function getRangeBracketKey(
 ): string | undefined {
   switch (flags.details?.range.bracket) {
     case RangeBracket.OUT_OF_RANGE:
-      return "wv.rules.range.ranges.outOfRange";
+      return "wv.rules.range.ranges.outOfRange.long";
     case RangeBracket.LONG:
-      return "wv.rules.range.ranges.long";
+      return "wv.rules.range.ranges.long.long";
     case RangeBracket.MEDIUM:
-      return "wv.rules.range.ranges.medium";
+      return "wv.rules.range.ranges.medium.long";
     case RangeBracket.SHORT:
-      return "wv.rules.range.ranges.short";
+      return "wv.rules.range.ranges.short.long";
   }
 }
 

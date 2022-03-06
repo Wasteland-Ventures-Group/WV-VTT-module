@@ -3,9 +3,8 @@ import type { ActorDataConstructorData } from "@league-of-foundry-developers/fou
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import {
+  ApparelSlot,
   CONSTANTS,
-  isSkillName,
-  isSpecialName,
   SkillName,
   SpecialName,
   SpecialNames
@@ -22,6 +21,7 @@ import Specials, {
 import type { Resource } from "../data/foundryCommon.js";
 import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
+import Apparel from "../item/apparel.js";
 import Weapon from "../item/weapon.js";
 import type WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
@@ -67,6 +67,11 @@ export default class WvActor extends Actor {
     );
   }
 
+  /** Get the damage threshold of the actor. */
+  get damageThreshold(): number {
+    return this.data.data.equipment.damageThreshold ?? 0;
+  }
+
   /** Get the readied Item of this actor, if it exists. */
   get readiedItem(): WvItem | null {
     const itemId = this.data.data.equipment.readiedItemId;
@@ -78,6 +83,83 @@ export default class WvActor extends Actor {
   /** Get the weapon slot weapons. */
   get weaponSlotWeapons(): [Weapon | null, Weapon | null] {
     return [this.getWeaponSlotWeapon(1), this.getWeaponSlotWeapon(2)];
+  }
+
+  /** Get the slots that are blocked by other apparel items. */
+  get blockedApparelSlots(): ApparelSlot[] {
+    const slots: Set<ApparelSlot> = new Set();
+
+    this.equippedApparel.forEach((apparel) => {
+      apparel.systemData.blockedSlots?.forEach((slot) => slots.add(slot));
+    });
+
+    return [...slots];
+  }
+
+  /** Get the equipped armor of the actor. */
+  get armor(): Apparel | null {
+    const armorId = this.data.data.equipment.armorSlotId;
+    if (armorId === null) return null;
+
+    const armor = this.items.get(armorId);
+    if (!(armor instanceof Apparel)) return null;
+
+    return armor;
+  }
+
+  /** Get the equipped clothing of the actor. */
+  get clothing(): Apparel | null {
+    const clothingId = this.data.data.equipment.clothingSlotId;
+    if (clothingId === null) return null;
+
+    const clothing = this.items.get(clothingId);
+    if (!(clothing instanceof Apparel)) return null;
+
+    return clothing;
+  }
+
+  /** Get the equipped eyes apparel of the actor. */
+  get eyesApparel(): Apparel | null {
+    const eyesId = this.data.data.equipment.eyesSlotId;
+    if (eyesId === null) return null;
+
+    const eyes = this.items.get(eyesId);
+    if (!(eyes instanceof Apparel)) return null;
+
+    return eyes;
+  }
+
+  /** Get the equipped mouth apparel of the actor. */
+  get mouthApparel(): Apparel | null {
+    const mouthId = this.data.data.equipment.mouthSlotId;
+    if (mouthId === null) return null;
+
+    const mouth = this.items.get(mouthId);
+    if (!(mouth instanceof Apparel)) return null;
+
+    return mouth;
+  }
+
+  /** Get the equipped belt apparel of the actor. */
+  get beltApparel(): Apparel | null {
+    const beltId = this.data.data.equipment.beltSlotId;
+    if (beltId === null) return null;
+
+    const belt = this.items.get(beltId);
+    if (!(belt instanceof Apparel)) return null;
+
+    return belt;
+  }
+
+  /** Get all equipped apparel items of the actor.  */
+  get equippedApparel(): Apparel[] {
+    return [
+      this.armor,
+      this.clothing,
+      this.eyesApparel,
+      this.mouthApparel,
+      this.beltApparel
+    ].filter((apparel): apparel is Apparel => apparel instanceof Apparel);
   }
 
   /**
@@ -189,7 +271,7 @@ export default class WvActor extends Actor {
     if (id === null) return;
 
     const item = this.items.get(id);
-    if (item?.type !== "weapon") return;
+    if (!(item instanceof Weapon)) return;
 
     const index = slot - 1;
     const slots = this.data.data.equipment.weaponSlotIds;
@@ -197,6 +279,62 @@ export default class WvActor extends Actor {
 
     slots[index] = id;
     await this.update({ data: { equipment: { weaponSlotIds: slots } } });
+  }
+
+  /**
+   * Equip an apparel into its slot. No update is made in the following cases:
+   * - the given ID is null
+   * - the actor has no item with the given ID
+   * - the designated item is not an apparel
+   * - the apparel's slot already has the given ID
+   *
+   * @param id - the ID of the actor owned apparel to equip
+   * @returns a promise that resolves once the update is done, rejects if this
+   *   is attempted in combat or the apparel slot is blocked
+   */
+  async equipApparel(id: string | null): Promise<void> {
+    if (this.inCombat)
+      throw new SystemRulesError(
+        "Can not slot a weapon in combat!",
+        "wv.system.messages.canNotDoInCombat"
+      );
+
+    if (id === null) return;
+
+    const item = this.items.get(id);
+    if (!(item instanceof Apparel)) return;
+
+    const slot = item.systemData.slot;
+    if (this.blockedApparelSlots.includes(slot))
+      throw new SystemRulesError(
+        "The apparel's slot is blocked by another apparel!",
+        "wv.system.messages.blockedByAnotherApparel"
+      );
+
+    let updateData: Partial<ActorDataConstructorData>;
+    switch (slot) {
+      case "armor":
+        if (this.data.data.equipment.armorSlotId === id) return;
+        updateData = { data: { equipment: { armorSlotId: id } } };
+        break;
+      case "clothing":
+        if (this.data.data.equipment.clothingSlotId === id) return;
+        updateData = { data: { equipment: { clothingSlotId: id } } };
+        break;
+      case "eyes":
+        if (this.data.data.equipment.eyesSlotId === id) return;
+        updateData = { data: { equipment: { eyesSlotId: id } } };
+        break;
+      case "mouth":
+        if (this.data.data.equipment.mouthSlotId === id) return;
+        updateData = { data: { equipment: { mouthSlotId: id } } };
+        break;
+      case "belt":
+        if (this.data.data.equipment.beltSlotId === id) return;
+        updateData = { data: { equipment: { beltSlotId: id } } };
+    }
+
+    await this.update(updateData);
   }
 
   /**
@@ -379,6 +517,23 @@ export default class WvActor extends Actor {
     this.applicableRuleElements
       .sort((a, b) => a.priority - b.priority)
       .forEach((rule) => rule.onAfterSkills());
+
+    // Calculate data derived from equipment -----------------------------------
+    data.equipment.damageThreshold = this.equippedApparel.reduce(
+      (dt, apparel) => {
+        dt += apparel.systemData.damageThreshold ?? 0;
+        return dt;
+      },
+      0
+    );
+
+    data.equipment.quickSlots.max = this.equippedApparel.reduce(
+      (qs, apparel) => {
+        qs += apparel.systemData.quickSlots ?? 0;
+        return qs;
+      },
+      0
+    );
 
     // Modify values based on the size -----------------------------------------
     // TODO: hit chance, reach, combat trick mods

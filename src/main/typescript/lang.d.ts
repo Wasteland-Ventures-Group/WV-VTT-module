@@ -120,6 +120,11 @@ export interface LangSchema {
             highVelocity: string;
           };
         };
+        /** Labels relating to the concept of apparel. */
+        apparel: {
+          /** The name of apparel. */
+          name: string;
+        };
         /** Labels relating to the concept of bottle caps */
         caps: QuantityNames;
         /** The name for the inventory */
@@ -141,7 +146,7 @@ export interface LangSchema {
         /** Labels for different equipment slots */
         slots: QuantityNames & {
           /** The overall name of a quick slot */
-          quickSlot: string;
+          quickSlot: QuantityNames;
           /** The overall name of a weapon slot */
           weaponSlot: QuantityNames;
           /** Names for different equipment slots */
@@ -308,6 +313,11 @@ export interface LangSchema {
          * @pattern (?=.*\{name\})
          */
         attackNotFound: string;
+        /**
+         * A general message that an apparel slot is already blocked by another
+         * apparel item.
+         */
+        blockedByAnotherApparel: string;
         /** A general message that something can not be done in combat. */
         canNotDoInCombat: string;
         /**

@@ -24,6 +24,7 @@ import {
 } from "../../dragData.js";
 import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
+import type Apparel from "../../item/apparel.js";
 import Weapon from "../../item/weapon.js";
 import Attack from "../../item/weapon/attack.js";
 import WvItem from "../../item/wvItem.js";
@@ -189,7 +190,12 @@ export default class WvActorSheet extends ActorSheet {
           readiedItem,
           weaponSlots: this.actor.weaponSlotWeapons.map((weapon) =>
             weapon ? this.toSheetWeapon(weapon) : null
-          )
+          ),
+          armor: this.actor.armor,
+          clothing: this.actor.clothing,
+          eyes: this.actor.eyesApparel,
+          mouth: this.actor.mouthApparel,
+          belt: this.actor.beltApparel
         },
         inventory: {
           items,
@@ -635,14 +641,11 @@ export default class WvActorSheet extends ActorSheet {
           await this.actor.slotWeapon(data._id, 2);
           break;
         case "armor":
-          break;
         case "clothing":
-          break;
         case "eyes":
-          break;
         case "mouth":
-          break;
         case "belt":
+          await this.actor.equipApparel(data._id);
       }
     } catch (e) {
       if (e instanceof SystemRulesError && e.key) {
@@ -723,8 +726,15 @@ export default class WvActorSheet extends ActorSheet {
         }
       }
     } else if (isApparelItemDragData(dragData) && !this.actor.inCombat) {
-      // TODO: do not allow slot when item is already in there
-      slotsToAllow.push(dragData.data.data.slot);
+      const apparels = this.actor.equippedApparel;
+      const blockedSlots = this.actor.blockedApparelSlots;
+
+      if (
+        !apparels.map((apparel) => apparel.id).includes(dragData.data._id) &&
+        !blockedSlots.includes(dragData.data.data.slot)
+      ) {
+        slotsToAllow.push(dragData.data.data.slot);
+      }
     }
 
     this.markEquipmentSlots(...slotsToAllow);
@@ -832,6 +842,11 @@ interface SheetEquipment {
   };
   readiedItem: ReadiedItem | null;
   weaponSlots: (SheetWeapon | null)[];
+  armor: Apparel | null;
+  clothing: Apparel | null;
+  eyes: Apparel | null;
+  mouth: Apparel | null;
+  belt: Apparel | null;
 }
 
 type ReadiedItem = ReturnType<WvItem["toJSON"]> | SheetWeapon;

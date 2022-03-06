@@ -96,6 +96,9 @@
             "highVelocity": "High Velocity"
           }
         },
+        "apparel": {
+          "name": "Apparel"
+        },
         "caps": {
           "singular": "Cap",
           "plural": "Caps"
@@ -114,7 +117,10 @@
         "slots": {
           "singular": "Equipment Slot",
           "plural": "Equipment Slots",
-          "quickSlot": "Quick Slot",
+          "quickSlot": {
+            "singular": "Quick Slot",
+            "plural": "Quick Slots"
+          },
           "weaponSlot": {
             "singular": "Weapon Slot",
             "plural": "Weapon Slots"
@@ -323,6 +329,7 @@
       },
       "messages": {
         "attackNotFound": "The attack with the name \"{name}\" could not be found in the Weapon.",
+        "blockedByAnotherApparel": "The apparel's slot is blocked by another apparel.",
         "canNotDoInCombat": "This can not be done in combat.",
         "couldNotCreateDocument": "Could not create a Document with the provided data.",
         "invalidSystemDataInMacro": "The macro you executed contained invalid system data, see the developer console for details.",

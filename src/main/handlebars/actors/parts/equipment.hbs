@@ -10,7 +10,7 @@
       <div class="ready-item-cost direct">{{sheet.equipment.readyItemCost.direct}} {{localize "wv.rules.actionPoints.short"}}</div>
       <div class="ready-item-cost from-quick-slot" data-equipment-slot-extra="quickSlot">
         <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
-        <div>({{localize "wv.rules.equipment.slots.quickSlot"}})</div>
+        <div>({{localize "wv.rules.equipment.slots.quickSlot.singular"}})</div>
       </div>
       <div class="ready-item-cost from-weapon-slot">
         <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
@@ -29,4 +29,9 @@
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.weaponSlots.[1] readied=false}}
     </div>
   </div>
+</section>
+<section>
+  <h3>{{localize "wv.rules.equipment.apparel.name"}}</h3>
+  <div>{{localize "wv.rules.damage.threshold.long"}} {{data.data.equipment.damageThreshold}}</div>
+  <div>{{localize "wv.rules.equipment.slots.quickSlot.plural"}} {{data.data.equipment.quickSlots.max}}</div>
 </section>

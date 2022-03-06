@@ -15,6 +15,7 @@ import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvRuler from "./foundryOverrides/wvRuler.js";
 import WvToken from "./foundryOverrides/wvToken.js";
+import Apparel from "./item/apparel.js";
 import Effect from "./item/effect.js";
 import Weapon from "./item/weapon.js";
 import WvItem from "./item/wvItem.js";
@@ -37,6 +38,7 @@ export function configureFoundryOnInit(): void {
         character: WvActor
       },
       item: {
+        apparel: Apparel,
         effect: Effect,
         weapon: Weapon
       }

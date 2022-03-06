@@ -1,15 +1,33 @@
 import type { JSONSchemaType } from "ajv";
+import { Resource, RESOURCE_JSON_SCHEMA } from "../../../foundryCommon.js";
 
 /** An actor equipment object for the database */
 export default class EquipmentSource {
   /** The amount of caps the actor owns */
   caps: number = 0;
 
+  quickSlots = new Resource(0);
+
   /** The ID of the readied item in the actor's posession. */
   readiedItemId: string | null = null;
 
   /** The IDs of the weapons items in the actor's posession in weapon slots. */
   weaponSlotIds: [string | null, string | null] = [null, null];
+
+  /** The ID of the equipped armor apparel. */
+  armorSlotId: string | null = null;
+
+  /** The ID of the equipped clothing apparel. */
+  clothingSlotId: string | null = null;
+
+  /** The ID of the equipped eyes apparel. */
+  eyesSlotId: string | null = null;
+
+  /** The ID of the equipped mouth apparel. */
+  mouthSlotId: string | null = null;
+
+  /** The ID of the equipped belt apparel. */
+  beltSlotId: string | null = null;
 }
 
 const ITEM_ID_SCHEMA = {
@@ -27,6 +45,7 @@ export const EQUIPMENT_JSON_SCHEMA: JSONSchemaType<EquipmentSource> = {
       type: "integer",
       default: 0
     },
+    quickSlots: RESOURCE_JSON_SCHEMA,
     readiedItemId: {
       ...ITEM_ID_SCHEMA,
       description:
@@ -39,9 +58,44 @@ export const EQUIPMENT_JSON_SCHEMA: JSONSchemaType<EquipmentSource> = {
       items: [ITEM_ID_SCHEMA, ITEM_ID_SCHEMA],
       minItems: 2,
       maxItems: 2
+    },
+    armorSlotId: {
+      ...ITEM_ID_SCHEMA,
+      description:
+        "The ID of the equipped armor apparel in the actor's posession. Can be null."
+    },
+    clothingSlotId: {
+      ...ITEM_ID_SCHEMA,
+      description:
+        "The ID of the equipped clothing apparel in the actor's posession. Can be null."
+    },
+    eyesSlotId: {
+      ...ITEM_ID_SCHEMA,
+      description:
+        "The ID of the equipped eyes apparel in the actor's posession. Can be null."
+    },
+    mouthSlotId: {
+      ...ITEM_ID_SCHEMA,
+      description:
+        "The ID of the equipped mouth apparel in the actor's posession. Can be null."
+    },
+    beltSlotId: {
+      ...ITEM_ID_SCHEMA,
+      description:
+        "The ID of the equipped belt apparel in the actor's posession. Can be null."
     }
   },
-  required: ["caps", "readiedItemId", "weaponSlotIds"],
+  required: [
+    "caps",
+    "quickSlots",
+    "readiedItemId",
+    "weaponSlotIds",
+    "armorSlotId",
+    "clothingSlotId",
+    "eyesSlotId",
+    "mouthSlotId",
+    "beltSlotId"
+  ],
   additionalProperties: false,
   default: {
     caps: 0

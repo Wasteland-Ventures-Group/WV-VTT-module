@@ -75,6 +75,9 @@
             "highVelocity": "Hochgeschwindigkeit"
           }
         },
+        "apparel": {
+          "name": "Bekleidung"
+        },
         "caps": {
           "singular": "Kronkorken",
           "plural": "Kronkorken"
@@ -93,7 +96,10 @@
         "slots": {
           "singular": "Ausrüstungplatz",
           "plural": "Ausrüstungsplätze",
-          "quickSlot": "Schnellplatz",
+          "quickSlot": {
+            "singular": "Schnellplatz",
+            "plural": "Schnellplätze"
+          },
           "weaponSlot": {
             "singular": "Waffenplatz",
             "plural": "Waffenplätze"
@@ -323,6 +329,7 @@
       },
       "messages": {
         "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte in der Waffe nicht gefunden werden.",
+        "blockedByAnotherApparel": "Der Platz für dieses Kleidungsstück ist von einem Anderen blockiert.",
         "canNotDoInCombat": "Dies kann nicht im Kampf getan werden.",
         "couldNotCreateDocument": "Konnte kein Dokument mit den gegebenen Daten erstellen.",
         "invalidSystemDataInMacro": "Das Macro, das du ausgeführt hast, beinhaltet invalide Systemdaten, sieh in der Entwicklerkonsole für Details nach.",

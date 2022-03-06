@@ -1,4 +1,5 @@
 import type { TYPES } from "../../../constants.js";
+import Equipment from "./equipment/properties.js";
 import Leveling from "./leveling/properties.js";
 import Skills from "./skills/properties.js";
 import { CharacterDataSourceData } from "./source.js";
@@ -50,14 +51,16 @@ export class SecondaryStatistics {
 
 /** The character data-properties data */
 export class CharacterDataPropertiesData extends CharacterDataSourceData {
+  override vitals: Vitals = new Vitals();
+
+  override leveling: Leveling = new Leveling();
+
+  override equipment: Equipment = new Equipment();
+
   specials: Specials = new Specials();
 
   /** The skills of an Actor */
   skills: Skills = new Skills();
-
-  override vitals: Vitals = new Vitals();
-
-  override leveling: Leveling = new Leveling();
 
   /** The resistances of an Actor */
   resistances: Resistances = new Resistances();

@@ -42,7 +42,8 @@ export default class WvActorSheet extends ActorSheet {
       dragDrop: [
         { dragSelector: "button[data-special]" },
         { dragSelector: "button[data-skill]" },
-        { dragSelector: ".fvtt-item-table .fvtt-item" }
+        { dragSelector: ".fvtt-item-table .fvtt-item" },
+        { dragSelector: "[data-equipment-slot][data-item-id]" }
       ],
       height: 1000,
       scrollY: [".content"],
@@ -492,7 +493,7 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const weaponElement = event.target.closest("[data-weapon-id]");
+    const weaponElement = event.target.closest("[data-item-id]");
     if (!(weaponElement instanceof HTMLElement)) {
       LOG.warn("Could not get the weapon element.");
       return;
@@ -504,7 +505,7 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const weaponId = weaponElement.dataset.weaponId;
+    const weaponId = weaponElement.dataset.itemId;
     if (!weaponId) {
       LOG.warn("Could not get the weapon ID.");
       return;
@@ -758,15 +759,18 @@ export default class WvActorSheet extends ActorSheet {
     const form = this._element ? this._element[0] : null;
     if (!form) return;
 
-    const slotElement = form.querySelector("[data-equipment-slot=readiedItem]");
-    if (!(slotElement instanceof HTMLElement)) return;
+    form
+      .querySelectorAll("[data-equipment-slot=readiedItem]")
+      .forEach((slotElement) => {
+        if (!(slotElement instanceof HTMLElement)) return;
 
-    slotElement.classList.remove(
-      "slotable",
-      "quick-slotable",
-      "weapon-slotable"
-    );
-    slotElement.classList.add(...types);
+        slotElement.classList.remove(
+          "slotable",
+          "quick-slotable",
+          "weapon-slotable"
+        );
+        slotElement.classList.add(...types);
+      });
   }
 
   /** Reset alterations to equipment slots. */

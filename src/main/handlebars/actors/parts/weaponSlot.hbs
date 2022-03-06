@@ -1,67 +1,65 @@
-<div class="weapon-slot" data-weapon-id="{{weapon._id}}">
-  {{~#if weapon~}}
-    <h3>{{weapon.name}}</h3>
-    <table>
-      <thead>
+{{~#if weapon~}}
+  <h3>{{weapon.name}}</h3>
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.damage.short"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.damage.threshold.reduction.short"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.actionPoints.use"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.equipment.weapon.shots"}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{~#each weapon.sheet.attacks as |attack|~}}
         <tr>
-          <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.rules.damage.short"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.rules.damage.threshold.reduction.short"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.rules.actionPoints.use"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.rules.equipment.weapon.shots"}}</th>
+          <th scope="row" class="align-left">
+            {{~#if ../readied~}}
+              <button class="min-width" type="button" title="{{localize 'wv.system.rolls.modifierExplanation'}}" data-weapon-attack-name="{{@key}}">{{@key}}</button>
+            {{~^~}}
+              {{@key}}
+            {{~/if~}}
+          </th>
+          <td class="align-right">{{attack.damage}}</td>
+          <td class="align-right">{{attack.dtReduction}}</td>
+          <td class="align-right">{{attack.ap}}</td>
+          <td class="align-right">{{attack.rounds}}</td>
         </tr>
-      </thead>
-      <tbody>
-        {{~#each weapon.sheet.attacks as |attack|~}}
-          <tr>
-            <th scope="row" class="align-left">
-              {{~#if ../readied~}}
-                <button class="min-width" type="button" title="{{localize 'wv.system.rolls.modifierExplanation'}}" data-weapon-attack-name="{{@key}}">{{@key}}</button>
-              {{~^~}}
-                {{@key}}
-              {{~/if~}}
-            </th>
-            <td class="align-right">{{attack.damage}}</td>
-            <td class="align-right">{{attack.dtReduction}}</td>
-            <td class="align-right">{{attack.ap}}</td>
-            <td class="align-right">{{attack.rounds}}</td>
-          </tr>
-        {{~/each~}}
-      </tbody>
-    </table>
-    <div class="detail-groups">
+      {{~/each~}}
+    </tbody>
+  </table>
+  <div class="detail-groups">
+    <section>
+      <span>{{localize "wv.rules.range.plural"}}:</span>
+      <span class="details">
+        <span>{{localize "wv.rules.range.ranges.short.short"}} ({{weapon.sheet.ranges.short.distance}}) [{{weapon.sheet.ranges.short.modifier}}]</span>
+        {{~#if weapon.sheet.ranges.medium~}}
+          <span>{{localize "wv.rules.range.ranges.medium.short"}} ({{weapon.sheet.ranges.medium.distance}}) [{{weapon.sheet.ranges.medium.modifier}}]</span>
+        {{~/if~}}
+        {{~#if weapon.sheet.ranges.long~}}
+          <span>{{localize "wv.rules.range.ranges.long.short"}} ({{weapon.sheet.ranges.long.distance}}) [{{weapon.sheet.ranges.long.modifier}}]</span>
+        {{~/if~}}
+      </span>
+    </section>
+    {{~#if weapon.sheet.usesAmmo~}}
       <section>
-        <span>{{localize "wv.rules.range.plural"}}:</span>
+        <span>{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
         <span class="details">
-          <span>{{localize "wv.rules.range.ranges.short.short"}} ({{weapon.sheet.ranges.short.distance}}) [{{weapon.sheet.ranges.short.modifier}}]</span>
-          {{~#if weapon.sheet.ranges.medium~}}
-            <span>{{localize "wv.rules.range.ranges.medium.short"}} ({{weapon.sheet.ranges.medium.distance}}) [{{weapon.sheet.ranges.medium.modifier}}]</span>
-          {{~/if~}}
-          {{~#if weapon.sheet.ranges.long~}}
-            <span>{{localize "wv.rules.range.ranges.long.short"}} ({{weapon.sheet.ranges.long.distance}}) [{{weapon.sheet.ranges.long.modifier}}]</span>
-          {{~/if~}}
+          <span>{{weapon.data.reload.ap}} {{localize "wv.rules.actionPoints.short"}}</span>
+          <span>{{weapon.data.reload.size}} {{weapon.sheet.reload.caliber}}</span>
+          <span>{{weapon.sheet.reload.containerType}}</span>
         </span>
       </section>
-      {{~#if weapon.sheet.usesAmmo~}}
-        <section>
-          <span>{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
-          <span class="details">
-            <span>{{weapon.data.reload.ap}} {{localize "wv.rules.actionPoints.short"}}</span>
-            <span>{{weapon.data.reload.size}} {{weapon.sheet.reload.caliber}}</span>
-            <span>{{weapon.sheet.reload.containerType}}</span>
-          </span>
-        </section>
-      {{~/if~}}
-      <div class="details">
-        <span>{{weapon.sheet.skill}}</span>
-        <span>{{localize "wv.rules.equipment.weapon.strengthRequirement.short"}} {{weapon.data.strengthRequirement}}</span>
-        {{~#if weapon.data.holdout~}}
-          <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
-        {{~/if~}}
-      </div>
-      {{~#if weapon.data.notes~}}
-        <div>{{weapon.data.notes}}</div>
+    {{~/if~}}
+    <div class="details">
+      <span>{{weapon.sheet.skill}}</span>
+      <span>{{localize "wv.rules.equipment.weapon.strengthRequirement.short"}} {{weapon.data.strengthRequirement}}</span>
+      {{~#if weapon.data.holdout~}}
+        <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
       {{~/if~}}
     </div>
-  {{~/if~}}
-</div>
+    {{~#if weapon.data.notes~}}
+      <div>{{weapon.data.notes}}</div>
+    {{~/if~}}
+  </div>
+{{~/if~}}

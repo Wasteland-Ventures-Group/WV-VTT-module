@@ -5,6 +5,113 @@
   form
     overflow-y: hidden
 
+  .equipment-slot
+    background-color: common.$shade-lighter
+    border:
+      color: common.$shade-darker
+      radius: common.$border-radius
+      style: solid
+      width: 1px
+    box-sizing: content-box
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    min-height: 3em
+    padding: 3px
+    text-align: center
+
+    &[data-equipment-slot=readiedItem]
+      min-height: 5em
+
+    &:not(:last-child)
+      margin-bottom: common.$spacing-distance
+
+  .weapon-slot
+    background-color: common.$shade-lighter
+    border:
+      color: common.$shade-darker
+      radius: common.$border-radius
+      style: solid
+      width: 1px
+    padding: 3px
+
+    &:not(:last-child)
+      margin-right: common.$spacing-distance
+
+    button[data-weapon-attack-name]
+      box-sizing: content-box
+      line-height: unset
+      max-height: 1em
+      padding: 3px
+
+    .detail-groups > *:not(:last-child)
+      border-bottom:
+        color: common.$shade-darker
+        style: solid
+        width: 1px
+      margin-bottom: 5px
+      padding-bottom: 5px
+
+    .details > *:not(:last-child)
+      border-right:
+        color: common.$shade-darker
+        style: solid
+        width: 1px
+      margin-right: 5px
+      padding-right: 5px
+
+  .equipment-slot,.weapon-slot
+
+    .equipment-slot-target
+      align-items: baseline
+      display: none
+      flex-wrap: nowrap
+      justify-content: center
+      text-align: center
+
+    .ready-item-cost
+      display: none
+
+    .ready-item-cost.from-quick-slot
+      background-color: common.$shade-lighter
+      border:
+        color: common.$shade-darker
+        radius: common.$border-radius
+        style: solid
+        width: 1px
+      margin-left: common.$spacing-distance
+      padding: 3px
+      text-align: center
+
+    &.not-slotable
+      background-color: common.$shade-darker
+
+    &.slotable
+
+      .equipment-slot-status
+        display: none
+
+      .equipment-slot-target
+        display: flex
+
+      &.in-combat
+
+        .ready-item-cost.direct
+          display: block
+
+    &.quick-slotable.in-combat
+
+      .ready-item-cost.from-quick-slot
+        display: block
+
+    &.weapon-slotable.in-combat
+
+      .ready-item-cost.direct
+        display: none
+
+      .ready-item-cost.from-weapon-slot
+        display: block
+
   .sheet-header
 
     .document-info
@@ -48,40 +155,6 @@
     > *:not(:last-child)
       margin-bottom: common.$spacing-distance * 2
 
-    .weapon-slot
-      background-color: common.$shade-lighter
-      border:
-        color: common.$shade-darker
-        radius: common.$border-radius
-        style: solid
-        width: 1px
-      padding: 3px
-
-      &:not(:last-child)
-        margin-right: common.$spacing-distance
-
-      button[data-weapon-attack-name]
-        box-sizing: content-box
-        line-height: unset
-        max-height: 1em
-        padding: 3px
-
-      .detail-groups > *:not(:last-child)
-        border-bottom:
-          color: common.$shade-darker
-          style: solid
-          width: 1px
-        margin-bottom: 5px
-        padding-bottom: 5px
-
-      .details > *:not(:last-child)
-        border-right:
-          color: common.$shade-darker
-          style: solid
-          width: 1px
-        margin-right: 5px
-        padding-right: 5px
-
   .inventory
 
     .equipment-slots
@@ -93,76 +166,6 @@
       flex-basis: 150px
       margin-right: common.$spacing-distance
       padding-right: common.$spacing-distance
-
-      .equipment-slot
-        background-color: common.$shade-lighter
-        border:
-          color: common.$shade-darker
-          radius: common.$border-radius
-          style: solid
-          width: 1px
-        box-sizing: content-box
-        display: flex
-        flex-direction: column
-        justify-content: space-between
-        min-height: 3em
-        padding: 3px
-        text-align: center
-
-        &[data-equipment-slot=readiedItem]
-          min-height: 5em
-
-        &:not(:last-child)
-          margin-bottom: common.$spacing-distance
-
-        .equipment-slot-target
-          align-items: baseline
-          display: none
-          flex-wrap: nowrap
-          justify-content: center
-
-        .ready-item-cost
-          display: none
-
-        .ready-item-cost.quick-slot
-          background-color: common.$shade-lighter
-          border:
-            color: common.$shade-darker
-            radius: common.$border-radius
-            style: solid
-            width: 1px
-          margin-left: common.$spacing-distance
-          padding: 3px
-          text-align: center
-
-        &.not-slotable
-          background-color: common.$shade-darker
-
-        &.slotable
-
-          .equipment-slot-status
-            display: none
-
-          .equipment-slot-target
-            display: flex
-
-          &.in-combat
-
-            .ready-item-cost.direct
-              display: block
-
-        &.quick-slotable.in-combat
-
-          .ready-item-cost.quick-slot
-            display: block
-
-        &.weapon-slotable.in-combat
-
-          .ready-item-cost.direct
-            display: none
-
-          .ready-item-cost.weapon-slot
-            display: block
 
     .controls-and-caps
       justify-content: space-between

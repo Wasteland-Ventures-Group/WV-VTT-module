@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000040",
+  "name": "Magic Fusion Cell (Overcharge)",
+  "type": "ammo",
+  "data": {
+    "name": "Magic Fusion Cell (Overcharge)",
+    "description": "",
+    "notes": "DT Reduction +1, Crit. Fail chance +5",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 0.6,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "magicFusionCell",
+    "type": "overcharge"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

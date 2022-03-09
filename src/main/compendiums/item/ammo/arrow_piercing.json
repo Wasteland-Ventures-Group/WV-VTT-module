@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000055",
+  "name": "Arrow (Piercing)",
+  "type": "ammo",
+  "data": {
+    "name": "Arrow (Piercing)",
+    "description": "",
+    "notes": "DT Reduction 1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 0.6,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "arrow",
+    "type": "piercing"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

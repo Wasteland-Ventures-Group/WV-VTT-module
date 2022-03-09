@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000038",
+  "name": "Gem Pack (Optimized)",
+  "type": "ammo",
+  "data": {
+    "name": "Gem Pack (Optimized)",
+    "description": "",
+    "notes": "Damage +1, DT Reduction +1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 2.4,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "gemPack",
+    "type": "optimized"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

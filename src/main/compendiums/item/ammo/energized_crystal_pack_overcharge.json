@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000044",
+  "name": "Energized Crystal Pack (Overcharge)",
+  "type": "ammo",
+  "data": {
+    "name": "Energized Crystal Pack (Overcrage)",
+    "description": "",
+    "notes": "DT Reduction +1, Crit. Fail chance +5",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 0.6,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "energizedCrystalPack",
+    "type": "overcharge"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

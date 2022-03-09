@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000051",
+  "name": "Arrow (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": "Arrow (Standard)",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 0.1,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "arrow",
+    "type": "standard"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

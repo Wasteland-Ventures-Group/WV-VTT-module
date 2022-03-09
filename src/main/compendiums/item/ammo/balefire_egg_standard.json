@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000065",
+  "name": "Balefire Egg",
+  "type": "ammo",
+  "data": {
+    "name": "Balefire Egg",
+    "description": "",
+    "notes": "Limited availability",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "exotic",
+    "value": 500,
+    "weight": 0,
+    "amount": 1,
+    "caliber": "balefireEgg",
+    "type": "standard"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

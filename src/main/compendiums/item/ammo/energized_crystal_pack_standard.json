@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000043",
+  "name": "Energized Crystal Pack (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": "Energized Crystal Pack (Standard)",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 0.4,
+    "weight": 0,
+    "amount": 10,
+    "caliber": "energizedCrystalPack",
+    "type": "standard"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

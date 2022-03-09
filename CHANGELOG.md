@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- some caliber types not localizing correctly
+  ([#211](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/211))
+
 ## [0.13.0] - 2022-03-06
 
 ### Added

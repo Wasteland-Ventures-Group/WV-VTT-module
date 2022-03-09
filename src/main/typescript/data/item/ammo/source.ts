@@ -17,7 +17,7 @@ export default interface AmmoDataSource {
 /** The Ammo Item data-source data */
 export class AmmoDataSourceData extends StackableBaseItem {
   /** The caliber of the ammo */
-  caliber: Caliber = ".308cal";
+  caliber: Caliber = "308cal";
 
   /** The sub type of the ammo */
   type: string = "";
@@ -33,7 +33,7 @@ export const AMMO_SOURCE_JSON_SCHEMA: JSONSchemaType<AmmoDataSourceData> = {
       description: "The caliber of the ammo",
       type: "string",
       enum: Calibers,
-      default: ".308cal"
+      default: "308cal"
     },
     type: {
       description: "The sub type of the ammo",
@@ -44,7 +44,7 @@ export const AMMO_SOURCE_JSON_SCHEMA: JSONSchemaType<AmmoDataSourceData> = {
   additionalProperties: false,
   default: {
     ...STACK_BASE_ITEM_JSON_SCHEMA.default,
-    caliber: ".308cal",
+    caliber: "308cal",
     type: ""
   }
 };

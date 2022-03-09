@@ -36,7 +36,7 @@
     "rarity": "uncommon",
     "reload": {
       "ap": 5,
-      "caliber": ".44cal",
+      "caliber": "44cal",
       "containerType": "magazine",
       "size": 6
     },

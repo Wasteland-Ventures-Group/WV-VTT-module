@@ -35,7 +35,7 @@
     "rarity": "rare",
     "reload": {
       "ap": 4,
-      "caliber": ".50cal",
+      "caliber": "50cal",
       "containerType": "magazine",
       "size": 8
     },

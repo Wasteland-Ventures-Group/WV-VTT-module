@@ -32,7 +32,7 @@ export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
     caliber: {
       description: "The caliber used by the weapon.",
       type: "string",
-      default: ".308cal",
+      default: "308cal",
       enum: Calibers
     },
     containerType: {
@@ -51,7 +51,7 @@ export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
   additionalProperties: false,
   default: {
     ap: 0,
-    caliber: ".308cal",
+    caliber: "308cal",
     containerType: "magazine",
     size: 0
   }

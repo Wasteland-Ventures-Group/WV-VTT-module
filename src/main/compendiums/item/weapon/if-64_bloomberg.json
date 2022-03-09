@@ -35,7 +35,7 @@
     "rarity": "uncommon",
     "reload": {
       "ap": 4,
-      "caliber": "5.56mm",
+      "caliber": "5_56mm",
       "containerType": "magazine",
       "size": 20
     },

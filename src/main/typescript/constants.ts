@@ -152,14 +152,14 @@ export function isEquipmentSlot(slot: string): slot is EquipmentSlot {
 
 export type Caliber = typeof Calibers[number];
 export const Calibers = [
-  ".308cal",
-  ".44cal",
-  ".50cal",
+  "308cal",
+  "44cal",
+  "50cal",
   "5mm",
-  "5.56mm",
+  "5_56mm",
   "9mm",
   "10mm",
-  "12.7mm",
+  "12_7mm",
   "20mm",
   "shotgunShell",
   "alienGemPack",
@@ -212,7 +212,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.12.0",
+  needsMigrationVersion: "0.14.0",
 
   /** The number of fixed decimals to round floating point numbers to. */
   fixedDecimals: 2,

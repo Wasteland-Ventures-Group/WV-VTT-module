@@ -1,20 +1,20 @@
 {
-  "_id": "WVAmmo0000000003",
-  "name": ".308 cal (Hollow Point)",
+  "_id": "WVAmmo0000000001",
+  "name": ".308 cal (Standard)",
   "type": "ammo",
   "data": {
-    "name": ".308 cal (Hollow Point)",
+    "name": ".308 cal (Standard)",
     "description": "Uncommon battle rifle round, used for hunting by Gryphons and ranged support units as well as for sporting events.",
-    "notes": "Unarmored targets: Gain (1) for each 1 base damage.",
+    "notes": "",
     "rules": {
       "sources": []
     },
     "rarity": "uncommon",
-    "value": 1.2,
+    "value": 0.6,
     "weight": 0,
     "amount": 10,
-    "caliber": ".308cal",
-    "type": "hollowPoint"
+    "caliber": "308cal",
+    "type": "standard"
   },
   "img": "",
   "effects": [],

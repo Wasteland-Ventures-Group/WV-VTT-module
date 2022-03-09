@@ -1,20 +1,20 @@
 {
-  "_id": "WVAmmo0000000006",
-  "name": ".44 cal (Armor Piercing)",
+  "_id": "WVAmmo0000000004",
+  "name": ".44 cal (Standard)",
   "type": "ammo",
   "data": {
-    "name": ".44 cal (Armor Piercing)",
+    "name": ".44 cal (Standard)",
     "description": "Uncommon round for stopping unrulily citizens, or Personal Defense Weapons.",
-    "notes": "Armored targets: DT Reduction 1",
+    "notes": "",
     "rules": {
       "sources": []
     },
     "rarity": "uncommon",
-    "value": 1.2,
+    "value": 0.4,
     "weight": 0,
     "amount": 10,
-    "caliber": ".44cal",
-    "type": "armorPiercing"
+    "caliber": "44cal",
+    "type": "standard"
   },
   "img": "",
   "effects": [],

@@ -1,4 +1,6 @@
-import { CONSTANTS, TYPES } from "../constants.js";
+import { Caliber, CONSTANTS, TYPES } from "../constants.js";
+import type { AmmoDataSourceData } from "../data/item/ammo/source.js";
+import type { WeaponDataSourceData } from "../data/item/weapon/source.js";
 import { getGame } from "../foundryHelpers.js";
 import WvItem from "../item/wvItem.js";
 import { LOG } from "../systemLogger.js";
@@ -56,10 +58,41 @@ async function migrateItem(item: foundry.documents.BaseItem): Promise<void> {
   try {
     if (PROTO_ITEM_TYPES.includes(item.data.type)) {
       migrateFromCompendium(item);
+    } else {
+      migrateAmmoFix(item);
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     LOG.error(`Failed migration for Item [${item.id}]: ${message}`);
+  }
+}
+
+async function migrateAmmoFix(item: foundry.documents.BaseItem): Promise<void> {
+  if (!["ammo", "weapon"].includes(item.type)) return;
+  if (item.type === "ammo") {
+    const data = item.data.data as AmmoDataSourceData;
+    const newCaliber = transformCaliber(data.caliber);
+    if (!newCaliber) return;
+
+    await item.update({ data: { caliber: newCaliber } });
+  } else if (item.type === "weapon") {
+    const data = item.data.data as WeaponDataSourceData;
+    if (!data.reload) return;
+
+    const newCaliber = transformCaliber(data.reload.caliber);
+    if (!newCaliber) return;
+
+    await item.update({
+      data: { reload: { ...data.reload, caliber: newCaliber } }
+    });
+  }
+}
+
+function transformCaliber(caliber: string): Caliber | undefined {
+  if (/^\.(?:308|44|50)cal$/.test(caliber)) {
+    return caliber.substring(1) as Caliber;
+  } else if (["5.56mm", "12.7mm"].includes(caliber)) {
+    return caliber.replace(".", "_") as Caliber;
   }
 }
 

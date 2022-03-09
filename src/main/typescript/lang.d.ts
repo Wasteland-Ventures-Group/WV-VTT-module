@@ -67,14 +67,14 @@ export interface LangSchema {
           caliber: string;
           /** Names for different calibers */
           calibers: {
-            ".308cal": string;
-            ".44cal": string;
-            ".50cal": string;
+            "308cal": string;
+            "44cal": string;
+            "50cal": string;
             "5mm": string;
-            "5.56mm": string;
+            "5_56mm": string;
             "9mm": string;
             "10mm": string;
-            "12.7mm": string;
+            "12_7mm": string;
             "20mm": string;
             shotgunShell: string;
             alienGemPack: string;

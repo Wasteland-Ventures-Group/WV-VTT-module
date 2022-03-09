@@ -35,7 +35,7 @@
     "rarity": "exotic",
     "reload": {
       "ap": 8,
-      "caliber": ".50cal",
+      "caliber": "50cal",
       "containerType": "magazine",
       "size": 60
     },

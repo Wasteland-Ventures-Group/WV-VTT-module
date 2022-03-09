@@ -57,13 +57,20 @@ export default class WvActor extends Actor {
     return getGroundSprintMoveRange(this);
   }
 
-  /** Check whether the actor is in combat in any scene. */
+  /**
+   * Check whether the actor is in combat in the active scene or in any
+   * unlinked combat.
+   */
   get inCombat(): boolean {
     const combats = getGame().combats;
     if (!combats) return false;
 
-    return combats.some((combat) =>
-      combat.combatants.some((combatant) => combatant.actor === this)
+    return combats.some(
+      (combat) =>
+        combat.isGloballyActive &&
+        combat.combatants.some((combatant) =>
+          combatant.actor ? combatant.actor.id === this.id : false
+        )
     );
   }
 

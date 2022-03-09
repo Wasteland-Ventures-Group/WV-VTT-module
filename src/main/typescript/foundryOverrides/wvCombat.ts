@@ -1,6 +1,19 @@
+import { getGame } from "../foundryHelpers.js";
 import { LOG } from "../systemLogger.js";
 
 export default class WvCombat extends Combat {
+  /**
+   * Check whether this combat counts as globally active, no matter which scene
+   * the current user is viewing.
+   */
+  get isGloballyActive(): boolean {
+    return (
+      (typeof this.data.scene !== "string" ||
+        getGame().scenes?.active?.id === this.data.scene) &&
+      this.started
+    );
+  }
+
   override async nextRound(): Promise<this | undefined> {
     this.resetActionPoints();
     return super.nextRound();

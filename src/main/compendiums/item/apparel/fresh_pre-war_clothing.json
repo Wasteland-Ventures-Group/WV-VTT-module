@@ -16,7 +16,7 @@
           "selector": "specials.agility.tempTotal",
           "target": "actor",
           "type": "WV.RuleElement.FlatModifier",
-          "value": 5
+          "value": 1
         }
       ]
     },

@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Tribal Armor
+- apparel slot displays to the equipment tab
+  ([#197](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/197))
 
 ### Changed
 

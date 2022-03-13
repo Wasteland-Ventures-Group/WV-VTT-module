@@ -205,6 +205,7 @@ export default class WvActorSheet extends ActorSheet {
           totalWeight: helpers.toFixed(totalWeight)
         },
         parts: {
+          apparelSlot: HANDLEBARS.partPaths.actor.apparelSlot,
           background: HANDLEBARS.partPaths.actor.background,
           effects: HANDLEBARS.partPaths.actor.effects,
           equipment: HANDLEBARS.partPaths.actor.equipment,
@@ -883,6 +884,7 @@ interface SheetData extends ActorSheet.Data {
     inventory: SheetInventory;
     magic: SheetMagic;
     parts: {
+      apparelSlot: string;
       background: string;
       effects: string;
       equipment: string;

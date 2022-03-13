@@ -290,6 +290,7 @@ export const CONSTANTS = {
 export const HANDLEBARS = {
   partPaths: {
     actor: {
+      apparelSlot: `${CONSTANTS.systemPath}/handlebars/actors/parts/apparelSlot.hbs`,
       background: `${CONSTANTS.systemPath}/handlebars/actors/parts/background.hbs`,
       effects: `${CONSTANTS.systemPath}/handlebars/actors/parts/effects.hbs`,
       equipment: `${CONSTANTS.systemPath}/handlebars/actors/parts/equipment.hbs`,

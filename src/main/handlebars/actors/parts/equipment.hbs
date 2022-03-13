@@ -32,6 +32,45 @@
 </section>
 <section>
   <h3>{{localize "wv.rules.equipment.apparel.name"}}</h3>
-  <div>{{localize "wv.rules.damage.threshold.long"}} {{data.data.equipment.damageThreshold}}</div>
-  <div>{{localize "wv.rules.equipment.slots.quickSlot.plural"}} {{data.data.equipment.quickSlots.max}}</div>
+  <div class="details spacing-bottom">
+    <span>{{localize "wv.rules.damage.threshold.long"}} {{data.data.equipment.damageThreshold}}</span>
+    <span>{{localize "wv.rules.equipment.slots.quickSlot.plural"}} {{data.data.equipment.quickSlots.max}}</span>
+  </div>
+  <div class="apparel-slots">
+    <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="armor">
+      {{~#if sheet.equipment.armor~}}
+{{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.armor}}
+      {{~else~}}
+        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.armor"}}</span>
+      {{~/if~}}
+    </div>
+    <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="clothing">
+      {{~#if sheet.equipment.clothing~}}
+{{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.clothing}}
+      {{~else~}}
+        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.clothing"}}</span>
+      {{~/if~}}
+    </div>
+    <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="eyes">
+      {{~#if sheet.equipment.eyes~}}
+{{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.eyes}}
+      {{~else~}}
+        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.eyes"}}</span>
+      {{~/if~}}
+    </div>
+    <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="mouth">
+      {{~#if sheet.equipment.mouth~}}
+{{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.mouth}}
+      {{~else~}}
+        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.mouth"}}</span>
+      {{~/if~}}
+    </div>
+    <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="belt">
+      {{~#if sheet.equipment.belt~}}
+{{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.belt}}
+      {{~else~}}
+        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.belt"}}</span>
+      {{~/if~}}
+    </div>
+  </div>
 </section>

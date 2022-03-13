@@ -18,6 +18,7 @@ export function registerHelpers(): void {
  */
 export function preloadTemplates(): void {
   loadTemplates([
+    HANDLEBARS.partPaths.actor.apparelSlot,
     HANDLEBARS.partPaths.actor.background,
     HANDLEBARS.partPaths.actor.effects,
     HANDLEBARS.partPaths.actor.equipment,

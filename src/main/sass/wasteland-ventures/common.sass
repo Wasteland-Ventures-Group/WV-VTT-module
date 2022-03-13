@@ -1,35 +1,15 @@
-$border-radius: 3px
-$input-height: 26px
-$max-input-chars: 5
-$spacing-distance: 0.5rem
-
-$icon-size-small: 24px
-$icon-size-medium: $icon-size-small * 2
-
-$shade-lighter: #fff5
-$shade-darker: #0005
-
-$color-info: #08c
-$color-warning: #dc0
-$color-error: #e00
-
-$color-crit-fail-fg: #aa0200
-$color-crit-fail-bg: #d8b5ba
-$color-crit-succ-fg: #18520b
-$color-crit-succ-bg: #acc2a7
-$color-crits-fg: #52290b
-$color-crits-bg: #c2b4a7
-
-@for $i from 1 through 5
-  h#{$i}
-    border: none
-
-h5
-  margin: 0 0 0.5rem
+@use "../constants.sass" as constants
 
 .wasteland-ventures
 
-  @for $i from 1 through $max-input-chars
+  @for $i from 1 through 5
+    h#{$i}
+      border: none
+
+  h5
+    margin: 0 0 0.5rem
+
+  @for $i from 1 through constants.$max-input-chars
     .size-#{$i}
       $width: #{$i}ch
       flex-basis: $width
@@ -45,6 +25,22 @@ h5
       display: grid
       grid-template-columns: repeat($i, auto)
 
+  .detail-groups > :not(:last-child)
+    border-bottom:
+      color: constants.$shade-darker
+      style: solid
+      width: 1px
+    margin-bottom: 5px
+    padding-bottom: 5px
+
+  .details > :not(:last-child)
+    border-right:
+      color: constants.$shade-darker
+      style: solid
+      width: 1px
+    margin-right: 5px
+    padding-right: 5px
+
   .flex-center
     align-items: center
 
@@ -53,10 +49,10 @@ h5
     flex-shrink: 0
 
   .spacing-bottom
-    margin-bottom: $spacing-distance
+    margin-bottom: constants.$spacing-distance
 
   .spacing-top
-    margin-top: $spacing-distance
+    margin-top: constants.$spacing-distance
 
   .no-margin
     margin: 0
@@ -81,7 +77,7 @@ h5
     width: 0%
 
   input:invalid
-    color: $color-error
+    color: constants.$color-error
 
   label.contained-target-inline
     align-items: baseline
@@ -93,23 +89,32 @@ h5
       margin-left: 1ch
 
   .standard-grid-gaps
-    column-gap: $spacing-distance * 2
-    row-gap: $spacing-distance
+    column-gap: constants.$spacing-distance * 2
+    row-gap: constants.$spacing-distance
 
   .standard-col-gaps
-    column-gap: $spacing-distance * 2
+    column-gap: constants.$spacing-distance * 2
+
+  .lighter-block
+    background-color: constants.$shade-lighter
+    border:
+      color: constants.$shade-darker
+      radius: constants.$border-radius
+      style: solid
+      width: 1px
+    padding: constants.$block-padding
 
   $tab-border-width: 1px
 
   .tabs
     .item
       border:
-        color: $shade-darker
+        color: constants.$shade-darker
         style: solid
         width: $tab-border-width
         top:
-          left-radius: $border-radius
-          right-radius: $border-radius
+          left-radius: constants.$border-radius
+          right-radius: constants.$border-radius
         left-width: 0
       flex: 1
       padding: 5px
@@ -122,13 +127,13 @@ h5
 
   .content
     border:
-      color: $shade-darker
+      color: constants.$shade-darker
       style: solid
       width: $tab-border-width
       top-width: 0
 
     .tab
-      padding: $spacing-distance
+      padding: constants.$spacing-distance
 
   button.control
     height: 30px

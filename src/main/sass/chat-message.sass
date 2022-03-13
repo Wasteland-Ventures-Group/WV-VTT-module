@@ -1,0 +1,17 @@
+@use "./constants.sass" as constants
+
+.chat-message
+
+  .dice-total
+
+    &.critical-failure
+      color: constants.$color-crit-fail-fg
+      background-color: constants.$color-crit-fail-bg
+
+    &.critical-success
+      color: constants.$color-crit-succ-fg
+      background-color: constants.$color-crit-succ-bg
+
+    &.criticals
+      color: constants.$color-crits-fg
+      background-color: constants.$color-crits-bg

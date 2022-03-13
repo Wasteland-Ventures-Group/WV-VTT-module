@@ -1,0 +1,104 @@
+@use "../../../constants.sass" as constants
+
+.wasteland-ventures.chat-message.system-message.weapon-attack
+
+  img
+    float: right
+    margin:
+      left: constants.$spacing-distance
+      bottom: constants.$spacing-distance
+    max-width: constants.$icon-size-medium
+
+  .roll-summary
+    display: flex
+    justify-content: space-between
+
+  .detail-section
+    margin-top: constants.$spacing-distance
+
+    &:not(:last-child)
+      margin-bottom: constants.$spacing-distance
+
+    .detail-content
+      display: none
+      margin:
+        bottom: 0
+        top: constants.$spacing-distance
+
+      > :last-child
+        margin-bottom: 0
+
+      .sub-section
+        margin-bottom: constants.$spacing-distance
+
+  .roll-details
+
+    .dice-rolls
+      margin-top: 3px
+
+  .dice-formula
+    background: rgba(0, 0, 0, 0.1)
+    border:
+      color: #999
+      radius: constants.$border-radius
+      style: solid
+      width: 1px
+    box-shadow: 0 0 2px #FFF inset
+    line-height: constants.$icon-size-small
+    text-align: center
+    word-break: break-all
+
+  .dice-rolls
+    list-style: none
+    margin: 0
+    overflow: hidden
+    padding-left: 0
+
+    .roll
+      background:
+        image: url("../../../icons/svg/d6-grey.svg")
+        repeat: no-repeat
+        size: constants.$icon-size-small
+      color: #000
+      float: left
+      font:
+        size: 16px
+        weight: bold
+      line-height: constants.$icon-size-small
+      margin-right: 1px
+      text-align: center
+      width: constants.$icon-size-small
+
+      &.success
+        color: #18520b
+        filter: sepia(0.5) hue-rotate(60deg)
+
+  .modifier-listing
+
+    .listing-heading
+      display: flex
+      margin-top: constants.$spacing-distance * 2
+
+      > hr
+        border-style: none
+        border-bottom:
+          color: constants.$shade-darker
+          style: solid
+          width: 1px
+        flex-grow: 1
+        margin-left: constants.$spacing-distance
+
+    .listing-table
+      grid-template-columns: auto, min-content
+
+      & > *
+        width: 100%
+
+      .listing-total
+        border:
+          bottom:
+            style: double
+            width: 3px
+          top:
+            style: solid
+            width: 1px

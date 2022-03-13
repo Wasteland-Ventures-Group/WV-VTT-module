@@ -8,22 +8,22 @@
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
-      <div class="resource-block flex-fixed">
+      <div class="lighter-block resource-block flex-fixed">
         <label>
           {{~localize "wv.system.misc.notes"~}}
           <textarea name="data.notes">{{data.data.notes}}</textarea>
         </label>
       </div>
-      <div class="resource-block resource-block-line flex-fixed">
+      <div class="lighter-block resource-block resource-block-line flex-fixed">
         <label class="contained-target-inline">
           {{~localize "wv.rules.skills.singular"~}}
           <span class="resource-display">{{sheet.skill}}</span>
         </label>
       </div>
-      <div class="resource-block flex-fixed">
+      <div class="lighter-block resource-block flex-fixed">
         <h4 class="resource-block-line">{{localize "wv.rules.equipment.weapon.attack.plural"}}</h4>
         {{#each sheet.attacks as |attack|~}}
-          <div class="resource-block flex-fixed weapon-attack">
+          <div class="lighter-block resource-block flex-fixed weapon-attack">
             <h5 class="resource-block-line">{{@key}}</h5>
             <label class="resource-block-line contained-target-inline">
               {{~localize "wv.rules.damage.long"~}}
@@ -49,7 +49,7 @@
           </div>
         {{~/each}}
       </div>
-      <div class="resource-block flex-fixed">
+      <div class="lighter-block resource-block flex-fixed">
         <h4 class="resource-block-line">{{localize "wv.rules.range.plural"}}</h4>
         <div class="grid-3cols standard-col-gaps flex-center">
           <label>{{localize "wv.rules.range.singular"}}</label>
@@ -71,7 +71,7 @@
         </div>
       </div>
       {{#if sheet.usesAmmo~}}
-        <div class="resource-block flex-fixed">
+        <div class="lighter-block resource-block flex-fixed">
           <h4 class="resource-block-line">{{localize "wv.rules.equipment.weapon.reload.name"}}</h4>
           <label class="resource-block-line contained-target-inline">
             {{~localize "wv.rules.actionPoints.use"~}}
@@ -91,13 +91,13 @@
           </label>
         </div>
       {{~/if}}
-      <div class="resource-block resource-block-line flex-fixed">
+      <div class="lighter-block resource-block resource-block-line flex-fixed">
         <label class="contained-target-inline">
           {{~localize "wv.rules.equipment.weapon.strengthRequirement.long"~}}
           <span class="resource-display size-2">{{data.data.strengthRequirement}}</span>
         </label>
       </div>
-      <div class="resource-block resource-block-line flex-fixed">
+      <div class="lighter-block resource-block resource-block-line flex-fixed">
         <label class="contained-target-inline">
           {{~localize "wv.rules.equipment.weapon.holdout"~}}
           <span class="resource-display far {{ternary data.data.holdout 'fa-check-square' 'fa-square'}}"></span>

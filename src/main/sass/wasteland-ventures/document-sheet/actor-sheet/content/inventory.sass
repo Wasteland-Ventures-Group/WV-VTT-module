@@ -1,0 +1,30 @@
+@use "../../../../constants.sass" as constants
+
+.wasteland-ventures.document-sheet.actor-sheet .inventory
+
+  .equipment-slots
+    border:
+      right:
+        color: constants.$shade-darker
+        style: solid
+        width: 1px
+    flex-basis: 150px
+    margin-right: constants.$spacing-distance
+    padding-right: constants.$spacing-distance
+
+    .equipment-slot
+      box-sizing: content-box
+      display: flex
+      flex-direction: column
+      justify-content: space-between
+      min-height: 3em
+      text-align: center
+
+      &[data-equipment-slot=readiedItem]
+        min-height: 5em
+
+      &:not(:last-child)
+        margin-bottom: constants.$spacing-distance
+
+  .controls-and-caps
+    justify-content: space-between

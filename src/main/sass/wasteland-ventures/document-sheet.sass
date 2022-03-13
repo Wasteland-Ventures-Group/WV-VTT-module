@@ -1,4 +1,4 @@
-@use "./common.sass" as common
+@use "./constants.sass" as constants
 
 .wasteland-ventures.document-sheet
 
@@ -7,8 +7,8 @@
     .document-img
       align-self: start
       margin:
-        bottom: common.$spacing-distance
-        right: common.$spacing-distance
+        bottom: constants.$spacing-distance
+        right: constants.$spacing-distance
       max-height: 200px
 
     .document-info
@@ -19,44 +19,36 @@
         width: 100%
 
   .sheet-header + *
-    margin-top: common.$spacing-distance
+    margin-top: constants.$spacing-distance
 
   .resource-block
-    $padding: 3px
-    background-color: common.$shade-lighter
-    border:
-      color: common.$shade-darker
-      radius: common.$border-radius
-      style: solid
-      width: 1px
     box-sizing: content-box
-    padding: $padding
 
     &.resource-block-line > *
-      margin-left: $padding * 2
+      margin-left: constants.$block-padding * 2
 
       > .resource-display
-        margin-right: $padding * 2
+        margin-right: constants.$block-padding * 2
 
     > .resource-block-line
       margin:
-        left: $padding * 2
-        right: $padding * 2
+        left: constants.$block-padding * 2
+        right: constants.$block-padding * 2
 
     @for $i from 2 through 6
 
       > .grid-#{$i}cols
         margin:
-          left: $padding * 2
-          right: $padding * 2
+          left: constants.$block-padding * 2
+          right: constants.$block-padding * 2
 
         > *
-          line-height: common.$input-height
+          line-height: constants.$input-height
 
   .resource-block-line
     align-items: center
     display: flex
-    height: common.$input-height
+    height: constants.$input-height
     justify-content: space-between
 
     > label.contained-target-inline
@@ -77,8 +69,8 @@
 
       img
         float: left
-        margin-right: common.$spacing-distance
-        max-width: common.$icon-size-medium
+        margin-right: constants.$spacing-distance
+        max-width: constants.$icon-size-medium
 
   .fvtt-item-table
     margin: 0
@@ -88,7 +80,7 @@
 
     th,td
       &:not(:last-child)
-        padding-right: common.$spacing-distance
+        padding-right: constants.$spacing-distance
 
     .fvtt-item
 

@@ -1,27 +1,27 @@
-@use "../common.sass" as common
+@use "../constants.sass" as constants
 
-.rule-elements
+.wasteland-ventures .rule-elements
 
   .rule-element-list
 
     .rule-element:not(:last-child)
-      margin-bottom: common.$spacing-distance
+      margin-bottom: constants.$spacing-distance
 
     .rule-element
-      background-color: common.$shade-lighter
+      background-color: constants.$shade-lighter
       border:
         radius: 3px
         style: solid
         width: 1px
-      box-shadow: 0 0 5px common.$shade-darker
-      padding: common.$spacing-distance
+      box-shadow: 0 0 5px constants.$shade-darker
+      padding: constants.$spacing-distance
 
       .rule-element-header
         display: flex
-        margin-bottom: common.$spacing-distance
+        margin-bottom: constants.$spacing-distance
 
         > :not(:first-child)
-          margin-left: common.$spacing-distance
+          margin-left: constants.$spacing-distance
 
         h4
           margin-right: auto
@@ -30,17 +30,17 @@
           align-items: center
           display: flex
 
-          > *:not(:first-child)
-            margin-left: common.$spacing-distance
+          > :not(:first-child)
+            margin-left: constants.$spacing-distance
 
           .rule-element-info-icon
-            color: common.$color-info
+            color: constants.$color-info
 
           .rule-element-error-icon
-            color: common.$color-error
+            color: constants.$color-error
 
           .rule-element-warning-icon
-            color: common.$color-warning
+            color: constants.$color-warning
 
       .rule-element-source
         resize: none
@@ -50,14 +50,14 @@
         .rule-element-error-message
 
           .fas
-            color: common.$color-error
+            color: constants.$color-error
 
         .rule-element-info-message
 
           .fas
-            color: common.$color-info
+            color: constants.$color-info
 
         .rule-element-warning-message
 
           .fas
-            color: common.$color-warning
+            color: constants.$color-warning

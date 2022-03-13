@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Tribal Armor
+
 ### Changed
 
 - actors are now only considered in combat, if they are part of a started combat

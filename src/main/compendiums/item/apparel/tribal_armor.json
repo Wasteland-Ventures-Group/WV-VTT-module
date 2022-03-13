@@ -1,0 +1,35 @@
+{
+  "_id": "WvApparel0000058",
+  "name": "Tribal Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Tribal Armor",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Survival Bonus",
+          "priority": 100,
+          "selector": "skills.survival.total",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        }
+      ]
+    },
+    "rarity": "common",
+    "value": 80,
+    "weight": 4,
+    "damageThreshold": 1,
+    "quickSlots": 1,
+    "modSlots": 2,
+    "slot": "armor",
+    "type": "lightArmor"
+  },
+  "img": "",
+  "effects": [],
+  "flags": {}
+}

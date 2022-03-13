@@ -32,7 +32,7 @@ const langPath = "./src/main/lang/*.json";
 const langOutPath = `${distWvPrefix}/lang`;
 
 const sassRoot = `./src/main/sass/${CONSTANTS.systemId}.sass`;
-const sassPath = "./src/main/sass/**/*.sass";
+const sassPath = "./src/main/sass/**/*.s{a,c}ss";
 const cssOutPath = `${distWvPrefix}/css`;
 
 const tsProjectPath = "./src/main/typescript/tsconfig.json";

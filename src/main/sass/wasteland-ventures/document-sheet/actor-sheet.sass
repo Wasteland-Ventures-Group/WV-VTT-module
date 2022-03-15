@@ -6,39 +6,45 @@
     overflow-y: hidden
 
   .equipment-slot
+    position: relative
 
     .equipment-slot-placeholder
       filter: opacity(0.5)
+      text-align: center
 
     .equipment-slot-target
-      align-items: baseline
+      align-items: center
+      background:
+        image: url(../../../ui/parchment.jpg)
+        repeat-x: repeat
+        repeat-y: repeat
       display: none
       flex-wrap: nowrap
       justify-content: center
+      left: 50%
+      position: absolute
       text-align: center
+      top: 50%
+      transform: translate(-50%, -50%)
+      white-space: nowrap
 
     .ready-item-cost
       display: none
 
     .ready-item-cost.from-quick-slot
-      margin-left: constants.$spacing-distance
+      margin-left: constants.$block-padding
       text-align: center
 
     &.not-slotable
       background-color: constants.$shade-darker
 
-    &.slotable
-
-      .equipment-slot-status
-        display: none
+    &.slotable.in-combat
 
       .equipment-slot-target
         display: flex
 
-      &.in-combat
-
-        .ready-item-cost.direct
-          display: block
+      .ready-item-cost.direct
+        display: block
 
     &.quick-slotable.in-combat
 

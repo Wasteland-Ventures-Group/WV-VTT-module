@@ -2,11 +2,15 @@
   <h3>{{localize "wv.rules.equipment.slots.names.readiedItem"}}</h3>
   <div class="lighter-block equipment-slot" data-equipment-slot="readiedItem">
     <div class="equipment-slot-status">
-    {{~#if (eq sheet.equipment.readiedItem.type "weapon")~}}
+      {{~#if sheet.equipment.readiedItem~}}
+        {{~#if (eq sheet.equipment.readiedItem.type "weapon")~}}
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.readiedItem readied=true}}
-    {{~/if~}}
+        {{~/if~}}
+      {{~else~}}
+        <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</div>
+      {{~/if~}}
     </div>
-    <div class="equipment-slot-target">
+    <div class="equipment-slot-target lighter-block">
       <div class="ready-item-cost direct">{{sheet.equipment.readyItemCost.direct}} {{localize "wv.rules.actionPoints.short"}}</div>
       <div class="lighter-block ready-item-cost from-quick-slot" data-equipment-slot-extra="quickSlot">
         <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
@@ -23,10 +27,18 @@
   <h3>{{localize "wv.rules.equipment.slots.weaponSlot.plural"}}</h3>
   <div class="flexrow weapon-slots">
     <div class="lighter-block equipment-slot" data-equipment-slot="weaponSlot1" data-item-id="{{sheet.equipment.weaponSlots.[0]._id}}">
+      {{~#if sheet.equipment.weaponSlots.[0]~}}
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.weaponSlots.[0] readied=false}}
+      {{~else~}}
+        <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.weaponSlot1"}}</div>
+      {{~/if~}}
     </div>
     <div class="lighter-block equipment-slot" data-equipment-slot="weaponSlot2" data-item-id="{{sheet.equipment.weaponSlots.[1]._id}}">
+      {{~#if sheet.equipment.weaponSlots.[1]~}}
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.weaponSlots.[1] readied=false}}
+      {{~else~}}
+        <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.weaponSlot2"}}</div>
+      {{~/if~}}
     </div>
   </div>
 </section>
@@ -41,35 +53,35 @@
       {{~#if sheet.equipment.armor~}}
 {{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.armor}}
       {{~else~}}
-        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.armor"}}</span>
+        <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.armor"}}</div>
       {{~/if~}}
     </div>
     <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="clothing">
       {{~#if sheet.equipment.clothing~}}
 {{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.clothing}}
       {{~else~}}
-        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.clothing"}}</span>
+        <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.clothing"}}</div>
       {{~/if~}}
     </div>
     <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="eyes">
       {{~#if sheet.equipment.eyes~}}
 {{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.eyes}}
       {{~else~}}
-        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.eyes"}}</span>
+        <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.eyes"}}</div>
       {{~/if~}}
     </div>
     <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="mouth">
       {{~#if sheet.equipment.mouth~}}
 {{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.mouth}}
       {{~else~}}
-        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.mouth"}}</span>
+        <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.mouth"}}</div>
       {{~/if~}}
     </div>
     <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="belt">
       {{~#if sheet.equipment.belt~}}
 {{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.belt}}
       {{~else~}}
-        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.belt"}}</span>
+        <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.belt"}}</div>
       {{~/if~}}
     </div>
   </div>

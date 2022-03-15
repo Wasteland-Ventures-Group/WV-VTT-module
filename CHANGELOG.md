@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - actors are now only considered in combat, if they are part of a started combat
   in the active scene or part of an unlinked, started combat
   ([#210](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/210))
+- the way the ready item cost is displayed on the equipment and inventory pages
+  ([#216](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/216))
 
 ### Fixed
 

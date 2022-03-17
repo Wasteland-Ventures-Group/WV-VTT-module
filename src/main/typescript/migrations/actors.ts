@@ -1,7 +1,10 @@
+import { CONSTANTS } from "../constants.js";
 import { LOG } from "../systemLogger.js";
 import { isLastMigrationOlderThan } from "./world.js";
 
-export default async function migrateActors(): Promise<void> {
+export default async function migrateActors(
+  currentVersion: string
+): Promise<void> {
   if (!(game instanceof Game)) {
     LOG.error("Game was not yet initialized!");
     return;
@@ -18,7 +21,7 @@ export default async function migrateActors(): Promise<void> {
   }
 
   for (const actor of game.actors) {
-    migrateActor(actor);
+    migrateActor(actor, currentVersion);
   }
 
   for (const scene of game.scenes) {
@@ -26,17 +29,22 @@ export default async function migrateActors(): Promise<void> {
       if (token.data.actorLink) continue;
       if (!token.actor) continue;
 
-      migrateActor(token.actor);
+      migrateActor(token.actor, currentVersion);
     }
   }
 }
 
-async function migrateActor(actor: foundry.documents.BaseActor): Promise<void> {
+async function migrateActor(
+  actor: foundry.documents.BaseActor,
+  currentVersion: string
+): Promise<void> {
   try {
     LOG.info(`Collecting update data for Actor [${actor.id}] "${actor.name}"`);
     const updateData = migrateActorData(actor.toObject());
     if (!foundry.utils.isObjectEmpty(updateData)) {
       LOG.info(`Migrating Actor [${actor.id}] "${actor.name}"`);
+      updateData[`flags.${CONSTANTS.systemId}.lastMigrationVersion`] =
+        currentVersion;
       await actor.update(updateData, { enforceTypes: false });
     }
   } catch (err) {

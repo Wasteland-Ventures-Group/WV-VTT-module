@@ -128,6 +128,64 @@ export default class WvItemSheet extends ItemSheet {
     this.render(false);
   }
 
+  /** Handle a click event on the toggle compendium link button. */
+  protected async onClickToggleCompendiumLink(): Promise<void> {
+    await this.item.toggleCompendiumLink();
+    if (ui.notifications) {
+      const key = this.item.getFlag(CONSTANTS.systemId, "disableCompendiumLink")
+        ? "wv.system.messages.itemIsNowUnlinked"
+        : "wv.system.messages.itemIsNowLinked";
+      ui.notifications.info(
+        getGame().i18n.format(key, { name: this.item.name })
+      );
+    }
+  }
+
+  /** Handle a click event on the update from compendium button. */
+  protected onClickUpdateFromCompendium(): void {
+    new Dialog({
+      title: getGame().i18n.format(
+        "wv.system.dialogs.compendiumOverwriteConfirm.title",
+        { name: this.item.name }
+      ),
+      content: getGame().i18n.localize(
+        "wv.system.dialogs.compendiumOverwriteConfirm.content"
+      ),
+      default: "yes",
+      buttons: {
+        yes: {
+          label: getGame().i18n.localize("wv.system.actions.update"),
+          callback: () => this.item.updateFromCompendium()
+        },
+        no: {
+          label: getGame().i18n.localize("wv.system.actions.cancel")
+        }
+      }
+    }).render(true);
+  }
+
+  protected override _getHeaderButtons(): Application.HeaderButton[] {
+    if (!this.item.hasEnabledCompendiumLink || !this.item.isProtoItemType)
+      return super._getHeaderButtons();
+
+    const buttons = super._getHeaderButtons();
+    if (this.item.hasEnabledCompendiumLink && this.item.isProtoItemType) {
+      buttons.unshift({
+        label: getGame().i18n.localize("wv.system.misc.updateFromCompendium"),
+        class: "wv-update-from-compendium",
+        icon: "fas fa-file-download",
+        onclick: this.onClickUpdateFromCompendium.bind(this)
+      });
+      buttons.unshift({
+        label: getGame().i18n.localize("wv.system.misc.toggleCompendiumLink"),
+        class: "wv-toggle-compendium-link",
+        icon: "fas fa-link",
+        onclick: this.onClickToggleCompendiumLink.bind(this)
+      });
+    }
+    return buttons;
+  }
+
   protected override async _updateObject(
     event: Event,
     formData: Record<string, string | RuleElementSource[] | unknown>

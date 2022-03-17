@@ -293,11 +293,29 @@ export interface LangSchema {
     system: {
       /** Labels for actions */
       actions: {
+        cancel: string;
         create: string;
         delete: string;
         edit: string;
         execute: string;
         submit: string;
+        update: string;
+      };
+      /** Labels relating to different dialogs */
+      dialogs: {
+        /** Labels for the compendium overwrite confirmation dialog */
+        compendiumOverwriteConfirm: {
+          /**
+           * The title for the dialog
+           *
+           * Parameters:
+           * - name: the name of the item
+           * @pattern (?=.*\{name\})
+           */
+          title: string;
+          /** The content of the dialog */
+          content: string;
+        };
       };
       /** Labels related to Effect Items */
       effect: QuantityNames;
@@ -330,6 +348,22 @@ export interface LangSchema {
          * invalid system data
          */
         invalidSystemDataInMacro: string;
+        /**
+         * The message when an item just changed compendium link to linked.
+         *
+         * Parameters:
+         * - name: the name of the item
+         * @pattern (?=.*\{name\})
+         */
+        itemIsNowLinked: string;
+        /**
+         * The message when an item just changed compendium link to unlinked.
+         *
+         * Parameters:
+         * - name: the name of the item
+         * @pattern (?=.*\{name\})
+         */
+        itemIsNowUnlinked: string;
         /**
          * The notification text for completed migrations.
          *
@@ -406,6 +440,10 @@ export interface LangSchema {
         speakerAlias: string;
         /** A collective name for miscellaneous statistics */
         statistics: string;
+        /** A label for toggling a compendium link */
+        toggleCompendiumLink: string;
+        /** A label for updating an item from a compendium */
+        updateFromCompendium: string;
       };
       /** Labels related to the prompt dialog */
       prompt: {

@@ -1,17 +1,12 @@
-import { Caliber, CONSTANTS, TYPES } from "../constants.js";
+import { Caliber, CONSTANTS, ProtoItemTypes } from "../constants.js";
 import type { AmmoDataSourceData } from "../data/item/ammo/source.js";
 import type { WeaponDataSourceData } from "../data/item/weapon/source.js";
-import { getGame } from "../foundryHelpers.js";
-import WvItem from "../item/wvItem.js";
+import { getUpdateDataFromCompendium } from "../item/wvItem.js";
 import { LOG } from "../systemLogger.js";
 
-/**
- * An array of item types, which use their base data out of prototype items
- * from the system's compendiums.
- */
-const PROTO_ITEM_TYPES: ValueOf<typeof TYPES.ITEM>[] = [TYPES.ITEM.WEAPON];
-
-export default async function migrateItems(): Promise<void> {
+export default async function migrateItems(
+  currentVersion: string
+): Promise<void> {
   if (!(game instanceof Game)) {
     LOG.error("Game was not yet initialized!");
     return;
@@ -33,12 +28,12 @@ export default async function migrateItems(): Promise<void> {
   }
 
   for (const item of game.items) {
-    migrateItem(item);
+    migrateItem(item, currentVersion);
   }
 
   for (const actor of game.actors) {
     for (const item of actor.items) {
-      migrateItem(item);
+      migrateItem(item, currentVersion);
     }
   }
 
@@ -48,18 +43,30 @@ export default async function migrateItems(): Promise<void> {
       if (!token.actor) continue;
 
       for (const item of token.actor.items) {
-        migrateItem(item);
+        migrateItem(item, currentVersion);
       }
     }
   }
 }
 
-async function migrateItem(item: foundry.documents.BaseItem): Promise<void> {
+async function migrateItem(
+  item: foundry.documents.BaseItem,
+  currentVersion: string
+): Promise<void> {
   try {
-    if (PROTO_ITEM_TYPES.includes(item.data.type)) {
-      migrateFromCompendium(item);
+    const disabledLink = item.getFlag(
+      CONSTANTS.systemId,
+      "disableCompendiumLink"
+    );
+    if (disabledLink) {
+      LOG.debug(
+        `The item is flagged to disable the compendium link. [${item.id}] "${item.name}"`
+      );
+    }
+    if (ProtoItemTypes.includes(item.data.type) && !disabledLink) {
+      migrateFromCompendium(item, currentVersion);
     } else {
-      migrateAmmoFix(item);
+      migrateAmmoFix(item, currentVersion);
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
@@ -67,7 +74,10 @@ async function migrateItem(item: foundry.documents.BaseItem): Promise<void> {
   }
 }
 
-async function migrateAmmoFix(item: foundry.documents.BaseItem): Promise<void> {
+async function migrateAmmoFix(
+  item: foundry.documents.BaseItem,
+  currentVersion: string
+): Promise<void> {
   if (!["ammo", "weapon"].includes(item.type)) return;
   if (item.type === "ammo") {
     const data = item.data.data as AmmoDataSourceData;
@@ -83,7 +93,8 @@ async function migrateAmmoFix(item: foundry.documents.BaseItem): Promise<void> {
     if (!newCaliber) return;
 
     await item.update({
-      data: { reload: { ...data.reload, caliber: newCaliber } }
+      data: { reload: { ...data.reload, caliber: newCaliber } },
+      flags: { [CONSTANTS.systemId]: { lastMigrationVersion: currentVersion } }
     });
   }
 }
@@ -97,35 +108,21 @@ function transformCaliber(caliber: string): Caliber | undefined {
 }
 
 async function migrateFromCompendium(
-  item: foundry.documents.BaseItem
+  item: foundry.documents.BaseItem,
+  currentVersion: string
 ): Promise<void> {
   LOG.info(`Updating Item from Compendium [${item.id}] "${item.name}"`);
-  await item.update(await getUpdateDataFromCompendium(item), {
-    recursive: false,
-    diff: false
-  });
-}
-
-async function getUpdateDataFromCompendium(
-  item: foundry.documents.BaseItem
-): Promise<Record<string, unknown>> {
-  const sourceId = foundry.utils.getProperty(item.data.flags, "core.sourceId");
-  if (typeof sourceId !== "string") return {};
-
-  const regex = new RegExp(
-    `^Compendium\\.(${CONSTANTS.systemId}\\.\\w+)\\.([a-zA-Z0-9]{16})$`
+  await item.update(
+    {
+      ...(await getUpdateDataFromCompendium(item)),
+      flags: {
+        ...item.data.flags,
+        [CONSTANTS.systemId]: { lastMigrationVersion: currentVersion }
+      }
+    },
+    {
+      recursive: false,
+      diff: false
+    }
   );
-  const match = regex.exec(sourceId);
-  if (!match || !match[1] || !match[2]) return {};
-
-  const compendium = getGame().packs.get(match[1]);
-  if (!compendium) return {};
-
-  const document = await compendium.getDocument(match[2]);
-  if (!(document instanceof WvItem)) return {};
-
-  const updateData = { data: document.toObject().data };
-  updateData.data.notes = item.data.data.notes;
-  updateData.data.rules.sources = item.data.data.rules.sources;
-  return updateData;
 }

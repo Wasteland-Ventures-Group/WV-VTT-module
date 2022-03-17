@@ -20,6 +20,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#210](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/210))
 - the way the ready item cost is displayed on the equipment and inventory pages
   ([#216](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/216))
+- the system now tracks per item, whether their data should stay linked to their
+  compendium entry
+  ([#198](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/198))
+- the system now tracks per document, when the last migration happened
+  ([#198](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/198))
+- ammo, apparel and misc items can now also have a compendium link
 
 ### Fixed
 

@@ -91,6 +91,14 @@ export const TYPES = {
   }
 } as const;
 
+export type ProtoItemType = typeof ProtoItemTypes[number];
+export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
+  TYPES.ITEM.AMMO,
+  TYPES.ITEM.APPAREL,
+  TYPES.ITEM.MISC,
+  TYPES.ITEM.WEAPON
+] as const;
+
 export type PhysicalItemType = typeof PhysicalItemTypes[number];
 export const PhysicalItemTypes = [
   TYPES.ITEM.AMMO,
@@ -286,6 +294,10 @@ export const CONSTANTS = {
    */
   systemPath: "systems/wasteland-ventures"
 } as const;
+
+export const SYSTEM_COMPENDIUM_SOURCE_ID_REGEX = new RegExp(
+  `^Compendium\\.(${CONSTANTS.systemId}\\.\\w+)\\.([a-zA-Z0-9]{16})$`
+);
 
 export const HANDLEBARS = {
   partPaths: {

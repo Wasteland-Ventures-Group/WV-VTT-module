@@ -17,7 +17,7 @@ import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateS
 import type Apparel from "./item/apparel.js";
 import type Effect from "./item/effect.js";
 import type Weapon from "./item/weapon.js";
-import WvItem from "./item/wvItem.js";
+import WvItem, { ItemFlags } from "./item/wvItem.js";
 import { macros } from "./macros/index.js";
 import type {
   Critical,
@@ -98,7 +98,10 @@ declare global {
 
   interface FlagConfig {
     ChatMessage: {
-      [CONSTANTS.systemId]?: SystemChatMessageFlags;
+      [CONSTANTS.systemId]?: SystemFlags & SystemChatMessageFlags;
+    };
+    Item: {
+      [CONSTANTS.systemId]?: SystemFlags & ItemFlags;
     };
   }
 
@@ -114,4 +117,9 @@ declare global {
       fcf: typeof flagCriticalFailure;
     }
   }
+}
+
+/** Common flags for system documents. */
+interface SystemFlags {
+  lastMigrationVersion?: string;
 }

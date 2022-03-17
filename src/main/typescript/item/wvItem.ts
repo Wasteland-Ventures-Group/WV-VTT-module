@@ -1,10 +1,16 @@
 import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
 import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
+import {
+  CONSTANTS,
+  ProtoItemTypes,
+  SYSTEM_COMPENDIUM_SOURCE_ID_REGEX
+} from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import { RULE_ELEMENTS } from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
+import { LOG } from "../systemLogger.js";
 import validateSystemData from "../validation/validateSystemData.js";
 
 /** The basic Wasteland Ventures Item. */
@@ -68,6 +74,19 @@ export default class WvItem extends Item {
     );
   }
 
+  /** Check whether the item has a compendium link in its flags. */
+  get hasEnabledCompendiumLink(): boolean {
+    const sourceId = this.getFlag("core", "sourceId");
+    if (typeof sourceId !== "string") return false;
+
+    return SYSTEM_COMPENDIUM_SOURCE_ID_REGEX.test(sourceId);
+  }
+
+  /** Check whether the item has the type of one of the prototype items. */
+  get isProtoItemType(): boolean {
+    return ProtoItemTypes.includes(this.data.type);
+  }
+
   /**
    * Get the total value of the item, if it has a value. If the amount is
    * undefined, 1 is used.
@@ -110,6 +129,17 @@ export default class WvItem extends Item {
       .forEach((rule) => rule.onAfterSpecial());
   }
 
+  /** Toggle the compendium link for this item. */
+  async toggleCompendiumLink(): Promise<void> {
+    const newValue = !this.getFlag(CONSTANTS.systemId, "disableCompendiumLink");
+    LOG.debug(
+      `Toggling "disableCompendiumLink" for [${this.id}] to ${newValue}`
+    );
+    await this.update({
+      flags: { [CONSTANTS.systemId]: { disableCompendiumLink: newValue } }
+    });
+  }
+
   /**
    * Update the RuleElement sources of this Effect.
    * @param sources - the new RuleElements
@@ -119,6 +149,20 @@ export default class WvItem extends Item {
       _id: this.id,
       data: { rules: { sources: sources } }
     });
+  }
+
+  /**
+   * Update the item from its compendium link, if one exists. This ignores
+   * whether the compendium link for this item is broken.
+   */
+  async updateFromCompendium(): Promise<void> {
+    if (!this.hasEnabledCompendiumLink) return;
+
+    LOG.debug(`Updating item from Compendium [${this.id}] "${this.name}"`);
+    await this.update(
+      { ...(await getUpdateDataFromCompendium(this)) },
+      { recursive: false, diff: false }
+    );
   }
 
   protected override async _preCreate(
@@ -158,6 +202,39 @@ type ItemContext = ConstructorParameters<typeof Item>[1] & {
     ready?: boolean;
   };
 };
+
+/** Flags for items. */
+export type ItemFlags = {
+  disableCompendiumLink?: boolean;
+  overwriteNotesWithCompendium?: boolean;
+  overwriteRulesWithCompendium?: boolean;
+};
+
+/** Fetch update data for an item from its compendium prototype. */
+export async function getUpdateDataFromCompendium(
+  item: foundry.documents.BaseItem
+): Promise<Record<string, unknown>> {
+  const sourceId = item.getFlag("core", "sourceId");
+  if (typeof sourceId !== "string") return {};
+
+  const match = SYSTEM_COMPENDIUM_SOURCE_ID_REGEX.exec(sourceId);
+  if (!match || !match[1] || !match[2]) return {};
+
+  const compendium = getGame().packs.get(match[1]);
+  if (!compendium) return {};
+
+  const document = await compendium.getDocument(match[2]);
+  if (!(document instanceof WvItem)) return {};
+
+  const updateData = { data: document.toObject().data };
+  if (!item.getFlag(CONSTANTS.systemId, "overwriteNotesWithCompendium")) {
+    updateData.data.notes = item.data.data.notes;
+  }
+  if (!item.getFlag(CONSTANTS.systemId, "overwriteRulesWithCompendium")) {
+    updateData.data.rules.sources = item.data.data.rules.sources;
+  }
+  return updateData;
+}
 
 /**
  * A custom typeguard to check whether a string is a mapped type identifier.

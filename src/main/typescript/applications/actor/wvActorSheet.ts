@@ -343,7 +343,6 @@ export default class WvActorSheet extends ActorSheet {
     const itemData = item.toObject();
 
     // Handle item sorting within the same Actor
-    // @ts-expect-error this isn't typed yet
     if (await this._isFromSameActor(data)) {
       const equipmentSlot = this.getDropEquipmentSlot(event.target);
 

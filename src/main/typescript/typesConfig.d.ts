@@ -86,13 +86,6 @@ declare global {
       "wasteland-ventures.bounds.special.points.min": number;
       "wasteland-ventures.enforceApDragDrop": settings.EnforceApSetting;
       "wasteland-ventures.enforceApRuler": settings.EnforceApSetting;
-
-      "core.defaultToken":
-        | {
-            bar1: { attribute: string };
-            bar2: { attribute: string };
-          }
-        | Record<string, never>;
     }
   }
 

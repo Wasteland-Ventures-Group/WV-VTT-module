@@ -43,7 +43,7 @@ export default class WvToken extends Token {
 
       // This can happen with tokens created by code.
       if (!(clone.actor instanceof WvActor)) {
-        if (preview) original.updateSource({ noUpdateFog: true });
+        if (preview) original.updateSource({ skipUpdateFog: true });
         if (ui.notifications)
           ui.notifications.error(
             game.i18n.format("wv.system.messages.noActor", { name: clone.name })
@@ -73,7 +73,7 @@ export default class WvToken extends Token {
       if (currAp < apUse) {
         // Reset the vision and warn the user when there are not enough AP to
         // move.
-        if (preview) original.updateSource({ noUpdateFog: true });
+        if (preview) original.updateSource({ skipUpdateFog: true });
         if (ui.notifications)
           ui.notifications.info(
             game.i18n.format("wv.system.messages.notEnoughApToMove", {

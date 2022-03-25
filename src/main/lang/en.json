@@ -218,6 +218,9 @@
         "plural": "Races",
         "singular": "Race"
       },
+      "radiation": {
+        "name": "Radiation"
+      },
       "range": {
         "distance": "Distance",
         "plural": "Ranges",

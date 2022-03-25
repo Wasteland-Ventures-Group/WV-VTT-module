@@ -145,7 +145,11 @@ export const EquipmentSlots = [
   "readiedItem",
   "weaponSlot1",
   "weaponSlot2",
-  ...ApparelSlots
+  "armor",
+  "belt",
+  "clothing",
+  "eyes",
+  "mouth"
 ] as const;
 
 /**

@@ -14,6 +14,9 @@ export default class VitalsSource {
 
   /** The current strain of an Actor */
   strain = new Resource(20);
+
+  /** The current dose of absorbed radiation of an Actor */
+  radiationDose = 0;
 }
 
 export const VITALS_JSON_SCHEMA: JSONSchemaType<VitalsSource> = {
@@ -23,14 +26,27 @@ export const VITALS_JSON_SCHEMA: JSONSchemaType<VitalsSource> = {
     hitPoints: RESOURCE_JSON_SCHEMA,
     actionPoints: RESOURCE_JSON_SCHEMA,
     insanity: RESOURCE_JSON_SCHEMA,
-    strain: RESOURCE_JSON_SCHEMA
+    strain: RESOURCE_JSON_SCHEMA,
+    radiationDose: {
+      description: "The absorbed dose of radition of an Actor",
+      type: "integer",
+      default: 0,
+      minimum: 0
+    }
   },
-  required: ["hitPoints", "actionPoints", "insanity", "strain"],
+  required: [
+    "hitPoints",
+    "actionPoints",
+    "insanity",
+    "strain",
+    "radiationDose"
+  ],
   additionalProperties: false,
   default: {
     hitPoints: { value: 15 },
     actionPoints: { value: 12 },
     insanity: { value: 0 },
-    strain: { value: 20 }
+    strain: { value: 20 },
+    radiationDose: 0
   }
 };

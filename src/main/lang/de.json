@@ -218,6 +218,9 @@
         "plural": "Rassen",
         "singular": "Rasse"
       },
+      "radiation": {
+        "name": "Strahlung"
+      },
       "range": {
         "distance": "Distanz",
         "plural": "Reichweiten",

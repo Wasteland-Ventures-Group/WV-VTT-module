@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#197](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/197))
 - dedicated, editable apparel item sheets
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+- a radiation tracker to the actor sheet
+  ([#209](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/209))
 
 ### Changed
 

@@ -1,4 +1,12 @@
-import type { I18nRaces, I18nSkills, I18nSpecials } from "./wvI18n.js";
+import type {
+  I18nApparelTypes,
+  I18nCalibers,
+  I18nEquipmentSlots,
+  I18nRaces,
+  I18nRarities,
+  I18nSkills,
+  I18nSpecials
+} from "./wvI18n.js";
 
 export interface LangSchema {
   /** The root element for the Wasteland Ventures system localization */
@@ -66,29 +74,7 @@ export interface LangSchema {
           /** The label for the caliber */
           caliber: string;
           /** Names for different calibers */
-          calibers: {
-            "308cal": string;
-            "44cal": string;
-            "50cal": string;
-            "5mm": string;
-            "5_56mm": string;
-            "9mm": string;
-            "10mm": string;
-            "12_7mm": string;
-            "20mm": string;
-            shotgunShell: string;
-            alienGemPack: string;
-            gemPack: string;
-            magicFusionCell: string;
-            energizedCrystalPack: string;
-            flamerFuel: string;
-            arrow: string;
-            rifleGrenade: string;
-            balefireEgg: string;
-            missile: string;
-            cloud: string;
-            improvised: string;
-          };
+          calibers: I18nCalibers;
           /** The name of ammunition */
           name: string;
           subTypes: {
@@ -127,14 +113,7 @@ export interface LangSchema {
           /** The name for the concept of apparel type */
           type: string;
           /** Names for the different apparel types */
-          types: {
-            clothing: string;
-            lightArmor: string;
-            heavyArmor: string;
-            premiumArmor: string;
-            powerArmor: string;
-            accessory: string;
-          };
+          types: I18nApparelTypes;
         };
         /** Labels relating to the concept of bottle caps */
         caps: QuantityNames;
@@ -147,12 +126,7 @@ export interface LangSchema {
           /** The name for the concept of rarity */
           name: string;
           /** Names for the rarity levels */
-          names: {
-            common: string;
-            uncommon: string;
-            rare: string;
-            exotic: string;
-          };
+          names: I18nRarities;
         };
         /** Labels for different equipment slots */
         slots: QuantityNames & {
@@ -165,16 +139,7 @@ export interface LangSchema {
           /** The names for weapon slots */
           weaponSlot: QuantityNames;
           /** Names for different equipment slots */
-          names: {
-            readiedItem: string;
-            weaponSlot1: string;
-            weaponSlot2: string;
-            armor: string;
-            clothing: string;
-            eyes: string;
-            mouth: string;
-            belt: string;
-          };
+          names: I18nEquipmentSlots;
         };
         /** Labels for the concept of value */
         value: {
@@ -235,8 +200,15 @@ export interface LangSchema {
         /** The label for the strain */
         strain: string;
       };
+      /** Labels related to races */
       race: QuantityNames & {
+        /** The names of races */
         names: I18nRaces;
+      };
+      /** Labels related to radiation */
+      radiation: {
+        /** The name of the radiation concept */
+        name: string;
       };
       /** Labels related to range */
       range: QuantityNames & {

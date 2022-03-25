@@ -24,13 +24,15 @@ import {
 } from "../../dragData.js";
 import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
-import type Apparel from "../../item/apparel.js";
+import Apparel from "../../item/apparel.js";
 import Weapon from "../../item/weapon.js";
 import Attack from "../../item/weapon/attack.js";
 import WvItem from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
+import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
+import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
 import Prompt from "../prompt.js";
@@ -147,6 +149,26 @@ export default class WvActorSheet extends ActorSheet {
       actorReadiedItem instanceof Weapon
         ? this.toSheetWeapon(actorReadiedItem)
         : actorReadiedItem?.toJSON() ?? null;
+    const armor =
+      this.actor.armor instanceof Apparel
+        ? this.toSheetApparel(this.actor.armor)
+        : null;
+    const clothing =
+      this.actor.clothing instanceof Apparel
+        ? this.toSheetApparel(this.actor.clothing)
+        : null;
+    const eyes =
+      this.actor.eyesApparel instanceof Apparel
+        ? this.toSheetApparel(this.actor.eyesApparel)
+        : null;
+    const mouth =
+      this.actor.mouthApparel instanceof Apparel
+        ? this.toSheetApparel(this.actor.mouthApparel)
+        : null;
+    const belt =
+      this.actor.beltApparel instanceof Apparel
+        ? this.toSheetApparel(this.actor.beltApparel)
+        : null;
 
     let totalValue = 0;
     let totalWeight = 0;
@@ -191,11 +213,11 @@ export default class WvActorSheet extends ActorSheet {
           weaponSlots: this.actor.weaponSlotWeapons.map((weapon) =>
             weapon ? this.toSheetWeapon(weapon) : null
           ),
-          armor: this.actor.armor,
-          clothing: this.actor.clothing,
-          eyes: this.actor.eyesApparel,
-          mouth: this.actor.mouthApparel,
-          belt: this.actor.beltApparel
+          armor,
+          clothing,
+          eyes,
+          mouth,
+          belt
         },
         inventory: {
           items,
@@ -420,6 +442,13 @@ export default class WvActorSheet extends ActorSheet {
 
     // Perform the update
     return this.actor.updateEmbeddedDocuments("Item", updateData);
+  }
+
+  protected toSheetApparel(apparel: Apparel): SheetApparel {
+    return {
+      ...apparel.toJSON(),
+      sheet: ApparelSheet.getApparelSheetData(apparel)
+    };
   }
 
   /** Transform a Weapon into a sheet weapon. */
@@ -842,14 +871,18 @@ interface SheetEquipment {
   };
   readiedItem: ReadiedItem | null;
   weaponSlots: (SheetWeapon | null)[];
-  armor: Apparel | null;
-  clothing: Apparel | null;
-  eyes: Apparel | null;
-  mouth: Apparel | null;
-  belt: Apparel | null;
+  armor: SheetApparel | null;
+  clothing: SheetApparel | null;
+  eyes: SheetApparel | null;
+  mouth: SheetApparel | null;
+  belt: SheetApparel | null;
 }
 
 type ReadiedItem = ReturnType<WvItem["toJSON"]> | SheetWeapon;
+
+type SheetApparel = ReturnType<Apparel["toJSON"]> & {
+  sheet: SheetApparelData;
+};
 
 type SheetWeapon = ReturnType<Weapon["toJSON"]> & {
   sheet: SheetWeaponData;

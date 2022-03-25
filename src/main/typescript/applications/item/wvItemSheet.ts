@@ -49,6 +49,8 @@ export default class WvItemSheet extends ItemSheet {
   override get template(): string {
     const root = `${CONSTANTS.systemPath}/handlebars/items/`;
     switch (this.item.data.type) {
+      case "apparel":
+        return root + "apparelSheet.hbs";
       case "effect":
         return root + "effectSheet.hbs";
       case "weapon":
@@ -79,6 +81,7 @@ export default class WvItemSheet extends ItemSheet {
         rarity,
         parts: {
           header: HANDLEBARS.partPaths.item.header,
+          physicalItemInputs: HANDLEBARS.partPaths.item.physicalItemInputs,
           rules: HANDLEBARS.partPaths.item.rules
         },
         rules: {
@@ -415,6 +418,7 @@ export interface SheetData extends ItemSheet.Data {
     rarity: SheetDataRarity | undefined;
     parts: {
       header: string;
+      physicalItemInputs: string;
       rules: string;
     };
     rules: {

@@ -76,7 +76,16 @@
           }
         },
         "apparel": {
-          "name": "Bekleidung"
+          "name": "Bekleidung",
+          "type": "Bekleidungsart",
+          "types": {
+            "clothing": "Kleidung",
+            "lightArmor": "Leichte Rüstung",
+            "heavyArmor": "Schwere Rüstung",
+            "premiumArmor": "Premium Rüstung",
+            "powerArmor": "Powerrüstung",
+            "accessory": "Zubehör"
+          }
         },
         "caps": {
           "singular": "Kronkorken",
@@ -96,6 +105,11 @@
         "slots": {
           "singular": "Ausrüstungplatz",
           "plural": "Ausrüstungsplätze",
+          "apparelSlot": "Bekleidungsplatz",
+          "modSlot": {
+            "singular": "Modifikationsplatz",
+            "plural": "Modifikationsplätze"
+          },
           "quickSlot": {
             "singular": "Schnellplatz",
             "plural": "Schnellplätze"
@@ -432,6 +446,7 @@
       "sheets": {
         "names": {
           "actorSheet": "Aktorbogen",
+          "apparelSheet": "Bekleidungsbogen",
           "effectSheet": "Effektbogen",
           "itemSheet": "Gegenstandsbogen",
           "weaponSheet": "Waffenbogen"

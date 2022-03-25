@@ -314,6 +314,7 @@ export const HANDLEBARS = {
     },
     item: {
       header: `${CONSTANTS.systemPath}/handlebars/items/parts/header.hbs`,
+      physicalItemInputs: `${CONSTANTS.systemPath}/handlebars/items/parts/physicalItemInputs.hbs`,
       rules: `${CONSTANTS.systemPath}/handlebars/items/parts/ruleElements.hbs`
     }
   }

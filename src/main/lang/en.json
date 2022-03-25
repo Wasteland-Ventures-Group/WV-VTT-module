@@ -97,7 +97,16 @@
           }
         },
         "apparel": {
-          "name": "Apparel"
+          "name": "Apparel",
+          "type": "Apparel Type",
+          "types": {
+            "clothing": "Clothing",
+            "lightArmor": "Light Armor",
+            "heavyArmor": "Heavy Armor",
+            "premiumArmor": "Premium Armor",
+            "powerArmor": "Power Armor",
+            "accessory": "Accessory"
+          }
         },
         "caps": {
           "singular": "Cap",
@@ -117,6 +126,11 @@
         "slots": {
           "singular": "Equipment Slot",
           "plural": "Equipment Slots",
+          "apparelSlot": "Apparel Slot",
+          "modSlot": {
+            "singular": "Mod Slot",
+            "plural": "Mod Slots"
+          },
           "quickSlot": {
             "singular": "Quick Slot",
             "plural": "Quick Slots"
@@ -432,6 +446,7 @@
       "sheets": {
         "names": {
           "actorSheet": "Actor Sheet",
+          "apparelSheet": "Apparel Sheet",
           "effectSheet": "Effect Sheet",
           "itemSheet": "Item Sheet",
           "weaponSheet": "Weapon Sheet"

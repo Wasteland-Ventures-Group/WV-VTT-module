@@ -2,16 +2,19 @@
   <div class="apparel-slot">
     <h3>{{apparel.name}}</h3>
     <div class="detail-groups">
-      <span class="details">
-        {{~#if apparel.data.data.damageThreshold~}}
-          <span>{{localize "wv.rules.damage.threshold.short"}} {{apparel.data.data.damageThreshold}}</span>
+      <div class="details">
+        {{~#if apparel.sheet.type~}}
+          <span>{{apparel.sheet.type}}</span>
         {{~/if~}}
-        {{~#if apparel.data.data.quickSlots~}}
-          <span>{{localize "wv.rules.equipment.slots.quickSlot.plural"}} {{apparel.data.data.quickSlots}}</span>
+        {{~#if apparel.data.damageThreshold~}}
+          <span>{{localize "wv.rules.damage.threshold.short"}} {{apparel.data.damageThreshold}}</span>
         {{~/if~}}
-      </span>
-      {{~#if weapon.data.notes~}}
-        <div class="details">{{apparel.data.data.notes}}</div>
+        {{~#if apparel.data.quickSlots~}}
+          <span>{{localize "wv.rules.equipment.slots.quickSlot.plural"}} {{apparel.data.quickSlots}}</span>
+        {{~/if~}}
+      </div>
+      {{~#if apparel.data.notes~}}
+        <div>{{apparel.data.notes}}</div>
       {{~/if~}}
     </div>
   </div>

@@ -8,41 +8,7 @@
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
-      <div class="general-info flexrow">
-        <label class="contained-target-inline">
-          {{~localize "wv.system.misc.name"~}}
-          <input type="text" name="data.name" value="{{data.data.name}}" />
-        </label>
-        {{#if sheet.rarity~}}
-          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.rarity.name"}}">
-            <span class="fas fa-gem"></span><select name="data.rarity">
-              {{selectOptions sheet.rarity.rarities selected=data.data.rarity}}
-            </select>
-          </span>
-        {{~/if}}
-        {{#if data.data.value includeZero=true ~}}
-          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.value.name"}}">
-            <span class="fas fa-coins"></span><input class="size-4" type="number" name="data.value" value="{{data.data.value}}" />
-          </span>
-        {{~/if}}
-        {{#if data.data.weight includeZero=true ~}}
-          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.weight.name"}}">
-            <span class="fas fa-weight"></span><input class="size-3" type="number" name="data.weight" value="{{data.data.weight}}" />
-          </span>
-        {{~/if}}
-      </div>
-      <div class="resource-block flex-fixed">
-        <label>
-          {{~localize "wv.system.misc.description"~}}
-          <textarea name="data.description">{{data.data.description}}</textarea>
-        </label>
-      </div>
-      <div class="resource-block flex-fixed">
-        <label>
-          {{~localize "wv.system.misc.notes"~}}
-          <textarea name="data.notes">{{data.data.notes}}</textarea>
-        </label>
-      </div>
+{{> (get . "sheet.parts.physicalItemInputs")}}
     </div>
 
     <div class="tab" data-group="primary" data-tab="rules">

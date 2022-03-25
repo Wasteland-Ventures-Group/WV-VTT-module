@@ -5,7 +5,10 @@ import {
   isSkillName,
   Race,
   Caliber,
-  Rarity
+  Rarity,
+  ApparelSlot,
+  ApparelType,
+  EquipmentSlot
 } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 
@@ -17,6 +20,15 @@ export interface I18nSpecial {
   /** The short name of the SPECIAL stat. */
   short: string;
 }
+
+/** The internationalization structure for equipment slots */
+export type I18nEquipmentSlots = Record<EquipmentSlot, string>;
+
+/** The internationalization structure for apparel slots */
+export type I18nApparelSlots = Record<ApparelSlot, string>;
+
+/** The internationalization structure for apparel types */
+export type I18nApparelTypes = Record<ApparelType, string>;
 
 /** The internationalization structure for calibers */
 export type I18nCalibers = Record<Caliber, string>;
@@ -37,6 +49,29 @@ export type I18nSkills = Record<SkillName, string>;
  * A helper class to serve Wasteland Ventures internationalization structures.
  */
 export default class WvI18n {
+  /** Get the internationalization of the apparel slots. */
+  static get apparelSlots(): I18nApparelSlots {
+    const slotNames = foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.equipment.slots.names"
+    ) as I18nEquipmentSlots;
+    return {
+      armor: slotNames.armor,
+      clothing: slotNames.clothing,
+      eyes: slotNames.eyes,
+      mouth: slotNames.mouth,
+      belt: slotNames.belt
+    };
+  }
+
+  static get apparelTypes(): I18nApparelTypes {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.equipment.apparel.types"
+    ) as I18nApparelTypes;
+  }
+
+  /** Get the internationalization of the calibers. */
   static get calibers(): I18nCalibers {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
@@ -52,6 +87,7 @@ export default class WvI18n {
     ) as I18nRaces;
   }
 
+  /** Get the internationalization of the rarities. */
   static get rarities(): I18nRarities {
     return foundry.utils.getProperty(
       getGame().i18n.translations,

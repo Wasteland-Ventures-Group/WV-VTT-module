@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 import WvActor from "./actor/wvActor.js";
 import WvActorSheet from "./applications/actor/wvActorSheet.js";
+import ApparelSheet from "./applications/item/apparelSheet.js";
 import EffectSheet from "./applications/item/effectSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
 import WvItemSheet from "./applications/item/wvItemSheet.js";
@@ -87,6 +88,11 @@ export function configureFoundryOnInit(): void {
     label: "wv.system.sheets.names.effectSheet",
     makeDefault: true,
     types: [TYPES.ITEM.EFFECT]
+  });
+  Items.registerSheet(CONSTANTS.systemId, ApparelSheet, {
+    label: "wv.system.sheets.names.apparelSheet",
+    makeDefault: true,
+    types: [TYPES.ITEM.APPAREL]
   });
   Items.registerSheet(CONSTANTS.systemId, WeaponSheet, {
     label: "wv.system.sheets.names.weaponSheet",

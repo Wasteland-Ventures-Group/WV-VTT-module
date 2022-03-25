@@ -1,0 +1,46 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+{{> (get . "sheet.parts.header")}}
+
+  <nav class="tabs flex-fixed" data-group="primary">
+    <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
+    <a class="item" data-tab="rules">{{localize "wv.system.ruleEngine.ruleElement.plural"}}</a>
+  </nav>
+
+  <section class="content">
+    <div class="tab active" data-group="primary" data-tab="stats">
+{{> (get . "sheet.parts.physicalItemInputs")}}
+      <div class="flexrow flex-j-spaced spacing-bottom">
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.damage.threshold.long"~}}
+          <input class="size-2" type="number" name="data.damageThreshold" value="{{data.data.damageThreshold}}" />
+        </label>
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.equipment.slots.quickSlot.plural"~}}
+          <input class="size-2" type="number" name="data.quickSlots" value="{{data.data.quickSlots}}" />
+        </label>
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.equipment.slots.modSlot.plural"~}}
+          <input class="size-2" type="number" name="data.modSlots" value="{{data.data.modSlots}}" />
+        </label>
+      </div>
+      <div class="flexrow flex-j-spaced">
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.equipment.slots.apparelSlot"~}}
+          <select name="data.slot">
+            {{selectOptions sheet.slots selected=data.data.slot}}
+          </select>
+        </label>
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.equipment.apparel.type"~}}
+          <select name="data.type">
+            {{selectOptions sheet.types selected=data.data.type}}
+          </select>
+        </label>
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="rules">
+{{> (get . "sheet.parts.rules")}}
+    </div>
+  </section>
+</form>

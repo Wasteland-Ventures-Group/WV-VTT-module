@@ -124,6 +124,17 @@ export interface LangSchema {
         apparel: {
           /** The name of apparel. */
           name: string;
+          /** The name for the concept of apparel type */
+          type: string;
+          /** Names for the different apparel types */
+          types: {
+            clothing: string;
+            lightArmor: string;
+            heavyArmor: string;
+            premiumArmor: string;
+            powerArmor: string;
+            accessory: string;
+          };
         };
         /** Labels relating to the concept of bottle caps */
         caps: QuantityNames;
@@ -145,9 +156,13 @@ export interface LangSchema {
         };
         /** Labels for different equipment slots */
         slots: QuantityNames & {
-          /** The overall name of a quick slot */
+          /** The name for the apparel slot concept */
+          apparelSlot: string;
+          /** The names for mod slots */
+          modSlot: QuantityNames;
+          /** The names for quick slots */
           quickSlot: QuantityNames;
-          /** The overall name of a weapon slot */
+          /** The names for weapon slots */
           weaponSlot: QuantityNames;
           /** Names for different equipment slots */
           names: {
@@ -595,6 +610,8 @@ export interface LangSchema {
         names: {
           /** The label for the Actor sheet */
           actorSheet: string;
+          /** The label for the Apparel sheet */
+          apparelSheet: string;
           /** The label for the Effect sheet */
           effectSheet: string;
           /** The label for the generic Item Sheet */

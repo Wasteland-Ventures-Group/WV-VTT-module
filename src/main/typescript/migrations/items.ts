@@ -2,8 +2,6 @@ import { Caliber, CONSTANTS, ProtoItemTypes } from "../constants.js";
 import type { AmmoDataSourceData } from "../data/item/ammo/source.js";
 import type { WeaponDataSourceData } from "../data/item/weapon/source.js";
 import { getUpdateDataFromCompendium } from "../item/wvItem.js";
-import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
-import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
 import { LOG } from "../systemLogger.js";
 
 export default async function migrateItems(
@@ -128,6 +126,9 @@ function transformCaliber(caliber: string): Caliber | undefined {
 async function migrateFromCompendium(
   item: foundry.documents.BaseItem
 ): Promise<void> {
+  const updateData = await getUpdateDataFromCompendium(item);
+  if (foundry.utils.isObjectEmpty(updateData)) return;
+
   LOG.info(`Updating Item from Compendium [${item.id}] "${item.name}"`);
   await item.update(
     { ...(await getUpdateDataFromCompendium(item)) },

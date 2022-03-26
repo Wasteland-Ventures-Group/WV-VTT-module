@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.14.2] - 2022-03-26
+
+- fix a bug in item compendium data migration
+
 ## [0.14.1] - 2022-03-26
 
 - add migrations for rule element hooks

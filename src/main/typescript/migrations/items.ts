@@ -2,6 +2,8 @@ import { Caliber, CONSTANTS, ProtoItemTypes } from "../constants.js";
 import type { AmmoDataSourceData } from "../data/item/ammo/source.js";
 import type { WeaponDataSourceData } from "../data/item/weapon/source.js";
 import { getUpdateDataFromCompendium } from "../item/wvItem.js";
+import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
+import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
 import { LOG } from "../systemLogger.js";
 
 export default async function migrateItems(
@@ -64,20 +66,21 @@ async function migrateItem(
       );
     }
     if (ProtoItemTypes.includes(item.data.type) && !disabledLink) {
-      migrateFromCompendium(item, currentVersion);
+      migrateFromCompendium(item);
     } else {
-      migrateAmmoFix(item, currentVersion);
+      migrateAmmoFix(item);
     }
+    migrateRuleElementHook(item);
+    await item.update({
+      flags: { [CONSTANTS.systemId]: { lastMigrationVersion: currentVersion } }
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     LOG.error(`Failed migration for Item [${item.id}]: ${message}`);
   }
 }
 
-async function migrateAmmoFix(
-  item: foundry.documents.BaseItem,
-  currentVersion: string
-): Promise<void> {
+async function migrateAmmoFix(item: foundry.documents.BaseItem): Promise<void> {
   if (!["ammo", "weapon"].includes(item.type)) return;
   if (item.type === "ammo") {
     const data = item.data.data as AmmoDataSourceData;
@@ -93,10 +96,25 @@ async function migrateAmmoFix(
     if (!newCaliber) return;
 
     await item.update({
-      data: { reload: { ...data.reload, caliber: newCaliber } },
-      flags: { [CONSTANTS.systemId]: { lastMigrationVersion: currentVersion } }
+      data: { reload: { ...data.reload, caliber: newCaliber } }
     });
   }
+}
+
+async function migrateRuleElementHook(
+  item: foundry.documents.BaseItem
+): Promise<void> {
+  await item.update({
+    data: {
+      rules: {
+        sources: item.data.data.rules.sources.map((rule) => ({
+          // @ts-expect-error This might not be there in not migrated data
+          hook: "afterSpecial",
+          ...rule
+        }))
+      }
+    }
+  });
 }
 
 function transformCaliber(caliber: string): Caliber | undefined {
@@ -108,18 +126,11 @@ function transformCaliber(caliber: string): Caliber | undefined {
 }
 
 async function migrateFromCompendium(
-  item: foundry.documents.BaseItem,
-  currentVersion: string
+  item: foundry.documents.BaseItem
 ): Promise<void> {
   LOG.info(`Updating Item from Compendium [${item.id}] "${item.name}"`);
   await item.update(
-    {
-      ...(await getUpdateDataFromCompendium(item)),
-      flags: {
-        ...item.data.flags,
-        [CONSTANTS.systemId]: { lastMigrationVersion: currentVersion }
-      }
-    },
+    { ...(await getUpdateDataFromCompendium(item)) },
     {
       recursive: false,
       diff: false

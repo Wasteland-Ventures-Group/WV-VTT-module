@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- weapon attacks not working on an actor sheet's equipment tab
+  ([#237](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/237))
+
 ## [0.14.2] - 2022-03-26
 
 - fix a bug in item compendium data migration

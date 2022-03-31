@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- default icons for item schemas
+- a dedicated ammo sheet
+  ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+
+### Changed
+
+- inputs which would be overwritten by a compendium link are disabled
+
 ## [0.14.3] - 2022-03-30
 
 ### Added

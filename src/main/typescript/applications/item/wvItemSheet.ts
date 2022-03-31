@@ -98,13 +98,31 @@ export default class WvItemSheet extends ItemSheet {
   override activateListeners(html: JQuery<HTMLFormElement>): void {
     super.activateListeners(html);
 
-    html
-      .find(".rule-element-control[data-action=create]")
-      .on("click", this.onClickCreateRuleElement.bind(this));
+    const sheetForm = html[0];
+    if (!(sheetForm instanceof HTMLFormElement))
+      throw new Error("The element passed was not a form element!");
 
-    html
-      .find(".rule-element-control[data-action=delete]")
-      .on("click", this.onClickDeleteRuleElement.bind(this));
+    sheetForm
+      .querySelectorAll(".rule-element-control[data-action=create]")
+      .forEach((element) =>
+        element.addEventListener(
+          "click",
+          this.onClickCreateRuleElement.bind(this)
+        )
+      );
+
+    sheetForm
+      .querySelectorAll(".rule-element-control[data-action=delete]")
+      .forEach((element) =>
+        element.addEventListener("click", (event) => {
+          if (!(event instanceof MouseEvent))
+            throw new Error("This should not happen!");
+          this.onClickDeleteRuleElement(event);
+        })
+      );
+
+    if (this.item.hasEnabledCompendiumLink)
+      this.disableCompendiumLinkInputs(sheetForm);
   }
 
   /** Handle a click event on a create rule element button. */
@@ -118,10 +136,16 @@ export default class WvItemSheet extends ItemSheet {
   }
 
   /** Handle a click event on a delete rule element button. */
-  protected onClickDeleteRuleElement(event: ClickEvent): void {
-    const index = $(event.target).parents(".rule-element").data("index");
-    if (typeof index !== "number")
-      throw new Error("Could not find the index data!");
+  protected onClickDeleteRuleElement(event: MouseEvent): void {
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const ruleElementElement = event.target.closest(".rule-element");
+    if (!(ruleElementElement instanceof HTMLElement))
+      throw new Error("The rule element element was not an HTMLElement.");
+
+    const index = parseInt(ruleElementElement.dataset.index ?? "");
+    if (isNaN(index)) throw new Error("The index was not a number!");
 
     const sources = this.item.data.data.rules.sources;
     sources.splice(index, 1);
@@ -131,6 +155,45 @@ export default class WvItemSheet extends ItemSheet {
     LOG.debug(`Deleted RuleElement on item with id [${this.item.id}]`);
     this.item.prepareData();
     this.render(false);
+  }
+
+  /** Disable all inputs that would be overwritten by a compendium update. */
+  protected disableCompendiumLinkInputs(form: HTMLFormElement): void {
+    const disableNotes = !!this.item.getFlag(
+      CONSTANTS.systemId,
+      "overwriteNotesWithCompendium"
+    );
+    const disableRules = !!this.item.getFlag(
+      CONSTANTS.systemId,
+      "overwriteRulesWithCompendium"
+    );
+
+    if (disableRules) {
+      form
+        .querySelectorAll("button.rule-element-control")
+        .forEach((element) => element.setAttribute("disabled", ""));
+    }
+
+    const tags = ["input", "select", "textarea"];
+    for (const tag of tags) {
+      const elements = form.getElementsByTagName(tag);
+      for (let i = 0; i < elements.length; i++) {
+        const el = elements.item(i);
+        if (
+          el instanceof HTMLInputElement ||
+          el instanceof HTMLSelectElement ||
+          el instanceof HTMLTextAreaElement
+        ) {
+          if (!el.name.startsWith("data.") && !el.name.startsWith("sheet."))
+            continue;
+
+          if (el.name === "data.notes" && !disableNotes) continue;
+          if (el.name.startsWith("sheet.rules.") && !disableRules) continue;
+
+          el.setAttribute("disabled", "");
+        }
+      }
+    }
   }
 
   /** Handle a click event on the toggle compendium link button. */
@@ -170,11 +233,8 @@ export default class WvItemSheet extends ItemSheet {
   }
 
   protected override _getHeaderButtons(): Application.HeaderButton[] {
-    if (!this.item.hasEnabledCompendiumLink || !this.item.isProtoItemType)
-      return super._getHeaderButtons();
-
     const buttons = super._getHeaderButtons();
-    if (this.item.hasEnabledCompendiumLink && this.item.isProtoItemType) {
+    if (this.item.hasCompendiumLink && this.item.isProtoItemType) {
       buttons.unshift({
         label: getGame().i18n.localize("wv.system.misc.updateFromCompendium"),
         class: "wv-update-from-compendium",
@@ -447,10 +507,3 @@ export interface SheetDataMessage {
   iconClass: string;
   message: string;
 }
-
-type ClickEvent = JQuery.ClickEvent<
-  HTMLElement,
-  unknown,
-  HTMLElement,
-  HTMLElement
->;

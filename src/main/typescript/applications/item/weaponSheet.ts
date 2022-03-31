@@ -107,13 +107,13 @@ export default class WeaponSheet extends WvItemSheet {
 
     sheetForm
       .querySelectorAll(".weapon-attack > button[data-attack]")
-      .forEach((element) => {
+      .forEach((element) =>
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
             throw new Error("This should not happen!");
           this.onClickAttackExecute(event);
-        });
-      });
+        })
+      );
   }
 
   override async getData(): Promise<SheetData> {

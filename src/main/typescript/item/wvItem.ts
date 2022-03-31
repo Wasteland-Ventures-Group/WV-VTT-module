@@ -75,11 +75,19 @@ export default class WvItem extends Item {
   }
 
   /** Check whether the item has a compendium link in its flags. */
-  get hasEnabledCompendiumLink(): boolean {
+  get hasCompendiumLink(): boolean {
     const sourceId = this.getFlag("core", "sourceId");
     if (typeof sourceId !== "string") return false;
 
     return SYSTEM_COMPENDIUM_SOURCE_ID_REGEX.test(sourceId);
+  }
+
+  /** Check whether the item has a compendium link that is currently enabled. */
+  get hasEnabledCompendiumLink(): boolean {
+    return (
+      this.hasCompendiumLink &&
+      !this.getFlag(CONSTANTS.systemId, "disableCompendiumLink")
+    );
   }
 
   /** Check whether the item has the type of one of the prototype items. */
@@ -156,7 +164,7 @@ export default class WvItem extends Item {
    * whether the compendium link for this item is broken.
    */
   async updateFromCompendium(): Promise<void> {
-    if (!this.hasEnabledCompendiumLink) return;
+    if (!this.hasCompendiumLink) return;
 
     LOG.debug(`Updating item from Compendium [${this.id}] "${this.name}"`);
     await this.update(

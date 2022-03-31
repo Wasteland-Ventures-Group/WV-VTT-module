@@ -94,7 +94,8 @@
             "pulse": "Pulse",
             "timed": "Timed",
             "highVelocity": "High Velocity"
-          }
+          },
+          "type": "Ammo Type"
         },
         "apparel": {
           "name": "Apparel",
@@ -449,6 +450,7 @@
       "sheets": {
         "names": {
           "actorSheet": "Actor Sheet",
+          "ammoSheet": "Ammo Sheet",
           "apparelSheet": "Apparel Sheet",
           "effectSheet": "Effect Sheet",
           "itemSheet": "Item Sheet",

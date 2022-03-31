@@ -5,7 +5,7 @@ import type { I18nApparelSlots, I18nApparelTypes } from "../../wvI18n.js";
 import WvI18n from "../../wvI18n.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 
-/** An Item Sheet for Apparel items. */
+/** An Item sheet for Apparel items. */
 export default class ApparelSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;

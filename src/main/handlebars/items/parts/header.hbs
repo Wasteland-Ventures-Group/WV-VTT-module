@@ -4,28 +4,33 @@
     <h1 class="document-name"><input name="name" type="text" value="{{data.name}}" placeholder="{{localize 'wv.system.misc.name'}}" /></h1>
     <div class="header-fields">
       <div class="general-info flexrow spacing-bottom">
-        {{#if data.data.name~}}
+        {{~#if data.data.name~}}
           <h3 class="proto-name">{{data.data.name}}</h3>
-        {{~/if}}
-        {{#if sheet.rarity~}}
+        {{~/if~}}
+        {{~#if sheet.rarity~}}
           <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.rarity.name"}}">
             <span class="fas fa-gem"></span><span>{{sheet.rarity.selectedName}}</span>
           </span>
-        {{~/if}}
-        {{#if data.data.value includeZero=true ~}}
+        {{~/if~}}
+        {{~#if data.data.value includeZero=true ~}}
           <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.value.name"}}">
             <span class="fas fa-coins"></span><span>{{data.data.value}}</span>
           </span>
-        {{~/if}}
-        {{#if data.data.weight includeZero=true ~}}
+        {{~/if~}}
+        {{~#if data.data.weight includeZero=true ~}}
           <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.weight.name"}}">
             <span class="fas fa-weight"></span><span>{{data.data.weight}}</span>
           </span>
-        {{~/if}}
+        {{~/if~}}
+        {{~#if data.data.amount includeZero=true ~}}
+          <span class="general-info-element flex-fixed" title="{{localize "wv.system.values.amount"}}">
+            <span class="fas fa-hashtag"></span><span>{{data.data.amount}}</span>
+          </span>
+        {{~/if~}}
       </div>
-      {{#if data.data.description~}}
+      {{~#if data.data.description~}}
         <section>{{data.data.description}}</section>
-      {{~/if}}
+      {{~/if~}}
     </div>
   </div>
 </header>

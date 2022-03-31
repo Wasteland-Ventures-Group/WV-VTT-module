@@ -1,0 +1,30 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+{{> (get . "sheet.parts.header")}}
+
+  <nav class="tabs flex-fixed" data-group="primary">
+    <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
+    <a class="item" data-tab="rules">{{localize "wv.system.ruleEngine.ruleElement.plural"}}</a>
+  </nav>
+
+  <section class="content">
+    <div class="tab active" data-group="primary" data-tab="stats">
+{{> (get . "sheet.parts.physicalItemInputs")}}
+      <div class="flexrow flex-j-spaced">
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.equipment.ammo.caliber"~}}
+          <select name="data.caliber">
+            {{~selectOptions sheet.calibers selected=data.data.caliber~}}
+          </select>
+        </label>
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.equipment.ammo.type"~}}
+          <input class="size-20" type="text" name="data.type" value="{{data.data.type}}" />
+        </label>
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="rules">
+{{> (get . "sheet.parts.rules")}}
+    </div>
+  </section>
+</form>

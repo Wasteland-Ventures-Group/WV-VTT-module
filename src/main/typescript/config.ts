@@ -1,6 +1,7 @@
 import Ajv from "ajv";
 import WvActor from "./actor/wvActor.js";
 import WvActorSheet from "./applications/actor/wvActorSheet.js";
+import AmmoSheet from "./applications/item/ammoSheet.js";
 import ApparelSheet from "./applications/item/apparelSheet.js";
 import EffectSheet from "./applications/item/effectSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
@@ -16,6 +17,7 @@ import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvRuler from "./foundryOverrides/wvRuler.js";
 import WvToken from "./foundryOverrides/wvToken.js";
+import Ammo from "./item/ammo.js";
 import Apparel from "./item/apparel.js";
 import Effect from "./item/effect.js";
 import Weapon from "./item/weapon.js";
@@ -39,6 +41,7 @@ export function configureFoundryOnInit(): void {
         character: WvActor
       },
       item: {
+        ammo: Ammo,
         apparel: Apparel,
         effect: Effect,
         weapon: Weapon
@@ -88,6 +91,11 @@ export function configureFoundryOnInit(): void {
     label: "wv.system.sheets.names.effectSheet",
     makeDefault: true,
     types: [TYPES.ITEM.EFFECT]
+  });
+  Items.registerSheet(CONSTANTS.systemId, AmmoSheet, {
+    label: "wv.system.sheets.names.ammoSheet",
+    makeDefault: true,
+    types: [TYPES.ITEM.AMMO]
   });
   Items.registerSheet(CONSTANTS.systemId, ApparelSheet, {
     label: "wv.system.sheets.names.apparelSheet",

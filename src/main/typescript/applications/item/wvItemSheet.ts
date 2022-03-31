@@ -49,6 +49,8 @@ export default class WvItemSheet extends ItemSheet {
   override get template(): string {
     const root = `${CONSTANTS.systemPath}/handlebars/items/`;
     switch (this.item.data.type) {
+      case "ammo":
+        return root + "ammoSheet.hbs";
       case "apparel":
         return root + "apparelSheet.hbs";
       case "effect":

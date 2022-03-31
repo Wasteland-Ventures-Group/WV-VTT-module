@@ -14,6 +14,7 @@ import type StackableBaseItem from "./data/item/stackableBaseItem.js";
 import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage/index.js";
+import type Ammo from "./item/ammo.js";
 import type Apparel from "./item/apparel.js";
 import type Effect from "./item/effect.js";
 import type Weapon from "./item/weapon.js";
@@ -56,6 +57,7 @@ declare global {
           character: typeof WvActor;
         };
         item: {
+          ammo: typeof Ammo;
           apparel: typeof Apparel;
           effect: typeof Effect;
           weapon: typeof Weapon;

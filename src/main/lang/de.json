@@ -73,7 +73,8 @@
             "pulse": "EMP",
             "timed": "Zeitzünder",
             "highVelocity": "Hochgeschwindigkeit"
-          }
+          },
+          "type": "Munitionstyp"
         },
         "apparel": {
           "name": "Bekleidung",
@@ -449,6 +450,7 @@
       "sheets": {
         "names": {
           "actorSheet": "Aktorbogen",
+          "ammoSheet": "Munitionsbogen",
           "apparelSheet": "Bekleidungsbogen",
           "effectSheet": "Effektbogen",
           "itemSheet": "Gegenstandsbogen",

@@ -105,6 +105,8 @@ export interface LangSchema {
             timed: string;
             highVelocity: string;
           };
+          /** The label for the ammo type */
+          type: string;
         };
         /** Labels relating to the concept of apparel. */
         apparel: {
@@ -582,6 +584,8 @@ export interface LangSchema {
         names: {
           /** The label for the Actor sheet */
           actorSheet: string;
+          /** The label for the Ammo sheet */
+          ammoSheet: string;
           /** The label for the Apparel sheet */
           apparelSheet: string;
           /** The label for the Effect sheet */

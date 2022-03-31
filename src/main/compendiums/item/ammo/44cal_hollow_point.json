@@ -16,7 +16,7 @@
     "caliber": "44cal",
     "type": "hollowPoint"
   },
-  "img": "",
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
   "effects": [],
   "flags": {}
 }

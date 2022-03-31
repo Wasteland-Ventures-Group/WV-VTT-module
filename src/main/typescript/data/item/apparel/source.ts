@@ -118,6 +118,7 @@ export const COMP_APPAREL_JSON_SCHEMA: JSONSchemaType<CompendiumApparel> = {
   default: {
     ...COMPENDIUM_JSON_SCHEMA.default,
     type: TYPES.ITEM.APPAREL,
-    data: APPAREL_SOURCE_JSON_SCHEMA.default
+    data: APPAREL_SOURCE_JSON_SCHEMA.default,
+    img: "icons/equipment/chest/breastplate-leather-brown-belted.webp"
   }
 };

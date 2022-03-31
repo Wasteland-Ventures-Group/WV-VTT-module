@@ -137,6 +137,7 @@ export const COMP_WEAPON_JSON_SCHEMA: JSONSchemaType<CompendiumWeapon> = {
   default: {
     ...COMPENDIUM_JSON_SCHEMA.default,
     type: TYPES.ITEM.WEAPON,
-    data: WEAPON_SOURCE_JSON_SCHEMA.default
+    data: WEAPON_SOURCE_JSON_SCHEMA.default,
+    img: "icons/weapons/guns/gun-pistol-flintlock-white.webp"
   }
 };

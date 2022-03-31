@@ -73,6 +73,7 @@ export const COMP_AMMO_JSON_SCHEMA: JSONSchemaType<CompendiumAmmo> = {
   default: {
     ...COMPENDIUM_JSON_SCHEMA.default,
     type: TYPES.ITEM.AMMO,
-    data: AMMO_SOURCE_JSON_SCHEMA.default
+    data: AMMO_SOURCE_JSON_SCHEMA.default,
+    img: "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp"
   }
 };

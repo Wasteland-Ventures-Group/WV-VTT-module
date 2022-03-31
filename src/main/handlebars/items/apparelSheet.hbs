@@ -27,13 +27,13 @@
         <label class="contained-target-inline flex-fixed">
           {{~localize "wv.rules.equipment.slots.apparelSlot"~}}
           <select name="data.slot">
-            {{selectOptions sheet.slots selected=data.data.slot}}
+            {{~selectOptions sheet.slots selected=data.data.slot~}}
           </select>
         </label>
         <label class="contained-target-inline flex-fixed">
           {{~localize "wv.rules.equipment.apparel.type"~}}
           <select name="data.type">
-            {{selectOptions sheet.types selected=data.data.type}}
+            {{~selectOptions sheet.types selected=data.data.type~}}
           </select>
         </label>
       </div>

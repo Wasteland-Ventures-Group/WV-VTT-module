@@ -2,7 +2,7 @@
   "_id": "WVweapon00000051",
   "name": "Mace",
   "type": "weapon",
-  "img": "",
+  "img": "icons/weapons/maces/mace-round-studded.webp",
   "data": {
     "name": "Mace",
     "description": "A simple and heavy metal lump at the end of a rod. Perfect for meeting mace to face.",

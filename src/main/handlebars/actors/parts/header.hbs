@@ -58,10 +58,15 @@
             </div>
           </label>
         </div>
-        <div class="radiation-dose lighter-block resource-block flex-fixed resource-block-line">
-          <label class="contained-target-inline">
-            {{~localize "wv.rules.radiation.name"~}}
+        <div class="radiation lighter-block resource-block flex-fixed">
+          <span class="contained-target-inline resource-block-line">{{~localize "wv.rules.radiation.name"~}}</span>
+          <label class="contained-target-inline resource-block-line">
+            {{~localize "wv.rules.radiation.dose"~}}
             <input class="size-2" type="number" name="data.vitals.radiationDose" value="{{data.data.vitals.radiationDose}}" min="0" />
+          </label>
+          <label class="contained-target-inline resource-block-line">
+            {{~localize "wv.rules.radiation.sicknessLevel"~}}
+            <span class="resource-display">{{sheet.radiationSicknessLevel}}</span>
           </label>
         </div>
       </div>

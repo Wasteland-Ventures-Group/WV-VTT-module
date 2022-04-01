@@ -28,6 +28,7 @@ import Apparel from "../../item/apparel.js";
 import Weapon from "../../item/weapon.js";
 import Attack from "../../item/weapon/attack.js";
 import WvItem from "../../item/wvItem.js";
+import { getI18nRadiationSicknessLevel } from "../../radiation.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
 import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
@@ -53,7 +54,7 @@ export default class WvActorSheet extends ActorSheet {
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
       ],
-      width: 700
+      width: 740
     } as typeof ActorSheet["defaultOptions"]);
   }
 
@@ -237,6 +238,7 @@ export default class WvActorSheet extends ActorSheet {
           stats: HANDLEBARS.partPaths.actor.stats,
           weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
         },
+        radiationSicknessLevel: getI18nRadiationSicknessLevel(this.actor),
         specials: SpecialNames.reduce((specials, specialName) => {
           specials[specialName] = {
             ...this.actor.getSpecial(specialName),
@@ -926,6 +928,7 @@ interface SheetData extends ActorSheet.Data {
       stats: string;
       weaponSlot: string;
     };
+    radiationSicknessLevel: string;
     skills: Record<SkillName, SheetSkill>;
     specials: Record<SpecialName, SheetSpecial>;
   };

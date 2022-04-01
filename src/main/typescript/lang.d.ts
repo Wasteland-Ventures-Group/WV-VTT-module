@@ -211,6 +211,18 @@ export interface LangSchema {
       radiation: {
         /** The name of the radiation concept */
         name: string;
+        /** The label for the absorbed dose */
+        dose: string;
+        /** The label for the radiation sickness level */
+        sicknessLevel: string;
+        /** Names for levels of radiation sickness */
+        sicknessLevels: {
+          none: string;
+          minor: string;
+          moderate: string;
+          major: string;
+          critical: string;
+        };
       };
       /** Labels related to range */
       range: QuantityNames & {

@@ -11,6 +11,7 @@ import {
   EquipmentSlot
 } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
+import type { RadiationSicknessLevel } from "./radiation.js";
 
 /** The internationalization structure of a single SPECIAL. */
 export interface I18nSpecial {
@@ -21,9 +22,6 @@ export interface I18nSpecial {
   short: string;
 }
 
-/** The internationalization structure for equipment slots */
-export type I18nEquipmentSlots = Record<EquipmentSlot, string>;
-
 /** The internationalization structure for apparel slots */
 export type I18nApparelSlots = Record<ApparelSlot, string>;
 
@@ -33,8 +31,14 @@ export type I18nApparelTypes = Record<ApparelType, string>;
 /** The internationalization structure for calibers */
 export type I18nCalibers = Record<Caliber, string>;
 
+/** The internationalization structure for equipment slots */
+export type I18nEquipmentSlots = Record<EquipmentSlot, string>;
+
 /** The internationalization structure of the Races */
 export type I18nRaces = Record<Race, string>;
+
+/** The internationalization structure of radiation sickness levels. */
+export type I18nRadSicknessLevels = Record<RadiationSicknessLevel, string>;
 
 /** The internationalization structure for rarities */
 export type I18nRarities = Record<Rarity, string>;
@@ -64,6 +68,7 @@ export default class WvI18n {
     };
   }
 
+  /** Get the internationalization of apparel types. */
   static get apparelTypes(): I18nApparelTypes {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
@@ -85,6 +90,14 @@ export default class WvI18n {
       getGame().i18n.translations,
       "wv.rules.race.names"
     ) as I18nRaces;
+  }
+
+  /** Get the internationalization of radiation sickness levels. */
+  static get radiationSicknessLevels(): I18nRadSicknessLevels {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.radiation.sicknessLevels"
+    ) as I18nRadSicknessLevels;
   }
 
   /** Get the internationalization of the rarities. */

@@ -25,6 +25,7 @@ import Apparel from "../item/apparel.js";
 import Weapon from "../item/weapon.js";
 import type WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
+import { applyRadiationSickness } from "../radiation.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
@@ -460,6 +461,9 @@ export default class WvActor extends Actor {
       const points = data.leveling.specialPoints[special];
       data.specials[special] = new Special(points, points, points);
     }
+
+    // Modify SPECIALS from Radiation sickness ---------------------------------
+    applyRadiationSickness(this);
   }
 
   override prepareEmbeddedDocuments(): void {

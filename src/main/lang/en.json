@@ -220,7 +220,16 @@
         "singular": "Race"
       },
       "radiation": {
-        "name": "Radiation"
+        "name": "Radiation",
+        "dose": "Absorbed Dose",
+        "sicknessLevel": "Sickness",
+        "sicknessLevels": {
+          "none": "None",
+          "minor": "Minor",
+          "moderate": "Moderate",
+          "major": "Major",
+          "critical": "Critical"
+        }
       },
       "range": {
         "distance": "Distance",

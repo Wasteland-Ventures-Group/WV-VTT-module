@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - default icons for item schemas
 - a dedicated ammo sheet
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+- automatic radiation sickness effects and sickness level display
+  ([#209](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/209))
 
 ### Changed
 

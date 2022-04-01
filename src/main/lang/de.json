@@ -220,7 +220,16 @@
         "singular": "Rasse"
       },
       "radiation": {
-        "name": "Strahlung"
+        "name": "Strahlung",
+        "dose": "Absorbierte Dosis",
+        "sicknessLevel": "Krankheit",
+        "sicknessLevels": {
+          "none": "Keine",
+          "minor": "Leicht",
+          "moderate": "Mittel",
+          "major": "Schwer",
+          "critical": "Kritisch"
+        }
       },
       "range": {
         "distance": "Distanz",

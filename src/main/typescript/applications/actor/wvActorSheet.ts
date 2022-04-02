@@ -54,7 +54,7 @@ export default class WvActorSheet extends ActorSheet {
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
       ],
-      width: 740
+      width: 800
     } as typeof ActorSheet["defaultOptions"]);
   }
 

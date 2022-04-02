@@ -1,0 +1,23 @@
+{
+  "_id": "WvApparel0000082",
+  "name": "Breather",
+  "type": "apparel",
+  "data": {
+    "name": "Breather",
+    "description": "",
+    "notes": "+5 Poison Resistance | +5 Rad Resistance",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 250,
+    "weight": 0.5,
+    "quickSlots": 0,
+    "modSlots": 0,
+    "slot": "mouth",
+    "type": "mouth"
+  },
+  "img": "icons/equipment/head/mask-plague-leather-brown.webp",
+  "effects": [],
+  "flags": {}
+}

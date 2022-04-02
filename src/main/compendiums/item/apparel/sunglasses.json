@@ -1,0 +1,23 @@
+{
+  "_id": "WvApparel0000084",
+  "name": "Sunglasses",
+  "type": "apparel",
+  "data": {
+    "name": "Sunglasses",
+    "description": "",
+    "notes": "Reduces effects of Blinding Light by 1, but increases penalties of Dim Light and Darkness by 1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 20,
+    "weight": 0,
+    "quickSlots": 0,
+    "modSlots": 0,
+    "slot": "eyes",
+    "type": "eyes"
+  },
+  "img": "icons/tools/scribal/spectacles-glasses.webp",
+  "effects": [],
+  "flags": {}
+}

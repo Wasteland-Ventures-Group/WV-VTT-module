@@ -1,0 +1,23 @@
+{
+  "_id": "WvApparel0000086",
+  "name": "Night Vision Goggles",
+  "type": "apparel",
+  "data": {
+    "name": "Night Vision Goggles",
+    "description": "",
+    "notes": "Reduce Penalties of Dim Light and Darkness by 2, but add penalties to normal light by 2 and block Sight at Blinding Light.",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 500,
+    "weight": 0.5,
+    "quickSlots": 0,
+    "modSlots": 0,
+    "slot": "eyes",
+    "type": "eyes"
+  },
+  "img": "icons/equipment/head/goggles-leather-blue.webp",
+  "effects": [],
+  "flags": {}
+}

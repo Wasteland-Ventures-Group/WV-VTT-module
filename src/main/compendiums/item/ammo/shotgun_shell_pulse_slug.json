@@ -16,7 +16,7 @@
     "caliber": "shotgunShell",
     "type": "pulseSlug"
   },
-  "img": "",
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
   "effects": [],
   "flags": {}
 }

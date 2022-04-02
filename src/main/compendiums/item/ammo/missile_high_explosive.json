@@ -16,7 +16,7 @@
     "caliber": "missile",
     "type": "highExplosive"
   },
-  "img": "",
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
   "effects": [],
   "flags": {}
 }

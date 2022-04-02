@@ -1,0 +1,34 @@
+{
+  "_id": "WvApparel0000020",
+  "name": "Firefighter Uniform",
+  "type": "apparel",
+  "data": {
+    "name": "Firefighter Uniform",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Endurance bonus",
+          "priority": 100,
+          "selector": "specials.endurance.tempTotal",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 1
+        }
+      ]
+    },
+    "rarity": "common",
+    "value": 100,
+    "weight": 3,
+    "quickSlots": 1,
+    "modSlots": 3,
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "effects": [],
+  "flags": {}
+}

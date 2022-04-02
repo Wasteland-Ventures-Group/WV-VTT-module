@@ -1,0 +1,44 @@
+{
+  "_id": "WvApparel0000024",
+  "name": "Arcane Attire",
+  "type": "apparel",
+  "data": {
+    "name": "Arcane Attire",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "MEW bonus",
+          "priority": 100,
+          "selector": "skills.magialEnergyWeapons.total",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Thaumaturgy bonus",
+          "priority": 100,
+          "selector": "skills.thaumaturgy.total",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        }
+      ]
+    },
+    "rarity": "uncommon",
+    "value": 200,
+    "weight": 1.5,
+    "quickSlots": 2,
+    "modSlots": 3,
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "effects": [],
+  "flags": {}
+}

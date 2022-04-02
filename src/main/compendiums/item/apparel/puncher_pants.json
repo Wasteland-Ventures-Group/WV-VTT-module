@@ -1,0 +1,44 @@
+{
+  "_id": "WvApparel0000023",
+  "name": "Puncher Pants",
+  "type": "apparel",
+  "data": {
+    "name": "Puncher Pants",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Strength bonus",
+          "priority": 100,
+          "selector": "specials.strength.tempTotal",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Unarmed bonus",
+          "priority": 100,
+          "selector": "skills.unarmed.total",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        }
+      ]
+    },
+    "rarity": "uncommon",
+    "value": 200,
+    "weight": 1.5,
+    "quickSlots": 1,
+    "modSlots": 3,
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "effects": [],
+  "flags": {}
+}

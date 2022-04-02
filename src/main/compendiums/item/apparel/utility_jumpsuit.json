@@ -1,0 +1,44 @@
+{
+  "_id": "WvApparel0000013",
+  "name": "Utility Jumpsuit",
+  "type": "apparel",
+  "data": {
+    "name": "Utility Jumpsuit",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Mechanics bonus",
+          "priority": 100,
+          "selector": "skills.mechanics.total",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Lockpick bonus",
+          "priority": 100,
+          "selector": "skills.lockpick.total",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        }
+      ]
+    },
+    "rarity": "uncommon",
+    "value": 100,
+    "weight": 0.5,
+    "quickSlots": 2,
+    "modSlots": 3,
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "effects": [],
+  "flags": {}
+}

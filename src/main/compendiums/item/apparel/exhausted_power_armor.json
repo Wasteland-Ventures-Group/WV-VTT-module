@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparel0000069",
+  "name": "Exhausted Power Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Exhausted Power Armor",
+    "description": "",
+    "notes": "+10 Poison Resistance | +20 Rad Resistance | User is Encumbered",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 4000,
+    "weight": 25,
+    "damageThreshold": 4,
+    "quickSlots": 0,
+    "modSlots": 3,
+    "slot": "armor",
+    "type": "heavyArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-steel-black.webp",
+  "effects": [],
+  "flags": {}
+}

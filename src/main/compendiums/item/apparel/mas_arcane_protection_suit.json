@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparel0000071",
+  "name": "MAS Arcane Protection Suit",
+  "type": "apparel",
+  "data": {
+    "name": "MAS Arcane Protection Suit",
+    "description": "",
+    "notes": "+1 DT against MEWs | +10 Rad Resistance",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 5000,
+    "weight": 8,
+    "damageThreshold": 2,
+    "quickSlots": 3,
+    "modSlots": 2,
+    "slot": "armor",
+    "type": "premiumArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-sculpted-green.webp",
+  "effects": [],
+  "flags": {}
+}

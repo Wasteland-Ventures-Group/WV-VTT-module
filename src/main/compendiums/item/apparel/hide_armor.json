@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparel0000065",
+  "name": "Hide Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Hide Armor",
+    "description": "",
+    "notes": "User is Encumbered",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 150,
+    "weight": 12,
+    "damageThreshold": 2,
+    "quickSlots": 0,
+    "modSlots": 2,
+    "slot": "armor",
+    "type": "heavyArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "effects": [],
+  "flags": {}
+}

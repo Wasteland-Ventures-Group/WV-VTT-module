@@ -1,0 +1,35 @@
+{
+  "_id": "WvApparel0000061",
+  "name": "Runic Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Runic Armor",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Thaumaturgy Bonus",
+          "priority": 100,
+          "selector": "skills.thaumaturgy.total",
+          "target": "actor",
+          "type": "WV.RuleElement.FlatModifier",
+          "value": 5
+        }
+      ]
+    },
+    "rarity": "uncommon",
+    "value": 550,
+    "weight": 4,
+    "damageThreshold": 1,
+    "quickSlots": 1,
+    "modSlots": 3,
+    "slot": "armor",
+    "type": "lightArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "effects": [],
+  "flags": {}
+}

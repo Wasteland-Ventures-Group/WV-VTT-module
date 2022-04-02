@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparel0000074",
+  "name": "T-45d Power Armor",
+  "type": "apparel",
+  "data": {
+    "name": "T-45d Power Armor",
+    "description": "",
+    "notes": "+20 Poison Resistance | +40 Rad Resistance | +10 Carry Weight",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "exotic",
+    "value": 9999,
+    "weight": 40,
+    "damageThreshold": 5,
+    "quickSlots": 2,
+    "modSlots": 3,
+    "slot": "armor",
+    "type": "powerArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-banded-steel-grey.webp",
+  "effects": [],
+  "flags": {}
+}

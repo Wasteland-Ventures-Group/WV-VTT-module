@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparel0000067",
+  "name": "Scale Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Scale Armor",
+    "description": "",
+    "notes": "User is Encumbered",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 1000,
+    "weight": 15,
+    "damageThreshold": 3,
+    "quickSlots": 0,
+    "modSlots": 4,
+    "slot": "armor",
+    "type": "heavyArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-steel-black.webp",
+  "effects": [],
+  "flags": {}
+}

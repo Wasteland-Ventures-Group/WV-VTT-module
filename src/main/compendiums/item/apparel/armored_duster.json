@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparel0000059",
+  "name": "Armored Duster",
+  "type": "apparel",
+  "data": {
+    "name": "Armored Duster",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "common",
+    "value": 100,
+    "weight": 3,
+    "damageThreshold": 1,
+    "quickSlots": 3,
+    "modSlots": 4,
+    "slot": "armor",
+    "type": "lightArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "effects": [],
+  "flags": {}
+}

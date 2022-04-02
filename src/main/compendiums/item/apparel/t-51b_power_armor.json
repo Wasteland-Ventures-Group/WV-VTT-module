@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparel0000075",
+  "name": "T-51b Power Armor",
+  "type": "apparel",
+  "data": {
+    "name": "T-51b Power Armor",
+    "description": "",
+    "notes": "+20 Poison Resistance | +40 Rad Resistance | +15 Carry Weight",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "exotic",
+    "value": 9999,
+    "weight": 40,
+    "damageThreshold": 6,
+    "quickSlots": 2,
+    "modSlots": 1,
+    "slot": "armor",
+    "type": "powerArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-banded-steel-grey.webp",
+  "effects": [],
+  "flags": {}
+}

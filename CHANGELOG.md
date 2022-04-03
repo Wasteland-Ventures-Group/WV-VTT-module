@@ -623,7 +623,8 @@ version, then continue with upgrading to the next version.
 
 - basic character Actor implementation with editable SPECIALs
 
-[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.3...HEAD
+[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.3...v0.15.0
 [0.14.3]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.2...v0.14.3
 [0.14.2]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.1...v0.14.2
 [0.14.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.0...v0.14.1

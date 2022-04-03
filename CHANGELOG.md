@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.15.0] - 2022-04-03
+
 ### Added
 
 - default icons for item schemas
@@ -14,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
 - automatic radiation sickness effects and sickness level display
   ([#209](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/209))
+- remaining ammo to ammo compendium
 
 ### Changed
 

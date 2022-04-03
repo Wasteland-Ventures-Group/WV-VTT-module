@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000058",
+  "name": "Rifle Grenade (High Explosive)",
+  "type": "ammo",
+  "data": {
+    "name": "Rifle Grenade (High Explosive)",
+    "description": "",
+    "notes": "Damage +(3), burst template becomes Large Burst; Crit. Fail chance +10",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 60,
+    "weight": 0,
+    "amount": 1,
+    "caliber": "rifleGrenade",
+    "type": "highExplosive"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

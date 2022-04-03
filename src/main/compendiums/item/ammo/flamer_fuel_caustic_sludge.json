@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000049",
+  "name": "Flamer Fuel (Caustic Sludge)",
+  "type": "ammo",
+  "data": {
+    "name": "Flamer Fuel (Caustic Sludge)",
+    "description": "",
+    "notes": "Normal Damage, Causes Burning; DT reduction 1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 0.6,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "flamerFuel",
+    "type": "causticSludge"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

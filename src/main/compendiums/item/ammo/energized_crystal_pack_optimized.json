@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000046",
+  "name": "Energized Crystal Pack (Optimized)",
+  "type": "ammo",
+  "data": {
+    "name": "Energized Crystal Pack (Optimized)",
+    "description": "",
+    "notes": "Damage +1, DT Reduction +1",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "exotic",
+    "value": 2.8,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "energizedCrystalPack",
+    "type": "optimized"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

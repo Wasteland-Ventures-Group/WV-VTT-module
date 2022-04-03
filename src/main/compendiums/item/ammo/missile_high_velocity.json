@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000063",
+  "name": "Missile (High Velocity)",
+  "type": "ammo",
+  "data": {
+    "name": "Missile (High Velocity)",
+    "description": "",
+    "notes": "Negates 10 from Range Penalties (moves faster)",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 150,
+    "weight": 0,
+    "amount": 1,
+    "caliber": "missile",
+    "type": "highVelocity"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "flags": {},
+  "effects": []
+}

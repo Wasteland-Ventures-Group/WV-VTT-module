@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000050",
+  "name": "Flamer Fuel (Cryo-fluid)",
+  "type": "ammo",
+  "data": {
+    "name": "Flamer Fuel (Cryo-fluid)",
+    "description": "",
+    "notes": "Causes Freezing; No longer causes Burning",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 0.2,
+    "weight": 0,
+    "amount": 5,
+    "caliber": "flamerFuel",
+    "type": "cryoFluid"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

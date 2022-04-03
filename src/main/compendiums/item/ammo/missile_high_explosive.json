@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000064",
+  "name": "Missile (High Explosive)",
+  "type": "ammo",
+  "data": {
+    "name": "Missile (High Explosive)",
+    "description": "",
+    "notes": "Damage +(5)",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 300,
+    "weight": 0,
+    "amount": 1,
+    "caliber": "missile",
+    "type": "highExplosive"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

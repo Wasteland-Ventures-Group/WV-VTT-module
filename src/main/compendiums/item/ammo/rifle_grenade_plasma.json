@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000059",
+  "name": "Rifle Grenade (Plasma)",
+  "type": "ammo",
+  "data": {
+    "name": "Rifle Grenade (Plasma)",
+    "description": "",
+    "notes": "Damage bonus +(2)",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "rare",
+    "value": 40,
+    "weight": 0,
+    "amount": 1,
+    "caliber": "rifleGrenade",
+    "type": "plasma"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

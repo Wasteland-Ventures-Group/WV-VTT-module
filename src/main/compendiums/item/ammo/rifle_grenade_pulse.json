@@ -1,0 +1,22 @@
+{
+  "_id": "WVAmmo0000000060",
+  "name": "Rifle Grenade (Pulse)",
+  "type": "ammo",
+  "data": {
+    "name": "Rifle Grenade (Pulse)",
+    "description": "",
+    "notes": "+5 vs. robots, +3 vs. power armor and other electrical equipment, -2 Damage against all other targets.",
+    "rules": {
+      "sources": []
+    },
+    "rarity": "uncommon",
+    "value": 25,
+    "weight": 0,
+    "amount": 1,
+    "caliber": "rifleGrenade",
+    "type": "pulse"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

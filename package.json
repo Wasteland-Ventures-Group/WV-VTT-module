@@ -46,7 +46,7 @@
     "lint-staged": "^12.3.7",
     "mocha": "^9.2.2",
     "prettier": "^2.6.1",
-    "sass": "^1.49.10",
+    "sass": "^1.49.11",
     "ts-json-schema-generator": "^1.0.0",
     "ts-node": "^10.7.0",
     "tsd": "^0.19.1",

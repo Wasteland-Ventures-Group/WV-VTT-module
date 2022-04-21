@@ -1,5 +1,11 @@
 import type { DefinedError } from "ajv";
-import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
+import {
+  CONSTANTS,
+  HANDLEBARS,
+  Rarities,
+  Rarity,
+  TYPES
+} from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
 import AdditionalPropMessage from "../../ruleEngine/messages/additionalPropMessage.js";
 import MissingPropMessage from "../../ruleEngine/messages/missingPropMessage.js";
@@ -128,11 +134,17 @@ export default class WvItemSheet extends ItemSheet {
   /** Handle a click event on a create rule element button. */
   protected onClickCreateRuleElement(): void {
     const sources = this.item.data.data.rules.sources;
-    sources.push(RULE_ELEMENT_SOURCE_JSON_SCHEMA.default);
+    sources.push(this.getDefaultRuleElementSource());
     this.item.updateRuleSources(sources);
+
     LOG.debug(`Created RuleElement on item with id [${this.item.id}]`);
     this.item.prepareData();
     this.render(false);
+  }
+
+  /** Get the default rule element source for newly created rule elements. */
+  protected getDefaultRuleElementSource(): RuleElementSource {
+    return { ...RULE_ELEMENT_SOURCE_JSON_SCHEMA.default };
   }
 
   /** Handle a click event on a delete rule element button. */

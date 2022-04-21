@@ -2,6 +2,7 @@ import type Effect from "../../item/effect.js";
 import { TYPES } from "../../constants.js";
 import { isOfItemType } from "../../item/wvItem.js";
 import WvItemSheet from "./wvItemSheet.js";
+import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
 
 /** An Item Sheet for Effect items. */
 export default class EffectSheet extends WvItemSheet {
@@ -17,5 +18,11 @@ export default class EffectSheet extends WvItemSheet {
       throw new Error("The used Item is not an Effect!");
 
     return super.item;
+  }
+
+  protected override getDefaultRuleElementSource(): RuleElementSource {
+    const source = super.getDefaultRuleElementSource();
+    source.target = "actor";
+    return source;
   }
 }

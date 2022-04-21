@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added an "onAfterComputation" hook for rule elements that is called after all
   other computations on an actor are done
   ([#247](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/247))
+- rule elements created on effect items now target the actor by default
 
 ## [0.15.0] - 2022-04-03
 

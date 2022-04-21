@@ -51,7 +51,7 @@
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-zip": "^5.1.0",
     "husky": "^7.0.1",
-    "lint-staged": "^12.3.8",
+    "lint-staged": "^12.4.0",
     "mocha": "^9.2.2",
     "prettier": "^2.6.2",
     "sass": "^1.50.0",

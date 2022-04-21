@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- amounts of stackable items with compendium link are no longer overwritten by
+  default
+  ([#249](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/249))
+
 ## [0.15.0] - 2022-04-03
 
 ### Added

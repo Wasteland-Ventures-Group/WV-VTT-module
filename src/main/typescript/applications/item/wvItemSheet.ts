@@ -159,6 +159,10 @@ export default class WvItemSheet extends ItemSheet {
 
   /** Disable all inputs that would be overwritten by a compendium update. */
   protected disableCompendiumLinkInputs(form: HTMLFormElement): void {
+    const disableAmount = !!this.item.getFlag(
+      CONSTANTS.systemId,
+      "overwriteAmountWithCompendium"
+    );
     const disableNotes = !!this.item.getFlag(
       CONSTANTS.systemId,
       "overwriteNotesWithCompendium"
@@ -187,6 +191,7 @@ export default class WvItemSheet extends ItemSheet {
           if (!el.name.startsWith("data.") && !el.name.startsWith("sheet."))
             continue;
 
+          if (el.name === "data.amount" && !disableAmount) continue;
           if (el.name === "data.notes" && !disableNotes) continue;
           if (el.name.startsWith("sheet.rules.") && !disableRules) continue;
 

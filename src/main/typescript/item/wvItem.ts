@@ -6,6 +6,7 @@ import {
   ProtoItemTypes,
   SYSTEM_COMPENDIUM_SOURCE_ID_REGEX
 } from "../constants.js";
+import StackableBaseItem from "../data/item/stackableBaseItem.js";
 import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import { RULE_ELEMENTS } from "../ruleEngine/ruleElements.js";
@@ -214,6 +215,7 @@ type ItemContext = ConstructorParameters<typeof Item>[1] & {
 /** Flags for items. */
 export type ItemFlags = {
   disableCompendiumLink?: boolean;
+  overwriteAmountWithCompendium?: boolean;
   overwriteNotesWithCompendium?: boolean;
   overwriteRulesWithCompendium?: boolean;
 };
@@ -240,6 +242,11 @@ export async function getUpdateDataFromCompendium(
   }
   if (!item.getFlag(CONSTANTS.systemId, "overwriteRulesWithCompendium")) {
     updateData.data.rules.sources = item.data.data.rules.sources;
+  }
+  if ("amount" in updateData.data && "amount" in item.data.data) {
+    if (!item.getFlag(CONSTANTS.systemId, "overwriteAmountWithCompendium")) {
+      updateData.data.amount = item.data.data.amount;
+    }
   }
   return updateData;
 }

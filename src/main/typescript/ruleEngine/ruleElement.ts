@@ -90,7 +90,6 @@ export default abstract class RuleElement {
   /**
    * Modify the Document after the SPECIAL calculation step, if the RuleElement
    * does not have errors.
-   * @param doc - the Document to modify
    */
   onAfterSpecial(): void {
     if (this.source.hook !== "afterSpecial") return;
@@ -103,7 +102,6 @@ export default abstract class RuleElement {
   /**
    * Modify the Document after the Skills calculation step, if the RuleElement
    * does not have errors.
-   * @param doc - the Document to modify
    */
   onAfterSkills(): void {
     if (this.source.hook !== "afterSkills") return;
@@ -111,6 +109,18 @@ export default abstract class RuleElement {
     if (this.shouldNotModify()) return;
 
     this._onAfterSkills();
+  }
+
+  /**
+   * Modify the Document after all other computations are done, if the
+   * RuleElement does not have errors.
+   */
+  onAfterComputation(): void {
+    if (this.source.hook !== "afterComputation") return;
+    this.validate();
+    if (this.shouldNotModify()) return;
+
+    this._onAfterComputation();
   }
 
   /** Validate the data and add any error messages to errors. */
@@ -146,6 +156,15 @@ export default abstract class RuleElement {
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected _onAfterSkills(): void {}
+
+  /**
+   * Modify the Document after all other computations are done.
+   *
+   * This is only called when the RuleElement has no errors and should be
+   * overridden by subclasses.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected _onAfterComputation(): void {}
 
   /**
    * Check whether the selector selects a property.

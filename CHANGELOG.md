@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - amounts of stackable items with compendium link are no longer overwritten by
   default
   ([#249](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/249))
+- added an "onAfterComputation" hook for rule elements that is called after all
+  other computations on an actor are done
+  ([#247](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/247))
 
 ## [0.15.0] - 2022-04-03
 

@@ -30,7 +30,11 @@ export default interface RuleElementSource {
   value: boolean | number | string;
 }
 
-export const RULE_ELEMENT_HOOKS = ["afterSpecial", "afterSkills"] as const;
+export const RULE_ELEMENT_HOOKS = [
+  "afterSpecial",
+  "afterSkills",
+  "afterComputation"
+] as const;
 
 export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
 

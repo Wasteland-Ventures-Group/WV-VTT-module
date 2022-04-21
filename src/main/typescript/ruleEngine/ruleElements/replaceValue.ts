@@ -20,6 +20,10 @@ export default class ReplaceValue extends RuleElement {
     this.apply();
   }
 
+  protected override _onAfterComputation(): void {
+    this.apply();
+  }
+
   /** Apply the rule element to the target Document. */
   protected apply(): void {
     foundry.utils.setProperty(

@@ -1,11 +1,5 @@
 import type { DefinedError } from "ajv";
-import {
-  CONSTANTS,
-  HANDLEBARS,
-  Rarities,
-  Rarity,
-  TYPES
-} from "../../constants.js";
+import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
 import AdditionalPropMessage from "../../ruleEngine/messages/additionalPropMessage.js";
 import MissingPropMessage from "../../ruleEngine/messages/missingPropMessage.js";

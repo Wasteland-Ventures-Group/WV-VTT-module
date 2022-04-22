@@ -6,7 +6,6 @@ import {
   ProtoItemTypes,
   SYSTEM_COMPENDIUM_SOURCE_ID_REGEX
 } from "../constants.js";
-import StackableBaseItem from "../data/item/stackableBaseItem.js";
 import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import { RULE_ELEMENTS } from "../ruleEngine/ruleElements.js";

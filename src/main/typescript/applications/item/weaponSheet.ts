@@ -1,10 +1,13 @@
 import { SpecialName, TYPES } from "../../constants.js";
-import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import * as ranges from "../../item/weapon/ranges.js";
 import { isOfItemType } from "../../item/wvItem.js";
-import WvI18n, { I18nSkills } from "../../wvI18n.js";
+import WvI18n, {
+  I18nAmmoContainerTypes,
+  I18nCalibers,
+  I18nSkills
+} from "../../wvI18n.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 export default class WeaponSheet extends WvItemSheet {
@@ -20,6 +23,8 @@ export default class WeaponSheet extends WvItemSheet {
   /** Get the weapon sheet data for a weapon. */
   static getWeaponSheetData(weapon: Weapon): SheetWeapon {
     const i18nSkills = WvI18n.skills;
+    const i18nCalibers = WvI18n.calibers;
+    const i18nContainerTypes = WvI18n.containerTypes;
 
     return {
       attacks: Object.entries(weapon.systemData.attacks.attacks).reduce<
@@ -48,15 +53,11 @@ export default class WeaponSheet extends WvItemSheet {
         )
       },
       reload: {
-        caliber: weapon.systemData.reload
-          ? WvI18n.calibers[weapon.systemData.reload.caliber]
-          : undefined,
-        containerType: weapon.systemData.reload
-          ? getGame().i18n.localize(
-              `wv.rules.equipment.weapon.reload.containerTypes.` +
-                weapon.systemData.reload.containerType
-            )
-          : undefined
+        caliber: i18nCalibers[weapon.systemData.reload.caliber],
+        calibers: i18nCalibers,
+        containerType:
+          i18nContainerTypes[weapon.systemData.reload.containerType],
+        containerTypes: i18nContainerTypes
       },
       skill: i18nSkills[weapon.systemData.skill],
       skills: i18nSkills,
@@ -64,7 +65,7 @@ export default class WeaponSheet extends WvItemSheet {
         "": "",
         ...WvI18n.longSpecials
       },
-      usesAmmo: weapon.systemData.reload !== undefined
+      usesAmmo: weapon.systemData.reload.size > 0
     };
   }
 
@@ -170,8 +171,10 @@ export interface SheetWeapon {
     long: string;
   };
   reload: {
-    caliber: string | undefined;
-    containerType: string | undefined;
+    caliber: string;
+    calibers: I18nCalibers;
+    containerType: string;
+    containerTypes: I18nAmmoContainerTypes;
   };
   skill: string;
   skills: I18nSkills;

@@ -83,6 +83,7 @@ async function migrateItem(
     } else {
       migrateAmmoFix(item, updateData);
       migrateRanges(item, updateData);
+      migrateMandatoryReload(item, updateData);
       if (!foundry.utils.isObjectEmpty(updateData)) {
         LOG.info(`Migrating Item [${item.id}] "${item.name}"`);
         await item.update(updateData);
@@ -186,6 +187,23 @@ function transformRange(
   }
 
   return range;
+}
+
+function migrateMandatoryReload(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>
+) {
+  if (item.type !== "weapon") return;
+
+  const data = item.data.data as WeaponDataSourceData;
+  if (data.reload) return;
+
+  updateData["data.reload"] = {
+    ap: 0,
+    caliber: "308cal",
+    containerType: "magazine",
+    size: 0
+  };
 }
 
 function migrateRuleElementHook(

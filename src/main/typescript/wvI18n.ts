@@ -10,6 +10,7 @@ import {
   ApparelType,
   EquipmentSlot
 } from "./constants.js";
+import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
 import { getGame } from "./foundryHelpers.js";
 import type { RadiationSicknessLevel } from "./radiation.js";
 
@@ -30,6 +31,9 @@ export type I18nApparelTypes = Record<ApparelType, string>;
 
 /** The internationalization structure for calibers */
 export type I18nCalibers = Record<Caliber, string>;
+
+/** The internationalization structure for ammo container types */
+export type I18nAmmoContainerTypes = Record<AmmoContainerType, string>;
 
 /** The internationalization structure for equipment slots */
 export type I18nEquipmentSlots = Record<EquipmentSlot, string>;
@@ -82,6 +86,14 @@ export default class WvI18n {
       getGame().i18n.translations,
       "wv.rules.equipment.ammo.calibers"
     ) as I18nCalibers;
+  }
+
+  /** Get the internationalization of the ammo container types. */
+  static get containerTypes(): I18nAmmoContainerTypes {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.equipment.weapon.reload.containerTypes"
+    ) as I18nAmmoContainerTypes;
   }
 
   /** Get the internationalization of the Races. */

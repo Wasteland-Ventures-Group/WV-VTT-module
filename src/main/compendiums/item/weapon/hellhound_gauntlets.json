@@ -46,6 +46,12 @@
       }
     },
     "rarity": "exotic",
+    "reload": {
+      "ap": 0,
+      "caliber": "308cal",
+      "containerType": "magazine",
+      "size": 0
+    },
     "skill": "unarmed",
     "strengthRequirement": 6,
     "value": 9999,

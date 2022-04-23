@@ -45,6 +45,12 @@
       }
     },
     "rarity": "common",
+    "reload": {
+      "ap": 0,
+      "caliber": "308cal",
+      "containerType": "magazine",
+      "size": 0
+    },
     "skill": "melee",
     "strengthRequirement": 7,
     "value": 200,

@@ -32,7 +32,7 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
    * The reload stats of the weapon. By default, the weapon does not support
    * reloading.
    */
-  reload?: ReloadSource;
+  reload: ReloadSource = RELOAD_JSON_SCHEMA.default;
 
   /** The skill associated with the weapon attacks */
   skill: SkillName = "firearms";
@@ -80,9 +80,7 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
     },
     reload: {
       ...RELOAD_JSON_SCHEMA,
-      description:
-        "The reload behavior of the weapon. If this is not specified the " +
-        "weapon does not support reloading."
+      description: "The reload behavior of the weapon."
     },
     skill: {
       description: "The Skill used for all actions of the weapon",
@@ -100,6 +98,7 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
     ...PHYS_BASE_ITEM_JSON_SCHEMA.required,
     "attacks",
     "ranges",
+    "reload",
     "skill",
     "strengthRequirement"
   ],
@@ -108,6 +107,7 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
     ...PHYS_BASE_ITEM_JSON_SCHEMA.default,
     attacks: ATTACKS_DEFAULT,
     ranges: RANGES_JSON_SCHEMA.default,
+    reload: RELOAD_JSON_SCHEMA.default,
     skill: "firearms",
     strengthRequirement: 0
   }

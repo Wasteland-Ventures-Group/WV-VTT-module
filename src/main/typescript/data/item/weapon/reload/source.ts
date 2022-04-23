@@ -10,14 +10,15 @@ export default interface ReloadSource {
   caliber: Caliber;
 
   /** The ammon container type of the weapon */
-  containerType: AmmoContainerSource;
+  containerType: AmmoContainerType;
 
   /** The amount of ammo that fits into the weapon's ammo container */
   size: number;
 }
 
 /** A type for ammo containers */
-type AmmoContainerSource = "internal" | "magazine";
+export type AmmoContainerType = typeof AmmoContainerTypes[number];
+const AmmoContainerTypes = ["internal", "magazine"] as const;
 
 /** A JSON schema for reload objects */
 export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
@@ -27,7 +28,8 @@ export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
     ap: {
       description: "The amount of action points used by the reload",
       type: "integer",
-      default: 0
+      default: 0,
+      minimum: 0
     },
     caliber: {
       description: "The caliber used by the weapon.",
@@ -38,13 +40,15 @@ export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
     containerType: {
       description: "The type of the ammo container used by the weapon",
       type: "string",
-      enum: ["internal", "magazine"],
+      enum: AmmoContainerTypes,
       default: "magazine"
     },
     size: {
-      description: "The size of the ammo container used by the weapon",
+      description:
+        "The size of the ammo container used by the weapon. If this is zero, the weapon does not support reloading.",
       type: "integer",
-      default: 0
+      default: 0,
+      minimum: 0
     }
   },
   required: ["ap", "caliber", "containerType", "size"],

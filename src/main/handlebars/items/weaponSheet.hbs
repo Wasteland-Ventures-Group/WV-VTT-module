@@ -25,6 +25,23 @@
           <input type="checkbox" name="data.holdout" {{checked data.data.holdout}} />
         </label>
       </div>
+      <div class="flexrow flex-j-spaced align-baseline spacing-bottom">
+        <span class="flex-fixed">{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
+        <label class="contained-target-inline flex-fixed" title="{{localize 'wv.rules.actionPoints.use'}}">
+          {{~localize "wv.rules.actionPoints.use"~}}
+          <input type="number" class="size-2" name="data.reload.ap" value="{{data.data.reload.ap}}" min="0" />
+        </label>
+        <span class="flex-fixed no-wrap">
+          <input type="number" class="size-3" name="data.reload.size" value="{{data.data.reload.size}}" min="0" title="{{localize 'wv.rules.equipment.weapon.reload.containerSize'}}" />
+          <span> * </span>
+          <select name="data.reload.caliber" title="{{localize 'wv.rules.equipment.ammo.caliber'}}">
+            {{~selectOptions sheet.reload.calibers selected=data.data.reload.caliber~}}
+          </select>
+        </span>
+        <select class="flex-fixed" name="data.reload.containerType" title="{{localize 'wv.rules.equipment.weapon.reload.containerType'}}">
+          {{~selectOptions sheet.reload.containerTypes selected=data.data.reload.containerType~}}
+        </select>
+      </div>
       <table class="spacing-bottom">
         <thead>
           <tr>
@@ -132,27 +149,6 @@
           </div>
         {{~/each}}
       </div>
-      {{#if sheet.usesAmmo~}}
-        <div class="lighter-block resource-block flex-fixed">
-          <h4 class="resource-block-line">{{localize "wv.rules.equipment.weapon.reload.name"}}</h4>
-          <label class="resource-block-line contained-target-inline">
-            {{~localize "wv.rules.actionPoints.use"~}}
-            <span class="resource-display size-2">{{data.data.reload.ap}}</span>
-          </label>
-          <label class="resource-block-line contained-target-inline">
-            {{~localize "wv.rules.equipment.ammo.caliber"~}}
-            <span class="resource-display">{{sheet.reload.caliber}}</span>
-          </label>
-          <label class="resource-block-line contained-target-inline">
-            {{~localize "wv.rules.equipment.weapon.reload.containerType"~}}
-            <span class="resource-display">{{sheet.reload.containerType}}</span>
-          </label>
-          <label class="resource-block-line contained-target-inline">
-            {{~localize "wv.rules.equipment.weapon.reload.containerSize"~}}
-            <span class="resource-display size-2">{{data.data.reload.size}}</span>
-          </label>
-        </div>
-      {{~/if}}
     </div>
 
     <div class="tab" data-group="primary" data-tab="rules">

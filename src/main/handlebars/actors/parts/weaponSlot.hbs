@@ -33,12 +33,12 @@
       <section>
         <span>{{localize "wv.rules.range.plural"}}:</span>
         <span class="details">
-          <span>{{localize "wv.rules.range.ranges.short.short"}} ({{weapon.sheet.displayRanges.short}}) [{{weapon.data.ranges.short.modifier}}]</span>
+          <span>{{localize "wv.rules.range.ranges.short.short"}} ({{weapon.sheet.displayRanges.short}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.short.modifier}}]</span>
           {{~#unless (eq "-" weapon.sheet.displayRanges.medium)~}}
-            <span>{{localize "wv.rules.range.ranges.medium.short"}} ({{weapon.sheet.displayRanges.medium}}) [{{weapon.data.ranges.medium.modifier}}]</span>
+            <span>{{localize "wv.rules.range.ranges.medium.short"}} ({{weapon.sheet.displayRanges.medium}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.medium.modifier}}]</span>
           {{~/unless~}}
           {{~#unless (eq "-" weapon.sheet.displayRanges.long)~}}
-            <span>{{localize "wv.rules.range.ranges.long.short"}} ({{weapon.sheet.displayRanges.long}}) [{{weapon.data.ranges.long.modifier}}]</span>
+            <span>{{localize "wv.rules.range.ranges.long.short"}} ({{weapon.sheet.displayRanges.long}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.long.modifier}}]</span>
           {{~/unless~}}
         </span>
       </section>

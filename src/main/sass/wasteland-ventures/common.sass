@@ -149,3 +149,14 @@
       right: 0
     max-width: 30px
     width: 30px
+
+  table
+    thead
+      vertical-align: baseline
+
+    th,td
+      &:not(:last-child)
+        padding-right: constants.$spacing-distance
+
+    td *
+      vertical-align: middle

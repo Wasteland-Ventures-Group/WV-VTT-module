@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- grid units to the range display on the equipment page
+
 ### Changed
 
 - amounts of stackable items with compendium link are no longer overwritten by

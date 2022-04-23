@@ -260,6 +260,7 @@ export default class WvActorSheet extends ActorSheet {
           };
           return skills;
         }, {} as Record<SkillName, SheetSkill>),
+        systemGridUnit: getGame().system.data.gridUnits,
         magic: {
           thaumSpecials: ThaumaturgySpecials.reduce(
             (thaumSpecials, thaumSpecialName) => {
@@ -931,5 +932,6 @@ interface SheetData extends ActorSheet.Data {
     radiationSicknessLevel: string;
     skills: Record<SkillName, SheetSkill>;
     specials: Record<SpecialName, SheetSpecial>;
+    systemGridUnit: string | undefined;
   };
 }

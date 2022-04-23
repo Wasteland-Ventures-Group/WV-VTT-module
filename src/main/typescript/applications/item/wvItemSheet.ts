@@ -90,7 +90,8 @@ export default class WvItemSheet extends ItemSheet {
           elements: data.data.data.rules.elements.map(
             this.mapSheetDataRuleElement.bind(this)
           )
-        }
+        },
+        systemGridUnit: getGame().system.data.gridUnits
       }
     };
   }
@@ -497,6 +498,7 @@ export interface SheetData extends ItemSheet.Data {
     rules: {
       elements: SheetDataRuleElement[];
     };
+    systemGridUnit: string | undefined;
   };
 }
 

@@ -227,8 +227,6 @@ async function migrateFromCompendium(
   const compendiumUpdateData = await getUpdateDataFromCompendium(item);
   if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
     LOG.info(`Updating Item from Compendium [${item.id}] "${item.name}"`);
-    compendiumUpdateData[`flags.${CONSTANTS.systemId}.lastMigrationVersion`] =
-      currentVersion;
     await item.update(
       { ...compendiumUpdateData },
       { recursive: false, diff: false }

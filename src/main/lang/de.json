@@ -170,6 +170,13 @@
       "damage": {
         "baseDamage": "Grundschaden",
         "damageDice": "Schadenswürfel",
+        "diceRange": "Stärke-basierter Schadensbereich",
+        "fallOff": {
+          "name": "Schadensabfall",
+          "types": {
+            "shotgun": "Schrotflinte"
+          }
+        },
         "long": "Schaden",
         "short": "DMG",
         "threshold": {
@@ -365,7 +372,8 @@
         "plural": "Gegenstände"
       },
       "messages": {
-        "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte in der Waffe nicht gefunden werden.",
+        "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte auf der Waffe nicht gefunden werden.",
+        "attackAlreadyExists": "Eine Attacke mit Namen \"{name}\" existiert schon auf der Waffe.",
         "blockedByAnotherApparel": "Der Platz für dieses Kleidungsstück ist von einem Anderen blockiert.",
         "canNotDoInCombat": "Dies kann nicht im Kampf getan werden.",
         "couldNotCreateDocument": "Konnte kein Dokument mit den gegebenen Daten erstellen.",

@@ -22,11 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - rule elements created on effect items now target the actor by default
 - the way weapon ranges are saved
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
-- made weapon basic parameters editable
-  ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
-- made weapon ranges editable
-  ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
-- made weapon reloads editable
+- made weapons editable via their sheets
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
 
 ### Fixed

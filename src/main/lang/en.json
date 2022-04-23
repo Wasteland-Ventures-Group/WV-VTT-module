@@ -29,6 +29,13 @@
       "damage": {
         "baseDamage": "Base Damage",
         "damageDice": "Damage Dice",
+        "diceRange": "Strength-based Dice Range",
+        "fallOff": {
+          "name": "Damage Fall-Off",
+          "types": {
+            "shotgun": "Shotgun"
+          }
+        },
         "long": "Damage",
         "short": "DMG",
         "threshold": {
@@ -365,7 +372,8 @@
         "plural": "Items"
       },
       "messages": {
-        "attackNotFound": "The attack with the name \"{name}\" could not be found in the Weapon.",
+        "attackNotFound": "The attack with the name \"{name}\" could not be found on the Weapon.",
+        "attackAlreadyExists": "An attack with the name \"{name}\" already exists on the Weapon.",
         "blockedByAnotherApparel": "The apparel's slot is blocked by another apparel.",
         "canNotDoInCombat": "This can not be done in combat.",
         "couldNotCreateDocument": "Could not create a Document with the provided data.",

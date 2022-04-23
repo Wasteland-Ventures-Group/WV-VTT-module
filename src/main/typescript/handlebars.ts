@@ -3,7 +3,10 @@ import { HANDLEBARS } from "./constants.js";
 /** This registers various Handlebars helpers. */
 export function registerHelpers(): void {
   Handlebars.registerHelper("get", (context, path) =>
-    foundry.utils.getProperty(context, path)
+    foundry.utils.getProperty(
+      context,
+      path instanceof Handlebars.SafeString ? path.toString() : path
+    )
   );
 
   Handlebars.registerHelper("ternary", (testValue, ...results) => {

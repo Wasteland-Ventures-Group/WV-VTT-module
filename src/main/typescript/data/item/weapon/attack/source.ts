@@ -20,7 +20,7 @@ export interface AttackSource {
     diceRange?: boolean;
 
     /** The optional damage fall-off type of the attack */
-    damageFallOff?: DamageFallOffSource;
+    damageFallOff?: DamageFallOffType | "";
   };
 
   /** The amount of rounds used with the attack */
@@ -40,7 +40,8 @@ export interface AttackSource {
 }
 
 /** A type representing different damage fall-off rules */
-type DamageFallOffSource = "shotgun";
+export type DamageFallOffType = typeof DamageFallOffTypes[number];
+const DamageFallOffTypes = ["shotgun"] as const;
 
 /** The default value for the damage object */
 const DAMAGE_DEFAULT = { base: 0, dice: 0 };
@@ -74,13 +75,11 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
           default: true
         },
         damageFallOff: {
-          description:
-            "The type of damage fall-off for the attack. If this is not " +
-            "specified, the attack has no damage fall-off.",
+          description: "The type of damage fall-off for the attack.",
           type: "string",
-          enum: ["shotgun"],
+          enum: ["", ...DamageFallOffTypes],
           nullable: true,
-          default: "shotgun"
+          default: ""
         }
       },
       required: ["base", "dice"],

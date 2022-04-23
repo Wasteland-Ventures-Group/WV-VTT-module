@@ -131,10 +131,7 @@ export default class WvItemSheet extends ItemSheet {
     const sources = this.item.data.data.rules.sources;
     sources.push(this.getDefaultRuleElementSource());
     this.item.updateRuleSources(sources);
-
     LOG.debug(`Created RuleElement on item with id [${this.item.id}]`);
-    this.item.prepareData();
-    this.render(false);
   }
 
   /** Get the default rule element source for newly created rule elements. */
@@ -160,8 +157,6 @@ export default class WvItemSheet extends ItemSheet {
     this.ruleElementSchemaErrors.splice(index, 1);
     this.item.updateRuleSources(sources);
     LOG.debug(`Deleted RuleElement on item with id [${this.item.id}]`);
-    this.item.prepareData();
-    this.render(false);
   }
 
   /** Disable all inputs that would be overwritten by a compendium update. */

@@ -6,7 +6,7 @@
       <div class="equipment-slot-status">
         <span>{{sheet.equipment.readiedItem.name}}</span>
       </div>
-      <div class="equipment-slot-target lighter-block">
+      <div class="equipment-slot-target lighter-block parchment-bg">
         <div class="ready-item-cost direct">{{sheet.equipment.readyItemCost.direct}} {{localize "wv.rules.actionPoints.short"}}</div>
         <div class="lighter-block ready-item-cost from-quick-slot" data-equipment-slot-extra="quickSlot">
           <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
@@ -88,8 +88,8 @@
             <td class="align-right min-width">{{item.totalWeight}}</td>
             <td class="min-width">
               <div class="fvtt-item-controls flexrow">
-                <button type="button" class="control item-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
-                <button type="button" class="control item-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
+                <button type="button" class="control small item-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+                <button type="button" class="control small item-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
               </div>
             </td>
           </tr>

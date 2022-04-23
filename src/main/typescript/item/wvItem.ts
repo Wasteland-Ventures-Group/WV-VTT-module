@@ -147,10 +147,7 @@ export default class WvItem extends Item {
    * @param sources - the new RuleElements
    */
   updateRuleSources(sources: RuleElementSource[]): void {
-    this.update({
-      _id: this.id,
-      data: { rules: { sources: sources } }
-    });
+    this.update({ data: { rules: { sources: sources } } });
   }
 
   /**

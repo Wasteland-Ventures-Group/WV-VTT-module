@@ -62,6 +62,17 @@ export interface LangSchema {
         baseDamage: string;
         /** Label for the damage dice */
         damageDice: string;
+        /** Label for the Strength based dice range */
+        diceRange: string;
+        /** Labels related to damage fall-off */
+        fallOff: {
+          /** The name of the damage fall-off concept */
+          name: string;
+          /** The names for the fall-off types */
+          types: {
+            shotgun: string;
+          };
+        };
         /** Labels related to damage threshold */
         threshold: ShortLongNames & {
           /** Names for damage threshold reduction */
@@ -331,10 +342,17 @@ export interface LangSchema {
          * The message when a specified attack could not be found on a weapon.
          *
          * Parameters:
-         * - name: the name of the weapon
+         * - name: the name of the attack
          * @pattern (?=.*\{name\})
          */
         attackNotFound: string;
+        /**
+         * The message when a specified attack already exists on a weapon.
+         * Parameters:
+         * - name: the name of the attack
+         * @pattern (?=.*\{name\})
+         */
+        attackAlreadyExists: string;
         /**
          * A general message that an apparel slot is already blocked by another
          * apparel item.

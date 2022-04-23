@@ -10,6 +10,7 @@ import {
   ApparelType,
   EquipmentSlot
 } from "./constants.js";
+import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
 import { getGame } from "./foundryHelpers.js";
 import type { RadiationSicknessLevel } from "./radiation.js";
@@ -34,6 +35,9 @@ export type I18nCalibers = Record<Caliber, string>;
 
 /** The internationalization structure for ammo container types */
 export type I18nAmmoContainerTypes = Record<AmmoContainerType, string>;
+
+/** The internationalization structure for damage fall-off types */
+export type I18nDamageFallOffTypes = Record<DamageFallOffType, string>;
 
 /** The internationalization structure for equipment slots */
 export type I18nEquipmentSlots = Record<EquipmentSlot, string>;
@@ -89,11 +93,19 @@ export default class WvI18n {
   }
 
   /** Get the internationalization of the ammo container types. */
-  static get containerTypes(): I18nAmmoContainerTypes {
+  static get ammoContainerTypes(): I18nAmmoContainerTypes {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
       "wv.rules.equipment.weapon.reload.containerTypes"
     ) as I18nAmmoContainerTypes;
+  }
+
+  /** Get the internationalization of the damage fall-off types. */
+  static get damageFallOffTypes(): I18nDamageFallOffTypes {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.damage.fallOff.types"
+    ) as I18nDamageFallOffTypes;
   }
 
   /** Get the internationalization of the Races. */

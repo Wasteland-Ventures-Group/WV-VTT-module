@@ -232,7 +232,9 @@
         }
       },
       "range": {
-        "distance": "Distanz",
+        "distance": {
+          "name": "Distanz"
+        },
         "plural": "Reichweiten",
         "ranges": {
           "outOfRange": {

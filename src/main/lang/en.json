@@ -232,7 +232,9 @@
         }
       },
       "range": {
-        "distance": "Distance",
+        "distance": {
+          "name": "Distance"
+        },
         "plural": "Ranges",
         "ranges": {
           "outOfRange": {

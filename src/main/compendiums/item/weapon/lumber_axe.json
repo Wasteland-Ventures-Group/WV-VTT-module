@@ -30,7 +30,11 @@
     },
     "ranges": {
       "short": {
-        "distance": "melee",
+        "distance": {
+          "base": 2,
+          "multiplier": 0,
+          "special": ""
+        },
         "modifier": 0
       },
       "medium": {
@@ -40,6 +44,14 @@
           "special": "strength"
         },
         "modifier": -10
+      },
+      "long": {
+        "distance": {
+          "base": 0,
+          "multiplier": 0,
+          "special": ""
+        },
+        "modifier": 0
       }
     },
     "rarity": "common",

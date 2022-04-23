@@ -248,7 +248,7 @@ export default class Attack {
         },
         range: {
           type: "number",
-          label: i18n.localize("wv.rules.range.distance"),
+          label: i18n.localize("wv.rules.range.distance.name"),
           value: interact.getRange(token, target) ?? 0,
           min: 0,
           max: 99999

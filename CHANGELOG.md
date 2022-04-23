@@ -16,6 +16,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   other computations on an actor are done
   ([#247](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/247))
 - rule elements created on effect items now target the actor by default
+- the way weapon ranges are saved
+  ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+
+### Fixed
+
+- item migrations throwing intermittent errors
+  ([#238](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/238))
 
 ## [0.15.0] - 2022-04-03
 

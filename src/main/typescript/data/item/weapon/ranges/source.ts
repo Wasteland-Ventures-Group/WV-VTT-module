@@ -9,10 +9,10 @@ export default interface RangesSource {
   /**
    * The medium range of the weapon. By default the weapon has no medium range.
    */
-  medium?: RangeSource;
+  medium: RangeSource;
 
   /** The long range of the weapon. By default the weapon has no long range. */
-  long?: RangeSource;
+  long: RangeSource;
 }
 
 /** An interface to represent values needed for an weapon's range */
@@ -29,10 +29,7 @@ export interface RangeSource {
 }
 
 /** A distance specifier for a weapon range. */
-export type DistanceSource = number | "melee" | SpecialBasedRangeSource;
-
-/** A SPECIAL based range */
-export interface SpecialBasedRangeSource {
+export interface DistanceSource {
   /** The base range of the range in meters */
   base: number;
 
@@ -40,7 +37,7 @@ export interface SpecialBasedRangeSource {
   multiplier: number;
 
   /** The name of the SPECIAL to use */
-  special: SpecialName;
+  special: SpecialName | "";
 }
 
 /** A JSON schema for a single range object */
@@ -49,53 +46,34 @@ const RANGE_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
   type: "object",
   properties: {
     distance: {
-      description:
-        "The distance of the range. This can either be a number for a " +
-        'distance in meters, the word "melee" for melee range or an object ' +
-        "for a SPECIAL based distance.",
-      oneOf: [
-        {
-          description: "A distance in meters",
+      description: "The distance of the range.",
+      type: "object",
+      properties: {
+        base: {
+          description: "The flat base distance of the distance in meters",
           type: "integer",
           default: 0
         },
-        {
-          description: "A distance in melee range",
-          type: "string",
-          const: "melee",
-          default: "melee"
+        multiplier: {
+          description: "The SPECIAL multiplier for the distance, can be 0.",
+          type: "integer",
+          default: 0
         },
-        {
-          description: "A SPECIAL based distance",
-          type: "object",
-          properties: {
-            base: {
-              description: "The flat base distance of the distance in meters",
-              type: "integer",
-              default: 0
-            },
-            multiplier: {
-              description: "The SPECIAL multiplier for the distance",
-              type: "integer",
-              default: 1
-            },
-            special: {
-              description:
-                "The SPECIAL to multiply and add to the base distance",
-              type: "string",
-              enum: SpecialNames,
-              default: "strength"
-            }
-          },
-          required: ["base", "multiplier", "special"],
-          additionalProperties: false,
-          default: {
-            base: 0,
-            multiplier: 1,
-            special: "strength"
-          }
+        special: {
+          description:
+            "The SPECIAL to multiply and add to the base distance, can be empty.",
+          type: "string",
+          enum: ["", ...SpecialNames],
+          default: ""
         }
-      ]
+      },
+      required: ["base", "multiplier", "special"],
+      additionalProperties: false,
+      default: {
+        base: 0,
+        multiplier: 0,
+        special: ""
+      }
     },
     modifier: {
       description: "A hit chance modifier, active on this range",
@@ -106,7 +84,11 @@ const RANGE_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
   required: ["distance", "modifier"],
   additionalProperties: false,
   default: {
-    distance: 20,
+    distance: {
+      base: 0,
+      multiplier: 0,
+      special: ""
+    },
     modifier: 0
   }
 };
@@ -122,26 +104,72 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
     },
     medium: {
       ...RANGE_JSON_SCHEMA,
-      description: "The medium range specification",
-      nullable: true,
-      default: {
-        distance: 40,
-        modifier: -10
-      }
+      description: "The medium range specification"
     },
     long: {
       ...RANGE_JSON_SCHEMA,
-      description: "The long range specification",
-      nullable: true,
-      default: {
-        distance: 60,
+      description: "The long range specification"
+    }
+  },
+  required: ["short", "medium", "long"],
+  additionalProperties: false,
+  default: {
+    short: RANGE_JSON_SCHEMA.default,
+    medium: RANGE_JSON_SCHEMA.default,
+    long: RANGE_JSON_SCHEMA.default
+  },
+  examples: [
+    {
+      short: {
+        distance: {
+          base: 2,
+          multiplier: 0,
+          special: ""
+        },
+        modifier: 0
+      },
+      medium: {
+        distance: {
+          base: 0,
+          multiplier: 0,
+          special: ""
+        },
+        modifier: 0
+      },
+      long: {
+        distance: {
+          base: 0,
+          multiplier: 0,
+          special: ""
+        },
+        modifier: 0
+      }
+    },
+    {
+      short: {
+        distance: {
+          base: 20,
+          multiplier: 0,
+          special: ""
+        },
+        modifier: 0
+      },
+      medium: {
+        distance: {
+          base: 40,
+          multiplier: 0,
+          special: ""
+        },
+        modifier: -10
+      },
+      long: {
+        distance: {
+          base: 60,
+          multiplier: 0,
+          special: ""
+        },
         modifier: -20
       }
     }
-  },
-  required: ["short"],
-  additionalProperties: false,
-  default: {
-    short: RANGE_JSON_SCHEMA.default
-  }
+  ]
 };

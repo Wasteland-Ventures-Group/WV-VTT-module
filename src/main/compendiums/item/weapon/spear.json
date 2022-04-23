@@ -29,7 +29,11 @@
     },
     "ranges": {
       "short": {
-        "distance": 2,
+        "distance": {
+          "base": 2,
+          "multiplier": 0,
+          "special": ""
+        },
         "modifier": 0
       },
       "medium": {

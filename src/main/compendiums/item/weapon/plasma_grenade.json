@@ -28,6 +28,22 @@
           "multiplier": 0
         },
         "modifier": 0
+      },
+      "medium": {
+        "distance": {
+          "base": 0,
+          "multiplier": 0,
+          "special": ""
+        },
+        "modifier": 0
+      },
+      "long": {
+        "distance": {
+          "base": 0,
+          "multiplier": 0,
+          "special": ""
+        },
+        "modifier": 0
       }
     },
     "rarity": "rare",

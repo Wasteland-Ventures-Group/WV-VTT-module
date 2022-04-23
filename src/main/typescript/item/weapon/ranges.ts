@@ -2,10 +2,7 @@ import { CONSTANTS, SpecialName } from "../../constants.js";
 import type Specials from "../../data/actor/character/specials/properties.js";
 import type WeaponDataProperties from "../../data/item/weapon/properties.js";
 import type RangesSource from "../../data/item/weapon/ranges/source.js";
-import type {
-  DistanceSource,
-  SpecialBasedRangeSource
-} from "../../data/item/weapon/ranges/source.js";
+import type { DistanceSource } from "../../data/item/weapon/ranges/source.js";
 
 /** A type representing the different range brackets */
 export enum RangeBracket {
@@ -26,8 +23,8 @@ export function getDisplayRanges(
 ): string {
   return [
     weaponData.ranges.short.distance,
-    weaponData.ranges.medium?.distance,
-    weaponData.ranges.long?.distance
+    weaponData.ranges.medium.distance,
+    weaponData.ranges.long.distance
   ]
     .map((range) => getDisplayRangeDistance(range, specials))
     .join("/");
@@ -36,28 +33,31 @@ export function getDisplayRanges(
 /**
  * Get the displayable distance for a range distance. If the distance is Special
  * based and no Special was passed, the range will be returned as a minimum and
- * maximum, separated by a dash.
+ * maximum, separated by a dash. If the base distance is zero and either one of
+ * the special distance components is not set, this returns a single dash.
  * @param distance - the range distance source data
  * @param specials - the Specials of the actor, owning the weapon
  * @returns the displayable distance
  */
 export function getDisplayRangeDistance(
-  distance: DistanceSource | undefined,
+  distance: DistanceSource,
   specials?: Partial<Specials> | undefined
 ): string {
-  if (distance === undefined) return "-";
-  if (typeof distance === "number") return distance.toString();
-  if (distance === "melee") return CONSTANTS.rules.melee.distance.toString();
-
-  const specialValue = (specials ?? {})[distance.special]?.tempTotal;
-  if (typeof specialValue === "number") {
-    return getSpecialRangeDistance(distance, specialValue).toString();
-  } else {
-    return [
-      getSpecialRangeDistance(distance, CONSTANTS.bounds.special.points.min),
-      getSpecialRangeDistance(distance, CONSTANTS.bounds.special.points.max)
-    ].join("-");
+  if (distance.multiplier !== 0 && distance.special !== "") {
+    const specialValue = (specials ?? {})[distance.special]?.tempTotal;
+    if (typeof specialValue === "number") {
+      return getSpecialRangeDistance(distance, specialValue).toString();
+    } else {
+      return [
+        getSpecialRangeDistance(distance, CONSTANTS.bounds.special.points.min),
+        getSpecialRangeDistance(distance, CONSTANTS.bounds.special.points.max)
+      ].join("-");
+    }
   }
+
+  if (distance.base === 0) return "-";
+
+  return distance.base.toString();
 }
 
 /**
@@ -72,11 +72,12 @@ export function getEffectiveRangeDistance(
   distance: DistanceSource,
   specials?: Partial<Specials>
 ): number {
-  if (typeof distance === "number") return distance;
-  if (distance === "melee") return CONSTANTS.rules.melee.distance;
+  if (distance.multiplier !== 0 && distance.special !== "") {
+    const specialValue = (specials ?? {})[distance.special]?.tempTotal ?? 0;
+    return getSpecialRangeDistance(distance, specialValue);
+  }
 
-  const specialValue = (specials ?? {})[distance.special]?.tempTotal ?? 0;
-  return getSpecialRangeDistance(distance, specialValue);
+  return distance.base;
 }
 
 /**
@@ -137,23 +138,21 @@ export function getRangeModifier(
  * @returns the effective distance
  */
 export function getSpecialRangeDistance(
-  distance: SpecialBasedRangeSource,
+  distance: DistanceSource,
   specialValue: number
 ): number {
-  return distance.base + specialValue * distance.multiplier;
+  return distance.base + distance.multiplier * specialValue;
 }
 
 /** Get the names of SPECIALs used in the Ranges. */
 export function getRangesSpecials(ranges: RangesSource): Set<SpecialName> {
   const specialNames: Set<SpecialName> = new Set();
 
-  [
-    ranges.short.distance,
-    ranges.medium?.distance,
-    ranges.long?.distance
-  ].forEach((distance) => {
-    if (typeof distance === "object") specialNames.add(distance.special);
-  });
+  [ranges.short.distance, ranges.medium.distance, ranges.long.distance].forEach(
+    (distance) => {
+      if (distance.special !== "") specialNames.add(distance.special);
+    }
+  );
 
   return specialNames;
 }

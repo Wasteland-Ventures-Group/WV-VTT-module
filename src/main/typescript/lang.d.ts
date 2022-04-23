@@ -226,8 +226,11 @@ export interface LangSchema {
       };
       /** Labels related to range */
       range: QuantityNames & {
-        /** The name for a measured distance */
-        distance: string;
+        /** Labels relating to the distance */
+        distance: {
+          /** The name for the concept of distance */
+          name: string;
+        };
         /** Names for different ranges */
         ranges: {
           /** The name for out of range */

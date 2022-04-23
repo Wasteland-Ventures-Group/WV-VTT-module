@@ -43,13 +43,18 @@ async function migrateActor(
     const updateData = migrateActorData(actor.toObject());
     if (!foundry.utils.isObjectEmpty(updateData)) {
       LOG.info(`Migrating Actor [${actor.id}] "${actor.name}"`);
-      updateData[`flags.${CONSTANTS.systemId}.lastMigrationVersion`] =
-        currentVersion;
       await actor.update(updateData, { enforceTypes: false });
+      await actor.setFlag(
+        CONSTANTS.systemId,
+        "lastMigrationVersion",
+        currentVersion
+      );
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    LOG.error(`Failed migration for Actor [${actor.id}]: ${message}`);
+    LOG.error(
+      `Failed migration for Actor [${actor.id}] "${actor.name}": ${message}`
+    );
   }
 }
 

@@ -1,7 +1,14 @@
 import { Caliber, CONSTANTS, ProtoItemTypes } from "../constants.js";
 import type { AmmoDataSourceData } from "../data/item/ammo/source.js";
+import type {
+  DistanceSource,
+  RangeSource
+} from "../data/item/weapon/ranges/source.js";
 import type { WeaponDataSourceData } from "../data/item/weapon/source.js";
-import { getUpdateDataFromCompendium } from "../item/wvItem.js";
+import {
+  getUpdateDataFromCompendium,
+  hasEnabledCompendiumLink
+} from "../item/wvItem.js";
 import { LOG } from "../systemLogger.js";
 
 export default async function migrateItems(
@@ -54,6 +61,7 @@ async function migrateItem(
   currentVersion: string
 ): Promise<void> {
   try {
+    LOG.info(`Collecting update data for Item [${item.id}] "${item.name}"`);
     const disabledLink = item.getFlag(
       CONSTANTS.systemId,
       "disableCompendiumLink"
@@ -63,29 +71,48 @@ async function migrateItem(
         `The item is flagged to disable the compendium link. [${item.id}] "${item.name}"`
       );
     }
-    if (ProtoItemTypes.includes(item.data.type) && !disabledLink) {
-      migrateFromCompendium(item);
+
+    const updateData = {};
+    migrateRuleElementHook(item, updateData);
+
+    if (
+      ProtoItemTypes.includes(item.data.type) &&
+      hasEnabledCompendiumLink(item)
+    ) {
+      await migrateFromCompendium(item, updateData, currentVersion);
     } else {
-      migrateAmmoFix(item);
+      migrateAmmoFix(item, updateData);
+      migrateRanges(item, updateData);
+      if (!foundry.utils.isObjectEmpty(updateData)) {
+        LOG.info(`Migrating Item [${item.id}] "${item.name}"`);
+        await item.update(updateData);
+        await item.setFlag(
+          CONSTANTS.systemId,
+          "lastMigrationVersion",
+          currentVersion
+        );
+      }
     }
-    migrateRuleElementHook(item);
-    await item.update({
-      flags: { [CONSTANTS.systemId]: { lastMigrationVersion: currentVersion } }
-    });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    LOG.error(`Failed migration for Item [${item.id}]: ${message}`);
+    LOG.error(
+      `Failed migration for Item [${item.id}] "${item.name}": ${message}`
+    );
   }
 }
 
-async function migrateAmmoFix(item: foundry.documents.BaseItem): Promise<void> {
+async function migrateAmmoFix(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>
+) {
   if (!["ammo", "weapon"].includes(item.type)) return;
+
   if (item.type === "ammo") {
     const data = item.data.data as AmmoDataSourceData;
     const newCaliber = transformCaliber(data.caliber);
     if (!newCaliber) return;
 
-    await item.update({ data: { caliber: newCaliber } });
+    updateData["data.caliber"] = newCaliber;
   } else if (item.type === "weapon") {
     const data = item.data.data as WeaponDataSourceData;
     if (!data.reload) return;
@@ -93,26 +120,8 @@ async function migrateAmmoFix(item: foundry.documents.BaseItem): Promise<void> {
     const newCaliber = transformCaliber(data.reload.caliber);
     if (!newCaliber) return;
 
-    await item.update({
-      data: { reload: { ...data.reload, caliber: newCaliber } }
-    });
+    updateData["data.reload"] = { ...data.reload, caliber: newCaliber };
   }
-}
-
-async function migrateRuleElementHook(
-  item: foundry.documents.BaseItem
-): Promise<void> {
-  await item.update({
-    data: {
-      rules: {
-        sources: item.data.data.rules.sources.map((rule) => ({
-          // @ts-expect-error This might not be there in not migrated data
-          hook: "afterSpecial",
-          ...rule
-        }))
-      }
-    }
-  });
 }
 
 function transformCaliber(caliber: string): Caliber | undefined {
@@ -123,18 +132,103 @@ function transformCaliber(caliber: string): Caliber | undefined {
   }
 }
 
-async function migrateFromCompendium(
-  item: foundry.documents.BaseItem
-): Promise<void> {
-  const updateData = await getUpdateDataFromCompendium(item);
-  if (foundry.utils.isObjectEmpty(updateData)) return;
+async function migrateRanges(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>
+) {
+  if (item.type !== "weapon") return;
 
-  LOG.info(`Updating Item from Compendium [${item.id}] "${item.name}"`);
-  await item.update(
-    { ...(await getUpdateDataFromCompendium(item)) },
-    {
-      recursive: false,
-      diff: false
-    }
+  const data = item.data.data as WeaponDataSourceData;
+  const newRanges = {
+    short: transformRange(data.ranges.short),
+    medium: transformRange(data.ranges.medium),
+    long: transformRange(data.ranges.long)
+  };
+  updateData["data.ranges"] = newRanges;
+}
+
+function transformRange(
+  range:
+    | (RangeSource & { distance: number | "melee" | DistanceSource })
+    | undefined
+): RangeSource {
+  if (range === undefined) {
+    return {
+      distance: {
+        base: 0,
+        multiplier: 0,
+        special: ""
+      },
+      modifier: 0
+    };
+  }
+
+  if (range.distance === "melee") {
+    return {
+      distance: {
+        base: 2,
+        multiplier: 0,
+        special: ""
+      },
+      modifier: range.modifier
+    };
+  }
+
+  if (typeof range.distance === "number") {
+    return {
+      distance: {
+        base: range.distance,
+        multiplier: 0,
+        special: ""
+      },
+      modifier: range.modifier
+    };
+  }
+
+  return range;
+}
+
+function migrateRuleElementHook(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>
+) {
+  updateData["data.rules.sources"] = item.data.data.rules.sources.map(
+    (rule) => ({
+      // @ts-expect-error This might not be there in not migrated data
+      hook: "afterSpecial",
+      ...rule
+    })
   );
+}
+
+async function migrateFromCompendium(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>,
+  currentVersion: string
+): Promise<void> {
+  const compendiumUpdateData = await getUpdateDataFromCompendium(item);
+  if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
+    LOG.info(`Updating Item from Compendium [${item.id}] "${item.name}"`);
+    compendiumUpdateData[`flags.${CONSTANTS.systemId}.lastMigrationVersion`] =
+      currentVersion;
+    await item.update(
+      { ...compendiumUpdateData },
+      { recursive: false, diff: false }
+    );
+    await item.setFlag(
+      CONSTANTS.systemId,
+      "lastMigrationVersion",
+      currentVersion
+    );
+  }
+
+  if (!foundry.utils.isObjectEmpty(updateData)) {
+    LOG.info(`Migrating Item [${item.id}] "${item.name}"`);
+    await item.update(updateData);
+    await item.setFlag(
+      CONSTANTS.systemId,
+      "lastMigrationVersion",
+      currentVersion
+    );
+  }
 }

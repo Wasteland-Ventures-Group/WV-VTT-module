@@ -30,15 +30,27 @@
     },
     "ranges": {
       "short": {
-        "distance": 30,
+        "distance": {
+          "base": 30,
+          "multiplier": 0,
+          "special": ""
+        },
         "modifier": 0
       },
       "medium": {
-        "distance": 60,
+        "distance": {
+          "base": 60,
+          "multiplier": 0,
+          "special": ""
+        },
         "modifier": -10
       },
       "long": {
-        "distance": 80,
+        "distance": {
+          "base": 80,
+          "multiplier": 0,
+          "special": ""
+        },
         "modifier": 0
       }
     },

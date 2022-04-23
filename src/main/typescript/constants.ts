@@ -224,7 +224,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.14.2",
+  needsMigrationVersion: "0.16.0",
 
   /** The number of fixed decimals to round floating point numbers to. */
   fixedDecimals: 2,
@@ -249,12 +249,6 @@ export const CONSTANTS = {
         /** The ready item cost for readying from a weapon or quick slot. */
         fromSlot: 3 as number
       }
-    },
-
-    /** Rule constants related to melee */
-    melee: {
-      /** The melee maximum distance */
-      distance: 2
     },
 
     /** Rule constants related to movement */

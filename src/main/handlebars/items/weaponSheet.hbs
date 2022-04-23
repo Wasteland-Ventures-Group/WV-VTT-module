@@ -8,18 +8,101 @@
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
-      <div class="lighter-block resource-block flex-fixed">
-        <label>
-          {{~localize "wv.system.misc.notes"~}}
-          <textarea name="data.notes">{{data.data.notes}}</textarea>
-        </label>
-      </div>
-      <div class="lighter-block resource-block resource-block-line flex-fixed">
-        <label class="contained-target-inline">
+{{> (get . "sheet.parts.physicalItemInputs")}}
+      <div class="flexrow flex-j-spaced spacing-bottom">
+        <label class="contained-target-inline flex-fixed">
           {{~localize "wv.rules.skills.singular"~}}
-          <span class="resource-display">{{sheet.skill}}</span>
+          <select name="data.skill">
+            {{~selectOptions sheet.skills selected=data.data.skill~}}
+          </select>
+        </label>
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.equipment.weapon.strengthRequirement.long"~}}
+          <input class="size-2" type="number" name="data.strengthRequirement" value="{{data.data.strengthRequirement}}" min="0" max="15" />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.rules.equipment.weapon.holdout"~}}
+          <input type="checkbox" name="data.holdout" {{checked data.data.holdout}} />
         </label>
       </div>
+      <table class="spacing-bottom">
+        <thead>
+          <tr>
+            <th scope="col" class="align-left">{{localize "wv.rules.range.singular"}}</th>
+            <th scope="col" class="align-right">{{localize "wv.rules.range.distance.name"}}</th>
+            <th scope="col" class="align-left">({{localize "wv.system.values.total"}})</th>
+            <th scope="col" class="align-right">{{localize "wv.system.misc.modifier"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.short.long"}}</th>
+            <td class="align-right">
+              <input type="number" class="size-3" name="data.ranges.short.distance.base" value="{{data.data.ranges.short.distance.base}}" min="0" />
+              <span>+</span>
+              <input type="number" class="size-2" name="data.ranges.short.distance.multiplier" value="{{data.data.ranges.short.distance.multiplier}}" min="0" />
+              <span>*</span>
+              <select name="data.ranges.short.distance.special">
+                {{~selectOptions sheet.specials selected=data.data.ranges.short.distance.special~}}
+              </select>
+            </td>
+            <td class="align-left min-width">
+              {{~#if (eq "-" sheet.displayRanges.short)~}}
+                <span>-</span>
+              {{~else~}}
+                <span>= {{sheet.displayRanges.short}}{{sheet.systemGridUnit}}</span>
+              {{~/if~}}
+            </td>
+            <td class="align-right min-width">
+              <input type="number" class="size-3" name="data.ranges.short.modifier" value="{{data.data.ranges.short.modifier}}" />
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.medium.long"}}</th>
+            <td class="align-right">
+              <input type="number" class="size-3" name="data.ranges.medium.distance.base" value="{{data.data.ranges.medium.distance.base}}" min="0" />
+              <span>+</span>
+              <input type="number" class="size-2" name="data.ranges.medium.distance.multiplier" value="{{data.data.ranges.medium.distance.multiplier}}" min="0" />
+              <span>*</span>
+              <select name="data.ranges.medium.distance.special">
+                {{~selectOptions sheet.specials selected=data.data.ranges.medium.distance.special~}}
+              </select>
+            </td>
+            <td class="align-left min-width">
+              {{~#if (eq "-" sheet.displayRanges.medium)~}}
+                <span>-</span>
+              {{~else~}}
+                <span>= {{sheet.displayRanges.medium}}{{sheet.systemGridUnit}}</span>
+              {{~/if~}}
+            </td>
+            <td class="align-right min-width">
+              <input type="number" class="size-3" name="data.ranges.medium.modifier" value="{{data.data.ranges.medium.modifier}}" />
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.long.long"}}</th>
+            <td class="align-right">
+              <input type="number" class="size-3" name="data.ranges.long.distance.base" value="{{data.data.ranges.long.distance.base}}" min="0" />
+              <span>+</span>
+              <input type="number" class="size-2" name="data.ranges.long.distance.multiplier" value="{{data.data.ranges.long.distance.multiplier}}" min="0" />
+              <span>*</span>
+              <select name="data.ranges.long.distance.special">
+                {{~selectOptions sheet.specials selected=data.data.ranges.long.distance.special~}}
+              </select>
+            </td>
+            <td class="align-left min-width">
+              {{~#if (eq "-" sheet.displayRanges.long)~}}
+                <span>-</span>
+              {{~else~}}
+                <span>= {{sheet.displayRanges.long}}{{sheet.systemGridUnit}}</span>
+              {{~/if~}}
+            </td>
+            <td class="align-right min-width">
+              <input type="number" class="size-3" name="data.ranges.long.modifier" value="{{data.data.ranges.long.modifier}}" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
       <div class="lighter-block resource-block flex-fixed">
         <h4 class="resource-block-line">{{localize "wv.rules.equipment.weapon.attack.plural"}}</h4>
         {{#each sheet.attacks as |attack|~}}
@@ -49,27 +132,6 @@
           </div>
         {{~/each}}
       </div>
-      <div class="lighter-block resource-block flex-fixed">
-        <h4 class="resource-block-line">{{localize "wv.rules.range.plural"}}</h4>
-        <div class="grid-3cols standard-col-gaps flex-center">
-          <label>{{localize "wv.rules.range.singular"}}</label>
-          <label>{{localize "wv.rules.range.distance"}}</label>
-          <label>{{localize "wv.system.misc.modifier"}}</label>
-          <label>{{localize "wv.rules.range.ranges.short.long"}}</label>
-          <span class="resource-display">{{sheet.ranges.short.distance}}</span>
-          <span class="resource-display">{{sheet.ranges.short.modifier}}</span>
-          {{#if sheet.ranges.medium~}}
-            <label>{{localize "wv.rules.range.ranges.medium.long"}}</label>
-            <span class="resource-display">{{sheet.ranges.medium.distance}}</span>
-            <span class="resource-display">{{sheet.ranges.medium.modifier}}</span>
-          {{~/if}}
-          {{#if sheet.ranges.long~}}
-            <label>{{localize "wv.rules.range.ranges.long.long"}}</label>
-            <span class="resource-display">{{sheet.ranges.long.distance}}</span>
-            <span class="resource-display">{{sheet.ranges.long.modifier}}</span>
-          {{~/if}}
-        </div>
-      </div>
       {{#if sheet.usesAmmo~}}
         <div class="lighter-block resource-block flex-fixed">
           <h4 class="resource-block-line">{{localize "wv.rules.equipment.weapon.reload.name"}}</h4>
@@ -91,18 +153,6 @@
           </label>
         </div>
       {{~/if}}
-      <div class="lighter-block resource-block resource-block-line flex-fixed">
-        <label class="contained-target-inline">
-          {{~localize "wv.rules.equipment.weapon.strengthRequirement.long"~}}
-          <span class="resource-display size-2">{{data.data.strengthRequirement}}</span>
-        </label>
-      </div>
-      <div class="lighter-block resource-block resource-block-line flex-fixed">
-        <label class="contained-target-inline">
-          {{~localize "wv.rules.equipment.weapon.holdout"~}}
-          <span class="resource-display far {{ternary data.data.holdout 'fa-check-square' 'fa-square'}}"></span>
-        </label>
-      </div>
     </div>
 
     <div class="tab" data-group="primary" data-tab="rules">

@@ -116,6 +116,20 @@ export default class WvI18n {
     ) as I18nSpecials;
   }
 
+  /** Get the internationalization of the long names for SPECIALs. */
+  static get longSpecials(): Record<SpecialName, string> {
+    const specials = WvI18n.specials;
+    return {
+      strength: specials.strength.long,
+      perception: specials.perception.long,
+      endurance: specials.endurance.long,
+      charisma: specials.charisma.long,
+      intelligence: specials.intelligence.long,
+      agility: specials.agility.long,
+      luck: specials.luck.long
+    };
+  }
+
   /** Get the internationalization of the Skills. */
   static get skills(): I18nSkills {
     return foundry.utils.getProperty(

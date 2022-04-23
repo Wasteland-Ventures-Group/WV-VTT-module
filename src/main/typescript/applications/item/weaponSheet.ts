@@ -1,25 +1,26 @@
-import { TYPES } from "../../constants.js";
-import type { RangeSource } from "../../data/item/weapon/ranges/source.js";
-import { isOfItemType } from "../../item/wvItem.js";
+import { SpecialName, TYPES } from "../../constants.js";
+import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import * as ranges from "../../item/weapon/ranges.js";
-import WvI18n from "../../wvI18n.js";
+import { isOfItemType } from "../../item/wvItem.js";
+import WvI18n, { I18nSkills } from "../../wvI18n.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
-import { getGame } from "../../foundryHelpers.js";
-import type WvActor from "../../actor/wvActor.js";
 
 export default class WeaponSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("weapon-sheet");
     return foundry.utils.mergeObject(defaultOptions, {
-      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }]
+      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }],
+      height: 1000
     } as typeof ItemSheet["defaultOptions"]);
   }
 
   /** Get the weapon sheet data for a weapon. */
   static getWeaponSheetData(weapon: Weapon): SheetWeapon {
+    const i18nSkills = WvI18n.skills;
+
     return {
       attacks: Object.entries(weapon.systemData.attacks.attacks).reduce<
         Record<string, SheetAttack>
@@ -32,16 +33,19 @@ export default class WeaponSheet extends WvItemSheet {
         };
         return obj;
       }, {}),
-      ranges: {
-        short: this.mapToSheetRange(
-          weapon.systemData.ranges.short,
-          weapon.actor
+      displayRanges: {
+        short: ranges.getDisplayRangeDistance(
+          weapon.systemData.ranges.short.distance,
+          weapon.actor?.data.data.specials
         ),
-        medium: this.mapToSheetRange(
-          weapon.systemData.ranges.medium,
-          weapon.actor
+        medium: ranges.getDisplayRangeDistance(
+          weapon.systemData.ranges.medium.distance,
+          weapon.actor?.data.data.specials
         ),
-        long: this.mapToSheetRange(weapon.systemData.ranges.long, weapon.actor)
+        long: ranges.getDisplayRangeDistance(
+          weapon.systemData.ranges.long.distance,
+          weapon.actor?.data.data.specials
+        )
       },
       reload: {
         caliber: weapon.systemData.reload
@@ -54,40 +58,13 @@ export default class WeaponSheet extends WvItemSheet {
             )
           : undefined
       },
-      skill: WvI18n.skills[weapon.systemData.skill],
+      skill: i18nSkills[weapon.systemData.skill],
+      skills: i18nSkills,
+      specials: {
+        "": "",
+        ...WvI18n.longSpecials
+      },
       usesAmmo: weapon.systemData.reload !== undefined
-    };
-  }
-
-  /**
-   * Map a Range to a sheet displayable Range
-   * @param range - the Range to map
-   * @returns a sheet displayable Range
-   */
-  protected static mapToSheetRange(
-    range: RangeSource,
-    actor: WvActor | null
-  ): SheetRange;
-  protected static mapToSheetRange(
-    range: undefined,
-    actor: WvActor | null
-  ): undefined;
-  protected static mapToSheetRange(
-    range: RangeSource | undefined,
-    actor: WvActor | null
-  ): SheetRange | undefined;
-  protected static mapToSheetRange(
-    range: RangeSource | undefined,
-    actor: WvActor | null
-  ): SheetRange | undefined {
-    if (!range) return;
-
-    return {
-      distance: ranges.getDisplayRangeDistance(
-        range.distance,
-        actor?.data.data.specials
-      ),
-      modifier: range.modifier
     };
   }
 
@@ -185,23 +162,20 @@ interface SheetAttack {
   rounds: number | undefined;
 }
 
-interface SheetRange {
-  distance: string;
-  modifier: number;
-}
-
 export interface SheetWeapon {
   attacks: Record<string, SheetAttack>;
-  ranges: {
-    short: SheetRange;
-    medium: SheetRange | undefined;
-    long: SheetRange | undefined;
+  displayRanges: {
+    short: string;
+    medium: string;
+    long: string;
   };
   reload: {
     caliber: string | undefined;
     containerType: string | undefined;
   };
   skill: string;
+  skills: I18nSkills;
+  specials: Record<"" | SpecialName, string>;
   usesAmmo: boolean;
 }
 

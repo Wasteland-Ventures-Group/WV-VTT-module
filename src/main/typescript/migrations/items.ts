@@ -83,7 +83,7 @@ async function migrateItem(
       migrateRanges(item, updateData);
       migrateMandatoryReload(item, updateData);
       if (!foundry.utils.isObjectEmpty(updateData)) {
-        LOG.info(`Migrating Item [${item.id}] "${item.name}"`);
+        LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
         await item.update(updateData);
         await item.setFlag(
           CONSTANTS.systemId,
@@ -104,13 +104,15 @@ function migrateRuleElementHook(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
-  updateData["data.rules.sources"] = item.data.data.rules.sources.map(
-    (rule) => ({
-      // @ts-expect-error This might not be there in not migrated data
-      hook: "afterSpecial",
-      ...rule
-    })
-  );
+  if (item.data.data.rules.sources.some((rule) => rule.hook === undefined)) {
+    updateData["data.rules.sources"] = item.data.data.rules.sources.map(
+      (rule) => ({
+        // @ts-expect-error This might not be there in not migrated data
+        hook: "afterSpecial",
+        ...rule
+      })
+    );
+  }
 }
 
 function migrateAmmoFix(
@@ -151,19 +153,19 @@ function migrateRanges(
   if (item.type !== "weapon") return;
 
   const data = item.data.data as WeaponDataSourceData;
-  const newRanges = {
-    short: transformRange(data.ranges.short),
-    medium: transformRange(data.ranges.medium),
-    long: transformRange(data.ranges.long)
-  };
-  updateData["data.ranges"] = newRanges;
+  const newShortRange = transformRange(data.ranges.short);
+  const newMediumRange = transformRange(data.ranges.medium);
+  const newLongRange = transformRange(data.ranges.long);
+  if (newShortRange) updateData["data.ranges.short"] = newShortRange;
+  if (newMediumRange) updateData["data.ranges.medium"] = newMediumRange;
+  if (newLongRange) updateData["data.ranges.long"] = newLongRange;
 }
 
 function transformRange(
   range:
     | (RangeSource & { distance: number | "melee" | DistanceSource })
     | undefined
-): RangeSource {
+): RangeSource | undefined {
   if (range === undefined) {
     return {
       distance: {
@@ -197,7 +199,7 @@ function transformRange(
     };
   }
 
-  return range;
+  return undefined;
 }
 
 function migrateMandatoryReload(
@@ -224,7 +226,10 @@ async function migrateFromCompendium(
 ): Promise<void> {
   const compendiumUpdateData = await getUpdateDataFromCompendium(item);
   if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
-    LOG.info(`Updating Item from Compendium [${item.id}] "${item.name}"`);
+    LOG.info(
+      `Updating Item from Compendium [${item.id}] "${item.name}" with`,
+      updateData
+    );
     await item.update(
       { ...compendiumUpdateData },
       { recursive: false, diff: false }
@@ -237,7 +242,7 @@ async function migrateFromCompendium(
   }
 
   if (!foundry.utils.isObjectEmpty(updateData)) {
-    LOG.info(`Migrating Item [${item.id}] "${item.name}"`);
+    LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
     await item.update(updateData);
     await item.setFlag(
       CONSTANTS.systemId,

@@ -280,6 +280,7 @@ export default class WeaponSheet extends WvItemSheet {
   }
 
   protected override disableCompendiumLinkInputs(form: HTMLFormElement): void {
+    super.disableCompendiumLinkInputs(form);
     form
       .querySelectorAll(".weapon-attack-control[data-action]")
       .forEach((element) => element.setAttribute("disabled", ""));

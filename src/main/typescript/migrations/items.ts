@@ -11,9 +11,7 @@ import {
 } from "../item/wvItem.js";
 import { LOG } from "../systemLogger.js";
 
-export default async function migrateItems(
-  currentVersion: string
-): Promise<void> {
+export default function migrateItems(currentVersion: string): void {
   if (!(game instanceof Game)) {
     LOG.error("Game was not yet initialized!");
     return;
@@ -102,7 +100,20 @@ async function migrateItem(
   }
 }
 
-async function migrateAmmoFix(
+function migrateRuleElementHook(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>
+) {
+  updateData["data.rules.sources"] = item.data.data.rules.sources.map(
+    (rule) => ({
+      // @ts-expect-error This might not be there in not migrated data
+      hook: "afterSpecial",
+      ...rule
+    })
+  );
+}
+
+function migrateAmmoFix(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
@@ -133,7 +144,7 @@ function transformCaliber(caliber: string): Caliber | undefined {
   }
 }
 
-async function migrateRanges(
+function migrateRanges(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
@@ -204,19 +215,6 @@ function migrateMandatoryReload(
     containerType: "magazine",
     size: 0
   };
-}
-
-function migrateRuleElementHook(
-  item: foundry.documents.BaseItem,
-  updateData: Record<string, unknown>
-) {
-  updateData["data.rules.sources"] = item.data.data.rules.sources.map(
-    (rule) => ({
-      // @ts-expect-error This might not be there in not migrated data
-      hook: "afterSpecial",
-      ...rule
-    })
-  );
 }
 
 async function migrateFromCompendium(

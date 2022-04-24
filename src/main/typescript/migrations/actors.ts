@@ -2,9 +2,7 @@ import { CONSTANTS } from "../constants.js";
 import { LOG } from "../systemLogger.js";
 import { isLastMigrationOlderThan } from "./world.js";
 
-export default async function migrateActors(
-  currentVersion: string
-): Promise<void> {
+export default function migrateActors(currentVersion: string): void {
   if (!(game instanceof Game)) {
     LOG.error("Game was not yet initialized!");
     return;

@@ -7,4 +7,7 @@ export default class Leveling extends LevelingSource {
 
   /** The maximum skill points of an Actor */
   maxSkillPoints?: number;
+
+  /** The amount of experience needed for the next level */
+  xpForNextLevel?: number;
 }

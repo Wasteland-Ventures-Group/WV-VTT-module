@@ -444,9 +444,13 @@ export default class WvActor extends Actor {
     const data = this.data.data;
 
     // Compute the level -------------------------------------------------------
-    data.leveling.level = Math.floor(
+    const level = Math.floor(
       (1 + Math.sqrt(data.leveling.experience / 12.5 + 1)) / 2
     );
+    data.leveling.level = level;
+
+    // Compute the XP needed for the next level --------------------------------
+    data.leveling.xpForNextLevel = 50 * (level + 1) * level;
 
     // Compute the maximum skill points to spend -------------------------------
     data.leveling.maxSkillPoints = data.leveling.levelIntelligences.reduce(

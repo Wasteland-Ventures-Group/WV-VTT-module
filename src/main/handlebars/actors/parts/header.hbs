@@ -13,7 +13,11 @@
         <div class="lighter-block resource-block resource-block-line flex-fixed">
           <label class="contained-target-inline">
             {{~localize "wv.rules.leveling.experience"~}}
-            <input class="size-5" type="number" name="data.leveling.experience" value="{{data.data.leveling.experience}}" min="{{sheet.bounds.experience.min}}" max="{{sheet.bounds.experience.max}}" />
+            <div class="resource-display">
+              <input class="size-5" type="number" name="data.leveling.experience" value="{{data.data.leveling.experience}}" min="{{sheet.bounds.experience.min}}" max="{{sheet.bounds.experience.max}}" />
+              <span>&nbsp;/&nbsp;</span>
+              <span>{{data.data.leveling.xpForNextLevel}}</span>
+            </div>
           </label>
         </div>
         <div class="lighter-block resource-block resource-block-line flex-fixed">

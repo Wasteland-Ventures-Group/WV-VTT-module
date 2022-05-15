@@ -111,9 +111,15 @@ run:
 
 ### Adding translations
 
-The translation files are located in `src/main/lang` and have a ready made JSON
-schema in the repo. This schema is written by hand and changes every time the
-translations change.
+The translation files are located in `src/main/lang`. Their schema is generated
+using the following:
+
+```sh
+./gulp.js langSchema
+```
+
+The schema is generated from `src/main/typescript/lang.d.ts`. It needs to be
+regenerated each time this file is changed.
 
 ### Putting the results in FoundryVTT
 

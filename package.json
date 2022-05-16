@@ -44,7 +44,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-tsdoc": "^0.2.16",
     "fancy-log": "^2.0.0",
-    "glob": "^7.1.7",
+    "glob": "^7.2.3",
     "glob-promise": "^4.2.0",
     "gulp": "^4.0.2",
     "gulp-dart-sass": "^1.0.2",

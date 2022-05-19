@@ -10,10 +10,16 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 4,
-            "dice": 2
+            "base": {
+              "source": 4
+            },
+            "dice": {
+              "source": 2
+            }
           },
-          "ap": 6,
+          "ap": {
+            "source": 6
+          },
           "rounds": 1,
           "splash": "small"
         }
@@ -22,35 +28,57 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 20,
-          "multiplier": 0,
+          "base": {
+            "source": 20
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 40,
-          "multiplier": 0,
+          "base": {
+            "source": 40
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 60,
-          "multiplier": 0,
+          "base": {
+            "source": 60
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -40
+        "modifier": {
+          "source": -40
+        }
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 5,
+      "ap": {
+        "source": 5
+      },
       "caliber": "rifleGrenade",
       "containerType": "internal",
-      "size": 4
+      "size": {
+        "source": 4
+      }
     },
     "skill": "explosives",
     "strengthRequirement": {

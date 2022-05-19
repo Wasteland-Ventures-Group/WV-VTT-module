@@ -10,10 +10,16 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 5,
-            "dice": 3
+            "base": {
+              "source": 5
+            },
+            "dice": {
+              "source": 3
+            }
           },
-          "ap": 5,
+          "ap": {
+            "source": 5
+          },
           "dtReduction": 1,
           "rounds": 1
         }
@@ -22,35 +28,57 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 40,
-          "multiplier": 0,
+          "base": {
+            "source": 40
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 80,
-          "multiplier": 0,
+          "base": {
+            "source": 80
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 120,
-          "multiplier": 0,
+          "base": {
+            "source": 120
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "energizedCrystalPack",
       "containerType": "magazine",
-      "size": 6
+      "size": {
+        "source": 6
+      }
     },
     "skill": "magicalEnergyWeapons",
     "strengthRequirement": {

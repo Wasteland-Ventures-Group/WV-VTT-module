@@ -1,10 +1,14 @@
 import type { JSONSchemaType } from "ajv";
 import { Caliber, Calibers } from "../../../../constants.js";
+import {
+  ModifiableNumber,
+  MODIFIABLE_NUMBER_JSON_SCHEMA
+} from "../../../common.js";
 
 /** A type specifying the way a weapon is reloaded */
 export default interface ReloadSource {
   /** The amount of action points needed to reload */
-  ap: number;
+  ap: ModifiableNumber;
 
   /** The caliber, used by the weapon */
   caliber: Caliber;
@@ -13,7 +17,7 @@ export default interface ReloadSource {
   containerType: AmmoContainerType;
 
   /** The amount of ammo that fits into the weapon's ammo container */
-  size: number;
+  size: ModifiableNumber;
 }
 
 /** A type for ammo containers */
@@ -26,10 +30,25 @@ export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
   type: "object",
   properties: {
     ap: {
+      ...MODIFIABLE_NUMBER_JSON_SCHEMA,
       description: "The amount of action points used by the reload",
-      type: "integer",
-      default: 0,
-      minimum: 0
+      properties: {
+        source: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0,
+          minimum: 0
+        },
+        total: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+          type: "integer",
+          default: 0,
+          minimum: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     },
     caliber: {
       description: "The caliber used by the weapon.",
@@ -44,19 +63,38 @@ export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {
       default: "magazine"
     },
     size: {
+      ...MODIFIABLE_NUMBER_JSON_SCHEMA,
       description:
         "The size of the ammo container used by the weapon. If this is zero, the weapon does not support reloading.",
-      type: "integer",
-      default: 0,
-      minimum: 0
+      properties: {
+        source: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0,
+          minimum: 0
+        },
+        total: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+          type: "integer",
+          default: 0,
+          minimum: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     }
   },
   required: ["ap", "caliber", "containerType", "size"],
   additionalProperties: false,
   default: {
-    ap: 0,
+    ap: {
+      source: 0
+    },
     caliber: "308cal",
     containerType: "magazine",
-    size: 0
+    size: {
+      source: 0
+    }
   }
 };

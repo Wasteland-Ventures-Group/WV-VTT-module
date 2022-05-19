@@ -1,4 +1,8 @@
 import type { JSONSchemaType } from "ajv";
+import {
+  ModifiableNumber,
+  MODIFIABLE_NUMBER_JSON_SCHEMA
+} from "../../../common.js";
 
 /** A Weapon Attacks DB container */
 export default class AttacksSource {
@@ -11,10 +15,10 @@ export interface AttackSource {
   /** The values related to the damage the weapon causes */
   damage: {
     /** The base damage amount */
-    base: number;
+    base: ModifiableNumber;
 
     /** The number of d6 to throw for variable damage */
-    dice: number;
+    dice: ModifiableNumber;
 
     /** Whether the damage uses a dice range based on actor Strength */
     diceRange?: boolean;
@@ -36,7 +40,7 @@ export interface AttackSource {
   splash?: "TODO"; // TODO: implement an enum or similar
 
   /** The amount of action points needed to attack */
-  ap: number;
+  ap: ModifiableNumber;
 }
 
 /** A type representing different damage fall-off rules */
@@ -44,7 +48,7 @@ export type DamageFallOffType = typeof DamageFallOffTypes[number];
 const DamageFallOffTypes = ["shotgun"] as const;
 
 /** The default value for the damage object */
-const DAMAGE_DEFAULT = { base: 0, dice: 0 };
+const DAMAGE_DEFAULT = { base: { source: 0 }, dice: { source: 0 } };
 
 /** A JSON schema for attack source objects */
 export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
@@ -56,14 +60,42 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
       type: "object",
       properties: {
         base: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA,
           description: "The flat base damage of the attack",
-          type: "integer",
-          default: 0
+          properties: {
+            source: {
+              ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+              type: "integer",
+              default: 0
+            },
+            total: {
+              ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+              type: "integer",
+              default: 0
+            }
+          },
+          default: {
+            source: 0
+          }
         },
         dice: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA,
           description: "The amount of d6 to throw for variable damage",
-          type: "integer",
-          default: 0
+          properties: {
+            source: {
+              ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+              type: "integer",
+              default: 0
+            },
+            total: {
+              ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+              type: "integer",
+              default: 0
+            }
+          },
+          default: {
+            source: 0
+          }
         },
         diceRange: {
           description:
@@ -111,9 +143,23 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
       default: "TODO"
     },
     ap: {
+      ...MODIFIABLE_NUMBER_JSON_SCHEMA,
       description: "The amount of action points used by the attack.",
-      type: "integer",
-      default: 0
+      properties: {
+        source: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        },
+        total: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     }
   },
   required: ["damage", "ap"],

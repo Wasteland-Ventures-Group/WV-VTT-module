@@ -9,18 +9,30 @@
     "attacks": {
       "sources": {
         "Swipe": {
-          "ap": 6,
+          "ap": {
+            "source": 6
+          },
           "damage": {
-            "base": 3,
-            "dice": 2,
+            "base": {
+              "source": 3
+            },
+            "dice": {
+              "source": 2
+            },
             "diceRange": true
           }
         },
         "Throw": {
-          "ap": 6,
+          "ap": {
+            "source": 6
+          },
           "damage": {
-            "base": 3,
-            "dice": 2,
+            "base": {
+              "source": 3
+            },
+            "dice": {
+              "source": 2
+            },
             "diceRange": true
           },
           "rounds": 1
@@ -30,35 +42,57 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 2,
-          "multiplier": 0,
+          "base": {
+            "source": 2
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 0,
-          "multiplier": 2,
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 2
+          },
           "special": "strength"
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 0,
-          "multiplier": 0,
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       }
     },
     "rarity": "uncommon",
     "reload": {
-      "ap": 0,
+      "ap": {
+        "source": 0
+      },
       "caliber": "308cal",
       "containerType": "magazine",
-      "size": 0
+      "size": {
+        "source": 0
+      }
     },
     "rules": {
       "sources": []

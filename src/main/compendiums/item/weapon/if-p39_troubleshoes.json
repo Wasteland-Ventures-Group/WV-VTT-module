@@ -9,10 +9,16 @@
     "attacks": {
       "sources": {
         "Single": {
-          "ap": 10,
+          "ap": {
+            "source": 10
+          },
           "damage": {
-            "base": 15,
-            "dice": 5
+            "base": {
+              "source": 15
+            },
+            "dice": {
+              "source": 5
+            }
           },
           "rounds": 1
         }
@@ -21,35 +27,57 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 250,
-          "multiplier": 0,
+          "base": {
+            "source": 250
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 500,
-          "multiplier": 0,
+          "base": {
+            "source": 500
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 750,
-          "multiplier": 0,
+          "base": {
+            "source": 750
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "exotic",
     "reload": {
-      "ap": 5,
+      "ap": {
+        "source": 5
+      },
       "caliber": "20mm",
       "containerType": "internal",
-      "size": 1
+      "size": {
+        "source": 1
+      }
     },
     "rules": {
       "sources": []

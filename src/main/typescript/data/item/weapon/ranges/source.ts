@@ -1,5 +1,9 @@
 import type { JSONSchemaType } from "ajv";
 import { SpecialName, SpecialNames } from "../../../../constants.js";
+import {
+  ModifiableNumber,
+  MODIFIABLE_NUMBER_JSON_SCHEMA
+} from "../../../common.js";
 
 /** An interface that represents the source ranges of a weapon. */
 export default interface RangesSource {
@@ -25,16 +29,16 @@ export interface RangeSource {
   distance: DistanceSource;
 
   /** The skill check modifier associated with this range */
-  modifier: number;
+  modifier: ModifiableNumber;
 }
 
 /** A distance specifier for a weapon range. */
 export interface DistanceSource {
   /** The base range of the range in meters */
-  base: number;
+  base: ModifiableNumber;
 
   /** The SPECIAL multiplier */
-  multiplier: number;
+  multiplier: ModifiableNumber;
 
   /** The name of the SPECIAL to use */
   special: SpecialName | "";
@@ -50,14 +54,42 @@ const RANGE_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
       type: "object",
       properties: {
         base: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA,
           description: "The flat base distance of the distance in meters",
-          type: "integer",
-          default: 0
+          properties: {
+            source: {
+              ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+              type: "integer",
+              default: 0
+            },
+            total: {
+              ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+              type: "integer",
+              default: 0
+            }
+          },
+          default: {
+            source: 0
+          }
         },
         multiplier: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA,
           description: "The SPECIAL multiplier for the distance, can be 0.",
-          type: "integer",
-          default: 0
+          properties: {
+            source: {
+              ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+              type: "integer",
+              default: 0
+            },
+            total: {
+              ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+              type: "integer",
+              default: 0
+            }
+          },
+          default: {
+            source: 0
+          }
         },
         special: {
           description:
@@ -70,26 +102,50 @@ const RANGE_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
       required: ["base", "multiplier", "special"],
       additionalProperties: false,
       default: {
-        base: 0,
-        multiplier: 0,
+        base: {
+          source: 0
+        },
+        multiplier: {
+          source: 0
+        },
         special: ""
       }
     },
     modifier: {
+      ...MODIFIABLE_NUMBER_JSON_SCHEMA,
       description: "A hit chance modifier, active on this range",
-      type: "integer",
-      default: 0
+      properties: {
+        source: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        },
+        total: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     }
   },
   required: ["distance", "modifier"],
   additionalProperties: false,
   default: {
     distance: {
-      base: 0,
-      multiplier: 0,
+      base: {
+        source: 0
+      },
+      multiplier: {
+        source: 0
+      },
       special: ""
     },
-    modifier: 0
+    modifier: {
+      source: 0
+    }
   }
 };
 
@@ -122,53 +178,89 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
     {
       short: {
         distance: {
-          base: 2,
-          multiplier: 0,
+          base: {
+            source: 2
+          },
+          multiplier: {
+            source: 0
+          },
           special: ""
         },
-        modifier: 0
+        modifier: {
+          source: 0
+        }
       },
       medium: {
         distance: {
-          base: 0,
-          multiplier: 0,
+          base: {
+            source: 0
+          },
+          multiplier: {
+            source: 0
+          },
           special: ""
         },
-        modifier: 0
+        modifier: {
+          source: 0
+        }
       },
       long: {
         distance: {
-          base: 0,
-          multiplier: 0,
+          base: {
+            source: 0
+          },
+          multiplier: {
+            source: 0
+          },
           special: ""
         },
-        modifier: 0
+        modifier: {
+          source: 0
+        }
       }
     },
     {
       short: {
         distance: {
-          base: 20,
-          multiplier: 0,
+          base: {
+            source: 20
+          },
+          multiplier: {
+            source: 0
+          },
           special: ""
         },
-        modifier: 0
+        modifier: {
+          source: 0
+        }
       },
       medium: {
         distance: {
-          base: 40,
-          multiplier: 0,
+          base: {
+            source: 40
+          },
+          multiplier: {
+            source: 0
+          },
           special: ""
         },
-        modifier: -10
+        modifier: {
+          source: -10
+        }
       },
       long: {
         distance: {
-          base: 60,
-          multiplier: 0,
+          base: {
+            source: 60
+          },
+          multiplier: {
+            source: 0
+          },
           special: ""
         },
-        modifier: -20
+        modifier: {
+          source: -20
+        }
       }
     }
   ]

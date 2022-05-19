@@ -11,46 +11,74 @@
       "sources": {
         "Strike": {
           "damage": {
-            "base": 1,
-            "dice": 2,
+            "base": {
+              "source": 1
+            },
+            "dice": {
+              "source": 2
+            },
             "diceRange": true
           },
-          "ap": 7
+          "ap": {
+            "source": 7
+          }
         }
       }
     },
     "ranges": {
       "short": {
         "distance": {
-          "base": 2,
-          "multiplier": 0,
+          "base": {
+            "source": 2
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 0,
-          "multiplier": 0,
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "long": {
         "distance": {
-          "base": 0,
-          "multiplier": 0,
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       }
     },
     "rarity": "common",
     "reload": {
-      "ap": 0,
+      "ap": {
+        "source": 0
+      },
       "caliber": "308cal",
       "containerType": "magazine",
-      "size": 0
+      "size": {
+        "source": 0
+      }
     },
     "rules": {
       "sources": []

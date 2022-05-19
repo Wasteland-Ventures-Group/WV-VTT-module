@@ -11,19 +11,31 @@
       "sources": {
         "Swipe": {
           "damage": {
-            "base": 2,
-            "dice": 1,
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 1
+            },
             "diceRange": true
           },
-          "ap": 6
+          "ap": {
+            "source": 6
+          }
         },
         "Throw": {
           "damage": {
-            "base": 2,
-            "dice": 1,
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 1
+            },
             "diceRange": true
           },
-          "ap": 6,
+          "ap": {
+            "source": 6
+          },
           "rounds": 1
         }
       }
@@ -31,35 +43,57 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 2,
-          "multiplier": 0,
+          "base": {
+            "source": 2
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 0,
-          "multiplier": 2,
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 2
+          },
           "special": "strength"
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 0,
-          "multiplier": 0,
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       }
     },
     "rarity": "common",
     "reload": {
-      "ap": 0,
+      "ap": {
+        "source": 0
+      },
       "caliber": "308cal",
       "containerType": "magazine",
-      "size": 0
+      "size": {
+        "source": 0
+      }
     },
     "skill": "melee",
     "strengthRequirement": {

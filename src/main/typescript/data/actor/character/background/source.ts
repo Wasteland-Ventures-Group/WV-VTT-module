@@ -145,7 +145,9 @@ export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
     dreams: "",
     karma: 0,
     personality: "",
-    size: 0,
+    size: {
+      source: 0
+    },
     socialContacts: "",
     specialTalent: "",
     virtue: ""

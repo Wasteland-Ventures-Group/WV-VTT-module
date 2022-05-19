@@ -6,6 +6,7 @@ import Prompt, {
 } from "../../applications/prompt.js";
 import { CONSTANTS, SpecialName, SpecialNames } from "../../constants.js";
 import { Special } from "../../data/actor/character/specials/properties.js";
+import { getTotal } from "../../data/common.js";
 import type { AttackSource } from "../../data/item/weapon/attack/source.js";
 import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";
@@ -111,7 +112,7 @@ export default class Attack {
     const remainingAp = outOfRange
       ? previousAp
       : token?.inCombat
-      ? previousAp - this.data.ap
+      ? previousAp - getTotal(this.data.ap)
       : previousAp;
     const notEnoughAp = 0 > remainingAp;
 
@@ -121,7 +122,7 @@ export default class Attack {
       attackName: this.name,
       details: {
         ap: {
-          cost: this.data.ap,
+          cost: getTotal(this.data.ap),
           previous: previousAp,
           remaining: remainingAp
         },
@@ -131,12 +132,12 @@ export default class Attack {
         },
         damage: {
           base: {
-            base: this.data.damage.base,
+            base: this.data.damage.base.source,
             modifiers: this.getDamageBaseModifierFlags(),
-            total: this.data.damage.base
+            total: getTotal(this.data.damage.base)
           },
           dice: {
-            base: this.data.damage.dice,
+            base: this.data.damage.dice.source,
             modifiers: this.getDamageDiceModifierFlags(
               strengthDamageDiceMod,
               rangeDamageDiceMod
@@ -184,7 +185,7 @@ export default class Attack {
 
     // Damage roll -------------------------------------------------------------
     const damageRoll = new Roll(
-      Formulator.damage(this.data.damage.base, damageDice).toString()
+      Formulator.damage(getTotal(this.data.damage.base), damageDice).toString()
     ).evaluate({ async: false });
 
     // Create attack message ---------------------------------------------------
@@ -194,24 +195,26 @@ export default class Attack {
   /** Get the system formula representation of the damage of this attack. */
   get damageFormula(): string {
     if (!this.data.damage.diceRange)
-      return `${this.data.damage.base}+(${this.data.damage.dice})`;
+      return `${getTotal(this.data.damage.base)}+(${getTotal(
+        this.data.damage.dice
+      )})`;
 
     if (this.weapon.actor) {
       const dice =
-        this.data.damage.dice +
+        getTotal(this.data.damage.dice) +
         this.getStrengthDamageDiceMod(
           this.weapon.actor.getSpecial("strength").tempTotal
         );
-      return `${this.data.damage.base}+(${dice})`;
+      return `${getTotal(this.data.damage.base)}+(${dice})`;
     }
 
     const low =
-      this.data.damage.dice +
+      getTotal(this.data.damage.dice) +
       this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.min);
     const high =
-      this.data.damage.dice +
+      getTotal(this.data.damage.dice) +
       this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.max);
-    return `${this.data.damage.base}+(${low}-${high})`;
+    return `${getTotal(this.data.damage.base)}+(${low}-${high})`;
   }
 
   /**
@@ -357,7 +360,7 @@ export default class Attack {
 
   /** Get the amount of damage d6 of this attack. */
   protected getDamageDice(strengthMod: number, rangeMod: number): number {
-    const dice = this.data.damage.dice + strengthMod + rangeMod;
+    const dice = getTotal(this.data.damage.dice) + strengthMod + rangeMod;
     return dice > 0 ? dice : 0;
   }
 
@@ -517,7 +520,7 @@ export default class Attack {
           formula: damageRoll.formula,
           results:
             damageRoll.dice[0]?.results.map((result) => result.result) ?? [],
-          total: damageRoll.total ?? this.data.damage.base
+          total: damageRoll.total ?? getTotal(this.data.damage.base)
         },
         hit: {
           critical: hitRoll.dice[0]?.results[0]?.critical,

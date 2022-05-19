@@ -1,4 +1,5 @@
 import { SpecialName, TYPES } from "../../constants.js";
+import { getTotal } from "../../data/common.js";
 import {
   AttackSource,
   ATTACK_JSON_SCHEMA
@@ -39,7 +40,7 @@ export default class WeaponSheet extends WvItemSheet {
         Record<string, SheetAttack>
       >((obj, [name, attack]) => {
         obj[name] = {
-          ap: attack.data.ap,
+          ap: getTotal(attack.data.ap),
           damage: attack.damageFormula,
           dtReduction: attack.data.dtReduction,
           rounds: attack.data.rounds
@@ -77,7 +78,7 @@ export default class WeaponSheet extends WvItemSheet {
         "": "",
         ...WvI18n.longSpecials
       },
-      usesAmmo: weapon.systemData.reload.size > 0
+      usesAmmo: getTotal(weapon.systemData.reload.size) > 0
     };
   }
 

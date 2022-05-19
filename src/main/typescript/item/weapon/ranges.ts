@@ -1,5 +1,6 @@
 import { CONSTANTS, SpecialName } from "../../constants.js";
 import type Specials from "../../data/actor/character/specials/properties.js";
+import { getTotal } from "../../data/common.js";
 import type WeaponDataProperties from "../../data/item/weapon/properties.js";
 import type RangesSource from "../../data/item/weapon/ranges/source.js";
 import type { DistanceSource } from "../../data/item/weapon/ranges/source.js";
@@ -43,7 +44,7 @@ export function getDisplayRangeDistance(
   distance: DistanceSource,
   specials?: Partial<Specials> | undefined
 ): string {
-  if (distance.multiplier !== 0 && distance.special !== "") {
+  if (getTotal(distance.multiplier) !== 0 && distance.special !== "") {
     const specialValue = (specials ?? {})[distance.special]?.tempTotal;
     if (typeof specialValue === "number") {
       return getSpecialRangeDistance(distance, specialValue).toString();
@@ -55,9 +56,9 @@ export function getDisplayRangeDistance(
     }
   }
 
-  if (distance.base === 0) return "-";
+  if (getTotal(distance.base) === 0) return "-";
 
-  return distance.base.toString();
+  return getTotal(distance.base).toString();
 }
 
 /**
@@ -72,12 +73,12 @@ export function getEffectiveRangeDistance(
   distance: DistanceSource,
   specials?: Partial<Specials>
 ): number {
-  if (distance.multiplier !== 0 && distance.special !== "") {
+  if (getTotal(distance.multiplier) !== 0 && distance.special !== "") {
     const specialValue = (specials ?? {})[distance.special]?.tempTotal ?? 0;
     return getSpecialRangeDistance(distance, specialValue);
   }
 
-  return distance.base;
+  return getTotal(distance.base);
 }
 
 /**
@@ -120,13 +121,14 @@ export function getRangeModifier(
   ranges: RangesSource,
   rangeBracket: RangeBracket
 ): number {
-  if (rangeBracket <= RangeBracket.SHORT) return ranges.short.modifier;
+  if (rangeBracket <= RangeBracket.SHORT)
+    return getTotal(ranges.short.modifier);
 
   if (ranges.medium && rangeBracket <= RangeBracket.MEDIUM)
-    return ranges.medium.modifier;
+    return getTotal(ranges.medium.modifier);
 
   if (ranges.long && rangeBracket <= RangeBracket.LONG)
-    return ranges.long.modifier;
+    return getTotal(ranges.long.modifier);
 
   return 0;
 }
@@ -141,7 +143,7 @@ export function getSpecialRangeDistance(
   distance: DistanceSource,
   specialValue: number
 ): number {
-  return distance.base + distance.multiplier * specialValue;
+  return getTotal(distance.base) + getTotal(distance.multiplier) * specialValue;
 }
 
 /** Get the names of SPECIALs used in the Ranges. */

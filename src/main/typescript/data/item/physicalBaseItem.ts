@@ -47,7 +47,11 @@ export const PHYS_BASE_ITEM_JSON_SCHEMA: JSONSchemaType<PhysicalBaseItem> = {
   default: {
     ...BASE_ITEM_JSON_SCHEMA.default,
     rarity: "common",
-    value: 0,
-    weight: 0
+    value: {
+      source: 0
+    },
+    weight: {
+      source: 0
+    }
   }
 };

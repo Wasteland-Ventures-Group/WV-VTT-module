@@ -61,9 +61,15 @@
     },
     "holdout": true,
     "skill": "firearms",
-    "strengthRequirement": 3,
-    "value": 200,
-    "weight": 2,
+    "strengthRequirement": {
+      "source": 3
+    },
+    "value": {
+      "source": 200
+    },
+    "weight": {
+      "source": 2
+    },
     "rules": {
       "sources": []
     }

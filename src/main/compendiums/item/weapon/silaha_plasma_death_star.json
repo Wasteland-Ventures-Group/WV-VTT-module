@@ -53,9 +53,15 @@
       "size": 20
     },
     "skill": "explosives",
-    "strengthRequirement": 8,
-    "value": 750,
-    "weight": 12,
+    "strengthRequirement": {
+      "source": 8
+    },
+    "value": {
+      "source": 750
+    },
+    "weight": {
+      "source": 12
+    },
     "rules": {
       "sources": []
     }

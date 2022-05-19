@@ -60,9 +60,15 @@
       "size": 20
     },
     "skill": "firearms",
-    "strengthRequirement": 8,
-    "value": 650,
-    "weight": 8,
+    "strengthRequirement": {
+      "source": 8
+    },
+    "value": {
+      "source": 650
+    },
+    "weight": {
+      "source": 8
+    },
     "rules": {
       "sources": []
     }

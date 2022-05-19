@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "rare",
-    "value": 40,
-    "weight": 0,
+    "value": {
+      "source": 40
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 1,
     "caliber": "rifleGrenade",
     "type": "plasma"

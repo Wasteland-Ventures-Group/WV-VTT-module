@@ -1,5 +1,6 @@
 import type { JSONSchemaType } from "ajv";
 import { Rarities, Rarity } from "../../constants.js";
+import { ModifiableNumber, MODIFIABLE_NUMBER_JSON_SCHEMA } from "../common.js";
 import BaseItem, { BASE_ITEM_JSON_SCHEMA } from "./baseItem.js";
 
 /** This holds the base values that all physical items have in common. */
@@ -7,11 +8,11 @@ export default abstract class PhysicalBaseItem extends BaseItem {
   /** The rarity of the item */
   rarity: Rarity = "common";
 
-  /** The value of the item in caps */
-  value: number = 0;
+  /** The value of the item in caps (can be floating point) */
+  value = new ModifiableNumber(0);
 
   /** The weight of the item in kg (can be floating point) */
-  weight: number = 0;
+  weight = new ModifiableNumber(0);
 }
 
 /** A JSOn schema for physical base item objects */
@@ -27,14 +28,18 @@ export const PHYS_BASE_ITEM_JSON_SCHEMA: JSONSchemaType<PhysicalBaseItem> = {
       enum: Rarities
     },
     value: {
-      description: "The value of the item in caps",
-      type: "number",
-      default: 0
+      ...MODIFIABLE_NUMBER_JSON_SCHEMA,
+      description: "The value of the item in caps (can be floating point)",
+      default: {
+        source: 0
+      }
     },
     weight: {
+      ...MODIFIABLE_NUMBER_JSON_SCHEMA,
       description: "The weight of the item in kg (can be floating point)",
-      type: "number",
-      default: 0
+      default: {
+        source: 0
+      }
     }
   },
   required: [...BASE_ITEM_JSON_SCHEMA.required, "rarity", "value", "weight"],

@@ -7,6 +7,10 @@ import {
   TYPES
 } from "../../../constants.js";
 import {
+  ModifiableNumber,
+  MODIFIABLE_NUMBER_JSON_SCHEMA
+} from "../../common.js";
+import {
   COMPENDIUM_JSON_SCHEMA,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
@@ -26,13 +30,13 @@ export class ApparelDataSourceData extends PhysicalBaseItem {
   blockedSlots?: ApparelSlot[] = [];
 
   /** The damage threshold of the apparel */
-  damageThreshold?: number = 0;
+  damageThreshold? = new ModifiableNumber(0);
 
   /** The number of quick slots of the apparel */
-  quickSlots?: number = 0;
+  quickSlots? = new ModifiableNumber(0);
 
   /** The number of mod slots of the apparel */
-  modSlots?: number = 0;
+  modSlots? = new ModifiableNumber(0);
 
   /** The apparel slot this apparel occupies when equipped */
   slot: ApparelSlot = "clothing";
@@ -59,21 +63,65 @@ export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
         default: []
       },
       damageThreshold: {
+        ...MODIFIABLE_NUMBER_JSON_SCHEMA,
         description: "The damage threshold of the apparel",
-        type: "integer",
-        default: 0
+        properties: {
+          source: {
+            ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+            type: "integer",
+            default: 0
+          },
+          total: {
+            ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+            type: "integer",
+            default: 0
+          }
+        },
+        default: {
+          source: 0
+        }
       },
       quickSlots: {
+        ...MODIFIABLE_NUMBER_JSON_SCHEMA,
         description: "The number of quick slots of the apparel",
-        type: "integer",
-        default: 0,
-        minimum: 0
+        properties: {
+          source: {
+            ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+            type: "integer",
+            default: 0,
+            minimum: 0
+          },
+          total: {
+            ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+            type: "integer",
+            default: 0,
+            minimum: 0
+          }
+        },
+        default: {
+          source: 0
+        }
       },
       modSlots: {
+        ...MODIFIABLE_NUMBER_JSON_SCHEMA,
         description: "The number of mod slots of the apparel",
-        type: "integer",
-        default: 0,
-        minimum: 0
+        properties: {
+          source: {
+            ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+            type: "integer",
+            default: 0,
+            minimum: 0
+          },
+          total: {
+            ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+            type: "integer",
+            default: 0,
+            minimum: 0
+          }
+        },
+        default: {
+          source: 0
+        }
       },
       slot: {
         description: "The apparel slot this apparel occupies when equipped",

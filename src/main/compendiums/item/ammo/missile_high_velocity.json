@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "uncommon",
-    "value": 150,
-    "weight": 0,
+    "value": {
+      "source": 150
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 1,
     "caliber": "missile",
     "type": "highVelocity"

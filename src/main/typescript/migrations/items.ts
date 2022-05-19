@@ -82,6 +82,7 @@ async function migrateItem(
       migrateAmmoFix(item, updateData);
       migrateRanges(item, updateData);
       migrateMandatoryReload(item, updateData);
+      migrateToModifiableNumbers(item, updateData);
       if (!foundry.utils.isObjectEmpty(updateData)) {
         LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
         await item.update(updateData);
@@ -111,6 +112,39 @@ function migrateRuleElementHook(
         hook: "afterSpecial",
         ...rule
       })
+    );
+  }
+}
+
+async function migrateFromCompendium(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>,
+  currentVersion: string
+): Promise<void> {
+  const compendiumUpdateData = await getUpdateDataFromCompendium(item);
+  if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
+    LOG.info(
+      `Updating Item from Compendium [${item.id}] "${item.name}" with`,
+      updateData
+    );
+    await item.update(
+      { ...compendiumUpdateData },
+      { recursive: false, diff: false }
+    );
+    await item.setFlag(
+      CONSTANTS.systemId,
+      "lastMigrationVersion",
+      currentVersion
+    );
+  }
+
+  if (!foundry.utils.isObjectEmpty(updateData)) {
+    LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
+    await item.update(updateData);
+    await item.setFlag(
+      CONSTANTS.systemId,
+      "lastMigrationVersion",
+      currentVersion
     );
   }
 }
@@ -219,35 +253,24 @@ function migrateMandatoryReload(
   };
 }
 
-async function migrateFromCompendium(
+function migrateToModifiableNumbers(
   item: foundry.documents.BaseItem,
-  updateData: Record<string, unknown>,
-  currentVersion: string
-): Promise<void> {
-  const compendiumUpdateData = await getUpdateDataFromCompendium(item);
-  if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
-    LOG.info(
-      `Updating Item from Compendium [${item.id}] "${item.name}" with`,
-      updateData
-    );
-    await item.update(
-      { ...compendiumUpdateData },
-      { recursive: false, diff: false }
-    );
-    await item.setFlag(
-      CONSTANTS.systemId,
-      "lastMigrationVersion",
-      currentVersion
-    );
-  }
-
-  if (!foundry.utils.isObjectEmpty(updateData)) {
-    LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
-    await item.update(updateData);
-    await item.setFlag(
-      CONSTANTS.systemId,
-      "lastMigrationVersion",
-      currentVersion
-    );
-  }
+  updateData: Record<string, unknown>
+) {
+  const data = item.data.data;
+  if ("value" in data && typeof data.value === "number")
+    updateData["data.value.source"] = data.value;
+  if ("weight" in data && typeof data.weight === "number")
+    updateData["data.weight.source"] = data.weight;
+  if ("damageThreshold" in data && typeof data.damageThreshold === "number")
+    updateData["data.damageThreshold.source"] = data.damageThreshold;
+  if ("quickSlots" in data && typeof data.quickSlots === "number")
+    updateData["data.quickSlots.source"] = data.quickSlots;
+  if ("modSlots" in data && typeof data.modSlots === "number")
+    updateData["data.modSlots.source"] = data.modSlots;
+  if (
+    "strengthRequirement" in data &&
+    typeof data.strengthRequirement === "number"
+  )
+    updateData["data.strengthRequirement.source"] = data.strengthRequirement;
 }

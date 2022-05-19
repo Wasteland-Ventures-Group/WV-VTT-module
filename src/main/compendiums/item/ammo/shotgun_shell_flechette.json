@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "uncommon",
-    "value": 2,
-    "weight": 0,
+    "value": {
+      "source": 2
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 5,
     "caliber": "shotgunShell",
     "type": "flechette"

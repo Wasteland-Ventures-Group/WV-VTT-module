@@ -53,9 +53,15 @@
     },
     "holdout": true,
     "skill": "unarmed",
-    "strengthRequirement": 5,
-    "value": 60,
-    "weight": 3,
+    "strengthRequirement": {
+      "source": 5
+    },
+    "value": {
+      "source": 60
+    },
+    "weight": {
+      "source": 3
+    },
     "rules": {
       "sources": []
     }

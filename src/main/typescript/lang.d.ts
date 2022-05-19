@@ -512,6 +512,16 @@ export interface LangSchema {
              */
             notMatchingSelector: string;
             /**
+             * An error message when the selected property on the target is not
+             * a modifiable number.
+             *
+             * Parameters:
+             * - name: the name of the target
+             * - path: the selector path
+             * @pattern (?=.*\{name\})(?=.*\{path\})
+             */
+            notModifiableNumber: string;
+            /**
              * An error message when the selected property on the target is of
              * the wrong type.
              *

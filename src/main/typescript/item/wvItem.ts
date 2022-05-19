@@ -6,6 +6,7 @@ import {
   ProtoItemTypes,
   SYSTEM_COMPENDIUM_SOURCE_ID_REGEX
 } from "../constants.js";
+import { getTotal } from "../data/common.js";
 import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import { RULE_ELEMENTS } from "../ruleEngine/ruleElements.js";
@@ -111,12 +112,16 @@ export default class WvItem extends Item {
 
   /** Get the value of the item, if it has any. */
   get value(): number | undefined {
-    return "value" in this.data.data ? this.data.data.value : undefined;
+    return "value" in this.data.data
+      ? getTotal(this.data.data.value)
+      : undefined;
   }
 
   /** Get the weight of the item, if it has any. */
   get weight(): number | undefined {
-    return "weight" in this.data.data ? this.data.data.weight : undefined;
+    return "weight" in this.data.data
+      ? getTotal(this.data.data.weight)
+      : undefined;
   }
 
   override prepareBaseData(): void {

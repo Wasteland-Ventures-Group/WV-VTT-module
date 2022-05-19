@@ -52,9 +52,15 @@
       "size": 0
     },
     "skill": "unarmed",
-    "strengthRequirement": 4,
-    "value": 300,
-    "weight": 4,
+    "strengthRequirement": {
+      "source": 4
+    },
+    "value": {
+      "source": 300
+    },
+    "weight": {
+      "source": 4
+    },
     "rules": {
       "sources": []
     }

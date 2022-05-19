@@ -56,9 +56,15 @@
       "sources": []
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 1,
-    "value": 150,
-    "weight": 1,
+    "strengthRequirement": {
+      "source": 1
+    },
+    "value": {
+      "source": 150
+    },
+    "weight": {
+      "source": 1
+    },
     "holdout": true
   },
   "effects": [],

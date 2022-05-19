@@ -56,9 +56,15 @@
       "sources": []
     },
     "skill": "firearms",
-    "strengthRequirement": 2,
-    "value": 100,
-    "weight": 1
+    "strengthRequirement": {
+      "source": 2
+    },
+    "value": {
+      "source": 100
+    },
+    "weight": {
+      "source": 1
+    }
   },
   "effects": [],
   "flags": {},

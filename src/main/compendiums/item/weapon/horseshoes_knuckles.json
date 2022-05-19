@@ -56,9 +56,15 @@
       "sources": []
     },
     "skill": "unarmed",
-    "strengthRequirement": 2,
-    "value": 60,
-    "weight": 0.5
+    "strengthRequirement": {
+      "source": 2
+    },
+    "value": {
+      "source": 60
+    },
+    "weight": {
+      "source": 0.5
+    }
   },
   "effects": [],
   "flags": {},

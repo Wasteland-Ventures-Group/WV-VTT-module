@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "uncommon",
-    "value": 60,
-    "weight": 0,
+    "value": {
+      "source": 60
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 1,
     "caliber": "rifleGrenade",
     "type": "highExplosive"

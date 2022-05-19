@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "exotic",
-    "value": 9999,
-    "weight": 0,
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 10,
     "caliber": "alienGemPack",
     "type": "standard"

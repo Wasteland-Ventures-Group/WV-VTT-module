@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "common",
-    "value": 0.3,
-    "weight": 0,
+    "value": {
+      "source": 0.3
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 10,
     "caliber": "5_56mm",
     "type": "standard"

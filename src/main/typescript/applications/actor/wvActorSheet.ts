@@ -149,7 +149,7 @@ export default class WvActorSheet extends ActorSheet {
     const readiedItem =
       actorReadiedItem instanceof Weapon
         ? this.toSheetWeapon(actorReadiedItem)
-        : actorReadiedItem?.toJSON() ?? null;
+        : actorReadiedItem?.toObject(false) ?? null;
     const armor =
       this.actor.armor instanceof Apparel
         ? this.toSheetApparel(this.actor.armor)
@@ -449,7 +449,7 @@ export default class WvActorSheet extends ActorSheet {
 
   protected toSheetApparel(apparel: Apparel): SheetApparel {
     return {
-      ...apparel.toJSON(),
+      ...apparel.toObject(false),
       sheet: ApparelSheet.getApparelSheetData(apparel)
     };
   }
@@ -457,7 +457,7 @@ export default class WvActorSheet extends ActorSheet {
   /** Transform a Weapon into a sheet weapon. */
   protected toSheetWeapon(weapon: Weapon): SheetWeapon {
     return {
-      ...weapon.toJSON(),
+      ...weapon.toObject(false),
       sheet: WeaponSheet.getWeaponSheetData(weapon)
     };
   }
@@ -881,13 +881,13 @@ interface SheetEquipment {
   belt: SheetApparel | null;
 }
 
-type ReadiedItem = ReturnType<WvItem["toJSON"]> | SheetWeapon;
+type ReadiedItem = ReturnType<WvItem["toObject"]> | SheetWeapon;
 
-type SheetApparel = ReturnType<Apparel["toJSON"]> & {
+type SheetApparel = ReturnType<Apparel["toObject"]> & {
   sheet: SheetApparelData;
 };
 
-type SheetWeapon = ReturnType<Weapon["toJSON"]> & {
+type SheetWeapon = ReturnType<Weapon["toObject"]> & {
   sheet: SheetWeaponData;
 };
 

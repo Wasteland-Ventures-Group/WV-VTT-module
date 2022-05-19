@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "exotic",
-    "value": 2.8,
-    "weight": 0,
+    "value": {
+      "source": 2.8
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 5,
     "caliber": "energizedCrystalPack",
     "type": "optimized"

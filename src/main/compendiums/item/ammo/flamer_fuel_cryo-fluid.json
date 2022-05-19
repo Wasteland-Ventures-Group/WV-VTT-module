@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "uncommon",
-    "value": 0.2,
-    "weight": 0,
+    "value": {
+      "source": 0.2
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 5,
     "caliber": "flamerFuel",
     "type": "cryoFluid"

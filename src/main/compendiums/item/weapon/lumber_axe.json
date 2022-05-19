@@ -62,9 +62,15 @@
       "size": 0
     },
     "skill": "melee",
-    "strengthRequirement": 6,
-    "value": 80,
-    "weight": 5,
+    "strengthRequirement": {
+      "source": 6
+    },
+    "value": {
+      "source": 80
+    },
+    "weight": {
+      "source": 5
+    },
     "rules": {
       "sources": []
     }

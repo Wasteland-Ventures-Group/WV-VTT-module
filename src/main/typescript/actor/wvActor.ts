@@ -13,11 +13,12 @@ import {
   Criticals,
   SecondaryStatistics
 } from "../data/actor/character/properties.js";
-import Skills, { Skill } from "../data/actor/character/skills/properties.js";
+import Skills from "../data/actor/character/skills/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
 import Specials, {
   Special
 } from "../data/actor/character/specials/properties.js";
+import { getTotal, ModifiableNumber } from "../data/common.js";
 import type { Resource } from "../data/foundryCommon.js";
 import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
@@ -186,7 +187,7 @@ export default class WvActor extends Actor {
    * Get a Skill from this actor.
    * @throws If the Skills have not been calculated yet.
    */
-  getSkill(name: SkillName): Skill {
+  getSkill(name: SkillName): ModifiableNumber {
     const skill = this.data.data.skills[name];
     if (skill === undefined)
       throw new Error("The Skills have not been calculated yet!");
@@ -427,7 +428,7 @@ export default class WvActor extends Actor {
     };
 
     new Roll(
-      Formulator.skill(this.getSkill(name).total)
+      Formulator.skill(getTotal(this.getSkill(name)))
         .modify(options?.modifier)
         .criticals(this.data.data.secondary.criticals)
         .toString()
@@ -536,7 +537,8 @@ export default class WvActor extends Actor {
     // Calculate data derived from equipment -----------------------------------
     data.equipment.damageThreshold = this.equippedApparel.reduce(
       (dt, apparel) => {
-        dt += apparel.systemData.damageThreshold ?? 0;
+        if (apparel.systemData.damageThreshold)
+          dt += getTotal(apparel.systemData.damageThreshold);
         return dt;
       },
       0
@@ -544,7 +546,8 @@ export default class WvActor extends Actor {
 
     data.equipment.quickSlots.max = this.equippedApparel.reduce(
       (qs, apparel) => {
-        qs += apparel.systemData.quickSlots ?? 0;
+        if (apparel.systemData.quickSlots)
+          qs += getTotal(apparel.systemData.quickSlots);
         return qs;
       },
       0
@@ -552,7 +555,7 @@ export default class WvActor extends Actor {
 
     // Modify values based on the size -----------------------------------------
     // TODO: hit chance, reach, combat trick mods
-    switch (data.background.size) {
+    switch (getTotal(data.background.size)) {
       case 4:
         data.vitals.hitPoints.max += 4;
         data.secondary.maxCarryWeight += 60;
@@ -640,7 +643,7 @@ export default class WvActor extends Actor {
    * point ranks.
    * @param skill - the name of the skill
    */
-  protected computeBaseSkill(skill: SkillName): Skill {
+  protected computeBaseSkill(skill: SkillName): ModifiableNumber {
     const baseSkill =
       this.getSpecial(
         skill === "thaumaturgy"
@@ -649,7 +652,7 @@ export default class WvActor extends Actor {
       ).permTotal *
         2 +
       Math.floor(this.getSpecial("luck").permTotal / 2);
-    return new Skill(
+    return new ModifiableNumber(
       baseSkill,
       baseSkill + this.data.data.leveling.skillRanks[skill]
     );

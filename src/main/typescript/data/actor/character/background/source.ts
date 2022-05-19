@@ -1,5 +1,9 @@
 import type { JSONSchemaType } from "ajv";
 import { CONSTANTS, Race, Races } from "../../../../constants.js";
+import {
+  ModifiableNumber,
+  MODIFIABLE_NUMBER_JSON_SCHEMA
+} from "../../../common.js";
 
 /** An Actor background object for the database */
 export default class BackgroundSource {
@@ -34,7 +38,7 @@ export default class BackgroundSource {
   personality = "";
 
   /** The current size of an Actor */
-  size = 0;
+  size = new ModifiableNumber(0);
 
   /** The social contacts of an Actor */
   socialContacts = "";
@@ -94,10 +98,26 @@ export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
       type: "string"
     },
     size: {
+      ...MODIFIABLE_NUMBER_JSON_SCHEMA,
       description: "The size of the character",
-      type: "integer",
-      maximum: CONSTANTS.bounds.size.max,
-      minimum: CONSTANTS.bounds.size.min
+      properties: {
+        source: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+          type: "integer",
+          maximum: CONSTANTS.bounds.size.max,
+          minimum: CONSTANTS.bounds.size.min,
+          default: 0
+        },
+        total: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+          type: "integer",
+          maximum: CONSTANTS.bounds.size.max,
+          minimum: CONSTANTS.bounds.size.min
+        }
+      },
+      default: {
+        source: 0
+      }
     },
     socialContacts: {
       description: "The social contacts of the character",

@@ -1,5 +1,9 @@
 import type { JSONSchemaType } from "ajv";
 import { SkillName, SkillNames, TYPES } from "../../../constants.js";
+import {
+  ModifiableNumber,
+  MODIFIABLE_NUMBER_JSON_SCHEMA
+} from "../../common.js";
 import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import { COMPENDIUM_JSON_SCHEMA } from "../../foundryCommon.js";
 import PhysicalBaseItem, {
@@ -38,7 +42,7 @@ export class WeaponDataSourceData extends PhysicalBaseItem {
   skill: SkillName = "firearms";
 
   /** The strength requirement for this weapon to be equipped */
-  strengthRequirement: number = 0;
+  strengthRequirement = new ModifiableNumber(0);
 }
 
 /** The default object for weapon attacks */
@@ -89,9 +93,23 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
       default: "firearms"
     },
     strengthRequirement: {
+      ...MODIFIABLE_NUMBER_JSON_SCHEMA,
       description: "The Strength requirement of the weapon",
-      type: "integer",
-      default: 0
+      properties: {
+        source: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        },
+        total: {
+          ...MODIFIABLE_NUMBER_JSON_SCHEMA.properties.total,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     }
   },
   required: [
@@ -109,7 +127,9 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
     ranges: RANGES_JSON_SCHEMA.default,
     reload: RELOAD_JSON_SCHEMA.default,
     skill: "firearms",
-    strengthRequirement: 0
+    strengthRequirement: {
+      source: 0
+    }
   }
 };
 

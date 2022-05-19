@@ -54,9 +54,15 @@
     },
     "holdout": true,
     "skill": "explosives",
-    "strengthRequirement": 2,
-    "value": 9999,
-    "weight": 0.2,
+    "strengthRequirement": {
+      "source": 2
+    },
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 0.2
+    },
     "rules": {
       "sources": []
     }

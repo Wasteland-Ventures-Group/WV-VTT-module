@@ -6,7 +6,9 @@
     "name": "IF-92 \"Melrose\"",
     "description": "Ironshod Firearms' machine gun developed at the tail end of the war. Easy to jury-rig, hence why it is often used as a basis for Wasteland Turrets.",
     "notes": "Point blank accuracy modifier -10",
-    "strengthRequirement": 8,
+    "strengthRequirement": {
+      "source": 8
+    },
     "attacks": {
       "sources": {
         "Burst": {
@@ -53,8 +55,12 @@
       "size": 100
     },
     "skill": "firearms",
-    "value": 500,
-    "weight": 7.5,
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 7.5
+    },
     "rules": {
       "sources": []
     }

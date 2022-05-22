@@ -1,4 +1,5 @@
 import type { TYPES } from "../../../constants.js";
+import { ModifiableNumber } from "../../common.js";
 import Equipment from "./equipment/properties.js";
 import Leveling from "./leveling/properties.js";
 import Skills from "./skills/properties.js";
@@ -15,10 +16,10 @@ export default interface CharacterDataProperties {
 /** Derived resistance values */
 export class Resistances {
   /** The basic poison resitance of an Actor */
-  poison = 10;
+  poison = new ModifiableNumber(10);
 
   /** The basic radiation resistance of an Actor */
-  radiation = 5;
+  radiation = new ModifiableNumber(5);
 }
 
 /** Stats related to critical success and failure */
@@ -29,15 +30,15 @@ export class Criticals {
    * @param failure - the critical failure chance
    */
   constructor(success = 1, failure = 100) {
-    this.success = success;
-    this.failure = failure;
+    this.success = new ModifiableNumber(success);
+    this.failure = new ModifiableNumber(failure);
   }
 
   /** The critical success chance */
-  success: number = 1;
+  success = new ModifiableNumber(1);
 
   /** The critical failure chance */
-  failure: number = 100;
+  failure = new ModifiableNumber(100);
 }
 
 /** Derived secondary statistics */

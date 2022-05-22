@@ -268,14 +268,18 @@ export default class Attack {
         critSuccess: {
           type: "number",
           label: i18n.localize("wv.rules.criticals.successChance"),
-          value: actor?.data.data.secondary.criticals.success ?? 5,
+          value: actor
+            ? getTotal(actor.data.data.secondary.criticals.success)
+            : 5,
           min: 0,
           max: 100
         },
         critFailure: {
           type: "number",
           label: i18n.localize("wv.rules.criticals.failureChance"),
-          value: actor?.data.data.secondary.criticals.failure ?? 96,
+          value: actor
+            ? getTotal(actor.data.data.secondary.criticals.failure)
+            : 96,
           min: 0,
           max: 100
         }

@@ -406,7 +406,10 @@ export default class WvActor extends Actor {
     new Roll(
       Formulator.special(this.getSpecial(name).tempTotal)
         .modify(options?.modifier)
-        .criticals(this.data.data.secondary.criticals)
+        .criticals({
+          success: getTotal(this.data.data.secondary.criticals.success),
+          failure: getTotal(this.data.data.secondary.criticals.failure)
+        })
         .toString()
     )
       .roll({ async: true })
@@ -430,7 +433,10 @@ export default class WvActor extends Actor {
     new Roll(
       Formulator.skill(getTotal(this.getSkill(name)))
         .modify(options?.modifier)
-        .criticals(this.data.data.secondary.criticals)
+        .criticals({
+          success: getTotal(this.data.data.secondary.criticals.success),
+          failure: getTotal(this.data.data.secondary.criticals.failure)
+        })
         .toString()
     )
       .roll({ async: true })

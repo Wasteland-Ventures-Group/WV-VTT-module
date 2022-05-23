@@ -15,6 +15,7 @@
         "fears": "Fears",
         "gender": "Gender",
         "personality": "Personality",
+        "size": "Size",
         "socialContacts": "Social Contacts",
         "specialTalent": "Special Talent",
         "virtue": "Virtue"
@@ -415,7 +416,7 @@
           "logical": {
             "noActor": "The target is set to \"actor\", but the item has no actor.",
             "notMatchingSelector": "The property \"{path}\" on \"{name}\" does not exist.",
-            "notModifiableNumber": "The property \"{path}\" on \"{name}\" is not a modifiable number.",
+            "notCompositeNumber": "The property \"{path}\" on \"{name}\" is not a modifiable number.",
             "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\".",
             "wrongValueType": "The value for this rule should be of type \"{type}\"."
           },

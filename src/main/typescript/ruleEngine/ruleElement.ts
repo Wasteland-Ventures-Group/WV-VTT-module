@@ -35,9 +35,24 @@ export default abstract class RuleElement {
   /** The data of the RuleElement */
   source: RuleElementSource;
 
+  /** Get the label of the RuleElement. */
+  get label(): string {
+    return this.source.label;
+  }
+
   /** Get the priority number of the RuleElement. */
   get priority(): number {
     return this.source.priority;
+  }
+
+  /** Get the property, the RuleElement points at. */
+  get property(): unknown {
+    return foundry.utils.getProperty(this.targetDoc.data.data, this.selector);
+  }
+
+  /** Set the property, the RuleElement points at. */
+  set property(value: unknown) {
+    foundry.utils.setProperty(this.targetDoc.data.data, this.selector, value);
   }
 
   /** Get the property selector of the RuleElement. */
@@ -60,7 +75,7 @@ export default abstract class RuleElement {
         return this.item;
       case "actor":
         if (this.item.actor === null) {
-          throw new Error("The actor of the RuleElement's item is null!");
+          throw new Error("The actor of the RuleElement's item is null.");
         }
 
         return this.item.actor;

@@ -1,5 +1,6 @@
 import { TYPES } from "../constants.js";
 import type ApparelDataProperties from "../data/item/apparel/properties.js";
+import { ApparelDataPropertiesData } from "../data/item/apparel/properties.js";
 import WvItem from "./wvItem.js";
 
 /**
@@ -22,5 +23,9 @@ export default class Apparel extends WvItem {
       throw new Error(`This data's data type is not ${TYPES.ITEM.APPAREL}.`);
 
     return this.data.data;
+  }
+
+  override prepareBaseData(): void {
+    this.data.data = new ApparelDataPropertiesData(this.systemData, this);
   }
 }

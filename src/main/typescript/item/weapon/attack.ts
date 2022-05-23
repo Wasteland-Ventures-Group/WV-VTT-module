@@ -6,8 +6,7 @@ import Prompt, {
 } from "../../applications/prompt.js";
 import { CONSTANTS, SpecialName, SpecialNames } from "../../constants.js";
 import { Special } from "../../data/actor/character/specials/properties.js";
-import { getTotal } from "../../data/common.js";
-import type { AttackSource } from "../../data/item/weapon/attack/source.js";
+import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";
 import { getGame } from "../../foundryHelpers.js";
@@ -24,12 +23,12 @@ export default class Attack {
   /**
    * Create an Attack from the given data.
    * @param name - the identifier name of the attack
-   * @param data - the attack source data
+   * @param data - the attack data
    * @param weapon - the Weapon this Attack belongs to
    */
   constructor(
     public name: string,
-    public data: AttackSource,
+    public data: AttackProperties,
     public weapon: Weapon
   ) {}
 
@@ -112,7 +111,7 @@ export default class Attack {
     const remainingAp = outOfRange
       ? previousAp
       : token?.inCombat
-      ? previousAp - getTotal(this.data.ap)
+      ? previousAp - this.data.ap.total
       : previousAp;
     const notEnoughAp = 0 > remainingAp;
 
@@ -122,7 +121,7 @@ export default class Attack {
       attackName: this.name,
       details: {
         ap: {
-          cost: getTotal(this.data.ap),
+          cost: this.data.ap.total,
           previous: previousAp,
           remaining: remainingAp
         },
@@ -134,7 +133,7 @@ export default class Attack {
           base: {
             base: this.data.damage.base.source,
             modifiers: this.getDamageBaseModifierFlags(),
-            total: getTotal(this.data.damage.base)
+            total: this.data.damage.base.total
           },
           dice: {
             base: this.data.damage.dice.source,
@@ -185,7 +184,7 @@ export default class Attack {
 
     // Damage roll -------------------------------------------------------------
     const damageRoll = new Roll(
-      Formulator.damage(getTotal(this.data.damage.base), damageDice).toString()
+      Formulator.damage(this.data.damage.base.total, damageDice).toString()
     ).evaluate({ async: false });
 
     // Create attack message ---------------------------------------------------
@@ -195,26 +194,24 @@ export default class Attack {
   /** Get the system formula representation of the damage of this attack. */
   get damageFormula(): string {
     if (!this.data.damage.diceRange)
-      return `${getTotal(this.data.damage.base)}+(${getTotal(
-        this.data.damage.dice
-      )})`;
+      return `${this.data.damage.base.total}+(${this.data.damage.dice.total})`;
 
     if (this.weapon.actor) {
       const dice =
-        getTotal(this.data.damage.dice) +
+        this.data.damage.dice.total +
         this.getStrengthDamageDiceMod(
           this.weapon.actor.getSpecial("strength").tempTotal
         );
-      return `${getTotal(this.data.damage.base)}+(${dice})`;
+      return `${this.data.damage.base.total}+(${dice})`;
     }
 
     const low =
-      getTotal(this.data.damage.dice) +
+      this.data.damage.dice.total +
       this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.min);
     const high =
-      getTotal(this.data.damage.dice) +
+      this.data.damage.dice.total +
       this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.max);
-    return `${getTotal(this.data.damage.base)}+(${low}-${high})`;
+    return `${this.data.damage.base.total}+(${low}-${high})`;
   }
 
   /**
@@ -268,18 +265,14 @@ export default class Attack {
         critSuccess: {
           type: "number",
           label: i18n.localize("wv.rules.criticals.successChance"),
-          value: actor
-            ? getTotal(actor.data.data.secondary.criticals.success)
-            : 5,
+          value: actor?.data.data.secondary.criticals.success.total ?? 5,
           min: 0,
           max: 100
         },
         critFailure: {
           type: "number",
           label: i18n.localize("wv.rules.criticals.failureChance"),
-          value: actor
-            ? getTotal(actor.data.data.secondary.criticals.failure)
-            : 96,
+          value: actor?.data.data.secondary.criticals.failure.total ?? 96,
           min: 0,
           max: 100
         }
@@ -364,7 +357,7 @@ export default class Attack {
 
   /** Get the amount of damage d6 of this attack. */
   protected getDamageDice(strengthMod: number, rangeMod: number): number {
-    const dice = getTotal(this.data.damage.dice) + strengthMod + rangeMod;
+    const dice = this.data.damage.dice.total + strengthMod + rangeMod;
     return dice > 0 ? dice : 0;
   }
 
@@ -524,7 +517,7 @@ export default class Attack {
           formula: damageRoll.formula,
           results:
             damageRoll.dice[0]?.results.map((result) => result.result) ?? [],
-          total: damageRoll.total ?? getTotal(this.data.damage.base)
+          total: damageRoll.total ?? this.data.damage.base.total
         },
         hit: {
           critical: hitRoll.dice[0]?.results[0]?.critical,

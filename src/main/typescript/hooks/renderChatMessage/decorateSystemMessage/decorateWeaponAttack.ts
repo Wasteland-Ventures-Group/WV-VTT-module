@@ -1,5 +1,5 @@
 import { CONSTANTS } from "../../../constants.js";
-import type Specials from "../../../data/actor/character/specials/properties.js";
+import type SpecialsProperties from "../../../data/actor/character/specials/properties.js";
 import type WeaponDataProperties from "../../../data/item/weapon/properties.js";
 import { scrollChatToBottom } from "../../../foundryHelpers.js";
 import { getDisplayRanges, RangeBracket } from "../../../item/weapon/ranges.js";
@@ -146,7 +146,7 @@ export interface CommonWeaponAttackFlags {
       distance: number;
     };
   };
-  ownerSpecials?: Partial<Specials> | undefined;
+  ownerSpecials?: Partial<SpecialsProperties> | undefined;
   weaponImage: string | null;
   weaponName: string;
   weaponSystemData: WeaponDataProperties["data"];

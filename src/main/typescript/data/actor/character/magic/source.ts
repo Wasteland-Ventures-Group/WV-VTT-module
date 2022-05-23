@@ -4,9 +4,8 @@ import {
   ThaumaturgySpecials
 } from "../../../../constants.js";
 
-/** An Actor magic object for the database */
 export default class MagicSource {
-  /** The SPECIAL associated with the Thaumaturgy skill */
+  /** The SPECIAL of the character associated with the Thaumaturgy skill */
   thaumSpecial: ThaumaturgySpecial = "intelligence";
 }
 

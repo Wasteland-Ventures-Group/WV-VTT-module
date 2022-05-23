@@ -15,6 +15,7 @@
         "fears": "Ängste",
         "gender": "Geschlecht",
         "personality": "Persöhnlichkeit",
+        "size": "Größe",
         "socialContacts": "Soziale Kontakte",
         "specialTalent": "Besonderes Talent",
         "virtue": "Tugend"
@@ -415,7 +416,7 @@
           "logical": {
             "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
             "notMatchingSelector": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
-            "notModifiableNumber": "Das Feld \"{path}\" in \"{name}\" ist keine modifizierbare Zahl.",
+            "notCompositeNumber": "Das Feld \"{path}\" in \"{name}\" ist keine zusammengesetzte Zahl.",
             "wrongSelectedType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
             "wrongValueType": "Der Wert dieser Regel sollte vom Typ \"{type}\" sein."
           },

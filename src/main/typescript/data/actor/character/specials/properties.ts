@@ -1,27 +1,28 @@
 import type { SpecialName } from "../../../../constants.js";
 
-/** Derived SPECIALs related data */
-export default class Specials implements Partial<Record<SpecialName, Special>> {
-  /** The Strength SPECIAL value of an Actor */
-  strength?: Special;
+export default class SpecialsProperties
+  implements Record<SpecialName, Special>
+{
+  /** The Strength SPECIAL of the character */
+  strength = new Special();
 
-  /** The Perception SPECIAL value of an Actor */
-  perception?: Special;
+  /** The Perception SPECIAL of the character */
+  perception = new Special();
 
-  /** The Endurance SPECIAL value of an Actor */
-  endurance?: Special;
+  /** The Endurance SPECIAL of the character */
+  endurance = new Special();
 
-  /** The Charisma SPECIAL value of an Actor */
-  charisma?: Special;
+  /** The Charisma SPECIAL of the character */
+  charisma = new Special();
 
-  /** The Intelligence SPECIAL value of an Actor */
-  intelligence?: Special;
+  /** The Intelligence SPECIAL of the character */
+  intelligence = new Special();
 
-  /** The Agility SPECIAL value of an Actor */
-  agility?: Special;
+  /** The Agility SPECIAL of the character */
+  agility = new Special();
 
-  /** The Luck SPECIAL value of an Actor */
-  luck?: Special;
+  /** The Luck SPECIAL of the character */
+  luck = new Special();
 }
 
 /** A SPECIAL, holding all intermediary steps for the final result */

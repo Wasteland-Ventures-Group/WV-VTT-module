@@ -1,5 +1,4 @@
 import { SpecialName, TYPES } from "../../constants.js";
-import { getTotal } from "../../data/common.js";
 import {
   AttackSource,
   ATTACK_JSON_SCHEMA
@@ -40,7 +39,7 @@ export default class WeaponSheet extends WvItemSheet {
         Record<string, SheetAttack>
       >((obj, [name, attack]) => {
         obj[name] = {
-          ap: getTotal(attack.data.ap),
+          ap: attack.data.ap.total,
           damage: attack.damageFormula,
           dtReduction: attack.data.dtReduction,
           rounds: attack.data.rounds
@@ -78,13 +77,13 @@ export default class WeaponSheet extends WvItemSheet {
         "": "",
         ...WvI18n.longSpecials
       },
-      usesAmmo: getTotal(weapon.systemData.reload.size) > 0
+      usesAmmo: weapon.systemData.reload.size.total > 0
     };
   }
 
   override get item(): Weapon {
     if (!isOfItemType(super.item, TYPES.ITEM.WEAPON))
-      throw new Error("The used Item is not a Weapon!");
+      throw new Error("The used Item is not a Weapon.");
 
     return super.item;
   }
@@ -94,14 +93,14 @@ export default class WeaponSheet extends WvItemSheet {
 
     const sheetForm = html[0];
     if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element!");
+      throw new Error("The element passed was not a form element.");
 
     sheetForm
       .querySelectorAll("button.weapon-attack-execute[data-attack]")
       .forEach((element) =>
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickAttackExecute(event);
         })
       );
@@ -120,7 +119,7 @@ export default class WeaponSheet extends WvItemSheet {
       .forEach((element) =>
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickDeleteWeaponAttack(event);
         })
       );

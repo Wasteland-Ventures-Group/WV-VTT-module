@@ -1,7 +1,12 @@
+import { CompositeNumber } from "../../../common.js";
 import VitalsSource from "./source.js";
 
-/** Derived vitals data */
-export default class Vitals extends VitalsSource {
-  /** The healing rate of an Actor per 8 hours of rest */
-  healingRate?: number;
+export default class VitalsProperties extends VitalsSource {
+  constructor(source: VitalsSource) {
+    super();
+    foundry.utils.mergeObject(this, source);
+  }
+
+  /** The healing rate of the character per 8 hours of rest */
+  healingRate = new CompositeNumber();
 }

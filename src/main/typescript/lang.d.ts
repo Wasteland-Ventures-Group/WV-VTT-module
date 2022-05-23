@@ -36,6 +36,8 @@ export interface LangSchema {
         gender: string;
         /** Label for the personality */
         personality: string;
+        /** Label for the size */
+        size: string;
         /** Label for the social contacts */
         socialContacts: string;
         /** Label for the special talent */
@@ -513,14 +515,14 @@ export interface LangSchema {
             notMatchingSelector: string;
             /**
              * An error message when the selected property on the target is not
-             * a modifiable number.
+             * a CompositeNumber.
              *
              * Parameters:
              * - name: the name of the target
              * - path: the selector path
              * @pattern (?=.*\{name\})(?=.*\{path\})
              */
-            notModifiableNumber: string;
+            notCompositeNumber: string;
             /**
              * An error message when the selected property on the target is of
              * the wrong type.

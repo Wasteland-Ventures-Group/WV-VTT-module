@@ -1,5 +1,4 @@
 import { HANDLEBARS } from "./constants.js";
-import { getTotal } from "./data/common.js";
 
 /** This registers various Handlebars helpers. */
 export function registerHelpers(): void {
@@ -13,10 +12,6 @@ export function registerHelpers(): void {
   Handlebars.registerHelper("ternary", (testValue, ...results) => {
     const result = testValue instanceof Function ? testValue() : testValue;
     return result ? results[0] : results[1];
-  });
-
-  Handlebars.registerHelper("total", (modNumber) => {
-    return getTotal(modNumber);
   });
 }
 

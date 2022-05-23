@@ -10,8 +10,8 @@ import { CONSTANTS, TYPES } from "./constants.js";
 import { CHARACTER_JSON_SCHEMA } from "./data/actor/character/source.js";
 import { AMMO_SOURCE_JSON_SCHEMA } from "./data/item/ammo/source.js";
 import { APPAREL_SOURCE_JSON_SCHEMA } from "./data/item/apparel/source.js";
-import { BASE_ITEM_JSON_SCHEMA } from "./data/item/baseItem.js";
-import { STACK_BASE_ITEM_JSON_SCHEMA } from "./data/item/stackableBaseItem.js";
+import { BASE_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/baseItem/source.js";
+import { STACK_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/stackableItem/source.js";
 import { WEAPON_SOURCE_JSON_SCHEMA } from "./data/item/weapon/source.js";
 import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
@@ -54,8 +54,8 @@ export function configureFoundryOnInit(): void {
       item: {
         ammo: ajv.compile(AMMO_SOURCE_JSON_SCHEMA),
         apparel: ajv.compile(APPAREL_SOURCE_JSON_SCHEMA),
-        effect: ajv.compile(BASE_ITEM_JSON_SCHEMA),
-        misc: ajv.compile(STACK_BASE_ITEM_JSON_SCHEMA),
+        effect: ajv.compile(BASE_ITEM_SOURCE_JSON_SCHEMA),
+        misc: ajv.compile(STACK_ITEM_SOURCE_JSON_SCHEMA),
         weapon: ajv.compile(WEAPON_SOURCE_JSON_SCHEMA)
       },
       ruleElement: ajv.compile(RULE_ELEMENT_SOURCE_JSON_SCHEMA)

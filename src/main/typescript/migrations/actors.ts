@@ -3,17 +3,17 @@ import { LOG } from "../systemLogger.js";
 
 export default function migrateActors(currentVersion: string): void {
   if (!(game instanceof Game)) {
-    LOG.error("Game was not yet initialized!");
+    LOG.error("Game was not yet initialized.");
     return;
   }
 
   if (!game.actors) {
-    LOG.error("Actors was not yet defined!");
+    LOG.error("Actors was not yet defined.");
     return;
   }
 
   if (!game.scenes) {
-    LOG.error("Scenes was not yet defined!");
+    LOG.error("Scenes was not yet defined.");
     return;
   }
 
@@ -39,7 +39,10 @@ async function migrateActor(
     LOG.info(`Collecting update data for Actor [${actor.id}] "${actor.name}"`);
     const updateData = migrateActorData(actor);
     if (!foundry.utils.isObjectEmpty(updateData)) {
-      LOG.info(`Migrating Actor [${actor.id}] "${actor.name}"`);
+      LOG.info(
+        `Migrating Actor [${actor.id}] "${actor.name}" with`,
+        updateData
+      );
       await actor.update(updateData, { enforceTypes: false });
       await actor.setFlag(
         CONSTANTS.systemId,
@@ -64,7 +67,7 @@ function migrateActorData(
   migratePlayerCharacterToCharacter(actor, updateData);
   removeHistory(actor, updateData);
   migrateSpecials(actor, updateData);
-  migrateToModifiableNumbers(actor, updateData);
+  migrateToCompositeNumbers(actor, updateData);
 
   return updateData;
 }
@@ -107,6 +110,7 @@ function migrateSpecials(
   updateData: Record<string, unknown>
 ): void {
   const specials = actor.data.data.specials;
+
   for (const special of [
     "strength",
     "perception",
@@ -121,10 +125,12 @@ function migrateSpecials(
       updateData[`data.specials.-=${special}`] = null;
     }
   }
-  updateData["data.-=specials"] = null;
+
+  if ("specials" in actor.data._source.data)
+    updateData["data.-=specials"] = null;
 }
 
-function migrateToModifiableNumbers(
+function migrateToCompositeNumbers(
   actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ) {

@@ -1,13 +1,20 @@
 import LevelingSource from "./source.js";
 
-/** Derived leveling related data */
-export default class Leveling extends LevelingSource {
-  /** The current level of an Actor */
-  level?: number;
+export default class LevelingProperties extends LevelingSource {
+  constructor(source: LevelingSource) {
+    super();
+    foundry.utils.mergeObject(this, source);
+  }
 
-  /** The maximum skill points of an Actor */
-  maxSkillPoints?: number;
+  /** The current level of the character */
+  level = 0;
 
-  /** The amount of experience needed for the next level */
-  xpForNextLevel?: number;
+  /** The maximum skill points of the character */
+  maxSkillPoints = 0;
+
+  /**
+   * The amount of experience needed for the character to advance to the next
+   * level
+   */
+  xpForNextLevel = 0;
 }

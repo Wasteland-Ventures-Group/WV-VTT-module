@@ -13,22 +13,22 @@ import { LOG } from "../systemLogger.js";
 
 export default function migrateItems(currentVersion: string): void {
   if (!(game instanceof Game)) {
-    LOG.error("Game was not yet initialized!");
+    LOG.error("Game was not yet initialized.");
     return;
   }
 
   if (!game.actors) {
-    LOG.error("Actors was not yet defined!");
+    LOG.error("Actors was not yet defined.");
     return;
   }
 
   if (!game.items) {
-    LOG.error("Items was not yet defined!");
+    LOG.error("Items was not yet defined.");
     return;
   }
 
   if (!game.scenes) {
-    LOG.error("Scenes was not yet defined!");
+    LOG.error("Scenes was not yet defined.");
     return;
   }
 
@@ -82,7 +82,7 @@ async function migrateItem(
       migrateAmmoFix(item, updateData);
       migrateRanges(item, updateData);
       migrateMandatoryReload(item, updateData);
-      migrateToModifiableNumbers(item, updateData);
+      migrateToCompositeNumbers(item, updateData);
       if (!foundry.utils.isObjectEmpty(updateData)) {
         LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
         await item.update(updateData);
@@ -267,7 +267,7 @@ function migrateMandatoryReload(
   };
 }
 
-function migrateToModifiableNumbers(
+function migrateToCompositeNumbers(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
@@ -324,6 +324,11 @@ function migrateToModifiableNumbers(
         updateData[`data.ranges.${distance}.modifier.source`] =
           data.ranges[distance].modifier;
     });
+
+    if (typeof data.reload.ap === "number")
+      updateData["data.reload.ap.source"] = data.reload.ap;
+    if (typeof data.reload.size === "number")
+      updateData["data.reload.size.source"] = data.reload.size;
 
     return;
   }

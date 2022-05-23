@@ -70,7 +70,7 @@ export default class WvActorSheet extends ActorSheet {
 
     const sheetForm = html[0];
     if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element!");
+      throw new Error("The element passed was not a form element.");
 
     ["change", "submit"].forEach((eventType) => {
       sheetForm.addEventListener(eventType, () => sheetForm.reportValidity());
@@ -82,14 +82,14 @@ export default class WvActorSheet extends ActorSheet {
     sheetForm.querySelectorAll("button[data-special]").forEach((element) => {
       element.addEventListener("click", (event) => {
         if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen!");
+          throw new Error("This should not happen.");
         this.onClickRollSpecial(event);
       });
     });
     sheetForm.querySelectorAll("button[data-skill]").forEach((element) => {
       element.addEventListener("click", (event) => {
         if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen!");
+          throw new Error("This should not happen.");
         this.onClickRollSkill(event);
       });
     });
@@ -100,7 +100,7 @@ export default class WvActorSheet extends ActorSheet {
       .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickCreateItem(event);
         });
       });
@@ -109,7 +109,7 @@ export default class WvActorSheet extends ActorSheet {
       .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickEditItem(event);
         });
       });
@@ -118,7 +118,7 @@ export default class WvActorSheet extends ActorSheet {
       .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickDeleteItem(event);
         });
       });
@@ -127,7 +127,7 @@ export default class WvActorSheet extends ActorSheet {
       .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickAttackExecute(event);
         });
       });
@@ -290,10 +290,10 @@ export default class WvActorSheet extends ActorSheet {
   override _onDragStart(event: DragEvent): void {
     const listenerElement = event.currentTarget;
     if (!(listenerElement instanceof HTMLElement))
-      throw new Error("The listener was not an HTMLElement!");
+      throw new Error("The listener was not an HTMLElement.");
 
     if (!(event.target instanceof HTMLElement))
-      throw new Error("The target was not an HTMLElement!");
+      throw new Error("The target was not an HTMLElement.");
 
     if (event.target.classList.contains("content-link")) return;
 
@@ -550,7 +550,7 @@ export default class WvActorSheet extends ActorSheet {
     }
 
     if (weaponId !== this.actor.data.data.equipment.readiedItemId) {
-      LOG.warn("The weapon was not readied!");
+      LOG.warn("The weapon was not readied.");
       return;
     }
 

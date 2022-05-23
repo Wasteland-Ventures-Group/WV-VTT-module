@@ -1,10 +1,12 @@
+import { CompositeNumber } from "../../../common.js";
 import EquipmentSource from "./source.js";
 
-/** Derived equipment data. */
-export default class Equipment extends EquipmentSource {
-  /** The damage threshold granted by equipment. */
-  damageThreshold?: number;
+export default class EquipmentProperties extends EquipmentSource {
+  constructor(source: EquipmentSource) {
+    super();
+    foundry.utils.mergeObject(this, source);
+  }
 
-  /** The maximum number of quick slot charges granted by equipment. */
-  maxQuickSlots?: number;
+  /** The damage threshold of the character */
+  damageThreshold = new CompositeNumber();
 }

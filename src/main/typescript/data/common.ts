@@ -1,49 +1,93 @@
 import type { JSONSchemaType } from "ajv";
 
-/** A class to represent modifiable numbers. */
-export class ModifiableNumber {
-  constructor(
-    /**
-     * The source value of the number This can be in the database, in which case
-     * it should not be modified aside from user input.
-     */
-    public source: number,
-
-    /**
-     * The total value of the number, that can be safely modified and is not
-     * saved in the database.
-     */
-    public total?: number
-  ) {}
-}
-
-/**
- * Get the total of a modifiable number, falling back to the source if total is
- * undefined.
- */
-export function getTotal(modNumber: {
+/** The data layout needed to create a CompositeNumber from raw data. */
+export interface CompositeNumberSource {
   source: number;
-  total?: number | undefined;
-}): number {
-  return modNumber.total ?? modNumber.source;
 }
 
-export const MODIFIABLE_NUMBER_JSON_SCHEMA: JSONSchemaType<ModifiableNumber> = {
-  description: "A schema for modifiable numbers",
-  type: "object",
-  properties: {
-    source: {
-      description:
-        "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
-      type: "number"
-    },
-    total: {
-      description:
-        "The total value of the number, that can be safely modified and is not saved in the database.",
-      type: "number",
-      nullable: true
+/** A class to represent numbers composed of a base and modifying components. */
+export class CompositeNumber {
+  /**
+   * Test whether the given source is a CompositeNumberSource.
+   * @param source - the source to test
+   * @returns whether the source is a CompositeNumberSource
+   */
+  static isSource(source: unknown): source is CompositeNumberSource {
+    return (
+      typeof source === "object" &&
+      null !== source &&
+      "source" in source &&
+      typeof (source as CompositeNumberSource).source === "number"
+    );
+  }
+
+  /**
+   * Create a CompositeNumber from the given source
+   * @param source - either a CompositeNumber or CompositeNumberSource
+   * @returns the created CompositeNumber
+   * @throws if the given source is neither a CompositeNumber or CompositeNumberSource
+   */
+  static from(source: unknown): CompositeNumber {
+    if (source instanceof CompositeNumber) return source;
+
+    if (this.isSource(source)) {
+      return new CompositeNumber(source.source);
     }
-  },
-  required: ["source"],
-  additionalProperties: false
-};
+
+    throw new Error(`The source was not valid: ${source}`);
+  }
+
+  /** Create a new CompositeNumber with the given source value. */
+  constructor(source = 0) {
+    this.source = source;
+    this.#components = [];
+  }
+
+  /** The internal components of the CompositeNumber */
+  #components: Component[];
+
+  /** The source value of the CompositeNumber */
+  source: number;
+
+  /** The total value of the CompositeNumber */
+  get total() {
+    return (
+      this.source +
+      this.#components.reduce((total, component) => {
+        return total + component.value;
+      }, 0)
+    );
+  }
+
+  /**
+   * Add the given Component to the CompositeNumber.
+   * @param component - the component to add
+   */
+  add(component: Component) {
+    this.#components.push(component);
+  }
+}
+
+/** A CompositeNumber component */
+interface Component {
+  /** The value this component modifies the CompositeNumber's value by */
+  value: number;
+
+  /** An explanatory label for the Component */
+  label: string;
+}
+
+export const COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> =
+  {
+    description: "A schema for modifiable number sources",
+    type: "object",
+    properties: {
+      source: {
+        description:
+          "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
+        type: "number"
+      }
+    },
+    required: ["source"],
+    additionalProperties: false
+  };

@@ -101,7 +101,7 @@ export default class WvItemSheet extends ItemSheet {
 
     const sheetForm = html[0];
     if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element!");
+      throw new Error("The element passed was not a form element.");
 
     sheetForm
       .querySelectorAll(".rule-element-control[data-action=create]")
@@ -117,7 +117,7 @@ export default class WvItemSheet extends ItemSheet {
       .forEach((element) =>
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickDeleteRuleElement(event);
         })
       );
@@ -149,7 +149,7 @@ export default class WvItemSheet extends ItemSheet {
       throw new Error("The rule element element was not an HTMLElement.");
 
     const index = parseInt(ruleElementElement.dataset.index ?? "");
-    if (isNaN(index)) throw new Error("The index was not a number!");
+    if (isNaN(index)) throw new Error("The index was not a number.");
 
     const sources = this.item.data.data.rules.sources;
     sources.splice(index, 1);
@@ -374,7 +374,7 @@ export default class WvItemSheet extends ItemSheet {
       if (ruleSources[index] === undefined) {
         const originalSource = originalSources[index];
         if (originalSource === undefined)
-          throw new Error("An original rule element source was undefined!");
+          throw new Error("An original rule element source was undefined.");
 
         ruleSources[index] = originalSource;
       }

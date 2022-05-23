@@ -6,10 +6,9 @@ import {
   ProtoItemTypes,
   SYSTEM_COMPENDIUM_SOURCE_ID_REGEX
 } from "../constants.js";
-import { getTotal } from "../data/common.js";
+import { MiscDataPropertiesData } from "../data/item/misc/properties.js";
 import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
-import { RULE_ELEMENTS } from "../ruleEngine/ruleElements.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import { LOG } from "../systemLogger.js";
 import validateSystemData from "../validation/validateSystemData.js";
@@ -112,22 +111,22 @@ export default class WvItem extends Item {
 
   /** Get the value of the item, if it has any. */
   get value(): number | undefined {
-    return "value" in this.data.data
-      ? getTotal(this.data.data.value)
-      : undefined;
+    if (!("value" in this.data.data)) return undefined;
+
+    return this.data.data.value.total;
   }
 
   /** Get the weight of the item, if it has any. */
   get weight(): number | undefined {
-    return "weight" in this.data.data
-      ? getTotal(this.data.data.weight)
-      : undefined;
+    if (!("weight" in this.data.data)) return undefined;
+
+    return this.data.data.weight.total;
   }
 
   override prepareBaseData(): void {
-    this.data.data.rules.elements = this.data.data.rules.sources.map(
-      (ruleSource) => new RULE_ELEMENTS[ruleSource.type](ruleSource, this)
-    );
+    if (this.data.type === "misc") {
+      this.data.data = new MiscDataPropertiesData(this.data.data, this);
+    }
   }
 
   override prepareEmbeddedDocuments(): void {

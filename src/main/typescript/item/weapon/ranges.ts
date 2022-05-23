@@ -1,9 +1,9 @@
 import { CONSTANTS, SpecialName } from "../../constants.js";
-import type Specials from "../../data/actor/character/specials/properties.js";
-import { getTotal } from "../../data/common.js";
+import type SpecialsProperties from "../../data/actor/character/specials/properties.js";
 import type WeaponDataProperties from "../../data/item/weapon/properties.js";
+import type RangesProperties from "../../data/item/weapon/ranges/properties.js";
+import type { DistanceProperties } from "../../data/item/weapon/ranges/properties.js";
 import type RangesSource from "../../data/item/weapon/ranges/source.js";
-import type { DistanceSource } from "../../data/item/weapon/ranges/source.js";
 
 /** A type representing the different range brackets */
 export enum RangeBracket {
@@ -20,7 +20,7 @@ export enum RangeBracket {
  */
 export function getDisplayRanges(
   weaponData: WeaponDataProperties["data"],
-  specials?: Partial<Specials>
+  specials?: Partial<SpecialsProperties>
 ): string {
   return [
     weaponData.ranges.short.distance,
@@ -41,10 +41,10 @@ export function getDisplayRanges(
  * @returns the displayable distance
  */
 export function getDisplayRangeDistance(
-  distance: DistanceSource,
-  specials?: Partial<Specials> | undefined
+  distance: DistanceProperties,
+  specials?: Partial<SpecialsProperties> | undefined
 ): string {
-  if (getTotal(distance.multiplier) !== 0 && distance.special !== "") {
+  if (distance.multiplier.total !== 0 && distance.special !== "") {
     const specialValue = (specials ?? {})[distance.special]?.tempTotal;
     if (typeof specialValue === "number") {
       return getSpecialRangeDistance(distance, specialValue).toString();
@@ -56,9 +56,9 @@ export function getDisplayRangeDistance(
     }
   }
 
-  if (getTotal(distance.base) === 0) return "-";
+  if (distance.base.total === 0) return "-";
 
-  return getTotal(distance.base).toString();
+  return distance.base.total.toString();
 }
 
 /**
@@ -70,15 +70,15 @@ export function getDisplayRangeDistance(
  * @returns the effective distance
  */
 export function getEffectiveRangeDistance(
-  distance: DistanceSource,
-  specials?: Partial<Specials>
+  distance: DistanceProperties,
+  specials?: Partial<SpecialsProperties>
 ): number {
-  if (getTotal(distance.multiplier) !== 0 && distance.special !== "") {
+  if (distance.multiplier.total !== 0 && distance.special !== "") {
     const specialValue = (specials ?? {})[distance.special]?.tempTotal ?? 0;
     return getSpecialRangeDistance(distance, specialValue);
   }
 
-  return getTotal(distance.base);
+  return distance.base.total;
 }
 
 /**
@@ -89,9 +89,9 @@ export function getEffectiveRangeDistance(
  * @returns the range bracket
  */
 export function getRangeBracket(
-  ranges: RangesSource,
+  ranges: RangesProperties,
   range: number,
-  specials?: Partial<Specials>
+  specials?: Partial<SpecialsProperties>
 ): RangeBracket {
   if (range <= getEffectiveRangeDistance(ranges.short.distance, specials))
     return RangeBracket.SHORT;
@@ -118,17 +118,16 @@ export function getRangeBracket(
  * @returns the modifier for the range (0, if out of range)
  */
 export function getRangeModifier(
-  ranges: RangesSource,
+  ranges: RangesProperties,
   rangeBracket: RangeBracket
 ): number {
-  if (rangeBracket <= RangeBracket.SHORT)
-    return getTotal(ranges.short.modifier);
+  if (rangeBracket <= RangeBracket.SHORT) return ranges.short.modifier.total;
 
   if (ranges.medium && rangeBracket <= RangeBracket.MEDIUM)
-    return getTotal(ranges.medium.modifier);
+    return ranges.medium.modifier.total;
 
   if (ranges.long && rangeBracket <= RangeBracket.LONG)
-    return getTotal(ranges.long.modifier);
+    return ranges.long.modifier.total;
 
   return 0;
 }
@@ -140,10 +139,10 @@ export function getRangeModifier(
  * @returns the effective distance
  */
 export function getSpecialRangeDistance(
-  distance: DistanceSource,
+  distance: DistanceProperties,
   specialValue: number
 ): number {
-  return getTotal(distance.base) + getTotal(distance.multiplier) * specialValue;
+  return distance.base.total + distance.multiplier.total * specialValue;
 }
 
 /** Get the names of SPECIALs used in the Ranges. */

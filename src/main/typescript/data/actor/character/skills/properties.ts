@@ -1,55 +1,54 @@
 import type { SkillName } from "../../../../constants.js";
-import type { ModifiableNumber } from "../../../common.js";
+import { CompositeNumber } from "../../../common.js";
 
-/** Derived skill values */
-export default class Skills
-  implements Partial<Record<SkillName, ModifiableNumber>>
+export default class SkillsProperties
+  implements Record<SkillName, CompositeNumber>
 {
-  /** The barter skill value of an Actor */
-  barter?: ModifiableNumber;
+  /** The Barter skill of the character */
+  barter = new CompositeNumber();
 
-  /** The diplomacy skill value of an Actor */
-  diplomacy?: ModifiableNumber;
+  /** The Diplomacy skill of the character */
+  diplomacy = new CompositeNumber();
 
-  /** The explosives skill value of an Actor */
-  explosives?: ModifiableNumber;
+  /** The Explosives skill of the character */
+  explosives = new CompositeNumber();
 
-  /** The firearms skill value of an Actor */
-  firearms?: ModifiableNumber;
+  /** The Firearms skill of the character */
+  firearms = new CompositeNumber();
 
-  /** The intimidation skill value of an Actor */
-  intimidation?: ModifiableNumber;
+  /** The Intimidation skill of the character */
+  intimidation = new CompositeNumber();
 
-  /** The lockpick skill value of an Actor */
-  lockpick?: ModifiableNumber;
+  /** The Lockpick skill of the character */
+  lockpick = new CompositeNumber();
 
-  /** The magical energy weapons skill value of an Actor */
-  magicalEnergyWeapons?: ModifiableNumber;
+  /** The Magical Energy Weapons skill of the character */
+  magicalEnergyWeapons = new CompositeNumber();
 
-  /** The mechanics skill value of an Actor */
-  mechanics?: ModifiableNumber;
+  /** The Mechanics skill of the character */
+  mechanics = new CompositeNumber();
 
-  /** The medicine skill value of an Actor */
-  medicine?: ModifiableNumber;
+  /** The Medicine skill of the character */
+  medicine = new CompositeNumber();
 
-  /** The melee skill value of an Actor */
-  melee?: ModifiableNumber;
+  /** The Melee skill of the character */
+  melee = new CompositeNumber();
 
-  /** The science skill value of an Actor */
-  science?: ModifiableNumber;
+  /** The Science skill of the character */
+  science = new CompositeNumber();
 
-  /** The sleight skill value of an Actor */
-  sleight?: ModifiableNumber;
+  /** The Sleight skill of the character */
+  sleight = new CompositeNumber();
 
-  /** The sneak skill value of an Actor */
-  sneak?: ModifiableNumber;
+  /** The Sneak skill of the character */
+  sneak = new CompositeNumber();
 
-  /** The survival skill value of an Actor */
-  survival?: ModifiableNumber;
+  /** The Survival skill of the character */
+  survival = new CompositeNumber();
 
-  /** The thaumaturgy skill value of an Actor */
-  thaumaturgy?: ModifiableNumber;
+  /** The Thaumaturgy skill of the character */
+  thaumaturgy = new CompositeNumber();
 
-  /** The unarmed skill value of an Actor */
-  unarmed?: ModifiableNumber;
+  /** The Unarmed skill of the character */
+  unarmed = new CompositeNumber();
 }

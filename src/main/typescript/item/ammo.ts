@@ -1,5 +1,6 @@
 import { TYPES } from "../constants.js";
 import type AmmoDataProperties from "../data/item/ammo/properties.js";
+import { AmmoDataPropertiesData } from "../data/item/ammo/properties.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent an ammo item in the Wasteland Ventures system. */
@@ -20,5 +21,9 @@ export default class Ammo extends WvItem {
       throw new Error(`This data's data type is not ${TYPES.ITEM.AMMO}.`);
 
     return this.data.data;
+  }
+
+  override prepareBaseData(): void {
+    this.data.data = new AmmoDataPropertiesData(this.systemData, this);
   }
 }

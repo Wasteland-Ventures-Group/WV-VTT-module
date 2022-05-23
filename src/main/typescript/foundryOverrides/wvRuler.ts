@@ -31,7 +31,7 @@ export default class WvRuler extends Ruler {
     const canvas = getCanvas();
     const grid = canvas.grid;
     if (!(grid instanceof GridLayer))
-      throw new Error("The canvas has no grid!");
+      throw new Error("The canvas has no grid.");
 
     // Get the movement token and check actor presence.
     const token = this._getMovementToken();
@@ -113,7 +113,7 @@ export default class WvRuler extends Ruler {
     totalDistance: number,
     isTotal: boolean
   ): string {
-    if (!canvas?.scene) throw new Error("There was no canvas or scene!");
+    if (!canvas?.scene) throw new Error("There was no canvas or scene.");
 
     const units = canvas.scene.data.gridUnits;
     const apUnit = getGame().i18n.localize("wv.rules.actionPoints.short");

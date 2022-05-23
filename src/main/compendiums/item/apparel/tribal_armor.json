@@ -15,7 +15,7 @@
           "priority": 100,
           "selector": "skills.survival",
           "target": "actor",
-          "type": "WV.RuleElement.ModifiableNumberModifier",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]

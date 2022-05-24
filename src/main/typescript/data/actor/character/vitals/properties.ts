@@ -1,24 +1,23 @@
-import { CompositeNumber } from "../../../common.js";
-import { Resource } from "../../../foundryCommon.js";
+import { CompositeNumber, CompositeResource } from "../../../common.js";
 import VitalsSource from "./source.js";
 
 export default class VitalsProperties extends VitalsSource {
   constructor(source: VitalsSource) {
     super();
     foundry.utils.mergeObject(this, source);
-    this.hitPoints = Resource.from(source.hitPoints);
-    this.actionPoints = Resource.from(source.actionPoints);
-    this.insanity = Resource.from(source.insanity);
-    this.strain = Resource.from(source.strain);
+    this.hitPoints = CompositeResource.from(source.hitPoints);
+    this.actionPoints = CompositeResource.from(source.actionPoints);
+    this.insanity = CompositeResource.from(source.insanity);
+    this.strain = CompositeResource.from(source.strain);
   }
 
-  override hitPoints: Resource;
+  override hitPoints: CompositeResource;
 
-  override actionPoints: Resource;
+  override actionPoints: CompositeResource;
 
-  override insanity: Resource;
+  override insanity: CompositeResource;
 
-  override strain: Resource;
+  override strain: CompositeResource;
 
   /** The healing rate of the character per 8 hours of rest */
   healingRate = new CompositeNumber();

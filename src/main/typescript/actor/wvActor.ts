@@ -12,8 +12,7 @@ import {
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
 import { Special } from "../data/actor/character/specials/properties.js";
-import { CompositeNumber } from "../data/common.js";
-import type { Resource } from "../data/foundryCommon.js";
+import { CompositeNumber, CompositeResource } from "../data/common.js";
 import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Apparel from "../item/apparel.js";
@@ -29,17 +28,17 @@ import WvI18n from "../wvI18n.js";
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
   /** A convenience getter for the Actor's hit points. */
-  get hitPoints(): Resource {
+  get hitPoints(): CompositeResource {
     return this.data.data.vitals.hitPoints;
   }
 
   /** A convenience getter for the Actor's action points. */
-  get actionPoints(): Resource {
+  get actionPoints(): CompositeResource {
     return this.data.data.vitals.actionPoints;
   }
 
   /** A convenience getter for the Actor's strain. */
-  get strain(): Resource {
+  get strain(): CompositeResource {
     return this.data.data.vitals.strain;
   }
 
@@ -468,7 +467,7 @@ export default class WvActor extends Actor {
     const data = this.data.data;
 
     // Compute the maximum hit points ------------------------------------------
-    data.vitals.hitPoints.max = this.getSpecial("endurance").permTotal + 10;
+    data.vitals.hitPoints.source = this.getSpecial("endurance").permTotal + 10;
 
     // Compute the maximum healing rate ----------------------------------------
     const endurance = this.getSpecial("endurance");
@@ -481,14 +480,14 @@ export default class WvActor extends Actor {
     data.vitals.healingRate = new CompositeNumber(healingRate);
 
     // Compute the maximum action points ---------------------------------------
-    data.vitals.actionPoints.max =
+    data.vitals.actionPoints.source =
       Math.floor(this.getSpecial("agility").tempTotal / 2) + 10;
 
     // Compute the maximum strain ----------------------------------------------
-    data.vitals.strain.max = 20 + Math.floor(data.leveling.level / 5) * 5;
+    data.vitals.strain.source = 20 + Math.floor(data.leveling.level / 5) * 5;
 
     // Compute the maximum insanity --------------------------------------------
-    data.vitals.insanity.max =
+    data.vitals.insanity.source =
       Math.floor(this.getSpecial("intelligence").tempTotal / 2) + 5;
 
     // Compute the critical values ---------------------------------------------
@@ -521,32 +520,29 @@ export default class WvActor extends Actor {
           value: apparel.systemData.damageThreshold.total,
           label: apparel.name ?? ""
         });
-    });
 
-    // TODO: maybe change quick slots max to NumberComponent
-    data.equipment.quickSlots.max = this.equippedApparel.reduce(
-      (qs, apparel) => {
-        if (apparel.systemData.quickSlots)
-          qs += apparel.systemData.quickSlots.total;
-        return qs;
-      },
-      0
-    );
+      if (apparel.systemData.quickSlots)
+        data.equipment.quickSlots.add({
+          value: apparel.systemData.quickSlots.total,
+          label: apparel.name ?? ""
+        });
+    });
 
     // Modify values based on the size -----------------------------------------
     // TODO: hit chance, reach, combat trick mods
     let maxCarryWeightSizeBonus = 0;
+    let hitPointsSizeBonus = 0;
     switch (data.background.size.total) {
       case 4:
-        data.vitals.hitPoints.max += 4;
+        hitPointsSizeBonus += 4;
         maxCarryWeightSizeBonus = 60;
         break;
       case 3:
-        data.vitals.hitPoints.max += 2;
+        hitPointsSizeBonus += 2;
         maxCarryWeightSizeBonus = 40;
         break;
       case 2:
-        data.vitals.hitPoints.max += 1;
+        hitPointsSizeBonus += 1;
         maxCarryWeightSizeBonus = 10;
         break;
       case 1:
@@ -556,15 +552,15 @@ export default class WvActor extends Actor {
         maxCarryWeightSizeBonus = -5;
         break;
       case -2:
-        data.vitals.hitPoints.max -= 1;
+        hitPointsSizeBonus -= 1;
         maxCarryWeightSizeBonus = -10;
         break;
       case -3:
-        data.vitals.hitPoints.max -= 2;
+        hitPointsSizeBonus -= 2;
         maxCarryWeightSizeBonus = -40;
         break;
       case -4:
-        data.vitals.hitPoints.max -= 4;
+        hitPointsSizeBonus -= 4;
         maxCarryWeightSizeBonus = -60;
         break;
       case 0:
@@ -573,6 +569,12 @@ export default class WvActor extends Actor {
     if (maxCarryWeightSizeBonus)
       data.secondary.maxCarryWeight.add({
         value: maxCarryWeightSizeBonus,
+        label: getGame().i18n.localize("wv.rules.background.size")
+      });
+
+    if (hitPointsSizeBonus)
+      data.vitals.hitPoints.add({
+        value: hitPointsSizeBonus,
         label: getGame().i18n.localize("wv.rules.background.size")
       });
 

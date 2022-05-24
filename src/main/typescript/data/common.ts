@@ -1,4 +1,5 @@
 import type { JSONSchemaType } from "ajv";
+import { Resource } from "./foundryCommon.js";
 
 /** The data layout needed to create a CompositeNumber from raw data. */
 export interface CompositeNumberSource {
@@ -38,16 +39,15 @@ export class CompositeNumber implements CompositeNumberSource {
   }
 
   /** Create a new CompositeNumber with the given source value. */
-  constructor(source = 0) {
-    this.source = source;
+  constructor(
+    /** The source value of the CompositeNumber */
+    public source = 0
+  ) {
     this.#components = [];
   }
 
   /** The internal components of the CompositeNumber */
   #components: Component[];
-
-  /** The source value of the CompositeNumber */
-  source: number;
 
   /** The total value of the CompositeNumber */
   get total() {
@@ -91,3 +91,38 @@ export const COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA: JSONSchemaType<CompositeNumber
     required: ["source"],
     additionalProperties: false
   };
+
+/**
+ * A class for what Foundry VTT will automatically recognize as a "resource",
+ * where the maximum can be composed like a CompositeNumber.
+ */
+export class CompositeResource extends CompositeNumber implements Resource {
+  /**
+   * Create a CompositeResource from the given source
+   * @param source - either a CompositeResource or CompositeResourceSource
+   * @returns the created CompositeResource
+   * @throws if the given source is neither a CompositeResource or CompositeResourceSource
+   */
+  static override from(source: unknown): CompositeResource {
+    if (source instanceof CompositeResource) return source;
+
+    if (Resource.isSource(source)) {
+      return new CompositeResource(source.value, source.value);
+    }
+
+    throw new Error(`The source was not valid: ${source}`);
+  }
+
+  /**
+   * Create a new CompositeResource with the given value and and source for the
+   * maximum.
+   */
+  constructor(public value: number, public source: number) {
+    super();
+  }
+
+  /** Get the max value of the resource. This is an alias for total. */
+  get max(): number {
+    return this.total;
+  }
+}

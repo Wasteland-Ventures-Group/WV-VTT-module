@@ -1,18 +1,21 @@
 import type { JSONSchemaType } from "ajv";
-import { Resource, RESOURCE_JSON_SCHEMA } from "../../../foundryCommon.js";
+import {
+  ResourceSource,
+  RESOURCE_SOURCE_JSON_SCHEMA
+} from "../../../foundryCommon.js";
 
 export default class VitalsSource {
   /** The hit points of the character */
-  hitPoints = new Resource(15);
+  hitPoints: ResourceSource = { value: 15 };
 
   /** The action points of the character */
-  actionPoints = new Resource(12);
+  actionPoints: ResourceSource = { value: 12 };
 
   /** The insanity of the character */
-  insanity = new Resource(0);
+  insanity: ResourceSource = { value: 0 };
 
   /** The strain of the character */
-  strain = new Resource(20);
+  strain: ResourceSource = { value: 20 };
 
   /** The absorbed dose of radiation of the character */
   radiationDose = 0;
@@ -22,10 +25,10 @@ export const VITALS_JSON_SCHEMA: JSONSchemaType<VitalsSource> = {
   description: "A vitals specification",
   type: "object",
   properties: {
-    hitPoints: RESOURCE_JSON_SCHEMA,
-    actionPoints: RESOURCE_JSON_SCHEMA,
-    insanity: RESOURCE_JSON_SCHEMA,
-    strain: RESOURCE_JSON_SCHEMA,
+    hitPoints: RESOURCE_SOURCE_JSON_SCHEMA,
+    actionPoints: RESOURCE_SOURCE_JSON_SCHEMA,
+    insanity: RESOURCE_SOURCE_JSON_SCHEMA,
+    strain: RESOURCE_SOURCE_JSON_SCHEMA,
     radiationDose: {
       description: "The absorbed dose of radition of the character",
       type: "integer",

@@ -1,12 +1,15 @@
 import type { JSONSchemaType } from "ajv";
-import { Resource, RESOURCE_JSON_SCHEMA } from "../../../foundryCommon.js";
+import {
+  ResourceSource,
+  RESOURCE_SOURCE_JSON_SCHEMA
+} from "../../../foundryCommon.js";
 
 export default class EquipmentSource {
   /** The amount of caps the character owns */
   caps: number = 0;
 
   /** The quick slot charges of the character */
-  quickSlots = new Resource(0);
+  quickSlots: ResourceSource = { value: 0 };
 
   /** The ID of the readied item in the character's posession. */
   readiedItemId: string | null = null;
@@ -47,7 +50,7 @@ export const EQUIPMENT_JSON_SCHEMA: JSONSchemaType<EquipmentSource> = {
       type: "integer",
       default: 0
     },
-    quickSlots: RESOURCE_JSON_SCHEMA,
+    quickSlots: RESOURCE_SOURCE_JSON_SCHEMA,
     readiedItemId: {
       ...ITEM_ID_SCHEMA,
       description:

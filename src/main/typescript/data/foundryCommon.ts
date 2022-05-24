@@ -1,25 +1,61 @@
 import type { JSONSchemaType } from "ajv";
 import { TYPES } from "../constants.js";
 
+/** The source data of a foundry resource. */
+export interface ResourceSource {
+  value: number;
+}
+
 /**
- * A class for what Foundry VTT will automatically recognize as a "resource".
+ * A class for what Foundry VTT will automatically recognize as a "resource",
+ * used in token bars for example.
  */
-export class Resource {
+export class Resource implements ResourceSource {
+  /**
+   * Test whether the given source is a ResourceSource.
+   * @param source - the source to test
+   * @returns whether the source is a ResourceSource
+   */
+  static isSource(source: unknown): source is ResourceSource {
+    return (
+      typeof source === "object" &&
+      null !== source &&
+      "value" in source &&
+      typeof (source as ResourceSource).value === "number"
+    );
+  }
+
+  /**
+   * Create a Resource from the given source
+   * @param source - either a Resource or ResourceSource
+   * @returns the created Resource
+   * @throws if the given source is neither a Resource or ResourceSource
+   */
+  static from(source: unknown): Resource {
+    if (source instanceof Resource) return source;
+
+    if (this.isSource(source)) {
+      return new Resource(source.value, source.value);
+    }
+
+    throw new Error(`The source was not valid: ${source}`);
+  }
+
+  /** Create a new Resource with the given value and maximum. */
   constructor(
     /** The current value of a resource */
     public value: number,
 
     /** The maximum value of a resource */
-    public max?: number
+    public max: number
   ) {}
 }
 
-export const RESOURCE_JSON_SCHEMA: JSONSchemaType<Resource> = {
+export const RESOURCE_SOURCE_JSON_SCHEMA: JSONSchemaType<ResourceSource> = {
   description: "A schema for a Foundry resource",
   type: "object",
   properties: {
-    value: { type: "number", minimum: 0 },
-    max: { type: "number", nullable: true }
+    value: { type: "number", minimum: 0 }
   },
   required: ["value"],
   additionalProperties: false

@@ -6,7 +6,7 @@ export interface CompositeNumberSource {
 }
 
 /** A class to represent numbers composed of a base and modifying components. */
-export class CompositeNumber {
+export class CompositeNumber implements CompositeNumberSource {
   /**
    * Test whether the given source is a CompositeNumberSource.
    * @param source - the source to test

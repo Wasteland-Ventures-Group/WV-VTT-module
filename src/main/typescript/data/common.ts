@@ -49,6 +49,11 @@ export class CompositeNumber implements CompositeNumberSource {
   /** The internal components of the CompositeNumber */
   #components: Component[];
 
+  /** Get the components that make up this CompositeNumber beyond the source. */
+  get components(): Component[] {
+    return this.#components;
+  }
+
   /** The total value of the CompositeNumber */
   get total() {
     return (

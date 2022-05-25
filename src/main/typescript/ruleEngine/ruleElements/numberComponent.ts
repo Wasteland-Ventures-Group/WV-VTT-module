@@ -2,6 +2,7 @@ import { CompositeNumber } from "../../data/common.js";
 import NotCompositeNumberMessage from "../messages/notCompositeNumberMessage.js";
 import RuleElement from "../ruleElement.js";
 
+/** A RuleElement that adds a component to a CompositeNumber. */
 export default class NumberComponent extends RuleElement {
   protected override validate(): void {
     super.validate();
@@ -39,7 +40,7 @@ export default class NumberComponent extends RuleElement {
     if (typeof this.value !== "number") return;
 
     const modNumber = CompositeNumber.from(this.property);
-    modNumber.add({ value: this.value, label: this.label });
+    modNumber.add({ value: this.value, label: this.fullLabel });
     this.property = modNumber;
   }
 }

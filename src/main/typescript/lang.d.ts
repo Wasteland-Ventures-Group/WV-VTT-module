@@ -504,16 +504,6 @@ export interface LangSchema {
              */
             noActor: string;
             /**
-             * An error message when the selector does not match a property on
-             * the target.
-             *
-             * Parameters
-             * - name: the name of the target document
-             * - path: the selector path
-             * @pattern (?=.*\{name\})(?=.*\{path\})
-             */
-            notMatchingSelector: string;
-            /**
              * An error message when the selected property on the target is not
              * a CompositeNumber.
              *
@@ -523,6 +513,16 @@ export interface LangSchema {
              * @pattern (?=.*\{name\})(?=.*\{path\})
              */
             notCompositeNumber: string;
+            /**
+             * An error message when the selector does not match a property on
+             * the target.
+             *
+             * Parameters
+             * - name: the name of the target document
+             * - path: the selector path
+             * @pattern (?=.*\{name\})(?=.*\{path\})
+             */
+            notMatchingSelector: string;
             /**
              * An error message when the selected property on the target is of
              * the wrong type.
@@ -569,6 +569,8 @@ export interface LangSchema {
             unknownHook: string;
             /** An error message for an unknown RuleElement type. */
             unknownRuleElement: string;
+            /** An error message for an unknown SPECIAL name. */
+            unknownSpecialName: string;
             /** An error message for an unknown RuleElement target. */
             unknownTarget: string;
             /**

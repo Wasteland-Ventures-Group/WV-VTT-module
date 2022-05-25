@@ -415,8 +415,8 @@
         "errors": {
           "logical": {
             "noActor": "The target is set to \"actor\", but the item has no actor.",
-            "notMatchingSelector": "The property \"{path}\" on \"{name}\" does not exist.",
             "notCompositeNumber": "The property \"{path}\" on \"{name}\" is not a modifiable number.",
+            "notMatchingSelector": "The property \"{path}\" on \"{name}\" does not exist.",
             "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\".",
             "wrongValueType": "The value for this rule should be of type \"{type}\"."
           },
@@ -426,6 +426,7 @@
             "unknown": "An unknown error occurred.",
             "unknownHook": "The type of hook is unknown.",
             "unknownRuleElement": "The type of RuleElement is unknown.",
+            "unknownSpecialName": "The SPECIAL name is unknown.",
             "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
             "wrongType": "The property \"{path}\" is not of type \"{type}\"."
           },

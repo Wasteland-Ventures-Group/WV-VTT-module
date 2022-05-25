@@ -40,6 +40,17 @@ export const RESOURCE_SOURCE_JSON_SCHEMA: JSONSchemaType<ResourceSource> = {
   additionalProperties: false
 };
 
+export interface FoundrySerializable {
+  /**
+   * Copy and transform the DocumentData into a plain object. Draw the values of
+   * the extracted object from the data source (by default) otherwise from its
+   * transformed values.
+   * @param source - Draw values from the underlying data source rather than transformed values
+   * @returns The extracted primitive object
+   */
+  toObject(source: boolean): unknown;
+}
+
 /** An interface to model Foundry's compendium layout. */
 export interface FoundryCompendiumData<T> {
   /** The NeDB database ID of the entry */

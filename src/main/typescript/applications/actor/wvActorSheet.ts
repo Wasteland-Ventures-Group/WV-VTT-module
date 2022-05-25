@@ -15,7 +15,6 @@ import {
   ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
-import type { Special } from "../../data/actor/character/specials/properties.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
@@ -240,8 +239,11 @@ export default class WvActorSheet extends ActorSheet {
         },
         radiationSicknessLevel: getI18nRadiationSicknessLevel(this.actor),
         specials: SpecialNames.reduce((specials, specialName) => {
+          const special = this.actor.data.data.specials[specialName];
           specials[specialName] = {
-            ...this.actor.getSpecial(specialName),
+            ...special,
+            permTotal: special.permTotal,
+            tempTotal: special.tempTotal,
             long: specialI18ns[specialName].long,
             short: specialI18ns[specialName].short
           };
@@ -901,7 +903,11 @@ interface SheetMagic {
   thaumSpecials: Record<ThaumaturgySpecial, string>;
 }
 
-type SheetSpecial = I18nSpecial & Special;
+interface SheetSpecial extends I18nSpecial {
+  points: number;
+  permTotal: number;
+  tempTotal: number;
+}
 
 interface SheetSkill {
   name: string;

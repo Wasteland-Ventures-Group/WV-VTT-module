@@ -16,9 +16,7 @@ import * as interact from "../../interaction.js";
 import type Weapon from "../weapon.js";
 import * as ranges from "./ranges.js";
 
-/**
- * An attack of a Weapon Item.
- */
+/** An attack of a Weapon Item. */
 export default class Attack {
   /**
    * Create an Attack from the given data.
@@ -118,7 +116,6 @@ export default class Attack {
     // Create common attack flags ----------------------------------------------
     const commonFlags: Required<deco.CommonWeaponAttackFlags> = {
       type: "weaponAttack",
-      attackName: this.name,
       details: {
         ap: {
           cost: this.data.ap.total,
@@ -154,10 +151,19 @@ export default class Attack {
           distance: range
         }
       },
-      ownerSpecials: specials,
-      weaponImage: this.weapon.img,
-      weaponName: this.weapon.data.name,
-      weaponSystemData: this.weapon.systemData
+      weapon: {
+        display: {
+          ranges: ranges.getDisplayRanges(this.weapon.systemData, specials)
+        },
+        image: this.weapon.img,
+        name: this.weapon.name,
+        system: {
+          attack: {
+            name: this.name
+          },
+          name: this.weapon.data.name
+        }
+      }
     };
 
     // Check range -------------------------------------------------------------
@@ -200,7 +206,7 @@ export default class Attack {
       const dice =
         this.data.damage.dice.total +
         this.getStrengthDamageDiceMod(
-          this.weapon.actor.getSpecial("strength").tempTotal
+          this.weapon.actor.data.data.specials.strength.tempTotal
         );
       return `${this.data.damage.base.total}+(${dice})`;
     }
@@ -258,7 +264,7 @@ export default class Attack {
           type: "number",
           label: i18n.localize("wv.rules.skills.singular"),
           value:
-            actor?.data.data.skills[this.weapon.systemData.skill]?.total ?? 0,
+            actor?.data.data.skills[this.weapon.systemData.skill].total ?? 0,
           min: 0,
           max: 100
         },
@@ -302,7 +308,7 @@ export default class Attack {
       specs[`${specialName}Base`] = {
         type: "number",
         label: `${i18nSpecial} (${i18nBase})`,
-        value: actor?.data.data.specials[specialName]?.base ?? 0,
+        value: actor?.data.data.specials[specialName].points ?? 0,
         min: 0,
         max: 15
       };
@@ -310,7 +316,7 @@ export default class Attack {
       specs[`${specialName}Temp`] = {
         type: "number",
         label: `${i18nSpecial} (${i18nTemp})`,
-        value: actor?.data.data.specials[specialName]?.tempTotal ?? 0,
+        value: actor?.data.data.specials[specialName].tempTotal ?? 0,
         min: 0,
         max: 15
       };
@@ -318,7 +324,7 @@ export default class Attack {
       specs[`${specialName}Perm`] = {
         type: "number",
         label: `${i18nSpecial} (${i18nPerm})`,
-        value: actor?.data.data.specials[specialName]?.permTotal ?? 0,
+        value: actor?.data.data.specials[specialName].permTotal ?? 0,
         min: 0,
         max: 15
       };
@@ -333,11 +339,20 @@ export default class Attack {
   ): Record<SpecialName, Special> {
     return SpecialNames.reduce((specials, specialName) => {
       if (promptValues[`${specialName}Base`]) {
-        specials[specialName] = new Special(
-          promptValues[`${specialName}Base`],
-          promptValues[`${specialName}Perm`],
-          promptValues[`${specialName}Temp`]
-        );
+        const points = promptValues[`${specialName}Base`];
+        const perm = promptValues[`${specialName}Perm`];
+        const temp = promptValues[`${specialName}Temp`];
+        const special = new Special(points);
+        const permBonus = perm - points;
+        const tempBonus = temp - points;
+        if (permBonus || tempBonus) {
+          const label = getGame().i18n.localize(
+            "wv.system.prompt.defaults.title"
+          );
+          if (permBonus) special.addPerm({ value: permBonus, label });
+          if (tempBonus) special.addTemp({ value: tempBonus, label });
+        }
+        specials[specialName] = special;
       }
       return specials;
     }, {} as Record<SpecialName, Special>);
@@ -362,8 +377,8 @@ export default class Attack {
   }
 
   /** Get the Strength damage modifier dice for the given Strength value. */
-  protected getStrengthDamageDiceMod(strength: number | undefined): number {
-    if (!this.data.damage.diceRange || typeof strength !== "number") {
+  protected getStrengthDamageDiceMod(strength: number): number {
+    if (!this.data.damage.diceRange) {
       return 0;
     }
 

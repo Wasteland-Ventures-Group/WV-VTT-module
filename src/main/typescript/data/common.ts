@@ -1,38 +1,65 @@
 import type { JSONSchemaType } from "ajv";
-import { Resource } from "./foundryCommon.js";
+import { FoundrySerializable, Resource } from "./foundryCommon.js";
 
 /** The data layout needed to create a CompositeNumber from raw data. */
 export interface CompositeNumberSource {
   source: number;
 }
 
+/** The data layout for a serialized composite number. */
+export interface SerializedCompositeNumber extends CompositeNumberSource {
+  components: Component[];
+}
+
 /** A class to represent numbers composed of a base and modifying components. */
-export class CompositeNumber implements CompositeNumberSource {
+export class CompositeNumber
+  implements CompositeNumberSource, FoundrySerializable
+{
   /**
    * Test whether the given source is a CompositeNumberSource.
    * @param source - the source to test
    * @returns whether the source is a CompositeNumberSource
    */
   static isSource(source: unknown): source is CompositeNumberSource {
+    if (typeof source !== "object" || null === source || !("source" in source))
+      return false;
+
+    const obj = source as CompositeNumberSource;
+    return typeof obj.source === "number";
+  }
+
+  /**
+   * Test whether the given source is a SerializedCompositeNumber.
+   * @param source - the source to test
+   * @returns whether the source is a SerializedCompositeNumber
+   */
+  static isSerialized(source: unknown): source is SerializedCompositeNumber {
+    if (!this.isSource(source) || !("components" in source)) return false;
+
+    const obj = source as SerializedCompositeNumber;
     return (
-      typeof source === "object" &&
-      null !== source &&
-      "source" in source &&
-      typeof (source as CompositeNumberSource).source === "number"
+      Array.isArray(obj.components) &&
+      !obj.components.some((component) => !isComponent(component))
     );
   }
 
   /**
    * Create a CompositeNumber from the given source
-   * @param source - either a CompositeNumber or CompositeNumberSource
+   * @param source - either a CompositeNumber, CompositeNumberSource or SerializedCompositeNumber
    * @returns the created CompositeNumber
-   * @throws if the given source is neither a CompositeNumber or CompositeNumberSource
+   * @throws if the given source is neither a CompositeNumber, CompositeNumberSource nor SerializedCompositeNumber
    */
   static from(source: unknown): CompositeNumber {
     if (source instanceof CompositeNumber) return source;
 
     if (this.isSource(source)) {
-      return new CompositeNumber(source.source);
+      const compNumber = new CompositeNumber(source.source);
+
+      if (this.isSerialized(source)) {
+        source.components.forEach((component) => compNumber.add(component));
+      }
+
+      return compNumber;
     }
 
     throw new Error(`The source was not valid: ${source}`);
@@ -56,12 +83,9 @@ export class CompositeNumber implements CompositeNumberSource {
 
   /** The total value of the CompositeNumber */
   get total() {
-    return (
-      this.source +
-      this.#components.reduce((total, component) => {
-        return total + component.value;
-      }, 0)
-    );
+    return this.#components.reduce((total, component) => {
+      return total + component.value;
+    }, this.source);
   }
 
   /**
@@ -71,15 +95,45 @@ export class CompositeNumber implements CompositeNumberSource {
   add(component: Component) {
     this.#components.push(component);
   }
+
+  toObject(source?: true): CompositeNumberSource;
+  toObject(source: false): SerializedCompositeNumber;
+  toObject(source?: boolean): CompositeNumberSource | SerializedCompositeNumber;
+  toObject(
+    source?: boolean
+  ): CompositeNumberSource | SerializedCompositeNumber {
+    if (source) {
+      return { source: this.source };
+    } else {
+      return {
+        source: this.source,
+        components: this.#components
+      };
+    }
+  }
 }
 
 /** A CompositeNumber component */
-interface Component {
+export interface Component {
   /** The value this component modifies the CompositeNumber's value by */
   value: number;
 
   /** An explanatory label for the Component */
   label: string;
+}
+
+/** Check whether the given source is a Component. */
+export function isComponent(source: unknown): source is Component {
+  if (
+    typeof source !== "object" ||
+    null === source ||
+    !("value" in source) ||
+    !("label" in source)
+  )
+    return false;
+
+  const obj = source as Component;
+  return typeof obj.value === "number" && typeof obj.label === "string";
 }
 
 export const COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> =

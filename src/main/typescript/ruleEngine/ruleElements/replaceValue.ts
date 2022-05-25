@@ -1,8 +1,6 @@
 import RuleElement from "../ruleElement.js";
 
-/**
- * A RuleElement that replaces the value of the selected data point.
- */
+/** A RuleElement that replaces the value of the selected data point. */
 export default class ReplaceValue extends RuleElement {
   protected override validate(): void {
     super.validate();
@@ -26,10 +24,6 @@ export default class ReplaceValue extends RuleElement {
 
   /** Apply the rule element to the target Document. */
   protected apply(): void {
-    foundry.utils.setProperty(
-      this.targetDoc.data.data,
-      this.selector,
-      this.value
-    );
+    this.property = this.value;
   }
 }

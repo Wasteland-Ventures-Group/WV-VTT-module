@@ -292,6 +292,7 @@ export default class Attack {
     actor: WvActor | null | undefined
   ): Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, NumberInputSpec> {
     const i18n = getGame().i18n;
+    const i18nMod = i18n.localize("wv.system.misc.modifier");
     const i18nBase = i18n.localize("wv.system.values.base");
     const i18nTemp = i18n.localize("wv.rules.special.tempTotal");
     const i18nPerm = i18n.localize("wv.rules.special.permTotal");
@@ -315,17 +316,17 @@ export default class Attack {
 
       specs[`${specialName}Temp`] = {
         type: "number",
-        label: `${i18nSpecial} (${i18nTemp})`,
-        value: actor?.data.data.specials[specialName].tempTotal ?? 0,
-        min: 0,
+        label: `${i18nSpecial} (${i18nTemp} ${i18nMod})`,
+        value: actor?.data.data.specials[specialName].tempModifier ?? 0,
+        min: -15,
         max: 15
       };
 
       specs[`${specialName}Perm`] = {
         type: "number",
-        label: `${i18nSpecial} (${i18nPerm})`,
-        value: actor?.data.data.specials[specialName].permTotal ?? 0,
-        min: 0,
+        label: `${i18nSpecial} (${i18nPerm} ${i18nMod})`,
+        value: actor?.data.data.specials[specialName].permModifier ?? 0,
+        min: -15,
         max: 15
       };
 
@@ -340,17 +341,15 @@ export default class Attack {
     return SpecialNames.reduce((specials, specialName) => {
       if (promptValues[`${specialName}Base`]) {
         const points = promptValues[`${specialName}Base`];
-        const perm = promptValues[`${specialName}Perm`];
-        const temp = promptValues[`${specialName}Temp`];
+        const permMod = promptValues[`${specialName}Perm`];
+        const tempMod = promptValues[`${specialName}Temp`];
         const special = new Special(points);
-        const permBonus = perm - points;
-        const tempBonus = temp - points;
-        if (permBonus || tempBonus) {
+        if (permMod || tempMod) {
           const label = getGame().i18n.localize(
             "wv.system.prompt.defaults.title"
           );
-          if (permBonus) special.addPerm({ value: permBonus, label });
-          if (tempBonus) special.addTemp({ value: tempBonus, label });
+          if (permMod) special.addPerm({ value: permMod, label });
+          if (tempMod) special.addTemp({ value: tempMod, label });
         }
         specials[specialName] = special;
       }

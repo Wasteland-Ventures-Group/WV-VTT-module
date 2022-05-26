@@ -109,18 +109,28 @@ export class Special implements FoundrySerializable {
     return this.#tempComponents;
   }
 
-  /** Get the permanent SPECIAL total. */
-  get permTotal(): number {
+  /** Get the permanent modifier value. */
+  get permModifier(): number {
     return this.#permComponents.reduce((total, component) => {
       return total + component.value;
-    }, this.points);
+    }, 0);
   }
 
-  /** Get the temporary SPECIAL total. */
-  get tempTotal(): number {
+  /** Get the temporary modifier value. This excludes the permanent modifier. */
+  get tempModifier(): number {
     return this.#tempComponents.reduce((total, component) => {
       return total + component.value;
-    }, this.points);
+    }, 0);
+  }
+
+  /** Get the permanent total. */
+  get permTotal(): number {
+    return this.points + this.permModifier;
+  }
+
+  /** Get the temporary total. */
+  get tempTotal(): number {
+    return this.permTotal + this.tempModifier;
   }
 
   /**

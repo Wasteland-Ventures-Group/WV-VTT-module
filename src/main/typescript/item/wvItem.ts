@@ -251,14 +251,14 @@ export async function getUpdateDataFromCompendium(
 
   const updateData = { data: document.toObject().data };
   if (!item.getFlag(CONSTANTS.systemId, "overwriteNotesWithCompendium")) {
-    updateData.data.notes = item.data.data.notes;
+    updateData.data.notes = item.data._source.data.notes;
   }
   if (!item.getFlag(CONSTANTS.systemId, "overwriteRulesWithCompendium")) {
-    updateData.data.rules.sources = item.data.data.rules.sources;
+    updateData.data.rules.sources = item.data._source.data.rules.sources;
   }
-  if ("amount" in updateData.data && "amount" in item.data.data) {
+  if ("amount" in updateData.data && "amount" in item.data._source.data) {
     if (!item.getFlag(CONSTANTS.systemId, "overwriteAmountWithCompendium")) {
-      updateData.data.amount = item.data.data.amount;
+      updateData.data.amount = item.data._source.data.amount;
     }
   }
   return updateData;

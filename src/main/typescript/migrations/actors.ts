@@ -1,4 +1,4 @@
-import { CONSTANTS } from "../constants.js";
+import { CONSTANTS, SpecialName, SpecialNames } from "../constants.js";
 import { LOG } from "../systemLogger.js";
 
 export default function migrateActors(currentVersion: string): void {
@@ -76,7 +76,7 @@ function migrateVitalsToResources(
   actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ): void {
-  const vitals = actor.data.data.vitals;
+  const vitals = actor.data._source.data.vitals;
   if (typeof vitals?.actionPoints === "number")
     updateData["data.vitals.actionPoints.value"] = vitals.actionPoints;
   if (typeof vitals?.hitPoints === "number")
@@ -101,7 +101,7 @@ function removeHistory(
   actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ): void {
-  if ("history" in actor.data.data.background)
+  if ("history" in actor.data._source.data.background)
     updateData["data.background.-=history"] = null;
 }
 
@@ -109,32 +109,26 @@ function migrateSpecials(
   actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ): void {
-  const specials = actor.data.data.specials;
+  const sourceData = actor.data._source.data;
+  if (!("specials" in sourceData)) return;
 
-  for (const special of [
-    "strength",
-    "perception",
-    "endurance",
-    "charisma",
-    "intelligence",
-    "agility",
-    "luck"
-  ] as const) {
+  const specials = (sourceData as { specials: Record<SpecialName, number> })
+    .specials;
+
+  for (const special of SpecialNames) {
     if (typeof specials?.[special] === "number") {
       updateData[`data.leveling.specialPoints.${special}`] = specials[special];
-      updateData[`data.specials.-=${special}`] = null;
     }
   }
 
-  if ("specials" in actor.data._source.data)
-    updateData["data.-=specials"] = null;
+  updateData["data.-=specials"] = null;
 }
 
 function migrateToCompositeNumbers(
   actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ) {
-  const background = actor.data.data.background;
+  const background = actor.data._source.data.background;
   if (typeof background.size === "number")
     updateData["data.background.size.source"] = background.size;
 }

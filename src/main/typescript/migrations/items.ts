@@ -1,5 +1,6 @@
 import { Caliber, CONSTANTS, ProtoItemTypes } from "../constants.js";
 import type { AmmoDataSourceData } from "../data/item/ammo/source.js";
+import type { ApparelDataSourceData } from "../data/item/apparel/source.js";
 import type {
   DistanceSource,
   RangeSource
@@ -105,8 +106,10 @@ function migrateRuleElementHook(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
-  if (item.data.data.rules.sources.some((rule) => rule.hook === undefined)) {
-    updateData["data.rules.sources"] = item.data.data.rules.sources.map(
+  if (
+    item.data._source.data.rules.sources.some((rule) => rule.hook === undefined)
+  ) {
+    updateData["data.rules.sources"] = item.data._source.data.rules.sources.map(
       (rule) => ({
         // @ts-expect-error This might not be there in not migrated data
         hook: "afterSpecial",
@@ -156,13 +159,13 @@ function migrateAmmoFix(
   if (!["ammo", "weapon"].includes(item.type)) return;
 
   if (item.type === "ammo") {
-    const data = item.data.data as AmmoDataSourceData;
+    const data = item.data._source.data as AmmoDataSourceData;
     const newCaliber = transformCaliber(data.caliber);
     if (!newCaliber) return;
 
     updateData["data.caliber"] = newCaliber;
   } else if (item.type === "weapon") {
-    const data = item.data.data as WeaponDataSourceData;
+    const data = item.data._source.data as WeaponDataSourceData;
     if (!data.reload) return;
 
     const newCaliber = transformCaliber(data.reload.caliber);
@@ -186,7 +189,7 @@ function migrateRanges(
 ) {
   if (item.type !== "weapon") return;
 
-  const data = item.data.data as WeaponDataSourceData;
+  const data = item.data._source.data as WeaponDataSourceData;
   const newShortRange = transformRange(data.ranges.short);
   const newMediumRange = transformRange(data.ranges.medium);
   const newLongRange = transformRange(data.ranges.long);
@@ -256,7 +259,7 @@ function migrateMandatoryReload(
 ) {
   if (item.type !== "weapon") return;
 
-  const data = item.data.data as WeaponDataSourceData;
+  const data = item.data._source.data as WeaponDataSourceData;
   if (data.reload) return;
 
   updateData["data.reload"] = {
@@ -271,14 +274,14 @@ function migrateToCompositeNumbers(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
-  const data = item.data.data;
+  const data = item.data._source.data;
   if ("value" in data && typeof data.value === "number")
     updateData["data.value.source"] = data.value;
   if ("weight" in data && typeof data.weight === "number")
     updateData["data.weight.source"] = data.weight;
 
   if (item.data.type === "apparel") {
-    const data = item.data.data;
+    const data = item.data._source.data as ApparelDataSourceData;
     if (typeof data.damageThreshold === "number")
       updateData["data.damageThreshold.source"] = data.damageThreshold;
     if (typeof data.quickSlots === "number")
@@ -289,7 +292,7 @@ function migrateToCompositeNumbers(
   }
 
   if (item.data.type === "weapon") {
-    const data = item.data.data;
+    const data = item.data._source.data as WeaponDataSourceData;
 
     if (typeof data.strengthRequirement === "number")
       updateData["data.strengthRequirement.source"] = data.strengthRequirement;

@@ -13,18 +13,26 @@
           "hook": "afterSpecial",
           "label": "Agility bonus",
           "priority": 100,
-          "selector": "specials.agility.tempTotal",
+          "selector": "agility",
           "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "type": "WV.RuleElement.TempSpecialComponent",
           "value": 1
         }
       ]
     },
     "rarity": "common",
-    "value": 80,
-    "weight": 0.5,
-    "quickSlots": 2,
-    "modSlots": 2,
+    "value": {
+      "source": 80
+    },
+    "weight": {
+      "source": 0.5
+    },
+    "quickSlots": {
+      "source": 2
+    },
+    "modSlots": {
+      "source": 2
+    },
     "slot": "clothing",
     "type": "clothing"
   },

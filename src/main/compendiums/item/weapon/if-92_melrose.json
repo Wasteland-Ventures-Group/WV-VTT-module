@@ -6,15 +6,23 @@
     "name": "IF-92 \"Melrose\"",
     "description": "Ironshod Firearms' machine gun developed at the tail end of the war. Easy to jury-rig, hence why it is often used as a basis for Wasteland Turrets.",
     "notes": "Point blank accuracy modifier -10",
-    "strengthRequirement": 8,
+    "strengthRequirement": {
+      "source": 8
+    },
     "attacks": {
       "sources": {
         "Burst": {
           "damage": {
-            "base": 2,
-            "dice": 6
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 6
+            }
           },
-          "ap": 6,
+          "ap": {
+            "source": 6
+          },
           "rounds": 5
         }
       }
@@ -22,39 +30,65 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 50,
-          "multiplier": 0,
+          "base": {
+            "source": 50
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 100,
-          "multiplier": 0,
+          "base": {
+            "source": 100
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 150,
-          "multiplier": 0,
+          "base": {
+            "source": 150
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 8,
+      "ap": {
+        "source": 8
+      },
       "caliber": "5_56mm",
       "containerType": "magazine",
-      "size": 100
+      "size": {
+        "source": 100
+      }
     },
     "skill": "firearms",
-    "value": 500,
-    "weight": 7.5,
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 7.5
+    },
     "rules": {
       "sources": []
     }

@@ -1,48 +1,51 @@
 import type { JSONSchemaType } from "ajv";
 import { CONSTANTS, Race, Races } from "../../../../constants.js";
+import {
+  CompositeNumberSource,
+  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
+} from "../../../common.js";
 
-/** An Actor background object for the database */
 export default class BackgroundSource {
-  /** The race of an Actor */
+  /** The race of the character */
   race: Race = "earthPony";
 
-  /** The age of an Actor */
+  /** The age of the character */
   age = "";
 
-  /** The gender of an Actor */
+  /** The gender of the character */
   gender = "";
 
-  /** The cutie mark of an Actor */
+  /** The cutie mark description of the character */
   cutieMark = "";
 
-  /** The appearance of an Actor */
+  /** The appearance of the character */
   appearance = "";
 
-  /** The background of an Actor */
+  /** The background of the character */
   background = "";
 
-  /** The fears of an Actor */
+  /** The fears of the character */
   fears = "";
 
-  /** The dreams of an Actor */
+  /** The dreams of the character */
   dreams = "";
 
-  /** The current karma of an Actor */
+  /** The karma of the character */
   karma = 0;
 
-  /** The personality of an Actor */
+  /** The personality of the character */
   personality = "";
 
-  /** The current size of an Actor */
-  size = 0;
+  /** The size of the character */
+  size: CompositeNumberSource = { source: 0 };
 
-  /** The social contacts of an Actor */
+  /** The social contacts of the character */
   socialContacts = "";
 
-  /** The special talent of an Actor */
+  /** The special talent description of the character */
   specialTalent = "";
 
-  /** The virtue of an Actor */
+  /** The virtue of the character */
   virtue = "";
 }
 
@@ -94,10 +97,20 @@ export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
       type: "string"
     },
     size: {
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
       description: "The size of the character",
-      type: "integer",
-      maximum: CONSTANTS.bounds.size.max,
-      minimum: CONSTANTS.bounds.size.min
+      properties: {
+        source: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          type: "integer",
+          maximum: CONSTANTS.bounds.size.max,
+          minimum: CONSTANTS.bounds.size.min,
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     },
     socialContacts: {
       description: "The social contacts of the character",
@@ -125,7 +138,9 @@ export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
     dreams: "",
     karma: 0,
     personality: "",
-    size: 0,
+    size: {
+      source: 0
+    },
     socialContacts: "",
     specialTalent: "",
     virtue: ""

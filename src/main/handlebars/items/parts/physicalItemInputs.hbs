@@ -10,14 +10,14 @@
       </select>
     </span>
   {{~/if~}}
-  {{~#if data.data.value includeZero=true ~}}
+  {{~#if data.data.value.source includeZero=true ~}}
     <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.value.name"}}">
-      <span class="fas fa-coins"></span><input class="size-4" type="number" name="data.value" value="{{data.data.value}}" />
+      <span class="fas fa-coins"></span><input class="size-4" type="number" name="data.value.source" value="{{data.data.value.source}}" />
     </span>
   {{~/if~}}
-  {{~#if data.data.weight includeZero=true ~}}
+  {{~#if data.data.weight.source includeZero=true ~}}
     <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.weight.name"}}">
-      <span class="fas fa-weight"></span><input class="size-3" type="number" name="data.weight" value="{{data.data.weight}}" />
+      <span class="fas fa-weight"></span><input class="size-3" type="number" name="data.weight.source" value="{{data.data.weight.source}}" />
     </span>
   {{~/if~}}
   {{~#if data.data.amount includeZero=true ~}}

@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "common",
-    "value": 0.5,
-    "weight": 0,
+    "value": {
+      "source": 0.5
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 10,
     "caliber": "5mm",
     "type": "hollowPoint"

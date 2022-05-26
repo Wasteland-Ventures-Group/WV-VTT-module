@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "exotic",
-    "value": 500,
-    "weight": 0,
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 1,
     "caliber": "balefireEgg",
     "type": "standard"

@@ -6,7 +6,7 @@ import Prompt, {
 } from "../../applications/prompt.js";
 import { CONSTANTS, SpecialName, SpecialNames } from "../../constants.js";
 import { Special } from "../../data/actor/character/specials/properties.js";
-import type { AttackSource } from "../../data/item/weapon/attack/source.js";
+import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";
 import { getGame } from "../../foundryHelpers.js";
@@ -16,19 +16,17 @@ import * as interact from "../../interaction.js";
 import type Weapon from "../weapon.js";
 import * as ranges from "./ranges.js";
 
-/**
- * An attack of a Weapon Item.
- */
+/** An attack of a Weapon Item. */
 export default class Attack {
   /**
    * Create an Attack from the given data.
    * @param name - the identifier name of the attack
-   * @param data - the attack source data
+   * @param data - the attack data
    * @param weapon - the Weapon this Attack belongs to
    */
   constructor(
     public name: string,
-    public data: AttackSource,
+    public data: AttackProperties,
     public weapon: Weapon
   ) {}
 
@@ -111,17 +109,16 @@ export default class Attack {
     const remainingAp = outOfRange
       ? previousAp
       : token?.inCombat
-      ? previousAp - this.data.ap
+      ? previousAp - this.data.ap.total
       : previousAp;
     const notEnoughAp = 0 > remainingAp;
 
     // Create common attack flags ----------------------------------------------
     const commonFlags: Required<deco.CommonWeaponAttackFlags> = {
       type: "weaponAttack",
-      attackName: this.name,
       details: {
         ap: {
-          cost: this.data.ap,
+          cost: this.data.ap.total,
           previous: previousAp,
           remaining: remainingAp
         },
@@ -131,12 +128,12 @@ export default class Attack {
         },
         damage: {
           base: {
-            base: this.data.damage.base,
+            base: this.data.damage.base.source,
             modifiers: this.getDamageBaseModifierFlags(),
-            total: this.data.damage.base
+            total: this.data.damage.base.total
           },
           dice: {
-            base: this.data.damage.dice,
+            base: this.data.damage.dice.source,
             modifiers: this.getDamageDiceModifierFlags(
               strengthDamageDiceMod,
               rangeDamageDiceMod
@@ -154,10 +151,19 @@ export default class Attack {
           distance: range
         }
       },
-      ownerSpecials: specials,
-      weaponImage: this.weapon.img,
-      weaponName: this.weapon.data.name,
-      weaponSystemData: this.weapon.systemData
+      weapon: {
+        display: {
+          ranges: ranges.getDisplayRanges(this.weapon.systemData, specials)
+        },
+        image: this.weapon.img,
+        name: this.weapon.name,
+        system: {
+          attack: {
+            name: this.name
+          },
+          name: this.weapon.data.name
+        }
+      }
     };
 
     // Check range -------------------------------------------------------------
@@ -184,7 +190,7 @@ export default class Attack {
 
     // Damage roll -------------------------------------------------------------
     const damageRoll = new Roll(
-      Formulator.damage(this.data.damage.base, damageDice).toString()
+      Formulator.damage(this.data.damage.base.total, damageDice).toString()
     ).evaluate({ async: false });
 
     // Create attack message ---------------------------------------------------
@@ -194,24 +200,24 @@ export default class Attack {
   /** Get the system formula representation of the damage of this attack. */
   get damageFormula(): string {
     if (!this.data.damage.diceRange)
-      return `${this.data.damage.base}+(${this.data.damage.dice})`;
+      return `${this.data.damage.base.total}+(${this.data.damage.dice.total})`;
 
     if (this.weapon.actor) {
       const dice =
-        this.data.damage.dice +
+        this.data.damage.dice.total +
         this.getStrengthDamageDiceMod(
-          this.weapon.actor.getSpecial("strength").tempTotal
+          this.weapon.actor.data.data.specials.strength.tempTotal
         );
-      return `${this.data.damage.base}+(${dice})`;
+      return `${this.data.damage.base.total}+(${dice})`;
     }
 
     const low =
-      this.data.damage.dice +
+      this.data.damage.dice.total +
       this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.min);
     const high =
-      this.data.damage.dice +
+      this.data.damage.dice.total +
       this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.max);
-    return `${this.data.damage.base}+(${low}-${high})`;
+    return `${this.data.damage.base.total}+(${low}-${high})`;
   }
 
   /**
@@ -258,21 +264,21 @@ export default class Attack {
           type: "number",
           label: i18n.localize("wv.rules.skills.singular"),
           value:
-            actor?.data.data.skills[this.weapon.systemData.skill]?.total ?? 0,
+            actor?.data.data.skills[this.weapon.systemData.skill].total ?? 0,
           min: 0,
           max: 100
         },
         critSuccess: {
           type: "number",
           label: i18n.localize("wv.rules.criticals.successChance"),
-          value: actor?.data.data.secondary.criticals.success ?? 5,
+          value: actor?.data.data.secondary.criticals.success.total ?? 5,
           min: 0,
           max: 100
         },
         critFailure: {
           type: "number",
           label: i18n.localize("wv.rules.criticals.failureChance"),
-          value: actor?.data.data.secondary.criticals.failure ?? 96,
+          value: actor?.data.data.secondary.criticals.failure.total ?? 96,
           min: 0,
           max: 100
         }
@@ -286,6 +292,7 @@ export default class Attack {
     actor: WvActor | null | undefined
   ): Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, NumberInputSpec> {
     const i18n = getGame().i18n;
+    const i18nMod = i18n.localize("wv.system.misc.modifier");
     const i18nBase = i18n.localize("wv.system.values.base");
     const i18nTemp = i18n.localize("wv.rules.special.tempTotal");
     const i18nPerm = i18n.localize("wv.rules.special.permTotal");
@@ -302,24 +309,24 @@ export default class Attack {
       specs[`${specialName}Base`] = {
         type: "number",
         label: `${i18nSpecial} (${i18nBase})`,
-        value: actor?.data.data.specials[specialName]?.base ?? 0,
+        value: actor?.data.data.specials[specialName].points ?? 0,
         min: 0,
         max: 15
       };
 
       specs[`${specialName}Temp`] = {
         type: "number",
-        label: `${i18nSpecial} (${i18nTemp})`,
-        value: actor?.data.data.specials[specialName]?.tempTotal ?? 0,
-        min: 0,
+        label: `${i18nSpecial} (${i18nTemp} ${i18nMod})`,
+        value: actor?.data.data.specials[specialName].tempModifier ?? 0,
+        min: -15,
         max: 15
       };
 
       specs[`${specialName}Perm`] = {
         type: "number",
-        label: `${i18nSpecial} (${i18nPerm})`,
-        value: actor?.data.data.specials[specialName]?.permTotal ?? 0,
-        min: 0,
+        label: `${i18nSpecial} (${i18nPerm} ${i18nMod})`,
+        value: actor?.data.data.specials[specialName].permModifier ?? 0,
+        min: -15,
         max: 15
       };
 
@@ -333,11 +340,18 @@ export default class Attack {
   ): Record<SpecialName, Special> {
     return SpecialNames.reduce((specials, specialName) => {
       if (promptValues[`${specialName}Base`]) {
-        specials[specialName] = new Special(
-          promptValues[`${specialName}Base`],
-          promptValues[`${specialName}Perm`],
-          promptValues[`${specialName}Temp`]
-        );
+        const points = promptValues[`${specialName}Base`];
+        const permMod = promptValues[`${specialName}Perm`];
+        const tempMod = promptValues[`${specialName}Temp`];
+        const special = new Special(points);
+        if (permMod || tempMod) {
+          const label = getGame().i18n.localize(
+            "wv.system.prompt.defaults.title"
+          );
+          if (permMod) special.addPerm({ value: permMod, label });
+          if (tempMod) special.addTemp({ value: tempMod, label });
+        }
+        specials[specialName] = special;
       }
       return specials;
     }, {} as Record<SpecialName, Special>);
@@ -357,13 +371,13 @@ export default class Attack {
 
   /** Get the amount of damage d6 of this attack. */
   protected getDamageDice(strengthMod: number, rangeMod: number): number {
-    const dice = this.data.damage.dice + strengthMod + rangeMod;
+    const dice = this.data.damage.dice.total + strengthMod + rangeMod;
     return dice > 0 ? dice : 0;
   }
 
   /** Get the Strength damage modifier dice for the given Strength value. */
-  protected getStrengthDamageDiceMod(strength: number | undefined): number {
-    if (!this.data.damage.diceRange || typeof strength !== "number") {
+  protected getStrengthDamageDiceMod(strength: number): number {
+    if (!this.data.damage.diceRange) {
       return 0;
     }
 
@@ -517,7 +531,7 @@ export default class Attack {
           formula: damageRoll.formula,
           results:
             damageRoll.dice[0]?.results.map((result) => result.result) ?? [],
-          total: damageRoll.total ?? this.data.damage.base
+          total: damageRoll.total ?? this.data.damage.base.total
         },
         hit: {
           critical: hitRoll.dice[0]?.results[0]?.critical,

@@ -53,7 +53,7 @@ export default class Formulator {
 
     if (this.type === "check") {
       if (typeof target !== "number")
-        throw new Error("A target is required for checks!");
+        throw new Error("A target is required for checks.");
 
       this.target = target;
       this.special = special;

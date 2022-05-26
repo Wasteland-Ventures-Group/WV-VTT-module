@@ -1,6 +1,6 @@
 import { TYPES } from "../constants.js";
 import type WeaponDataProperties from "../data/item/weapon/properties.js";
-import Attack from "./weapon/attack.js";
+import { WeaponDataPropertiesData } from "../data/item/weapon/properties.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent a weapon in the Wasteland Ventures system. */
@@ -25,11 +25,6 @@ export default class Weapon extends WvItem {
   }
 
   override prepareBaseData(): void {
-    super.prepareBaseData();
-    this.systemData.attacks.attacks = {};
-    Object.entries(this.systemData.attacks.sources).forEach(
-      ([name, source]) =>
-        (this.systemData.attacks.attacks[name] = new Attack(name, source, this))
-    );
+    this.data.data = new WeaponDataPropertiesData(this.systemData, this);
   }
 }

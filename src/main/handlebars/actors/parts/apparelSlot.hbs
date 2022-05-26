@@ -6,11 +6,11 @@
         {{~#if apparel.sheet.type~}}
           <span>{{apparel.sheet.type}}</span>
         {{~/if~}}
-        {{~#if apparel.data.damageThreshold~}}
-          <span>{{localize "wv.rules.damage.threshold.short"}} {{apparel.data.damageThreshold}}</span>
+        {{~#if apparel.data.damageThreshold.total~}}
+          <span>{{localize "wv.rules.damage.threshold.short"}} {{apparel.data.damageThreshold.total}}</span>
         {{~/if~}}
-        {{~#if apparel.data.quickSlots~}}
-          <span>{{localize "wv.rules.equipment.slots.quickSlot.plural"}} {{apparel.data.quickSlots}}</span>
+        {{~#if apparel.data.quickSlots.total~}}
+          <span>{{localize "wv.rules.equipment.slots.quickSlot.plural"}} {{apparel.data.quickSlots.total}}</span>
         {{~/if~}}
       </div>
       {{~#if apparel.data.notes~}}

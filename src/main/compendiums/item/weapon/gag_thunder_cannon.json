@@ -9,10 +9,16 @@
     "attacks": {
       "sources": {
         "Single": {
-          "ap": 6,
+          "ap": {
+            "source": 6
+          },
           "damage": {
-            "base": 3,
-            "dice": 3
+            "base": {
+              "source": 3
+            },
+            "dice": {
+              "source": 3
+            }
           },
           "rounds": 1
         }
@@ -21,43 +27,71 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 50,
-          "multiplier": 0,
+          "base": {
+            "source": 50
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 100,
-          "multiplier": 0,
+          "base": {
+            "source": 100
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 150,
-          "multiplier": 0,
+          "base": {
+            "source": 150
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "exotic",
     "reload": {
-      "ap": 5,
+      "ap": {
+        "source": 5
+      },
       "caliber": "energizedCrystalPack",
       "containerType": "magazine",
-      "size": 4
+      "size": {
+        "source": 4
+      }
     },
     "rules": {
       "sources": []
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 8,
-    "value": 9999,
-    "weight": 10
+    "strengthRequirement": {
+      "source": 8
+    },
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 10
+    }
   },
   "effects": [],
   "flags": {},

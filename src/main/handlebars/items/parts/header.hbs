@@ -12,14 +12,14 @@
             <span class="fas fa-gem"></span><span>{{sheet.rarity.selectedName}}</span>
           </span>
         {{~/if~}}
-        {{~#if data.data.value includeZero=true ~}}
+        {{~#if data.data.value.total includeZero=true ~}}
           <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.value.name"}}">
-            <span class="fas fa-coins"></span><span>{{data.data.value}}</span>
+            <span class="fas fa-coins"></span><span>{{data.data.value.total}}</span>
           </span>
         {{~/if~}}
-        {{~#if data.data.weight includeZero=true ~}}
+        {{~#if data.data.weight.total includeZero=true ~}}
           <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.weight.name"}}">
-            <span class="fas fa-weight"></span><span>{{data.data.weight}}</span>
+            <span class="fas fa-weight"></span><span>{{data.data.weight.total}}</span>
           </span>
         {{~/if~}}
         {{~#if data.data.amount includeZero=true ~}}

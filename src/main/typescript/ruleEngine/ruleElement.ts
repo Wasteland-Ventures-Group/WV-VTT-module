@@ -35,9 +35,31 @@ export default abstract class RuleElement {
   /** The data of the RuleElement */
   source: RuleElementSource;
 
+  /** Get the label of the RuleElement. */
+  get label(): string {
+    return this.source.label;
+  }
+
+  /**
+   * Get the full label of the RuleElement, consisting of item name and label.
+   */
+  get fullLabel(): string {
+    return (this.item.name ?? "") + " - " + this.label;
+  }
+
   /** Get the priority number of the RuleElement. */
   get priority(): number {
     return this.source.priority;
+  }
+
+  /** Get the property, the RuleElement points at. */
+  get property(): unknown {
+    return foundry.utils.getProperty(this.targetDoc.data.data, this.selector);
+  }
+
+  /** Set the property, the RuleElement points at. */
+  set property(value: unknown) {
+    foundry.utils.setProperty(this.targetDoc.data.data, this.selector, value);
   }
 
   /** Get the property selector of the RuleElement. */
@@ -59,9 +81,8 @@ export default abstract class RuleElement {
       case "item":
         return this.item;
       case "actor":
-        if (this.item.actor === null) {
-          throw new Error("The actor of the RuleElement's item is null!");
-        }
+        if (this.item.actor === null)
+          throw new Error("The actor of the RuleElement's item is null.");
 
         return this.item.actor;
     }
@@ -178,9 +199,7 @@ export default abstract class RuleElement {
     let invalidSelector = false;
 
     try {
-      invalidSelector =
-        foundry.utils.getProperty(this.targetDoc.data.data, this.selector) ===
-        undefined;
+      invalidSelector = this.property === undefined;
     } catch (error) {
       if (error instanceof TypeError) {
         // This can happen, when the prefix part of a path finds a valid
@@ -210,12 +229,7 @@ export default abstract class RuleElement {
   protected checkSelectedIsOfType(
     expectedType: "boolean" | "number" | "string"
   ): void {
-    const actualType = typeof foundry.utils.getProperty(
-      this.targetDoc.data.data,
-      this.selector
-    );
-
-    if (actualType !== expectedType) {
+    if (typeof this.property !== expectedType) {
       this.messages.push(
         new WrongSelectedTypeMessage(
           this.targetName,
@@ -245,10 +259,7 @@ export default abstract class RuleElement {
    * If the type changes, a warning message is added to the RuleElement.
    */
   protected checkTypeChanged(): void {
-    const originalType = typeof foundry.utils.getProperty(
-      this.targetDoc.data.data,
-      this.selector
-    );
+    const originalType = typeof this.property;
     const newType = typeof this.value;
 
     if (originalType !== newType) {

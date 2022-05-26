@@ -28,7 +28,7 @@ export default class ApparelSheet extends WvItemSheet {
 
   override get item(): Apparel {
     if (!isOfItemType(super.item, TYPES.ITEM.APPAREL))
-      throw new Error("The used Item is not an Apparel!");
+      throw new Error("The used Item is not an Apparel.");
 
     return super.item;
   }

@@ -10,19 +10,31 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 1,
-            "dice": 5
+            "base": {
+              "source": 1
+            },
+            "dice": {
+              "source": 5
+            }
           },
-          "ap": 5,
+          "ap": {
+            "source": 5
+          },
           "rounds": 1,
           "dtReduction": 1
         },
         "Burst": {
           "damage": {
-            "base": 2,
-            "dice": 8
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 8
+            }
           },
-          "ap": 7,
+          "ap": {
+            "source": 7
+          },
           "rounds": 3,
           "dtReduction": 1
         }
@@ -31,40 +43,68 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 30,
-          "multiplier": 0,
+          "base": {
+            "source": 30
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 60,
-          "multiplier": 0,
+          "base": {
+            "source": 60
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 80,
-          "multiplier": 0,
+          "base": {
+            "source": 80
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "magicFusionCell",
       "containerType": "magazine",
-      "size": 30
+      "size": {
+        "source": 30
+      }
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 4,
-    "value": 500,
-    "weight": 4.5,
+    "strengthRequirement": {
+      "source": 4
+    },
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 4.5
+    },
     "rules": {
       "sources": []
     }

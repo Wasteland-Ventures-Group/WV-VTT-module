@@ -1,8 +1,6 @@
 import { CONSTANTS } from "../../../constants.js";
-import type Specials from "../../../data/actor/character/specials/properties.js";
-import type WeaponDataProperties from "../../../data/item/weapon/properties.js";
 import { scrollChatToBottom } from "../../../foundryHelpers.js";
-import { getDisplayRanges, RangeBracket } from "../../../item/weapon/ranges.js";
+import { RangeBracket } from "../../../item/weapon/ranges.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
 import type { HookParams } from "../index.js";
 import { getContentElement } from "./index.js";
@@ -25,18 +23,14 @@ export default async function decorateWeaponAttack(
         rangeBracket: getRangeBracketKey(flags)
       },
       raw: {
-        displayRanges: getDisplayRanges(
-          flags.weaponSystemData,
-          flags.ownerSpecials
-        ),
         mainHeading:
-          flags.weaponName !== flags.weaponSystemData.name
-            ? flags.weaponName
-            : flags.weaponSystemData.name,
+          flags.weapon.name !== flags.weapon.system.name
+            ? flags.weapon.name ?? ""
+            : flags.weapon.system.name,
         subHeading:
-          flags.weaponName !== flags.weaponSystemData.name
-            ? `${flags.weaponSystemData.name} - ${flags.attackName}`
-            : flags.attackName
+          flags.weapon.name !== flags.weapon.system.name
+            ? `${flags.weapon.system.name} - ${flags.weapon.system.attack.name}`
+            : flags.weapon.system.attack.name
       }
     }
   };
@@ -107,7 +101,7 @@ function getHitResultKey(flags: ExecutedAttackFlags): string {
 function getRangeBracketKey(
   flags: CommonWeaponAttackFlags
 ): string | undefined {
-  switch (flags.details?.range.bracket) {
+  switch (flags.details.range.bracket) {
     case RangeBracket.OUT_OF_RANGE:
       return "wv.rules.range.ranges.outOfRange.long";
     case RangeBracket.LONG:
@@ -125,7 +119,6 @@ export type WeaponAttackFlags = NotExecutedAttackFlags | ExecutedAttackFlags;
 /** The common weapon attack chat message flags */
 export interface CommonWeaponAttackFlags {
   type: "weaponAttack";
-  attackName: string;
   details: {
     ap: {
       previous: number;
@@ -146,10 +139,19 @@ export interface CommonWeaponAttackFlags {
       distance: number;
     };
   };
-  ownerSpecials?: Partial<Specials> | undefined;
-  weaponImage: string | null;
-  weaponName: string;
-  weaponSystemData: WeaponDataProperties["data"];
+  weapon: {
+    display: {
+      ranges: string;
+    };
+    image: string | null;
+    name: string | null;
+    system: {
+      attack: {
+        name: string;
+      };
+      name: string;
+    };
+  };
 }
 
 /** The attack chat message flags for a unexecuted attack */
@@ -194,7 +196,6 @@ type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
       rangeBracket: string | undefined;
     };
     raw: {
-      displayRanges: string;
       mainHeading: string;
       subHeading: string;
     };

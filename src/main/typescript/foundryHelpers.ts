@@ -3,7 +3,7 @@
  * @throws if game has not yet been initialized.
  */
 export function getGame(): Game {
-  if (!(game instanceof Game)) throw new Error("Game was not yet initialized!");
+  if (!(game instanceof Game)) throw new Error("Game was not yet initialized.");
 
   return game;
 }
@@ -14,7 +14,7 @@ export function getGame(): Game {
  */
 export function getCanvas(): Canvas {
   if (!(canvas instanceof Canvas))
-    throw new Error("Canvas was not yet initialized!");
+    throw new Error("Canvas was not yet initialized.");
 
   return canvas;
 }

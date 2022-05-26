@@ -10,51 +10,85 @@
       "sources": {
         "Strike": {
           "damage": {
-            "base": 3,
-            "dice": 2,
+            "base": {
+              "source": 3
+            },
+            "dice": {
+              "source": 2
+            },
             "diceRange": true
           },
-          "ap": 6
+          "ap": {
+            "source": 6
+          }
         }
       }
     },
     "ranges": {
       "short": {
         "distance": {
-          "base": 2,
-          "multiplier": 0,
+          "base": {
+            "source": 2
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 0,
-          "multiplier": 0,
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "long": {
         "distance": {
-          "base": 0,
-          "multiplier": 0,
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 0,
+      "ap": {
+        "source": 0
+      },
       "caliber": "308cal",
       "containerType": "magazine",
-      "size": 0
+      "size": {
+        "source": 0
+      }
     },
     "skill": "unarmed",
-    "strengthRequirement": 4,
-    "value": 300,
-    "weight": 4,
+    "strengthRequirement": {
+      "source": 4
+    },
+    "value": {
+      "source": 300
+    },
+    "weight": {
+      "source": 4
+    },
     "rules": {
       "sources": []
     }

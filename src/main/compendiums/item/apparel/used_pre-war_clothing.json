@@ -10,10 +10,18 @@
       "sources": []
     },
     "rarity": "common",
-    "value": 15,
-    "weight": 0.5,
-    "quickSlots": 2,
-    "modSlots": 2,
+    "value": {
+      "source": 15
+    },
+    "weight": {
+      "source": 0.5
+    },
+    "quickSlots": {
+      "source": 2
+    },
+    "modSlots": {
+      "source": 2
+    },
     "slot": "clothing",
     "type": "clothing"
   },

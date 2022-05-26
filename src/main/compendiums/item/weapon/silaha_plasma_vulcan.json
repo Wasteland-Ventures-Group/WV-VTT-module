@@ -10,10 +10,16 @@
       "sources": {
         "Burst": {
           "damage": {
-            "base": 2,
-            "dice": 8
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 8
+            }
           },
-          "ap": 7,
+          "ap": {
+            "source": 7
+          },
           "rounds": 10,
           "dtReduction": 2
         }
@@ -22,40 +28,68 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 40,
-          "multiplier": 0,
+          "base": {
+            "source": 40
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 80,
-          "multiplier": 0,
+          "base": {
+            "source": 80
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 120,
-          "multiplier": 0,
+          "base": {
+            "source": 120
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "exotic",
     "reload": {
-      "ap": 6,
+      "ap": {
+        "source": 6
+      },
       "caliber": "energizedCrystalPack",
       "containerType": "magazine",
-      "size": 200
+      "size": {
+        "source": 200
+      }
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 8,
-    "value": 9999,
-    "weight": 12,
+    "strengthRequirement": {
+      "source": 8
+    },
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 12
+    },
     "rules": {
       "sources": []
     }

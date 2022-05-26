@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "common",
-    "value": 10,
-    "weight": 0,
+    "value": {
+      "source": 10
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 1,
     "caliber": "rifleGrenade",
     "type": "standard"

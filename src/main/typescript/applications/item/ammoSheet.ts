@@ -15,7 +15,7 @@ export default class AmmoSheet extends WvItemSheet {
 
   override get item(): Ammo {
     if (!isOfItemType(super.item, TYPES.ITEM.AMMO))
-      throw new Error("The used Item is not an Apparel!");
+      throw new Error("The used Item is not an Apparel.");
 
     return super.item;
   }

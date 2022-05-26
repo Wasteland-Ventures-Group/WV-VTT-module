@@ -1,70 +1,69 @@
 import type { TYPES } from "../../../constants.js";
-import Equipment from "./equipment/properties.js";
-import Leveling from "./leveling/properties.js";
-import Skills from "./skills/properties.js";
+import { CompositeNumber } from "../../common.js";
+import BackgroundProperties from "./background/properties.js";
+import EquipmentProperties from "./equipment/properties.js";
+import LevelingProperties from "./leveling/properties.js";
+import SkillsProperties from "./skills/properties.js";
 import { CharacterDataSourceData } from "./source.js";
-import Specials from "./specials/properties.js";
-import Vitals from "./vitals/properties.js";
+import SpecialsProperties from "./specials/properties.js";
+import VitalsProperties from "./vitals/properties.js";
 
-/** The character data-properties */
 export default interface CharacterDataProperties {
   type: typeof TYPES.ACTOR.CHARACTER;
   data: CharacterDataPropertiesData;
 }
 
-/** Derived resistance values */
-export class Resistances {
-  /** The basic poison resitance of an Actor */
-  poison = 10;
+export class ResistancesProperties {
+  /** The poison resistance of the character */
+  poison = new CompositeNumber(10);
 
-  /** The basic radiation resistance of an Actor */
-  radiation = 5;
+  /** The radiation resistance of the character */
+  radiation = new CompositeNumber(5);
 }
 
-/** Stats related to critical success and failure */
-export class Criticals {
-  /**
-   * Create a new Criticals.
-   * @param success - the critical success chance
-   * @param failure - the critical failure chance
-   */
-  constructor(success = 1, failure = 100) {
-    this.success = success;
-    this.failure = failure;
+export class CriticalsProperties {
+  /** The critical failure chance of the character */
+  failure = new CompositeNumber(100);
+
+  /** The critical success chance of the character */
+  success = new CompositeNumber(1);
+}
+
+export class SecondaryStatisticsProperties {
+  /** The criticals of the character */
+  criticals = new CriticalsProperties();
+
+  /** The maximum carry weight of the character in kg */
+  maxCarryWeight = new CompositeNumber();
+}
+
+export class CharacterDataPropertiesData extends CharacterDataSourceData {
+  constructor(source: CharacterDataSourceData) {
+    super();
+    foundry.utils.mergeObject(this, source);
+    this.background = new BackgroundProperties(source.background);
+    this.equipment = new EquipmentProperties(source.equipment);
+    this.leveling = new LevelingProperties(source.leveling);
+    this.vitals = new VitalsProperties(source.vitals);
   }
 
-  /** The critical success chance */
-  success: number = 1;
+  override background: BackgroundProperties;
 
-  /** The critical failure chance */
-  failure: number = 100;
-}
+  override equipment: EquipmentProperties;
 
-/** Derived secondary statistics */
-export class SecondaryStatistics {
-  /** The criticals of the Actor */
-  criticals: Criticals = new Criticals();
+  override leveling: LevelingProperties;
 
-  /** The maximum carry weight of an Actor in kg */
-  maxCarryWeight?: number;
-}
+  override vitals: VitalsProperties;
 
-/** The character data-properties data */
-export class CharacterDataPropertiesData extends CharacterDataSourceData {
-  override vitals: Vitals = new Vitals();
+  /** The secondary statistics of the character */
+  secondary = new SecondaryStatisticsProperties();
 
-  override leveling: Leveling = new Leveling();
+  /** The resistances of the character */
+  resistances = new ResistancesProperties();
 
-  override equipment: Equipment = new Equipment();
+  /** The skills of the character */
+  skills = new SkillsProperties();
 
-  specials: Specials = new Specials();
-
-  /** The skills of an Actor */
-  skills: Skills = new Skills();
-
-  /** The resistances of an Actor */
-  resistances: Resistances = new Resistances();
-
-  /** The secondary statistics of an Actor */
-  secondary: SecondaryStatistics = new SecondaryStatistics();
+  /** The SPECIALs of the character */
+  specials = new SpecialsProperties();
 }

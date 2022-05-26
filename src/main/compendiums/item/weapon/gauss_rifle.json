@@ -10,10 +10,16 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 6,
-            "dice": 1
+            "base": {
+              "source": 6
+            },
+            "dice": {
+              "source": 1
+            }
           },
-          "ap": 7,
+          "ap": {
+            "source": 7
+          },
           "dtReduction": 3,
           "rounds": 1
         }
@@ -22,40 +28,68 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 250,
-          "multiplier": 0,
+          "base": {
+            "source": 250
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 500,
-          "multiplier": 0,
+          "base": {
+            "source": 500
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 750,
-          "multiplier": 0,
+          "base": {
+            "source": 750
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "energizedCrystalPack",
       "containerType": "magazine",
-      "size": 5
+      "size": {
+        "source": 5
+      }
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 6,
-    "value": 800,
-    "weight": 6,
+    "strengthRequirement": {
+      "source": 6
+    },
+    "value": {
+      "source": 800
+    },
+    "weight": {
+      "source": 6
+    },
     "rules": {
       "sources": []
     }

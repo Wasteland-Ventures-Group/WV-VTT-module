@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "rare",
-    "value": 6,
-    "weight": 0,
+    "value": {
+      "source": 6
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 5,
     "caliber": "arrow",
     "type": "explosive"

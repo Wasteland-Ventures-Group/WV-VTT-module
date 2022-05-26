@@ -7,32 +7,34 @@ import {
   TYPES
 } from "../../../constants.js";
 import {
+  CompositeNumberSource,
+  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
+} from "../../common.js";
+import {
   COMPENDIUM_JSON_SCHEMA,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
-import PhysicalBaseItem, {
-  PHYS_BASE_ITEM_JSON_SCHEMA
-} from "../physicalBaseItem.js";
+import PhysicalItemSource, {
+  PHYS_ITEM_SOURCE_JSON_SCHEMA
+} from "../common/physicalItem/source.js";
 
-/** The Apparel Item data-source */
 export default interface ApparelDataSource {
   type: typeof TYPES.ITEM.APPAREL;
   data: ApparelDataSourceData;
 }
 
-/** The Apparel Item data-source data */
-export class ApparelDataSourceData extends PhysicalBaseItem {
+export class ApparelDataSourceData extends PhysicalItemSource {
   /** The other apparel slots this apparel blocks aside from its own */
   blockedSlots?: ApparelSlot[] = [];
 
   /** The damage threshold of the apparel */
-  damageThreshold?: number = 0;
+  damageThreshold?: CompositeNumberSource = { source: 0 };
 
   /** The number of quick slots of the apparel */
-  quickSlots?: number = 0;
+  quickSlots?: CompositeNumberSource = { source: 0 };
 
   /** The number of mod slots of the apparel */
-  modSlots?: number = 0;
+  modSlots?: CompositeNumberSource = { source: 0 };
 
   /** The apparel slot this apparel occupies when equipped */
   slot: ApparelSlot = "clothing";
@@ -47,7 +49,7 @@ export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
     description: "The system data for an apparel item",
     type: "object",
     properties: {
-      ...PHYS_BASE_ITEM_JSON_SCHEMA.properties,
+      ...PHYS_ITEM_SOURCE_JSON_SCHEMA.properties,
       blockedSlots: {
         description:
           "The other apparel slots this apparel blocks aside from its own",
@@ -59,21 +61,48 @@ export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
         default: []
       },
       damageThreshold: {
+        ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
         description: "The damage threshold of the apparel",
-        type: "integer",
-        default: 0
+        properties: {
+          source: {
+            ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+            type: "integer",
+            default: 0
+          }
+        },
+        default: {
+          source: 0
+        }
       },
       quickSlots: {
+        ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
         description: "The number of quick slots of the apparel",
-        type: "integer",
-        default: 0,
-        minimum: 0
+        properties: {
+          source: {
+            ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+            type: "integer",
+            default: 0,
+            minimum: 0
+          }
+        },
+        default: {
+          source: 0
+        }
       },
       modSlots: {
+        ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
         description: "The number of mod slots of the apparel",
-        type: "integer",
-        default: 0,
-        minimum: 0
+        properties: {
+          source: {
+            ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+            type: "integer",
+            default: 0,
+            minimum: 0
+          }
+        },
+        default: {
+          source: 0
+        }
       },
       slot: {
         description: "The apparel slot this apparel occupies when equipped",
@@ -86,10 +115,10 @@ export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
         enum: ApparelTypes
       }
     },
-    required: [...PHYS_BASE_ITEM_JSON_SCHEMA.required, "slot", "type"],
+    required: [...PHYS_ITEM_SOURCE_JSON_SCHEMA.required, "slot", "type"],
     additionalProperties: false,
     default: {
-      ...PHYS_BASE_ITEM_JSON_SCHEMA.default,
+      ...PHYS_ITEM_SOURCE_JSON_SCHEMA.default,
       slot: "clothing",
       type: "clothing"
     }

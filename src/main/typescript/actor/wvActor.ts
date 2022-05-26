@@ -9,16 +9,9 @@ import {
   SpecialName,
   SpecialNames
 } from "../constants.js";
-import {
-  Criticals,
-  SecondaryStatistics
-} from "../data/actor/character/properties.js";
-import Skills, { Skill } from "../data/actor/character/skills/properties.js";
+import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
-import Specials, {
-  Special
-} from "../data/actor/character/specials/properties.js";
-import type { Resource } from "../data/foundryCommon.js";
+import { CompositeNumber, CompositeResource } from "../data/common.js";
 import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Apparel from "../item/apparel.js";
@@ -34,17 +27,17 @@ import WvI18n from "../wvI18n.js";
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
   /** A convenience getter for the Actor's hit points. */
-  get hitPoints(): Resource {
+  get hitPoints(): CompositeResource {
     return this.data.data.vitals.hitPoints;
   }
 
   /** A convenience getter for the Actor's action points. */
-  get actionPoints(): Resource {
+  get actionPoints(): CompositeResource {
     return this.data.data.vitals.actionPoints;
   }
 
   /** A convenience getter for the Actor's strain. */
-  get strain(): Resource {
+  get strain(): CompositeResource {
     return this.data.data.vitals.strain;
   }
 
@@ -77,7 +70,7 @@ export default class WvActor extends Actor {
 
   /** Get the damage threshold of the actor. */
   get damageThreshold(): number {
-    return this.data.data.equipment.damageThreshold ?? 0;
+    return this.data.data.equipment.damageThreshold.total;
   }
 
   /** Get the readied Item of this actor, if it exists. */
@@ -170,30 +163,6 @@ export default class WvActor extends Actor {
     ].filter((apparel): apparel is Apparel => apparel instanceof Apparel);
   }
 
-  /**
-   * Get a SPECIAL from this actor.
-   * @throws If the SPECIALS have not been calculated yet.
-   */
-  getSpecial(name: SpecialName): Special {
-    const special = this.data.data.specials[name];
-    if (special === undefined)
-      throw new Error("The SPECIALs have not been calculated yet!");
-
-    return special;
-  }
-
-  /**
-   * Get a Skill from this actor.
-   * @throws If the Skills have not been calculated yet.
-   */
-  getSkill(name: SkillName): Skill {
-    const skill = this.data.data.skills[name];
-    if (skill === undefined)
-      throw new Error("The Skills have not been calculated yet!");
-
-    return skill;
-  }
-
   /** Get the weapon of the given weapon slot. */
   getWeaponSlotWeapon(slot: 1 | 2): Weapon | null {
     const itemId = this.data.data.equipment.weaponSlotIds[slot - 1];
@@ -244,7 +213,7 @@ export default class WvActor extends Actor {
 
     if (this.actionPoints.value < apCost) {
       throw new SystemRulesError(
-        "Not enough action points!",
+        "Not enough action points.",
         "wv.system.messages.notEnoughAp"
       );
     }
@@ -272,7 +241,7 @@ export default class WvActor extends Actor {
   async slotWeapon(id: string | null, slot: 1 | 2): Promise<void> {
     if (this.inCombat)
       throw new SystemRulesError(
-        "Can not slot a weapon in combat!",
+        "Can not slot a weapon in combat.",
         "wv.system.messages.canNotDoInCombat"
       );
 
@@ -303,7 +272,7 @@ export default class WvActor extends Actor {
   async equipApparel(id: string | null): Promise<void> {
     if (this.inCombat)
       throw new SystemRulesError(
-        "Can not slot a weapon in combat!",
+        "Can not equip an apparel in combat.",
         "wv.system.messages.canNotDoInCombat"
       );
 
@@ -315,7 +284,7 @@ export default class WvActor extends Actor {
     const slot = item.systemData.slot;
     if (this.blockedApparelSlots.includes(slot))
       throw new SystemRulesError(
-        "The apparel's slot is blocked by another apparel!",
+        "The apparel's slot is blocked by another apparel.",
         "wv.system.messages.blockedByAnotherApparel"
       );
 
@@ -403,9 +372,12 @@ export default class WvActor extends Actor {
     };
 
     new Roll(
-      Formulator.special(this.getSpecial(name).tempTotal)
+      Formulator.special(this.data.data.specials[name].tempTotal)
         .modify(options?.modifier)
-        .criticals(this.data.data.secondary.criticals)
+        .criticals({
+          success: this.data.data.secondary.criticals.success.total,
+          failure: this.data.data.secondary.criticals.failure.total
+        })
         .toString()
     )
       .roll({ async: true })
@@ -427,9 +399,12 @@ export default class WvActor extends Actor {
     };
 
     new Roll(
-      Formulator.skill(this.getSkill(name).total)
+      Formulator.skill(this.data.data.skills[name].total)
         .modify(options?.modifier)
-        .criticals(this.data.data.secondary.criticals)
+        .criticals({
+          success: this.data.data.secondary.criticals.success.total,
+          failure: this.data.data.secondary.criticals.failure.total
+        })
         .toString()
     )
       .roll({ async: true })
@@ -441,6 +416,7 @@ export default class WvActor extends Actor {
   }
 
   override prepareBaseData(): void {
+    this.data.data = new CharacterDataPropertiesData(this.data.data);
     const data = this.data.data;
 
     // Compute the level -------------------------------------------------------
@@ -460,10 +436,8 @@ export default class WvActor extends Actor {
     );
 
     // Compute the SPECIALs ----------------------------------------------------
-    data.specials = new Specials();
     for (const special of SpecialNames) {
-      const points = data.leveling.specialPoints[special];
-      data.specials[special] = new Special(points, points, points);
+      data.specials[special].points = data.leveling.specialPoints[special];
     }
 
     // Modify SPECIALS from Radiation sickness ---------------------------------
@@ -481,48 +455,38 @@ export default class WvActor extends Actor {
     const data = this.data.data;
 
     // Compute the maximum hit points ------------------------------------------
-    data.vitals.hitPoints.max = this.getSpecial("endurance").permTotal + 10;
+    data.vitals.hitPoints.source =
+      this.data.data.specials.endurance.permTotal + 10;
 
     // Compute the maximum healing rate ----------------------------------------
-    const endurance = this.getSpecial("endurance");
-    if (endurance.tempTotal >= 8) {
-      data.vitals.healingRate = 3;
-    } else if (endurance.tempTotal >= 4) {
-      data.vitals.healingRate = 2;
-    } else {
-      data.vitals.healingRate = 1;
+    data.vitals.healingRate.source = 1;
+    if (this.data.data.specials.endurance.tempTotal >= 8) {
+      data.vitals.healingRate.source = 3;
+    } else if (this.data.data.specials.endurance.tempTotal >= 4) {
+      data.vitals.healingRate.source = 2;
     }
 
     // Compute the maximum action points ---------------------------------------
-    data.vitals.actionPoints.max =
-      Math.floor(this.getSpecial("agility").tempTotal / 2) + 10;
+    data.vitals.actionPoints.source =
+      Math.floor(this.data.data.specials.agility.tempTotal / 2) + 10;
 
     // Compute the maximum strain ----------------------------------------------
-    const level = data.leveling.level;
-    if (level === undefined)
-      throw new Error("The level should be computed before computing strain.");
-    data.vitals.strain.max = 20 + Math.floor(level / 5) * 5;
+    data.vitals.strain.source = 20 + Math.floor(data.leveling.level / 5) * 5;
 
     // Compute the maximum insanity --------------------------------------------
-    data.vitals.insanity.max =
-      Math.floor(this.getSpecial("intelligence").tempTotal / 2) + 5;
-
-    // Init the secondary statistics -------------------------------------------
-    data.secondary = new SecondaryStatistics();
+    data.vitals.insanity.source =
+      Math.floor(this.data.data.specials.intelligence.tempTotal / 2) + 5;
 
     // Compute the critical values ---------------------------------------------
-    const luck = this.getSpecial("luck").tempTotal;
-    data.secondary.criticals = new Criticals(
-      Math.max(1, luck),
-      Math.min(100, 90 + luck)
-    );
+    const luck = this.data.data.specials.luck.tempTotal;
+    data.secondary.criticals.success.source = Math.max(1, luck);
+    data.secondary.criticals.failure.source = Math.min(100, 90 + luck);
 
     // Compute the maximum carry weight ----------------------------------------
-    data.secondary.maxCarryWeight =
-      this.getSpecial("strength").tempTotal * 5 + 10;
+    data.secondary.maxCarryWeight.source =
+      this.data.data.specials.strength.tempTotal * 5 + 10;
 
     // Compute the skills ------------------------------------------------------
-    data.skills = new Skills();
     let skill: SkillName;
     for (skill in CONSTANTS.skillSpecials) {
       data.skills[skill] = this.computeBaseSkill(skill);
@@ -534,58 +498,69 @@ export default class WvActor extends Actor {
       .forEach((rule) => rule.onAfterSkills());
 
     // Calculate data derived from equipment -----------------------------------
-    data.equipment.damageThreshold = this.equippedApparel.reduce(
-      (dt, apparel) => {
-        dt += apparel.systemData.damageThreshold ?? 0;
-        return dt;
-      },
-      0
-    );
+    this.equippedApparel.forEach((apparel) => {
+      if (apparel.systemData.damageThreshold)
+        data.equipment.damageThreshold.add({
+          value: apparel.systemData.damageThreshold.total,
+          label: apparel.name ?? ""
+        });
 
-    data.equipment.quickSlots.max = this.equippedApparel.reduce(
-      (qs, apparel) => {
-        qs += apparel.systemData.quickSlots ?? 0;
-        return qs;
-      },
-      0
-    );
+      if (apparel.systemData.quickSlots)
+        data.equipment.quickSlots.add({
+          value: apparel.systemData.quickSlots.total,
+          label: apparel.name ?? ""
+        });
+    });
 
     // Modify values based on the size -----------------------------------------
     // TODO: hit chance, reach, combat trick mods
-    switch (data.background.size) {
+    let maxCarryWeightSizeBonus = 0;
+    let hitPointsSizeBonus = 0;
+    switch (data.background.size.total) {
       case 4:
-        data.vitals.hitPoints.max += 4;
-        data.secondary.maxCarryWeight += 60;
+        hitPointsSizeBonus += 4;
+        maxCarryWeightSizeBonus = 60;
         break;
       case 3:
-        data.vitals.hitPoints.max += 2;
-        data.secondary.maxCarryWeight += 40;
+        hitPointsSizeBonus += 2;
+        maxCarryWeightSizeBonus = 40;
         break;
       case 2:
-        data.vitals.hitPoints.max += 1;
-        data.secondary.maxCarryWeight += 10;
+        hitPointsSizeBonus += 1;
+        maxCarryWeightSizeBonus = 10;
         break;
       case 1:
-        data.secondary.maxCarryWeight += 5;
+        maxCarryWeightSizeBonus = 5;
         break;
       case -1:
-        data.secondary.maxCarryWeight -= 5;
+        maxCarryWeightSizeBonus = -5;
         break;
       case -2:
-        data.vitals.hitPoints.max -= 1;
-        data.secondary.maxCarryWeight -= 10;
+        hitPointsSizeBonus -= 1;
+        maxCarryWeightSizeBonus = -10;
         break;
       case -3:
-        data.vitals.hitPoints.max -= 2;
-        data.secondary.maxCarryWeight -= 40;
+        hitPointsSizeBonus -= 2;
+        maxCarryWeightSizeBonus = -40;
         break;
       case -4:
-        data.vitals.hitPoints.max -= 4;
-        data.secondary.maxCarryWeight -= 60;
+        hitPointsSizeBonus -= 4;
+        maxCarryWeightSizeBonus = -60;
         break;
       case 0:
       default:
     }
+    if (maxCarryWeightSizeBonus)
+      data.secondary.maxCarryWeight.add({
+        value: maxCarryWeightSizeBonus,
+        label: getGame().i18n.localize("wv.rules.background.size")
+      });
+
+    if (hitPointsSizeBonus)
+      data.vitals.hitPoints.add({
+        value: hitPointsSizeBonus,
+        label: getGame().i18n.localize("wv.rules.background.size")
+      });
 
     this.applicableRuleElements
       .sort((a, b) => a.priority - b.priority)
@@ -640,19 +615,21 @@ export default class WvActor extends Actor {
    * point ranks.
    * @param skill - the name of the skill
    */
-  protected computeBaseSkill(skill: SkillName): Skill {
+  protected computeBaseSkill(skill: SkillName): CompositeNumber {
     const baseSkill =
-      this.getSpecial(
+      this.data.data.specials[
         skill === "thaumaturgy"
           ? this.data.data.magic.thaumSpecial
           : CONSTANTS.skillSpecials[skill]
-      ).permTotal *
+      ].permTotal *
         2 +
-      Math.floor(this.getSpecial("luck").permTotal / 2);
-    return new Skill(
-      baseSkill,
-      baseSkill + this.data.data.leveling.skillRanks[skill]
-    );
+      Math.floor(this.data.data.specials.luck.permTotal / 2);
+    const composite = new CompositeNumber(baseSkill);
+    composite.add({
+      value: this.data.data.leveling.skillRanks[skill],
+      label: getGame().i18n.localize("wv.rules.skills.points.short")
+    });
+    return composite;
   }
 
   /** Validate passed source system data. */

@@ -1,28 +1,28 @@
 import type { JSONSchemaType } from "ajv";
-import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
-import RulesSource from "./rules/source.js";
+import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../../../ruleEngine/ruleElementSource.js";
+import RulesSource from "../rules/source.js";
 
-/** This holds the base values that all items have in common. */
-export default abstract class BaseItem {
+/** This holds the source of the base values that all items have in common. */
+export default abstract class BaseItemSource {
   /**
    * The name of the item in the Wasteland Wares list. This is not the name a
    * player can give their specific instance of an item, but rather the name of
    * the item "prototype".
    */
-  name: string = "";
+  name = "";
 
-  /** The description of the item in the Wasteland Wares list. */
-  description: string = "";
+  /** The description of the item in the Wasteland Wares list */
+  description = "";
 
-  /** User provided notes. */
-  notes: string = "";
+  /** User provided notes */
+  notes = "";
 
-  /** The rules of the item. */
-  rules: RulesSource = new RulesSource();
+  /** The RuleElement sources of the item */
+  rules = new RulesSource();
 }
 
 /** A JSON schema for base item objects */
-export const BASE_ITEM_JSON_SCHEMA: JSONSchemaType<BaseItem> = {
+export const BASE_ITEM_SOURCE_JSON_SCHEMA: JSONSchemaType<BaseItemSource> = {
   description: "Common system data for items",
   type: "object",
   properties: {

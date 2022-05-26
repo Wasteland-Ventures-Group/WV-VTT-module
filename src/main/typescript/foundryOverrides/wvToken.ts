@@ -25,7 +25,7 @@ export default class WvToken extends Token {
 
     const grid = canvas.grid;
     if (!(grid instanceof GridLayer))
-      throw new Error("The canvas has no grid!");
+      throw new Error("The canvas has no grid.");
 
     const { originalEvent } = event.data;
     const preview = game.settings.get("core", "tokenDragPreview");

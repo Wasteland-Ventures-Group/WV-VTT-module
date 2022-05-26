@@ -9,19 +9,31 @@
     "attacks": {
       "sources": {
         "Single": {
-          "ap": 4,
+          "ap": {
+            "source": 4
+          },
           "damage": {
-            "base": 1,
-            "dice": 7,
+            "base": {
+              "source": 1
+            },
+            "dice": {
+              "source": 7
+            },
             "damageFallOff": "shotgun"
           },
           "rounds": 1
         },
         "Burst": {
-          "ap": 5,
+          "ap": {
+            "source": 5
+          },
           "damage": {
-            "base": 2,
-            "dice": 10,
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 10
+            },
             "damageFallOff": "shotgun"
           },
           "rounds": 2
@@ -31,43 +43,71 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 12,
-          "multiplier": 0,
+          "base": {
+            "source": 12
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 24,
-          "multiplier": 0,
+          "base": {
+            "source": 24
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 36,
-          "multiplier": 0,
+          "base": {
+            "source": 36
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "uncommon",
     "reload": {
-      "ap": 3,
+      "ap": {
+        "source": 3
+      },
       "caliber": "shotgunShell",
       "containerType": "internal",
-      "size": 2
+      "size": {
+        "source": 2
+      }
     },
     "rules": {
       "sources": []
     },
     "skill": "firearms",
-    "strengthRequirement": 6,
-    "value": 500,
-    "weight": 3.5
+    "strengthRequirement": {
+      "source": 6
+    },
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 3.5
+    }
   },
   "effects": [],
   "flags": {},

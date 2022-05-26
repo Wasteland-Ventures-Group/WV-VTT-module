@@ -13,18 +13,26 @@
           "hook": "afterSkills",
           "label": "Diplomacy bonus",
           "priority": 100,
-          "selector": "skills.diplomacy.total",
+          "selector": "skills.diplomacy",
           "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
     "rarity": "common",
-    "value": 40,
-    "weight": 0.5,
-    "quickSlots": 1,
-    "modSlots": 2,
+    "value": {
+      "source": 40
+    },
+    "weight": {
+      "source": 0.5
+    },
+    "quickSlots": {
+      "source": 1
+    },
+    "modSlots": {
+      "source": 2
+    },
     "slot": "clothing",
     "type": "clothing"
   },

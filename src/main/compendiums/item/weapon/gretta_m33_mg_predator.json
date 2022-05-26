@@ -10,10 +10,16 @@
       "sources": {
         "Burst": {
           "damage": {
-            "base": 4,
-            "dice": 8
+            "base": {
+              "source": 4
+            },
+            "dice": {
+              "source": 8
+            }
           },
-          "ap": 7,
+          "ap": {
+            "source": 7
+          },
           "rounds": 5
         }
       }
@@ -21,40 +27,68 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 120,
-          "multiplier": 0,
+          "base": {
+            "source": 120
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 240,
-          "multiplier": 0,
+          "base": {
+            "source": 240
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 360,
-          "multiplier": 0,
+          "base": {
+            "source": 360
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "exotic",
     "reload": {
-      "ap": 8,
+      "ap": {
+        "source": 8
+      },
       "caliber": "50cal",
       "containerType": "magazine",
-      "size": 60
+      "size": {
+        "source": 60
+      }
     },
     "skill": "firearms",
-    "strengthRequirement": 10,
-    "value": 0,
-    "weight": 20,
+    "strengthRequirement": {
+      "source": 10
+    },
+    "value": {
+      "source": 0
+    },
+    "weight": {
+      "source": 20
+    },
     "rules": {
       "sources": []
     }

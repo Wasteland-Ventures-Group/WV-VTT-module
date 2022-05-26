@@ -10,10 +10,16 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 10,
-            "dice": 20
+            "base": {
+              "source": 10
+            },
+            "dice": {
+              "source": 20
+            }
           },
-          "ap": 5,
+          "ap": {
+            "source": 5
+          },
           "rounds": 1,
           "splash": "huge"
         }
@@ -22,40 +28,68 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 40,
-          "multiplier": 0,
+          "base": {
+            "source": 40
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 80,
-          "multiplier": 0,
+          "base": {
+            "source": 80
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 120,
-          "multiplier": 0,
+          "base": {
+            "source": 120
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -40
+        "modifier": {
+          "source": -40
+        }
       }
     },
     "rarity": "exotic",
     "reload": {
-      "ap": 8,
+      "ap": {
+        "source": 8
+      },
       "caliber": "balefireEgg",
       "containerType": "internal",
-      "size": 1
+      "size": {
+        "source": 1
+      }
     },
     "skill": "explosives",
-    "strengthRequirement": 8,
-    "value": 9999,
-    "weight": 15,
+    "strengthRequirement": {
+      "source": 8
+    },
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 15
+    },
     "rules": {
       "sources": []
     }

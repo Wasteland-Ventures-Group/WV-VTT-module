@@ -13,19 +13,29 @@
           "hook": "afterSkills",
           "label": "Survival Bonus",
           "priority": 100,
-          "selector": "skills.survival.total",
+          "selector": "skills.survival",
           "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
     "rarity": "common",
-    "value": 80,
-    "weight": 4,
-    "damageThreshold": 1,
-    "quickSlots": 1,
-    "modSlots": 2,
+    "value": {
+      "source": 80
+    },
+    "weight": {
+      "source": 4
+    },
+    "damageThreshold": {
+      "source": 1
+    },
+    "quickSlots": {
+      "source": 1
+    },
+    "modSlots": {
+      "source": 2
+    },
     "slot": "armor",
     "type": "lightArmor"
   },

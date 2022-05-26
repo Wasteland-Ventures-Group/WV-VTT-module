@@ -7,54 +7,53 @@ import {
   SpecialNames
 } from "../../../../constants.js";
 
-/** An Actor invested skill points object for the database */
 export class SkillRanks implements Record<SkillName, number> {
-  /** The invested Barter skill points of an Actor */
+  /** The invested Barter skill points of the character */
   barter = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Diplomacy skill points of an Actor */
+  /** The invested Diplomacy skill points of the character */
   diplomacy = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Explosives skill points of an Actor */
+  /** The invested Explosives skill points of the character */
   explosives = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Firearms skill points of an Actor */
+  /** The invested Firearms skill points of the character */
   firearms = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Intimidation skill points of an Actor */
+  /** The invested Intimidation skill points of the character */
   intimidation = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Lockpick skill points of an Actor */
+  /** The invested Lockpick skill points of the character */
   lockpick = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Magical Energy Weapons skill points of an Actor */
+  /** The invested Magical Energy Weapons skill points of the character */
   magicalEnergyWeapons = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Mechanics skill points of an Actor */
+  /** The invested Mechanics skill points of the character */
   mechanics = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Medicine skill points of an Actor */
+  /** The invested Medicine skill points of the character */
   medicine = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Melee skill points of an Actor */
+  /** The invested Melee skill points of the character */
   melee = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Science skill points of an Actor */
+  /** The invested Science skill points of the character */
   science = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Sleight skill points of an Actor */
+  /** The invested Sleight skill points of the character */
   sleight = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Sneak skill points of an Actor */
+  /** The invested Sneak skill points of the character */
   sneak = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Survival skill points of an Actor */
+  /** The invested Survival skill points of the character */
   survival = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Thaumaturgy skill points of an Actor */
+  /** The invested Thaumaturgy skill points of the character */
   thaumaturgy = CONSTANTS.bounds.skills.points.min;
 
-  /** The invested Unarmed skill points of an Actor */
+  /** The invested Unarmed skill points of the character */
   unarmed = CONSTANTS.bounds.skills.points.min;
 }
 
@@ -77,27 +76,26 @@ export const SKILL_RANKS_JSON_SCHEMA: JSONSchemaType<SkillRanks> = {
   }, {} as Record<SkillName, number>)
 };
 
-/** An Actor SPECIALs object for the database */
 export class SpecialsPoints implements Record<SpecialName, number> {
-  /** The invested Strength SPECIAL points of an Actor */
+  /** The invested Strength SPECIAL points of the character */
   strength = 5;
 
-  /** The invested Perception SPECIAL points of an Actor */
+  /** The invested Perception SPECIAL points of the character */
   perception = 5;
 
-  /** The invested Endurance SPECIAL points of an Actor */
+  /** The invested Endurance SPECIAL points of the character */
   endurance = 5;
 
-  /** The invested Charisma SPECIAL points of an Actor */
+  /** The invested Charisma SPECIAL points of the character */
   charisma = 5;
 
-  /** The invested Intelligence SPECIAL points of an Actor */
+  /** The invested Intelligence SPECIAL points of the character */
   intelligence = 5;
 
-  /** The invested Agility SPECIAL points of an Actor */
+  /** The invested Agility SPECIAL points of the character */
   agility = 5;
 
-  /** The invested Luck SPECIAL points of an Actor */
+  /** The invested Luck SPECIAL points of the character */
   luck = 5;
 }
 
@@ -122,19 +120,20 @@ export const SPECIALS_POINTS_JSON_SCHEMA: JSONSchemaType<SpecialsPoints> = {
 
 type NumberProperty = { type: "integer"; maximum: number; minimum: number };
 
-/** An Actor leveling object for the database */
 export default class LevelingSource {
-  /** The current experience of an Actor */
+  /** The current experience of the character */
   experience = 0;
 
   /**
-   * The skill point relevant intelligence values at each level up of an Actor
+   * The skill point relevant intelligence values at each level up of the
+   * character
    */
   levelIntelligences: number[] = [];
 
-  /** The skill ranks added for an Actor */
+  /** The skill ranks of the character */
   skillRanks = new SkillRanks();
 
+  /** The SPECIAL points of the character */
   specialPoints = new SpecialsPoints();
 }
 

@@ -1,5 +1,5 @@
-{{#if weaponImage~}}
-  <img src="{{weaponImage}}" />
+{{#if weapon.image~}}
+  <img src="{{weapon.image}}" />
 {{~/if}}
 <h3>{{template.raw.mainHeading}}</h3>
 <h4>{{template.raw.subHeading}}</h4>
@@ -15,7 +15,7 @@
     <div class="spacing-bottom">
       <span>{{localize "wv.rules.range.singular"}}</span>
       <ul class="no-margin">
-        <li>{{localize "wv.rules.range.plural"}}: {{template.raw.displayRanges}}</li>
+        <li>{{localize "wv.rules.range.plural"}}: {{weapon.display.ranges}}</li>
         <li>{{localize "wv.rules.range.singular"}}: {{localize template.keys.rangeBracket}}</li>
         <li>{{localize "wv.rules.range.distance.name"}}: {{details.range.distance}}</li>
       </ul>

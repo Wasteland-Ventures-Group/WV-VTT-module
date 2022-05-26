@@ -18,7 +18,7 @@
         </label>
         <label class="contained-target-inline flex-fixed">
           {{~localize "wv.rules.equipment.weapon.strengthRequirement.long"~}}
-          <input class="size-2" type="number" name="data.strengthRequirement" value="{{data.data.strengthRequirement}}" min="0" max="15" />
+          <input class="size-2" type="number" name="data.strengthRequirement.source" value="{{data.data.strengthRequirement.source}}" min="0" max="15" />
         </label>
         <label class="contained-target-inline flex-fixed flex-center">
           {{~localize "wv.rules.equipment.weapon.holdout"~}}
@@ -29,10 +29,10 @@
         <span class="flex-fixed">{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
         <label class="contained-target-inline flex-fixed" title="{{localize 'wv.rules.actionPoints.use'}}">
           {{~localize "wv.rules.actionPoints.use"~}}
-          <input type="number" class="size-2" name="data.reload.ap" value="{{data.data.reload.ap}}" min="0" />
+          <input type="number" class="size-2" name="data.reload.ap.source" value="{{data.data.reload.ap.source}}" min="0" />
         </label>
         <span class="flex-fixed no-wrap">
-          <input type="number" class="size-3" name="data.reload.size" value="{{data.data.reload.size}}" min="0" title="{{localize 'wv.rules.equipment.weapon.reload.containerSize'}}" />
+          <input type="number" class="size-3" name="data.reload.size.source" value="{{data.data.reload.size.source}}" min="0" title="{{localize 'wv.rules.equipment.weapon.reload.containerSize'}}" />
           <span> * </span>
           <select name="data.reload.caliber" title="{{localize 'wv.rules.equipment.ammo.caliber'}}">
             {{~selectOptions sheet.reload.calibers selected=data.data.reload.caliber~}}
@@ -55,9 +55,9 @@
           <tr>
             <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.short.long"}}</th>
             <td class="align-right">
-              <input type="number" class="size-3" name="data.ranges.short.distance.base" value="{{data.data.ranges.short.distance.base}}" min="0" />
+              <input type="number" class="size-3" name="data.ranges.short.distance.base.source" value="{{data.data.ranges.short.distance.base.source}}" min="0" />
               <span>+</span>
-              <input type="number" class="size-2" name="data.ranges.short.distance.multiplier" value="{{data.data.ranges.short.distance.multiplier}}" min="0" />
+              <input type="number" class="size-2" name="data.ranges.short.distance.multiplier.source" value="{{data.data.ranges.short.distance.multiplier.source}}" min="0" />
               <span>*</span>
               <select name="data.ranges.short.distance.special">
                 {{~selectOptions sheet.specials selected=data.data.ranges.short.distance.special~}}
@@ -71,15 +71,15 @@
               {{~/if~}}
             </td>
             <td class="align-right min-width">
-              <input type="number" class="size-3" name="data.ranges.short.modifier" value="{{data.data.ranges.short.modifier}}" />
+              <input type="number" class="size-3" name="data.ranges.short.modifier.source" value="{{data.data.ranges.short.modifier.source}}" />
             </td>
           </tr>
           <tr>
             <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.medium.long"}}</th>
             <td class="align-right">
-              <input type="number" class="size-3" name="data.ranges.medium.distance.base" value="{{data.data.ranges.medium.distance.base}}" min="0" />
+              <input type="number" class="size-3" name="data.ranges.medium.distance.base.source" value="{{data.data.ranges.medium.distance.base.source}}" min="0" />
               <span>+</span>
-              <input type="number" class="size-2" name="data.ranges.medium.distance.multiplier" value="{{data.data.ranges.medium.distance.multiplier}}" min="0" />
+              <input type="number" class="size-2" name="data.ranges.medium.distance.multiplier.source" value="{{data.data.ranges.medium.distance.multiplier.source}}" min="0" />
               <span>*</span>
               <select name="data.ranges.medium.distance.special">
                 {{~selectOptions sheet.specials selected=data.data.ranges.medium.distance.special~}}
@@ -93,15 +93,15 @@
               {{~/if~}}
             </td>
             <td class="align-right min-width">
-              <input type="number" class="size-3" name="data.ranges.medium.modifier" value="{{data.data.ranges.medium.modifier}}" />
+              <input type="number" class="size-3" name="data.ranges.medium.modifier.source" value="{{data.data.ranges.medium.modifier.source}}" />
             </td>
           </tr>
           <tr>
             <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.long.long"}}</th>
             <td class="align-right">
-              <input type="number" class="size-3" name="data.ranges.long.distance.base" value="{{data.data.ranges.long.distance.base}}" min="0" />
+              <input type="number" class="size-3" name="data.ranges.long.distance.base.source" value="{{data.data.ranges.long.distance.base.source}}" min="0" />
               <span>+</span>
-              <input type="number" class="size-2" name="data.ranges.long.distance.multiplier" value="{{data.data.ranges.long.distance.multiplier}}" min="0" />
+              <input type="number" class="size-2" name="data.ranges.long.distance.multiplier.source" value="{{data.data.ranges.long.distance.multiplier.source}}" min="0" />
               <span>*</span>
               <select name="data.ranges.long.distance.special">
                 {{~selectOptions sheet.specials selected=data.data.ranges.long.distance.special~}}
@@ -115,7 +115,7 @@
               {{~/if~}}
             </td>
             <td class="align-right min-width">
-              <input type="number" class="size-3" name="data.ranges.long.modifier" value="{{data.data.ranges.long.modifier}}" />
+              <input type="number" class="size-3" name="data.ranges.long.modifier.source" value="{{data.data.ranges.long.modifier.source}}" />
             </td>
           </tr>
         </tbody>
@@ -140,9 +140,9 @@
                 <input type="text" name="sheet.attacks.name.{{@key}}" value="{{@key}}" />
               </th>
               <td class="align-left">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.base" value="{{attack.damage.base}}" min="0" title="{{localize 'wv.rules.damage.baseDamage'}}" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.base.source" value="{{attack.damage.base.source}}" min="0" title="{{localize 'wv.rules.damage.baseDamage'}}" />
                 <span>+</span>
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.dice" value="{{attack.damage.dice}}" min="0" title="{{localize 'wv.rules.damage.damageDice'}}" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.dice.source" value="{{attack.damage.dice.source}}" min="0" title="{{localize 'wv.rules.damage.damageDice'}}" />
                 <span>d6</span>
                 <input type="checkbox" name="data.attacks.sources.{{@key}}.damage.diceRange" {{checked attack.damage.diceRange}} title="{{localize 'wv.rules.damage.diceRange'}}" />
                 <select name="data.attacks.sources.{{@key}}.damage.damageFallOff" title="{{localize 'wv.rules.damage.fallOff.name'}}">
@@ -156,7 +156,7 @@
                 <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.rounds" value="{{attack.rounds}}" min="0" />
               </td>
               <td class="align-right min-width">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.ap" value="{{attack.ap}}" min="0" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.ap.source" value="{{attack.ap.source}}" min="0" />
               </td>
               <td class="min-width">
                 <button type="button" class="control medium weapon-attack-execute fas fa-bullseye" title="{{localize 'wv.system.rolls.modifierExplanation'}}" data-attack="{{@key}}" title="{{localize 'wv.system.actions.execute'}}"></button>

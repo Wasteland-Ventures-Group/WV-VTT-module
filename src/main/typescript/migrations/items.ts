@@ -13,22 +13,22 @@ import { LOG } from "../systemLogger.js";
 
 export default function migrateItems(currentVersion: string): void {
   if (!(game instanceof Game)) {
-    LOG.error("Game was not yet initialized!");
+    LOG.error("Game was not yet initialized.");
     return;
   }
 
   if (!game.actors) {
-    LOG.error("Actors was not yet defined!");
+    LOG.error("Actors was not yet defined.");
     return;
   }
 
   if (!game.items) {
-    LOG.error("Items was not yet defined!");
+    LOG.error("Items was not yet defined.");
     return;
   }
 
   if (!game.scenes) {
-    LOG.error("Scenes was not yet defined!");
+    LOG.error("Scenes was not yet defined.");
     return;
   }
 
@@ -82,6 +82,7 @@ async function migrateItem(
       migrateAmmoFix(item, updateData);
       migrateRanges(item, updateData);
       migrateMandatoryReload(item, updateData);
+      migrateToCompositeNumbers(item, updateData);
       if (!foundry.utils.isObjectEmpty(updateData)) {
         LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
         await item.update(updateData);
@@ -111,6 +112,39 @@ function migrateRuleElementHook(
         hook: "afterSpecial",
         ...rule
       })
+    );
+  }
+}
+
+async function migrateFromCompendium(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>,
+  currentVersion: string
+): Promise<void> {
+  const compendiumUpdateData = await getUpdateDataFromCompendium(item);
+  if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
+    LOG.info(
+      `Updating Item from Compendium [${item.id}] "${item.name}" with`,
+      updateData
+    );
+    await item.update(
+      { ...compendiumUpdateData },
+      { recursive: false, diff: false }
+    );
+    await item.setFlag(
+      CONSTANTS.systemId,
+      "lastMigrationVersion",
+      currentVersion
+    );
+  }
+
+  if (!foundry.utils.isObjectEmpty(updateData)) {
+    LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
+    await item.update(updateData);
+    await item.setFlag(
+      CONSTANTS.systemId,
+      "lastMigrationVersion",
+      currentVersion
     );
   }
 }
@@ -169,19 +203,29 @@ function transformRange(
   if (range === undefined) {
     return {
       distance: {
-        base: 0,
-        multiplier: 0,
+        base: {
+          source: 0
+        },
+        multiplier: {
+          source: 0
+        },
         special: ""
       },
-      modifier: 0
+      modifier: {
+        source: 0
+      }
     };
   }
 
   if (range.distance === "melee") {
     return {
       distance: {
-        base: 2,
-        multiplier: 0,
+        base: {
+          source: 2
+        },
+        multiplier: {
+          source: 0
+        },
         special: ""
       },
       modifier: range.modifier
@@ -191,8 +235,12 @@ function transformRange(
   if (typeof range.distance === "number") {
     return {
       distance: {
-        base: range.distance,
-        multiplier: 0,
+        base: {
+          source: range.distance
+        },
+        multiplier: {
+          source: 0
+        },
         special: ""
       },
       modifier: range.modifier
@@ -219,35 +267,69 @@ function migrateMandatoryReload(
   };
 }
 
-async function migrateFromCompendium(
+function migrateToCompositeNumbers(
   item: foundry.documents.BaseItem,
-  updateData: Record<string, unknown>,
-  currentVersion: string
-): Promise<void> {
-  const compendiumUpdateData = await getUpdateDataFromCompendium(item);
-  if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
-    LOG.info(
-      `Updating Item from Compendium [${item.id}] "${item.name}" with`,
-      updateData
-    );
-    await item.update(
-      { ...compendiumUpdateData },
-      { recursive: false, diff: false }
-    );
-    await item.setFlag(
-      CONSTANTS.systemId,
-      "lastMigrationVersion",
-      currentVersion
-    );
+  updateData: Record<string, unknown>
+) {
+  const data = item.data.data;
+  if ("value" in data && typeof data.value === "number")
+    updateData["data.value.source"] = data.value;
+  if ("weight" in data && typeof data.weight === "number")
+    updateData["data.weight.source"] = data.weight;
+
+  if (item.data.type === "apparel") {
+    const data = item.data.data;
+    if (typeof data.damageThreshold === "number")
+      updateData["data.damageThreshold.source"] = data.damageThreshold;
+    if (typeof data.quickSlots === "number")
+      updateData["data.quickSlots.source"] = data.quickSlots;
+    if (typeof data.modSlots === "number")
+      updateData["data.modSlots.source"] = data.modSlots;
+    return;
   }
 
-  if (!foundry.utils.isObjectEmpty(updateData)) {
-    LOG.info(`Migrating Item [${item.id}] "${item.name}" with`, updateData);
-    await item.update(updateData);
-    await item.setFlag(
-      CONSTANTS.systemId,
-      "lastMigrationVersion",
-      currentVersion
-    );
+  if (item.data.type === "weapon") {
+    const data = item.data.data;
+
+    if (typeof data.strengthRequirement === "number")
+      updateData["data.strengthRequirement.source"] = data.strengthRequirement;
+
+    if (typeof data.reload.ap === "number")
+      updateData["data.reload.ap.source"] = data.reload.ap;
+    if (typeof data.reload.size === "number")
+      updateData["data.reload.size.source"] = data.reload.size;
+
+    Object.keys(data.attacks.sources).forEach((key) => {
+      const attack = data.attacks.sources[key];
+      if (!attack) return;
+
+      if (typeof attack.damage.base === "number")
+        updateData[`data.attacks.sources.${key}.damage.base.source`] =
+          attack.damage.base;
+      if (typeof attack.damage.dice === "number")
+        updateData[`data.attacks.sources.${key}.damage.dice.source`] =
+          attack.damage.dice;
+      if (typeof attack.ap === "number")
+        updateData[`data.attacks.sources.${key}.ap.source`] = attack.ap;
+    });
+
+    (["short", "medium", "long"] as const).forEach((distance) => {
+      if (typeof data.ranges[distance].distance.base === "number")
+        updateData[`data.ranges.${distance}.distance.base.source`] =
+          data.ranges[distance].distance.base;
+      if (typeof data.ranges[distance].distance.multiplier === "number")
+        updateData[`data.ranges.${distance}.distance.multiplier.source`] =
+          data.ranges[distance].distance.multiplier;
+      if (typeof data.ranges[distance].modifier === "number")
+        updateData[`data.ranges.${distance}.modifier.source`] =
+          data.ranges[distance].modifier;
+    });
+
+    if (typeof data.reload.ap === "number")
+      updateData["data.reload.ap.source"] = data.reload.ap;
+    if (typeof data.reload.size === "number")
+      updateData["data.reload.size.source"] = data.reload.size;
+
+    return;
   }
 }

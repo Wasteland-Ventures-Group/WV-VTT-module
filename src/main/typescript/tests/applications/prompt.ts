@@ -99,18 +99,18 @@ export default function registerPromptTests(
 function setAndSubmit(values: Record<string, string>) {
   const prompt = document.querySelector(promptSelector);
   if (!(prompt instanceof HTMLFormElement))
-    throw "The prompt was not an HTMLFormElement!";
+    throw "The prompt was not an HTMLFormElement.";
 
   Object.entries(values).forEach(([name, value]) => {
     const input = prompt.querySelector(`input[name=${name}]`);
     if (!(input instanceof HTMLInputElement))
-      throw "The input was not an HTMLInputElement!";
+      throw "The input was not an HTMLInputElement.";
     input.value = value;
   });
 
   const button = prompt.querySelector("button");
   if (!(button instanceof HTMLButtonElement))
-    throw "The input was not an HTMLButtonElement!";
+    throw "The input was not an HTMLButtonElement.";
 
   button.click();
 }

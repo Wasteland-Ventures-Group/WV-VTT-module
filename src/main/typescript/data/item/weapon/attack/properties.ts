@@ -1,8 +1,48 @@
-import type Attack from "../../../../item/weapon/attack.js";
-import AttacksSource from "./source.js";
+import Attack from "../../../../item/weapon/attack.js";
+import AttacksSource, { AttackSource, DamageSource } from "./source.js";
+import type Weapon from "../../../../item/weapon.js";
+import { CompositeNumber } from "../../../common.js";
 
-/** A Weapon Attacks container */
 export default class Attacks extends AttacksSource {
+  constructor(source: AttacksSource, owningWeapon: Weapon) {
+    super();
+    foundry.utils.mergeObject(this, source);
+    Object.entries(source.sources).forEach(
+      ([name, source]) =>
+        (this.attacks[name] = new Attack(
+          name,
+          new AttackProperties(source),
+          owningWeapon
+        ))
+    );
+  }
+
   /** The Weapon Attacks, created from the sources */
   attacks: Record<string, Attack> = {};
+}
+
+export class AttackProperties extends AttackSource {
+  constructor(source: AttackSource) {
+    super();
+    foundry.utils.mergeObject(this, source);
+    this.damage = new DamageProperties(source.damage);
+    this.ap = CompositeNumber.from(source.ap);
+  }
+
+  override damage: DamageProperties;
+
+  override ap: CompositeNumber;
+}
+
+export class DamageProperties extends DamageSource {
+  constructor(source: DamageSource) {
+    super();
+    foundry.utils.mergeObject(this, source);
+    this.base = CompositeNumber.from(source.base);
+    this.dice = CompositeNumber.from(source.dice);
+  }
+
+  override base: CompositeNumber;
+
+  override dice: CompositeNumber;
 }

@@ -10,8 +10,12 @@
       "sources": []
     },
     "rarity": "uncommon",
-    "value": 0.7,
-    "weight": 0,
+    "value": {
+      "source": 0.7
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 10,
     "caliber": "shotgunShell",
     "type": "magnum"

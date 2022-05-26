@@ -7,10 +7,10 @@ import { WvActorDataProperties } from "./data/actor/properties.js";
 import { WvActorDataSource } from "./data/actor/source.js";
 import type { AmmoDataSourceData } from "./data/item/ammo/source.js";
 import type { ApparelDataSourceData } from "./data/item/apparel/source.js";
-import type BaseItem from "./data/item/baseItem.js";
+import type BaseItemSource from "./data/item/common/baseItem/source.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
 import { WvItemDataSource } from "./data/item/source.js";
-import type StackableBaseItem from "./data/item/stackableBaseItem.js";
+import type StackableItemSource from "./data/item/common/stackableItem/source.js";
 import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage/index.js";
@@ -71,8 +71,8 @@ declare global {
         item: {
           [TYPES.ITEM.AMMO]: ValidateFunction<AmmoDataSourceData>;
           [TYPES.ITEM.APPAREL]: ValidateFunction<ApparelDataSourceData>;
-          [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItem>;
-          [TYPES.ITEM.MISC]: ValidateFunction<StackableBaseItem>;
+          [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItemSource>;
+          [TYPES.ITEM.MISC]: ValidateFunction<StackableItemSource>;
           [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;
         };
         ruleElement: ValidateFunction<RuleElementSource>;

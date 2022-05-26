@@ -36,6 +36,8 @@ export interface LangSchema {
         gender: string;
         /** Label for the personality */
         personality: string;
+        /** Label for the size */
+        size: string;
         /** Label for the social contacts */
         socialContacts: string;
         /** Label for the special talent */
@@ -502,6 +504,16 @@ export interface LangSchema {
              */
             noActor: string;
             /**
+             * An error message when the selected property on the target is not
+             * a CompositeNumber.
+             *
+             * Parameters:
+             * - name: the name of the target
+             * - path: the selector path
+             * @pattern (?=.*\{name\})(?=.*\{path\})
+             */
+            notCompositeNumber: string;
+            /**
              * An error message when the selector does not match a property on
              * the target.
              *
@@ -557,6 +569,8 @@ export interface LangSchema {
             unknownHook: string;
             /** An error message for an unknown RuleElement type. */
             unknownRuleElement: string;
+            /** An error message for an unknown SPECIAL name. */
+            unknownSpecialName: string;
             /** An error message for an unknown RuleElement target. */
             unknownTarget: string;
             /**

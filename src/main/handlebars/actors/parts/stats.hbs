@@ -9,7 +9,7 @@
       <label>{{special.long}}</label>
       <span class="resource-display size-2">{{special.tempTotal}}</span>
       <span class="resource-display size-2">{{special.permTotal}}</span>
-      <input class="size-2" type="number" name="data.leveling.specialPoints.{{@key}}" value="{{special.base}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
+      <input class="size-2" type="number" name="data.leveling.specialPoints.{{@key}}" value="{{special.points}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
       <button data-special="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
     {{/each}}
   </div>
@@ -17,11 +17,11 @@
     <h4 class="resource-block-line">{{localize "wv.rules.criticals.title"}}</h4>
     <label class="contained-target-inline resource-block-line">
       {{~localize "wv.rules.criticals.success"~}}
-      <span class="resource-display size-2">{{data.data.secondary.criticals.success}}</span>
+      <span class="resource-display size-2">{{data.data.secondary.criticals.success.total}}</span>
     </label>
     <label class="contained-target-inline resource-block-line">
       {{~localize "wv.rules.criticals.failure"~}}
-      <span class="resource-display size-3">{{data.data.secondary.criticals.failure}}</span>
+      <span class="resource-display size-3">{{data.data.secondary.criticals.failure.total}}</span>
     </label>
   </div>
 </div>

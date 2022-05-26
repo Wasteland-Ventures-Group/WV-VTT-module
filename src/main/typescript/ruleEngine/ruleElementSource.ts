@@ -92,7 +92,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
         description: "The identifier of the type or rule element to use",
         type: "string",
         enum: Object.keys(RULE_ELEMENTS) as RuleElementId[],
-        default: "WV.RuleElement.FlatModifier"
+        default: "WV.RuleElement.NumberComponent"
       },
       value: {
         description: "The value to use for the rule element",
@@ -118,7 +118,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       priority: 100,
       selector: "",
       target: "item",
-      type: "WV.RuleElement.FlatModifier",
+      type: "WV.RuleElement.NumberComponent",
       value: 0
     }
   };

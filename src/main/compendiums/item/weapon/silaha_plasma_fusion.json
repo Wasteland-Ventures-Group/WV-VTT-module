@@ -10,11 +10,17 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 2,
-            "dice": 6,
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 6
+            },
             "damageFallOff": "shotgun"
           },
-          "ap": 6,
+          "ap": {
+            "source": 6
+          },
           "rounds": 1,
           "dtReduction": 1
         }
@@ -23,40 +29,68 @@
     "ranges": {
       "short": {
         "distance": {
-          "base": 16,
-          "multiplier": 0,
+          "base": {
+            "source": 16
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        }
       },
       "medium": {
         "distance": {
-          "base": 32,
-          "multiplier": 0,
+          "base": {
+            "source": 32
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -10
+        "modifier": {
+          "source": -10
+        }
       },
       "long": {
         "distance": {
-          "base": 64,
-          "multiplier": 0,
+          "base": {
+            "source": 64
+          },
+          "multiplier": {
+            "source": 0
+          },
           "special": ""
         },
-        "modifier": -20
+        "modifier": {
+          "source": -20
+        }
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "magicFusionCell",
       "containerType": "magazine",
-      "size": 8
+      "size": {
+        "source": 8
+      }
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 5,
-    "value": 550,
-    "weight": 5.5,
+    "strengthRequirement": {
+      "source": 5
+    },
+    "value": {
+      "source": 550
+    },
+    "weight": {
+      "source": 5.5
+    },
     "rules": {
       "sources": []
     }

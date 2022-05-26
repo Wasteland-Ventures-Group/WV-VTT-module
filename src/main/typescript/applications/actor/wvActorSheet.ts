@@ -15,7 +15,6 @@ import {
   ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
-import type { Special } from "../../data/actor/character/specials/properties.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
@@ -70,7 +69,7 @@ export default class WvActorSheet extends ActorSheet {
 
     const sheetForm = html[0];
     if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element!");
+      throw new Error("The element passed was not a form element.");
 
     ["change", "submit"].forEach((eventType) => {
       sheetForm.addEventListener(eventType, () => sheetForm.reportValidity());
@@ -82,14 +81,14 @@ export default class WvActorSheet extends ActorSheet {
     sheetForm.querySelectorAll("button[data-special]").forEach((element) => {
       element.addEventListener("click", (event) => {
         if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen!");
+          throw new Error("This should not happen.");
         this.onClickRollSpecial(event);
       });
     });
     sheetForm.querySelectorAll("button[data-skill]").forEach((element) => {
       element.addEventListener("click", (event) => {
         if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen!");
+          throw new Error("This should not happen.");
         this.onClickRollSkill(event);
       });
     });
@@ -100,7 +99,7 @@ export default class WvActorSheet extends ActorSheet {
       .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickCreateItem(event);
         });
       });
@@ -109,7 +108,7 @@ export default class WvActorSheet extends ActorSheet {
       .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickEditItem(event);
         });
       });
@@ -118,7 +117,7 @@ export default class WvActorSheet extends ActorSheet {
       .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickDeleteItem(event);
         });
       });
@@ -127,7 +126,7 @@ export default class WvActorSheet extends ActorSheet {
       .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickAttackExecute(event);
         });
       });
@@ -149,7 +148,7 @@ export default class WvActorSheet extends ActorSheet {
     const readiedItem =
       actorReadiedItem instanceof Weapon
         ? this.toSheetWeapon(actorReadiedItem)
-        : actorReadiedItem?.toJSON() ?? null;
+        : actorReadiedItem?.toObject(false) ?? null;
     const armor =
       this.actor.armor instanceof Apparel
         ? this.toSheetApparel(this.actor.armor)
@@ -240,8 +239,11 @@ export default class WvActorSheet extends ActorSheet {
         },
         radiationSicknessLevel: getI18nRadiationSicknessLevel(this.actor),
         specials: SpecialNames.reduce((specials, specialName) => {
+          const special = this.actor.data.data.specials[specialName];
           specials[specialName] = {
-            ...this.actor.getSpecial(specialName),
+            ...special,
+            permTotal: special.permTotal,
+            tempTotal: special.tempTotal,
             long: specialI18ns[specialName].long,
             short: specialI18ns[specialName].short
           };
@@ -290,10 +292,10 @@ export default class WvActorSheet extends ActorSheet {
   override _onDragStart(event: DragEvent): void {
     const listenerElement = event.currentTarget;
     if (!(listenerElement instanceof HTMLElement))
-      throw new Error("The listener was not an HTMLElement!");
+      throw new Error("The listener was not an HTMLElement.");
 
     if (!(event.target instanceof HTMLElement))
-      throw new Error("The target was not an HTMLElement!");
+      throw new Error("The target was not an HTMLElement.");
 
     if (event.target.classList.contains("content-link")) return;
 
@@ -449,7 +451,7 @@ export default class WvActorSheet extends ActorSheet {
 
   protected toSheetApparel(apparel: Apparel): SheetApparel {
     return {
-      ...apparel.toJSON(),
+      ...apparel.toObject(false),
       sheet: ApparelSheet.getApparelSheetData(apparel)
     };
   }
@@ -457,7 +459,7 @@ export default class WvActorSheet extends ActorSheet {
   /** Transform a Weapon into a sheet weapon. */
   protected toSheetWeapon(weapon: Weapon): SheetWeapon {
     return {
-      ...weapon.toJSON(),
+      ...weapon.toObject(false),
       sheet: WeaponSheet.getWeaponSheetData(weapon)
     };
   }
@@ -550,7 +552,7 @@ export default class WvActorSheet extends ActorSheet {
     }
 
     if (weaponId !== this.actor.data.data.equipment.readiedItemId) {
-      LOG.warn("The weapon was not readied!");
+      LOG.warn("The weapon was not readied.");
       return;
     }
 
@@ -881,13 +883,13 @@ interface SheetEquipment {
   belt: SheetApparel | null;
 }
 
-type ReadiedItem = ReturnType<WvItem["toJSON"]> | SheetWeapon;
+type ReadiedItem = ReturnType<WvItem["toObject"]> | SheetWeapon;
 
-type SheetApparel = ReturnType<Apparel["toJSON"]> & {
+type SheetApparel = ReturnType<Apparel["toObject"]> & {
   sheet: SheetApparelData;
 };
 
-type SheetWeapon = ReturnType<Weapon["toJSON"]> & {
+type SheetWeapon = ReturnType<Weapon["toObject"]> & {
   sheet: SheetWeaponData;
 };
 
@@ -901,7 +903,11 @@ interface SheetMagic {
   thaumSpecials: Record<ThaumaturgySpecial, string>;
 }
 
-type SheetSpecial = I18nSpecial & Special;
+interface SheetSpecial extends I18nSpecial {
+  points: number;
+  permTotal: number;
+  tempTotal: number;
+}
 
 interface SheetSkill {
   name: string;

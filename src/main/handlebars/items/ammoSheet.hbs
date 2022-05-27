@@ -3,11 +3,24 @@
 
   <nav class="tabs flex-fixed" data-group="primary">
     <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
+    <a class="item" data-tab="sources">{{localize "wv.system.misc.sourceValues"}}</a>
     <a class="item" data-tab="rules">{{localize "wv.system.ruleEngine.ruleElement.plural"}}</a>
   </nav>
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
+      <div class="detail-groups">
+        <section class="details">
+          <span>{{localize "wv.rules.equipment.ammo.caliber"}}: {{sheet.caliber}}</span>
+          <span>{{localize "wv.rules.equipment.ammo.type"}}: {{data.data.type}}</span>
+        </section>
+        {{~#if data.data.notes~}}
+          <section>{{data.data.notes}}</section>
+        {{~/if~}}
+      </div>
+    </div>
+
+    <div class="tab active" data-group="primary" data-tab="sources">
 {{> (get . "sheet.parts.physicalItemInputs")}}
       <div class="flexrow flex-j-spaced">
         <label class="contained-target-inline flex-fixed">

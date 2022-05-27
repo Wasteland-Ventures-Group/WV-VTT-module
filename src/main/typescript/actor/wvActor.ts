@@ -4,7 +4,6 @@ import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/s
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import {
   ApparelSlot,
-  ApparelSlots,
   CONSTANTS,
   SkillName,
   SpecialName,

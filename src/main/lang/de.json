@@ -108,6 +108,10 @@
           "singular": "Ausrüstungplatz",
           "plural": "Ausrüstungsplätze",
           "apparelSlot": "Bekleidungsplatz",
+          "blockedSlots": {
+            "singular": "Blockierter Platz",
+            "plural": "Blockierte Plätze"
+          },
           "modSlot": {
             "singular": "Modifikationsplatz",
             "plural": "Modifikationsplätze"

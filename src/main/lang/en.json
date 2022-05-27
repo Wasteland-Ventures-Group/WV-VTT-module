@@ -136,6 +136,10 @@
           "singular": "Equipment Slot",
           "plural": "Equipment Slots",
           "apparelSlot": "Apparel Slot",
+          "blockedSlots": {
+            "singular": "Blocked Slot",
+            "plural": "Blocked Slots"
+          },
           "modSlot": {
             "singular": "Mod Slot",
             "plural": "Mod Slots"

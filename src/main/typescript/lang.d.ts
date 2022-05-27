@@ -147,6 +147,8 @@ export interface LangSchema {
         slots: QuantityNames & {
           /** The name for the apparel slot concept */
           apparelSlot: string;
+          /** The names for blocked apparel slots */
+          blockedSlots: QuantityNames;
           /** The names for mod slots */
           modSlot: QuantityNames;
           /** The names for quick slots */

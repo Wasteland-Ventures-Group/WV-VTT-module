@@ -13,6 +13,11 @@ export function registerHelpers(): void {
     const result = testValue instanceof Function ? testValue() : testValue;
     return result ? results[0] : results[1];
   });
+
+  Handlebars.registerHelper("disabled", (testValue) => {
+    const result = testValue instanceof Function ? testValue() : testValue;
+    return result ? "disabled" : "";
+  });
 }
 
 /**

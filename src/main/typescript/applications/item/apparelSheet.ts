@@ -19,6 +19,7 @@ export default class ApparelSheet extends WvItemSheet {
     const typesI18ns = WvI18n.apparelTypes;
 
     return {
+      blockedSlots: apparel.blockedApparelSlots.map((slot) => slotsI18ns[slot]),
       slot: slotsI18ns[apparel.systemData.slot],
       slots: slotsI18ns,
       type: typesI18ns[apparel.systemData.type],
@@ -47,6 +48,7 @@ export default class ApparelSheet extends WvItemSheet {
 }
 
 export interface SheetApparel {
+  blockedSlots: string[];
   slot: string;
   slots: I18nApparelSlots;
   type: string;

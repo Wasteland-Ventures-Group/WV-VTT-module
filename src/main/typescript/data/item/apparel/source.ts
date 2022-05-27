@@ -25,7 +25,7 @@ export default interface ApparelDataSource {
 
 export class ApparelDataSourceData extends PhysicalItemSource {
   /** The other apparel slots this apparel blocks aside from its own */
-  blockedSlots?: ApparelSlot[] = [];
+  blockedSlots?: Record<ApparelSlot, boolean>;
 
   /** The damage threshold of the apparel */
   damageThreshold?: CompositeNumberSource = { source: 0 };
@@ -53,12 +53,18 @@ export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
       blockedSlots: {
         description:
           "The other apparel slots this apparel blocks aside from its own",
-        type: "array",
-        items: {
-          type: "string",
-          enum: ApparelSlots
-        },
-        default: []
+        type: "object",
+        properties: ApparelSlots.reduce((slots, apparelSlot) => {
+          slots[apparelSlot] = { type: "boolean" };
+          return slots;
+        }, {} as Record<ApparelSlot, { type: "boolean" }>),
+        nullable: true,
+        required: ApparelSlots,
+        additionalProperties: false,
+        default: ApparelSlots.reduce((slots, apparelSlot) => {
+          slots[apparelSlot] = false;
+          return slots;
+        }, {} as Record<ApparelSlot, boolean>)
       },
       damageThreshold: {
         ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,

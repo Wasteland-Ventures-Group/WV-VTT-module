@@ -1,4 +1,4 @@
-import { TYPES } from "../constants.js";
+import { ApparelSlot, ApparelSlots, TYPES } from "../constants.js";
 import type ApparelDataProperties from "../data/item/apparel/properties.js";
 import { ApparelDataPropertiesData } from "../data/item/apparel/properties.js";
 import WvItem from "./wvItem.js";
@@ -23,6 +23,21 @@ export default class Apparel extends WvItem {
       throw new Error(`This data's data type is not ${TYPES.ITEM.APPAREL}.`);
 
     return this.data.data;
+  }
+
+  /** Get the slots that are blocked by this apparel. */
+  get blockedApparelSlots(): ApparelSlot[] {
+    const slots: Set<ApparelSlot> = new Set();
+
+    for (const apparelSlot of ApparelSlots) {
+      if (
+        apparelSlot !== this.systemData.slot &&
+        this.systemData.blockedSlots[apparelSlot]
+      )
+        slots.add(apparelSlot);
+    }
+
+    return [...slots];
   }
 
   override prepareBaseData(): void {

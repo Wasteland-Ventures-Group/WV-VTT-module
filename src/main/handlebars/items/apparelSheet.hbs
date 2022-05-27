@@ -19,14 +19,14 @@
           <span>{{localize "wv.rules.equipment.slots.apparelSlot"}}: {{sheet.slot}}</span
           ><span>{{localize "wv.rules.equipment.apparel.type"}}: {{sheet.type}}</span>
         </section>
-        {{~#if data.data.blockedSlots~}}
+        {{~#if sheet.blockedSlots~}}
           <section>
             <span>{{localize "wv.rules.equipment.slots.blockedSlots.plural"}}:</span>
-            <section class="details">
-              {{~#each data.data.blockedSlots as |blockedSlot|~}}
-                <span>{{blockedSlot}}</span>
+            <span class="details">
+              {{~#each sheet.blockedSlots as |slot|~}}
+                <span>{{slot}}</span>
               {{~/each~}}
-            </section>
+            </span>
           </section>
         {{~/if~}}
         {{~#if data.data.notes~}}
@@ -51,7 +51,7 @@
           <input class="size-2" type="number" name="data.modSlots.source" value="{{data.data.modSlots.source}}" />
         </label>
       </div>
-      <div class="flexrow flex-j-spaced">
+      <div class="flexrow flex-j-spaced spacing-bottom">
         <label class="contained-target-inline flex-fixed">
           {{~localize "wv.rules.equipment.slots.apparelSlot"~}}
           <select name="data.slot">
@@ -63,6 +63,28 @@
           <select name="data.type">
             {{~selectOptions sheet.types selected=data.data.type~}}
           </select>
+        </label>
+      </div>
+      <div class="flexrow flex-j-spaced">
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.rules.equipment.slots.names.armor"~}}
+          <input type="checkbox" name="data.blockedSlots.armor" {{checked data.data.blockedSlots.armor}} {{disabled (eq "armor" data.data.slot)}} />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.rules.equipment.slots.names.clothing"~}}
+          <input type="checkbox" name="data.blockedSlots.clothing" {{checked data.data.blockedSlots.clothing}} {{disabled (eq "clothing" data.data.slot)}} />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.rules.equipment.slots.names.eyes"~}}
+          <input type="checkbox" name="data.blockedSlots.eyes" {{checked data.data.blockedSlots.eyes}} {{disabled (eq "eyes" data.data.slot)}} />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.rules.equipment.slots.names.mouth"~}}
+          <input type="checkbox" name="data.blockedSlots.mouth" {{checked data.data.blockedSlots.mouth}} {{disabled (eq "mouth" data.data.slot)}} />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.rules.equipment.slots.names.belt"~}}
+          <input type="checkbox" name="data.blockedSlots.belt" {{checked data.data.blockedSlots.belt}} {{disabled (eq "belt" data.data.slot)}} />
         </label>
       </div>
     </div>

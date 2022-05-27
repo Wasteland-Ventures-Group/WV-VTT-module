@@ -50,15 +50,15 @@
           <section>
             <span>{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
             <span class="details">
-              <span>{{localize "wv.rules.actionPoints.use"}}: {{data.data.reload.ap.total}}</span>
-              <span>{{data.data.reload.size.total}} * {{sheet.reload.caliber}}</span>
-              <span>{{sheet.reload.containerType}}</span>
+              <span>{{localize "wv.rules.actionPoints.use"}}: {{data.data.reload.ap.total}}</span
+              ><span>{{data.data.reload.size.total}} * {{sheet.reload.caliber}}</span
+              ><span>{{sheet.reload.containerType}}</span>
             </span>
           </section>
         {{~/if~}}
         <section class="details">
-          <span>{{localize "wv.rules.skills.singular"}}: {{sheet.skill}}</span>
-          <span>{{localize "wv.rules.equipment.weapon.strengthRequirement.long"}}: {{data.data.strengthRequirement.total}}</span>
+          <span>{{localize "wv.rules.skills.singular"}}: {{sheet.skill}}</span
+          ><span>{{localize "wv.rules.equipment.weapon.strengthRequirement.long"}}: {{data.data.strengthRequirement.total}}</span>
           {{~#if data.data.holdout~}}
             <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
           {{~/if~}}

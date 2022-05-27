@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- new rule elements
+  - WV.RuleElement.NumberComponent: allows modifying a number and tracking the
+    modifier
+  - WV.RuleElement.PermSpecialComponent: allows modifying a permanent SPECIAL by
+    name instead of path and tracks the modifier
+  - WV.RuleElement.TempSpecialComponent: allows modifying a temporary SPECIAL by
+    name instead of path and tracks the modifier
+
+### Changed
+
+- most actor and item numbers are now easily modifiable and keep track of their
+  original source and all contributing modifiers
+- changes to permanent SPECIAL also change the temporary SPECIAL before its own
+  modifiers
+
 ## [0.16.1] - 2022-04-24
 
 ### Fixed

@@ -52,15 +52,15 @@
           </span>
         </section>
       {{~/if~}}
-      <div class="details">
+      <section class="details">
         <span>{{weapon.sheet.skill}}</span>
         <span>{{localize "wv.rules.equipment.weapon.strengthRequirement.short"}} {{weapon.data.strengthRequirement.total}}</span>
         {{~#if weapon.data.holdout~}}
           <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
         {{~/if~}}
-      </div>
+      </section>
       {{~#if weapon.data.notes~}}
-        <div>{{weapon.data.notes}}</div>
+        <section>{{weapon.data.notes}}</section>
       {{~/if~}}
     </div>
   </div>

@@ -56,20 +56,20 @@
             </span>
           </section>
         {{~/if~}}
-        <div class="details">
+        <section class="details">
           <span>{{localize "wv.rules.skills.singular"}}: {{sheet.skill}}</span>
           <span>{{localize "wv.rules.equipment.weapon.strengthRequirement.long"}}: {{data.data.strengthRequirement.total}}</span>
           {{~#if data.data.holdout~}}
             <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
           {{~/if~}}
-        </div>
+        </section>
         {{~#if data.data.notes~}}
-          <div>{{data.data.notes}}</div>
+          <section>{{data.data.notes}}</section>
         {{~/if~}}
       </div>
     </div>
 
-    <div class="tab active" data-group="primary" data-tab="sources">
+    <div class="tab" data-group="primary" data-tab="sources">
 {{> (get . "sheet.parts.physicalItemInputs")}}
       <div class="flexrow flex-j-spaced spacing-bottom">
         <label class="contained-target-inline flex-fixed">

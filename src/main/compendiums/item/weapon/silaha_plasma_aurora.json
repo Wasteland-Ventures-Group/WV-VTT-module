@@ -20,8 +20,12 @@
               "source": 2
             }
           },
-          "dtReduction": 2,
-          "rounds": 1
+          "dtReduction": {
+            "source": 2
+          },
+          "rounds": {
+            "source": 1
+          }
         }
       }
     },

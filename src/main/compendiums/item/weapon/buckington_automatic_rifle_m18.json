@@ -20,7 +20,9 @@
           "ap": {
             "source": 5
           },
-          "rounds": 1
+          "rounds": {
+            "source": 1
+          }
         },
         "Burst": {
           "damage": {
@@ -34,7 +36,9 @@
           "ap": {
             "source": 8
           },
-          "rounds": 5
+          "rounds": {
+            "source": 5
+          }
         }
       }
     },

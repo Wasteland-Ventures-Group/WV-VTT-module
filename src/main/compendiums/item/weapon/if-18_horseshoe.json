@@ -20,7 +20,9 @@
               "source": 2
             }
           },
-          "rounds": 1
+          "rounds": {
+            "source": 1
+          }
         }
       }
     },

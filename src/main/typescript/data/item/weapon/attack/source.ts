@@ -14,10 +14,10 @@ export class AttackSource {
   damage = new DamageSource();
 
   /** The amount of rounds used with the attack */
-  rounds?: number;
+  rounds?: CompositeNumberSource = { source: 0 };
 
   /** The damage threshold reduction of the attack */
-  dtReduction?: number;
+  dtReduction?: CompositeNumberSource = { source: 0 };
 
   /** The splash radius */
   splash?: "TODO"; // TODO: implement an enum or similar
@@ -104,20 +104,38 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
       default: DAMAGE_DEFAULT
     },
     rounds: {
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
       description:
         "The amount of ammo used by the attack. If this is not specified " +
         "the attack does not consume ammo.",
-      type: "integer",
       nullable: true,
-      default: 1
+      properties: {
+        source: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     },
     dtReduction: {
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
       description:
         "The amount of DT reduction on the target. If this is not specified " +
         "the attack has no DT reduction.",
-      type: "integer",
       nullable: true,
-      default: 1
+      properties: {
+        source: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     },
     splash: {
       description:

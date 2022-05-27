@@ -20,7 +20,9 @@
           "ap": {
             "source": 4
           },
-          "rounds": 1,
+          "rounds": {
+            "source": 1
+          },
           "splash": "large"
         }
       }

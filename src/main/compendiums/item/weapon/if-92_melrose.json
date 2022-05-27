@@ -23,7 +23,9 @@
           "ap": {
             "source": 6
           },
-          "rounds": 5
+          "rounds": {
+            "source": 5
+          }
         }
       }
     },

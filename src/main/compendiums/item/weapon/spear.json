@@ -35,7 +35,9 @@
           "ap": {
             "source": 7
           },
-          "rounds": 1
+          "rounds": {
+            "source": 1
+          }
         }
       }
     },

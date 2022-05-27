@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- item sheets now show their final stats on the stats tab and allow editing on
+  the source values tab
+
 ## [0.16.1] - 2022-04-24
 
 ### Fixed

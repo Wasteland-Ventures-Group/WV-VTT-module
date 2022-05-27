@@ -18,7 +18,9 @@
             },
             "diceRange": true
           },
-          "dtReduction": 2,
+          "dtReduction": {
+            "source": 2
+          },
           "ap": {
             "source": 7
           }

@@ -20,8 +20,12 @@
           "ap": {
             "source": 4
           },
-          "rounds": 1,
-          "dtReduction": 1
+          "rounds": {
+            "source": 1
+          },
+          "dtReduction": {
+            "source": 1
+          }
         }
       }
     },

@@ -460,6 +460,8 @@ export interface LangSchema {
         newName: string;
         /** The label for user provided notes */
         notes: string;
+        /** The label for source values */
+        sourceValues: string;
         /** The label for a speaker alias */
         speakerAlias: string;
         /** A collective name for miscellaneous statistics */

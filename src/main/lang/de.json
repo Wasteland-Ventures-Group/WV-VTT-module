@@ -396,6 +396,7 @@
         "name": "Name",
         "newName": "{what} (Neu)",
         "notes": "Notizen",
+        "sourceValues": "Grundwerte",
         "speakerAlias": "Sprecheralias",
         "statistics": "Statistiken",
         "toggleCompendiumLink": "Comp.-Verknüpfung",

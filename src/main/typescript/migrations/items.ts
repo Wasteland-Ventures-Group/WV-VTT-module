@@ -312,6 +312,11 @@ function migrateToCompositeNumbers(
       if (typeof attack.damage.dice === "number")
         updateData[`data.attacks.sources.${key}.damage.dice.source`] =
           attack.damage.dice;
+      if (typeof attack.rounds === "number")
+        updateData[`data.attacks.sources.${key}.rounds.source`] = attack.rounds;
+      if (typeof attack.dtReduction === "number")
+        updateData[`data.attacks.sources.${key}.dtReduction.source`] =
+          attack.dtReduction;
       if (typeof attack.ap === "number")
         updateData[`data.attacks.sources.${key}.ap.source`] = attack.ap;
     });

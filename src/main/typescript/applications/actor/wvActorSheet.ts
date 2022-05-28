@@ -40,21 +40,25 @@ import Prompt from "../prompt.js";
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
   static override get defaultOptions(): ActorSheet.Options {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: [CONSTANTS.systemId, "document-sheet", "actor-sheet"],
-      dragDrop: [
-        { dragSelector: "button[data-special]" },
-        { dragSelector: "button[data-skill]" },
-        { dragSelector: ".fvtt-item-table .fvtt-item" },
-        { dragSelector: "[data-equipment-slot][data-item-id]" }
-      ],
-      height: 1000,
-      scrollY: [".content"],
-      tabs: [
-        { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
-      ],
-      width: 800
-    } as typeof ActorSheet["defaultOptions"]);
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes = [
+      CONSTANTS.systemId,
+      "document-sheet",
+      "actor-sheet"
+    ];
+    defaultOptions.dragDrop = [
+      { dragSelector: "button[data-special]" },
+      { dragSelector: "button[data-skill]" },
+      { dragSelector: ".fvtt-item-table .fvtt-item" },
+      { dragSelector: "[data-equipment-slot][data-item-id]" }
+    ];
+    defaultOptions.height = 1000;
+    defaultOptions.scrollY = [".content"];
+    defaultOptions.tabs = [
+      { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
+    ];
+    defaultOptions.width = 800;
+    return defaultOptions;
   }
 
   override get template(): string {

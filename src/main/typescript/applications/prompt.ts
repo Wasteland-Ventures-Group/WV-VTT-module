@@ -161,13 +161,13 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     Object.keys(this.specs).forEach((key: keyof Specs) => {
       const inputValue = data.get(key as string);
       if (typeof inputValue !== "string")
-        throw Error(`The value of input ${key} is missing.`);
+        throw Error(`The value of input ${String(key)} is missing.`);
 
       switch (this.specs[key]["type"]) {
         case "number": {
           const value = parseInt(inputValue);
           if (isNaN(value))
-            throw Error(`The input of ${key} was not a number.`);
+            throw Error(`The input of ${String(key)} was not a number.`);
           values[key] = value as InputSpecReturnType<Specs[typeof key]>;
           break;
         }

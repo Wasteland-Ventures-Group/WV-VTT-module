@@ -269,6 +269,16 @@
         },
         "singular": "Range"
       },
+      "resistances": {
+        "poison": {
+          "short": "Poi Res",
+          "long": "Poison Resistance"
+        },
+        "radiation": {
+          "short": "Rad Res",
+          "long": "Radiation Resistance"
+        }
+      },
       "rolls": {
         "results": {
           "criticalFailure": "Critical Failure",

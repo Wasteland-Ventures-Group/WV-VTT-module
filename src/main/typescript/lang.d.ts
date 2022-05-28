@@ -260,6 +260,12 @@ export interface LangSchema {
           short: ShortLongNames;
         };
       };
+      resistances: {
+        /** Labels for the poison resistance */
+        poison: ShortLongNames;
+        /** Labels for the radiation resistance */
+        radiation: ShortLongNames;
+      };
       /** Rules labels related to rolls */
       rolls: {
         /** Labels for roll results */

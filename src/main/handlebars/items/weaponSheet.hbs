@@ -50,7 +50,7 @@
           <section>
             <span>{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
             <span class="details">
-              <span>{{localize "wv.rules.actionPoints.use"}}: {{data.data.reload.ap.total}}</span
+              <span>{{data.data.reload.ap.total}} {{localize "wv.rules.actionPoints.short"}}</span
               ><span>{{data.data.reload.size.total}} * {{sheet.reload.caliber}}</span
               ><span>{{sheet.reload.containerType}}</span>
             </span>
@@ -95,7 +95,7 @@
         </label>
         <span class="flex-fixed no-wrap">
           <input type="number" class="size-3" name="data.reload.size.source" value="{{data.data.reload.size.source}}" min="0" title="{{localize 'wv.rules.equipment.weapon.reload.containerSize'}}" />
-          <span> * </span>
+          <span>*</span>
           <select name="data.reload.caliber" title="{{localize 'wv.rules.equipment.ammo.caliber'}}">
             {{~selectOptions sheet.reload.calibers selected=data.data.reload.caliber~}}
           </select>

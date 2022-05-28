@@ -269,6 +269,16 @@
         },
         "singular": "Reichweite"
       },
+      "resistances": {
+        "poison": {
+          "short": "Gift-Res",
+          "long": "Gift-Resistenz"
+        },
+        "radiation": {
+          "short": "Strahl-Res",
+          "long": "Strahlungsresistenz"
+        }
+      },
       "rolls": {
         "results": {
           "criticalFailure": "Kritischer Fehlschlag",

@@ -26,17 +26,34 @@
         {{~/each~}}
       </tbody>
     </table>
-    <div class="lighter-block resource-block flex-fixed">
-      <h4 class="resource-block-line">{{localize "wv.rules.criticals.title"}}</h4>
-      <label class="contained-target-inline resource-block-line">
-        {{~localize "wv.rules.criticals.success"~}}
-        <span class="resource-display size-2">{{data.data.secondary.criticals.success.total}}</span>
-      </label>
-      <label class="contained-target-inline resource-block-line">
-        {{~localize "wv.rules.criticals.failure"~}}
-        <span class="resource-display size-3">{{data.data.secondary.criticals.failure.total}}</span>
-      </label>
-    </div>
+    <table class="flex-fixed no-margin">
+      <tbody>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.damage.threshold.long"}}</th>
+          <td class="align-right">{{data.data.equipment.damageThreshold.total}}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.resistances.poison.long"}}</th>
+          <td class="align-right">{{data.data.resistances.poison.total}}%</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.resistances.radiation.long"}}</th>
+          <td class="align-right">{{data.data.resistances.radiation.total}}%</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.equipment.slots.quickSlot.plural"}}</th>
+          <td class="align-right">{{data.data.equipment.quickSlots.max}}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.criticals.successChance"}}</th>
+          <td class="align-right">&lt;={{data.data.secondary.criticals.success.total}}</td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.criticals.failureChance"}}</th>
+          <td class="align-right">&gt;={{data.data.secondary.criticals.failure.total}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <table class="flex-fixed no-margin">
     <thead>

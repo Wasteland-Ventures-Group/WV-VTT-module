@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     name instead of path and tracks the modifier
 - apparel sheets now allow editing blocked apparel slots
 - insanity to the character sheet
+- resistances to the character sheet
 
 ### Changed
 
@@ -27,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   modifiers
 - item sheets now show their final stats on the stats tab and allow editing on
   the source values tab
+- moved damage threshold and quick slots max to statistics page
+- expanded the criticals block on statistics page to hold other statistics
 
 ### Fixed
 

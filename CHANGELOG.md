@@ -24,6 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - changes to permanent SPECIAL also change the temporary SPECIAL before its own
   modifiers
 
+### Fixed
+
+- migrations using derived values, they are now only using source values and are
+  more robust because of that
+
 ## [0.16.1] - 2022-04-24
 
 ### Fixed

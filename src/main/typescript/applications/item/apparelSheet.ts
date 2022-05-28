@@ -1,4 +1,4 @@
-import { TYPES } from "../../constants.js";
+import { ApparelSlots, isApparelSlot, TYPES } from "../../constants.js";
 import type Apparel from "../../item/apparel.js";
 import { isOfItemType } from "../../item/wvItem.js";
 import type { I18nApparelSlots, I18nApparelTypes } from "../../wvI18n.js";
@@ -44,6 +44,25 @@ export default class ApparelSheet extends WvItemSheet {
         ...ApparelSheet.getApparelSheetData(this.item)
       }
     };
+  }
+
+  protected override _updateObject(
+    event: Event,
+    formData: Record<string, unknown>
+  ): Promise<unknown> {
+    this.patchBlockedApparelSlots(formData);
+    return super._updateObject(event, formData);
+  }
+
+  /** Patch the form data to set disabled blocked slots to false. */
+  protected patchBlockedApparelSlots(formData: Record<string, unknown>) {
+    const slot = formData["data.slot"];
+    if (typeof slot === "string" && isApparelSlot(slot))
+      formData[`data.blockedSlots.${slot}`] = false;
+    else
+      for (const slotName of ApparelSlots)
+        if (!(typeof formData[`data.blockedSlots.${slotName}`] === "boolean"))
+          formData[`data.blockedSlots.${slotName}`] = false;
   }
 }
 

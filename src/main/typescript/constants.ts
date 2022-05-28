@@ -140,6 +140,15 @@ export const ApparelSlots = [
   "mouth"
 ] as const;
 
+/**
+ * A custom typeguard to check whether a given strings is an apparel slot name.
+ * @param slot - the name of the slot to test
+ * @returns whether the given name is an apparel slot name
+ */
+export function isApparelSlot(slot: string): slot is ApparelSlot {
+  return ApparelSlots.includes(slot as ApparelSlot);
+}
+
 export type EquipmentSlot = typeof EquipmentSlots[number];
 export const EquipmentSlots = [
   "readiedItem",
@@ -156,7 +165,7 @@ export const EquipmentSlots = [
  * A custom typeguard to check whether a given strings is an equipment slot
  * name.
  * @param slot - the name of the slot to test
- * @returns whether the given name is a slot name
+ * @returns whether the given name is an equipment slot name
  */
 export function isEquipmentSlot(slot: string): slot is EquipmentSlot {
   return EquipmentSlots.includes(slot as EquipmentSlot);

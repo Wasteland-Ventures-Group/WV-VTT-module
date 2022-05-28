@@ -6,8 +6,10 @@ import {
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
+import Attack from "../../item/weapon/attack.js";
 import * as ranges from "../../item/weapon/ranges.js";
 import { isOfItemType } from "../../item/wvItem.js";
+import { LOG } from "../../systemLogger.js";
 import WvI18n, {
   I18nAmmoContainerTypes,
   I18nCalibers,
@@ -35,17 +37,6 @@ export default class WeaponSheet extends WvItemSheet {
     const i18nContainerTypes = WvI18n.ammoContainerTypes;
 
     return {
-      attacks: Object.entries(weapon.systemData.attacks.attacks).reduce<
-        Record<string, SheetAttack>
-      >((obj, [name, attack]) => {
-        obj[name] = {
-          ap: attack.data.ap.total,
-          damage: attack.damageFormula,
-          dtReduction: attack.data.dtReduction,
-          rounds: attack.data.rounds
-        };
-        return obj;
-      }, {}),
       damageFallOffTypes: {
         "": "",
         ...i18nDamageFallOffTypes
@@ -76,8 +67,7 @@ export default class WeaponSheet extends WvItemSheet {
       specials: {
         "": "",
         ...WvI18n.longSpecials
-      },
-      usesAmmo: weapon.systemData.reload.size.total > 0
+      }
     };
   }
 
@@ -96,14 +86,14 @@ export default class WeaponSheet extends WvItemSheet {
       throw new Error("The element passed was not a form element.");
 
     sheetForm
-      .querySelectorAll("button.weapon-attack-execute[data-attack]")
-      .forEach((element) =>
+      .querySelectorAll("button[data-weapon-attack-name]")
+      .forEach((element) => {
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
             throw new Error("This should not happen.");
           this.onClickAttackExecute(event);
-        })
-      );
+        });
+      });
 
     sheetForm
       .querySelectorAll(".weapon-attack-control[data-action=create]")
@@ -185,14 +175,28 @@ export default class WeaponSheet extends WvItemSheet {
 
   /** Handle a click event on an Attack execute button. */
   protected async onClickAttackExecute(event: MouseEvent): Promise<void> {
-    if (!(event.target instanceof HTMLElement))
-      throw new Error("The target was not an HTMLElement.");
+    if (!(event.target instanceof HTMLElement)) {
+      LOG.warn("The target was not an HTMLElement.");
+      return;
+    }
 
-    const attackName = event.target.dataset.attack;
-    if (!attackName) return;
+    const attackElement = event.target.closest("[data-weapon-attack-name]");
+    if (!(attackElement instanceof HTMLElement)) {
+      LOG.warn("Could not get the attack element.");
+      return;
+    }
 
-    const attack = this.item.systemData.attacks.attacks[attackName];
-    if (!attack) return;
+    const attackKey = attackElement.dataset.weaponAttackName;
+    if (!attackKey) {
+      LOG.warn("Could not get the attack name.");
+      return;
+    }
+
+    const attack = this.item.systemData.attacks.attacks[attackKey];
+    if (!(attack instanceof Attack)) {
+      LOG.warn("Could not find the attack on the weapon.");
+      return;
+    }
 
     attack.execute({ whisperToGms: event.ctrlKey });
   }
@@ -287,15 +291,7 @@ export default class WeaponSheet extends WvItemSheet {
   }
 }
 
-interface SheetAttack {
-  ap: number;
-  damage: string;
-  dtReduction: number | undefined;
-  rounds: number | undefined;
-}
-
 export interface SheetWeapon {
-  attacks: Record<string, SheetAttack>;
   damageFallOffTypes: I18nDamageFallOffTypes & { "": string };
   displayRanges: {
     short: string;
@@ -311,7 +307,6 @@ export interface SheetWeapon {
   skill: string;
   skills: I18nSkills;
   specials: Record<"" | SpecialName, string>;
-  usesAmmo: boolean;
 }
 
 export interface SheetData extends ItemSheetData {

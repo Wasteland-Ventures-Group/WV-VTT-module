@@ -221,6 +221,24 @@ export default class Attack {
   }
 
   /**
+   * Get the string representation of the potential damage range of the attack.
+   */
+  get damageRange(): string {
+    const low = this.data.damage.base.total;
+    let high = low + this.data.damage.dice.total;
+
+    if (this.data.damage.diceRange) {
+      high += this.getStrengthDamageDiceMod(
+        this.weapon.actor
+          ? this.weapon.actor.data.data.specials.strength.tempTotal
+          : CONSTANTS.bounds.special.points.max
+      );
+    }
+
+    return `${low} - ${high}`;
+  }
+
+  /**
    * Get the data external to the attack.
    * @throws If the potential Prompt is closed without submitting
    */

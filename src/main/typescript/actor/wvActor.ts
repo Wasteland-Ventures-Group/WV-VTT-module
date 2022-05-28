@@ -86,12 +86,12 @@ export default class WvActor extends Actor {
     return [this.getWeaponSlotWeapon(1), this.getWeaponSlotWeapon(2)];
   }
 
-  /** Get the slots that are blocked by other apparel items. */
+  /** Get the slots that are blocked by apparel items. */
   get blockedApparelSlots(): ApparelSlot[] {
     const slots: Set<ApparelSlot> = new Set();
 
     this.equippedApparel.forEach((apparel) => {
-      apparel.systemData.blockedSlots?.forEach((slot) => slots.add(slot));
+      apparel.blockedApparelSlots.forEach(slots.add, slots);
     });
 
     return [...slots];

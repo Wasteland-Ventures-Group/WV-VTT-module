@@ -147,6 +147,8 @@ export interface LangSchema {
         slots: QuantityNames & {
           /** The name for the apparel slot concept */
           apparelSlot: string;
+          /** The names for blocked apparel slots */
+          blockedSlots: QuantityNames;
           /** The names for mod slots */
           modSlot: QuantityNames;
           /** The names for quick slots */
@@ -460,6 +462,8 @@ export interface LangSchema {
         newName: string;
         /** The label for user provided notes */
         notes: string;
+        /** The label for source values */
+        sourceValues: string;
         /** The label for a speaker alias */
         speakerAlias: string;
         /** A collective name for miscellaneous statistics */

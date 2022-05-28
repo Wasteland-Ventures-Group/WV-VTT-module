@@ -21,7 +21,9 @@
           "ap": {
             "source": 4
           },
-          "dtReduction": 1
+          "dtReduction": {
+            "source": 1
+          }
         }
       }
     },

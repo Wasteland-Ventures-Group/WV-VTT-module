@@ -26,10 +26,18 @@ export class AttackProperties extends AttackSource {
     super();
     foundry.utils.mergeObject(this, source);
     this.damage = new DamageProperties(source.damage);
+    this.rounds = CompositeNumber.from(source.rounds ?? { source: 0 });
+    this.dtReduction = CompositeNumber.from(
+      source.dtReduction ?? { source: 0 }
+    );
     this.ap = CompositeNumber.from(source.ap);
   }
 
   override damage: DamageProperties;
+
+  override rounds: CompositeNumber;
+
+  override dtReduction: CompositeNumber;
 
   override ap: CompositeNumber;
 }

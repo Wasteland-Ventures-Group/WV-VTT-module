@@ -21,7 +21,9 @@
             },
             "diceRange": true
           },
-          "dtReduction": 1
+          "dtReduction": {
+            "source": 1
+          }
         }
       }
     },

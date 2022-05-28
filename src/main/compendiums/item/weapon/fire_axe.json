@@ -35,7 +35,9 @@
             },
             "diceRange": true
           },
-          "rounds": 1
+          "rounds": {
+            "source": 1
+          }
         }
       }
     },

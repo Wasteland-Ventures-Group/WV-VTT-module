@@ -5,14 +5,14 @@
       <thead>
         <tr>
           <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.rules.damage.short"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.damage.long"}}</th>
           <th scope="col" class="align-right">{{localize "wv.rules.damage.threshold.reduction.short"}}</th>
           <th scope="col" class="align-right">{{localize "wv.rules.actionPoints.use"}}</th>
           <th scope="col" class="align-right">{{localize "wv.rules.equipment.weapon.shots"}}</th>
         </tr>
       </thead>
       <tbody>
-        {{~#each weapon.sheet.attacks as |attack|~}}
+        {{~#each weapon.data.attacks.attacks as |attack|~}}
           <tr>
             <th scope="row" class="align-left">
               {{~#if ../readied~}}
@@ -21,10 +21,10 @@
                 {{@key}}
               {{~/if~}}
             </th>
-            <td class="align-right">{{attack.damage}}</td>
-            <td class="align-right">{{attack.dtReduction}}</td>
-            <td class="align-right">{{attack.ap.total}}</td>
-            <td class="align-right">{{attack.rounds}}</td>
+            <td class="align-right">{{attack.damageFormula}} = {{attack.damageRange}}</td>
+            <td class="align-right">{{attack.data.dtReduction.total}}</td>
+            <td class="align-right">{{attack.data.ap.total}}</td>
+            <td class="align-right">{{attack.data.rounds.total}}</td>
           </tr>
         {{~/each~}}
       </tbody>
@@ -42,7 +42,7 @@
           {{~/unless~}}
         </span>
       </section>
-      {{~#if weapon.sheet.usesAmmo~}}
+      {{~#if (gt weapon.data.reload.size.total 0)~}}
         <section>
           <span>{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
           <span class="details">
@@ -52,15 +52,15 @@
           </span>
         </section>
       {{~/if~}}
-      <div class="details">
+      <section class="details">
         <span>{{weapon.sheet.skill}}</span>
         <span>{{localize "wv.rules.equipment.weapon.strengthRequirement.short"}} {{weapon.data.strengthRequirement.total}}</span>
         {{~#if weapon.data.holdout~}}
           <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
         {{~/if~}}
-      </div>
+      </section>
       {{~#if weapon.data.notes~}}
-        <div>{{weapon.data.notes}}</div>
+        <section>{{weapon.data.notes}}</section>
       {{~/if~}}
     </div>
   </div>

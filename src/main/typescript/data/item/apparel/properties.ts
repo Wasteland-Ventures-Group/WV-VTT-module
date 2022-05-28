@@ -1,3 +1,4 @@
+import type { ApparelSlot } from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import { CompositeNumber } from "../../common.js";
 import PhysicalItemProperties from "../common/physicalItem/properties.js";
@@ -17,6 +18,13 @@ export class ApparelDataPropertiesData
     super();
     foundry.utils.mergeObject(this, source);
     PhysicalItemProperties.transform(this, source, owningItem);
+    this.blockedSlots = source.blockedSlots ?? {
+      armor: false,
+      belt: false,
+      clothing: false,
+      eyes: false,
+      mouth: false
+    };
     this.damageThreshold = source.damageThreshold
       ? CompositeNumber.from(source.damageThreshold)
       : new CompositeNumber();
@@ -33,6 +41,8 @@ export class ApparelDataPropertiesData
   override value = new CompositeNumber();
 
   override weight = new CompositeNumber();
+
+  override blockedSlots: Record<ApparelSlot, boolean>;
 
   override damageThreshold: CompositeNumber;
 

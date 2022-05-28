@@ -3,11 +3,73 @@
 
   <nav class="tabs flex-fixed" data-group="primary">
     <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
+    <a class="item" data-tab="sources">{{localize "wv.system.misc.sourceValues"}}</a>
     <a class="item" data-tab="rules">{{localize "wv.system.ruleEngine.ruleElement.plural"}}</a>
   </nav>
 
   <section class="content">
     <div class="tab active" data-group="primary" data-tab="stats">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
+            <th scope="col" class="align-right">{{localize "wv.rules.damage.long"}}</th>
+            <th scope="col" class="align-right">{{localize "wv.rules.damage.threshold.reduction.long"}}</th>
+            <th scope="col" class="align-right">{{localize "wv.rules.actionPoints.use"}}</th>
+            <th scope="col" class="align-right">{{localize "wv.rules.equipment.weapon.shots"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{~#each data.data.attacks.attacks as |attack|~}}
+            <tr>
+              <th scope="row" class="align-left">
+                <button class="min-width no-wrap" type="button" title="{{localize 'wv.system.rolls.modifierExplanation'}}" data-weapon-attack-name="{{@key}}">{{@key}}</button>
+              </th>
+              <td class="align-right">{{attack.damageFormula}} = {{attack.damageRange}}</td>
+              <td class="align-right">{{attack.data.dtReduction.total}}</td>
+              <td class="align-right">{{attack.data.ap.total}}</td>
+              <td class="align-right">{{attack.data.rounds.total}}</td>
+            </tr>
+          {{~/each~}}
+        </tbody>
+      </table>
+      <div class="detail-groups">
+        <section>
+          <span>{{localize "wv.rules.range.plural"}}:</span>
+          <span class="details">
+            <span>{{localize "wv.rules.range.ranges.short.long"}} ({{sheet.displayRanges.short}}{{sheet.systemGridUnit}}) [{{data.data.ranges.short.modifier.total}}]</span>
+            {{~#unless (eq "-" sheet.displayRanges.medium)~}}
+              <span>{{localize "wv.rules.range.ranges.medium.long"}} ({{sheet.displayRanges.medium}}{{sheet.systemGridUnit}}) [{{data.data.ranges.medium.modifier.total}}]</span>
+            {{~/unless~}}
+            {{~#unless (eq "-" sheet.displayRanges.long)~}}
+              <span>{{localize "wv.rules.range.ranges.long.long"}} ({{sheet.displayRanges.long}}{{sheet.systemGridUnit}}) [{{data.data.ranges.long.modifier.total}}]</span>
+            {{~/unless~}}
+          </span>
+        </section>
+        {{~#if (gt data.data.reload.size.total 0)~}}
+          <section>
+            <span>{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
+            <span class="details">
+              <span>{{localize "wv.rules.actionPoints.use"}}: {{data.data.reload.ap.total}}</span
+              ><span>{{data.data.reload.size.total}} * {{sheet.reload.caliber}}</span
+              ><span>{{sheet.reload.containerType}}</span>
+            </span>
+          </section>
+        {{~/if~}}
+        <section class="details">
+          <span>{{localize "wv.rules.skills.singular"}}: {{sheet.skill}}</span
+          ><span>{{localize "wv.rules.equipment.weapon.strengthRequirement.long"}}: {{data.data.strengthRequirement.total}}</span>
+          {{~#if data.data.holdout~}}
+            <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
+          {{~/if~}}
+        </section>
+        {{~#if data.data.notes~}}
+          <section>{{data.data.notes}}</section>
+        {{~/if~}}
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="sources">
 {{> (get . "sheet.parts.physicalItemInputs")}}
       <div class="flexrow flex-j-spaced spacing-bottom">
         <label class="contained-target-inline flex-fixed">
@@ -47,7 +109,6 @@
           <tr>
             <th scope="col" class="align-left">{{localize "wv.rules.range.singular"}}</th>
             <th scope="col" class="align-right">{{localize "wv.rules.range.distance.name"}}</th>
-            <th scope="col" class="align-left">({{localize "wv.system.values.total"}})</th>
             <th scope="col" class="align-right">{{localize "wv.system.misc.modifier"}}</th>
           </tr>
         </thead>
@@ -62,13 +123,6 @@
               <select name="data.ranges.short.distance.special">
                 {{~selectOptions sheet.specials selected=data.data.ranges.short.distance.special~}}
               </select>
-            </td>
-            <td class="align-left min-width">
-              {{~#if (eq "-" sheet.displayRanges.short)~}}
-                <span>-</span>
-              {{~else~}}
-                <span>= {{sheet.displayRanges.short}}{{sheet.systemGridUnit}}</span>
-              {{~/if~}}
             </td>
             <td class="align-right min-width">
               <input type="number" class="size-3" name="data.ranges.short.modifier.source" value="{{data.data.ranges.short.modifier.source}}" />
@@ -85,13 +139,6 @@
                 {{~selectOptions sheet.specials selected=data.data.ranges.medium.distance.special~}}
               </select>
             </td>
-            <td class="align-left min-width">
-              {{~#if (eq "-" sheet.displayRanges.medium)~}}
-                <span>-</span>
-              {{~else~}}
-                <span>= {{sheet.displayRanges.medium}}{{sheet.systemGridUnit}}</span>
-              {{~/if~}}
-            </td>
             <td class="align-right min-width">
               <input type="number" class="size-3" name="data.ranges.medium.modifier.source" value="{{data.data.ranges.medium.modifier.source}}" />
             </td>
@@ -106,13 +153,6 @@
               <select name="data.ranges.long.distance.special">
                 {{~selectOptions sheet.specials selected=data.data.ranges.long.distance.special~}}
               </select>
-            </td>
-            <td class="align-left min-width">
-              {{~#if (eq "-" sheet.displayRanges.long)~}}
-                <span>-</span>
-              {{~else~}}
-                <span>= {{sheet.displayRanges.long}}{{sheet.systemGridUnit}}</span>
-              {{~/if~}}
             </td>
             <td class="align-right min-width">
               <input type="number" class="size-3" name="data.ranges.long.modifier.source" value="{{data.data.ranges.long.modifier.source}}" />
@@ -134,32 +174,31 @@
           </tr>
         </thead>
         <tbody>
-          {{~#each data.data.attacks.sources as |attack|~}}
+          {{~#each data.data.attacks.attacks as |attack|~}}
             <tr class="weapon-attack">
               <th scope="row" class="align-left">
                 <input type="text" name="sheet.attacks.name.{{@key}}" value="{{@key}}" />
               </th>
               <td class="align-left">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.base.source" value="{{attack.damage.base.source}}" min="0" title="{{localize 'wv.rules.damage.baseDamage'}}" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.base.source" value="{{attack.data.damage.base.source}}" min="0" title="{{localize 'wv.rules.damage.baseDamage'}}" />
                 <span>+</span>
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.dice.source" value="{{attack.damage.dice.source}}" min="0" title="{{localize 'wv.rules.damage.damageDice'}}" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.dice.source" value="{{attack.data.damage.dice.source}}" min="0" title="{{localize 'wv.rules.damage.damageDice'}}" />
                 <span>d6</span>
-                <input type="checkbox" name="data.attacks.sources.{{@key}}.damage.diceRange" {{checked attack.damage.diceRange}} title="{{localize 'wv.rules.damage.diceRange'}}" />
+                <input type="checkbox" name="data.attacks.sources.{{@key}}.damage.diceRange" {{checked attack.data.damage.diceRange}} title="{{localize 'wv.rules.damage.diceRange'}}" />
                 <select name="data.attacks.sources.{{@key}}.damage.damageFallOff" title="{{localize 'wv.rules.damage.fallOff.name'}}">
-                  {{~selectOptions ../sheet.damageFallOffTypes selected=attack.damage.damageFallOff~}}
+                  {{~selectOptions ../sheet.damageFallOffTypes selected=attack.data.damage.damageFallOff~}}
                 </select>
               </td>
               <td class="align-right min-width">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.dtReduction" value="{{attack.dtReduction}}" min="0" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.dtReduction.source" value="{{attack.data.dtReduction.source}}" min="0" />
               </td>
               <td class="align-right min-width">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.rounds" value="{{attack.rounds}}" min="0" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.rounds.source" value="{{attack.data.rounds.source}}" min="0" />
               </td>
               <td class="align-right min-width">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.ap.source" value="{{attack.ap.source}}" min="0" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.ap.source" value="{{attack.data.ap.source}}" min="0" />
               </td>
               <td class="min-width">
-                <button type="button" class="control medium weapon-attack-execute fas fa-bullseye" title="{{localize 'wv.system.rolls.modifierExplanation'}}" data-attack="{{@key}}" title="{{localize 'wv.system.actions.execute'}}"></button>
                 <button type="button" class="control medium weapon-attack-control fas fa-minus" data-action="delete" data-attack="{{@key}}" title="{{localize 'wv.system.actions.delete'}}"></button>
               </td>
             </tr>

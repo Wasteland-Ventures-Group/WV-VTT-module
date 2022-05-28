@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     name instead of path and tracks the modifier
   - WV.RuleElement.TempSpecialComponent: allows modifying a temporary SPECIAL by
     name instead of path and tracks the modifier
+- apparel sheets now allow editing blocked apparel slots
 
 ### Changed
 
@@ -23,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   original source and all contributing modifiers
 - changes to permanent SPECIAL also change the temporary SPECIAL before its own
   modifiers
+- item sheets now show their final stats on the stats tab and allow editing on
+  the source values tab
 
 ### Fixed
 

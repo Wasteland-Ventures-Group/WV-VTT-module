@@ -113,7 +113,7 @@ async function esBuild({
       incremental: incremental,
       keepNames: true,
       legalComments: "none",
-      minify: prod,
+      minify: false,
       outfile: jsOutFile,
       sourcemap: true,
       sourceRoot: `systems/${CONSTANTS.systemId}`,

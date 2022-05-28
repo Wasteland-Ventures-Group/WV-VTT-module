@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.1] - 2022-05-28
+
+### Fixed
+
+- some miscellaneous bugs
+
 ## [0.17.0] - 2022-05-28
 
 ### Added
@@ -177,7 +183,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - basic support for ammo items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
 - a basic inventory tab to actors
-- misscellaneous items
+- miscellaneous items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
 - ability to add misc items to an actor from the actor sheet
 

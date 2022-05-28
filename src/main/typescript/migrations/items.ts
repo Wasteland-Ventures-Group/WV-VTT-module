@@ -288,6 +288,18 @@ function migrateToCompositeNumbers(
       updateData["data.quickSlots.source"] = data.quickSlots;
     if (typeof data.modSlots === "number")
       updateData["data.modSlots.source"] = data.modSlots;
+    if (Array.isArray(data.blockedSlots))
+      updateData["data.blockedSlots"] = {
+        armor: false,
+        belt: false,
+        clothing: false,
+        eyes: false,
+        mouth: false,
+        ...data.blockedSlots.reduce((slots, slot) => {
+          slots[slot] = true;
+          return slots;
+        }, {})
+      };
     return;
   }
 

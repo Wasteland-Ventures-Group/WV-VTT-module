@@ -87,7 +87,7 @@ export default class WvItemSheet extends ItemSheet {
           rules: HANDLEBARS.partPaths.item.rules
         },
         rules: {
-          elements: data.data.data.rules.elements.map(
+          elements: this.item.data.data.rules.elements.map(
             this.mapSheetDataRuleElement.bind(this)
           )
         },

@@ -63,13 +63,23 @@
     display: flex
     justify-content: space-between
 
-  tr
+  th,tr
 
-    button[data-weapon-attack-name]
+    button,img,input,select
       box-sizing: content-box
-      line-height: unset
       max-height: 1em
+
+    button
+      line-height: unset
       padding: constants.$block-padding
+
+    img
+      max-width: 1em
+
+    select
+      padding:
+        bottom: 1px
+        top: 1px
 
   .fvtt-item-list
 
@@ -79,17 +89,3 @@
         float: left
         margin-right: constants.$spacing-distance
         max-width: constants.$icon-size-medium
-
-  .fvtt-item-table
-    margin: 0
-
-    .fvtt-item
-      img,input
-        box-sizing: content-box
-        max-height: 1em
-
-      img
-        max-width: 1em
-
-      .fvtt-item-controls
-        flex-wrap: nowrap

@@ -179,8 +179,10 @@
       vertical-align: baseline
 
     th,td
-      &:not(:last-child)
-        padding-right: constants.$spacing-distance
+      padding-right: constants.$spacing-distance
+
+      &:first-child
+        padding-left: constants.$spacing-distance
 
     td *
       vertical-align: middle

@@ -10,6 +10,8 @@ export default class AmmoSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("ammo-sheet");
+    defaultOptions.height = 260;
+    defaultOptions.width = 670;
     return defaultOptions;
   }
 

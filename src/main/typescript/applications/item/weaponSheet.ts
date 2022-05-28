@@ -23,9 +23,10 @@ export default class WeaponSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("weapon-sheet");
+    defaultOptions.height = 390;
+    defaultOptions.width = 700;
     return foundry.utils.mergeObject(defaultOptions, {
-      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }],
-      height: 760
+      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }]
     } as typeof ItemSheet["defaultOptions"]);
   }
 

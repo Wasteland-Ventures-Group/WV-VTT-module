@@ -18,11 +18,11 @@ export default class WvItemSheet extends ItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"],
-      height: 500,
+      height: 410,
       tabs: [
         { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
       ],
-      width: 670
+      width: 600
     } as typeof ItemSheet["defaultOptions"]);
   }
 

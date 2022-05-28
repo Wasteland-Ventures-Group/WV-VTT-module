@@ -9,6 +9,8 @@ export default class EffectSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("effect-sheet");
+    defaultOptions.height = 500;
+    defaultOptions.width = 670;
     defaultOptions.tabs = [];
     return defaultOptions;
   }

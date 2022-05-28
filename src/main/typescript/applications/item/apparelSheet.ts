@@ -10,6 +10,8 @@ export default class ApparelSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("apparel-sheet");
+    defaultOptions.height = 300;
+    defaultOptions.width = 500;
     return defaultOptions;
   }
 

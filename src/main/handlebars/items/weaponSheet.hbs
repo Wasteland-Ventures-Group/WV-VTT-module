@@ -164,12 +164,12 @@
         <thead>
           <tr>
             <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
-            <th scope="col" class="align-left">{{localize "wv.rules.damage.long"}}</th>
+            <th scope="col" class="align-right min-width">{{localize "wv.rules.damage.long"}}</th>
             <th scope="col" class="align-right min-width">{{localize "wv.rules.damage.threshold.reduction.short"}}</th>
             <th scope="col" class="align-right min-width">{{localize "wv.rules.equipment.weapon.shots"}}</th>
             <th scope="col" class="align-right min-width">{{localize "wv.rules.actionPoints.use"}}</th>
             <th scope="col" class="align-right min-width">
-              <button type="button" class="control medium weapon-attack-control fas fa-plus parchment-bg" data-action="create" title="{{localize 'wv.system.actions.create'}}"></button>
+              <button type="button" class="control small weapon-attack-control fas fa-plus parchment-bg" data-action="create" title="{{localize 'wv.system.actions.create'}}"></button>
             </th>
           </tr>
         </thead>
@@ -179,7 +179,7 @@
               <th scope="row" class="align-left">
                 <input type="text" name="sheet.attacks.name.{{@key}}" value="{{@key}}" />
               </th>
-              <td class="align-left">
+              <td class="align-right min-width">
                 <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.base.source" value="{{attack.data.damage.base.source}}" min="0" title="{{localize 'wv.rules.damage.baseDamage'}}" />
                 <span>+</span>
                 <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.dice.source" value="{{attack.data.damage.dice.source}}" min="0" title="{{localize 'wv.rules.damage.damageDice'}}" />
@@ -198,8 +198,8 @@
               <td class="align-right min-width">
                 <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.ap.source" value="{{attack.data.ap.source}}" min="0" />
               </td>
-              <td class="min-width">
-                <button type="button" class="control medium weapon-attack-control fas fa-minus" data-action="delete" data-attack="{{@key}}" title="{{localize 'wv.system.actions.delete'}}"></button>
+              <td class="align-right min-width">
+                <button type="button" class="control small weapon-attack-control fas fa-minus" data-action="delete" data-attack="{{@key}}" title="{{localize 'wv.system.actions.delete'}}"></button>
               </td>
             </tr>
           {{~/each~}}

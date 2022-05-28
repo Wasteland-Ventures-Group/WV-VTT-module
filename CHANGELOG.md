@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - migrations using derived values, they are now only using source values and are
   more robust because of that
+- limited character sheets not scrolling and showing images in huge sizes
 
 ## [0.16.1] - 2022-04-24
 

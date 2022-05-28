@@ -11,6 +11,7 @@ import {
   hasEnabledCompendiumLink
 } from "../item/wvItem.js";
 import { LOG } from "../systemLogger.js";
+import { isLastMigrationOlderThan } from "./world.js";
 
 export default function migrateItems(currentVersion: string): void {
   if (!(game instanceof Game)) {
@@ -72,7 +73,7 @@ async function migrateItem(
     }
 
     const updateData = {};
-    migrateRuleElementHook(item, updateData);
+    migrateRuleElements(item, updateData);
 
     if (
       ProtoItemTypes.includes(item.data.type) &&
@@ -102,19 +103,62 @@ async function migrateItem(
   }
 }
 
-function migrateRuleElementHook(
+function migrateRuleElements(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
-  if (
-    item.data._source.data.rules.sources.some((rule) => rule.hook === undefined)
-  ) {
+  if (isLastMigrationOlderThan("0.17.2"))
+    migrateRuleElementsPreComposedNumbers(item, updateData);
+}
+
+function migrateRuleElementsPreComposedNumbers(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>
+) {
+  if (item.data._source.data.rules.sources.length > 0) {
     updateData["data.rules.sources"] = item.data._source.data.rules.sources.map(
-      (rule) => ({
-        // @ts-expect-error This might not be there in not migrated data
-        hook: "afterSpecial",
-        ...rule
-      })
+      (rule) => {
+        let enabled = false;
+
+        const hook = rule.hook ?? "afterSpecial";
+
+        let selector = rule.selector;
+        let type = rule.type;
+        const specialMatch = /^specials\.(\w+)\.(\w+)/.exec(selector);
+        if (specialMatch) {
+          enabled = true;
+          selector = specialMatch[1] as string;
+          if ("permTotal" === specialMatch[2]) {
+            type = "WV.RuleElement.PermSpecialComponent";
+          } else {
+            type = "WV.RuleElement.TempSpecialComponent";
+          }
+        }
+        const skillMatch = /^skills\.(\w+)/.exec(selector);
+        if (skillMatch) {
+          enabled = true;
+          selector = `skills.${skillMatch[1] as string}`;
+          type = "WV.RuleElement.NumberComponent";
+        }
+
+        if (
+          [
+            "WV.RuleElement.PermSpecialComponent",
+            "WV.RuleElement.TempSpecialComponent",
+            "WV.RuleElement.NumberComponent"
+          ].includes(type)
+        ) {
+          enabled = true;
+        }
+
+        return {
+          ...rule,
+          enabled,
+          hook,
+          selector,
+          type
+        };
+      }
     );
   }
 }

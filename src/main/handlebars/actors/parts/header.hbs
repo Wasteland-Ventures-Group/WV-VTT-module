@@ -22,6 +22,16 @@
         </div>
         <div class="lighter-block resource-block resource-block-line flex-fixed">
           <label class="contained-target-inline">
+            {{~localize "wv.rules.insanity"~}}
+            <div class="resource-display">
+              <input class="size-2" type="number" name="data.vitals.insanity.value" value="{{data.data.vitals.insanity.value}}" min="0" max="{{data.data.vitals.insanity.max}}" />
+              <span>&nbsp;/&nbsp;</span>
+              <span class="size-2">{{data.data.vitals.insanity.max}}</span>
+            </div>
+          </label>
+        </div>
+        <div class="lighter-block resource-block resource-block-line flex-fixed">
+          <label class="contained-target-inline">
             {{~localize "wv.rules.karma"~}}
             <input class="size-4" type="number" name="data.background.karma" value="{{data.data.background.karma}}" min="{{sheet.bounds.karma.min}}" max="{{sheet.bounds.karma.max}}" />
           </label>

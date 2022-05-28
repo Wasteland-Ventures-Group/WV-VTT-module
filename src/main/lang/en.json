@@ -197,6 +197,7 @@
         "health": "Health",
         "healingRate": "Healing Rate"
       },
+      "insanity": "Insanity",
       "karma": "Karma",
       "leveling": {
         "level": "Level",

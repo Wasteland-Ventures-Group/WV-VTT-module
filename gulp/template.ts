@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import { distWvPrefix, templateOutPath } from "../gulpfile.js";
-import { TYPES } from "../src/main/typescript/constants.js";
+import { MagicSpecials, TYPES } from "../src/main/typescript/constants.js";
 
 export default async function templateTask(): Promise<void> {
   // We somehow have to get TS to reimport the files each time. Currently they
@@ -10,6 +10,7 @@ export default async function templateTask(): Promise<void> {
     import("../src/main/typescript/data/item/ammo/source.js"),
     import("../src/main/typescript/data/item/apparel/source.js"),
     import("../src/main/typescript/data/item/effect/source.js"),
+    import("../src/main/typescript/data/item/magic/source.js"),
     import("../src/main/typescript/data/item/misc/source.js"),
     import("../src/main/typescript/data/item/weapon/source.js")
   ]);
@@ -19,6 +20,7 @@ export default async function templateTask(): Promise<void> {
     ammoSource,
     apparelSource,
     effectSource,
+    magicSource,
     miscSource,
     weaponSource
   ] = await imports;
@@ -30,6 +32,7 @@ export default async function templateTask(): Promise<void> {
     [TYPES.ITEM.AMMO, new ammoSource.AmmoDataSourceData()],
     [TYPES.ITEM.APPAREL, new apparelSource.ApparelDataSourceData()],
     [TYPES.ITEM.EFFECT, new effectSource.EffectDataSourceData()],
+    [TYPES.ITEM.MAGIC, new magicSource.MagicDataSourceData()],
     [TYPES.ITEM.MISC, new miscSource.MiscDataSourceData()],
     [TYPES.ITEM.WEAPON, new weaponSource.WeaponDataSourceData()]
   ];

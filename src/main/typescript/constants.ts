@@ -57,6 +57,102 @@ export const ThaumaturgySpecials = SpecialNames.filter(
   (special) => special !== "luck"
 ) as ThaumaturgySpecial[];
 
+export type Spirit = typeof Spirits[number];
+export const Spirits = [
+  "incantations",
+  "embers",
+  "machines",
+  "nature",
+  "serenity",
+  "shadows",
+  "streams",
+  "trust",
+  "whispers"
+] as const;
+
+export type Maneuver = typeof Maneuvers[number];
+export const Maneuvers = [
+  "agility",
+  "endurance",
+  "wonderboltAndTalon"
+] as const;
+
+export type Branch = typeof Branches[number];
+export const Branches = ["charm", "might", "sight"] as const;
+
+export type School = typeof Schools[number];
+export const Schools = [
+  "general",
+  "conjuration",
+  "dark",
+  "enhancement",
+  "illusion",
+  "medical",
+  "perception",
+  "protective",
+  "transmutation"
+] as const;
+
+export type GeneralMagicSchool = Maneuver | School | Branch | Spirit;
+export const MagicSpecials = {
+  agility: ["agility"],
+  endurance: ["endurance"],
+  wonderboltAndTalon: ["agility", "endurance", "charisma"],
+  charm: ["charisma"],
+  might: ["strength"],
+  sight: ["perception"],
+  general: [
+    "strength",
+    "perception",
+    "endurance",
+    "charisma",
+    "intelligence",
+    "agility",
+    "luck"
+  ],
+  conjuration: ["intelligence"],
+  dark: ["endurance"],
+  enhancement: ["charisma"],
+  illusion: ["charisma"],
+  medical: ["intelligence"],
+  perception: ["perception"],
+  transmutation: ["endurance"],
+  incantations: [
+    "strength",
+    "perception",
+    "endurance",
+    "charisma",
+    "intelligence",
+    "agility",
+    "luck"
+  ],
+  embers: ["agility"],
+  machines: ["intelligence"],
+  nature: ["endurance"],
+  serenity: ["perception"],
+  shadows: ["intelligence"],
+  streams: ["endurance"],
+  trust: ["charisma"],
+  whispers: ["charisma"]
+} as Record<GeneralMagicSchool, SpecialName[]>;
+
+export const SpellRanges = [
+  "none",
+  "self",
+  "touch",
+  "other",
+  "distance",
+  "splash"
+] as const;
+export const SplashSizes = ["tiny", "small", "large", "huge"];
+
+export const GeneralMagicSchools = Array<GeneralMagicSchool>().concat(
+  Maneuvers,
+  Schools,
+  Branches,
+  Spirits
+);
+
 export type SkillName = typeof SkillNames[number];
 export const SkillNames = [
   "barter",
@@ -98,7 +194,8 @@ export const TYPES = {
     APPAREL: "apparel",
     EFFECT: "effect",
     MISC: "misc",
-    WEAPON: "weapon"
+    WEAPON: "weapon",
+    MAGIC: "magic"
   }
 } as const;
 

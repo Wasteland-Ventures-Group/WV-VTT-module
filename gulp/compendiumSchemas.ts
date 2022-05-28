@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import { COMP_AMMO_JSON_SCHEMA } from "../src/main/typescript/data/item/ammo/source.js";
+import { COMP_MAGIC_JSON_SCHEMA } from "../src/main/typescript/data/item/magic/source.js";
 import { COMP_APPAREL_JSON_SCHEMA } from "../src/main/typescript/data/item/apparel/source.js";
 import { COMP_WEAPON_JSON_SCHEMA } from "../src/main/typescript/data/item/weapon/source.js";
 
@@ -12,6 +13,11 @@ const schemaConfigs: SchemaConfig[] = [
     fileName: "ammo",
     outputBasePath: itemOutputBasePath,
     schema: COMP_AMMO_JSON_SCHEMA
+  },
+  {
+    fileName: "magic",
+    outputBasePath: itemOutputBasePath,
+    schema: COMP_MAGIC_JSON_SCHEMA
   },
   {
     fileName: "apparel",

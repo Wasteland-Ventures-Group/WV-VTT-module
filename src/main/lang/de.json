@@ -20,6 +20,18 @@
         "specialTalent": "Besonderes Talent",
         "virtue": "Tugend"
       },
+      "crippledLimbs": {
+        "status": {
+          "torso": "Verkrüppelter Torso",
+          "head": "Verkrüppelter Kopf",
+          "frontLeftLeg": "Verkrüppeltes Bein Vorne Links",
+          "frontRightLeg": "Verkrüppeltes Bein Vorne Rechts",
+          "rearLeftLeg": "Verkrüppeltes Bein Hinten Links",
+          "rearRightLeg": "Verkrüppeltes Bein Hinten Rechts",
+          "leftWing": "Verkrüppelter Flügel Links",
+          "rightWing": "Verkrüppelter Flügel Rechts"
+        }
+      },
       "equipment": {
         "ammo": {
           "caliber": "Kaliber",

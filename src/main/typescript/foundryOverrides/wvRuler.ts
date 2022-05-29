@@ -1,7 +1,7 @@
 import WvActor from "../actor/wvActor.js";
 import { CONSTANTS } from "../constants.js";
 import { getCanvas, getGame } from "../foundryHelpers.js";
-import { getApUse } from "../movement.js";
+import { getWalkApForDistance } from "../movement.js";
 import { enforceApRulerSettingName, EnforceApSetting } from "../settings.js";
 import { LOG } from "../systemLogger.js";
 
@@ -58,7 +58,7 @@ export default class WvRuler extends Ruler {
       .reduce((a, b) => a + b, 0);
 
     // Get the two AP values.
-    const apUse = getApUse(distance);
+    const apUse = getWalkApForDistance(distance, token.actor);
     const currAp = token.actor.actionPoints.value;
 
     // Check if there are enough AP for the movement.
@@ -115,10 +115,13 @@ export default class WvRuler extends Ruler {
   ): string {
     if (!canvas?.scene) throw new Error("There was no canvas or scene.");
 
+    const token = this._getMovementToken();
+    const actor = token?.actor ?? undefined;
+
     const units = canvas.scene.data.gridUnits;
     const apUnit = getGame().i18n.localize("wv.rules.actionPoints.short");
-    const segmentApUse = getApUse(segmentDistance);
-    const totalApUse = getApUse(totalDistance);
+    const segmentApUse = getWalkApForDistance(segmentDistance, actor);
+    const totalApUse = getWalkApForDistance(totalDistance, actor);
 
     let label = `${Math.round(segmentDistance * 100) / 100} ${units}`;
     if (isTotal)
@@ -128,9 +131,8 @@ export default class WvRuler extends Ruler {
     label += `${segmentApUse} ${apUnit}`;
     if (isTotal) label += ` [${totalApUse} ${apUnit}]`;
 
-    const token = this._getMovementToken();
-    if (token?.actor instanceof WvActor) {
-      const currentAp = token.actor.actionPoints.value;
+    if (actor instanceof WvActor) {
+      const currentAp = actor.actionPoints.value;
       const segmentApRemaining = currentAp - segmentApUse;
       const totalApRemaining = currentAp - totalApUse;
 

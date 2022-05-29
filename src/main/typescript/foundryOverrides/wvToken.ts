@@ -1,5 +1,5 @@
 import { getCanvas, getGame } from "../foundryHelpers.js";
-import { getApUse } from "../movement.js";
+import { getWalkApForDistance } from "../movement.js";
 import WvActor from "../actor/wvActor.js";
 import { LOG } from "../systemLogger.js";
 import { CONSTANTS } from "../constants.js";
@@ -64,8 +64,9 @@ export default class WvToken extends Token {
 
       // Get the two AP values.
       const ray = new Ray(origin, target);
-      const apUse = getApUse(
-        grid.measureDistances([{ ray }], { gridSpaces: true })[0] ?? 0
+      const apUse = getWalkApForDistance(
+        grid.measureDistances([{ ray }], { gridSpaces: true })[0] ?? 0,
+        clone.actor
       );
       const currAp = clone.actor.actionPoints.value;
 

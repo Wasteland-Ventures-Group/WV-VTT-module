@@ -41,6 +41,16 @@ export default class WvActor extends Actor {
     return this.data.data.vitals.strain;
   }
 
+  /** Get the amount of crippled legs of the character. */
+  get crippledLegs(): number {
+    return [
+      this.data.data.vitals.crippledLimbs.legs.front.left,
+      this.data.data.vitals.crippledLimbs.legs.front.right,
+      this.data.data.vitals.crippledLimbs.legs.rear.left,
+      this.data.data.vitals.crippledLimbs.legs.rear.right
+    ].filter(Boolean).length;
+  }
+
   /** Get the ground movement range of the actor. */
   get groundMoveRange(): number {
     return getGroundMoveRange(this);

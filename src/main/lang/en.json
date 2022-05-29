@@ -20,6 +20,18 @@
         "specialTalent": "Special Talent",
         "virtue": "Virtue"
       },
+      "crippledLimbs": {
+        "status": {
+          "torso": "Crippled Torso",
+          "head": "Crippled Head",
+          "frontLeftLeg": "Crippled Front Left Leg",
+          "frontRightLeg": "Crippled Front Right Leg",
+          "rearLeftLeg": "Crippled Rear Left Leg",
+          "rearRightLeg": "Crippled Rear Right Leg",
+          "leftWing": "Crippled Left Wing",
+          "rightWing": "Crippled Right Wing"
+        }
+      },
       "criticals": {
         "title": "Criticals",
         "failure": "Failure",

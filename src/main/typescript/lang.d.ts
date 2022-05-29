@@ -45,6 +45,20 @@ export interface LangSchema {
         /** Label for the virtue */
         virtue: string;
       };
+      /** Labels relating to crippled limbs */
+      crippledLimbs: {
+        /** Status labels for different limbs */
+        status: {
+          torso: string;
+          head: string;
+          frontLeftLeg: string;
+          frontRightLeg: string;
+          rearLeftLeg: string;
+          rearRightLeg: string;
+          leftWing: string;
+          rightWing: string;
+        };
+      };
       /** Labels relating to criticals */
       criticals: {
         /** The grouping title for criticals */

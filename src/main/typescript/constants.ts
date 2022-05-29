@@ -273,11 +273,13 @@ export const CONSTANTS = {
 
     /** Rule constants related to movement */
     movement: {
+      /** The amount of AP needed to walk one meter. */
+      apPerMeter: 0.5,
+
       /**
-       * The amount of meters one AP spent in movement can move an actor by
-       * default.
+       * The amount of additional AP needed to walk one meter per crippled leg.
        */
-      metersPerAp: 2
+      penaltyPerCrippledLeg: 0.5
     }
   },
 

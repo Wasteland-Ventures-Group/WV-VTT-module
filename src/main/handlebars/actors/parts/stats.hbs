@@ -29,6 +29,44 @@
     <table class="flex-fixed no-margin">
       <tbody>
         <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.torso"}}</th>
+          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.torso" {{checked data.data.vitals.crippledLimbs.torso}} /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.head"}}</th>
+          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.head" {{checked data.data.vitals.crippledLimbs.head}} /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.frontLeftLeg"}}</th>
+          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.front.left" {{checked data.data.vitals.crippledLimbs.legs.front.left}} /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.frontRightLeg"}}</th>
+          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.front.right" {{checked data.data.vitals.crippledLimbs.legs.front.right}} /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rearLeftLeg"}}</th>
+          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.rear.left" {{checked data.data.vitals.crippledLimbs.legs.rear.left}} /></td>
+        </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rearRightLeg"}}</th>
+          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.rear.right" {{checked data.data.vitals.crippledLimbs.legs.rear.right}} /></td>
+        </tr>
+        {{~#if data.data.background.race.hasWings~}}
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.leftWing"}}</th>
+            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.wings.left" {{checked data.data.vitals.crippledLimbs.wings.left}} /></td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rightWing"}}</th>
+            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.wings.right" {{checked data.data.vitals.crippledLimbs.wings.right}} /></td>
+          </tr>
+        {{~/if~}}
+      </tbody>
+    </table>
+    <table class="flex-fixed no-margin">
+      <tbody>
+        <tr>
           <th scope="row" class="align-left">{{localize "wv.rules.damage.threshold.long"}}</th>
           <td class="align-right">{{data.data.equipment.damageThreshold.total}}</td>
         </tr>

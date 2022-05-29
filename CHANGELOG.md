@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.18.0] - 2022-05-29
+
+### Added
+
+- crippled limb status to character sheets
+  ([#248](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/248))
+- walk movement penalties for crippled legs
+
 ### Changed
 
 - race handling in characters
@@ -38,12 +46,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     name instead of path and tracks the modifier
 - apparel sheets now allow editing blocked apparel slots
 - insanity to the character sheet
+  ([#327](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/327))
 - resistances to the character sheet
+  ([#327](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/327))
+- character sheets now show the XP needed for the next level
+  ([#297](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/297))
 
 ### Changed
 
 - most actor and item numbers are now easily modifiable and keep track of their
   original source and all contributing modifiers
+  ([#301](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/301))
 - changes to permanent SPECIAL also change the temporary SPECIAL before its own
   modifiers
 - item sheets now show their final stats on the stats tab and allow editing on
@@ -55,7 +68,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - migrations using derived values, they are now only using source values and are
   more robust because of that
+  ([#315](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/315))
 - limited character sheets not scrolling and showing images in huge sizes
+  ([#299](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/299))
 
 ## [0.16.1] - 2022-04-24
 
@@ -704,7 +719,8 @@ version, then continue with upgrading to the next version.
 
 - basic character Actor implementation with editable SPECIALs
 
-[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.2...HEAD
+[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.2...v0.18.0
 [0.17.2]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.1...v0.17.2
 [0.17.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.0...v0.17.1
 [0.17.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.16.1...v0.17.0

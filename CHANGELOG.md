@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- race handling in characters
+  - source data changed from `background.race` to `background.raceName`
+  - runtime data added `background.race`, which is an instance of `Race`
+
 ## [0.17.2] - 2022-05-28
 
 ### Added

@@ -6,7 +6,7 @@ import {
   isPhysicalItemType,
   isSkillName,
   isSpecialName,
-  Race,
+  RaceName,
   SkillName,
   SkillNames,
   SpecialName,
@@ -30,7 +30,7 @@ import WvItem from "../../item/wvItem.js";
 import { getI18nRadiationSicknessLevel } from "../../radiation.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
-import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
+import WvI18n, { I18nRaceNames, I18nSpecial } from "../../wvI18n.js";
 import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
@@ -144,9 +144,9 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   override async getData(): Promise<SheetData> {
-    const racesI18ns = WvI18n.races;
-    const specialI18ns = WvI18n.specials;
-    const skillI18ns = WvI18n.skills;
+    const i18nRaceNames = WvI18n.raceNames;
+    const i18nSpecials = WvI18n.specials;
+    const i18nSkills = WvI18n.skills;
 
     const actorReadiedItem = this.actor.readiedItem;
     const readiedItem =
@@ -202,13 +202,13 @@ export default class WvActorSheet extends ActorSheet {
       ...(await super.getData()),
       sheet: {
         background: {
-          race: racesI18ns[this.actor.data.data.background.race],
-          races: Object.entries(racesI18ns)
+          raceName: i18nRaceNames[this.actor.data.data.background.raceName],
+          raceNames: Object.entries(i18nRaceNames)
             .sort((a, b) => a[1].localeCompare(b[1]))
-            .reduce((races, [race, name]) => {
-              races[race as Race] = name;
-              return races;
-            }, {} as I18nRaces)
+            .reduce((racesNames, [raceName, i18nRaceName]) => {
+              racesNames[raceName as RaceName] = i18nRaceName;
+              return racesNames;
+            }, {} as I18nRaceNames)
         },
         bounds: CONSTANTS.bounds,
         equipment: {
@@ -248,8 +248,8 @@ export default class WvActorSheet extends ActorSheet {
             ...special,
             permTotal: special.permTotal,
             tempTotal: special.tempTotal,
-            long: specialI18ns[specialName].long,
-            short: specialI18ns[specialName].short
+            long: i18nSpecials[specialName].long,
+            short: i18nSpecials[specialName].short
           };
           return specials;
         }, {} as Record<SpecialName, SheetSpecial>),
@@ -259,9 +259,9 @@ export default class WvActorSheet extends ActorSheet {
               ? this.actor.data.data.magic.thaumSpecial
               : CONSTANTS.skillSpecials[skillName];
           skills[skillName] = {
-            name: skillI18ns[skillName],
+            name: i18nSkills[skillName],
             ranks: this.actor.data.data.leveling.skillRanks[skillName],
-            special: specialI18ns[specialName].short,
+            special: i18nSpecials[specialName].short,
             total: this.actor.data.data.skills[skillName]?.total
           };
           return skills;
@@ -271,7 +271,7 @@ export default class WvActorSheet extends ActorSheet {
           thaumSpecials: ThaumaturgySpecials.reduce(
             (thaumSpecials, thaumSpecialName) => {
               thaumSpecials[thaumSpecialName] =
-                specialI18ns[thaumSpecialName].long;
+                i18nSpecials[thaumSpecialName].long;
               return thaumSpecials;
             },
             {} as Record<ThaumaturgySpecial, string>
@@ -841,8 +841,8 @@ export default class WvActorSheet extends ActorSheet {
 }
 
 interface SheetBackground {
-  race: string;
-  races: I18nRaces;
+  raceName: string;
+  raceNames: I18nRaceNames;
 }
 
 interface SheetBound {

@@ -2,7 +2,7 @@ import type {
   I18nApparelTypes,
   I18nCalibers,
   I18nEquipmentSlots,
-  I18nRaces,
+  I18nRaceNames,
   I18nRarities,
   I18nSkills,
   I18nSpecials
@@ -222,7 +222,7 @@ export interface LangSchema {
       /** Labels related to races */
       race: QuantityNames & {
         /** The names of races */
-        names: I18nRaces;
+        names: I18nRaceNames;
       };
       /** Labels related to radiation */
       radiation: {

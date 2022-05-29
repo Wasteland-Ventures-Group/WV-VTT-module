@@ -68,6 +68,7 @@ function migrateActorData(
   removeHistory(actor, updateData);
   migrateSpecials(actor, updateData);
   migrateToCompositeNumbers(actor, updateData);
+  migrateRace(actor, updateData);
 
   return updateData;
 }
@@ -131,4 +132,17 @@ function migrateToCompositeNumbers(
   const background = actor.data._source.data.background;
   if (typeof background.size === "number")
     updateData["data.background.size.source"] = background.size;
+}
+
+function migrateRace(
+  actor: foundry.documents.BaseActor,
+  updateData: Record<string, unknown>
+) {
+  const background = actor.data._source.data.background as unknown as {
+    race: string;
+  };
+  if (typeof background.race === "string") {
+    updateData["data.background.raceName"] = background.race;
+    updateData["data.background.-=race"] = null;
+  }
 }

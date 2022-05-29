@@ -3,7 +3,7 @@ import {
   SpecialName,
   isSpecialName,
   isSkillName,
-  Race,
+  RaceName,
   Caliber,
   Rarity,
   ApparelSlot,
@@ -42,8 +42,8 @@ export type I18nDamageFallOffTypes = Record<DamageFallOffType, string>;
 /** The internationalization structure for equipment slots */
 export type I18nEquipmentSlots = Record<EquipmentSlot, string>;
 
-/** The internationalization structure of the Races */
-export type I18nRaces = Record<Race, string>;
+/** The internationalization structure of the Race names */
+export type I18nRaceNames = Record<RaceName, string>;
 
 /** The internationalization structure of radiation sickness levels. */
 export type I18nRadSicknessLevels = Record<RadiationSicknessLevel, string>;
@@ -108,12 +108,12 @@ export default class WvI18n {
     ) as I18nDamageFallOffTypes;
   }
 
-  /** Get the internationalization of the Races. */
-  static get races(): I18nRaces {
+  /** Get the internationalization of the Race names. */
+  static get raceNames(): I18nRaceNames {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
       "wv.rules.race.names"
-    ) as I18nRaces;
+    ) as I18nRaceNames;
   }
 
   /** Get the internationalization of radiation sickness levels. */

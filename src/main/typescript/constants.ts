@@ -1,5 +1,5 @@
-export type Race = typeof Races[number];
-export const Races = [
+export type RaceName = typeof RaceNames[number];
+export const RaceNames = [
   "earthPony",
   "pegasus",
   "unicorn",
@@ -20,6 +20,17 @@ export const Races = [
   "minotaur",
   "yak"
 ] as const;
+
+export type FlyingRaceName = typeof FlyingRaceNames[number];
+export const FlyingRaceNames = [
+  "pegasus",
+  "griffon",
+  "batPony",
+  "hippogriff"
+] as const;
+
+export type WingedRaceName = typeof WingedRaceNames[number];
+export const WingedRaceNames = [...FlyingRaceNames] as const;
 
 export type SpecialName = typeof SpecialNames[number];
 export const SpecialNames = [
@@ -233,7 +244,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.17.2",
+  needsMigrationVersion: "0.18.0",
 
   /** The number of fixed decimals to round floating point numbers to. */
   fixedDecimals: 2,

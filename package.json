@@ -38,7 +38,7 @@
     "ajv-cli": "^5.0.0",
     "chai": "^4.3.6",
     "del": "^6.1.1",
-    "esbuild": "^0.14.42",
+    "esbuild": "^0.14.43",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",

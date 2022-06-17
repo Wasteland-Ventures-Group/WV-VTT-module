@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - limited actor sheets now render in a smaller size
   ([#330](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/330))
 
+### Fixed
+
+- the race no showing on limited actor sheets
+
 ## [0.18.0] - 2022-05-29
 
 ### Added

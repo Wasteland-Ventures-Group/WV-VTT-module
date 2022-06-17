@@ -1,3 +1,4 @@
+import type WvActor from "../../actor/wvActor.js";
 import {
   CONSTANTS,
   EquipmentSlot,
@@ -61,10 +62,27 @@ export default class WvActorSheet extends ActorSheet {
     return defaultOptions;
   }
 
+  constructor(
+    object: WvActor,
+    options?: Partial<ActorSheet.Options> | undefined
+  ) {
+    super(object, options);
+
+    const defaultOptions = WvActorSheet.defaultOptions;
+    if (!options?.height) {
+      const height = this.limited ? "auto" : defaultOptions.height;
+      this.options.height = height;
+      this.position.height = height;
+    }
+    if (!options?.width) {
+      const width = this.limited ? 600 : defaultOptions.width;
+      this.options.width = width;
+      this.position.width = width;
+    }
+  }
+
   override get template(): string {
-    const isGm = getGame().user?.isGM ?? false;
-    const showLimited = !isGm && this.actor.limited;
-    const sheetName = (showLimited ? "limitedA" : "a") + "ctorSheet.hbs";
+    const sheetName = (this.limited ? "limitedA" : "a") + "ctorSheet.hbs";
     return `${CONSTANTS.systemPath}/handlebars/actors/${sheetName}`;
   }
 
@@ -451,6 +469,12 @@ export default class WvActorSheet extends ActorSheet {
 
     // Perform the update
     return this.actor.updateEmbeddedDocuments("Item", updateData);
+  }
+
+  /** Check whether the sheet is limited for the current user. */
+  get limited(): boolean {
+    const isGm = getGame().user?.isGM ?? false;
+    return !isGm && this.actor.limited;
   }
 
   protected toSheetApparel(apparel: Apparel): SheetApparel {

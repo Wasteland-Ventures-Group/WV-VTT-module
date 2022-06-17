@@ -8,10 +8,14 @@
       <p>{{localize "wv.rules.background.age"}}: {{data.data.background.age}}</p>
     </section>
     <section>
-      <h2>{{localize "wv.rules.background.appearance"}}</h2>
-      <p>{{data.data.background.appearance}}</p>
-      <h2>{{localize "wv.rules.background.cutieMark"}}</h2>
-      <p>{{data.data.background.cutieMark}}</p>
+      <section>
+        <h2>{{localize "wv.rules.background.appearance"}}</h2>
+        {{{enrichHTML data.data.background.appearance}}}
+      </section>
+      <section>
+        <h2>{{localize "wv.rules.background.cutieMark"}}</h2>
+        {{{enrichHTML data.data.background.cutieMark}}}
+      </section>
     </section>
   </div>
 </form>

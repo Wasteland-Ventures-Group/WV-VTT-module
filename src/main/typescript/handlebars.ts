@@ -1,10 +1,17 @@
 import { HANDLEBARS } from "./constants.js";
+import { getGame } from "./foundryHelpers.js";
 
 /** This registers various Handlebars helpers. */
 export function registerHelpers(): void {
   Handlebars.registerHelper("disabled", (testValue) => {
     const result = testValue instanceof Function ? testValue() : testValue;
     return result ? "disabled" : "";
+  });
+
+  Handlebars.registerHelper("enrichHTML", (html) => {
+    return TextEditor.enrichHTML(html, {
+      secrets: getGame().user?.isGM ?? false
+    });
   });
 
   Handlebars.registerHelper("get", (context, path) =>

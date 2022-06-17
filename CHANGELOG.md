@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - limited actor sheets now render in a smaller size
   ([#330](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/330))
+- background descriptions now support rich text editing
+  ([#331](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/331))
 
 ### Fixed
 

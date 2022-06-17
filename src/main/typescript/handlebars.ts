@@ -2,6 +2,11 @@ import { HANDLEBARS } from "./constants.js";
 
 /** This registers various Handlebars helpers. */
 export function registerHelpers(): void {
+  Handlebars.registerHelper("disabled", (testValue) => {
+    const result = testValue instanceof Function ? testValue() : testValue;
+    return result ? "disabled" : "";
+  });
+
   Handlebars.registerHelper("get", (context, path) =>
     foundry.utils.getProperty(
       context,
@@ -12,11 +17,6 @@ export function registerHelpers(): void {
   Handlebars.registerHelper("ternary", (testValue, ...results) => {
     const result = testValue instanceof Function ? testValue() : testValue;
     return result ? results[0] : results[1];
-  });
-
-  Handlebars.registerHelper("disabled", (testValue) => {
-    const result = testValue instanceof Function ? testValue() : testValue;
-    return result ? "disabled" : "";
   });
 }
 

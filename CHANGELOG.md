@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - a total SPECIAL points display to the character sheet
+- a total Skill points display to the character sheet
 
 ### Changed
 

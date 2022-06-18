@@ -249,6 +249,11 @@ export default class WvActorSheet extends ActorSheet {
           totalWeight: helpers.toFixed(totalWeight)
         },
         leveling: {
+          totalSkillPoints: SkillNames.reduce(
+            (points, skillName) =>
+              this.actor.data.data.skills[skillName].source + points,
+            0
+          ),
           totalSpecialPoints: SpecialNames.reduce(
             (points, specialName) =>
               this.actor.data.data.specials[specialName].points + points,
@@ -935,6 +940,7 @@ interface SheetInventory {
 }
 
 interface SheetLeveling {
+  totalSkillPoints: number;
   totalSpecialPoints: number;
 }
 

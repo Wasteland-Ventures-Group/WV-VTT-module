@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#330](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/330))
 - background descriptions now support rich text editing
   ([#331](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/331))
+- the modifier listings in weapon attacks to use tables
+  ([#130](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/130))
 
 ### Fixed
 

@@ -31,58 +31,85 @@
     <div class="spacing-bottom">
       <span>{{localize "wv.rules.criticals.title"}}</span>
       <ul class="no-margin">
-        <li>{{localize "wv.rules.criticals.success"}}: {{details.criticals.success}}</li>
-        <li>{{localize "wv.rules.criticals.failure"}}: {{details.criticals.failure}}</li>
+        <li>{{localize "wv.rules.criticals.success"}}: &lt;={{details.criticals.success}}</li>
+        <li>{{localize "wv.rules.criticals.failure"}}: &gt;={{details.criticals.failure}}</li>
       </ul>
     </div>
-    <div class="modifier-listing">
-      <div class="listing-heading">
-        <span>{{localize "wv.rules.rolls.targets.hitChance"}}</span>
-        <hr />
-      </div>
-      <div class="listing-table grid-2cols">
-        <span>{{localize "wv.system.values.base"}}</span>
-        <span class="align-right">{{details.hit.base}}</span>
+    <table class="modifier-listing">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2">{{localize "wv.rules.rolls.targets.hitChance"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.base"}}</th>
+          <td class="align-right">{{details.hit.base}}</td>
+        </tr>
         {{#each details.hit.modifiers as |modifier|~}}
-          <span>{{localize modifier.key}}</span>
-          <span class="align-right">{{modifier.amount}}</span>
+          <tr>
+            <th scope="row">{{localize modifier.key}}</th>
+            <td class="align-right">{{modifier.amount}}</td>
+          </tr>
         {{~/each}}
-        <span class="listing-total">{{localize "wv.system.values.total"}}</span>
-        <span class="listing-total align-right">{{details.hit.total}}</span>
-      </div>
-    </div>
-    <div class="modifier-listing">
-      <div class="listing-heading">
-        <span>{{localize "wv.rules.damage.baseDamage"}}</span>
-        <hr />
-      </div>
-      <div class="listing-table grid-2cols">
-        <span>{{localize "wv.system.values.base"}}</span>
-        <span class="align-right">{{details.damage.base.base}}</span>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.total"}}</th>
+          <td class="align-right">{{details.hit.total}}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <table class="modifier-listing">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2">{{localize "wv.rules.damage.baseDamage"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.base"}}</th>
+          <td class="align-right">{{details.damage.base.base}}</td>
+        </tr>
         {{#each details.damage.base.modifiers as |modifier|~}}
-          <span>{{localize modifier.key}}</span>
-          <span class="align-right">{{modifier.amount}}</span>
+          <tr>
+            <th scop="row">{{localize modifier.key}}</th>
+            <td class="align-right">{{modifier.amount}}</td>
+          </tr>
         {{~/each}}
-        <span class="listing-total">{{localize "wv.system.values.total"}}</span>
-        <span class="listing-total align-right">{{details.damage.base.total}}</span>
-      </div>
-    </div>
-    <div class="modifier-listing">
-      <div class="listing-heading">
-        <span>{{localize "wv.rules.damage.damageDice"}}</span>
-        <hr />
-      </div>
-      <div class="listing-table grid-2cols">
-        <span>{{localize "wv.system.values.base"}}</span>
-        <span class="align-right">{{details.damage.dice.base}}</span>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.total"}}</th>
+          <td class="align-right">{{details.damage.base.total}}</td>
+        </tr>
+      </tfoot>
+    </table>
+    <table class="modifier-listing">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2">{{localize "wv.rules.damage.damageDice"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.base"}}</th>
+          <td class="align-right">{{details.damage.dice.base}}</td>
+        </tr>
         {{#each details.damage.dice.modifiers as |modifier|~}}
-          <span>{{localize modifier.key}}</span>
-          <span class="align-right">{{modifier.amount}}</span>
+          <tr>
+            <th scope="row">{{localize modifier.key}}</th>
+            <td class="align-right">{{modifier.amount}}</td>
+          </tr>
         {{~/each}}
-        <span class="listing-total">{{localize "wv.system.values.total"}}</span>
-        <span class="listing-total align-right">{{details.damage.dice.total}}</span>
-      </div>
-    </div>
+      </tbody>
+      <tfoot>
+        <tr class="listing-total">
+          <th scope="row">{{localize "wv.system.values.total"}}</th>
+          <td class="align-right">{{details.damage.dice.total}}</td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 </div>
 

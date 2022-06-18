@@ -74,31 +74,13 @@
         filter: sepia(0.5) hue-rotate(60deg)
 
   .modifier-listing
+    margin-top: constants.$spacing-distance * 2
 
-    .listing-heading
-      display: flex
-      margin-top: constants.$spacing-distance * 2
-
-      > hr
-        border-style: none
-        border-bottom:
-          color: constants.$shade-darker
+    tfoot
+      border:
+        bottom:
+          style: double
+          width: 3px
+        top:
           style: solid
           width: 1px
-        flex-grow: 1
-        margin-left: constants.$spacing-distance
-
-    .listing-table
-      grid-template-columns: auto, min-content
-
-      & > *
-        width: 100%
-
-      .listing-total
-        border:
-          bottom:
-            style: double
-            width: 3px
-          top:
-            style: solid
-            width: 1px

@@ -248,6 +248,13 @@ export default class WvActorSheet extends ActorSheet {
           ),
           totalWeight: helpers.toFixed(totalWeight)
         },
+        leveling: {
+          totalSpecialPoints: SpecialNames.reduce(
+            (points, specialName) =>
+              this.actor.data.data.specials[specialName].points + points,
+            0
+          )
+        },
         parts: {
           apparelSlot: HANDLEBARS.partPaths.actor.apparelSlot,
           background: HANDLEBARS.partPaths.actor.background,
@@ -927,6 +934,10 @@ interface SheetInventory {
   totalWeight: string;
 }
 
+interface SheetLeveling {
+  totalSpecialPoints: number;
+}
+
 interface SheetMagic {
   thaumSpecials: Record<ThaumaturgySpecial, string>;
 }
@@ -951,6 +962,7 @@ interface SheetData extends ActorSheet.Data {
     effects: SheetEffect[];
     equipment: SheetEquipment;
     inventory: SheetInventory;
+    leveling: SheetLeveling;
     magic: SheetMagic;
     parts: {
       apparelSlot: string;

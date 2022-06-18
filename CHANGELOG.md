@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- a total SPECIAL points display to the character sheet
+
 ### Changed
 
 - limited actor sheets now render in a smaller size

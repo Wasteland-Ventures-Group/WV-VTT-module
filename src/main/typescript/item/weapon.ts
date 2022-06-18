@@ -1,6 +1,7 @@
 import { TYPES } from "../constants.js";
 import type WeaponDataProperties from "../data/item/weapon/properties.js";
 import { WeaponDataPropertiesData } from "../data/item/weapon/properties.js";
+import { getGame } from "../foundryHelpers.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent a weapon in the Wasteland Ventures system. */
@@ -26,5 +27,20 @@ export default class Weapon extends WvItem {
 
   override prepareBaseData(): void {
     this.data.data = new WeaponDataPropertiesData(this.systemData, this);
+  }
+
+  override finalizeData(): void {
+    if (this.systemData.skill === "unarmed" && this.actor) {
+      Object.values(this.systemData.attacks.attacks).forEach((attack) => {
+        if (!this.actor) return;
+
+        attack.data.damage.dice.add({
+          value: Math.floor(this.actor.data.data.skills.unarmed.total / 20),
+          label: `${getGame().i18n.localize(
+            "wv.rules.skills.names.unarmed"
+          )} - ${getGame().i18n.localize("wv.rules.damage.damageDice")}`
+        });
+      });
+    }
   }
 }

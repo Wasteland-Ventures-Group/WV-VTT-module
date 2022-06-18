@@ -135,6 +135,13 @@ export default class WvItem extends Item {
       .forEach((rule) => rule.onAfterSpecial());
   }
 
+  /**
+   * Finalize the data of the item. Usually this is only done for owned items
+   * and when all computations for the owner are complete.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  finalizeData(): void {}
+
   /** Toggle the compendium link for this item. */
   async toggleCompendiumLink(): Promise<void> {
     const newValue = !this.getFlag(CONSTANTS.systemId, "disableCompendiumLink");

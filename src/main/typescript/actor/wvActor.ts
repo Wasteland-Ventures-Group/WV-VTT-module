@@ -575,6 +575,8 @@ export default class WvActor extends Actor {
     this.applicableRuleElements
       .sort((a, b) => a.priority - b.priority)
       .forEach((rule) => rule.onAfterComputation());
+
+    this.items.forEach((item) => item.finalizeData());
   }
 
   protected override async _preCreate(

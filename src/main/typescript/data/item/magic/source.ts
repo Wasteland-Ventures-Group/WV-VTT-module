@@ -7,9 +7,10 @@ import {
   Spirit,
   SpellRanges,
   TYPES,
-  SplashSizes
+  SplashSizes,
+  GeneralMagicSchool
 } from "../../../constants.js";
-import BaseItem, {
+import BaseItemSource, {
   BASE_ITEM_SOURCE_JSON_SCHEMA
 } from "../common/baseItem/source.js";
 import {
@@ -23,8 +24,8 @@ export default interface MagicDataSource {
   data: MagicDataSourceData;
 }
 
-export class MagicDataSourceData extends BaseItem {
-  school: School | Spirit | Branch | Maneuver = "general";
+export class MagicDataSourceData extends BaseItemSource {
+  school: GeneralMagicSchool = "general";
 }
 
 /** A JSON schema for magic source objects */
@@ -84,10 +85,13 @@ export const MAGIC_SOURCE_JSON_SCHEMA: JSONSchemaType<MagicDataSourceData> = {
     },
     target: {
       description: "Information relating to the spell's target",
-      targetCount: {
-        description: "The number of creatures this spell can target",
-        type: "number",
-        default: 0
+      type: "string",
+      properties: {
+        targetCount: {
+          description: "The number of creatures this spell can target",
+          type: "number",
+          default: 0
+        }
       }
     }
   },

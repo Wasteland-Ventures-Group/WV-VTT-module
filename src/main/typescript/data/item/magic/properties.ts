@@ -1,11 +1,11 @@
 import type WvItem from "../../../item/wvItem.js";
+import BaseItemProperties from "../common/baseItem/properties.js";
 import RulesProperties from "../common/rules/properties.js";
 import type MagicDataSource from "./source.js";
-import BaseItemProperties from "../common/baseItem/properties.js";
 import { MagicDataSourceData } from "./source.js";
 
 export default interface MagicDataProperties extends MagicDataSource {
-  data: MagicDataSourceData;
+  data: MagicDataPropertiesData;
 }
 
 export class MagicDataPropertiesData

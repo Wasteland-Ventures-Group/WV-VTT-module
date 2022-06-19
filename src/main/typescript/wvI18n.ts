@@ -8,7 +8,8 @@ import {
   Rarity,
   ApparelSlot,
   ApparelType,
-  EquipmentSlot
+  EquipmentSlot,
+  GeneralMagicSchool
 } from "./constants.js";
 import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
@@ -32,6 +33,8 @@ export type I18nApparelTypes = Record<ApparelType, string>;
 
 /** The internationalization structure for calibers */
 export type I18nCalibers = Record<Caliber, string>;
+
+export type I18nSchools = Record<GeneralMagicSchool, string>;
 
 /** The internationalization structure for ammo container types */
 export type I18nAmmoContainerTypes = Record<AmmoContainerType, string>;
@@ -90,6 +93,14 @@ export default class WvI18n {
       getGame().i18n.translations,
       "wv.rules.equipment.ammo.calibers"
     ) as I18nCalibers;
+  }
+
+  /** Get the internationalisation of the magic schools */
+  static get schools(): I18nSchools {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.magic.schools"
+    ) as I18nSchools;
   }
 
   /** Get the internationalization of the ammo container types. */

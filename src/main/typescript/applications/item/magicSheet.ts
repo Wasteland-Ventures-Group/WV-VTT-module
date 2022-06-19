@@ -1,14 +1,14 @@
-import { TYPES } from "../../constants";
+import { MagicTypes, TYPES } from "../../constants";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet";
 import { isOfItemType } from "../../item/wvItem.js";
 import type Magic from "../../item/magic";
-import WvI18n, { I18nSchools } from "../../wvI18n";
+import WvI18n, { I18nMagicSchools, I18nMagicTypes } from "../../wvI18n";
 
 export default class MagicSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("magic-sheet");
-    defaultOptions.height = 260;
+    defaultOptions.height = 480;
     defaultOptions.width = 670;
     return defaultOptions;
   }
@@ -22,14 +22,18 @@ export default class MagicSheet extends WvItemSheet {
 
   override async getData(): Promise<SheetData> {
     const data = await super.getData();
-    const schoolsI18n = WvI18n.schools;
+    const schoolsI18n = WvI18n.magicSchools;
+
+    const school: string = schoolsI18n[this.item.systemData.school];
+    const magicType: string = WvI18n.magicTypes[this.item.systemData.type];
 
     return {
       ...data,
       sheet: {
         ...data.sheet,
         schools: schoolsI18n,
-        school: schoolsI18n[this.item.systemData.school]
+        school: school,
+        type: magicType
       }
     };
   }
@@ -37,7 +41,8 @@ export default class MagicSheet extends WvItemSheet {
 
 export interface SheetMagic {
   school: string;
-  schools: I18nSchools;
+  schools: I18nMagicSchools;
+  type: string;
 }
 
 export interface SheetData extends ItemSheetData {

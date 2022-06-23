@@ -27,6 +27,7 @@ import type {
 } from "./rolls/criticalsModifiers.js";
 import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
 import type * as settings from "./settings.js";
+import type { LangSchemaPaths } from "./lang.js";
 
 declare global {
   interface SourceConfig {
@@ -111,6 +112,11 @@ declare global {
       fcs: typeof flagCriticalSuccesses;
       fcf: typeof flagCriticalFailure;
     }
+  }
+
+  interface Localization {
+    localize(stringId: LangSchemaPaths): string;
+    format(stringId: LangSchemaPaths, data?: Record<string, unknown>): string;
   }
 }
 

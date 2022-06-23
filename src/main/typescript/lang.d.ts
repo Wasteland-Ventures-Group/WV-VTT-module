@@ -1,3 +1,4 @@
+import type { Join, PathsToStringProps } from "./helperTypes.js";
 import type {
   I18nApparelTypes,
   I18nCalibers,
@@ -7,6 +8,8 @@ import type {
   I18nSkills,
   I18nSpecials
 } from "./wvI18n.js";
+
+export type LangSchemaPaths = Join<PathsToStringProps<LangSchema>, ".">;
 
 export interface LangSchema {
   /** The root element for the Wasteland Ventures system localization */

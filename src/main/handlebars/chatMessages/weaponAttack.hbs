@@ -31,8 +31,8 @@
     <div class="spacing-bottom">
       <span>{{localize "wv.rules.criticals.title"}}</span>
       <ul class="no-margin">
-        <li>{{localize "wv.rules.criticals.success"}}: &lt;={{details.criticals.success}}</li>
-        <li>{{localize "wv.rules.criticals.failure"}}: &gt;={{details.criticals.failure}}</li>
+        <li>{{localize "wv.rules.criticals.success"}}: &lt;={{details.criticals.success.total}}</li>
+        <li>{{localize "wv.rules.criticals.failure"}}: &gt;={{details.criticals.failure.total}}</li>
       </ul>
     </div>
     <table class="modifier-listing">
@@ -44,12 +44,12 @@
       <tbody>
         <tr>
           <th scope="row">{{localize "wv.system.values.base"}}</th>
-          <td class="align-right">{{details.hit.base}}</td>
+          <td class="align-right">{{details.hit.source}}</td>
         </tr>
-        {{#each details.hit.modifiers as |modifier|~}}
+        {{#each details.hit.components as |component|~}}
           <tr>
-            <th scope="row">{{localize modifier.key}}</th>
-            <td class="align-right">{{modifier.amount}}</td>
+            <th scope="row">{{component.label}}</th>
+            <td class="align-right">{{component.value}}</td>
           </tr>
         {{~/each}}
       </tbody>
@@ -69,12 +69,12 @@
       <tbody>
         <tr>
           <th scope="row">{{localize "wv.system.values.base"}}</th>
-          <td class="align-right">{{details.damage.base.base}}</td>
+          <td class="align-right">{{details.damage.base.source}}</td>
         </tr>
-        {{#each details.damage.base.modifiers as |modifier|~}}
+        {{#each details.damage.base.components as |component|~}}
           <tr>
-            <th scop="row">{{localize modifier.key}}</th>
-            <td class="align-right">{{modifier.amount}}</td>
+            <th scope="row">{{component.label}}</th>
+            <td class="align-right">{{component.value}}</td>
           </tr>
         {{~/each}}
       </tbody>
@@ -94,12 +94,12 @@
       <tbody>
         <tr>
           <th scope="row">{{localize "wv.system.values.base"}}</th>
-          <td class="align-right">{{details.damage.dice.base}}</td>
+          <td class="align-right">{{details.damage.dice.source}}</td>
         </tr>
-        {{#each details.damage.dice.modifiers as |modifier|~}}
+        {{#each details.damage.dice.components as |component|~}}
           <tr>
-            <th scope="row">{{localize modifier.key}}</th>
-            <td class="align-right">{{modifier.amount}}</td>
+            <th scope="row">{{component.label}}</th>
+            <td class="align-right">{{component.value}}</td>
           </tr>
         {{~/each}}
       </tbody>

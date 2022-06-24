@@ -6,6 +6,7 @@ import Prompt, {
 } from "../../applications/prompt.js";
 import { CONSTANTS, SpecialName, SpecialNames } from "../../constants.js";
 import { Special } from "../../data/actor/character/specials/properties.js";
+import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";
@@ -13,6 +14,8 @@ import { getGame } from "../../foundryHelpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 import * as interact from "../../interaction.js";
+import { LOG } from "../../systemLogger.js";
+import SystemRulesError from "../../systemRulesError.js";
 import type Weapon from "../weapon.js";
 import * as ranges from "./ranges.js";
 
@@ -36,10 +39,44 @@ export default class Attack {
    */
   async execute(options: RollOptions = {}): Promise<void> {
     // Get owners and data -----------------------------------------------------
+    let weapon = this.weapon;
     let token = interact.getFirstControlledToken();
-    const actor = this.weapon.actor ?? interact.getActor(token);
+    let actor = weapon.actor ?? interact.getActor(token);
     token ??= interact.getActorToken(actor);
     const target = interact.getFirstTarget();
+
+    if (!actor)
+      throw new SystemRulesError(
+        "Can not execute a weapon attack without an actor!"
+      );
+
+    // Clone the weapon, so we can finalize it with the selected actor and other
+    // external data.
+    const originalActor = actor;
+    actor = await actor.clone();
+    if (!actor) {
+      LOG.error("Could not clone the actor: ", originalActor);
+      return;
+    }
+
+    const originalWeapon = weapon;
+    const clonedWeapon = await weapon.clone({ parent: actor });
+    if (!clonedWeapon) {
+      LOG.error("Could not clone the weapon: ", originalWeapon);
+      return;
+    }
+    weapon = clonedWeapon;
+
+    // Only finalize, if the weapon hasn't already been finalized
+    if (!this.weapon.actor) {
+      weapon.finalizeData();
+    }
+
+    const attack = weapon.systemData.attacks.attacks[this.name];
+    if (!attack) {
+      LOG.error(`Could not find attack "${this.name}" on: `, weapon);
+      return;
+    }
 
     // Get needed external data ------------------------------------------------
     let externalData: ExternalData;
@@ -49,64 +86,48 @@ export default class Attack {
       if (e === "closed") return;
       else throw e;
     }
-    const {
-      alias,
-      ap: previousAp,
-      modifier: promptHitModifier,
-      range,
-      skillTotal,
-      critSuccess,
-      critFailure,
-      ...promptSpecialValues
-    } = externalData;
-
-    const specials = this.getSpecialsFromPromptSpecials(promptSpecialValues);
-
-    // Get speaker -------------------------------------------------------------
-    const speaker = {
-      scene: null,
-      actor: actor?.id ?? null,
-      token: null,
-      alias
-    };
+    const { alias, modifier, range } = externalData;
 
     // Create common chat message data -----------------------------------------
     const commonData: ChatMessageDataConstructorData =
-      this.createDefaultMessageData(speaker, options);
+      this.createDefaultMessageData(
+        {
+          scene: null,
+          actor: actor.id,
+          token: token?.id ?? null,
+          alias
+        },
+        options
+      );
 
     // Get range bracket -------------------------------------------------------
     const rangeBracket = ranges.getRangeBracket(
-      this.weapon.systemData.ranges,
+      weapon.systemData.ranges,
       range,
-      specials
+      actor.data.data.specials
     );
-    const outOfRange = ranges.RangeBracket.OUT_OF_RANGE === rangeBracket;
-
-    // Calculate damage dice ---------------------------------------------------
-    const strengthDamageDiceMod = this.getStrengthDamageDiceMod(
-      specials.strength?.tempTotal ?? 0
-    );
-    const rangeDamageDiceMod = this.getRangeDamageDiceMod(rangeBracket);
-    const damageDice = this.getDamageDice(
-      strengthDamageDiceMod,
-      rangeDamageDiceMod
-    );
+    const isOutOfRange = ranges.RangeBracket.OUT_OF_RANGE === rangeBracket;
+    attack.applyRangeDamageDiceMod(range);
 
     // Calculate hit roll target -----------------------------------------------
     const rangeModifier = ranges.getRangeModifier(
-      this.weapon.systemData.ranges,
+      weapon.systemData.ranges,
       rangeBracket
     );
-    const hitTotal = this.getHitRollTarget(
-      skillTotal,
+
+    const critSuccess = actor.data.data.secondary.criticals.success;
+    const critFailure = actor.data.data.secondary.criticals.failure;
+    const hitChance = attack.getHitRollTarget(
+      actor.data.data.skills[weapon.systemData.skill],
       rangeModifier,
-      promptHitModifier,
-      critSuccess,
-      critFailure
+      modifier,
+      critSuccess.total,
+      critFailure.total
     );
 
     // Calculate AP ------------------------------------------------------------
-    const remainingAp = outOfRange
+    const previousAp = actor.data.data.vitals.actionPoints.value;
+    const remainingAp = isOutOfRange
       ? previousAp
       : token?.inCombat
       ? previousAp - this.data.ap.total
@@ -123,29 +144,14 @@ export default class Attack {
           remaining: remainingAp
         },
         criticals: {
-          failure: critFailure,
-          success: critSuccess
+          failure: critFailure.toObject(false),
+          success: critSuccess.toObject(false)
         },
         damage: {
-          base: {
-            base: this.data.damage.base.source,
-            modifiers: this.getDamageBaseModifierFlags(),
-            total: this.data.damage.base.total
-          },
-          dice: {
-            base: this.data.damage.dice.source,
-            modifiers: this.getDamageDiceModifierFlags(
-              strengthDamageDiceMod,
-              rangeDamageDiceMod
-            ),
-            total: damageDice
-          }
+          base: this.data.damage.base.toObject(false),
+          dice: this.data.damage.dice.toObject(false)
         },
-        hit: {
-          base: skillTotal,
-          modifiers: this.getHitModifierFlags(rangeModifier, promptHitModifier),
-          total: hitTotal
-        },
+        hit: hitChance.toObject(false),
         range: {
           bracket: rangeBracket,
           distance: range
@@ -153,7 +159,10 @@ export default class Attack {
       },
       weapon: {
         display: {
-          ranges: ranges.getDisplayRanges(this.weapon.systemData, specials)
+          ranges: ranges.getDisplayRanges(
+            this.weapon.systemData,
+            actor.data.data.specials
+          )
         },
         image: this.weapon.img,
         name: this.weapon.name,
@@ -167,7 +176,7 @@ export default class Attack {
     };
 
     // Check range -------------------------------------------------------------
-    if (outOfRange) {
+    if (isOutOfRange) {
       this.createOutOfRangeMessage(commonData, commonFlags);
       return;
     }
@@ -183,14 +192,17 @@ export default class Attack {
 
     // Hit roll ----------------------------------------------------------------
     const hitRoll = new Roll(
-      Formulator.skill(hitTotal)
-        .criticals({ success: critSuccess, failure: critFailure })
+      Formulator.skill(hitChance.total)
+        .criticals({ success: critSuccess.total, failure: critFailure.total })
         .toString()
     ).evaluate({ async: false });
 
     // Damage roll -------------------------------------------------------------
     const damageRoll = new Roll(
-      Formulator.damage(this.data.damage.base.total, damageDice).toString()
+      Formulator.damage(
+        this.data.damage.base.total,
+        this.data.damage.dice.total
+      ).toString()
     ).evaluate({ async: false });
 
     // Create attack message ---------------------------------------------------
@@ -239,11 +251,39 @@ export default class Attack {
   }
 
   /**
+   * Apply a Strength damage dice modifier to the attack, based on the Strength
+   * of the given Actor.
+   */
+  applyStrengthDamageDiceMod(actor: WvActor): void {
+    const value = this.getStrengthDamageDiceMod(
+      actor.data.data.specials.strength.tempTotal
+    );
+    if (value)
+      this.data.damage.dice.add({
+        value,
+        label: `${getGame().i18n.localize(
+          "wv.rules.special.names.strength.long"
+        )} - ${getGame().i18n.localize("wv.rules.damage.damageDice")}`
+      });
+  }
+
+  protected applyRangeDamageDiceMod(range: ranges.RangeBracket): void {
+    const value = this.getRangeDamageDiceMod(range);
+    if (value)
+      this.data.damage.dice.add({
+        value,
+        label: `${getGame().i18n.localize(
+          "wv.rules.range.singular"
+        )} - ${getGame().i18n.localize("wv.rules.damage.damageDice")}`
+      });
+  }
+
+  /**
    * Get the data external to the attack.
    * @throws If the potential Prompt is closed without submitting
    */
   protected async getExternalData(
-    actor: WvActor | null | undefined,
+    actor: WvActor,
     token: Token | null | undefined,
     target: Token | null | undefined
   ): Promise<ExternalData> {
@@ -254,14 +294,7 @@ export default class Attack {
         alias: {
           type: "text",
           label: i18n.localize("wv.system.misc.speakerAlias"),
-          value: actor?.name
-        },
-        ap: {
-          type: "number",
-          label: i18n.localize("wv.rules.actionPoints.long"),
-          value: actor?.actionPoints.value,
-          min: 0,
-          max: actor?.actionPoints.max ?? 99
+          value: actor.name
         },
         modifier: {
           type: "number",
@@ -276,29 +309,6 @@ export default class Attack {
           value: interact.getRange(token, target) ?? 0,
           min: 0,
           max: 99999
-        },
-        ...this.getSpecialPromptSpecs(actor),
-        skillTotal: {
-          type: "number",
-          label: i18n.localize("wv.rules.skills.singular"),
-          value:
-            actor?.data.data.skills[this.weapon.systemData.skill].total ?? 0,
-          min: 0,
-          max: 100
-        },
-        critSuccess: {
-          type: "number",
-          label: i18n.localize("wv.rules.criticals.successChance"),
-          value: actor?.data.data.secondary.criticals.success.total ?? 5,
-          min: 0,
-          max: 100
-        },
-        critFailure: {
-          type: "number",
-          label: i18n.localize("wv.rules.criticals.failureChance"),
-          value: actor?.data.data.secondary.criticals.failure.total ?? 96,
-          min: 0,
-          max: 100
         }
       },
       { title: `${this.weapon.data.name} - ${this.name}` }
@@ -377,20 +387,38 @@ export default class Attack {
 
   /** Get the hit roll target. */
   protected getHitRollTarget(
-    skillTotal: number,
+    skill: CompositeNumber,
     rangeModifier: number,
     promptHitModifier: number,
     criticalSuccess: number,
     criticalFailure: number
-  ) {
-    const hitTotal = skillTotal + rangeModifier + promptHitModifier;
-    return Math.clamped(hitTotal, criticalSuccess, criticalFailure);
-  }
+  ): CompositeNumber {
+    const hitChance = skill.clone();
 
-  /** Get the amount of damage d6 of this attack. */
-  protected getDamageDice(strengthMod: number, rangeMod: number): number {
-    const dice = this.data.damage.dice.total + strengthMod + rangeMod;
-    return dice > 0 ? dice : 0;
+    hitChance.add({
+      value: rangeModifier,
+      label: getGame().i18n.localize("wv.rules.range.singular")
+    });
+    hitChance.add({
+      value: promptHitModifier,
+      label: getGame().i18n.localize("wv.system.misc.modifier")
+    });
+
+    const total = hitChance.total;
+    if (total < criticalSuccess) {
+      hitChance.add({
+        value: criticalSuccess - total,
+        label: getGame().i18n.localize("wv.rules.criticals.success")
+      });
+    }
+    if (total > criticalFailure) {
+      hitChance.add({
+        value: total - criticalFailure,
+        label: getGame().i18n.localize("wv.rules.criticals.failure")
+      });
+    }
+
+    return hitChance;
   }
 
   /** Get the Strength damage modifier dice for the given Strength value. */
@@ -597,46 +625,26 @@ export function isWeaponAttackDragData(
   );
 }
 
-/**
- * The Prompt input spec for an attack prompt, can have optional SPECIAL specs
- */
+/** The Prompt input spec for an attack prompt */
 type PromptSpec = {
   alias: TextInputSpec;
-  ap: NumberInputSpec;
   modifier: NumberInputSpec;
   range: NumberInputSpec;
-  skillTotal: NumberInputSpec;
-  critSuccess: NumberInputSpec;
-  critFailure: NumberInputSpec;
-} & Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, NumberInputSpec>;
+};
 
-/** Data external to the attack, can have optional SPECIAL data */
-type ExternalData = {
+/** Data external to the attack */
+interface ExternalData {
   /** The chat message alias of the executing actor */
   alias: string;
-
-  /** The current action points of the actor */
-  ap: number;
 
   /** A possible modifier for the attack */
   modifier: number;
 
   /** The range to the target in meters */
   range: number;
+}
 
-  /** The skill total of the executing actor */
-  skillTotal: number;
-
-  /** The critical success rate of the actor */
-  critSuccess: number;
-
-  /** The critical failure rate of the actor */
-  critFailure: number;
-} & Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, number>;
-
-/**
- * Options for modifying Attack rolls.
- */
+/** Options for modifying Attack rolls. */
 export interface RollOptions {
   /**
    * Whether to whisper the Attack to GMs.

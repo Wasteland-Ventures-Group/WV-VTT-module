@@ -26,6 +26,11 @@ import WvI18n from "../wvI18n.js";
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
+  /** Get an identifying string for this Actor. */
+  get ident(): string {
+    return `[${this.id}] "${this.name}"`;
+  }
+
   /** A convenience getter for the Actor's hit points. */
   get hitPoints(): CompositeResource {
     return this.data.data.vitals.hitPoints;

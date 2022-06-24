@@ -62,6 +62,16 @@ export default class WvItem extends Item {
     }
   }
 
+  /** Get an identifying string for this Item. */
+  get ident(): string {
+    const thisIdent = `[${this.id}] "${this.name}"`;
+    if (this.parent) {
+      return `${this.parent.ident} -> ${thisIdent}`;
+    } else {
+      return thisIdent;
+    }
+  }
+
   /** Get the amount of the item, if it has any. */
   get amount(): number | undefined {
     return "amount" in this.data.data ? this.data.data.amount : undefined;

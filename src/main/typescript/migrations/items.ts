@@ -10,7 +10,7 @@ import {
   getUpdateDataFromCompendium,
   hasEnabledCompendiumLink
 } from "../item/wvItem.js";
-import { LOG } from "../systemLogger.js";
+import SystemLogger, { LOG } from "../systemLogger.js";
 import { isLastMigrationOlderThan } from "./world.js";
 
 export default function migrateItems(currentVersion: string): void {
@@ -56,27 +56,23 @@ export default function migrateItems(currentVersion: string): void {
   }
 }
 
-function itemIdent(item: foundry.documents.BaseItem): string {
-  if (item.parent) {
-    return `[${item.parent.id}] "${item.parent.name}" -> [${item.id}] "${item.name}"`;
-  } else {
-    return `[${item.id}] "${item.name}"`;
-  }
-}
-
 async function migrateItem(
   item: foundry.documents.BaseItem,
   currentVersion: string
 ): Promise<void> {
   try {
-    LOG.info(`Collecting update data for Item ${itemIdent(item)}`);
+    LOG.info(
+      `Collecting update data for Item ${SystemLogger.getItemIdent(item)}`
+    );
     const disabledLink = item.getFlag(
       CONSTANTS.systemId,
       "disableCompendiumLink"
     );
     if (disabledLink) {
       LOG.debug(
-        `The item is flagged to disable the compendium link. ${itemIdent(item)}`
+        `The item is flagged to disable the compendium link. ${SystemLogger.getItemIdent(
+          item
+        )}`
       );
     }
 
@@ -94,7 +90,10 @@ async function migrateItem(
       migrateMandatoryReload(item, updateData);
       migrateToCompositeNumbers(item, updateData);
       if (!foundry.utils.isObjectEmpty(updateData)) {
-        LOG.info(`Migrating Item ${itemIdent(item)} with`, updateData);
+        LOG.info(
+          `Migrating Item ${SystemLogger.getItemIdent(item)} with`,
+          updateData
+        );
         await item.update(updateData);
         await item.setFlag(
           CONSTANTS.systemId,
@@ -105,7 +104,9 @@ async function migrateItem(
     }
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    LOG.error(`Failed migration for Item ${itemIdent(item)}: ${message}`);
+    LOG.error(
+      `Failed migration for Item ${SystemLogger.getItemIdent(item)}: ${message}`
+    );
   }
 }
 
@@ -177,7 +178,7 @@ async function migrateFromCompendium(
   const compendiumUpdateData = await getUpdateDataFromCompendium(item);
   if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
     LOG.info(
-      `Updating Item ${itemIdent(item)} from Compendium with`,
+      `Updating Item ${SystemLogger.getItemIdent(item)} from Compendium with`,
       updateData
     );
     await item.update(
@@ -192,7 +193,10 @@ async function migrateFromCompendium(
   }
 
   if (!foundry.utils.isObjectEmpty(updateData)) {
-    LOG.info(`Migrating Item ${itemIdent(item)} with`, updateData);
+    LOG.info(
+      `Migrating Item ${SystemLogger.getItemIdent(item)} with`,
+      updateData
+    );
     await item.update(updateData);
     await item.setFlag(
       CONSTANTS.systemId,

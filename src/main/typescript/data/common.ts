@@ -111,6 +111,17 @@ export class CompositeNumber
       };
     }
   }
+
+  /** Clone this CompositeNumber. */
+  clone(): CompositeNumber {
+    const clone = new CompositeNumber(this.source);
+
+    for (const component of this.#components) {
+      clone.add(component);
+    }
+
+    return clone;
+  }
 }
 
 /** A CompositeNumber component */
@@ -177,11 +188,22 @@ export class CompositeResource extends CompositeNumber implements Resource {
    * maximum.
    */
   constructor(public value: number, public source: number) {
-    super();
+    super(source);
   }
 
   /** Get the max value of the resource. This is an alias for total. */
   get max(): number {
     return this.total;
+  }
+
+  /** Clone this CompositeResource. */
+  override clone(): CompositeResource {
+    const clone = new CompositeResource(this.value, this.source);
+
+    for (const component of this.components) {
+      clone.add(component);
+    }
+
+    return clone;
   }
 }

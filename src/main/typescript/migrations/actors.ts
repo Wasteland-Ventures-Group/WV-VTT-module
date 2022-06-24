@@ -1,5 +1,5 @@
 import { CONSTANTS, SpecialName, SpecialNames } from "../constants.js";
-import { LOG } from "../systemLogger.js";
+import SystemLogger, { LOG } from "../systemLogger.js";
 
 export default function migrateActors(currentVersion: string): void {
   if (!(game instanceof Game)) {
@@ -36,11 +36,13 @@ async function migrateActor(
   currentVersion: string
 ): Promise<void> {
   try {
-    LOG.info(`Collecting update data for Actor [${actor.id}] "${actor.name}"`);
+    LOG.info(
+      `Collecting update data for Actor ${SystemLogger.getActorIdent(actor)}`
+    );
     const updateData = migrateActorData(actor);
     if (!foundry.utils.isObjectEmpty(updateData)) {
       LOG.info(
-        `Migrating Actor [${actor.id}] "${actor.name}" with`,
+        `Migrating Actor ${SystemLogger.getActorIdent(actor)} with`,
         updateData
       );
       await actor.update(updateData, { enforceTypes: false });
@@ -53,7 +55,9 @@ async function migrateActor(
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     LOG.error(
-      `Failed migration for Actor [${actor.id}] "${actor.name}": ${message}`
+      `Failed migration for Actor ${SystemLogger.getActorIdent(
+        actor
+      )}: ${message}`
     );
   }
 }

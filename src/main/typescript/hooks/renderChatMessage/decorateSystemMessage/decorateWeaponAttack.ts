@@ -1,4 +1,6 @@
 import { CONSTANTS } from "../../../constants.js";
+import type { SerializedCompositeNumber } from "../../../data/common.js";
+import { CompositeNumber } from "../../../data/common.js";
 import { scrollChatToBottom } from "../../../foundryHelpers.js";
 import { RangeBracket } from "../../../item/weapon/ranges.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
@@ -18,6 +20,18 @@ export default async function decorateWeaponAttack(
 
   const commonData: CommonWeaponAttackTemplateData = {
     ...flags,
+    details: {
+      ...flags.details,
+      criticals: {
+        failure: CompositeNumber.from(flags.details.criticals.failure),
+        success: CompositeNumber.from(flags.details.criticals.success)
+      },
+      damage: {
+        base: CompositeNumber.from(flags.details.damage.base),
+        dice: CompositeNumber.from(flags.details.damage.dice)
+      },
+      hit: CompositeNumber.from(flags.details.hit)
+    },
     template: {
       keys: {
         rangeBracket: getRangeBracketKey(flags)
@@ -126,14 +140,14 @@ export interface CommonWeaponAttackFlags {
       remaining: number;
     };
     criticals: {
-      failure: number;
-      success: number;
+      failure: SerializedCompositeNumber;
+      success: SerializedCompositeNumber;
     };
     damage: {
-      base: DetailsListingInfo;
-      dice: DetailsListingInfo;
+      base: SerializedCompositeNumber;
+      dice: SerializedCompositeNumber;
     };
-    hit: DetailsListingInfo;
+    hit: SerializedCompositeNumber;
     range: {
       bracket: RangeBracket;
       distance: number;
@@ -183,14 +197,19 @@ export interface ModifierFlags {
   key: string;
 }
 
-interface DetailsListingInfo {
-  base: number;
-  modifiers: ModifierFlags[];
-  total: number;
-}
-
 /** The template data common for both executed and not executed attacks. */
 type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
+  details: CommonWeaponAttackFlags["details"] & {
+    criticals: {
+      failure: CompositeNumber;
+      success: CompositeNumber;
+    };
+    damage: {
+      base: CompositeNumber;
+      dice: CompositeNumber;
+    };
+    hit: CompositeNumber;
+  };
   template: {
     keys: {
       rangeBracket: string | undefined;

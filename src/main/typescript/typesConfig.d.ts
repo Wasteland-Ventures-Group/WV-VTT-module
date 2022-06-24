@@ -27,7 +27,7 @@ import type {
 } from "./rolls/criticalsModifiers.js";
 import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
 import type * as settings from "./settings.js";
-import type { LangSchemaPaths } from "./lang.js";
+import type { WvI18nKey } from "./lang.js";
 
 declare global {
   interface SourceConfig {
@@ -115,8 +115,8 @@ declare global {
   }
 
   interface Localization {
-    localize(stringId: LangSchemaPaths): string;
-    format(stringId: LangSchemaPaths, data?: Record<string, unknown>): string;
+    localize(stringId: WvI18nKey): string;
+    format(stringId: WvI18nKey, data?: Record<string, unknown>): string;
   }
 }
 

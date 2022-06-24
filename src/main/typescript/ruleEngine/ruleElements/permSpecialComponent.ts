@@ -39,7 +39,7 @@ export default class PermSpecialComponent extends RuleElement {
 
     (this.property as Special).addPerm({
       value: this.value,
-      label: this.fullLabel
+      labelComponents: this.labelComponents
     });
   }
 }

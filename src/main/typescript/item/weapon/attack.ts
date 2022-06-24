@@ -4,8 +4,7 @@ import Prompt, {
   NumberInputSpec,
   TextInputSpec
 } from "../../applications/prompt.js";
-import { CONSTANTS, SpecialName, SpecialNames } from "../../constants.js";
-import { Special } from "../../data/actor/character/specials/properties.js";
+import { CONSTANTS } from "../../constants.js";
 import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import type DragData from "../../dragData.js";
@@ -211,17 +210,8 @@ export default class Attack {
 
   /** Get the system formula representation of the damage of this attack. */
   get damageFormula(): string {
-    if (!this.data.damage.diceRange)
+    if (!this.data.damage.diceRange || this.weapon.actor)
       return `${this.data.damage.base.total}+(${this.data.damage.dice.total})`;
-
-    if (this.weapon.actor) {
-      const dice =
-        this.data.damage.dice.total +
-        this.getStrengthDamageDiceMod(
-          this.weapon.actor.data.data.specials.strength.tempTotal
-        );
-      return `${this.data.damage.base.total}+(${dice})`;
-    }
 
     const low =
       this.data.damage.dice.total +
@@ -239,11 +229,9 @@ export default class Attack {
     const low = this.data.damage.base.total;
     let high = low + this.data.damage.dice.total;
 
-    if (this.data.damage.diceRange) {
+    if (this.data.damage.diceRange && !this.weapon.actor) {
       high += this.getStrengthDamageDiceMod(
-        this.weapon.actor
-          ? this.weapon.actor.data.data.specials.strength.tempTotal
-          : CONSTANTS.bounds.special.points.max
+        CONSTANTS.bounds.special.points.max
       );
     }
 
@@ -261,9 +249,11 @@ export default class Attack {
     if (value)
       this.data.damage.dice.add({
         value,
-        label: `${getGame().i18n.localize(
-          "wv.rules.special.names.strength.long"
-        )} - ${getGame().i18n.localize("wv.rules.damage.damageDice")}`
+        labelComponents: [
+          { key: "wv.rules.special.names.strength.long" },
+          { text: "-" },
+          { key: "wv.rules.damage.damageDice" }
+        ]
       });
   }
 
@@ -272,9 +262,11 @@ export default class Attack {
     if (value)
       this.data.damage.dice.add({
         value,
-        label: `${getGame().i18n.localize(
-          "wv.rules.range.singular"
-        )} - ${getGame().i18n.localize("wv.rules.damage.damageDice")}`
+        labelComponents: [
+          { key: "wv.rules.range.singular" },
+          { text: "-" },
+          { key: "wv.rules.damage.damageDice" }
+        ]
       });
   }
 
@@ -315,76 +307,6 @@ export default class Attack {
     );
   }
 
-  /** Get the number input specs for the SPECIALs. */
-  protected getSpecialPromptSpecs(
-    actor: WvActor | null | undefined
-  ): Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, NumberInputSpec> {
-    const i18n = getGame().i18n;
-    const i18nMod = i18n.localize("wv.system.misc.modifier");
-    const i18nBase = i18n.localize("wv.system.values.base");
-    const i18nTemp = i18n.localize("wv.rules.special.tempTotal");
-    const i18nPerm = i18n.localize("wv.rules.special.permTotal");
-
-    const specialNames = ranges.getRangesSpecials(
-      this.weapon.systemData.ranges
-    );
-    if (this.data.damage.diceRange) specialNames.add("strength");
-
-    return [...specialNames].reduce((specs, specialName) => {
-      const i18nSpecial = i18n.localize(
-        `wv.rules.special.names.${specialName}.long`
-      );
-      specs[`${specialName}Base`] = {
-        type: "number",
-        label: `${i18nSpecial} (${i18nBase})`,
-        value: actor?.data.data.specials[specialName].points ?? 0,
-        min: 0,
-        max: 15
-      };
-
-      specs[`${specialName}Temp`] = {
-        type: "number",
-        label: `${i18nSpecial} (${i18nTemp} ${i18nMod})`,
-        value: actor?.data.data.specials[specialName].tempModifier ?? 0,
-        min: -15,
-        max: 15
-      };
-
-      specs[`${specialName}Perm`] = {
-        type: "number",
-        label: `${i18nSpecial} (${i18nPerm} ${i18nMod})`,
-        value: actor?.data.data.specials[specialName].permModifier ?? 0,
-        min: -15,
-        max: 15
-      };
-
-      return specs;
-    }, {} as Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, NumberInputSpec>);
-  }
-
-  /** Transform the results of prompting for SPECIALs back to Specials. */
-  protected getSpecialsFromPromptSpecials(
-    promptValues: Record<`${SpecialName}${"Base" | "Temp" | "Perm"}`, number>
-  ): Record<SpecialName, Special> {
-    return SpecialNames.reduce((specials, specialName) => {
-      if (promptValues[`${specialName}Base`]) {
-        const points = promptValues[`${specialName}Base`];
-        const permMod = promptValues[`${specialName}Perm`];
-        const tempMod = promptValues[`${specialName}Temp`];
-        const special = new Special(points);
-        if (permMod || tempMod) {
-          const label = getGame().i18n.localize(
-            "wv.system.prompt.defaults.title"
-          );
-          if (permMod) special.addPerm({ value: permMod, label });
-          if (tempMod) special.addTemp({ value: tempMod, label });
-        }
-        specials[specialName] = special;
-      }
-      return specials;
-    }, {} as Record<SpecialName, Special>);
-  }
-
   /** Get the hit roll target. */
   protected getHitRollTarget(
     skill: CompositeNumber,
@@ -395,26 +317,29 @@ export default class Attack {
   ): CompositeNumber {
     const hitChance = skill.clone();
 
-    hitChance.add({
-      value: rangeModifier,
-      label: getGame().i18n.localize("wv.rules.range.singular")
-    });
-    hitChance.add({
-      value: promptHitModifier,
-      label: getGame().i18n.localize("wv.system.misc.modifier")
-    });
+    if (rangeModifier)
+      hitChance.add({
+        value: rangeModifier,
+        labelComponents: [{ key: "wv.rules.range.singular" }]
+      });
+
+    if (promptHitModifier)
+      hitChance.add({
+        value: promptHitModifier,
+        labelComponents: [{ key: "wv.system.misc.modifier" }]
+      });
 
     const total = hitChance.total;
     if (total < criticalSuccess) {
       hitChance.add({
         value: criticalSuccess - total,
-        label: getGame().i18n.localize("wv.rules.criticals.success")
+        labelComponents: [{ key: "wv.rules.criticals.success" }]
       });
     }
     if (total > criticalFailure) {
       hitChance.add({
         value: total - criticalFailure,
-        label: getGame().i18n.localize("wv.rules.criticals.failure")
+        labelComponents: [{ key: "wv.rules.criticals.failure" }]
       });
     }
 
@@ -450,59 +375,6 @@ export default class Attack {
     }
 
     return 0;
-  }
-
-  /** Get the hit modifier flags. */
-  protected getHitModifierFlags(
-    rangeHitModifier: number,
-    promptHitModifier: number
-  ): deco.ModifierFlags[] {
-    const modifiers: deco.ModifierFlags[] = [];
-
-    if (rangeHitModifier) {
-      modifiers.push({
-        amount: rangeHitModifier,
-        key: "wv.rules.range.singular"
-      });
-    }
-
-    if (promptHitModifier) {
-      modifiers.push({
-        amount: promptHitModifier,
-        key: "wv.system.misc.modifier"
-      });
-    }
-
-    return modifiers;
-  }
-
-  /** Get the damage base value modifier flags. */
-  protected getDamageBaseModifierFlags(): deco.ModifierFlags[] {
-    return [];
-  }
-
-  /** Get the damage dice modifier flags. */
-  protected getDamageDiceModifierFlags(
-    strengthMod: number,
-    rangeMod: number
-  ): deco.ModifierFlags[] {
-    const modifiers: deco.ModifierFlags[] = [];
-
-    if (strengthMod) {
-      modifiers.push({
-        amount: strengthMod,
-        key: "wv.rules.special.names.strength.long"
-      });
-    }
-
-    if (rangeMod) {
-      modifiers.push({
-        amount: rangeMod,
-        key: "wv.rules.range.singular"
-      });
-    }
-
-    return modifiers;
   }
 
   /** Create the default message data for weapon attack messages. */

@@ -1,4 +1,6 @@
 import type { JSONSchemaType } from "ajv";
+import { getGame } from "../foundryHelpers.js";
+import type { WvI18nKey } from "../lang.js";
 import { FoundrySerializable, Resource } from "./foundryCommon.js";
 
 /** The data layout needed to create a CompositeNumber from raw data. */
@@ -8,7 +10,7 @@ export interface CompositeNumberSource {
 
 /** The data layout for a serialized composite number. */
 export interface SerializedCompositeNumber extends CompositeNumberSource {
-  components: Component[];
+  components: ComponentSource[];
 }
 
 /** A class to represent numbers composed of a base and modifying components. */
@@ -39,7 +41,7 @@ export class CompositeNumber
     const obj = source as SerializedCompositeNumber;
     return (
       Array.isArray(obj.components) &&
-      !obj.components.some((component) => !isComponent(component))
+      !obj.components.some((component) => !Component.isSource(component))
     );
   }
 
@@ -92,8 +94,12 @@ export class CompositeNumber
    * Add the given Component to the CompositeNumber.
    * @param component - the component to add
    */
-  add(component: Component) {
-    this.#components.push(component);
+  add(component: ComponentSource | Component) {
+    this.#components.push(
+      component instanceof Component
+        ? component
+        : new Component(component.value, component.labelComponents)
+    );
   }
 
   toObject(source?: true): CompositeNumberSource;
@@ -107,7 +113,9 @@ export class CompositeNumber
     } else {
       return {
         source: this.source,
-        components: this.#components
+        components: this.#components.map((component) =>
+          component.toObject(source)
+        )
       };
     }
   }
@@ -124,27 +132,95 @@ export class CompositeNumber
   }
 }
 
-/** A CompositeNumber component */
-export interface Component {
+/** A component of a label for a Component. */
+export type LabelComponent = { text: string } | { key: WvI18nKey };
+
+/** Test whether the given object is a LabelComponent. */
+export function isLabelComponent(object: unknown): object is LabelComponent {
+  if (typeof object !== "object" || null === object) return false;
+
+  const comp = object as LabelComponent;
+  if ("key" in comp && typeof comp.key === "string") {
+    return getGame().i18n.localize(comp.key) !== comp.key;
+  }
+
+  return "text" in comp && typeof comp.text === "string";
+}
+
+/** A CompositeNumber Component source */
+export interface ComponentSource {
   /** The value this component modifies the CompositeNumber's value by */
   value: number;
 
   /** An explanatory label for the Component */
-  label: string;
+  labelComponents: LabelComponent[];
 }
 
-/** Check whether the given source is a Component. */
-export function isComponent(source: unknown): source is Component {
-  if (
-    typeof source !== "object" ||
-    null === source ||
-    !("value" in source) ||
-    !("label" in source)
-  )
-    return false;
+/** A Component of a CompositeNumber */
+export class Component implements ComponentSource, FoundrySerializable {
+  /**
+   * Test whether the given source is a ComponentSource.
+   * @param source - the source to test
+   * @returns whether the source is a ComponentSource
+   */
+  static isSource(source: unknown): source is ComponentSource {
+    if (
+      typeof source !== "object" ||
+      null === source ||
+      !("value" in source) ||
+      !("labelComponents" in source)
+    )
+      return false;
 
-  const obj = source as Component;
-  return typeof obj.value === "number" && typeof obj.label === "string";
+    const obj = source as ComponentSource;
+    return (
+      typeof obj.value === "number" &&
+      Array.isArray(obj.labelComponents) &&
+      !obj.labelComponents.some(
+        (labelComponent) => !isLabelComponent(labelComponent)
+      )
+    );
+  }
+
+  /**
+   * Create a Component from the given source
+   * @param source - either a Component or ComponentSource
+   * @returns the created Component
+   * @throws if the given source is neither a Component nor ComponentSource
+   */
+  static from(source: unknown): Component {
+    if (source instanceof Component) return source;
+
+    if (this.isSource(source))
+      return new Component(source.value, source.labelComponents);
+
+    throw new Error(`The source was not valid: ${source}`);
+  }
+
+  /** Create a new Component with the given value and label components. */
+  constructor(public value: number, public labelComponents: LabelComponent[]) {}
+
+  /**
+   * Construct a label out of the label components of this Component. This
+   * localizes "key" components and leaves "text" components as they are.
+   */
+  get label(): string {
+    return this.labelComponents
+      .map((labelComponent) =>
+        "key" in labelComponent
+          ? getGame().i18n.localize(labelComponent.key)
+          : labelComponent.text
+      )
+      .join(" ");
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  toObject(_source?: boolean): ComponentSource {
+    return {
+      value: this.value,
+      labelComponents: this.labelComponents
+    };
+  }
 }
 
 export const COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> =

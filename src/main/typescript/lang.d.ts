@@ -9,7 +9,8 @@ import type {
   I18nSpecials
 } from "./wvI18n.js";
 
-export type LangSchemaPaths = Join<PathsToStringProps<LangSchema>, ".">;
+/** A union of possible i18n keys. */
+export type WvI18nKey = Join<PathsToStringProps<LangSchema>, ".">;
 
 export interface LangSchema {
   /** The root element for the Wasteland Ventures system localization */

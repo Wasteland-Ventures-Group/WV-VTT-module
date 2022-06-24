@@ -40,7 +40,7 @@ export default class NumberComponent extends RuleElement {
     if (typeof this.value !== "number") return;
 
     const modNumber = CompositeNumber.from(this.property);
-    modNumber.add({ value: this.value, label: this.fullLabel });
+    modNumber.add({ value: this.value, labelComponents: this.labelComponents });
     this.property = modNumber;
   }
 }

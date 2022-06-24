@@ -517,13 +517,13 @@ export default class WvActor extends Actor {
       if (apparel.systemData.damageThreshold)
         data.equipment.damageThreshold.add({
           value: apparel.systemData.damageThreshold.total,
-          label: apparel.name ?? ""
+          labelComponents: [{ text: apparel.name ?? "" }]
         });
 
       if (apparel.systemData.quickSlots)
         data.equipment.quickSlots.add({
           value: apparel.systemData.quickSlots.total,
-          label: apparel.name ?? ""
+          labelComponents: [{ text: apparel.name ?? "" }]
         });
     });
 
@@ -568,13 +568,13 @@ export default class WvActor extends Actor {
     if (maxCarryWeightSizeBonus)
       data.secondary.maxCarryWeight.add({
         value: maxCarryWeightSizeBonus,
-        label: getGame().i18n.localize("wv.rules.background.size")
+        labelComponents: [{ key: "wv.rules.background.size" }]
       });
 
     if (hitPointsSizeBonus)
       data.vitals.hitPoints.add({
         value: hitPointsSizeBonus,
-        label: getGame().i18n.localize("wv.rules.background.size")
+        labelComponents: [{ key: "wv.rules.background.size" }]
       });
 
     this.applicableRuleElements
@@ -644,7 +644,7 @@ export default class WvActor extends Actor {
     const composite = new CompositeNumber(baseSkill);
     composite.add({
       value: this.data.data.leveling.skillRanks[skill],
-      label: getGame().i18n.localize("wv.rules.skills.points.short")
+      labelComponents: [{ key: "wv.rules.skills.points.short" }]
     });
     return composite;
   }

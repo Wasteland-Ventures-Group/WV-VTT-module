@@ -192,11 +192,6 @@ export type ExecutedAttackFlags = CommonWeaponAttackFlags & {
   };
 };
 
-export interface ModifierFlags {
-  amount: number;
-  key: string;
-}
-
 /** The template data common for both executed and not executed attacks. */
 type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
   details: CommonWeaponAttackFlags["details"] & {

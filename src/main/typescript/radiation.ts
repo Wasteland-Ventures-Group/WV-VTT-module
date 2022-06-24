@@ -1,5 +1,5 @@
 import type WvActor from "./actor/wvActor.js";
-import { getGame } from "./foundryHelpers.js";
+import type { LabelComponent } from "./data/common.js";
 import WvI18n from "./wvI18n.js";
 
 /** Apply radiation sickness effects to an actor based on its absorbed dose. */
@@ -7,27 +7,41 @@ export function applyRadiationSickness(actor: WvActor) {
   const sicknessLevel = getRadiationSicknessLevel(
     actor.data.data.vitals.radiationDose
   );
-  const label = getGame().i18n.localize("wv.rules.radiation.name");
+  const labelComponents: LabelComponent[] = [
+    { key: "wv.rules.radiation.name" }
+  ];
 
   switch (sicknessLevel) {
     case "none":
       return;
     case "minor":
-      actor.data.data.specials.endurance.addTemp({ value: -1, label });
+      actor.data.data.specials.endurance.addTemp({
+        value: -1,
+        labelComponents
+      });
       return;
     case "moderate":
-      actor.data.data.specials.endurance.addTemp({ value: -2, label });
-      actor.data.data.specials.agility.addTemp({ value: -1, label });
+      actor.data.data.specials.endurance.addTemp({
+        value: -2,
+        labelComponents
+      });
+      actor.data.data.specials.agility.addTemp({ value: -1, labelComponents });
       return;
     case "major":
-      actor.data.data.specials.endurance.addTemp({ value: -3, label });
-      actor.data.data.specials.agility.addTemp({ value: -2, label });
-      actor.data.data.specials.strength.addTemp({ value: -1, label });
+      actor.data.data.specials.endurance.addTemp({
+        value: -3,
+        labelComponents
+      });
+      actor.data.data.specials.agility.addTemp({ value: -2, labelComponents });
+      actor.data.data.specials.strength.addTemp({ value: -1, labelComponents });
       return;
     case "critical":
-      actor.data.data.specials.endurance.addTemp({ value: -3, label });
-      actor.data.data.specials.agility.addTemp({ value: -3, label });
-      actor.data.data.specials.strength.addTemp({ value: -2, label });
+      actor.data.data.specials.endurance.addTemp({
+        value: -3,
+        labelComponents
+      });
+      actor.data.data.specials.agility.addTemp({ value: -3, labelComponents });
+      actor.data.data.specials.strength.addTemp({ value: -2, labelComponents });
       return;
   }
 }

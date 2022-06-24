@@ -39,7 +39,7 @@ export default class TempSpecialComponent extends RuleElement {
 
     (this.property as Special).addTemp({
       value: this.value,
-      label: this.fullLabel
+      labelComponents: this.labelComponents
     });
   }
 }

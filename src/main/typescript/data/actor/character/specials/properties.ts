@@ -1,5 +1,5 @@
 import type { SpecialName } from "../../../../constants.js";
-import { Component, isComponent } from "../../../common.js";
+import { ComponentSource, Component } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
 export default class SpecialsProperties
@@ -30,8 +30,8 @@ export default class SpecialsProperties
 /** The layout for a serialized Special. */
 export interface SerializedSpecial {
   points: number;
-  permComponents: Component[];
-  tempComponents: Component[];
+  permComponents: ComponentSource[];
+  tempComponents: ComponentSource[];
 }
 
 /** A SPECIAL, holding all intermediary steps for the final result */
@@ -55,9 +55,9 @@ export class Special implements FoundrySerializable {
     return (
       typeof obj.points === "number" &&
       Array.isArray(obj.permComponents) &&
-      !obj.permComponents.some((component) => !isComponent(component)) &&
+      !obj.permComponents.some((component) => !Component.isSource(component)) &&
       Array.isArray(obj.tempComponents) &&
-      !obj.tempComponents.some((component) => isComponent(component))
+      !obj.tempComponents.some((component) => !Component.isSource(component))
     );
   }
 
@@ -137,16 +137,24 @@ export class Special implements FoundrySerializable {
    * Add the given Component to the permanent components of the SPECIAL.
    * @param component - the component to add
    */
-  addPerm(component: Component) {
-    this.#permComponents.push(component);
+  addPerm(component: ComponentSource | Component) {
+    this.#permComponents.push(
+      component instanceof Component
+        ? component
+        : new Component(component.value, component.labelComponents)
+    );
   }
 
   /**
    * Add the given Component to the temporary components of the SPECIAL.
    * @param component - the component to add
    */
-  addTemp(component: Component) {
-    this.#tempComponents.push(component);
+  addTemp(component: ComponentSource | Component) {
+    this.#tempComponents.push(
+      component instanceof Component
+        ? component
+        : new Component(component.value, component.labelComponents)
+    );
   }
 
   toObject(source?: true): Record<string, never>;
@@ -157,8 +165,12 @@ export class Special implements FoundrySerializable {
     } else {
       return {
         points: this.points,
-        permComponents: this.#permComponents,
-        tempComponents: this.#tempComponents
+        permComponents: this.#permComponents.map((component) =>
+          component.toObject(source)
+        ),
+        tempComponents: this.#tempComponents.map((component) =>
+          component.toObject(source)
+        )
       };
     }
   }

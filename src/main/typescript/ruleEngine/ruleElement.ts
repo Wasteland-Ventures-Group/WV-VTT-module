@@ -1,3 +1,4 @@
+import type { LabelComponent } from "../data/common.js";
 import type WvItem from "../item/wvItem.js";
 import ChangedTypeMessage from "./messages/changedTypeMessage.js";
 import NotMatchingSelectorMessage from "./messages/notMatchingSelectorMessage.js";
@@ -41,10 +42,19 @@ export default abstract class RuleElement {
   }
 
   /**
-   * Get the full label of the RuleElement, consisting of item name and label.
+   * Get the full label of this RuleElement as LabelComponents of the item name
+   * and RuleElement label.
    */
-  get fullLabel(): string {
-    return (this.item.name ?? "") + " - " + this.label;
+  get labelComponents(): LabelComponent[] {
+    const components: LabelComponent[] = [];
+
+    if (this.item.name) {
+      components.push({ text: this.item.name });
+      components.push({ text: "-" });
+    }
+    components.push({ text: this.label });
+
+    return components;
   }
 
   /** Get the priority number of the RuleElement. */

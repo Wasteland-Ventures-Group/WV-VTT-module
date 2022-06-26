@@ -108,6 +108,11 @@ export const SchoolByMagicType = {
   spirit: Spirits as unknown
 } as Record<MagicType, typeof GeneralMagicSchools>;
 
+/**
+ * Determines the type of magic based on its school
+ * @param school - the school to categorise
+ * @returns the type
+ */
 export function getMagicType(school: GeneralMagicSchool): MagicType {
   for (const magicType of MagicTypes) {
     const schoolFamily = SchoolByMagicType[magicType];
@@ -116,7 +121,7 @@ export function getMagicType(school: GeneralMagicSchool): MagicType {
     }
   }
 
-  throw new Error();
+  throw new Error("Unreachable Code");
 }
 
 export type GeneralMagicSchool = typeof GeneralMagicSchools[number];

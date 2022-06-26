@@ -1,5 +1,5 @@
 <form class="{{cssClass}} flexcol" autocomplete="off">
-  {{> (get . "sheet.parts.header")}}
+{{> (get . "sheet.parts.header")}}
 
   <nav class="tabs flex-fixed" data-group="primary">
     <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
@@ -15,7 +15,7 @@
           <span>{{localize "wv.rules.magic.school.singular"}}: {{sheet.school}}</span>
         </section>
         {{~#if data.data.notes~}}
-        <section>{{data.data.notes}}</section>
+          <section>{{data.data.notes}}</section>
         {{~/if~}}
       </div>
     </div>

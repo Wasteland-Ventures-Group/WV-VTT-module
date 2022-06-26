@@ -1,3 +1,4 @@
+import { MagicType, getMagicType } from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import BaseItemProperties from "../common/baseItem/properties.js";
 import RulesProperties from "../common/rules/properties.js";
@@ -15,8 +16,11 @@ export class MagicDataPropertiesData
   constructor(source: MagicDataSourceData, owningItem: WvItem) {
     super();
     foundry.utils.mergeObject(this, source);
+    this.type = getMagicType(this.school);
     BaseItemProperties.transform(this, source, owningItem);
   }
 
   override rules = new RulesProperties();
+
+  type: MagicType = getMagicType(this.school);
 }

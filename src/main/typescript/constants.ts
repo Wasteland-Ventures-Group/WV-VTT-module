@@ -93,6 +93,32 @@ export const Schools = [
   "transmutation"
 ] as const;
 
+export type MagicType = typeof MagicTypes[number];
+export const MagicTypes = [
+  "spirit",
+  "unicorn",
+  "earthPony",
+  "maneuver"
+] as const;
+
+export const SchoolByMagicType = {
+  unicorn: Schools as unknown,
+  maneuver: Maneuvers as unknown,
+  earthPony: Branches as unknown,
+  spirit: Spirits as unknown
+} as Record<MagicType, typeof GeneralMagicSchools>;
+
+export function getMagicType(school: GeneralMagicSchool): MagicType {
+  for (const magicType of MagicTypes) {
+    const schoolFamily = SchoolByMagicType[magicType];
+    if (schoolFamily.includes(school)) {
+      return magicType;
+    }
+  }
+
+  throw new Error();
+}
+
 export type GeneralMagicSchool = Maneuver | School | Branch | Spirit;
 export const MagicSpecials = {
   agility: ["agility"],

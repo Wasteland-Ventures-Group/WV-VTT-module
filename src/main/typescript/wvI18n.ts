@@ -9,7 +9,8 @@ import {
   ApparelSlot,
   ApparelType,
   EquipmentSlot,
-  GeneralMagicSchool
+  GeneralMagicSchool,
+  MagicType
 } from "./constants.js";
 import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
@@ -34,7 +35,11 @@ export type I18nApparelTypes = Record<ApparelType, string>;
 /** The internationalization structure for calibers */
 export type I18nCalibers = Record<Caliber, string>;
 
-export type I18nSchools = Record<GeneralMagicSchool, string>;
+/** The internationalisation structure of the magic types */
+export type I18nMagicTypes = Record<MagicType, string>;
+
+/** The internationalisation structure of the magic schools */
+export type I18nMagicSchools = Record<GeneralMagicSchool, string>;
 
 /** The internationalization structure for ammo container types */
 export type I18nAmmoContainerTypes = Record<AmmoContainerType, string>;
@@ -96,11 +101,19 @@ export default class WvI18n {
   }
 
   /** Get the internationalisation of the magic schools */
-  static get schools(): I18nSchools {
+  static get magicSchools(): I18nMagicSchools {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
-      "wv.rules.magic.schools"
-    ) as I18nSchools;
+      "wv.rules.magic.school.names"
+    ) as I18nMagicSchools;
+  }
+
+  /** Get the internationalisation of the magic types */
+  static get magicTypes(): I18nMagicTypes {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.magic.type.names"
+    ) as I18nMagicTypes;
   }
 
   /** Get the internationalization of the ammo container types. */

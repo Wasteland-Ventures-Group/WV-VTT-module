@@ -119,7 +119,7 @@ export function getMagicType(school: GeneralMagicSchool): MagicType {
   throw new Error();
 }
 
-export type GeneralMagicSchool = Maneuver | School | Branch | Spirit;
+export type GeneralMagicSchool = typeof GeneralMagicSchools[number];
 export const MagicSpecials = {
   agility: ["agility"],
   endurance: ["endurance"],
@@ -172,12 +172,32 @@ export const SpellRanges = [
 ] as const;
 export const SplashSizes = ["tiny", "small", "large", "huge"];
 
-export const GeneralMagicSchools = Array<GeneralMagicSchool>().concat(
-  Maneuvers,
-  Schools,
-  Branches,
-  Spirits
-);
+export const GeneralMagicSchools = [
+  "general",
+  "conjuration",
+  "dark",
+  "enhancement",
+  "illusion",
+  "medical",
+  "perception",
+  "protective",
+  "transmutation",
+  "agility",
+  "endurance",
+  "wonderboltAndTalon",
+  "incantations",
+  "embers",
+  "machines",
+  "nature",
+  "serenity",
+  "shadows",
+  "streams",
+  "trust",
+  "whispers",
+  "charm",
+  "might",
+  "sight"
+] as const;
 
 export type SkillName = typeof SkillNames[number];
 export const SkillNames = [

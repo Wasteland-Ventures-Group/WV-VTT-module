@@ -1,8 +1,8 @@
-import { MagicTypes, TYPES } from "../../constants";
+import { TYPES } from "../../constants";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet";
 import { isOfItemType } from "../../item/wvItem.js";
 import type Magic from "../../item/magic";
-import WvI18n, { I18nMagicSchools, I18nMagicTypes } from "../../wvI18n";
+import WvI18n, { I18nMagicSchools } from "../../wvI18n";
 
 export default class MagicSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {

@@ -1,10 +1,6 @@
 import type { JSONSchemaType } from "ajv";
 import {
-  Branch,
   GeneralMagicSchools,
-  Maneuver,
-  School,
-  Spirit,
   SpellRanges,
   TYPES,
   SplashSizes,

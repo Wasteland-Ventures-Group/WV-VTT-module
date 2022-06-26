@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import { distWvPrefix, templateOutPath } from "../gulpfile.js";
-import { MagicSpecials, TYPES } from "../src/main/typescript/constants.js";
+import { TYPES } from "../src/main/typescript/constants.js";
 
 export default async function templateTask(): Promise<void> {
   // We somehow have to get TS to reimport the files each time. Currently they

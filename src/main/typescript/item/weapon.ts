@@ -1,5 +1,4 @@
 import { TYPES } from "../constants.js";
-import type WeaponDataProperties from "../data/item/weapon/properties.js";
 import { WeaponDataPropertiesData } from "../data/item/weapon/properties.js";
 import { LOG } from "../systemLogger.js";
 import WvItem from "./wvItem.js";
@@ -17,16 +16,8 @@ export default class Weapon extends WvItem {
     super(data, context);
   }
 
-  /** Get the system data of this weapon. */
-  get systemData(): WeaponDataProperties["data"] {
-    if (!this.data || this.data.type !== TYPES.ITEM.WEAPON)
-      throw new Error(`This data's data type is not ${TYPES.ITEM.WEAPON}.`);
-
-    return this.data.data;
-  }
-
   override prepareBaseData(): void {
-    this.data.data = new WeaponDataPropertiesData(this.systemData, this);
+    this.data.data = new WeaponDataPropertiesData(this.data.data, this);
   }
 
   override finalizeData(): void {
@@ -36,10 +27,17 @@ export default class Weapon extends WvItem {
       );
     }
 
-    Object.values(this.systemData.attacks.attacks).forEach((attack) => {
+    Object.values(this.data.data.attacks.attacks).forEach((attack) => {
       if (!this.actor) return;
 
       attack.applyStrengthDamageDiceMod(this.actor);
     });
   }
+}
+
+export default interface Weapon {
+  data: foundry.data.ItemData & {
+    type: typeof TYPES.ITEM.WEAPON;
+    _source: { type: typeof TYPES.ITEM.WEAPON };
+  };
 }

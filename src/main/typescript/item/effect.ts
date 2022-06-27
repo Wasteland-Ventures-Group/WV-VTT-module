@@ -1,5 +1,4 @@
 import { TYPES } from "../constants.js";
-import type EffectDataProperties from "../data/item/effect/properties.js";
 import { EffectDataPropertiesData } from "../data/item/effect/properties.js";
 import WvItem from "./wvItem.js";
 
@@ -16,15 +15,14 @@ export default class Effect extends WvItem {
     super(data, context);
   }
 
-  /** Get the system data of this effect. */
-  get systemData(): EffectDataProperties["data"] {
-    if (!this.data || this.data.type !== TYPES.ITEM.EFFECT)
-      throw new Error(`This data's data type is not ${TYPES.ITEM.EFFECT}.`);
-
-    return this.data.data;
-  }
-
   override prepareBaseData(): void {
-    this.data.data = new EffectDataPropertiesData(this.systemData, this);
+    this.data.data = new EffectDataPropertiesData(this.data.data, this);
   }
+}
+
+export default interface Effect {
+  data: foundry.data.ItemData & {
+    type: typeof TYPES.ITEM.EFFECT;
+    _source: { type: typeof TYPES.ITEM.EFFECT };
+  };
 }

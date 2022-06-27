@@ -602,7 +602,7 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attack = weapon.systemData.attacks.attacks[attackKey];
+    const attack = weapon.data.data.attacks.attacks[attackKey];
     if (!(attack instanceof Attack)) {
       LOG.warn("Could not find the attack on the weapon.");
       return;

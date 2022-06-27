@@ -296,7 +296,7 @@ export default class WvActor extends Actor {
     const item = this.items.get(id);
     if (!(item instanceof Apparel)) return;
 
-    const slot = item.systemData.slot;
+    const slot = item.data.data.slot;
     if (this.blockedApparelSlots.includes(slot))
       throw new SystemRulesError(
         "The apparel's slot is blocked by another apparel.",
@@ -514,15 +514,15 @@ export default class WvActor extends Actor {
 
     // Calculate data derived from equipment -----------------------------------
     this.equippedApparel.forEach((apparel) => {
-      if (apparel.systemData.damageThreshold)
+      if (apparel.data.data.damageThreshold)
         data.equipment.damageThreshold.add({
-          value: apparel.systemData.damageThreshold.total,
+          value: apparel.data.data.damageThreshold.total,
           labelComponents: [{ text: apparel.name ?? "" }]
         });
 
-      if (apparel.systemData.quickSlots)
+      if (apparel.data.data.quickSlots)
         data.equipment.quickSlots.add({
-          value: apparel.systemData.quickSlots.total,
+          value: apparel.data.data.quickSlots.total,
           labelComponents: [{ text: apparel.name ?? "" }]
         });
     });

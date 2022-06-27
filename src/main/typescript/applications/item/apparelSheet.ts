@@ -22,9 +22,9 @@ export default class ApparelSheet extends WvItemSheet {
 
     return {
       blockedSlots: apparel.blockedApparelSlots.map((slot) => slotsI18ns[slot]),
-      slot: slotsI18ns[apparel.systemData.slot],
+      slot: slotsI18ns[apparel.data.data.slot],
       slots: slotsI18ns,
-      type: typesI18ns[apparel.systemData.type],
+      type: typesI18ns[apparel.data.data.type],
       types: typesI18ns
     };
   }

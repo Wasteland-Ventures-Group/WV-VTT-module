@@ -21,7 +21,7 @@ import Ammo from "./item/ammo.js";
 import Apparel from "./item/apparel.js";
 import Effect from "./item/effect.js";
 import Weapon from "./item/weapon.js";
-import WvItem from "./item/wvItem.js";
+import { WvItemProxy } from "./item/wvItemProxy.js";
 import { macros } from "./macros/index.js";
 import {
   flagCriticalFailure,
@@ -64,7 +64,7 @@ export function configureFoundryOnInit(): void {
 
   // Register our own Document classes.
   CONFIG.Actor.documentClass = WvActor;
-  CONFIG.Item.documentClass = WvItem;
+  CONFIG.Item.documentClass = WvItemProxy;
 
   // Register our override classes.
   CONFIG.Combat.documentClass = WvCombat;

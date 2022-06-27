@@ -71,7 +71,7 @@ export default class Attack {
       weapon.finalizeData();
     }
 
-    const attack = weapon.systemData.attacks.attacks[this.name];
+    const attack = weapon.data.data.attacks.attacks[this.name];
     if (!attack) {
       LOG.error(`Could not find attack "${this.name}" on: `, weapon);
       return;
@@ -101,7 +101,7 @@ export default class Attack {
 
     // Get range bracket -------------------------------------------------------
     const rangeBracket = ranges.getRangeBracket(
-      weapon.systemData.ranges,
+      weapon.data.data.ranges,
       range,
       actor.data.data.specials
     );
@@ -110,14 +110,14 @@ export default class Attack {
 
     // Calculate hit roll target -----------------------------------------------
     const rangeModifier = ranges.getRangeModifier(
-      weapon.systemData.ranges,
+      weapon.data.data.ranges,
       rangeBracket
     );
 
     const critSuccess = actor.data.data.secondary.criticals.success;
     const critFailure = actor.data.data.secondary.criticals.failure;
     const hitChance = attack.getHitRollTarget(
-      actor.data.data.skills[weapon.systemData.skill],
+      actor.data.data.skills[weapon.data.data.skill],
       rangeModifier,
       modifier,
       critSuccess.total,
@@ -159,7 +159,7 @@ export default class Attack {
       weapon: {
         display: {
           ranges: ranges.getDisplayRanges(
-            this.weapon.systemData,
+            this.weapon.data.data,
             actor.data.data.specials
           )
         },

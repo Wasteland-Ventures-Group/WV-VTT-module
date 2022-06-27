@@ -44,26 +44,26 @@ export default class WeaponSheet extends WvItemSheet {
       },
       displayRanges: {
         short: ranges.getDisplayRangeDistance(
-          weapon.systemData.ranges.short.distance,
+          weapon.data.data.ranges.short.distance,
           weapon.actor?.data.data.specials
         ),
         medium: ranges.getDisplayRangeDistance(
-          weapon.systemData.ranges.medium.distance,
+          weapon.data.data.ranges.medium.distance,
           weapon.actor?.data.data.specials
         ),
         long: ranges.getDisplayRangeDistance(
-          weapon.systemData.ranges.long.distance,
+          weapon.data.data.ranges.long.distance,
           weapon.actor?.data.data.specials
         )
       },
       reload: {
-        caliber: i18nCalibers[weapon.systemData.reload.caliber],
+        caliber: i18nCalibers[weapon.data.data.reload.caliber],
         calibers: i18nCalibers,
         containerType:
-          i18nContainerTypes[weapon.systemData.reload.containerType],
+          i18nContainerTypes[weapon.data.data.reload.containerType],
         containerTypes: i18nContainerTypes
       },
-      skill: i18nSkills[weapon.systemData.skill],
+      skill: i18nSkills[weapon.data.data.skill],
       skills: i18nSkills,
       specials: {
         "": "",
@@ -193,7 +193,7 @@ export default class WeaponSheet extends WvItemSheet {
       return;
     }
 
-    const attack = this.item.systemData.attacks.attacks[attackKey];
+    const attack = this.item.data.data.attacks.attacks[attackKey];
     if (!(attack instanceof Attack)) {
       LOG.warn("Could not find the attack on the weapon.");
       return;
@@ -208,7 +208,7 @@ export default class WeaponSheet extends WvItemSheet {
       label: getGame().i18n.localize("wv.system.misc.name")
     });
 
-    if (this.item.systemData.attacks.sources[newName]) {
+    if (this.item.data.data.attacks.sources[newName]) {
       ui?.notifications?.error(
         getGame().i18n.format("wv.system.messages.attackAlreadyExists", {
           name: newName
@@ -237,7 +237,7 @@ export default class WeaponSheet extends WvItemSheet {
     const attackName = event.target.dataset.attack;
     if (!attackName) return;
 
-    const attack = this.item.systemData.attacks.attacks[attackName];
+    const attack = this.item.data.data.attacks.attacks[attackName];
     if (attack === undefined) {
       ui?.notifications?.error(
         getGame().i18n.format("wv.system.messages.attackNotFound", {
@@ -263,8 +263,8 @@ export default class WeaponSheet extends WvItemSheet {
       if (typeof newAttackName !== "string") continue;
       if (oldAttackName === newAttackName) continue;
 
-      const oldAttack = this.item.systemData.attacks.sources[oldAttackName];
-      const newAttack = this.item.systemData.attacks.sources[newAttackName];
+      const oldAttack = this.item.data.data.attacks.sources[oldAttackName];
+      const newAttack = this.item.data.data.attacks.sources[newAttackName];
       if (newAttack !== undefined) {
         ui?.notifications?.error(
           getGame().i18n.format("wv.system.messages.attackAlreadyExists", {

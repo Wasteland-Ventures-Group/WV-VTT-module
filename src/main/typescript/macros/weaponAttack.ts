@@ -107,7 +107,7 @@ export function executeWeaponAttack(
   }
   if (!(weapon instanceof Weapon)) return;
 
-  const atk = weapon.systemData.attacks.attacks[attackName];
+  const atk = weapon.data.data.attacks.attacks[attackName];
   if (!(atk instanceof attack.default)) return;
 
   atk.execute();
@@ -142,7 +142,7 @@ export async function executeWeaponAttackFromSource(
     });
     return;
   }
-  const attack = weapon.systemData.attacks.attacks[attackName];
+  const attack = weapon.data.data.attacks.attacks[attackName];
   if (attack) attack.execute(options);
   else
     ui?.notifications?.error(

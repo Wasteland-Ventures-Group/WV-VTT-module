@@ -21,10 +21,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#331](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/331))
 - the modifier listings in weapon attacks to use tables
   ([#130](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/130))
+- weapon attacks and their chat messages now use CompositeNumbers as well
+- CompositeNumber components now have an array of LabelComponents instead of a
+  simple string label
+- replaces the item constructor hack with a Proxy
+- swapped RuleElements' target and selector properties
 
 ### Fixed
 
-- the race no showing on limited actor sheets
+- the race not showing on limited actor sheets
+- ammo and apparel compendiums not being validated against their schemas
 
 ## [0.18.0] - 2022-05-29
 

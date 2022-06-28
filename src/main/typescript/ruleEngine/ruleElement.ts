@@ -1,17 +1,17 @@
 import type { LabelComponent } from "../data/common.js";
 import type WvItem from "../item/wvItem.js";
 import ChangedTypeMessage from "./messages/changedTypeMessage.js";
-import NotMatchingSelectorMessage from "./messages/notMatchingSelectorMessage.js";
-import WrongSelectedTypeMessage from "./messages/wrongSelectedTypeMessage.js";
+import NotMatchingTargetMessage from "./messages/notMatchingTargetMessage.js";
+import WrongTargetTypeMessage from "./messages/wrongTargetTypeMessage.js";
 import WrongValueTypeMessage from "./messages/wrongValueTypeMessage.js";
 import RuleElementMessage from "./ruleElementMessage.js";
 import type RuleElementSource from "./ruleElementSource.js";
-import type { RuleElementTarget } from "./ruleElementSource.js";
+import type { RuleElementSelector } from "./ruleElementSource.js";
 
 /**
  * A rule engine element, allowing the modification of a data point, specified
- * by a selector and a given value. How the data point is modified depends on
- * the type of the element.
+ * by a target and a given value. How the data point is modified depends on the
+ * type of the element.
  */
 export default abstract class RuleElement {
   /**
@@ -22,19 +22,14 @@ export default abstract class RuleElement {
    *                   before creating the RuleElement
    */
   constructor(
-    source: RuleElementSource,
+    /** The source data of the RuleElement */
+    public source: RuleElementSource,
+
     public item: WvItem,
-    messages: RuleElementMessage[] = []
-  ) {
-    this.messages = messages;
-    this.source = source;
-  }
 
-  /** Messages that were accumulated while validating the source */
-  messages: RuleElementMessage[];
-
-  /** The data of the RuleElement */
-  source: RuleElementSource;
+    /** Messages that were accumulated while validating the source */
+    public messages: RuleElementMessage[] = []
+  ) {}
 
   /** Get the label of the RuleElement. */
   get label(): string {
@@ -64,30 +59,30 @@ export default abstract class RuleElement {
 
   /** Get the property, the RuleElement points at. */
   get property(): unknown {
-    return foundry.utils.getProperty(this.targetDoc.data.data, this.selector);
+    return foundry.utils.getProperty(this.selectedDoc.data.data, this.target);
   }
 
   /** Set the property, the RuleElement points at. */
   set property(value: unknown) {
-    foundry.utils.setProperty(this.targetDoc.data.data, this.selector, value);
+    foundry.utils.setProperty(this.selectedDoc.data.data, this.target, value);
   }
 
-  /** Get the property selector of the RuleElement. */
-  get selector(): string {
+  /** Get the filtering selector of the RuleElement. */
+  get selector(): RuleElementSelector {
     return this.source.selector;
   }
 
   /** Get the target property of the RuleElement. */
-  get target(): RuleElementTarget {
+  get target(): string {
     return this.source.target;
   }
 
   /**
-   * Get the target Document of the RuleElement.
-   * @throws if the target is "actor" and the RuleElement's Item has no Actor.
+   * Get the selected Document of the RuleElement.
+   * @throws if the selector is "actor" and the RuleElement's Item has no Actor.
    */
-  get targetDoc(): Actor | Item {
-    switch (this.target) {
+  get selectedDoc(): Actor | Item {
+    switch (this.selector) {
       case "item":
         return this.item;
       case "actor":
@@ -113,7 +108,10 @@ export default abstract class RuleElement {
     return hasWarnings(this.messages);
   }
 
-  /** Whether something prevents this rule element from modifying the owner. */
+  /**
+   * Whether something prevents this rule element from modifying the selected
+   * Document.
+   */
   shouldNotModify(): boolean {
     return this.hasErrors() || !this.source.enabled;
   }
@@ -156,7 +154,7 @@ export default abstract class RuleElement {
 
   /** Validate the data and add any error messages to errors. */
   protected validate(): void {
-    if (this.target === "actor" && this.item.actor === null) {
+    if (this.selector === "actor" && this.item.actor === null) {
       this.messages.push(
         new RuleElementMessage(
           "wv.system.ruleEngine.errors.logical.noActor",
@@ -167,7 +165,7 @@ export default abstract class RuleElement {
       return;
     }
 
-    this.checkIfSelectorIsValid();
+    this.checkIfTargetIsValid();
   }
 
   /**
@@ -198,52 +196,51 @@ export default abstract class RuleElement {
   protected _onAfterComputation(): void {}
 
   /**
-   * Check whether the selector selects a property.
+   * Check whether the target targets a property.
    *
-   * If the selector does not match, an error message is added to the
-   * RuleElement.
+   * If the target does not match, an error message is added to the RuleElement.
    * @throws if anything else than a TypeError is thrown by
    *         `foundry.utils.getProperty()`
    */
-  protected checkIfSelectorIsValid(): void {
-    let invalidSelector = false;
+  protected checkIfTargetIsValid(): void {
+    let invalidTarget = false;
 
     try {
-      invalidSelector = this.property === undefined;
+      invalidTarget = this.property === undefined;
     } catch (error) {
       if (error instanceof TypeError) {
         // This can happen, when the prefix part of a path finds a valid
         // property, which has a non-object value and the selector has further
         // parts.
-        invalidSelector = true;
+        invalidTarget = true;
       } else {
         throw error;
       }
     }
 
-    if (invalidSelector) {
+    if (invalidTarget) {
       this.messages.push(
-        new NotMatchingSelectorMessage(this.targetName, this.selector)
+        new NotMatchingTargetMessage(this.selectedDocName, this.target)
       );
     }
   }
 
   /**
-   * Check whether the selected property is of the given type.
+   * Check whether the target property is of the given type.
    *
    * If the type is incorrect, an error message is added to the RuleElement.
    * @remarks When this is called, it should already be verified that the
-   *          selector actually matches a property.
+   *          target actually matches a property.
    * @param expectedType - the type to check for
    */
-  protected checkSelectedIsOfType(
+  protected checkTargetIsOfType(
     expectedType: "boolean" | "number" | "string"
   ): void {
     if (typeof this.property !== expectedType) {
       this.messages.push(
-        new WrongSelectedTypeMessage(
-          this.targetName,
-          this.selector,
+        new WrongTargetTypeMessage(
+          this.selectedDocName,
+          this.target,
           expectedType
         )
       );
@@ -275,8 +272,8 @@ export default abstract class RuleElement {
     if (originalType !== newType) {
       this.messages.push(
         new ChangedTypeMessage(
-          this.targetName,
-          this.selector,
+          this.selectedDocName,
+          this.target,
           originalType,
           newType
         )
@@ -284,11 +281,11 @@ export default abstract class RuleElement {
     }
   }
 
-  /** Get the name of the target document of this rule. */
-  protected get targetName(): string | null {
+  /** Get the name of the selected Document of this rule. */
+  protected get selectedDocName(): string | null {
     // This has to be accessed in this way, because this can end up being called
     // when the `data` on an Actor or Item is not initialized yet.
-    return this.targetDoc.data?.name ?? null;
+    return this.selectedDoc.data?._source.name ?? null;
   }
 }
 

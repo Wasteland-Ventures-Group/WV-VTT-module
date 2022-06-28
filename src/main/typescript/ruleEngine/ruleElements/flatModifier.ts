@@ -1,7 +1,7 @@
 import RuleElement from "../ruleElement.js";
 
 /**
- * A RuleElement that applies a flat positive or negative value to the selected
+ * A RuleElement that applies a flat positive or negative value to the target
  * data point.
  */
 export default class FlatModifier extends RuleElement {
@@ -10,7 +10,7 @@ export default class FlatModifier extends RuleElement {
 
     if (this.hasErrors()) return;
 
-    this.checkSelectedIsOfType("number");
+    this.checkTargetIsOfType("number");
     this.checkValueIsOfType("number");
   }
 
@@ -26,7 +26,6 @@ export default class FlatModifier extends RuleElement {
     this.apply();
   }
 
-  /** Apply the rule element to the target Document. */
   protected apply(): void {
     if (typeof this.value !== "number") return;
 

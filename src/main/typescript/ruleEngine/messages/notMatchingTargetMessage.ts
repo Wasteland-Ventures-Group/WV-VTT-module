@@ -1,16 +1,16 @@
 import { getGame } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
-/** An error about a not matching selector. */
-export default class NotMatchingSelectorMessage extends RuleElementMessage {
+/** An error about a not matching target */
+export default class NotMatchingTargetMessage extends RuleElementMessage {
   constructor(
-    /** The name of the target document */
+    /** The name of the selected document */
     public docName: string | null,
 
     /** The path to the property */
     public propertyPath: string
   ) {
-    super("wv.system.ruleEngine.errors.logical.notMatchingSelector", "error");
+    super("wv.system.ruleEngine.errors.logical.notMatchingTarget", "error");
   }
 
   override get message(): string {

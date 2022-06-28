@@ -33,7 +33,7 @@ export default class WvItem extends Item {
   /** Get RuleElements that apply to this Item. */
   get applicableRuleElements(): RuleElement[] {
     return this.data.data.rules.elements.filter(
-      (rule) => rule.target === "item"
+      (rule) => rule.selector === "item"
     );
   }
 
@@ -197,18 +197,20 @@ export function hasEnabledCompendiumLink(item: foundry.documents.BaseItem) {
 /** Fetch update data for an item from its compendium prototype. */
 export async function getUpdateDataFromCompendium(
   item: foundry.documents.BaseItem
-): Promise<Record<string, unknown>> {
+): Promise<{
+  data: foundry.documents.BaseItem["data"]["_source"]["data"];
+} | null> {
   const sourceId = item.getFlag("core", "sourceId");
-  if (typeof sourceId !== "string") return {};
+  if (typeof sourceId !== "string") return null;
 
   const match = SYSTEM_COMPENDIUM_SOURCE_ID_REGEX.exec(sourceId);
-  if (!match || !match[1] || !match[2]) return {};
+  if (!match || !match[1] || !match[2]) return null;
 
   const compendium = getGame().packs.get(match[1]);
-  if (!compendium) return {};
+  if (!compendium) return null;
 
   const document = await compendium.getDocument(match[2]);
-  if (!(document instanceof WvItem)) return {};
+  if (!(document instanceof WvItem)) return null;
 
   const updateData = { data: document.toObject().data };
   if (!item.getFlag(CONSTANTS.systemId, "overwriteNotesWithCompendium")) {

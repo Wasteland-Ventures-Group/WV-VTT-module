@@ -15,13 +15,11 @@ export default interface RuleElementSource {
   /** The place in the order of application, starting with lowest */
   priority: number;
 
-  /** The selector of the element */
-  selector: string;
+  /** The filter to determine applicable documents with */
+  selector: RuleElementSelector;
 
-  /**
-   * Whether the RuleElement applies to the the Document or the Owning document
-   */
-  target: RuleElementTarget;
+  /** The target property on the selected document */
+  target: string;
 
   /** The type identifier of the element. */
   type: RuleElementId;
@@ -39,10 +37,10 @@ export const RULE_ELEMENT_HOOKS = [
 export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
 
 /** The valid values of a RuleElement target property */
-export const RULE_ELEMENT_TARGETS = ["item", "actor"] as const;
+export const RULE_ELEMENT_DOC_SELECTORS = ["item", "actor"] as const;
 
 /** The type of the valid values for a RuleElement target property */
-export type RuleElementTarget = typeof RULE_ELEMENT_TARGETS[number];
+export type RuleElementSelector = typeof RULE_ELEMENT_DOC_SELECTORS[number];
 
 /** A JSON schema for RuleElementSource objects */
 export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> =
@@ -75,18 +73,15 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
         default: 0
       },
       selector: {
-        description:
-          "A property selector to pick the property the rule element should be " +
-          "applied to",
+        description: "The filter to determine applicable documents with",
         type: "string",
-        default: ""
+        enum: RULE_ELEMENT_DOC_SELECTORS,
+        default: "item"
       },
       target: {
-        description:
-          "Whether the rule element applies to its own item or the owning actor",
+        description: "The target property on the selected document",
         type: "string",
-        enum: RULE_ELEMENT_TARGETS,
-        default: "item"
+        default: ""
       },
       type: {
         description: "The identifier of the type or rule element to use",
@@ -116,8 +111,8 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       hook: "afterSpecial",
       label: "New Rule Element",
       priority: 100,
-      selector: "",
-      target: "item",
+      selector: "item",
+      target: "",
       type: "WV.RuleElement.NumberComponent",
       value: 0
     }

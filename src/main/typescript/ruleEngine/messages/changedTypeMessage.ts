@@ -4,7 +4,7 @@ import RuleElementMessage from "../ruleElementMessage.js";
 /** A warning about a rule element changing the type of a property. */
 export default class ChangedTypeMessage extends RuleElementMessage {
   constructor(
-    /** The name of the target document */
+    /** The name of the selected document */
     public docName: string | null,
 
     /** The path to the property */

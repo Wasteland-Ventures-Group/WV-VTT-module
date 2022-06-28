@@ -1,10 +1,10 @@
 import { getGame } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
-/** A warning about a wrong selected property type on the target */
+/** A warning about a wrong targeted property type on the selected Document */
 export default class NotCompositeNumberMessage extends RuleElementMessage {
   constructor(
-    /** The name of the target document */
+    /** The name of the selected document */
     public docName: string | null,
 
     /** The path to the property */

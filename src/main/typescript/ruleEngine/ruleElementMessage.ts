@@ -1,10 +1,11 @@
 import { getGame } from "../foundryHelpers.js";
+import type { WvI18nKey } from "../lang.js";
 
 /** A message in a RuleElement */
 export default class RuleElementMessage {
   constructor(
     /** The message key for the textual message */
-    public messageKey: string,
+    public messageKey: WvI18nKey,
 
     /** The type of the message. */
     public type: MessageType = "info"

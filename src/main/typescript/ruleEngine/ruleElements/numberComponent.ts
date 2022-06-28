@@ -9,7 +9,7 @@ export default class NumberComponent extends RuleElement {
 
     if (this.hasErrors()) return;
 
-    this.checkSelectedIsCompositeNumber();
+    this.checkTargetIsCompositeNumber();
   }
 
   protected override _onAfterSpecial(): void {
@@ -24,18 +24,17 @@ export default class NumberComponent extends RuleElement {
     this.apply();
   }
 
-  protected checkSelectedIsCompositeNumber() {
+  protected checkTargetIsCompositeNumber() {
     const property = this.property;
 
     if (property instanceof CompositeNumber) return;
     if (CompositeNumber.isSource(property)) return;
 
     this.messages.push(
-      new NotCompositeNumberMessage(this.targetName, this.selector)
+      new NotCompositeNumberMessage(this.selectedDocName, this.target)
     );
   }
 
-  /** Apply the rule element to the target Document. */
   protected apply(): void {
     if (typeof this.value !== "number") return;
 

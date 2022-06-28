@@ -444,8 +444,8 @@
           "logical": {
             "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
             "notCompositeNumber": "Das Feld \"{path}\" in \"{name}\" ist keine zusammengesetzte Zahl.",
-            "notMatchingSelector": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
-            "wrongSelectedType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
+            "notMatchingTarget": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
+            "wrongTargetType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
             "wrongValueType": "Der Wert dieser Regel sollte vom Typ \"{type}\" sein."
           },
           "semantic": {
@@ -455,7 +455,7 @@
             "unknownHook": "Der Typ des Hooks ist nicht bekannt.",
             "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
             "unknownSpecialName": "Der SPECIAL-Name ist nicht bekannt.",
-            "unknownTarget": "Das Ziel ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
+            "unknownSelector": "Der Selektor ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
             "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
           },
           "syntax": "Syntaxfehler: {message}"

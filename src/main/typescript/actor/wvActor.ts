@@ -613,13 +613,13 @@ export default class WvActor extends Actor {
 
     this.itemTypes.effect.forEach((effect) => {
       effect.data.data.rules.elements.forEach((rule) => {
-        if (rule.target === "actor") rules.push(rule);
+        if (rule.selector === "actor") rules.push(rule);
       });
     });
 
     this.equippedApparel.forEach((apparel) => {
       apparel.data.data.rules.elements.forEach((rule) => {
-        if (rule.target === "actor") rules.push(rule);
+        if (rule.selector === "actor") rules.push(rule);
       });
     });
 

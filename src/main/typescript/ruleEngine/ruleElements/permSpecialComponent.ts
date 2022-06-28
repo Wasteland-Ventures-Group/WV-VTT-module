@@ -5,17 +5,17 @@ import RuleElement from "../ruleElement.js";
 
 /** A RuleElement that adds a permanent component to a SPECIAL. */
 export default class PermSpecialComponent extends RuleElement {
-  protected override checkIfSelectorIsValid(): void {
-    if (!isSpecialName(this.source.selector)) {
+  protected override checkIfTargetIsValid(): void {
+    if (!isSpecialName(this.source.target)) {
       this.messages.push(new WrongSpecialNameMessage());
     }
   }
 
-  override get selector(): string {
-    return `specials.${this.source.selector}`;
+  override get target(): string {
+    return `specials.${this.source.target}`;
   }
 
-  override get targetDoc(): Actor {
+  override get selectedDoc(): Actor {
     if (this.item.actor === null)
       throw new Error("The actor of the RuleElement's item is null.");
 

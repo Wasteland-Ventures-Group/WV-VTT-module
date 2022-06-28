@@ -15,6 +15,14 @@ const validationConfigs: ValidationConfig[] = [
     schemaPath: langSchemaPath
   },
   {
+    dataGlob: "./src/main/compendiums/item/ammo/*.json",
+    schemaPath: `${baseItemSchemaPath}/ammo.json`
+  },
+  {
+    dataGlob: "./src/main/compendiums/item/apparel/*.json",
+    schemaPath: `${baseItemSchemaPath}/apparel.json`
+  },
+  {
     dataGlob: "./src/main/compendiums/item/weapon/*.json",
     schemaPath: `${baseItemSchemaPath}/weapon.json`
   }

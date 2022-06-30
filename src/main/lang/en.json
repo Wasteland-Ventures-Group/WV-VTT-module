@@ -460,6 +460,7 @@
             "additional": "The property \"{property}\" is not allowed at \"{path}\".",
             "missing": "The property \"{property}\" is missing at \"{path}\".",
             "unknown": "An unknown error occurred.",
+            "unknownCondition": "The type of condition is unknown.",
             "unknownHook": "The type of hook is unknown.",
             "unknownRuleElement": "The type of RuleElement is unknown.",
             "unknownSpecialName": "The SPECIAL name is unknown.",

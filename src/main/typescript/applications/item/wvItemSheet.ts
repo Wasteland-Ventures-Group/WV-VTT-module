@@ -307,7 +307,7 @@ export default class WvItemSheet extends ItemSheet {
       hasErrors: re.hasErrors(messages) || rule.hasDocumentErrors,
       hasWarnings: re.hasWarnings(messages) || rule.hasDocumentWarnings,
       documentMessages,
-      label: rule.source.label,
+      label: rule.label,
       messages,
       source
     };
@@ -493,6 +493,11 @@ export default class WvItemSheet extends ItemSheet {
           case "#/properties/type/enum":
             return new RuleElementMessage(
               "wv.system.ruleEngine.errors.semantic.unknownRuleElement",
+              "error"
+            );
+          case "#/properties/conditions/items/enum":
+            return new RuleElementMessage(
+              "wv.system.ruleEngine.errors.semantic.unknownCondition",
               "error"
             );
         }

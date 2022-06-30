@@ -28,6 +28,7 @@ import Apparel from "../../item/apparel.js";
 import Weapon from "../../item/weapon.js";
 import Attack from "../../item/weapon/attack.js";
 import WvItem from "../../item/wvItem.js";
+import { WvItemProxy } from "../../item/wvItemProxy.js";
 import { getI18nRadiationSicknessLevel } from "../../radiation.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
@@ -397,7 +398,7 @@ export default class WvActorSheet extends ActorSheet {
   ): Promise<unknown> {
     if (!this.actor.isOwner) return false;
 
-    const item = await WvItem.fromDropData(data);
+    const item = await WvItemProxy.fromDropData(data);
     if (!(item instanceof WvItem))
       throw new Error("The item was not created successfully.");
 

@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - the ability for RuleElements to affect multiple documents
   (this is only the ground work for now, there are no selectors yet that allow
   multiple documents to be selected)
+- conditions for RuleElements. The first and so far only one is "whenEquipped"
+  and only applies RuleElements when they are equipped in an apparel slot,
+  weapon slot or the readied item
 
 ### Changed
 

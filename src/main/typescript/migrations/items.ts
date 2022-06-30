@@ -121,7 +121,9 @@ function migrateRuleElements(
         const transformed = isLastMigrationOlderThan("0.17.2")
           ? migrateRuleElementPreComposedNumbers(rule)
           : rule;
-        return migrateRuleElementSelectTargetSwap(transformed);
+        return migrateRuleElementAddConditions(
+          migrateRuleElementSelectTargetSwap(transformed)
+        );
       }
     );
   }
@@ -132,7 +134,9 @@ function ruleElementsNeedMigration(ruleElements: RuleElementSource[]): boolean {
 
   if (isLastMigrationOlderThan("0.17.2")) return true;
 
-  return ruleElements.some(hasWrongSelectorAndTarget);
+  return ruleElements.some(
+    (rule) => hasWrongSelectorAndTarget(rule) || hasMissingConditions(rule)
+  );
 }
 
 function hasWrongSelectorAndTarget(rule: RuleElementSource): boolean {
@@ -140,6 +144,10 @@ function hasWrongSelectorAndTarget(rule: RuleElementSource): boolean {
     ["actor", "item"].includes(rule.target) &&
     !["actor", "item"].includes(rule.selector)
   );
+}
+
+function hasMissingConditions(rule: RuleElementSource): boolean {
+  return !("conditions" in rule);
 }
 
 function migrateRuleElementPreComposedNumbers(
@@ -195,6 +203,14 @@ function migrateRuleElementSelectTargetSwap(
 
     return { ...rule, target: rule.selector, selector: oldTarget };
   }
+  return rule;
+}
+
+function migrateRuleElementAddConditions(
+  rule: RuleElementSource
+): RuleElementSource {
+  if (hasMissingConditions(rule)) return { ...rule, conditions: [] };
+
   return rule;
 }
 

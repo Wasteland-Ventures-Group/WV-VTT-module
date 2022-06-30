@@ -19,6 +19,12 @@ export default interface RuleElementSource {
   /** The filter to determine applicable documents with */
   selector: RuleElementSelector;
 
+  /**
+   * Optional conditions when this RuleElement should apply. All of the
+   * conditions need to be met for the RuleElement to apply.
+   */
+  conditions: RuleElementCondition[];
+
   /** The target property on the selected document */
   target: string;
 
@@ -38,6 +44,9 @@ export const RULE_ELEMENT_HOOKS = [
 
 export type RuleElementSelector = typeof RULE_ELEMENT_DOC_SELECTORS[number];
 export const RULE_ELEMENT_DOC_SELECTORS = ["item", "actor"] as const;
+
+export type RuleElementCondition = typeof RULE_ELEMENT_CONDITIONS[number];
+export const RULE_ELEMENT_CONDITIONS = ["whenEquipped"] as const;
 
 /** A JSON schema for RuleElementSource objects */
 export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> =
@@ -75,6 +84,16 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
         enum: RULE_ELEMENT_DOC_SELECTORS,
         default: "item"
       },
+      conditions: {
+        description:
+          "Optional conditions when this RuleElement should apply. All of the conditions need to be met for the RuleElement to apply.",
+        type: "array",
+        items: {
+          type: "string",
+          enum: RULE_ELEMENT_CONDITIONS
+        },
+        default: []
+      },
       target: {
         description: "The target property on the selected document",
         type: "string",
@@ -98,6 +117,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       "label",
       "priority",
       "selector",
+      "conditions",
       "target",
       "type",
       "value"
@@ -109,6 +129,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       label: "New Rule Element",
       priority: 100,
       selector: "item",
+      conditions: [],
       target: "",
       type: "WV.RuleElement.NumberComponent",
       value: 0

@@ -460,6 +460,7 @@
             "additional": "Das Feld \"{property}\" ist nicht erlaubt an Stelle \"{path}\".",
             "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
             "unknown": "Ein unbekannter Fehler is aufgetreten.",
+            "unknownCondition": "Der Typ der Bedingung ist nicht bekannt.",
             "unknownHook": "Der Typ des Hooks ist nicht bekannt.",
             "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
             "unknownSpecialName": "Der SPECIAL-Name ist nicht bekannt.",

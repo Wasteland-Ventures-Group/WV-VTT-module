@@ -16,12 +16,15 @@ import Formulator from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Apparel from "../item/apparel.js";
 import Weapon from "../item/weapon.js";
-import type WvItem from "../item/wvItem.js";
+import WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 import { applyRadiationSickness } from "../radiation.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import { ruleElementSort } from "../ruleEngine/ruleElement.js";
-import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
+import type {
+  RuleElementCondition,
+  RuleElementHook
+} from "../ruleEngine/ruleElementSource.js";
 import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n from "../wvI18n.js";
@@ -178,6 +181,18 @@ export default class WvActor extends Actor {
       this.mouthApparel,
       this.beltApparel
     ].filter((apparel): apparel is Apparel => apparel instanceof Apparel);
+  }
+
+  /**
+   * Get all equipped items. This includes the readied item, weapon slot
+   * weapons and equipped apparel.
+   */
+  get equippedItems(): WvItem[] {
+    return [
+      this.readiedItem,
+      ...this.weaponSlotWeapons,
+      ...this.equippedApparel
+    ].filter((item): item is WvItem => item instanceof WvItem);
   }
 
   /** Get the weapon of the given weapon slot. */
@@ -579,19 +594,6 @@ export default class WvActor extends Actor {
     this.items.forEach((item) => item.finalizeData());
   }
 
-  /** Apply the RuleElements of this Actor's Items to itself and its Items. */
-  protected applyRuleElementsForHook(hook: RuleElementHook): void {
-    const ruleElements: RuleElement[] = [];
-
-    this.items.forEach((item) =>
-      ruleElements.push(...item.getRuleElementsForHook(hook))
-    );
-
-    ruleElements
-      .sort(ruleElementSort)
-      .forEach((ruleElement) => ruleElement.apply([this, ...this.items]));
-  }
-
   protected override async _preCreate(
     data: ActorDataConstructorData,
     options: DocumentModificationOptions,
@@ -613,25 +615,6 @@ export default class WvActor extends Actor {
         inplace: false
       })
     );
-  }
-
-  /** Get RuleElements that apply to this Actor. */
-  protected get applicableRuleElements(): RuleElement[] {
-    const rules: RuleElement[] = [];
-
-    this.itemTypes.effect.forEach((effect) => {
-      effect.data.data.rules.elements.forEach((rule) => {
-        if (rule.selector === "actor") rules.push(rule);
-      });
-    });
-
-    this.equippedApparel.forEach((apparel) => {
-      apparel.data.data.rules.elements.forEach((rule) => {
-        if (rule.selector === "actor") rules.push(rule);
-      });
-    });
-
-    return rules;
   }
 
   /**
@@ -660,6 +643,31 @@ export default class WvActor extends Actor {
   /** Validate passed source system data. */
   protected validateSystemData(data: unknown): void {
     validateSystemData(data, getGame().wv.validators.actor[this.data.type]);
+  }
+
+  /** Apply the RuleElements of this Actor's Items to itself and its Items. */
+  protected applyRuleElementsForHook(hook: RuleElementHook): void {
+    const equippedItemIds = this.equippedItems
+      .map((item) => item.id)
+      .filter((id): id is string => typeof id === "string");
+
+    this.items
+      .map((item) => item.getRuleElementsForHook(hook))
+      .deepFlatten()
+      .sort(ruleElementSort)
+      .forEach((rule) => {
+        if (equippedItemIds.includes(rule.item.id ?? ""))
+          this.applyRuleElement(rule, { metConditions: ["whenEquipped"] });
+        else this.applyRuleElement(rule);
+      });
+  }
+
+  /** A function to apply a RuleElement to this actor and its items */
+  protected applyRuleElement(
+    rule: RuleElement,
+    options: { metConditions: RuleElementCondition[] } = { metConditions: [] }
+  ): void {
+    rule.apply([this, ...this.items], options);
   }
 }
 

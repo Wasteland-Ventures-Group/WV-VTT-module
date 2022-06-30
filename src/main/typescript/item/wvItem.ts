@@ -10,7 +10,10 @@ import {
 import { MiscDataPropertiesData } from "../data/item/misc/properties.js";
 import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
-import { ruleElementSort } from "../ruleEngine/ruleElement.js";
+import {
+  ruleElementSort,
+  withoutConditions
+} from "../ruleEngine/ruleElement.js";
 import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import { LOG } from "../systemLogger.js";
@@ -91,6 +94,7 @@ export default class WvItem extends Item {
   override prepareEmbeddedDocuments(): void {
     if (this.actor === null) {
       this.data.data.rules.elements
+        .filter(withoutConditions)
         .sort(ruleElementSort)
         .forEach((ruleElement) => ruleElement.apply([this]));
     }
@@ -114,7 +118,7 @@ export default class WvItem extends Item {
   /** Get the RuleElements of this Item for the given hook. */
   getRuleElementsForHook(hook: RuleElementHook): RuleElement[] {
     return this.data.data.rules.elements.filter(
-      (ruleElement) => ruleElement.source.hook === hook
+      (ruleElement) => ruleElement.hook === hook
     );
   }
 

@@ -9,7 +9,11 @@ import WrongTargetTypeMessage from "./messages/wrongTargetTypeMessage.js";
 import WrongValueTypeMessage from "./messages/wrongValueTypeMessage.js";
 import type RuleElementMessage from "./ruleElementMessage.js";
 import type RuleElementSource from "./ruleElementSource.js";
-import type { RuleElementSelector } from "./ruleElementSource.js";
+import type {
+  RuleElementCondition,
+  RuleElementHook,
+  RuleElementSelector
+} from "./ruleElementSource.js";
 
 /**
  * A rule engine element, allowing the modification of a data point, specified
@@ -40,6 +44,20 @@ export default abstract class RuleElement {
    * Document.
    */
   documentMessages: Record<string, DocumentMessagesValue> = {};
+
+  /** Get the conditions for this RuleElement. */
+  get conditions(): RuleElementCondition[] {
+    return this.source.conditions;
+  }
+
+  /** Get the enabled setting of the RuleElement. */
+  get enabled(): boolean {
+    return this.source.enabled;
+  }
+
+  get hook(): RuleElementHook {
+    return this.source.hook;
+  }
 
   /** Get the label of the RuleElement. */
   get label(): string {
@@ -111,8 +129,13 @@ export default abstract class RuleElement {
    * If this RuleElement has errors or is disabled, this does nothing.
    * The RuleElement will only apply to those Documents that match its selector.
    */
-  apply(documents: (WvActor | WvItem)[]): void {
-    if (!this.shouldApply) return;
+  apply(
+    documents: (WvActor | WvItem)[],
+    { metConditions }: { metConditions: RuleElementCondition[] } = {
+      metConditions: []
+    }
+  ): void {
+    if (!this.shouldApply({ metConditions })) return;
 
     for (const document of documents) {
       if (!isStoredDocument(document)) continue;
@@ -294,10 +317,24 @@ export default abstract class RuleElement {
   protected innerApply(_document: StoredDocument<WvActor | WvItem>): void {}
 
   /**
-   * Whether something prevents this RuleElement from applying to any Document.
+   * Whether nothing prevents this RuleElement from applying to any Document.
    */
-  private get shouldApply(): boolean {
-    return !this.hasErrors && this.source.enabled;
+  private shouldApply(
+    { metConditions }: { metConditions: RuleElementCondition[] } = {
+      metConditions: []
+    }
+  ): boolean {
+    return !this.hasErrors && this.enabled && this.conditionsMet(metConditions);
+  }
+
+  /**
+   * Check whether the given met conditions meet the required conditions of
+   * this RuleElement.
+   */
+  private conditionsMet(metConditions: RuleElementCondition[]): boolean {
+    return !this.conditions.some(
+      (condition) => !metConditions.includes(condition)
+    );
   }
 
   /** Determine whether this rule element selects the given document. */
@@ -308,14 +345,12 @@ export default abstract class RuleElement {
   }
 
   /**
-   * Check whether something prevents this RuleElement from applying to the
-   * given document.
+   * Check whether nothing prevents this RuleElement from applying to the
+   * given document. This assumes that that the RuleElement should apply in
+   * general.
    */
   private shouldApplyTo(document: StoredDocument<WvActor | WvItem>): boolean {
-    return (
-      this.shouldApply &&
-      !hasErrors(this.documentMessages[document.id]?.messages ?? [])
-    );
+    return !hasErrors(this.documentMessages[document.id]?.messages ?? []);
   }
 }
 
@@ -338,4 +373,9 @@ export function hasWarnings(messages: RuleElementMessage[]): boolean {
 /** A sort function for RuleElements */
 export function ruleElementSort(a: RuleElement, b: RuleElement): number {
   return a.priority - b.priority;
+}
+
+/** A filter function for RuleElements without conditions */
+export function withoutConditions(rule: RuleElement): boolean {
+  return rule.conditions.length === 0;
 }

@@ -433,9 +433,7 @@ export default class WvItemSheet extends ItemSheet {
     rawSource: string
   ): void {
     this.ruleElementSyntaxErrors[index] = [
-      new SyntaxErrorMessage(
-        error.message.split(": ")[1] ?? "Unable to get specific message"
-      ),
+      new SyntaxErrorMessage(error.message),
       rawSource
     ];
     LOG.warn(

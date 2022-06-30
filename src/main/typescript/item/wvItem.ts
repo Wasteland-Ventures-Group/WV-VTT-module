@@ -1,6 +1,7 @@
 import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
 import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
+import type WvActor from "../actor/wvActor.js";
 import {
   CONSTANTS,
   ProtoItemTypes,
@@ -9,6 +10,8 @@ import {
 import { MiscDataPropertiesData } from "../data/item/misc/properties.js";
 import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
+import { ruleElementSort } from "../ruleEngine/ruleElement.js";
+import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import { LOG } from "../systemLogger.js";
 import validateSystemData from "../validation/validateSystemData.js";
@@ -28,13 +31,6 @@ export default class WvItem extends Item {
   /** Get the amount of the item, if it has any. */
   get amount(): number | undefined {
     return "amount" in this.data.data ? this.data.data.amount : undefined;
-  }
-
-  /** Get RuleElements that apply to this Item. */
-  get applicableRuleElements(): RuleElement[] {
-    return this.data.data.rules.elements.filter(
-      (rule) => rule.selector === "item"
-    );
   }
 
   /** Check whether the item has a compendium link in its flags. */
@@ -93,9 +89,33 @@ export default class WvItem extends Item {
   }
 
   override prepareEmbeddedDocuments(): void {
-    this.applicableRuleElements
-      .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onAfterSpecial());
+    if (this.actor === null) {
+      this.data.data.rules.elements
+        .sort(ruleElementSort)
+        .forEach((ruleElement) => ruleElement.apply([this]));
+    }
+  }
+
+  /** Get the related Document from the given relation. */
+  getRelatedDoc(
+    relation: DocumentRelation,
+    id: string
+  ): WvActor | WvItem | null {
+    switch (relation) {
+      case "thisItem":
+        return this;
+      case "parentActor":
+        return this.actor;
+      case "parentOwnedItem":
+        return this.actor?.items.get(id) ?? null;
+    }
+  }
+
+  /** Get the RuleElements of this Item for the given hook. */
+  getRuleElementsForHook(hook: RuleElementHook): RuleElement[] {
+    return this.data.data.rules.elements.filter(
+      (ruleElement) => ruleElement.source.hook === hook
+    );
   }
 
   /**
@@ -253,3 +273,6 @@ export function isOfItemType<
 ): item is InstanceType<Game["wv"]["typeConstructors"]["item"][T]> {
   return item instanceof getGame().wv.typeConstructors.item[type];
 }
+
+/** The relation of the owning item to the document that caused a message */
+export type DocumentRelation = "thisItem" | "parentActor" | "parentOwnedItem";

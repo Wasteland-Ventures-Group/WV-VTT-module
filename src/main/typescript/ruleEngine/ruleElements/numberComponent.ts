@@ -1,4 +1,6 @@
+import type WvActor from "../../actor/wvActor.js";
 import { CompositeNumber } from "../../data/common.js";
+import type WvItem from "../../item/wvItem.js";
 import NotCompositeNumberMessage from "../messages/notCompositeNumberMessage.js";
 import RuleElement from "../ruleElement.js";
 
@@ -6,40 +8,45 @@ import RuleElement from "../ruleElement.js";
 export default class NumberComponent extends RuleElement {
   protected override validate(): void {
     super.validate();
-
-    if (this.hasErrors()) return;
-
-    this.checkTargetIsCompositeNumber();
+    this.checkValueIsOfType("number");
   }
 
-  protected override _onAfterSpecial(): void {
-    this.apply();
+  protected override validateAgainstDocument(
+    document: StoredDocument<WvActor | WvItem>
+  ): void {
+    super.validateAgainstDocument(document);
+    this.checkTargetIsCompositeNumber(document);
   }
 
-  protected override _onAfterSkills(): void {
-    this.apply();
+  protected override innerApply(
+    document: StoredDocument<WvActor | WvItem>
+  ): void {
+    if (typeof this.value !== "number") return;
+
+    const modNumber = CompositeNumber.from(this.getProperty(document));
+    modNumber.add({ value: this.value, labelComponents: this.labelComponents });
+    this.setProperty(document, modNumber);
   }
 
-  protected override _onAfterComputation(): void {
-    this.apply();
-  }
-
-  protected checkTargetIsCompositeNumber() {
-    const property = this.property;
+  /**
+   * Check whether the target property is a CompositeNumber or
+   * CompositeNumberSource.
+   *
+   * If the type is incorrect, an error message is added to the RuleElement.
+   * @remarks When this is called, it should already be verified that the
+   *          target actually matches a property.
+   */
+  protected checkTargetIsCompositeNumber(
+    document: StoredDocument<WvActor | WvItem>
+  ) {
+    const property = this.getProperty(document);
 
     if (property instanceof CompositeNumber) return;
     if (CompositeNumber.isSource(property)) return;
 
-    this.messages.push(
-      new NotCompositeNumberMessage(this.selectedDocName, this.target)
+    this.addDocumentMessage(
+      document,
+      new NotCompositeNumberMessage(this.target)
     );
-  }
-
-  protected apply(): void {
-    if (typeof this.value !== "number") return;
-
-    const modNumber = CompositeNumber.from(this.property);
-    modNumber.add({ value: this.value, labelComponents: this.labelComponents });
-    this.property = modNumber;
   }
 }

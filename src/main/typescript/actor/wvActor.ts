@@ -20,6 +20,8 @@ import type WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
 import { applyRadiationSickness } from "../radiation.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
+import { ruleElementSort } from "../ruleEngine/ruleElement.js";
+import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
 import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n from "../wvI18n.js";
@@ -461,9 +463,7 @@ export default class WvActor extends Actor {
 
   override prepareEmbeddedDocuments(): void {
     super.prepareEmbeddedDocuments();
-    this.applicableRuleElements
-      .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onAfterSpecial());
+    this.applyRuleElementsForHook("afterSpecial");
   }
 
   override prepareDerivedData(): void {
@@ -508,9 +508,7 @@ export default class WvActor extends Actor {
     }
     data.skills["thaumaturgy"] = this.computeBaseSkill("thaumaturgy");
 
-    this.applicableRuleElements
-      .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onAfterSkills());
+    this.applyRuleElementsForHook("afterSkills");
 
     // Calculate data derived from equipment -----------------------------------
     this.equippedApparel.forEach((apparel) => {
@@ -577,11 +575,21 @@ export default class WvActor extends Actor {
         labelComponents: [{ key: "wv.rules.background.size" }]
       });
 
-    this.applicableRuleElements
-      .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onAfterComputation());
-
+    this.applyRuleElementsForHook("afterComputation");
     this.items.forEach((item) => item.finalizeData());
+  }
+
+  /** Apply the RuleElements of this Actor's Items to itself and its Items. */
+  protected applyRuleElementsForHook(hook: RuleElementHook): void {
+    const ruleElements: RuleElement[] = [];
+
+    this.items.forEach((item) =>
+      ruleElements.push(...item.getRuleElementsForHook(hook))
+    );
+
+    ruleElements
+      .sort(ruleElementSort)
+      .forEach((ruleElement) => ruleElement.apply([this, ...this.items]));
   }
 
   protected override async _preCreate(

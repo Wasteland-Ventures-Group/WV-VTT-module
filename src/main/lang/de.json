@@ -440,12 +440,20 @@
         "modifierExplanation": "Strg-Klick um an Spielleiter zu Flüstern"
       },
       "ruleEngine": {
+        "documentMessages": {
+          "name": "Dokumentenbezogene Meldungen",
+          "relations": {
+            "thisItem": "Dieser Gegenstand",
+            "parentActor": "Elternaktor",
+            "parentOwnedItem": "Gegenstand im besitz des Elternaktors"
+          }
+        },
         "errors": {
           "logical": {
-            "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
-            "notCompositeNumber": "Das Feld \"{path}\" in \"{name}\" ist keine zusammengesetzte Zahl.",
-            "notMatchingTarget": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
-            "wrongTargetType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
+            "notCompositeNumber": "Das Feld \"{path}\" ist keine zusammengesetzte Zahl.",
+            "notMatchingTarget": "Das Feld \"{path}\" existiert nicht.",
+            "wrongDocumentType": "Das Dokument ist nicht vom erwarteten Typ \"{type}\".",
+            "wrongTargetType": "Das Feld \"{path}\" hat nicht den benötigten Typ \"{type}\".",
             "wrongValueType": "Der Wert dieser Regel sollte vom Typ \"{type}\" sein."
           },
           "semantic": {
@@ -465,7 +473,7 @@
           "plural": "Regelelemente"
         },
         "warnings": {
-          "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert.",
+          "changedType": "Der Typ von \"{path}\" wurde von \"{original}\" zu \"{new}\" geändert.",
           "notSaved": "Die Änderungen wurden wegen Fehlern nicht gespeichert. Du kannst dieses Foundry Fenster schließen und die Fehler später beheben. Die Änderungen gehen verloren, wenn Foundry neu geladen wird."
         }
       },

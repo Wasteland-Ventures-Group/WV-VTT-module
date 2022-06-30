@@ -1,4 +1,5 @@
 import type { Join, PathsToStringProps } from "./helperTypes.js";
+import type { DocumentRelation } from "./item/wvItem.js";
 import type {
   I18nApparelTypes,
   I18nCalibers,
@@ -524,23 +525,24 @@ export interface LangSchema {
       };
       /** Labels related to the Rule Engine */
       ruleEngine: {
+        /** Labels for document related rule element messages */
+        documentMessages: {
+          /** The descriptive name for document related rule element messages */
+          name: string;
+          /** Labels for different document relations */
+          relations: Record<DocumentRelation, string>;
+        };
         /** Labels for different errors */
         errors: {
           /** Various logical errors */
           logical: {
             /**
-             * An error message when the target is set to "actor", but the item
-             * of the RuleElement has no actor.
-             */
-            noActor: string;
-            /**
              * An error message when the selected property on the target is not
              * a CompositeNumber.
              *
              * Parameters:
-             * - name: the name of the target
              * - path: the selector path
-             * @pattern (?=.*\{name\})(?=.*\{path\})
+             * @pattern (?=.*\{path\})
              */
             notCompositeNumber: string;
             /**
@@ -548,20 +550,27 @@ export interface LangSchema {
              * selected Document.
              *
              * Parameters
-             * - name: the name of the selected document
              * - path: the target path
-             * @pattern (?=.*\{name\})(?=.*\{path\})
+             * @pattern (?=.*\{path\})
              */
             notMatchingTarget: string;
+            /**
+             * An error message when a selected document is not of the expected
+             * type.
+             *
+             * Parameters
+             * - type: the expected type
+             * @pattern (?=.*\{type\})
+             */
+            wrongDocumentType: string;
             /**
              * An error message when the target property on the selected
              * Document is of the wrong type.
              *
              * Parameters:
-             * - name: the name of the target
              * - path: the target path
              * - type: the expected type of the rule element type
-             * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{type\})
+             * @pattern (?=.*\{path\})(?=.*\{type\})
              */
             wrongTargetType: string;
             /**
@@ -630,11 +639,10 @@ export interface LangSchema {
            * A warning, stating that the type of a property was changed.
            *
            * Parameters:
-           * - name: the target name
            * - path: the path of the property on the target
            * - original: the original type of the property
            * - new: the new type of the property
-           * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
+           * @pattern (?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
            */
           changedType: string;
           /**

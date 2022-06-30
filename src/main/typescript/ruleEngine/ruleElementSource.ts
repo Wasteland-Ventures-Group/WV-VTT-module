@@ -1,5 +1,6 @@
 import type { JSONSchemaType } from "ajv";
-import { RuleElementId, RULE_ELEMENTS } from "./ruleElements.js";
+import type { RuleElementId } from "./ruleElements.js";
+import { RULE_ELEMENTS } from "./ruleElements.js";
 
 /** The RuleElement raw data layout */
 export default interface RuleElementSource {
@@ -28,19 +29,15 @@ export default interface RuleElementSource {
   value: boolean | number | string;
 }
 
+export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
 export const RULE_ELEMENT_HOOKS = [
   "afterSpecial",
   "afterSkills",
   "afterComputation"
 ] as const;
 
-export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
-
-/** The valid values of a RuleElement target property */
-export const RULE_ELEMENT_DOC_SELECTORS = ["item", "actor"] as const;
-
-/** The type of the valid values for a RuleElement target property */
 export type RuleElementSelector = typeof RULE_ELEMENT_DOC_SELECTORS[number];
+export const RULE_ELEMENT_DOC_SELECTORS = ["item", "actor"] as const;
 
 /** A JSON schema for RuleElementSource objects */
 export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> =

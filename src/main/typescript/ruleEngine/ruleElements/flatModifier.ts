@@ -1,3 +1,5 @@
+import type WvActor from "../../actor/wvActor.js";
+import type WvItem from "../../item/wvItem.js";
 import RuleElement from "../ruleElement.js";
 
 /**
@@ -7,28 +9,24 @@ import RuleElement from "../ruleElement.js";
 export default class FlatModifier extends RuleElement {
   protected override validate(): void {
     super.validate();
-
-    if (this.hasErrors()) return;
-
-    this.checkTargetIsOfType("number");
     this.checkValueIsOfType("number");
   }
 
-  protected override _onAfterSpecial(): void {
-    this.apply();
+  protected override validateAgainstDocument(
+    document: StoredDocument<WvActor | WvItem>
+  ): void {
+    super.validateAgainstDocument(document);
+    this.checkTargetIsOfType(document, "number");
   }
 
-  protected override _onAfterSkills(): void {
-    this.apply();
-  }
-
-  protected override _onAfterComputation(): void {
-    this.apply();
-  }
-
-  protected apply(): void {
+  protected override innerApply(
+    document: StoredDocument<WvActor | WvItem>
+  ): void {
     if (typeof this.value !== "number") return;
 
-    this.property = (this.property as number) + this.value;
+    this.setProperty(
+      document,
+      (this.getProperty(document) as number) + this.value
+    );
   }
 }

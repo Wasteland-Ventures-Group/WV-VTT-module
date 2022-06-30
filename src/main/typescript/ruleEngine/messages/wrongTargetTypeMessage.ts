@@ -4,9 +4,6 @@ import RuleElementMessage from "../ruleElementMessage.js";
 /** A warning about a wrong target property type on the selected Document */
 export default class WrongTargetTypeMessage extends RuleElementMessage {
   constructor(
-    /** The name of the selected document */
-    public docName: string | null,
-
     /** The path to the property */
     public propertyPath: string,
 
@@ -18,7 +15,6 @@ export default class WrongTargetTypeMessage extends RuleElementMessage {
 
   override get message(): string {
     return getGame().i18n.format(this.messageKey, {
-      name: this.docName,
       path: this.propertyPath,
       type: this.typeName
     });

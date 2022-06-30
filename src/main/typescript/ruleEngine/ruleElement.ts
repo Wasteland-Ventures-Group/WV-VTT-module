@@ -1,10 +1,13 @@
+import type WvActor from "../actor/wvActor.js";
 import type { LabelComponent } from "../data/common.js";
+import { isStoredDocument } from "../foundryHelpers.js";
+import type { DocumentRelation } from "../item/wvItem.js";
 import type WvItem from "../item/wvItem.js";
 import ChangedTypeMessage from "./messages/changedTypeMessage.js";
 import NotMatchingTargetMessage from "./messages/notMatchingTargetMessage.js";
 import WrongTargetTypeMessage from "./messages/wrongTargetTypeMessage.js";
 import WrongValueTypeMessage from "./messages/wrongValueTypeMessage.js";
-import RuleElementMessage from "./ruleElementMessage.js";
+import type RuleElementMessage from "./ruleElementMessage.js";
 import type RuleElementSource from "./ruleElementSource.js";
 import type { RuleElementSelector } from "./ruleElementSource.js";
 
@@ -18,18 +21,25 @@ export default abstract class RuleElement {
    * Create a RuleElement from the given data and owning item.
    * @param source   - the source data for the RuleElement
    * @param item     - the owning item
-   * @param messages - potential messages encountered when validating the source
-   *                   before creating the RuleElement
    */
   constructor(
     /** The source data of the RuleElement */
     public source: RuleElementSource,
 
-    public item: WvItem,
+    /** The owning Item of the RuleElement */
+    public item: WvItem
+  ) {
+    this.validate();
+  }
 
-    /** Messages that were accumulated while validating the source */
-    public messages: RuleElementMessage[] = []
-  ) {}
+  /** Messages that were accumulated while validating the source. */
+  messages: RuleElementMessage[] = [];
+
+  /**
+   * Document IDs mapping to arrays of messages, specific to the respective
+   * Document.
+   */
+  documentMessages: Record<string, DocumentMessagesValue> = {};
 
   /** Get the label of the RuleElement. */
   get label(): string {
@@ -57,16 +67,6 @@ export default abstract class RuleElement {
     return this.source.priority;
   }
 
-  /** Get the property, the RuleElement points at. */
-  get property(): unknown {
-    return foundry.utils.getProperty(this.selectedDoc.data.data, this.target);
-  }
-
-  /** Set the property, the RuleElement points at. */
-  set property(value: unknown) {
-    foundry.utils.setProperty(this.selectedDoc.data.data, this.target, value);
-  }
-
   /** Get the filtering selector of the RuleElement. */
   get selector(): RuleElementSelector {
     return this.source.selector;
@@ -77,175 +77,77 @@ export default abstract class RuleElement {
     return this.source.target;
   }
 
-  /**
-   * Get the selected Document of the RuleElement.
-   * @throws if the selector is "actor" and the RuleElement's Item has no Actor.
-   */
-  get selectedDoc(): Actor | Item {
-    switch (this.selector) {
-      case "item":
-        return this.item;
-      case "actor":
-        if (this.item.actor === null)
-          throw new Error("The actor of the RuleElement's item is null.");
-
-        return this.item.actor;
-    }
-  }
-
   /** Get the value of the RuleElement. */
   get value(): boolean | number | string {
     return this.source.value;
   }
 
   /** Whether the RuleElement has errors */
-  hasErrors(): boolean {
+  get hasErrors(): boolean {
     return hasErrors(this.messages);
   }
 
   /** Whether the RuleElement has warnings */
-  hasWarnings(): boolean {
+  get hasWarnings(): boolean {
     return hasWarnings(this.messages);
   }
 
-  /**
-   * Whether something prevents this rule element from modifying the selected
-   * Document.
-   */
-  shouldNotModify(): boolean {
-    return this.hasErrors() || !this.source.enabled;
+  /** Whether the RuleElement has document related errors */
+  get hasDocumentErrors(): boolean {
+    return Object.values(this.documentMessages).some((value) =>
+      hasErrors(value.messages)
+    );
+  }
+
+  /** Whether the RuleElement has document related warnings */
+  get hasDocumentWarnings(): boolean {
+    return Object.values(this.documentMessages).some((value) =>
+      hasWarnings(value.messages)
+    );
   }
 
   /**
-   * Modify the Document after the SPECIAL calculation step, if the RuleElement
-   * does not have errors.
+   * Apply this RuleElement to the given Documents.
+   * If this RuleElement has errors or is disabled, this does nothing.
+   * The RuleElement will only apply to those Documents that match its selector.
    */
-  onAfterSpecial(): void {
-    if (this.source.hook !== "afterSpecial") return;
-    this.validate();
-    if (this.shouldNotModify()) return;
+  apply(documents: (WvActor | WvItem)[]): void {
+    if (!this.shouldApply) return;
 
-    this._onAfterSpecial();
-  }
+    for (const document of documents) {
+      if (!isStoredDocument(document)) continue;
+      if (!this.selects(document)) continue;
 
-  /**
-   * Modify the Document after the Skills calculation step, if the RuleElement
-   * does not have errors.
-   */
-  onAfterSkills(): void {
-    if (this.source.hook !== "afterSkills") return;
-    this.validate();
-    if (this.shouldNotModify()) return;
+      this.validateAgainstDocument(document);
+      if (!this.shouldApplyTo(document)) continue;
 
-    this._onAfterSkills();
-  }
-
-  /**
-   * Modify the Document after all other computations are done, if the
-   * RuleElement does not have errors.
-   */
-  onAfterComputation(): void {
-    if (this.source.hook !== "afterComputation") return;
-    this.validate();
-    if (this.shouldNotModify()) return;
-
-    this._onAfterComputation();
-  }
-
-  /** Validate the data and add any error messages to errors. */
-  protected validate(): void {
-    if (this.selector === "actor" && this.item.actor === null) {
-      this.messages.push(
-        new RuleElementMessage(
-          "wv.system.ruleEngine.errors.logical.noActor",
-          "error"
-        )
-      );
-
-      return;
+      this.innerApply(document);
     }
+  }
 
-    this.checkIfTargetIsValid();
+  /** Get the name of the given Document. */
+  protected getDocName(document: WvActor | WvItem): string | null {
+    // This has to be accessed in this way, because this can end up being called
+    // when the `data` on an Actor or Item is not initialized yet.
+    return document.data?._source.name ?? null;
+  }
+
+  /** Get the property of the given Document, the RuleElement points at. */
+  protected getProperty(document: WvActor | WvItem): unknown {
+    return foundry.utils.getProperty(document.data.data, this.target);
+  }
+
+  /** Set the property of the given Document, the RuleElement points at. */
+  protected setProperty(document: WvActor | WvItem, value: unknown) {
+    foundry.utils.setProperty(document.data.data, this.target, value);
   }
 
   /**
-   * Modify the Document after the SPECIAL calculation step.
-   *
-   * This is only called when the RuleElement has no errors and should be
-   * overridden by subclasses.
+   * Validate the RuleElement itself and add messages to it. This should be
+   * overriden by subclasses if needed.
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected _onAfterSpecial(): void {}
-
-  /**
-   * Modify the Document after the Skills calculation step.
-   *
-   * This is only called when the RuleElement has no errors and should be
-   * overridden by subclasses.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected _onAfterSkills(): void {}
-
-  /**
-   * Modify the Document after all other computations are done.
-   *
-   * This is only called when the RuleElement has no errors and should be
-   * overridden by subclasses.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected _onAfterComputation(): void {}
-
-  /**
-   * Check whether the target targets a property.
-   *
-   * If the target does not match, an error message is added to the RuleElement.
-   * @throws if anything else than a TypeError is thrown by
-   *         `foundry.utils.getProperty()`
-   */
-  protected checkIfTargetIsValid(): void {
-    let invalidTarget = false;
-
-    try {
-      invalidTarget = this.property === undefined;
-    } catch (error) {
-      if (error instanceof TypeError) {
-        // This can happen, when the prefix part of a path finds a valid
-        // property, which has a non-object value and the selector has further
-        // parts.
-        invalidTarget = true;
-      } else {
-        throw error;
-      }
-    }
-
-    if (invalidTarget) {
-      this.messages.push(
-        new NotMatchingTargetMessage(this.selectedDocName, this.target)
-      );
-    }
-  }
-
-  /**
-   * Check whether the target property is of the given type.
-   *
-   * If the type is incorrect, an error message is added to the RuleElement.
-   * @remarks When this is called, it should already be verified that the
-   *          target actually matches a property.
-   * @param expectedType - the type to check for
-   */
-  protected checkTargetIsOfType(
-    expectedType: "boolean" | "number" | "string"
-  ): void {
-    if (typeof this.property !== expectedType) {
-      this.messages.push(
-        new WrongTargetTypeMessage(
-          this.selectedDocName,
-          this.target,
-          expectedType
-        )
-      );
-    }
-  }
+  protected validate(): void {}
 
   /**
    * Check whether the value is of the given type.
@@ -261,32 +163,166 @@ export default abstract class RuleElement {
   }
 
   /**
-   * Check whether the target property will change.
-   *
-   * If the type changes, a warning message is added to the RuleElement.
+   * Validate the RuleElement against a Document and add any messages to the
+   * RuleElement.
    */
-  protected checkTypeChanged(): void {
-    const originalType = typeof this.property;
-    const newType = typeof this.value;
+  protected validateAgainstDocument(
+    document: StoredDocument<WvActor | WvItem>
+  ): void {
+    this.checkTargetIsValid(document);
+  }
 
-    if (originalType !== newType) {
-      this.messages.push(
-        new ChangedTypeMessage(
-          this.selectedDocName,
-          this.target,
-          originalType,
-          newType
-        )
+  /**
+   * Add a message for the given document, initializing the messages array, if
+   * it doesn't exist yet.
+   */
+  protected addDocumentMessage(
+    document: StoredDocument<WvActor | WvItem>,
+    message: RuleElementMessage
+  ): void {
+    const value = this.documentMessages[document.id];
+    if (value === undefined)
+      this.documentMessages[document.id] = {
+        causeDocRelation: this.getCauseDocRelation(document),
+        messages: [message]
+      };
+    else value.messages.push(message);
+  }
+
+  /**
+   * Get the relation between the owning Item and the cause Document of a
+   * message.
+   * @throws if the given Document is not the owning Item, but the owning Item
+   *         has no parent Actor
+   * @throws if the given Document could not be found in the Actor or its owned
+   *         Items
+   */
+  protected getCauseDocRelation(
+    document: StoredDocument<WvActor | WvItem>
+  ): DocumentRelation {
+    if (this.item.id === document.id) return "thisItem";
+
+    if (this.item.actor === null)
+      throw new Error(
+        "The cause document was not the owning item, but the owning item has no parent!"
+      );
+
+    if (this.item.actor.id === document.id) return "parentActor";
+
+    if (this.item.actor.items.has(document.id)) return "parentOwnedItem";
+
+    throw new Error(
+      "Could not find the given Document's ID in the owning Actor!"
+    );
+  }
+
+  /**
+   * Check whether the target targets a property.
+   *
+   * If the target does not match, an error message is added to the RuleElement.
+   * @throws if anything else than a TypeError is thrown by
+   *         `foundry.utils.getProperty()`
+   */
+  protected checkTargetIsValid(
+    document: StoredDocument<WvActor | WvItem>
+  ): void {
+    let invalidTarget = false;
+
+    try {
+      invalidTarget = this.getProperty(document) === undefined;
+    } catch (error) {
+      if (error instanceof TypeError) {
+        // This can happen, when the prefix part of a path finds a valid
+        // property, which has a non-object value and the selector has further
+        // parts.
+        invalidTarget = true;
+      } else {
+        throw error;
+      }
+    }
+
+    if (invalidTarget) {
+      this.addDocumentMessage(
+        document,
+        new NotMatchingTargetMessage(this.target)
       );
     }
   }
 
-  /** Get the name of the selected Document of this rule. */
-  protected get selectedDocName(): string | null {
-    // This has to be accessed in this way, because this can end up being called
-    // when the `data` on an Actor or Item is not initialized yet.
-    return this.selectedDoc.data?._source.name ?? null;
+  /**
+   * Check whether the target property is of the given type.
+   *
+   * If the type is incorrect, an error message is added to the RuleElement.
+   * @remarks When this is called, it should already be verified that the
+   *          target actually matches a property.
+   */
+  protected checkTargetIsOfType(
+    document: StoredDocument<WvActor | WvItem>,
+    expectedType: "boolean" | "number" | "string"
+  ): void {
+    if (typeof this.getProperty(document) !== expectedType) {
+      this.addDocumentMessage(
+        document,
+        new WrongTargetTypeMessage(this.target, expectedType)
+      );
+    }
   }
+
+  /**
+   * Check whether the target property will change.
+   *
+   * If the type changes, a warning message is added to the RuleElement.
+   */
+  protected checkTypeChanged(document: StoredDocument<WvActor | WvItem>): void {
+    const originalType = typeof this.getProperty(document);
+    const newType = typeof this.value;
+
+    if (originalType !== newType) {
+      this.addDocumentMessage(
+        document,
+        new ChangedTypeMessage(this.target, originalType, newType)
+      );
+    }
+  }
+
+  /**
+   * Apply this RuleElement to the given document. All necessary checks should
+   * have already been performed at this point. This should be overriden by
+   * subclesses.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  protected innerApply(_document: StoredDocument<WvActor | WvItem>): void {}
+
+  /**
+   * Whether something prevents this RuleElement from applying to any Document.
+   */
+  private get shouldApply(): boolean {
+    return !this.hasErrors && this.source.enabled;
+  }
+
+  /** Determine whether this rule element selects the given document. */
+  private selects(document: WvActor | WvItem): boolean {
+    if (document instanceof Actor && this.selector === "actor") return true;
+
+    return document instanceof Item && this.selector === "item";
+  }
+
+  /**
+   * Check whether something prevents this RuleElement from applying to the
+   * given document.
+   */
+  private shouldApplyTo(document: StoredDocument<WvActor | WvItem>): boolean {
+    return (
+      this.shouldApply &&
+      !hasErrors(this.documentMessages[document.id]?.messages ?? [])
+    );
+  }
+}
+
+/** An value in the documentMessages object */
+export interface DocumentMessagesValue {
+  causeDocRelation: DocumentRelation;
+  messages: RuleElementMessage[];
 }
 
 /** Check whether the given messages contain errors. */
@@ -297,4 +333,9 @@ export function hasErrors(messages: RuleElementMessage[]): boolean {
 /** Check whether the given messages contain warnings. */
 export function hasWarnings(messages: RuleElementMessage[]): boolean {
   return messages.some((message) => message.isWarning());
+}
+
+/** A sort function for RuleElements */
+export function ruleElementSort(a: RuleElement, b: RuleElement): number {
+  return a.priority - b.priority;
 }

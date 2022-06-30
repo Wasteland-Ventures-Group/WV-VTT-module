@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - a total SPECIAL points display to the character sheet
 - a total Skill points display to the character sheet
 - a finalize data step for items
+- the ability for RuleElements to affect multiple documents
+  (this is only the ground work for now, there are no selectors yet that allow
+  multiple documents to be selected)
 
 ### Changed
 

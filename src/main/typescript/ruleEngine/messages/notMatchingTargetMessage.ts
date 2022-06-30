@@ -4,9 +4,6 @@ import RuleElementMessage from "../ruleElementMessage.js";
 /** An error about a not matching target */
 export default class NotMatchingTargetMessage extends RuleElementMessage {
   constructor(
-    /** The name of the selected document */
-    public docName: string | null,
-
     /** The path to the property */
     public propertyPath: string
   ) {
@@ -14,9 +11,6 @@ export default class NotMatchingTargetMessage extends RuleElementMessage {
   }
 
   override get message(): string {
-    return getGame().i18n.format(this.messageKey, {
-      name: this.docName,
-      path: this.propertyPath
-    });
+    return getGame().i18n.format(this.messageKey, { path: this.propertyPath });
   }
 }

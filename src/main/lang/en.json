@@ -440,12 +440,20 @@
         "modifierExplanation": "Ctrl-Click to whisper to game masters"
       },
       "ruleEngine": {
+        "documentMessages": {
+          "name": "Document related messages",
+          "relations": {
+            "thisItem": "This Item",
+            "parentActor": "Parent Actor",
+            "parentOwnedItem": "Parent Actor owned Item"
+          }
+        },
         "errors": {
           "logical": {
-            "noActor": "The target is set to \"actor\", but the item has no actor.",
-            "notCompositeNumber": "The property \"{path}\" on \"{name}\" is not a modifiable number.",
-            "notMatchingTarget": "The property \"{path}\" on \"{name}\" does not exist.",
-            "wrongTargetType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\".",
+            "notCompositeNumber": "The property \"{path}\" is not a composite number.",
+            "notMatchingTarget": "The property \"{path}\" does not exist.",
+            "wrongDocumentType": "The Document is not of the expected type \"{type}\".",
+            "wrongTargetType": "The property \"{path}\" is not of the needed type \"{type}\".",
             "wrongValueType": "The value for this rule should be of type \"{type}\"."
           },
           "semantic": {
@@ -465,7 +473,7 @@
           "plural": "Rule Elements"
         },
         "warnings": {
-          "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\".",
+          "changedType": "The type of \"{path}\" changed from \"{original}\" to \"{new}\".",
           "notSaved": "This rule element was not saved due to errors. It is save to close this Foundry window and fix this later. Though the changes will be lost once Foundry is reloaded."
         }
       },

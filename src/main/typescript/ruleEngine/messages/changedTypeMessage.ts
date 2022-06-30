@@ -4,9 +4,6 @@ import RuleElementMessage from "../ruleElementMessage.js";
 /** A warning about a rule element changing the type of a property. */
 export default class ChangedTypeMessage extends RuleElementMessage {
   constructor(
-    /** The name of the selected document */
-    public docName: string | null,
-
     /** The path to the property */
     public propertyPath: string,
 
@@ -21,7 +18,6 @@ export default class ChangedTypeMessage extends RuleElementMessage {
 
   override get message(): string {
     return getGame().i18n.format(this.messageKey, {
-      name: this.docName,
       path: this.propertyPath,
       original: this.originalType,
       new: this.newType

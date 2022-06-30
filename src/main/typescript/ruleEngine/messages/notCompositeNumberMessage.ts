@@ -4,9 +4,6 @@ import RuleElementMessage from "../ruleElementMessage.js";
 /** A warning about a wrong targeted property type on the selected Document */
 export default class NotCompositeNumberMessage extends RuleElementMessage {
   constructor(
-    /** The name of the selected document */
-    public docName: string | null,
-
     /** The path to the property */
     public propertyPath: string
   ) {
@@ -14,9 +11,6 @@ export default class NotCompositeNumberMessage extends RuleElementMessage {
   }
 
   override get message(): string {
-    return getGame().i18n.format(this.messageKey, {
-      name: this.docName,
-      path: this.propertyPath
-    });
+    return getGame().i18n.format(this.messageKey, { path: this.propertyPath });
   }
 }

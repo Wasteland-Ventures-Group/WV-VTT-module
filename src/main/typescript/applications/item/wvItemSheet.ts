@@ -287,6 +287,7 @@ export default class WvItemSheet extends ItemSheet {
 
     let messages: RuleElementMessage[];
     let source: string;
+    let documentMessages: SheetDataDocumentMessages[] = [];
     if (hasSyntaxError) {
       messages = [syntaxError, new NotSavedMessage()];
       source = syntaxErrorTuple[1] ?? "";
@@ -296,14 +297,38 @@ export default class WvItemSheet extends ItemSheet {
     } else {
       messages = rule.messages;
       source = JSON.stringify(rule.source, null, 2);
+      documentMessages = Object.entries(rule.documentMessages).map(
+        ([id, value]) => this.mapToSheetDataDocumentMessages(id, value)
+      );
     }
 
     return {
-      hasErrors: re.hasErrors(messages),
-      hasWarnings: re.hasWarnings(messages),
+      hasDocumentMessages: documentMessages.length > 0,
+      hasErrors: re.hasErrors(messages) || rule.hasDocumentErrors,
+      hasWarnings: re.hasWarnings(messages) || rule.hasDocumentWarnings,
+      documentMessages,
       label: rule.source.label,
       messages,
       source
+    };
+  }
+
+  /**
+   * Map an entry in a RuleElement's documentMessages to a
+   * SheetDataDocumentMessages.
+   */
+  private mapToSheetDataDocumentMessages(
+    docId: string,
+    value: re.DocumentMessagesValue
+  ): SheetDataDocumentMessages {
+    return {
+      docId,
+      docName:
+        this.item.getRelatedDoc(value.causeDocRelation, docId)?.name ?? "",
+      messages: value.messages,
+      docRelation: getGame().i18n.localize(
+        `wv.system.ruleEngine.documentMessages.relations.${value.causeDocRelation}`
+      )
     };
   }
 
@@ -503,11 +528,20 @@ export interface SheetDataRarity {
 }
 
 export interface SheetDataRuleElement {
+  hasDocumentMessages: boolean;
   hasErrors: boolean;
   hasWarnings: boolean;
+  documentMessages: SheetDataDocumentMessages[];
   label: string;
   messages: SheetDataMessage[];
   source: string;
+}
+
+export interface SheetDataDocumentMessages {
+  docId: string;
+  docName: string;
+  messages: SheetDataMessage[];
+  docRelation: string;
 }
 
 export interface SheetDataMessage {

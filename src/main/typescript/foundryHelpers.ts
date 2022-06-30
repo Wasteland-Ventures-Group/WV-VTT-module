@@ -26,3 +26,19 @@ export function scrollChatToBottom() {
   const popoutChatLog = document.querySelector("#chat-popout #chat-log");
   if (popoutChatLog) popoutChatLog.scrollTop = popoutChatLog.scrollHeight;
 }
+
+/**
+ * Check whether the given document is a StoredDocument. This means checking it
+ * has an ID.
+ */
+export function isStoredDocument<
+  T extends foundry.abstract.Document<
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    foundry.abstract.DocumentData<any, any, any, any, any>,
+    foundry.abstract.Document<any, any> | null,
+    any
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+  >
+>(document: T): document is StoredDocument<T> {
+  return document.id !== null;
+}

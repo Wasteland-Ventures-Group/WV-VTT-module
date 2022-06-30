@@ -341,7 +341,11 @@ export default abstract class RuleElement {
   private selects(document: WvActor | WvItem): boolean {
     if (document instanceof Actor && this.selector === "actor") return true;
 
-    return document instanceof Item && this.selector === "item";
+    return (
+      document instanceof Item &&
+      this.selector === "item" &&
+      this.item.id === document.id
+    );
   }
 
   /**

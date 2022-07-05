@@ -83,7 +83,7 @@
     "rules": {
       "sources": []
     },
-    "tags": [],
+    "tags": ["skillful"],
     "skill": "unarmed",
     "strengthRequirement": {
       "source": 2

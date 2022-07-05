@@ -91,6 +91,7 @@
     "weight": {
       "source": 5
     },
+    "tags": [],
     "rules": {
       "sources": []
     }

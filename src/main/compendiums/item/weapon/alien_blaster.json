@@ -87,6 +87,7 @@
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "magicalEnergyWeapons",
     "strengthRequirement": {
       "source": 1

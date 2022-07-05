@@ -1,4 +1,5 @@
 import type { JSONSchemaType } from "ajv";
+import { KnownTag, KnownTags } from "../../../../constants.js";
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../../../ruleEngine/ruleElementSource.js";
 import RulesSource from "../rules/source.js";
 
@@ -19,6 +20,9 @@ export default abstract class BaseItemSource {
 
   /** The RuleElement sources of the item */
   rules = new RulesSource();
+
+  /** Tags of the item */
+  tags: KnownTag[] = [];
 }
 
 /** A JSON schema for base item objects */
@@ -59,14 +63,24 @@ export const BASE_ITEM_SOURCE_JSON_SCHEMA: JSONSchemaType<BaseItemSource> = {
       required: ["sources"],
       additionalProperties: false,
       default: { sources: [] }
+    },
+    tags: {
+      description: "Tags of the item",
+      type: "array",
+      items: {
+        type: "string",
+        enum: KnownTags
+      },
+      default: []
     }
   },
-  required: ["name", "description", "notes", "rules"],
+  required: ["name", "description", "notes", "rules", "tags"],
   additionalProperties: false,
   default: {
     name: "",
     description: "",
     notes: "",
-    rules: { sources: [] }
+    rules: { sources: [] },
+    tags: []
   }
 };

@@ -86,6 +86,7 @@
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "melee",
     "strengthRequirement": {
       "source": 4

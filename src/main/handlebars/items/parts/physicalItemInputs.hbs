@@ -1,8 +1,4 @@
-<div class="general-info flexrow spacing-bottom">
-  <label class="contained-target-inline">
-    {{~localize "wv.system.misc.name"~}}
-    <input type="text" name="data.name" value="{{data.data.name}}" />
-  </label>
+<div class="general-info flexrow spacing-bottom flex-j-spaced">
   {{~#if sheet.rarity~}}
     <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.rarity.name"}}">
       <span class="fas fa-gem"></span><select name="data.rarity">
@@ -25,16 +21,4 @@
       <span class="fas fa-hashtag"></span><input class="size-3" type="number" name="data.amount" value="{{data.data.amount}}" />
     </span>
   {{~/if~}}
-</div>
-<div class="resource-block flex-fixed spacing-bottom">
-  <label>
-    {{~localize "wv.system.misc.description"~}}
-    <textarea name="data.description">{{data.data.description}}</textarea>
-  </label>
-</div>
-<div class="resource-block flex-fixed spacing-bottom">
-  <label>
-    {{~localize "wv.system.misc.notes"~}}
-    <textarea name="data.notes">{{data.data.notes}}</textarea>
-  </label>
 </div>

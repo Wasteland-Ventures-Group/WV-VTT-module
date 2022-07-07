@@ -29,8 +29,13 @@
         {{~/if~}}
       </div>
       {{~#if data.data.description~}}
-        <section>{{data.data.description}}</section>
+        <section class="spacing-bottom">{{data.data.description}}</section>
       {{~/if~}}
+      <div class="tags">
+        {{~#each data.data.tags as |tag|~}}
+          <span class="fas fa-tag tag">{{tag}}</span>
+        {{~/each~}}
+      </div>
     </div>
   </div>
 </header>

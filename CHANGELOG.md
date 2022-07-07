@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   weapon slot or the readied item
 - tags in the source data of items
 - automatic bonus damage dice modifier for skillful weapons
+- tag display in item sheet header
+- tag input field to edit free-form tags
 
 ### Changed
 

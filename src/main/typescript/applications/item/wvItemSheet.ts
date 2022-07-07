@@ -82,6 +82,7 @@ export default class WvItemSheet extends ItemSheet {
       sheet: {
         rarity,
         parts: {
+          baseItemInputs: HANDLEBARS.partPaths.item.baseItemInputs,
           header: HANDLEBARS.partPaths.item.header,
           physicalItemInputs: HANDLEBARS.partPaths.item.physicalItemInputs,
           rules: HANDLEBARS.partPaths.item.rules
@@ -260,8 +261,9 @@ export default class WvItemSheet extends ItemSheet {
 
   protected override async _updateObject(
     event: Event,
-    formData: Record<string, string | RuleElementSource[] | unknown>
+    formData: Record<string, unknown>
   ): Promise<unknown> {
+    this.parseTags(formData);
     this.parseRuleElementSources(formData);
     return super._updateObject(event, formData);
   }
@@ -332,6 +334,20 @@ export default class WvItemSheet extends ItemSheet {
     };
   }
 
+  /** Parse the tags and split them by commas. */
+  private parseTags(formData: Record<string, unknown>) {
+    if (typeof formData["data.tags"] === "string") {
+      formData["data.tags"] = [
+        ...new Set(
+          formData["data.tags"]
+            .split(",")
+            .map((string) => string.trim())
+            .filter((string) => string.length > 0)
+        )
+      ].sort((a, b) => a.localeCompare(b));
+    }
+  }
+
   /**
    * Parse the RuleElement sources from the form data. This adds the update data
    * for the rule elements to the given form data and deletes the front-end only
@@ -339,9 +355,7 @@ export default class WvItemSheet extends ItemSheet {
    * arrays of this class and their updates are not added to the update data.
    * @param formData - the data of the submitted form
    */
-  private parseRuleElementSources(
-    formData: Record<string, string | RuleElementSource[] | unknown>
-  ) {
+  private parseRuleElementSources(formData: Record<string, unknown>) {
     // Prepare for a new parse
     this.ruleElementSyntaxErrors = [];
     this.ruleElementSchemaErrors = [];
@@ -514,6 +528,7 @@ export interface SheetData extends ItemSheet.Data {
   sheet: {
     rarity: SheetDataRarity | undefined;
     parts: {
+      baseItemInputs: string;
       header: string;
       physicalItemInputs: string;
       rules: string;

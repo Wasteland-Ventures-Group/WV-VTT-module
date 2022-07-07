@@ -60,6 +60,9 @@
   .no-margin
     margin: 0
 
+  .resize-vertical
+    resize: vertical
+
   input[type=number]
     justify-self: right
     text-align: right
@@ -186,3 +189,22 @@
 
     td *
       vertical-align: middle
+
+  .tags
+    > :not(:last-child)
+      margin-right: constants.$spacing-distance
+
+  .tag
+    background-color: constants.$shade-lighter
+    border:
+      color: constants.$shade-darker
+      style: solid
+      width: 1px
+    padding:
+      bottom: 3px
+      left: 5px
+      right: 5px
+      top: 3px
+
+    &.fas:before
+      margin-right: constants.$spacing-distance

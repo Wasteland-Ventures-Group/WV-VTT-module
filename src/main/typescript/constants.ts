@@ -129,9 +129,6 @@ export function isPhysicalItemType(
   return PhysicalItemTypes.includes(type as PhysicalItemType);
 }
 
-export type KnownTag = typeof KnownTags[number];
-export const KnownTags = ["skillful"] as const;
-
 export type Rarity = typeof Rarities[number];
 export const Rarities = ["common", "uncommon", "rare", "exotic"] as const;
 
@@ -336,6 +333,7 @@ export const HANDLEBARS = {
       weaponSlot: `${CONSTANTS.systemPath}/handlebars/actors/parts/weaponSlot.hbs`
     },
     item: {
+      baseItemInputs: `${CONSTANTS.systemPath}/handlebars/items/parts/baseItemInputs.hbs`,
       header: `${CONSTANTS.systemPath}/handlebars/items/parts/header.hbs`,
       physicalItemInputs: `${CONSTANTS.systemPath}/handlebars/items/parts/physicalItemInputs.hbs`,
       rules: `${CONSTANTS.systemPath}/handlebars/items/parts/ruleElements.hbs`

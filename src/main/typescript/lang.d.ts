@@ -495,6 +495,8 @@ export interface LangSchema {
         speakerAlias: string;
         /** A collective name for miscellaneous statistics */
         statistics: string;
+        /** A collective name for tags */
+        tags: string;
         /** A label for toggling a compendium link */
         toggleCompendiumLink: string;
         /** A label for updating an item from a compendium */

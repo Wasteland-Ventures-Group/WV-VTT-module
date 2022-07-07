@@ -1,5 +1,4 @@
 import type { JSONSchemaType } from "ajv";
-import { KnownTag, KnownTags } from "../constants.js";
 
 export type KeywordSelectorWord = typeof KeywordSelectorsWords[number];
 export const KeywordSelectorsWords = [
@@ -18,13 +17,13 @@ export const KEYWORD_SELECTOR_WORD_JSON_SCHEMA: JSONSchemaType<KeywordSelectorWo
   };
 
 export interface TagSelectorSource {
-  tag: KnownTag;
+  tag: string;
 }
 export const TAG_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TagSelectorSource> =
   {
     description: "A schema for a tag selector source",
     type: "object",
-    properties: { tag: { type: "string", enum: KnownTags } },
+    properties: { tag: { type: "string" } },
     required: ["tag"],
     additionalProperties: false
   };

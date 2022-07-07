@@ -130,7 +130,7 @@ export function isPhysicalItemType(
 }
 
 export type KnownTag = typeof KnownTags[number];
-export const KnownTags = ["skillful"];
+export const KnownTags = ["skillful"] as const;
 
 export type Rarity = typeof Rarities[number];
 export const Rarities = ["common", "uncommon", "rare", "exotic"] as const;

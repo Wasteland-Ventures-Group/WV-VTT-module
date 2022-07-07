@@ -13,8 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - a total Skill points display to the character sheet
 - a finalize data step for items
 - the ability for RuleElements to affect multiple documents
-  (this is only the ground work for now, there are no selectors yet that allow
-  multiple documents to be selected)
+- DocumentSelectors:
+  - "actor": selects only actors
+  - "item": selects only items
+  - "parent": selects only the parent of the document the selector is attached
+    to
+  - "sibling": selects siblings in the parent document of the document the
+    selector is attached to
+  - "this": selects only the document the selector is attached to
+  - `{ tag: "<some tag>" }`: selects only items that have the specified tag
 - conditions for RuleElements. The first and so far only one is "whenEquipped"
   and only applies RuleElements when they are equipped in an apparel slot,
   weapon slot or the readied item
@@ -33,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   simple string label
 - replaces the item constructor hack with a Proxy
 - swapped RuleElements' target and selector properties
+- renamed RuleElements' "selector" property to "selectors"
 
 ### Fixed
 

@@ -1,6 +1,8 @@
 import type { JSONSchemaType } from "ajv";
-import type { RuleElementId } from "./ruleElements.js";
-import { RULE_ELEMENTS } from "./ruleElements.js";
+import {
+  DocumentSelectorSource,
+  DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA
+} from "./documentSelectorSource.js";
 
 /** The RuleElement raw data layout */
 export default interface RuleElementSource {
@@ -17,7 +19,7 @@ export default interface RuleElementSource {
   priority: number;
 
   /** The filter to determine applicable documents with */
-  selector: RuleElementSelector;
+  selectors: DocumentSelectorSource[];
 
   /**
    * Optional conditions when this RuleElement should apply. All of the
@@ -35,15 +37,21 @@ export default interface RuleElementSource {
   value: boolean | number | string;
 }
 
+export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
+export const RULE_ELEMENT_IDS = [
+  "WV.RuleElement.FlatModifier",
+  "WV.RuleElement.NumberComponent",
+  "WV.RuleElement.PermSpecialComponent",
+  "WV.RuleElement.ReplaceValue",
+  "WV.RuleElement.TempSpecialComponent"
+] as const;
+
 export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
 export const RULE_ELEMENT_HOOKS = [
   "afterSpecial",
   "afterSkills",
   "afterComputation"
 ] as const;
-
-export type RuleElementSelector = typeof RULE_ELEMENT_DOC_SELECTORS[number];
-export const RULE_ELEMENT_DOC_SELECTORS = ["item", "actor"] as const;
 
 export type RuleElementCondition = typeof RULE_ELEMENT_CONDITIONS[number];
 export const RULE_ELEMENT_CONDITIONS = ["whenEquipped"] as const;
@@ -78,11 +86,11 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
         type: "number",
         default: 0
       },
-      selector: {
+      selectors: {
         description: "The filter to determine applicable documents with",
-        type: "string",
-        enum: RULE_ELEMENT_DOC_SELECTORS,
-        default: "item"
+        type: "array",
+        items: DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA,
+        default: ["this"]
       },
       conditions: {
         description:
@@ -102,7 +110,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       type: {
         description: "The identifier of the type or rule element to use",
         type: "string",
-        enum: Object.keys(RULE_ELEMENTS) as RuleElementId[],
+        enum: RULE_ELEMENT_IDS,
         default: "WV.RuleElement.NumberComponent"
       },
       value: {
@@ -116,7 +124,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       "hook",
       "label",
       "priority",
-      "selector",
+      "selectors",
       "conditions",
       "target",
       "type",
@@ -128,7 +136,7 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       hook: "afterSpecial",
       label: "New Rule Element",
       priority: 100,
-      selector: "item",
+      selectors: ["item", "this"],
       conditions: [],
       target: "",
       type: "WV.RuleElement.NumberComponent",

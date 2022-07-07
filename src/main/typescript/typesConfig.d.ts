@@ -28,6 +28,11 @@ import type {
 import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
 import type * as settings from "./settings.js";
 import type { WvI18nKey } from "./lang.js";
+import type RuleElement from "./ruleEngine/ruleElement.js";
+import type { RuleElementId } from "./ruleEngine/ruleElementSource.js";
+import type { KeywordSelectorWord } from "./ruleEngine/documentSelectorSource.js";
+import type DocumentSelector from "./ruleEngine/documentSelector.js";
+import type TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
 
 declare global {
   interface SourceConfig {
@@ -53,15 +58,22 @@ declare global {
       ajv: Ajv;
       /** Wasteland Ventures macros */
       macros: typeof macros;
+      ruleEngine: {
+        elements: Record<RuleElementId, typeof RuleElement>;
+        selectors: {
+          keyword: Record<KeywordSelectorWord, typeof DocumentSelector>;
+          tag: typeof TagSelector;
+        };
+      };
       typeConstructors: {
         actor: {
-          character: typeof WvActor;
+          [TYPES.ACTOR.CHARACTER]: typeof WvActor;
         };
         item: {
-          ammo: typeof Ammo;
-          apparel: typeof Apparel;
-          effect: typeof Effect;
-          weapon: typeof Weapon;
+          [TYPES.ITEM.AMMO]: typeof Ammo;
+          [TYPES.ITEM.APPAREL]: typeof Apparel;
+          [TYPES.ITEM.EFFECT]: typeof Effect;
+          [TYPES.ITEM.WEAPON]: typeof Weapon;
         };
       };
       /** Wasteland Ventures system data JSON validators */

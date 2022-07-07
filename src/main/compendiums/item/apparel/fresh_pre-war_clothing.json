@@ -13,7 +13,7 @@
           "hook": "afterSpecial",
           "label": "Agility bonus",
           "priority": 100,
-          "selector": "actor",
+          "selectors": ["actor", "parent"],
           "conditions": ["whenEquipped"],
           "target": "agility",
           "type": "WV.RuleElement.TempSpecialComponent",

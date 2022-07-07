@@ -119,45 +119,49 @@ function migrateRuleElements(
     updateData["data.rules.sources"] = item.data._source.data.rules.sources.map(
       (rule) => {
         const transformed = isLastMigrationOlderThan("0.17.2")
-          ? migrateRuleElementPreComposedNumbers(rule)
+          ? migrateRuleElementPreComposedNumbers(
+              rule as unknown as OldRuleElementSource
+            )
           : rule;
-        return migrateRuleElementAddConditions(
-          migrateRuleElementSelectTargetSwap(transformed)
-        );
+        return migrateRuleElementPostComposedNumbers(transformed);
       }
     );
   }
 }
 
+type OldRuleElementSource = Omit<
+  RuleElementSource,
+  "conditions" | "selectors"
+> & {
+  target: "actor" | "item";
+  selector: string;
+};
+
 function ruleElementsNeedMigration(ruleElements: RuleElementSource[]): boolean {
   if (ruleElements.length < 1) return false;
 
-  if (isLastMigrationOlderThan("0.17.2")) return true;
-
-  return ruleElements.some(
-    (rule) => hasWrongSelectorAndTarget(rule) || hasMissingConditions(rule)
-  );
-}
-
-function hasWrongSelectorAndTarget(rule: RuleElementSource): boolean {
   return (
-    ["actor", "item"].includes(rule.target) &&
-    !["actor", "item"].includes(rule.selector)
+    isLastMigrationOlderThan("0.17.2") ||
+    ruleElements.some((rule) => isOldRuleElementPostComposedNumbers(rule))
   );
 }
 
-function hasMissingConditions(rule: RuleElementSource): boolean {
-  return !("conditions" in rule);
+function isOldRuleElementPostComposedNumbers(
+  rule: OldRuleElementSource | RuleElementSource
+): rule is OldRuleElementSource {
+  return (
+    "selector" in rule || !("conditions" in rule) || !("selectors" in rule)
+  );
 }
 
 function migrateRuleElementPreComposedNumbers(
-  rule: RuleElementSource
-): RuleElementSource {
+  rule: OldRuleElementSource
+): OldRuleElementSource {
   let enabled = false;
 
   const hook = rule.hook ?? "afterSpecial";
 
-  let selector = rule.selector as string;
+  let selector = rule.selector as unknown as string;
   let type: typeof rule.type = rule.type;
   const specialMatch = /^specials\.(\w+)\.(\w+)/.exec(selector);
   if (specialMatch) {
@@ -190,28 +194,39 @@ function migrateRuleElementPreComposedNumbers(
     ...rule,
     enabled,
     hook,
-    selector: selector as "item" | "actor",
+    selector,
     type
   };
 }
 
-function migrateRuleElementSelectTargetSwap(
-  rule: RuleElementSource
+function migrateRuleElementPostComposedNumbers(
+  rule: OldRuleElementSource | RuleElementSource
 ): RuleElementSource {
-  if (hasWrongSelectorAndTarget(rule)) {
-    const oldTarget = rule.target as "actor" | "item";
+  if (!isOldRuleElementPostComposedNumbers(rule)) return rule;
 
-    return { ...rule, target: rule.selector, selector: oldTarget };
+  let selectors: RuleElementSource["selectors"];
+  let target: RuleElementSource["target"];
+  if ("selectors" in rule) {
+    target = (rule as RuleElementSource).target;
+    selectors = (rule as RuleElementSource).selectors;
+  } else {
+    selectors =
+      rule.target === "actor" ? ["actor", "parent"] : ["item", "this"];
+    target = rule.selector;
   }
-  return rule;
-}
 
-function migrateRuleElementAddConditions(
-  rule: RuleElementSource
-): RuleElementSource {
-  if (hasMissingConditions(rule)) return { ...rule, conditions: [] };
-
-  return rule;
+  return {
+    conditions:
+      "conditions" in rule ? (rule as RuleElementSource).conditions : [],
+    enabled: rule.enabled,
+    hook: rule.hook,
+    label: rule.label,
+    priority: rule.priority,
+    selectors,
+    target,
+    type: rule.type,
+    value: rule.value
+  };
 }
 
 async function migrateFromCompendium(

@@ -3,6 +3,7 @@ import type { LabelComponent } from "../data/common.js";
 import { isStoredDocument } from "../foundryHelpers.js";
 import type { DocumentRelation } from "../item/wvItem.js";
 import type WvItem from "../item/wvItem.js";
+import DocumentSelector, { createSelector } from "./documentSelector.js";
 import ChangedTypeMessage from "./messages/changedTypeMessage.js";
 import NotMatchingTargetMessage from "./messages/notMatchingTargetMessage.js";
 import WrongTargetTypeMessage from "./messages/wrongTargetTypeMessage.js";
@@ -11,8 +12,7 @@ import type RuleElementMessage from "./ruleElementMessage.js";
 import type RuleElementSource from "./ruleElementSource.js";
 import type {
   RuleElementCondition,
-  RuleElementHook,
-  RuleElementSelector
+  RuleElementHook
 } from "./ruleElementSource.js";
 
 /**
@@ -20,7 +20,7 @@ import type {
  * by a target and a given value. How the data point is modified depends on the
  * type of the element.
  */
-export default abstract class RuleElement {
+export default class RuleElement {
   /**
    * Create a RuleElement from the given data and owning item.
    * @param source   - the source data for the RuleElement
@@ -34,6 +34,9 @@ export default abstract class RuleElement {
     public item: WvItem
   ) {
     this.validate();
+    this.selectors = this.source.selectors.map((source) =>
+      createSelector(this.item, source)
+    );
   }
 
   /** Messages that were accumulated while validating the source. */
@@ -44,6 +47,9 @@ export default abstract class RuleElement {
    * Document.
    */
   documentMessages: Record<string, DocumentMessagesValue> = {};
+
+  /** Get the filtering selectors of the RuleElement. */
+  selectors: DocumentSelector[];
 
   /** Get the conditions for this RuleElement. */
   get conditions(): RuleElementCondition[] {
@@ -83,11 +89,6 @@ export default abstract class RuleElement {
   /** Get the priority number of the RuleElement. */
   get priority(): number {
     return this.source.priority;
-  }
-
-  /** Get the filtering selector of the RuleElement. */
-  get selector(): RuleElementSelector {
-    return this.source.selector;
   }
 
   /** Get the target property of the RuleElement. */
@@ -338,14 +339,8 @@ export default abstract class RuleElement {
   }
 
   /** Determine whether this rule element selects the given document. */
-  private selects(document: WvActor | WvItem): boolean {
-    if (document instanceof Actor && this.selector === "actor") return true;
-
-    return (
-      document instanceof Item &&
-      this.selector === "item" &&
-      this.item.id === document.id
-    );
+  private selects(document: StoredDocument<WvActor | WvItem>): boolean {
+    return !this.selectors.some((selector) => !selector.selects(document));
   }
 
   /**

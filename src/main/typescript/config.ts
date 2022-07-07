@@ -27,6 +27,17 @@ import {
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
+import ActorSelector from "./ruleEngine/documentSelectors/actorSelector.js";
+import ItemSelector from "./ruleEngine/documentSelectors/itemSelector.js";
+import ParentSelector from "./ruleEngine/documentSelectors/parentSelector.js";
+import SiblingSelector from "./ruleEngine/documentSelectors/siblingSelector.js";
+import TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
+import ThisSelector from "./ruleEngine/documentSelectors/thisSelector.js";
+import FlatModifier from "./ruleEngine/ruleElements/flatModifier.js";
+import NumberComponent from "./ruleEngine/ruleElements/numberComponent.js";
+import PermSpecialComponent from "./ruleEngine/ruleElements/permSpecialComponent.js";
+import ReplaceValue from "./ruleEngine/ruleElements/replaceValue.js";
+import TempSpecialComponent from "./ruleEngine/ruleElements/tempSpecialComponent.js";
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "./ruleEngine/ruleElementSource.js";
 import { initializedSettingName } from "./settings.js";
 
@@ -36,6 +47,25 @@ export function configureFoundryOnInit(): void {
   getGame().wv = {
     ajv,
     macros,
+    ruleEngine: {
+      elements: {
+        "WV.RuleElement.FlatModifier": FlatModifier,
+        "WV.RuleElement.NumberComponent": NumberComponent,
+        "WV.RuleElement.PermSpecialComponent": PermSpecialComponent,
+        "WV.RuleElement.ReplaceValue": ReplaceValue,
+        "WV.RuleElement.TempSpecialComponent": TempSpecialComponent
+      },
+      selectors: {
+        keyword: {
+          actor: ActorSelector,
+          item: ItemSelector,
+          parent: ParentSelector,
+          sibling: SiblingSelector,
+          this: ThisSelector
+        },
+        tag: TagSelector
+      }
+    },
     typeConstructors: {
       actor: {
         character: WvActor

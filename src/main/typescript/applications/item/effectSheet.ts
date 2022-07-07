@@ -24,7 +24,7 @@ export default class EffectSheet extends WvItemSheet {
 
   protected override getDefaultRuleElementSource(): RuleElementSource {
     const source = super.getDefaultRuleElementSource();
-    source.selector = "actor";
+    source.selectors = ["actor", "parent"];
     return source;
   }
 }

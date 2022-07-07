@@ -1,6 +1,6 @@
+import { getGame } from "../../../../foundryHelpers.js";
 import type WvItem from "../../../../item/wvItem.js";
 import type RuleElement from "../../../../ruleEngine/ruleElement.js";
-import { RULE_ELEMENTS } from "../../../../ruleEngine/ruleElements.js";
 import RulesSource from "./source.js";
 
 export default class RulesProperties extends RulesSource {
@@ -15,8 +15,9 @@ export default class RulesProperties extends RulesSource {
     source: RulesSource,
     owningItem: WvItem
   ) {
+    const elements = getGame().wv.ruleEngine.elements;
     target.elements = source.sources.map(
-      (ruleSource) => new RULE_ELEMENTS[ruleSource.type](ruleSource, owningItem)
+      (ruleSource) => new elements[ruleSource.type](ruleSource, owningItem)
     );
   }
 

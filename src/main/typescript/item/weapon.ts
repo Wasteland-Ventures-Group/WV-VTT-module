@@ -31,6 +31,9 @@ export default class Weapon extends WvItem {
       if (!this.actor) return;
 
       attack.applyStrengthDamageDiceMod(this.actor);
+
+      if (this.data.data.tags.includes("skillful"))
+        attack.applySkillfulDamageDiceMod(this.actor);
     });
   }
 }

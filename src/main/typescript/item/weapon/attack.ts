@@ -257,6 +257,25 @@ export default class Attack {
       });
   }
 
+  /**
+   * Apply a skill damage dice modifier to the attack, based on the skill of
+   * the weapon and the skill value of the given Actor.
+   */
+  applySkillfulDamageDiceMod(actor: WvActor): void {
+    const value = this.getSkillfulDamageDiceMod(
+      actor.data.data.skills[this.weapon.data.data.skill].total
+    );
+    if (value)
+      this.data.damage.dice.add({
+        value,
+        labelComponents: [
+          { key: `wv.rules.skills.names.${this.weapon.data.data.skill}` },
+          { text: "-" },
+          { key: "wv.rules.damage.damageDice" }
+        ]
+      });
+  }
+
   protected applyRangeDamageDiceMod(range: ranges.RangeBracket): void {
     const value = this.getRangeDamageDiceMod(range);
     if (value)
@@ -361,6 +380,11 @@ export default class Attack {
     }
 
     return 0;
+  }
+
+  /** Get the "skillful" skill-based damage dice modifier value. */
+  protected getSkillfulDamageDiceMod(skill: number): number {
+    return Math.floor(skill / 20);
   }
 
   /** Get the range damage modifier dice for the given range bracket. */

@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and only applies RuleElements when they are equipped in an apparel slot,
   weapon slot or the readied item
 - tags in the source data of items
+- automatic bonus damage dice modifier for skillful weapons
 
 ### Changed
 

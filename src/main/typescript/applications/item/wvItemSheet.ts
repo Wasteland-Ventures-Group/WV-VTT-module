@@ -1,6 +1,7 @@
 import type { DefinedError } from "ajv";
 import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
+import type { DocumentRelation } from "../../item/wvItem.js";
 import AdditionalPropMessage from "../../ruleEngine/messages/additionalPropMessage.js";
 import MissingPropMessage from "../../ruleEngine/messages/missingPropMessage.js";
 import NotSavedMessage from "../../ruleEngine/messages/notSavedMessage.js";
@@ -305,12 +306,14 @@ export default class WvItemSheet extends ItemSheet {
     }
 
     return {
-      hasDocumentMessages: documentMessages.length > 0,
+      hasDocumentMessages: rule.hasDocumentMessages,
       hasErrors: re.hasErrors(messages) || rule.hasDocumentErrors,
+      hasSelectedDocuments: rule.hasSelectedDocuments,
       hasWarnings: re.hasWarnings(messages) || rule.hasDocumentWarnings,
       documentMessages,
       label: rule.label,
       messages,
+      selectedDocuments: rule.selectedDocuments,
       source
     };
   }
@@ -548,10 +551,15 @@ export interface SheetDataRarity {
 export interface SheetDataRuleElement {
   hasDocumentMessages: boolean;
   hasErrors: boolean;
+  hasSelectedDocuments: boolean;
   hasWarnings: boolean;
   documentMessages: SheetDataDocumentMessages[];
   label: string;
   messages: SheetDataMessage[];
+  selectedDocuments: Record<
+    string,
+    { name: string; relation: DocumentRelation }
+  >;
   source: string;
 }
 

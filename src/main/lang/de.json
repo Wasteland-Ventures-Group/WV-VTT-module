@@ -474,6 +474,9 @@
           "singular": "Regelelement",
           "plural": "Regelelemente"
         },
+        "selectors": {
+          "selectedDocuments": "Ausgewählte Dokumente"
+        },
         "warnings": {
           "changedType": "Der Typ von \"{path}\" wurde von \"{original}\" zu \"{new}\" geändert.",
           "notSaved": "Die Änderungen wurden wegen Fehlern nicht gespeichert. Du kannst dieses Foundry Fenster schließen und die Fehler später beheben. Die Änderungen gehen verloren, wenn Foundry neu geladen wird."

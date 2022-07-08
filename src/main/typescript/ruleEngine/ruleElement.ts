@@ -62,6 +62,12 @@ export default class RuleElement {
   /** Get the filtering selectors of the RuleElement. */
   selectors: DocumentSelector[];
 
+  /** Selected document IDs, mapping to their names */
+  selectedDocuments: Record<
+    string,
+    { name: string; relation: DocumentRelation }
+  > = {};
+
   /** Get the conditions for this RuleElement. */
   get conditions(): RuleElementCondition[] {
     return this.source.conditions;
@@ -122,6 +128,16 @@ export default class RuleElement {
     return hasWarnings(this.messages);
   }
 
+  /** Whether this RuleElement has selected documents */
+  get hasSelectedDocuments(): boolean {
+    return !foundry.utils.isObjectEmpty(this.selectedDocuments);
+  }
+
+  /** Whether this RuleElement has document messages */
+  get hasDocumentMessages(): boolean {
+    return !foundry.utils.isObjectEmpty(this.documentMessages);
+  }
+
   /** Whether the RuleElement has document related errors */
   get hasDocumentErrors(): boolean {
     return Object.values(this.documentMessages).some((value) =>
@@ -152,6 +168,7 @@ export default class RuleElement {
     for (const document of documents) {
       if (!this.selects(document)) continue;
 
+      this.addSelectedDocument(document);
       this.validateAgainstDocument(document);
       if (!this.shouldApplyTo(document)) continue;
 
@@ -225,21 +242,20 @@ export default class RuleElement {
     const value = this.documentMessages[document.id];
     if (value === undefined)
       this.documentMessages[document.id] = {
-        causeDocRelation: this.getCauseDocRelation(document),
+        causeDocRelation: this.getDocRelation(document),
         messages: [message]
       };
     else value.messages.push(message);
   }
 
   /**
-   * Get the relation between the owning Item and the cause Document of a
-   * message.
+   * Get the relation between the owning Item and given document.
    * @throws if the given Document is not the owning Item, but the owning Item
    *         has no parent Actor
    * @throws if the given Document could not be found in the Actor or its owned
    *         Items
    */
-  protected getCauseDocRelation(document: WvActor | WvItem): DocumentRelation {
+  protected getDocRelation(document: WvActor | WvItem): DocumentRelation {
     if (isSameDocument(this.item, document)) return "thisItem";
 
     if (this.item.actor === null)
@@ -357,6 +373,19 @@ export default class RuleElement {
   /** Determine whether this rule element selects the given document. */
   private selects(document: WvActor | WvItem): boolean {
     return !this.selectors.some((selector) => !selector.selects(document));
+  }
+
+  /** Add the document to the tracked list of selected documents. */
+  private addSelectedDocument(document: WvActor | WvItem) {
+    if (document.id === null) {
+      LOG.warn("Can't track selection of ephemeral documents.");
+      return;
+    }
+
+    this.selectedDocuments[document.id] = {
+      name: document.name ?? "",
+      relation: this.getDocRelation(document)
+    };
   }
 
   /**

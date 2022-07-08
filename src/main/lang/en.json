@@ -474,6 +474,9 @@
           "singular": "Rule Element",
           "plural": "Rule Elements"
         },
+        "selectors": {
+          "selectedDocuments": "Selected Documents"
+        },
         "warnings": {
           "changedType": "The type of \"{path}\" changed from \"{original}\" to \"{new}\".",
           "notSaved": "This rule element was not saved due to errors. It is save to close this Foundry window and fix this later. Though the changes will be lost once Foundry is reloaded."

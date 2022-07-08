@@ -637,6 +637,11 @@ export interface LangSchema {
         };
         /** Labels for rule elements */
         ruleElement: QuantityNames;
+        /** Labels related to selectors */
+        selectors: {
+          /** A summary label for selected documents */
+          selectedDocuments: string;
+        };
         /** Labels for different warnings */
         warnings: {
           /**

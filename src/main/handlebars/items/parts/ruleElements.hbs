@@ -28,6 +28,16 @@
             </li>
           {{~/each~}}
         </ul>
+        {{~#if element.hasSelectedDocuments~}}
+          <details>
+            <summary>{{localize "wv.system.ruleEngine.selectors.selectedDocuments"}}</summary>
+            <ul>
+              {{~#each element.selectedDocuments as |selected|~}}
+                <li>[{{@key}}] ({{selected.relation}}) "{{selected.name}}"</li>
+              {{~/each~}}
+            </ul>
+          </details>
+        {{~/if~}}
         {{~#if element.hasDocumentMessages~}}
           <details>
             <summary>{{localize "wv.system.ruleEngine.documentMessages.name"}}</summary>

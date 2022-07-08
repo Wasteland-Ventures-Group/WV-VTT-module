@@ -33,7 +33,7 @@
             <summary>{{localize "wv.system.ruleEngine.selectors.selectedDocuments"}}</summary>
             <ul>
               {{~#each element.selectedDocuments as |selected|~}}
-                <li>[{{@key}}] ({{selected.relation}}) "{{selected.name}}"</li>
+                <li>[{{selected.docId}}] ({{selected.docRelation}}) "{{selected.docName}}"</li>
               {{~/each~}}
             </ul>
           </details>

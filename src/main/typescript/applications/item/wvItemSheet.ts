@@ -313,7 +313,9 @@ export default class WvItemSheet extends ItemSheet {
       documentMessages,
       label: rule.label,
       messages,
-      selectedDocuments: rule.selectedDocuments,
+      selectedDocuments: Object.entries(rule.selectedDocuments).map(
+        ([id, value]) => this.mapToSheetDataSelectedDocument(id, value)
+      ),
       source
     };
   }
@@ -333,6 +335,19 @@ export default class WvItemSheet extends ItemSheet {
       messages: value.messages,
       docRelation: getGame().i18n.localize(
         `wv.system.ruleEngine.documentMessages.relations.${value.causeDocRelation}`
+      )
+    };
+  }
+
+  private mapToSheetDataSelectedDocument(
+    docId: string,
+    { name, relation }: { name: string; relation: DocumentRelation }
+  ): SheetDataSelectedDocument {
+    return {
+      docId,
+      docName: name,
+      docRelation: getGame().i18n.localize(
+        `wv.system.ruleEngine.documentMessages.relations.${relation}`
       )
     };
   }
@@ -556,17 +571,17 @@ export interface SheetDataRuleElement {
   documentMessages: SheetDataDocumentMessages[];
   label: string;
   messages: SheetDataMessage[];
-  selectedDocuments: Record<
-    string,
-    { name: string; relation: DocumentRelation }
-  >;
+  selectedDocuments: SheetDataSelectedDocument[];
   source: string;
 }
 
-export interface SheetDataDocumentMessages {
+export interface SheetDataDocumentMessages extends SheetDataSelectedDocument {
+  messages: SheetDataMessage[];
+}
+
+export interface SheetDataSelectedDocument {
   docId: string;
   docName: string;
-  messages: SheetDataMessage[];
   docRelation: string;
 }
 

@@ -34,6 +34,7 @@ import SiblingSelector from "./ruleEngine/documentSelectors/siblingSelector.js";
 import TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
 import ThisSelector from "./ruleEngine/documentSelectors/thisSelector.js";
 import TypeSelector from "./ruleEngine/documentSelectors/typeSelector.js";
+import UsesSkillSelector from "./ruleEngine/documentSelectors/usesSkillSelector.js";
 import FlatModifier from "./ruleEngine/ruleElements/flatModifier.js";
 import NumberComponent from "./ruleEngine/ruleElements/numberComponent.js";
 import PermSpecialComponent from "./ruleEngine/ruleElements/permSpecialComponent.js";
@@ -65,7 +66,8 @@ export function configureFoundryOnInit(): void {
           this: ThisSelector
         },
         tag: TagSelector,
-        type: TypeSelector
+        type: TypeSelector,
+        usesSkill: UsesSkillSelector
       }
     },
     typeConstructors: {

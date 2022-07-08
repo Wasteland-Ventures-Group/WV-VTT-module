@@ -16,6 +16,8 @@ export function createSelector(
     return new selectors.tag(root, source.tag);
   } else if ("type" in source) {
     return new selectors.type(root, source.type);
+  } else if ("usesSkill" in source) {
+    return new selectors.usesSkill(root, source.usesSkill);
   }
 
   throw new Error(`The given source is not a recognized source: ${source}`);

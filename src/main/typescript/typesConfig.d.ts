@@ -34,6 +34,7 @@ import type { KeywordSelectorWord } from "./ruleEngine/documentSelectorSource.js
 import type DocumentSelector from "./ruleEngine/documentSelector.js";
 import type TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
 import type TypeSelector from "./ruleEngine/documentSelectors/typeSelector.js";
+import type UsesSkillSelector from "./ruleEngine/documentSelectors/usesSkillSelector.js";
 
 declare global {
   interface SourceConfig {
@@ -65,6 +66,7 @@ declare global {
           keyword: Record<KeywordSelectorWord, typeof DocumentSelector>;
           tag: typeof TagSelector;
           type: typeof TypeSelector;
+          usesSkill: typeof UsesSkillSelector;
         };
       };
       typeConstructors: {

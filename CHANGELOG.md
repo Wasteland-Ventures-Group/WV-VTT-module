@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `{ tag: "<some tag>" }`: selects only items that have the specified tag
   - `{ type: "<some type>" }`: selects only documents that have the specified
     type
+  - `{ usesSkill: "<some skill name>" }`: selects only skill-using documents
+    that use the specified skill
 - conditions for RuleElements. The first and so far only one is "whenEquipped"
   and only applies RuleElements when they are equipped in an apparel slot,
   weapon slot or the readied item

@@ -104,9 +104,9 @@ async function migrateItem(
       );
     }
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
     LOG.error(
-      `Failed migration for Item ${SystemLogger.getItemIdent(item)}: ${message}`
+      `Failed migration for Item ${SystemLogger.getItemIdent(item)}.`,
+      err
     );
   }
 }

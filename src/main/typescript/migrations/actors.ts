@@ -53,11 +53,9 @@ async function migrateActor(
       );
     }
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
     LOG.error(
-      `Failed migration for Actor ${SystemLogger.getActorIdent(
-        actor
-      )}: ${message}`
+      `Failed migration for Actor ${SystemLogger.getActorIdent(actor)}.`,
+      err
     );
   }
 }

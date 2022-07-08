@@ -35,6 +35,7 @@ import type DocumentSelector from "./ruleEngine/documentSelector.js";
 import type TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
 import type TypeSelector from "./ruleEngine/documentSelectors/typeSelector.js";
 import type UsesSkillSelector from "./ruleEngine/documentSelectors/usesSkillSelector.js";
+import type OrSelector from "./ruleEngine/documentSelectors/orSelector.js";
 
 declare global {
   interface SourceConfig {
@@ -64,6 +65,7 @@ declare global {
         elements: Record<RuleElementId, typeof RuleElement>;
         selectors: {
           keyword: Record<KeywordSelectorWord, typeof DocumentSelector>;
+          or: typeof OrSelector;
           tag: typeof TagSelector;
           type: typeof TypeSelector;
           usesSkill: typeof UsesSkillSelector;

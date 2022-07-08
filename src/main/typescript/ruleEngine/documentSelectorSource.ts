@@ -58,8 +58,33 @@ export const USES_SKILL_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<UsesSkillSel
     additionalProperties: false
   };
 
+export interface OrSelectorSource {
+  or: Exclude<DocumentSelectorSource, OrSelectorSource>[];
+}
+export const OR_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<OrSelectorSource> =
+  {
+    description: "A schema for an or selector source",
+    type: "object",
+    properties: {
+      or: {
+        type: "array",
+        items: {
+          oneOf: [
+            KEYWORD_SELECTOR_WORD_JSON_SCHEMA,
+            TAG_SELECTOR_SOURCE_JSON_SCHEMA,
+            TYPE_SELECTOR_SOURCE_JSON_SCHEMA,
+            USES_SKILL_SELECTOR_SOURCE_JSON_SCHEMA
+          ]
+        }
+      }
+    },
+    required: ["or"],
+    additionalProperties: false
+  };
+
 export type DocumentSelectorSource =
   | KeywordSelectorWord
+  | OrSelectorSource
   | TagSelectorSource
   | TypeSelectorSource
   | UsesSkillSelectorSource;
@@ -68,6 +93,7 @@ export const DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<DocumentSelect
     description: "A schema for document selector sources",
     oneOf: [
       KEYWORD_SELECTOR_WORD_JSON_SCHEMA,
+      OR_SELECTOR_SOURCE_JSON_SCHEMA,
       TAG_SELECTOR_SOURCE_JSON_SCHEMA,
       TYPE_SELECTOR_SOURCE_JSON_SCHEMA,
       USES_SKILL_SELECTOR_SOURCE_JSON_SCHEMA

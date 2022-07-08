@@ -29,6 +29,7 @@ import {
 } from "./rolls/criticalsModifiers.js";
 import ActorSelector from "./ruleEngine/documentSelectors/actorSelector.js";
 import ItemSelector from "./ruleEngine/documentSelectors/itemSelector.js";
+import OrSelector from "./ruleEngine/documentSelectors/orSelector.js";
 import ParentSelector from "./ruleEngine/documentSelectors/parentSelector.js";
 import SiblingSelector from "./ruleEngine/documentSelectors/siblingSelector.js";
 import TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
@@ -65,6 +66,7 @@ export function configureFoundryOnInit(): void {
           sibling: SiblingSelector,
           this: ThisSelector
         },
+        or: OrSelector,
         tag: TagSelector,
         type: TypeSelector,
         usesSkill: UsesSkillSelector

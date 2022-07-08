@@ -21,11 +21,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - "sibling": selects siblings in the parent document of the document the
     selector is attached to
   - "this": selects only the document the selector is attached to
-  - `{ tag: "<some tag>" }`: selects only items that have the specified tag
-  - `{ type: "<some type>" }`: selects only documents that have the specified
-    type
-  - `{ usesSkill: "<some skill name>" }`: selects only skill-using documents
-    that use the specified skill
+  - `{ "tag": "&lt;some tag&gt;" }`: selects only items that have the specified
+    tag
+  - `{ "type": "&lt;some type&gt;" }`: selects only documents that have the
+    specified type
+  - `{ "usesSkill": "&lt;some skill name&gt;" }`: selects only skill-using
+    documents that use the specified skill
+  - `{ "or": [&lt;selectors&gt;] }`: selects documents where at least one of the
+    specified selectors matches (can not be nested)
 - conditions for RuleElements. The first and so far only one is "whenEquipped"
   and only applies RuleElements when they are equipped in an apparel slot,
   weapon slot or the readied item

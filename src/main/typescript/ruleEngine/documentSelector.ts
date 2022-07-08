@@ -12,6 +12,11 @@ export function createSelector(
 
   if (typeof source === "string") {
     return new selectors.keyword[source](root);
+  } else if ("or" in source) {
+    return new selectors.or(
+      root,
+      source.or.map((source) => createSelector(root, source))
+    );
   } else if ("tag" in source) {
     return new selectors.tag(root, source.tag);
   } else if ("type" in source) {

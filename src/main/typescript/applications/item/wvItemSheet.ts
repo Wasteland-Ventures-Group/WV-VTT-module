@@ -402,7 +402,7 @@ export default class WvItemSheet extends ItemSheet {
     if (!ruleSources.length) {
       // If the rule elements were the only thing that was changed, but all of
       // them contained errors, preventing save, we need to rerender manually.
-      if (!Object.keys(formData).keys.length) this.render(false);
+      if (!Object.keys(formData).keys.length) this.render();
       return;
     }
 

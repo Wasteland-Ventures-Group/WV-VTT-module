@@ -671,7 +671,7 @@ export default class WvActorSheet extends ActorSheet {
     const item = this.actor.items.get(id);
     if (item) {
       item.delete();
-      this.render(false);
+      this.render();
     }
   }
 
@@ -693,8 +693,8 @@ export default class WvActorSheet extends ActorSheet {
     const item = this.actor.items.get(id);
     if (item) {
       item.update({ data: { amount } });
-      item.render(false);
-      this.render(false);
+      item.render();
+      this.render();
     }
   }
 

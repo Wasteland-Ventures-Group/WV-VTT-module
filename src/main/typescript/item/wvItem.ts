@@ -97,6 +97,7 @@ export default class WvItem extends Item {
         .filter(withoutConditions)
         .sort(ruleElementSort)
         .forEach((ruleElement) => ruleElement.apply([this]));
+      this.apps && this.render();
     }
   }
 

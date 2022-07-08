@@ -591,7 +591,10 @@ export default class WvActor extends Actor {
       });
 
     this.applyRuleElementsForHook("afterComputation");
-    this.items.forEach((item) => item.finalizeData());
+    this.items.forEach((item) => {
+      item.finalizeData();
+      item.apps && item.render();
+    });
   }
 
   protected override async _preCreate(

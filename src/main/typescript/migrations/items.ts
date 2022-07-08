@@ -311,7 +311,8 @@ function transformRange(
       },
       modifier: {
         source: 0
-      }
+      },
+      tags: []
     };
   }
 
@@ -326,7 +327,8 @@ function transformRange(
         },
         special: ""
       },
-      modifier: range.modifier
+      modifier: range.modifier,
+      tags: ["melee"]
     };
   }
 
@@ -341,7 +343,8 @@ function transformRange(
         },
         special: ""
       },
-      modifier: range.modifier
+      modifier: range.modifier,
+      tags: []
     };
   }
 

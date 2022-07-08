@@ -3,6 +3,7 @@ import {
   CompositeNumberSource,
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
 } from "../../../common.js";
+import { TAGS_SOURCE_JSON_SCHEMA } from "../../common/baseItem/source.js";
 
 export default class AttacksSource {
   /** The source objects for the Attacks */
@@ -24,6 +25,9 @@ export class AttackSource {
 
   /** The amount of action points needed to attack */
   ap: CompositeNumberSource = { source: 0 };
+
+  /** Tags of the attack */
+  tags: string[] = [];
 }
 
 /** The source data for weapon damage */
@@ -158,12 +162,17 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
       default: {
         source: 0
       }
+    },
+    tags: {
+      ...TAGS_SOURCE_JSON_SCHEMA,
+      description: "Tags of the attack"
     }
   },
-  required: ["damage", "ap"],
+  required: ["damage", "ap", "tags"],
   additionalProperties: false,
   default: {
     damage: DAMAGE_DEFAULT,
-    ap: { source: 0 }
+    ap: { source: 0 },
+    tags: []
   }
 };

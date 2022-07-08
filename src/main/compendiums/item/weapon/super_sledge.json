@@ -20,7 +20,8 @@
               "source": 0
             },
             "diceRange": true
-          }
+          },
+          "tags": ["melee"]
         }
       }
     },
@@ -37,7 +38,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": ["melee"]
       },
       "medium": {
         "distance": {
@@ -51,7 +53,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       },
       "long": {
         "distance": {
@@ -65,7 +68,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "rare",

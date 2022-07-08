@@ -26,7 +26,8 @@
           "dtReduction": {
             "source": 1
           },
-          "splash": "large"
+          "splash": "large",
+          "tags": ["thrown"]
         }
       }
     },
@@ -43,7 +44,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": ["thrown"]
       },
       "medium": {
         "distance": {
@@ -57,7 +59,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       },
       "long": {
         "distance": {
@@ -71,7 +74,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "rare",

@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - tag input field to edit free-form tags
 - RuleElements now show their selected documents in their sheets
 - ability for RuleElements to modify multiple properties on a document
+- tags in the sources of weapon attacks and ranges
 
 ### Changed
 

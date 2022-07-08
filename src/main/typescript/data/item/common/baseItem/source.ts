@@ -24,6 +24,12 @@ export default abstract class BaseItemSource {
   tags: string[] = [];
 }
 
+export const TAGS_SOURCE_JSON_SCHEMA: JSONSchemaType<string[]> = {
+  type: "array",
+  items: { type: "string" },
+  default: []
+};
+
 /** A JSON schema for base item objects */
 export const BASE_ITEM_SOURCE_JSON_SCHEMA: JSONSchemaType<BaseItemSource> = {
   description: "Common system data for items",
@@ -64,10 +70,8 @@ export const BASE_ITEM_SOURCE_JSON_SCHEMA: JSONSchemaType<BaseItemSource> = {
       default: { sources: [] }
     },
     tags: {
-      description: "Tags of the item",
-      type: "array",
-      items: { type: "string" },
-      default: []
+      ...TAGS_SOURCE_JSON_SCHEMA,
+      description: "Tags of the item"
     }
   },
   required: ["name", "description", "notes", "rules", "tags"],

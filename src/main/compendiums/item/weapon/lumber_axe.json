@@ -21,7 +21,8 @@
           },
           "ap": {
             "source": 6
-          }
+          },
+          "tags": ["melee"]
         },
         "Throw": {
           "damage": {
@@ -38,7 +39,8 @@
           },
           "rounds": {
             "source": 1
-          }
+          },
+          "tags": ["thrown"]
         }
       }
     },
@@ -55,7 +57,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": ["melee", "thrown"]
       },
       "medium": {
         "distance": {
@@ -69,7 +72,8 @@
         },
         "modifier": {
           "source": -10
-        }
+        },
+        "tags": ["thrown"]
       },
       "long": {
         "distance": {
@@ -83,7 +87,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "common",

@@ -102,6 +102,14 @@ export const TYPES = {
   }
 } as const;
 
+export type SystemDocumentType =
+  | ValueOf<typeof TYPES.ACTOR>
+  | ValueOf<typeof TYPES.ITEM>;
+export const SystemDocumentTypes: SystemDocumentType[] = [
+  ...Object.values(TYPES.ACTOR),
+  ...Object.values(TYPES.ITEM)
+];
+
 export type ProtoItemType = typeof ProtoItemTypes[number];
 export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
   TYPES.ITEM.AMMO,

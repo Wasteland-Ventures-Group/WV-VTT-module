@@ -1,4 +1,5 @@
 import type { JSONSchemaType } from "ajv";
+import { SystemDocumentType, SystemDocumentTypes } from "../constants.js";
 
 export type KeywordSelectorWord = typeof KeywordSelectorsWords[number];
 export const KeywordSelectorsWords = [
@@ -28,9 +29,28 @@ export const TAG_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TagSelectorSource> 
     additionalProperties: false
   };
 
-export type DocumentSelectorSource = KeywordSelectorWord | TagSelectorSource;
+export interface TypeSelectorSource {
+  type: SystemDocumentType;
+}
+export const TYPE_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TypeSelectorSource> =
+  {
+    description: "A schema for a type selector source",
+    type: "object",
+    properties: { type: { type: "string", enum: SystemDocumentTypes } },
+    required: ["type"],
+    additionalProperties: false
+  };
+
+export type DocumentSelectorSource =
+  | KeywordSelectorWord
+  | TagSelectorSource
+  | TypeSelectorSource;
 export const DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<DocumentSelectorSource> =
   {
     description: "A schema for document selector sources",
-    oneOf: [KEYWORD_SELECTOR_WORD_JSON_SCHEMA, TAG_SELECTOR_SOURCE_JSON_SCHEMA]
+    oneOf: [
+      KEYWORD_SELECTOR_WORD_JSON_SCHEMA,
+      TAG_SELECTOR_SOURCE_JSON_SCHEMA,
+      TYPE_SELECTOR_SOURCE_JSON_SCHEMA
+    ]
   };

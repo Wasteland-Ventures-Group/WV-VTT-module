@@ -9,11 +9,16 @@ export function createSelector(
   source: DocumentSelectorSource
 ): DocumentSelector {
   const selectors = getGame().wv.ruleEngine.selectors;
+
   if (typeof source === "string") {
     return new selectors.keyword[source](root);
-  } else {
+  } else if ("tag" in source) {
     return new selectors.tag(root, source.tag);
+  } else if ("type" in source) {
+    return new selectors.type(root, source.type);
   }
+
+  throw new Error(`The given source is not a recognized source: ${source}`);
 }
 
 /** A tool to select documents. */

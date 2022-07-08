@@ -1,5 +1,6 @@
 import type WvActor from "../../actor/wvActor.js";
-import type WvItem from "../../item/wvItem.js";
+import { isSiblingItem } from "../../foundryHelpers.js";
+import WvItem from "../../item/wvItem.js";
 import DocumentSelector from "../documentSelector.js";
 
 /**
@@ -7,9 +8,9 @@ import DocumentSelector from "../documentSelector.js";
  * root.
  */
 export default class SiblingSelector extends DocumentSelector {
-  override selects(document: StoredDocument<WvActor | WvItem>): boolean {
-    const parent = this.rootParent;
-    if (!parent) return false;
-    return parent.items.has(document.id);
+  override selects(document: WvActor | WvItem): boolean {
+    return this.root instanceof WvItem && document instanceof WvItem
+      ? isSiblingItem(this.root, document)
+      : false;
   }
 }

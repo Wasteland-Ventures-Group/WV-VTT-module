@@ -1,8 +1,13 @@
-import type WvActor from "../actor/wvActor.js";
+import WvActor from "../actor/wvActor.js";
 import type { LabelComponent } from "../data/common.js";
-import { isStoredDocument } from "../foundryHelpers.js";
+import {
+  isOwningActor,
+  isSameDocument,
+  isSiblingItem
+} from "../foundryHelpers.js";
 import type { DocumentRelation } from "../item/wvItem.js";
-import type WvItem from "../item/wvItem.js";
+import WvItem from "../item/wvItem.js";
+import { LOG } from "../systemLogger.js";
 import DocumentSelector, { createSelector } from "./documentSelector.js";
 import ChangedTypeMessage from "./messages/changedTypeMessage.js";
 import NotMatchingTargetMessage from "./messages/notMatchingTargetMessage.js";
@@ -47,6 +52,12 @@ export default class RuleElement {
    * Document.
    */
   documentMessages: Record<string, DocumentMessagesValue> = {};
+
+  /**
+   * Whether there was at least one considered ephemeral document that had
+   * errors.
+   */
+  hasEphemeralDocumentErrors = false;
 
   /** Get the filtering selectors of the RuleElement. */
   selectors: DocumentSelector[];
@@ -139,7 +150,6 @@ export default class RuleElement {
     if (!this.shouldApply({ metConditions })) return;
 
     for (const document of documents) {
-      if (!isStoredDocument(document)) continue;
       if (!this.selects(document)) continue;
 
       this.validateAgainstDocument(document);
@@ -190,9 +200,7 @@ export default class RuleElement {
    * Validate the RuleElement against a Document and add any messages to the
    * RuleElement.
    */
-  protected validateAgainstDocument(
-    document: StoredDocument<WvActor | WvItem>
-  ): void {
+  protected validateAgainstDocument(document: WvActor | WvItem): void {
     this.checkTargetIsValid(document);
   }
 
@@ -201,9 +209,19 @@ export default class RuleElement {
    * it doesn't exist yet.
    */
   protected addDocumentMessage(
-    document: StoredDocument<WvActor | WvItem>,
+    document: WvActor | WvItem,
     message: RuleElementMessage
   ): void {
+    if (document.id === null) {
+      if (message.isError()) this.hasEphemeralDocumentErrors = true;
+
+      LOG.warn(
+        "Can't add document messages for ephemeral documents.",
+        document
+      );
+      return;
+    }
+
     const value = this.documentMessages[document.id];
     if (value === undefined)
       this.documentMessages[document.id] = {
@@ -221,22 +239,22 @@ export default class RuleElement {
    * @throws if the given Document could not be found in the Actor or its owned
    *         Items
    */
-  protected getCauseDocRelation(
-    document: StoredDocument<WvActor | WvItem>
-  ): DocumentRelation {
-    if (this.item.id === document.id) return "thisItem";
+  protected getCauseDocRelation(document: WvActor | WvItem): DocumentRelation {
+    if (isSameDocument(this.item, document)) return "thisItem";
 
     if (this.item.actor === null)
       throw new Error(
         "The cause document was not the owning item, but the owning item has no parent!"
       );
 
-    if (this.item.actor.id === document.id) return "parentActor";
+    if (document instanceof WvActor && isOwningActor(this.item, document))
+      return "parentActor";
 
-    if (this.item.actor.items.has(document.id)) return "parentOwnedItem";
+    if (document instanceof WvItem && isSiblingItem(this.item, document))
+      return "parentOwnedItem";
 
     throw new Error(
-      "Could not find the given Document's ID in the owning Actor!"
+      "Could not find the given Document's relation to the owning item!"
     );
   }
 
@@ -247,9 +265,7 @@ export default class RuleElement {
    * @throws if anything else than a TypeError is thrown by
    *         `foundry.utils.getProperty()`
    */
-  protected checkTargetIsValid(
-    document: StoredDocument<WvActor | WvItem>
-  ): void {
+  protected checkTargetIsValid(document: WvActor | WvItem): void {
     let invalidTarget = false;
 
     try {
@@ -281,7 +297,7 @@ export default class RuleElement {
    *          target actually matches a property.
    */
   protected checkTargetIsOfType(
-    document: StoredDocument<WvActor | WvItem>,
+    document: WvActor | WvItem,
     expectedType: "boolean" | "number" | "string"
   ): void {
     if (typeof this.getProperty(document) !== expectedType) {
@@ -297,7 +313,7 @@ export default class RuleElement {
    *
    * If the type changes, a warning message is added to the RuleElement.
    */
-  protected checkTypeChanged(document: StoredDocument<WvActor | WvItem>): void {
+  protected checkTypeChanged(document: WvActor | WvItem): void {
     const originalType = typeof this.getProperty(document);
     const newType = typeof this.value;
 
@@ -315,7 +331,7 @@ export default class RuleElement {
    * subclesses.
    */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected innerApply(_document: StoredDocument<WvActor | WvItem>): void {}
+  protected innerApply(_document: WvActor | WvItem): void {}
 
   /**
    * Whether nothing prevents this RuleElement from applying to any Document.
@@ -339,7 +355,7 @@ export default class RuleElement {
   }
 
   /** Determine whether this rule element selects the given document. */
-  private selects(document: StoredDocument<WvActor | WvItem>): boolean {
+  private selects(document: WvActor | WvItem): boolean {
     return !this.selectors.some((selector) => !selector.selects(document));
   }
 
@@ -348,8 +364,14 @@ export default class RuleElement {
    * given document. This assumes that that the RuleElement should apply in
    * general.
    */
-  private shouldApplyTo(document: StoredDocument<WvActor | WvItem>): boolean {
-    return !hasErrors(this.documentMessages[document.id]?.messages ?? []);
+  private shouldApplyTo(document: WvActor | WvItem): boolean {
+    if (document.id === null && this.hasEphemeralDocumentErrors) return false;
+
+    return !hasErrors(
+      document.id === null
+        ? []
+        : this.documentMessages[document.id]?.messages ?? []
+    );
   }
 }
 

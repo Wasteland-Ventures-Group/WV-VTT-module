@@ -1,4 +1,4 @@
-import WvActor from "../actor/wvActor.js";
+import type WvActor from "../actor/wvActor.js";
 import { getGame } from "../foundryHelpers.js";
 import type WvItem from "../item/wvItem.js";
 import type { DocumentSelectorSource } from "./documentSelectorSource.js";
@@ -30,13 +30,8 @@ export default class DocumentSelector {
     public root: WvActor | WvItem
   ) {}
 
-  /** Get the parent of the selector root. */
-  get rootParent(): WvActor | null {
-    return this.root instanceof WvActor ? this.root : this.root.parent;
-  }
-
   /** Check whether this selector selects the given document. */
-  selects(_document: StoredDocument<WvActor | WvItem>): boolean {
+  selects(_document: WvActor | WvItem): boolean {
     return false;
   }
 }

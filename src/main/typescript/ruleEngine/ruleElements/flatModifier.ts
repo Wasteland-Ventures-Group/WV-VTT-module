@@ -12,16 +12,12 @@ export default class FlatModifier extends RuleElement {
     this.checkValueIsOfType("number");
   }
 
-  protected override validateAgainstDocument(
-    document: StoredDocument<WvActor | WvItem>
-  ): void {
+  protected override validateAgainstDocument(document: WvActor | WvItem): void {
     super.validateAgainstDocument(document);
     this.checkTargetIsOfType(document, "number");
   }
 
-  protected override innerApply(
-    document: StoredDocument<WvActor | WvItem>
-  ): void {
+  protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
     this.setProperty(

@@ -21,17 +21,13 @@ export default class TempSpecialComponent extends RuleElement {
     }
   }
 
-  protected override validateAgainstDocument(
-    document: StoredDocument<WvActor | WvItem>
-  ): void {
+  protected override validateAgainstDocument(document: WvActor | WvItem): void {
     if (document instanceof Actor) return;
 
     this.addDocumentMessage(document, new NotActorMessage());
   }
 
-  protected override innerApply(
-    document: StoredDocument<WvActor | WvItem>
-  ): void {
+  protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
     (this.getProperty(document) as Special).addTemp({

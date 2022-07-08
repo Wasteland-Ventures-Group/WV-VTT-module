@@ -11,16 +11,12 @@ export default class NumberComponent extends RuleElement {
     this.checkValueIsOfType("number");
   }
 
-  protected override validateAgainstDocument(
-    document: StoredDocument<WvActor | WvItem>
-  ): void {
+  protected override validateAgainstDocument(document: WvActor | WvItem): void {
     super.validateAgainstDocument(document);
     this.checkTargetIsCompositeNumber(document);
   }
 
-  protected override innerApply(
-    document: StoredDocument<WvActor | WvItem>
-  ): void {
+  protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
     const modNumber = CompositeNumber.from(this.getProperty(document));
@@ -36,9 +32,7 @@ export default class NumberComponent extends RuleElement {
    * @remarks When this is called, it should already be verified that the
    *          target actually matches a property.
    */
-  protected checkTargetIsCompositeNumber(
-    document: StoredDocument<WvActor | WvItem>
-  ) {
+  protected checkTargetIsCompositeNumber(document: WvActor | WvItem) {
     const property = this.getProperty(document);
 
     if (property instanceof CompositeNumber) return;

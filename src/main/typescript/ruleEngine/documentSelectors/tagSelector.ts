@@ -8,7 +8,7 @@ export default class TagSelector extends DocumentSelector {
     super(root);
   }
 
-  override selects(document: StoredDocument<WvActor | WvItem>): boolean {
+  override selects(document: WvActor | WvItem): boolean {
     if (!(document instanceof WvItem)) return false;
 
     return document.data.data.tags.includes(this.tag);

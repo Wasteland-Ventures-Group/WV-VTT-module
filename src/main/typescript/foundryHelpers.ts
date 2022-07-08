@@ -27,18 +27,24 @@ export function scrollChatToBottom() {
   if (popoutChatLog) popoutChatLog.scrollTop = popoutChatLog.scrollHeight;
 }
 
-/**
- * Check whether the given document is a StoredDocument. This means checking it
- * has an ID.
- */
-export function isStoredDocument<
-  T extends foundry.abstract.Document<
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    foundry.abstract.DocumentData<any, any, any, any, any>,
-    foundry.abstract.Document<any, any> | null,
-    any
-    /* eslint-enable @typescript-eslint/no-explicit-any */
-  >
->(document: T): document is StoredDocument<T> {
-  return document.id !== null;
+/** Check whether two variables reference the same document. */
+export function isSameDocument<T extends Actor | Item>(
+  root: T | null,
+  target: T | null
+) {
+  if (root === null || target === null) return false;
+
+  return typeof root.id === "string" && typeof target.id === "string"
+    ? root.uuid === target.uuid
+    : root == target;
+}
+
+/** Check whether the given target is the owning actor of the given item. */
+export function isOwningActor(root: Item, target: Actor) {
+  return isSameDocument(root.parent, target);
+}
+
+/** Check whether the given root and target are items of the same actor. */
+export function isSiblingItem(root: Item, target: Item) {
+  return isSameDocument(root.parent, target.parent);
 }

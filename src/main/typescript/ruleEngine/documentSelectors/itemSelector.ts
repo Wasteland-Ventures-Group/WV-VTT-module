@@ -4,7 +4,7 @@ import DocumentSelector from "../documentSelector.js";
 
 /** A DocumentSelector that selects only items. */
 export default class ItemSelector extends DocumentSelector {
-  override selects(document: StoredDocument<WvItem | WvActor>): boolean {
+  override selects(document: WvItem | WvActor): boolean {
     return document instanceof WvItem;
   }
 }

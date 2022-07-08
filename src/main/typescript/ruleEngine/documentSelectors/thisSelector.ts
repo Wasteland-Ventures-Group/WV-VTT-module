@@ -4,7 +4,7 @@ import DocumentSelector from "../documentSelector.js";
 
 /** A DocumentSelector that only selects its own root document. */
 export default class ThisSelector extends DocumentSelector {
-  selects(document: StoredDocument<WvItem | WvActor>): boolean {
+  override selects(document: StoredDocument<WvItem | WvActor>): boolean {
     return this.root.id === document.id;
   }
 }

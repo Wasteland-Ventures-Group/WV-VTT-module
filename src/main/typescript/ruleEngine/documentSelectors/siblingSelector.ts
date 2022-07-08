@@ -7,7 +7,7 @@ import DocumentSelector from "../documentSelector.js";
  * root.
  */
 export default class SiblingSelector extends DocumentSelector {
-  selects(document: StoredDocument<WvActor | WvItem>): boolean {
+  override selects(document: StoredDocument<WvActor | WvItem>): boolean {
     const parent = this.rootParent;
     if (!parent) return false;
     return parent.items.has(document.id);

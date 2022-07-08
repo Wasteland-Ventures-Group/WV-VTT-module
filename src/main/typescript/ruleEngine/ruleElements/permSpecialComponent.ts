@@ -1,6 +1,6 @@
 import type WvActor from "../../actor/wvActor.js";
 import { isSpecialName } from "../../constants.js";
-import type { Special } from "../../data/actor/character/specials/properties.js";
+import { Special } from "../../data/actor/character/specials/properties.js";
 import type WvItem from "../../item/wvItem.js";
 import NotActorMessage from "../messages/notActorMessage.js";
 import WrongSpecialNameMessage from "../messages/wrongSpecialNameMessage.js";
@@ -30,9 +30,13 @@ export default class PermSpecialComponent extends RuleElement {
   protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
-    (this.getProperty(document) as Special).addPerm({
-      value: this.value,
-      labelComponents: this.labelComponents
+    this.mapProperties(document, (value) => {
+      if (!(value instanceof Special) || typeof this.value !== "number") return;
+
+      value.addPerm({
+        value: this.value,
+        labelComponents: this.labelComponents
+      });
     });
   }
 }

@@ -1,10 +1,12 @@
 import WvActor from "../actor/wvActor.js";
+import { TYPES } from "../constants.js";
 import type { LabelComponent } from "../data/common.js";
 import {
   isOwningActor,
   isSameDocument,
   isSiblingItem
 } from "../foundryHelpers.js";
+import type Weapon from "../item/weapon.js";
 import type { DocumentRelation } from "../item/wvItem.js";
 import WvItem from "../item/wvItem.js";
 import { LOG } from "../systemLogger.js";
@@ -27,9 +29,15 @@ import type {
  */
 export default class RuleElement {
   /**
+   * A RegExp to match a target against an attacks pattern. This can be used to
+   * apply a RuleElement against all attacks of a weapon.
+   */
+  static ATTACKS_TARGET_REGEXP = /@attacks\|(?<path>\w+(?:\.\w+)*)/;
+
+  /**
    * Create a RuleElement from the given data and owning item.
-   * @param source   - the source data for the RuleElement
-   * @param item     - the owning item
+   * @param source - the source data for the RuleElement
+   * @param item   - the owning item
    */
   constructor(
     /** The source data of the RuleElement */
@@ -39,8 +47,12 @@ export default class RuleElement {
     public item: WvItem
   ) {
     this.validate();
-    this.selectors = this.source.selectors.map((source) =>
-      createSelector(this.item, source)
+    this.selectors =
+      this.source.selectors?.map((source) =>
+        createSelector(this.item, source)
+      ) ?? [];
+    this.attackRegexpMatch = RuleElement.ATTACKS_TARGET_REGEXP.exec(
+      this.source.target
     );
   }
 
@@ -68,9 +80,12 @@ export default class RuleElement {
     { name: string; relation: DocumentRelation }
   > = {};
 
+  /** A potential RegExp match against the attacks target pattern */
+  attackRegexpMatch: RegExpExecArray | null;
+
   /** Get the conditions for this RuleElement. */
   get conditions(): RuleElementCondition[] {
-    return this.source.conditions;
+    return this.source.conditions ?? [];
   }
 
   /** Get the enabled setting of the RuleElement. */
@@ -110,6 +125,13 @@ export default class RuleElement {
 
   /** Get the target property of the RuleElement. */
   get target(): string {
+    if (this.attackRegexpMatch) {
+      const path = this.attackRegexpMatch.groups?.path;
+      if (path === undefined)
+        throw new Error("There was no path after splitting!");
+      return path;
+    }
+
     return this.source.target;
   }
 
@@ -176,21 +198,53 @@ export default class RuleElement {
     }
   }
 
-  /** Get the name of the given Document. */
-  protected getDocName(document: WvActor | WvItem): string | null {
-    // This has to be accessed in this way, because this can end up being called
-    // when the `data` on an Actor or Item is not initialized yet.
-    return document.data?._source.name ?? null;
+  /** Get the properties of the given Document, the RuleElement targets. */
+  protected getProperties(document: WvActor | WvItem): unknown[] {
+    if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
+      return Object.keys(document.data.data.attacks.attacks).map((key) =>
+        foundry.utils.getProperty(
+          (document as Weapon).data.data.attacks.attacks,
+          `${key}.${this.target}`
+        )
+      );
+    }
+
+    return [foundry.utils.getProperty(document.data.data, this.target)];
   }
 
-  /** Get the property of the given Document, the RuleElement points at. */
-  protected getProperty(document: WvActor | WvItem): unknown {
-    return foundry.utils.getProperty(document.data.data, this.target);
+  /** Set the properties of the given Document, the RuleElement targets. */
+  protected setProperties(document: WvActor | WvItem, values: unknown[]) {
+    if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
+      const keys = Object.keys(document.data.data.attacks.attacks);
+      if (keys.length !== values.length)
+        throw new Error(
+          `The amount of values (${values.length}) has to be the same as the amount of keys (${keys.length})!`
+        );
+
+      Object.keys(document.data.data.attacks.attacks).forEach((key, index) => {
+        if (values[index] === undefined) return;
+
+        foundry.utils.setProperty(
+          (document as Weapon).data.data.attacks.attacks,
+          `${key}.${this.target}`,
+          values[index]
+        );
+      });
+
+      return;
+    }
+
+    if (values[0] === undefined) return;
+
+    foundry.utils.setProperty(document.data.data, this.target, values[0]);
   }
 
-  /** Set the property of the given Document, the RuleElement points at. */
-  protected setProperty(document: WvActor | WvItem, value: unknown) {
-    foundry.utils.setProperty(document.data.data, this.target, value);
+  /** A helper function that allows to map properties of a document 1 to 1. */
+  protected mapProperties(
+    document: WvActor | WvItem,
+    map: (value: unknown, index: number, array: unknown[]) => unknown
+  ) {
+    this.setProperties(document, this.getProperties(document).map(map));
   }
 
   /**
@@ -284,8 +338,14 @@ export default class RuleElement {
   protected checkTargetIsValid(document: WvActor | WvItem): void {
     let invalidTarget = false;
 
+    if (this.attackRegexpMatch && document.data.type !== TYPES.ITEM.WEAPON) {
+      invalidTarget = true;
+    }
+
     try {
-      invalidTarget = this.getProperty(document) === undefined;
+      invalidTarget = this.getProperties(document).some(
+        (value) => value === undefined
+      );
     } catch (error) {
       if (error instanceof TypeError) {
         // This can happen, when the prefix part of a path finds a valid
@@ -316,7 +376,11 @@ export default class RuleElement {
     document: WvActor | WvItem,
     expectedType: "boolean" | "number" | "string"
   ): void {
-    if (typeof this.getProperty(document) !== expectedType) {
+    if (
+      this.getProperties(document).some(
+        (value) => typeof value !== expectedType
+      )
+    ) {
       this.addDocumentMessage(
         document,
         new WrongTargetTypeMessage(this.target, expectedType)
@@ -330,14 +394,17 @@ export default class RuleElement {
    * If the type changes, a warning message is added to the RuleElement.
    */
   protected checkTypeChanged(document: WvActor | WvItem): void {
-    const originalType = typeof this.getProperty(document);
-    const newType = typeof this.value;
+    for (const value of this.getProperties(document)) {
+      const originalType = typeof value;
+      const newType = typeof this.value;
 
-    if (originalType !== newType) {
-      this.addDocumentMessage(
-        document,
-        new ChangedTypeMessage(this.target, originalType, newType)
-      );
+      if (originalType !== newType) {
+        this.addDocumentMessage(
+          document,
+          new ChangedTypeMessage(this.target, originalType, newType)
+        );
+        break;
+      }
     }
   }
 

@@ -20,9 +20,10 @@ export default class FlatModifier extends RuleElement {
   protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
-    this.setProperty(
-      document,
-      (this.getProperty(document) as number) + this.value
-    );
+    this.mapProperties(document, (value) => {
+      if (typeof value !== "number" || typeof this.value !== "number") return;
+
+      return value + this.value;
+    });
   }
 }

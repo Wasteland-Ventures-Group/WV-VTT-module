@@ -10,6 +10,6 @@ export default class ReplaceValue extends RuleElement {
   }
 
   protected override innerApply(document: WvActor | WvItem): void {
-    this.setProperty(document, this.value);
+    this.mapProperties(document, () => this.value);
   }
 }

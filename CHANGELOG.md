@@ -29,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     documents that use the specified skill
   - `{ "or": [&lt;selectors&gt;] }`: selects documents where at least one of the
     specified selectors matches (can not be nested)
+- special target keywords
+  - `@attacks|&lt;path&gt;`: applies to the same property on all attacks of a
+    weapon
 - conditions for RuleElements. The first and so far only one is "whenEquipped"
   and only applies RuleElements when they are equipped in an apparel slot,
   weapon slot or the readied item
@@ -37,6 +40,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - tag display in item sheet header
 - tag input field to edit free-form tags
 - RuleElements now show their selected documents in their sheets
+- ability for RuleElements to modify multiple properties on a document
 
 ### Changed
 

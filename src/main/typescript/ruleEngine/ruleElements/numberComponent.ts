@@ -19,9 +19,16 @@ export default class NumberComponent extends RuleElement {
   protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
-    const modNumber = CompositeNumber.from(this.getProperty(document));
-    modNumber.add({ value: this.value, labelComponents: this.labelComponents });
-    this.setProperty(document, modNumber);
+    this.mapProperties(document, (value) => {
+      if (typeof this.value !== "number") return;
+
+      const modNumber = CompositeNumber.from(value);
+      modNumber.add({
+        value: this.value,
+        labelComponents: this.labelComponents
+      });
+      return modNumber;
+    });
   }
 
   /**
@@ -33,14 +40,15 @@ export default class NumberComponent extends RuleElement {
    *          target actually matches a property.
    */
   protected checkTargetIsCompositeNumber(document: WvActor | WvItem) {
-    const property = this.getProperty(document);
+    for (const property of this.getProperties(document)) {
+      if (property instanceof CompositeNumber) continue;
+      if (CompositeNumber.isSource(property)) continue;
 
-    if (property instanceof CompositeNumber) return;
-    if (CompositeNumber.isSource(property)) return;
-
-    this.addDocumentMessage(
-      document,
-      new NotCompositeNumberMessage(this.target)
-    );
+      this.addDocumentMessage(
+        document,
+        new NotCompositeNumberMessage(this.target)
+      );
+      break;
+    }
   }
 }

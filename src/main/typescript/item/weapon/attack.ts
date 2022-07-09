@@ -276,6 +276,13 @@ export default class Attack {
       });
   }
 
+  /** Check whether this attack matches the given list of tags. */
+  matches(tags: string[] | undefined): boolean {
+    if (tags === undefined) return true;
+
+    return !tags.some((tag) => !this.data.tags.includes(tag));
+  }
+
   protected applyRangeDamageDiceMod(range: ranges.RangeBracket): void {
     const value = this.getRangeDamageDiceMod(range);
     if (value)

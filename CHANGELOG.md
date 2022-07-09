@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - special target keywords
   - `@attacks|&lt;path&gt;`: applies to the same property on all attacks of a
     weapon
+  - `@attacks[&lt;tags list&gt;]|&lt;path&gt;`: applies to the same property on
+    all attacks of a weapon, that have the given tags
 - conditions for RuleElements. The first and so far only one is "whenEquipped"
   and only applies RuleElements when they are equipped in an apparel slot,
   weapon slot or the readied item

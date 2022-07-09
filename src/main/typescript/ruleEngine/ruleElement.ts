@@ -6,7 +6,6 @@ import {
   isSameDocument,
   isSiblingItem
 } from "../foundryHelpers.js";
-import type Weapon from "../item/weapon.js";
 import type { DocumentRelation } from "../item/wvItem.js";
 import WvItem from "../item/wvItem.js";
 import { LOG } from "../systemLogger.js";
@@ -32,7 +31,8 @@ export default class RuleElement {
    * A RegExp to match a target against an attacks pattern. This can be used to
    * apply a RuleElement against all attacks of a weapon.
    */
-  static ATTACKS_TARGET_REGEXP = /@attacks\|(?<path>\w+(?:\.\w+)*)/;
+  static ATTACKS_TARGET_REGEXP =
+    /@attacks(?:\[(?<tags>[^,]+(?:,[^,]+)*)\])?\|(?<path>\w+(?:\.\w+)*)/;
 
   /**
    * Create a RuleElement from the given data and owning item.
@@ -201,12 +201,11 @@ export default class RuleElement {
   /** Get the properties of the given Document, the RuleElement targets. */
   protected getProperties(document: WvActor | WvItem): unknown[] {
     if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      return Object.keys(document.data.data.attacks.attacks).map((key) =>
-        foundry.utils.getProperty(
-          (document as Weapon).data.data.attacks.attacks,
-          `${key}.${this.target}`
+      return Object.values(document.data.data.attacks.attacks)
+        .filter((attack) =>
+          attack.matches(this.attackRegexpMatch?.groups?.tags?.split(","))
         )
-      );
+        .map((attack) => foundry.utils.getProperty(attack, this.target));
     }
 
     return [foundry.utils.getProperty(document.data.data, this.target)];
@@ -215,20 +214,19 @@ export default class RuleElement {
   /** Set the properties of the given Document, the RuleElement targets. */
   protected setProperties(document: WvActor | WvItem, values: unknown[]) {
     if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      const keys = Object.keys(document.data.data.attacks.attacks);
-      if (keys.length !== values.length)
+      const attacks = Object.values(document.data.data.attacks.attacks).filter(
+        (attack) =>
+          attack.matches(this.attackRegexpMatch?.groups?.tags?.split(","))
+      );
+      if (attacks.length !== values.length)
         throw new Error(
-          `The amount of values (${values.length}) has to be the same as the amount of keys (${keys.length})!`
+          `The amount of values (${values.length}) has to be the same as the amount of attacks (${attacks.length})!`
         );
 
-      Object.keys(document.data.data.attacks.attacks).forEach((key, index) => {
+      attacks.forEach((attack, index) => {
         if (values[index] === undefined) return;
 
-        foundry.utils.setProperty(
-          (document as Weapon).data.data.attacks.attacks,
-          `${key}.${this.target}`,
-          values[index]
-        );
+        foundry.utils.setProperty(attack, this.target, values[index]);
       });
 
       return;

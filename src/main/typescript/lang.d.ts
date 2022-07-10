@@ -42,7 +42,7 @@ export interface LangSchema {
         /** Label for the personality */
         personality: string;
         /** Label for the size */
-        size: string;
+        sizeCategory: string;
         /** Label for the social contacts */
         socialContacts: string;
         /** Label for the special talent */

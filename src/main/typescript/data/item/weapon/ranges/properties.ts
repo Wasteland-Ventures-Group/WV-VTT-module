@@ -187,7 +187,7 @@ export class DistanceProperties extends DistanceSource {
     if (value)
       this.base.add({
         value,
-        labelComponents: [{ key: "wv.rules.background.size" }]
+        labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
       });
   }
 

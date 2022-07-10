@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#131](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/131))
 - size category based range bonus now automatically applies to weapon ranges
   tagged with "melee"
+- show size category on the statistics tab on the character sheet
 
 ### Changed
 

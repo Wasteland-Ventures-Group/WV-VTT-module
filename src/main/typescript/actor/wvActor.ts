@@ -581,13 +581,13 @@ export default class WvActor extends Actor {
     if (maxCarryWeightSizeBonus)
       data.secondary.maxCarryWeight.add({
         value: maxCarryWeightSizeBonus,
-        labelComponents: [{ key: "wv.rules.background.size" }]
+        labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
       });
 
     if (hitPointsSizeBonus)
       data.vitals.hitPoints.add({
         value: hitPointsSizeBonus,
-        labelComponents: [{ key: "wv.rules.background.size" }]
+        labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
       });
 
     this.applyRuleElementsForHook("afterComputation");

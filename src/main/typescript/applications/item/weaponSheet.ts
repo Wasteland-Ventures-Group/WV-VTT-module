@@ -167,7 +167,20 @@ export default class WeaponSheet extends WvItemSheet {
     formData: Record<string, unknown>
   ): Promise<unknown> {
     this.addAttackRenameUpdateData(formData);
+    for (const rangeName of ["short", "medium", "long"]) {
+      this.sanitizeTags(formData, `data.ranges.${rangeName}.tags`);
+    }
+    Object.keys(this.item.data.data.attacks.sources).forEach((attackName) => {
+      this.sanitizeTags(formData, `data.attacks.sources.${attackName}.tags`);
+    });
     return super._updateObject(event, formData);
+  }
+
+  protected override disableCompendiumLinkInputs(form: HTMLFormElement): void {
+    super.disableCompendiumLinkInputs(form);
+    form
+      .querySelectorAll(".weapon-attack-control[data-action]")
+      .forEach((element) => element.setAttribute("disabled", ""));
   }
 
   /** Handle a click event on an Attack execute button. */
@@ -278,13 +291,6 @@ export default class WeaponSheet extends WvItemSheet {
         formData[`data.attacks.sources.${newAttackName}`] = oldAttack;
       }
     }
-  }
-
-  protected override disableCompendiumLinkInputs(form: HTMLFormElement): void {
-    super.disableCompendiumLinkInputs(form);
-    form
-      .querySelectorAll(".weapon-attack-control[data-action]")
-      .forEach((element) => element.setAttribute("disabled", ""));
   }
 }
 

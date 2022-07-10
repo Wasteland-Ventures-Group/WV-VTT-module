@@ -264,9 +264,27 @@ export default class WvItemSheet extends ItemSheet {
     event: Event,
     formData: Record<string, unknown>
   ): Promise<unknown> {
-    this.parseTags(formData);
+    this.sanitizeTags(formData, "data.tags");
     this.parseRuleElementSources(formData);
     return super._updateObject(event, formData);
+  }
+
+  /** Sanitize the tags on the given property in the form data. */
+  protected sanitizeTags(
+    formData: Record<string, unknown>,
+    name: string
+  ): void {
+    const value = formData[name];
+    if (typeof value === "string") {
+      formData[name] = [
+        ...new Set(
+          value
+            .split(",")
+            .map((string) => string.trim())
+            .filter((string) => string.length > 0)
+        )
+      ].sort((a, b) => a.localeCompare(b));
+    }
   }
 
   /**
@@ -350,20 +368,6 @@ export default class WvItemSheet extends ItemSheet {
         `wv.system.ruleEngine.documentMessages.relations.${relation}`
       )
     };
-  }
-
-  /** Parse the tags and split them by commas. */
-  private parseTags(formData: Record<string, unknown>) {
-    if (typeof formData["data.tags"] === "string") {
-      formData["data.tags"] = [
-        ...new Set(
-          formData["data.tags"]
-            .split(",")
-            .map((string) => string.trim())
-            .filter((string) => string.length > 0)
-        )
-      ].sort((a, b) => a.localeCompare(b));
-    }
   }
 
   /**

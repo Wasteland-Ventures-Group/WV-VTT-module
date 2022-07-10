@@ -9,6 +9,7 @@
           <th scope="col" class="align-right">{{localize "wv.rules.damage.threshold.reduction.short"}}</th>
           <th scope="col" class="align-right">{{localize "wv.rules.actionPoints.use"}}</th>
           <th scope="col" class="align-right">{{localize "wv.rules.equipment.weapon.shots"}}</th>
+          <th scope="col" class="align-left">{{localize "wv.system.misc.tags"}}</th>
         </tr>
       </thead>
       <tbody>
@@ -25,6 +26,11 @@
             <td class="align-right">{{attack.data.dtReduction.total}}</td>
             <td class="align-right">{{attack.data.ap.total}}</td>
             <td class="align-right">{{attack.data.rounds.total}}</td>
+            <td class="align-left tags">
+              {{~#each attack.data.tags as |tag|~}}
+                <span class="fas fa-tag tag">{{tag}}</span>
+              {{~/each~}}
+            </td>
           </tr>
         {{~/each~}}
       </tbody>
@@ -33,12 +39,24 @@
       <section>
         <span>{{localize "wv.rules.range.plural"}}:</span>
         <span class="details">
-          <span>{{localize "wv.rules.range.ranges.short.short"}} ({{weapon.sheet.displayRanges.short}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.short.modifier.total}}]</span>
+          <span>{{localize "wv.rules.range.ranges.short.short"}} ({{weapon.sheet.displayRanges.short}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.short.modifier.total}}] <span class="tags">
+              {{~#each weapon.data.ranges.short.tags as |tag|~}}
+                <span class="fas fa-tag tag">{{tag}}</span>
+              {{~/each~}}
+            </span></span>
           {{~#unless (eq "-" weapon.sheet.displayRanges.medium)~}}
-            <span>{{localize "wv.rules.range.ranges.medium.short"}} ({{weapon.sheet.displayRanges.medium}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.medium.modifier.total}}]</span>
+            <span>{{localize "wv.rules.range.ranges.medium.short"}} ({{weapon.sheet.displayRanges.medium}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.medium.modifier.total}}] <span class="tags">
+              {{~#each weapon.data.ranges.medium.tags as |tag|~}}
+                <span class="fas fa-tag tag">{{tag}}</span>
+              {{~/each~}}
+            </span></span>
           {{~/unless~}}
           {{~#unless (eq "-" weapon.sheet.displayRanges.long)~}}
-            <span>{{localize "wv.rules.range.ranges.long.short"}} ({{weapon.sheet.displayRanges.long}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.long.modifier.total}}]</span>
+            <span>{{localize "wv.rules.range.ranges.long.short"}} ({{weapon.sheet.displayRanges.long}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.long.modifier.total}}] <span class="tags">
+              {{~#each weapon.data.ranges.long.tags as |tag|~}}
+                <span class="fas fa-tag tag">{{tag}}</span>
+              {{~/each~}}
+            </span></span>
           {{~/unless~}}
         </span>
       </section>
@@ -58,6 +76,11 @@
         {{~#if weapon.data.holdout~}}
           <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
         {{~/if~}}
+      </section>
+      <section class="tags">
+        {{~#each weapon.data.tags as |tag|~}}
+          <span class="fas fa-tag tag">{{tag}}</span>
+        {{~/each~}}
       </section>
       {{~#if weapon.data.notes~}}
         <section>{{weapon.data.notes}}</section>

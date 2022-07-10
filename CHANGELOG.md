@@ -54,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - size category based range bonus now automatically applies to weapon ranges
   tagged with "melee"
 - show size category on the statistics tab on the character sheet
+- make tags editable on attacks and ranges
+- show tags on equipment tab
 
 ### Changed
 

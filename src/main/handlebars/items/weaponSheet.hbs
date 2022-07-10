@@ -14,9 +14,10 @@
           <tr>
             <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
             <th scope="col" class="align-right">{{localize "wv.rules.damage.long"}}</th>
-            <th scope="col" class="align-right">{{localize "wv.rules.damage.threshold.reduction.long"}}</th>
+            <th scope="col" class="align-right">{{localize "wv.rules.damage.threshold.reduction.short"}}</th>
             <th scope="col" class="align-right">{{localize "wv.rules.actionPoints.use"}}</th>
             <th scope="col" class="align-right">{{localize "wv.rules.equipment.weapon.shots"}}</th>
+            <th scope="col" class="align-left">{{localize "wv.system.misc.tags"}}</th>
           </tr>
         </thead>
         <tbody>
@@ -29,6 +30,11 @@
               <td class="align-right">{{attack.data.dtReduction.total}}</td>
               <td class="align-right">{{attack.data.ap.total}}</td>
               <td class="align-right">{{attack.data.rounds.total}}</td>
+              <td class="align-left tags">
+                {{~#each attack.data.tags as |tag|~}}
+                  <span class="fas fa-tag tag">{{tag}}</span>
+                {{~/each~}}
+              </td>
             </tr>
           {{~/each~}}
         </tbody>
@@ -37,12 +43,24 @@
         <section>
           <span>{{localize "wv.rules.range.plural"}}:</span>
           <span class="details">
-            <span>{{localize "wv.rules.range.ranges.short.long"}} ({{sheet.displayRanges.short}}{{sheet.systemGridUnit}}) [{{data.data.ranges.short.modifier.total}}]</span>
+            <span>{{localize "wv.rules.range.ranges.short.long"}} ({{sheet.displayRanges.short}}{{sheet.systemGridUnit}}) [{{data.data.ranges.short.modifier.total}}] <span class="tags">
+                {{~#each data.data.ranges.short.tags as |tag|~}}
+                  <span class="fas fa-tag tag">{{tag}}</span>
+                {{~/each~}}
+              </span></span>
             {{~#unless (eq "-" sheet.displayRanges.medium)~}}
-              <span>{{localize "wv.rules.range.ranges.medium.long"}} ({{sheet.displayRanges.medium}}{{sheet.systemGridUnit}}) [{{data.data.ranges.medium.modifier.total}}]</span>
+              <span>{{localize "wv.rules.range.ranges.medium.long"}} ({{sheet.displayRanges.medium}}{{sheet.systemGridUnit}}) [{{data.data.ranges.medium.modifier.total}}] <span class="tags">
+                {{~#each data.data.ranges.medium.tags as |tag|~}}
+                  <span class="fas fa-tag tag">{{tag}}</span>
+                {{~/each~}}
+              </span></span>
             {{~/unless~}}
             {{~#unless (eq "-" sheet.displayRanges.long)~}}
-              <span>{{localize "wv.rules.range.ranges.long.long"}} ({{sheet.displayRanges.long}}{{sheet.systemGridUnit}}) [{{data.data.ranges.long.modifier.total}}]</span>
+              <span>{{localize "wv.rules.range.ranges.long.long"}} ({{sheet.displayRanges.long}}{{sheet.systemGridUnit}}) [{{data.data.ranges.long.modifier.total}}] <span class="tags">
+                {{~#each data.data.ranges.long.tags as |tag|~}}
+                  <span class="fas fa-tag tag">{{tag}}</span>
+                {{~/each~}}
+              </span></span>
             {{~/unless~}}
           </span>
         </section>
@@ -111,6 +129,7 @@
             <th scope="col" class="align-left">{{localize "wv.rules.range.singular"}}</th>
             <th scope="col" class="align-right">{{localize "wv.rules.range.distance.name"}}</th>
             <th scope="col" class="align-right">{{localize "wv.system.misc.modifier"}}</th>
+            <th scope="col" class="align-left">{{localize "wv.system.misc.tags"}}</th>
           </tr>
         </thead>
         <tbody>
@@ -128,6 +147,9 @@
             <td class="align-right min-width">
               <input type="number" class="size-3" name="data.ranges.short.modifier.source" value="{{data.data.ranges.short.modifier.source}}" />
             </td>
+            <td class="align-left">
+              <input type="text" name="data.ranges.short.tags" value="{{data.data.ranges.short.tags}}" />
+            </td>
           </tr>
           <tr>
             <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.medium.long"}}</th>
@@ -142,6 +164,9 @@
             </td>
             <td class="align-right min-width">
               <input type="number" class="size-3" name="data.ranges.medium.modifier.source" value="{{data.data.ranges.medium.modifier.source}}" />
+            </td>
+            <td class="align-left">
+              <input type="text" name="data.ranges.medium.tags" value="{{data.data.ranges.medium.tags}}" />
             </td>
           </tr>
           <tr>
@@ -158,6 +183,9 @@
             <td class="align-right min-width">
               <input type="number" class="size-3" name="data.ranges.long.modifier.source" value="{{data.data.ranges.long.modifier.source}}" />
             </td>
+            <td class="align-left">
+              <input type="text" name="data.ranges.long.tags" value="{{data.data.ranges.long.tags}}" />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -169,6 +197,7 @@
             <th scope="col" class="align-right min-width">{{localize "wv.rules.damage.threshold.reduction.short"}}</th>
             <th scope="col" class="align-right min-width">{{localize "wv.rules.equipment.weapon.shots"}}</th>
             <th scope="col" class="align-right min-width">{{localize "wv.rules.actionPoints.use"}}</th>
+            <th scope="col" class="align-left">{{localize "wv.system.misc.tags"}}</th>
             <th scope="col" class="align-right min-width">
               <button type="button" class="control small weapon-attack-control fas fa-plus parchment-bg" data-action="create" title="{{localize 'wv.system.actions.create'}}"></button>
             </th>
@@ -198,6 +227,9 @@
               </td>
               <td class="align-right min-width">
                 <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.ap.source" value="{{attack.data.ap.source}}" min="0" />
+              </td>
+              <td class="align-left">
+                <input type="text" name="data.attacks.sources.{{@key}}.tags" value="{{attack.data.tags}}" />
               </td>
               <td class="align-right min-width">
                 <button type="button" class="control small weapon-attack-control fas fa-minus" data-action="delete" data-attack="{{@key}}" title="{{localize 'wv.system.actions.delete'}}"></button>

@@ -59,7 +59,7 @@ export default class WvActorSheet extends ActorSheet {
     defaultOptions.tabs = [
       { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
     ];
-    defaultOptions.width = 800;
+    defaultOptions.width = 900;
     return defaultOptions;
   }
 
@@ -643,7 +643,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
@@ -661,7 +661,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
@@ -680,7 +680,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLInputElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 

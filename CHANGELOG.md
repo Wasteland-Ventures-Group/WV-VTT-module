@@ -56,6 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - show size category on the statistics tab on the character sheet
 - make tags editable on attacks and ranges
 - show tags on equipment tab
+- equipped items can now be edited directly from the equipment page
 
 ### Changed
 

@@ -105,20 +105,20 @@
   <table class="flex-fixed no-margin">
     <thead>
       <tr>
-        <th scope="col" class="min-width no-wrap align-left">{{localize "wv.rules.skills.singular"}}</th>
-        <th scope="col" class="min-width no-wrap align-left">{{localize "wv.rules.special.singular"}}</th>
-        <th scope="col" class="min-width no-wrap align-right">{{localize "wv.system.values.total"}}</th>
-        <th scope="col" class="min-width no-wrap align-right">{{localize "wv.rules.skills.points.short"}}</th>
-        <th scope="col" class="min-width no-wrap align-right">{{localize "wv.system.rolls.imperative"}}</th>
+        <th scope="col" class="align-left no-wrap">{{localize "wv.rules.skills.singular"}}</th>
+        <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.system.values.total"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.skills.points.short"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.system.rolls.imperative"}}</th>
       </tr>
     </thead>
     <tbody>
       {{~#each sheet.skills as |skill|~}}
       <tr>
-        <th scope="row" class="min-width no-wrap align-left">{{skill.name}}</th>
-        <td class="min-width no-wrap align-left">{{skill.special}}</td>
-        <td class="min-width no-wrap align-right">{{skill.total}}</td>
-        <td class="min-width no-wrap align-right">
+        <th scope="row" class="no-wrap align-left">{{skill.name}}</th>
+        <td class="align-left">{{skill.special}}</td>
+        <td class="align-right">{{skill.total}}</td>
+        <td class="align-right">
           <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
         </td>
         <td class="align-right">

@@ -7,7 +7,6 @@ import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../../item/weapon.js";
 import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
 import Attack from "../../item/weapon/attack.js";
-import * as ranges from "../../item/weapon/ranges.js";
 import { isOfItemType } from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, {
@@ -43,16 +42,13 @@ export default class WeaponSheet extends WvItemSheet {
         ...i18nDamageFallOffTypes
       },
       displayRanges: {
-        short: ranges.getDisplayRangeDistance(
-          weapon.data.data.ranges.short.distance,
+        short: weapon.data.data.ranges.short.distance.getDisplayRangeDistance(
           weapon.actor?.data.data.specials
         ),
-        medium: ranges.getDisplayRangeDistance(
-          weapon.data.data.ranges.medium.distance,
+        medium: weapon.data.data.ranges.medium.distance.getDisplayRangeDistance(
           weapon.actor?.data.data.specials
         ),
-        long: ranges.getDisplayRangeDistance(
-          weapon.data.data.ranges.long.distance,
+        long: weapon.data.data.ranges.long.distance.getDisplayRangeDistance(
           weapon.actor?.data.data.specials
         )
       },

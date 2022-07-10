@@ -4,7 +4,7 @@ import Prompt, {
   NumberInputSpec,
   TextInputSpec
 } from "../../applications/prompt.js";
-import { CONSTANTS } from "../../constants.js";
+import { CONSTANTS, RangeBracket } from "../../constants.js";
 import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import type DragData from "../../dragData.js";
@@ -16,7 +16,6 @@ import * as interact from "../../interaction.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
 import type Weapon from "../weapon.js";
-import * as ranges from "./ranges.js";
 
 /** An attack of a Weapon Item. */
 export default class Attack {
@@ -100,19 +99,16 @@ export default class Attack {
       );
 
     // Get range bracket -------------------------------------------------------
-    const rangeBracket = ranges.getRangeBracket(
-      weapon.data.data.ranges,
+    const rangeBracket = weapon.data.data.ranges.getRangeBracket(
       range,
       actor.data.data.specials
     );
-    const isOutOfRange = ranges.RangeBracket.OUT_OF_RANGE === rangeBracket;
+    const isOutOfRange = RangeBracket.OUT_OF_RANGE === rangeBracket;
     attack.applyRangeDamageDiceMod(range);
 
     // Calculate hit roll target -----------------------------------------------
-    const rangeModifier = ranges.getRangeModifier(
-      weapon.data.data.ranges,
-      rangeBracket
-    );
+    const rangeModifier =
+      weapon.data.data.ranges.getRangeModifier(rangeBracket);
 
     const critSuccess = actor.data.data.secondary.criticals.success;
     const critFailure = actor.data.data.secondary.criticals.failure;
@@ -158,8 +154,7 @@ export default class Attack {
       },
       weapon: {
         display: {
-          ranges: ranges.getDisplayRanges(
-            this.weapon.data.data,
+          ranges: this.weapon.data.data.ranges.getDisplayRanges(
             actor.data.data.specials
           )
         },
@@ -283,7 +278,7 @@ export default class Attack {
     return !tags.some((tag) => !this.data.tags.includes(tag));
   }
 
-  protected applyRangeDamageDiceMod(range: ranges.RangeBracket): void {
+  protected applyRangeDamageDiceMod(range: RangeBracket): void {
     const value = this.getRangeDamageDiceMod(range);
     if (value)
       this.data.damage.dice.add({
@@ -395,12 +390,12 @@ export default class Attack {
   }
 
   /** Get the range damage modifier dice for the given range bracket. */
-  protected getRangeDamageDiceMod(range: ranges.RangeBracket): number {
+  protected getRangeDamageDiceMod(range: RangeBracket): number {
     if (this.data.damage.damageFallOff === "shotgun") {
       switch (range) {
-        case ranges.RangeBracket.LONG:
+        case RangeBracket.LONG:
           return -4;
-        case ranges.RangeBracket.MEDIUM:
+        case RangeBracket.MEDIUM:
           return -2;
       }
     }

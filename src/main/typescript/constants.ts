@@ -110,6 +110,14 @@ export const SystemDocumentTypes: SystemDocumentType[] = [
   ...Object.values(TYPES.ITEM)
 ];
 
+/** A type representing the different range brackets */
+export enum RangeBracket {
+  SHORT,
+  MEDIUM,
+  LONG,
+  OUT_OF_RANGE
+}
+
 export type ProtoItemType = typeof ProtoItemTypes[number];
 export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
   TYPES.ITEM.AMMO,

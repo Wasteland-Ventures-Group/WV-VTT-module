@@ -1,9 +1,7 @@
 import type { JSONSchemaType } from "ajv";
 import {
   GeneralMagicSchools,
-  SpellRanges,
   TYPES,
-  SplashSizes,
   GeneralMagicSchool
 } from "../../../constants.js";
 import BaseItemSource, {
@@ -13,6 +11,8 @@ import {
   COMPENDIUM_JSON_SCHEMA,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
+import { RangeSource, RANGES_JSON_SCHEMA } from "./ranges/source.js";
+import { TargetSource, TARGET_JSON_SCHEMA } from "./target/source.js";
 
 /** The Magic Item data-source */
 export default interface MagicDataSource {
@@ -22,6 +22,14 @@ export default interface MagicDataSource {
 
 export class MagicDataSourceData extends BaseItemSource {
   school: GeneralMagicSchool = "general";
+
+  apCost: number = 0;
+
+  strainCost: number = 0;
+
+  range: RangeSource = new RangeSource();
+
+  target: TargetSource = new TargetSource();
 }
 
 /** A JSON schema for magic source objects */
@@ -47,48 +55,10 @@ export const MAGIC_SOURCE_JSON_SCHEMA: JSONSchemaType<MagicDataSourceData> = {
       default: 0
     },
     range: {
-      description: "The spell's range, if it has one",
-      type: "string",
-      default: "none",
-      enum: SpellRanges,
-      properties: {
-        rangeScale: {
-          description:
-            "How much potency influences the range of a spell with a range of 'distance'",
-          type: "number",
-          default: 1
-        },
-        rangeBase: {
-          description:
-            "The flat, non-scaling part of a spell's range (provided it has a range of 'distance').",
-          type: "number",
-          default: 0
-        },
-        rangeSplash: {
-          description:
-            "The size of the splash, provided this spell has a range of 'splash'",
-          type: "string",
-          enum: SplashSizes,
-          default: "tiny"
-        }
-      }
-    },
-    areaOfEffect: {
-      description: "The spell's area of effect",
-      type: "string",
-      default: "none",
-      enum: SplashSizes.concat(["none"]) // probably not the right way, will figure it out later
+      ...RANGES_JSON_SCHEMA
     },
     target: {
-      description: "Information relating to the spell's target",
-      type: "string",
-      properties: {
-        targetCount: {
-          description: "The number of creatures this spell can target",
-          type: "number",
-          default: 0
-        }
-      }
+      ...TARGET_JSON_SCHEMA
     }
   },
   required: [...BASE_ITEM_SOURCE_JSON_SCHEMA.required, "school"],

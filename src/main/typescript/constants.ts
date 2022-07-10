@@ -175,7 +175,13 @@ export const SpellRanges = [
   "distance",
   "splash"
 ] as const;
-export const SplashSizes = ["tiny", "small", "large", "huge"];
+export type SpellRange = typeof SpellRanges[number];
+
+export const SplashSizes = ["tiny", "small", "large", "huge"] as const;
+export type SplashSize = typeof SplashSizes[number];
+
+export const TargetTypes = ["none", "self", "creature", "tile"] as const;
+export type TargetType = typeof TargetTypes[number];
 
 export const GeneralMagicSchools = [
   "general",

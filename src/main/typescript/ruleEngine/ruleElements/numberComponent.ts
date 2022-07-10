@@ -20,14 +20,13 @@ export default class NumberComponent extends RuleElement {
     if (typeof this.value !== "number") return;
 
     this.mapProperties(document, (value) => {
-      if (typeof this.value !== "number") return;
+      if (typeof this.value !== "number" || !(value instanceof CompositeNumber))
+        return;
 
-      const modNumber = CompositeNumber.from(value);
-      modNumber.add({
+      value.add({
         value: this.value,
         labelComponents: this.labelComponents
       });
-      return modNumber;
     });
   }
 
@@ -42,7 +41,6 @@ export default class NumberComponent extends RuleElement {
   protected checkTargetIsCompositeNumber(document: WvActor | WvItem) {
     for (const property of this.getProperties(document)) {
       if (property instanceof CompositeNumber) continue;
-      if (CompositeNumber.isSource(property)) continue;
 
       this.addDocumentMessage(
         document,

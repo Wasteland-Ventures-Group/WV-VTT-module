@@ -19,6 +19,11 @@ export default class Attacks extends AttacksSource {
 
   /** The Weapon Attacks, created from the sources */
   attacks: Record<string, Attack> = {};
+
+  /** Get all attacks matching the given tags. */
+  getMatching(tags: string[] | undefined): Attack[] {
+    return Object.values(this.attacks).filter((attack) => attack.matches(tags));
+  }
 }
 
 export class AttackProperties extends AttackSource {

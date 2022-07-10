@@ -201,48 +201,38 @@ export default class RuleElement {
   /** Get the properties of the given Document, the RuleElement targets. */
   protected getProperties(document: WvActor | WvItem): unknown[] {
     if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      return Object.values(document.data.data.attacks.attacks)
-        .filter((attack) =>
-          attack.matches(this.attackRegexpMatch?.groups?.tags?.split(","))
-        )
+      return document.data.data.attacks
+        .getMatching(this.attackRegexpMatch?.groups?.tags?.split(","))
         .map((attack) => foundry.utils.getProperty(attack, this.target));
     }
 
     return [foundry.utils.getProperty(document.data.data, this.target)];
   }
 
-  /** Set the properties of the given Document, the RuleElement targets. */
-  protected setProperties(document: WvActor | WvItem, values: unknown[]) {
+  /**
+   * Map the targeted properties of a document. If the mapping function does not
+   * return a value, this assumes that the property has already been modified.
+   * Otherwise the property is set with {@link foundry.utils.setProperty}.
+   */
+  protected mapProperties(
+    document: WvActor | WvItem,
+    callback: (value: unknown) => unknown
+  ) {
     if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      const attacks = Object.values(document.data.data.attacks.attacks).filter(
-        (attack) =>
-          attack.matches(this.attackRegexpMatch?.groups?.tags?.split(","))
-      );
-      if (attacks.length !== values.length)
-        throw new Error(
-          `The amount of values (${values.length}) has to be the same as the amount of attacks (${attacks.length})!`
+      document.data.data.attacks
+        .getMatching(this.attackRegexpMatch.groups?.tags?.split(","))
+        .forEach((attack) =>
+          callback(foundry.utils.getProperty(attack, this.target))
         );
-
-      attacks.forEach((attack, index) => {
-        if (values[index] === undefined) return;
-
-        foundry.utils.setProperty(attack, this.target, values[index]);
-      });
 
       return;
     }
 
-    if (values[0] === undefined) return;
-
-    foundry.utils.setProperty(document.data.data, this.target, values[0]);
-  }
-
-  /** A helper function that allows to map properties of a document 1 to 1. */
-  protected mapProperties(
-    document: WvActor | WvItem,
-    map: (value: unknown, index: number, array: unknown[]) => unknown
-  ) {
-    this.setProperties(document, this.getProperties(document).map(map));
+    const modifiedProperty = callback(
+      foundry.utils.getProperty(document.data.data, this.target)
+    );
+    if (modifiedProperty !== undefined)
+      foundry.utils.setProperty(document, this.target, modifiedProperty);
   }
 
   /**

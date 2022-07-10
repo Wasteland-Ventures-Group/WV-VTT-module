@@ -17,6 +17,13 @@ export default class RangesProperties extends RangesSource {
 
   override long: RangeProperties;
 
+  /** Get all ranges matching the given tags. */
+  getMatching(tags: string[] | undefined): RangeProperties[] {
+    return [this.short, this.medium, this.long].filter((range) =>
+      range.matches(tags)
+    );
+  }
+
   /**
    * Get the range bracket for the given distance in meters.
    * @param distance - the distance in meters to get the bracket for
@@ -76,6 +83,13 @@ export class RangeProperties extends RangeSource {
   override distance: DistanceProperties;
 
   override modifier: CompositeNumber;
+
+  /** Check whether this range matches the given list of tags. */
+  matches(tags: string[] | undefined): boolean {
+    if (tags === undefined) return true;
+
+    return !tags.some((tag) => !this.tags.includes(tag));
+  }
 }
 
 export class DistanceProperties extends DistanceSource {

@@ -35,6 +35,13 @@ export default class RuleElement {
     /@attacks(?:\[(?<tags>[^,]+(?:,[^,]+)*)\])?\|(?<path>\w+(?:\.\w+)*)/;
 
   /**
+   * A RegExp to match a target against a ranges pattern. This can be used to
+   * apply a RuleElement against all ranges of a weapon.
+   */
+  static RANGES_TARGET_REGEXP =
+    /@ranges(?:\[(?<tags>[^,]+(?:,[^,]+)*)\])?\|(?<path>\w+(?:\.\w+)*)/;
+
+  /**
    * Create a RuleElement from the given data and owning item.
    * @param source - the source data for the RuleElement
    * @param item   - the owning item
@@ -52,6 +59,9 @@ export default class RuleElement {
         createSelector(this.item, source)
       ) ?? [];
     this.attackRegexpMatch = RuleElement.ATTACKS_TARGET_REGEXP.exec(
+      this.source.target
+    );
+    this.rangesRegexpMatch = RuleElement.RANGES_TARGET_REGEXP.exec(
       this.source.target
     );
   }
@@ -82,6 +92,9 @@ export default class RuleElement {
 
   /** A potential RegExp match against the attacks target pattern */
   attackRegexpMatch: RegExpExecArray | null;
+
+  /** A potential RegExp match against the ranges target pattern */
+  rangesRegexpMatch: RegExpExecArray | null;
 
   /** Get the conditions for this RuleElement. */
   get conditions(): RuleElementCondition[] {
@@ -127,6 +140,13 @@ export default class RuleElement {
   get target(): string {
     if (this.attackRegexpMatch) {
       const path = this.attackRegexpMatch.groups?.path;
+      if (path === undefined)
+        throw new Error("There was no path after splitting!");
+      return path;
+    }
+
+    if (this.rangesRegexpMatch) {
+      const path = this.rangesRegexpMatch.groups?.path;
       if (path === undefined)
         throw new Error("There was no path after splitting!");
       return path;
@@ -206,6 +226,12 @@ export default class RuleElement {
         .map((attack) => foundry.utils.getProperty(attack, this.target));
     }
 
+    if (this.rangesRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
+      return document.data.data.ranges
+        .getMatching(this.rangesRegexpMatch?.groups?.tags?.split(","))
+        .map((range) => foundry.utils.getProperty(range, this.target));
+    }
+
     return [foundry.utils.getProperty(document.data.data, this.target)];
   }
 
@@ -223,6 +249,16 @@ export default class RuleElement {
         .getMatching(this.attackRegexpMatch.groups?.tags?.split(","))
         .forEach((attack) =>
           callback(foundry.utils.getProperty(attack, this.target))
+        );
+
+      return;
+    }
+
+    if (this.rangesRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
+      document.data.data.ranges
+        .getMatching(this.rangesRegexpMatch.groups?.tags?.split(","))
+        .forEach((range) =>
+          callback(foundry.utils.getProperty(range, this.target))
         );
 
       return;
@@ -325,10 +361,6 @@ export default class RuleElement {
    */
   protected checkTargetIsValid(document: WvActor | WvItem): void {
     let invalidTarget = false;
-
-    if (this.attackRegexpMatch && document.data.type !== TYPES.ITEM.WEAPON) {
-      invalidTarget = true;
-    }
 
     try {
       invalidTarget = this.getProperties(document).some(

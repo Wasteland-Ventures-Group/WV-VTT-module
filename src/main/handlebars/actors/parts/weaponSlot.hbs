@@ -35,32 +35,54 @@
         {{~/each~}}
       </tbody>
     </table>
-    <div class="detail-groups">
-      <section>
-        <span>{{localize "wv.rules.range.plural"}}:</span>
-        <span class="details">
-          <span>{{localize "wv.rules.range.ranges.short.short"}} ({{weapon.sheet.displayRanges.short}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.short.modifier.total}}] <span class="tags">
-              {{~#each weapon.data.ranges.short.tags as |tag|~}}
+    <table class="spacing-bottom">
+      <thead>
+        <tr>
+          <th scope="col" class="align-left">{{localize "wv.rules.range.singular"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.range.distance.name"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.system.misc.modifier"}}</th>
+          <th scope="col" class="align-left">{{localize "wv.system.misc.tags"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.short.long"}}</th>
+          <td class="align-right">{{weapon.sheet.displayRanges.short}}{{sheet.systemGridUnit}}</td>
+          <td class="align-right">{{weapon.data.ranges.short.modifier.total}}</td>
+          <td class="align-left tags">
+            {{~#each weapon.data.ranges.short.tags as |tag|~}}
+              <span class="fas fa-tag tag">{{tag}}</span>
+            {{~/each~}}
+          </td>
+        </tr>
+        {{~#unless (eq "-" weapon.sheet.displayRanges.medium)~}}
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.medium.long"}}</th>
+            <td class="align-right">{{weapon.sheet.displayRanges.medium}}{{sheet.systemGridUnit}}</td>
+            <td class="align-right">{{weapon.data.ranges.medium.modifier.total}}</td>
+            <td class="align-left tags">
+              {{~#each data.data.ranges.medium.tags as |tag|~}}
                 <span class="fas fa-tag tag">{{tag}}</span>
               {{~/each~}}
-            </span></span>
-          {{~#unless (eq "-" weapon.sheet.displayRanges.medium)~}}
-            <span>{{localize "wv.rules.range.ranges.medium.short"}} ({{weapon.sheet.displayRanges.medium}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.medium.modifier.total}}] <span class="tags">
-              {{~#each weapon.data.ranges.medium.tags as |tag|~}}
-                <span class="fas fa-tag tag">{{tag}}</span>
-              {{~/each~}}
-            </span></span>
-          {{~/unless~}}
-          {{~#unless (eq "-" weapon.sheet.displayRanges.long)~}}
-            <span>{{localize "wv.rules.range.ranges.long.short"}} ({{weapon.sheet.displayRanges.long}}{{sheet.systemGridUnit}}) [{{weapon.data.ranges.long.modifier.total}}] <span class="tags">
+            </td>
+          </tr>
+        {{~/unless~}}
+        {{~#unless (eq "-" weapon.sheet.displayRanges.long)~}}
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.long.long"}}</th>
+            <td class="align-right">{{weapon.sheet.displayRanges.long}}{{sheet.systemGridUnit}}</td>
+            <td class="align-right">{{weapon.data.ranges.long.modifier.total}}</td>
+            <td class="align-left tags">
               {{~#each weapon.data.ranges.long.tags as |tag|~}}
                 <span class="fas fa-tag tag">{{tag}}</span>
               {{~/each~}}
-            </span></span>
-          {{~/unless~}}
-        </span>
-      </section>
-      {{~#if (gt weapon.data.reload.size.total 0)~}}
+            </td>
+          </tr>
+        {{~/unless~}}
+      </tbody>
+    </table>
+    <div class="detail-groups">
+      {{~#if weapon.data.reload.size.total~}}
         <section>
           <span>{{localize "wv.rules.equipment.weapon.reload.name"}}:</span>
           <span class="details">
@@ -77,11 +99,13 @@
           <span>{{localize "wv.rules.equipment.weapon.holdout"}}</span>
         {{~/if~}}
       </section>
-      <section class="tags">
-        {{~#each weapon.data.tags as |tag|~}}
-          <span class="fas fa-tag tag">{{tag}}</span>
-        {{~/each~}}
-      </section>
+      {{~#if weapon.data.tags.length~}}
+        <section class="tags">
+          {{~#each weapon.data.tags as |tag|~}}
+            <span class="fas fa-tag tag">{{tag}}</span>
+          {{~/each~}}
+        </section>
+      {{~/if~}}
       {{~#if weapon.data.notes~}}
         <section>{{weapon.data.notes}}</section>
       {{~/if~}}

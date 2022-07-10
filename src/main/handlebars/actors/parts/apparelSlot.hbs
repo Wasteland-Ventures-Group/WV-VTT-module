@@ -13,11 +13,13 @@
           <span>{{localize "wv.rules.equipment.slots.quickSlot.plural"}}: {{apparel.data.quickSlots.total}}</span>
         {{~/if~}}
       </div>
-      <section class="tags">
-        {{~#each apparel.data.tags as |tag|~}}
-          <span class="fas fa-tag tag">{{tag}}</span>
-        {{~/each~}}
-      </section>
+      {{~#if apparel.data.tags.length~}}
+        <section class="tags">
+          {{~#each apparel.data.tags as |tag|~}}
+            <span class="fas fa-tag tag">{{tag}}</span>
+          {{~/each~}}
+        </section>
+      {{~/if~}}
       {{~#if apparel.data.notes~}}
         <div>{{apparel.data.notes}}</div>
       {{~/if~}}

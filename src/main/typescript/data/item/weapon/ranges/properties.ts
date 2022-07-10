@@ -1,4 +1,5 @@
-import { CONSTANTS, RangeBracket } from "../../../../constants.js";
+import type WvActor from "../../../../actor/wvActor.js";
+import { CONSTANTS, RangeBracket, TAGS } from "../../../../constants.js";
 import type SpecialsProperties from "../../../actor/character/specials/properties.js";
 import { CompositeNumber } from "../../../common.js";
 import RangesSource, { DistanceSource, RangeSource } from "./source.js";
@@ -85,6 +86,19 @@ export default class RangesProperties extends RangesSource {
       .map((range) => range.distance.getDisplayRangeDistance(specials))
       .join("/");
   }
+
+  /**
+   * Apply a size category based reach bonus to the appropriate range distances.
+   */
+  applySizeCategoryReachBonus(actor: WvActor | null): void {
+    if (!actor) return;
+
+    this.getMatching([TAGS.sizeCategoryReachBonus]).forEach((range) =>
+      range.distance.applySizeCategoryReachBonus(
+        actor.data.data.background.size.total
+      )
+    );
+  }
 }
 
 export class RangeProperties extends RangeSource {
@@ -162,6 +176,33 @@ export class DistanceProperties extends DistanceSource {
     if (this.base.total === 0) return "-";
 
     return this.base.total.toString();
+  }
+
+  /**
+   * Apply a base distance bonus to the distance based on the given size
+   * category.
+   */
+  applySizeCategoryReachBonus(sizeCategory: number) {
+    const value = this.getSizeCategoryReachBonus(sizeCategory);
+    if (value)
+      this.base.add({
+        value,
+        labelComponents: [{ key: "wv.rules.background.size" }]
+      });
+  }
+
+  /** Get the size category based reach bonus for the given size category. */
+  private getSizeCategoryReachBonus(sizeCategory: number): number {
+    switch (sizeCategory) {
+      case 2:
+        return 2;
+      case 3:
+        return 4;
+      case 4:
+        return 10;
+      default:
+        return 0;
+    }
   }
 
   /**

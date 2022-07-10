@@ -541,7 +541,7 @@ export default class WvActor extends Actor {
     });
 
     // Modify values based on the size -----------------------------------------
-    // TODO: hit chance, reach, combat trick mods
+    // TODO: hit chance, combat trick mods
     let maxCarryWeightSizeBonus = 0;
     let hitPointsSizeBonus = 0;
     switch (data.background.size.total) {

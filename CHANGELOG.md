@@ -51,6 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - weapons with attacks that are tagged as "melee" or "thrown" now only pick
   ranges that also have the corresponding tag, when executing the attack
   ([#131](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/131))
+- size category based range bonus now automatically applies to weapon ranges
+  tagged with "melee"
 
 ### Changed
 

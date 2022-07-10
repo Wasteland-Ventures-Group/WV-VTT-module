@@ -1,4 +1,4 @@
-import { TYPES } from "../constants.js";
+import { TAGS, TYPES } from "../constants.js";
 import { WeaponDataPropertiesData } from "../data/item/weapon/properties.js";
 import { LOG } from "../systemLogger.js";
 import WvItem from "./wvItem.js";
@@ -32,9 +32,11 @@ export default class Weapon extends WvItem {
 
       attack.applyStrengthDamageDiceMod(this.actor);
 
-      if (this.data.data.tags.includes("skillful"))
-        attack.applySkillfulDamageDiceMod(this.actor);
+      if (this.data.data.tags.includes(TAGS.skillDamageBonus))
+        attack.applySkillDamageDiceMod(this.actor);
     });
+
+    this.data.data.ranges.applySizeCategoryReachBonus(this.actor);
   }
 }
 

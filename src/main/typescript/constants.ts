@@ -110,14 +110,6 @@ export const SystemDocumentTypes: SystemDocumentType[] = [
   ...Object.values(TYPES.ITEM)
 ];
 
-export type RangePickingTag = typeof RANGE_PICKING_TAGS[number];
-export const RANGE_PICKING_TAGS = ["melee", "thrown"] as const;
-
-/** Check whether the given tag is one of the range picking tags. */
-export function isRangePickingTag(tag: string): tag is RangePickingTag {
-  return RANGE_PICKING_TAGS.includes(tag as RangePickingTag);
-}
-
 /** A type representing the different range brackets */
 export enum RangeBracket {
   SHORT,
@@ -338,6 +330,18 @@ export const CONSTANTS = {
    */
   systemPath: "systems/wasteland-ventures"
 } as const;
+
+export type RangePickingTag = typeof TAGS.rangePicking[number];
+export const TAGS = {
+  rangePicking: ["melee", "thrown"],
+  skillDamageBonus: "skillful",
+  sizeCategoryReachBonus: "melee"
+} as const;
+
+/** Check whether the given tag is one of the range picking tags. */
+export function isRangePickingTag(tag: string): tag is RangePickingTag {
+  return TAGS.rangePicking.includes(tag as RangePickingTag);
+}
 
 export const SYSTEM_COMPENDIUM_SOURCE_ID_REGEX = new RegExp(
   `^Compendium\\.(${CONSTANTS.systemId}\\.\\w+)\\.([a-zA-Z0-9]{16})$`

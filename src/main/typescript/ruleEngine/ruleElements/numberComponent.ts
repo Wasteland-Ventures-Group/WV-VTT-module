@@ -40,6 +40,7 @@ export default class NumberComponent extends RuleElement {
    */
   protected checkTargetIsCompositeNumber(document: WvActor | WvItem) {
     for (const property of this.getProperties(document)) {
+      if (property === undefined) continue;
       if (property instanceof CompositeNumber) continue;
 
       this.addDocumentMessage(

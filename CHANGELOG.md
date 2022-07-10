@@ -64,6 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - the race not showing on limited actor sheets
 - ammo and apparel compendiums not being validated against their schemas
+- NumberComponents no longer both show a "property does not exist" and "property
+  is not a CompositeNumber" error
 
 ## [0.18.0] - 2022-05-29
 

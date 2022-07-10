@@ -110,6 +110,14 @@ export const SystemDocumentTypes: SystemDocumentType[] = [
   ...Object.values(TYPES.ITEM)
 ];
 
+export type RangePickingTag = typeof RANGE_PICKING_TAGS[number];
+export const RANGE_PICKING_TAGS = ["melee", "thrown"] as const;
+
+/** Check whether the given tag is one of the range picking tags. */
+export function isRangePickingTag(tag: string): tag is RangePickingTag {
+  return RANGE_PICKING_TAGS.includes(tag as RangePickingTag);
+}
+
 /** A type representing the different range brackets */
 export enum RangeBracket {
   SHORT,

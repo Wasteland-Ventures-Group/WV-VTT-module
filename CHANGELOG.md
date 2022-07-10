@@ -48,6 +48,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - RuleElements now show their selected documents in their sheets
 - ability for RuleElements to modify multiple properties on a document
 - tags in the sources of weapon attacks and ranges
+- weapons with attacks that are tagged as "melee" or "thrown" now only pick
+  ranges that also have the corresponding tag, when executing the attack
+  ([#131](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/131))
 
 ### Changed
 

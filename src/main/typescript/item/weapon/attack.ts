@@ -4,7 +4,7 @@ import Prompt, {
   NumberInputSpec,
   TextInputSpec
 } from "../../applications/prompt.js";
-import { CONSTANTS, RangeBracket } from "../../constants.js";
+import { CONSTANTS, isRangePickingTag, RangeBracket } from "../../constants.js";
 import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import type DragData from "../../dragData.js";
@@ -101,6 +101,7 @@ export default class Attack {
     // Get range bracket -------------------------------------------------------
     const rangeBracket = weapon.data.data.ranges.getRangeBracket(
       range,
+      this.rangePickingTags,
       actor.data.data.specials
     );
     const isOutOfRange = RangeBracket.OUT_OF_RANGE === rangeBracket;
@@ -155,6 +156,7 @@ export default class Attack {
       weapon: {
         display: {
           ranges: this.weapon.data.data.ranges.getDisplayRanges(
+            this.rangePickingTags,
             actor.data.data.specials
           )
         },
@@ -231,6 +233,11 @@ export default class Attack {
     }
 
     return `${low} - ${high}`;
+  }
+
+  /** Get the range picking relevant tags for this attack. */
+  get rangePickingTags(): string[] {
+    return this.data.tags.filter(isRangePickingTag);
   }
 
   /**

@@ -27,20 +27,31 @@ export default class RangesProperties extends RangesSource {
   /**
    * Get the range bracket for the given distance in meters.
    * @param distance - the distance in meters to get the bracket for
+   * @param tags - potential range picking relevant tags
    * @param specials - the Specials of the actor to consult for Special ranges
    * @returns the range bracket
    */
   getRangeBracket(
     distance: number,
+    tags: string[],
     specials?: Partial<SpecialsProperties>
   ): RangeBracket {
-    if (distance <= this.short.distance.getEffectiveRangeDistance(specials))
+    if (
+      this.short.matches(tags) &&
+      distance <= this.short.distance.getEffectiveRangeDistance(specials)
+    )
       return RangeBracket.SHORT;
 
-    if (distance <= this.medium.distance.getEffectiveRangeDistance(specials))
+    if (
+      this.medium.matches(tags) &&
+      distance <= this.medium.distance.getEffectiveRangeDistance(specials)
+    )
       return RangeBracket.MEDIUM;
 
-    if (distance <= this.long.distance.getEffectiveRangeDistance(specials))
+    if (
+      this.long.matches(tags) &&
+      distance <= this.long.distance.getEffectiveRangeDistance(specials)
+    )
       return RangeBracket.LONG;
 
     return RangeBracket.OUT_OF_RANGE;
@@ -63,11 +74,15 @@ export default class RangesProperties extends RangesSource {
 
   /**
    * Get the ranges of the weapon as a displayable string.
+   * @param tags - potential range picking relevant tags
    * @param specials - the Specials of the actor, owning the weapon
    */
-  getDisplayRanges(specials?: Partial<SpecialsProperties>): string {
-    return [this.short.distance, this.medium.distance, this.long.distance]
-      .map((distance) => distance.getDisplayRangeDistance(specials))
+  getDisplayRanges(
+    tags: string[],
+    specials?: Partial<SpecialsProperties>
+  ): string {
+    return this.getMatching(tags)
+      .map((range) => range.distance.getDisplayRangeDistance(specials))
       .join("/");
   }
 }

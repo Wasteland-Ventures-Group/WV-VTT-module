@@ -28,7 +28,6 @@ import Apparel from "../../item/apparel.js";
 import Weapon from "../../item/weapon.js";
 import WvItem from "../../item/wvItem.js";
 import { WvItemProxy } from "../../item/wvItemProxy.js";
-import { getI18nRadiationSicknessLevel } from "../../radiation.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
 import WvI18n, { I18nRaceNames, I18nSpecial } from "../../wvI18n.js";
@@ -271,7 +270,6 @@ export default class WvActorSheet extends ActorSheet {
           stats: HANDLEBARS.partPaths.actor.stats,
           weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
         },
-        radiationSicknessLevel: getI18nRadiationSicknessLevel(this.actor),
         specials: SpecialNames.reduce((specials, specialName) => {
           const special = this.actor.data.data.specials[specialName];
           specials[specialName] = {
@@ -981,7 +979,6 @@ interface SheetData extends ActorSheet.Data {
       stats: string;
       weaponSlot: string;
     };
-    radiationSicknessLevel: string;
     skills: Record<SkillName, SheetSkill>;
     specials: Record<SpecialName, SheetSpecial>;
     systemGridUnit: string | undefined;

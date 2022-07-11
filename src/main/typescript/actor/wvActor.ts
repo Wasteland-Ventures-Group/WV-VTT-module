@@ -6,19 +6,17 @@ import {
   ApparelSlot,
   CONSTANTS,
   SkillName,
-  SpecialName,
-  SpecialNames
+  SpecialName
 } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
-import { CompositeNumber, CompositeResource } from "../data/common.js";
+import type { CompositeResource } from "../data/common.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Apparel from "../item/apparel.js";
 import Weapon from "../item/weapon.js";
 import WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
-import { applyRadiationSickness } from "../radiation.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
 import { ruleElementSort } from "../ruleEngine/ruleElement.js";
 import type {
@@ -53,12 +51,7 @@ export default class WvActor extends Actor {
 
   /** Get the amount of crippled legs of the character. */
   get crippledLegs(): number {
-    return [
-      this.data.data.vitals.crippledLimbs.legs.front.left,
-      this.data.data.vitals.crippledLimbs.legs.front.right,
-      this.data.data.vitals.crippledLimbs.legs.rear.left,
-      this.data.data.vitals.crippledLimbs.legs.rear.right
-    ].filter(Boolean).length;
+    return this.data.data.vitals.crippledLegs;
   }
 
   /** Get the ground movement range of the actor. */
@@ -449,31 +442,10 @@ export default class WvActor extends Actor {
 
   override prepareBaseData(): void {
     this.data.data = new CharacterDataPropertiesData(this.data.data);
-    const data = this.data.data;
 
-    // Compute the level -------------------------------------------------------
-    const level = Math.floor(
-      (1 + Math.sqrt(data.leveling.experience / 12.5 + 1)) / 2
+    this.data.data.specials.applyRadiationSickness(
+      this.data.data.vitals.radiationSicknessLevel
     );
-    data.leveling.level = level;
-
-    // Compute the XP needed for the next level --------------------------------
-    data.leveling.xpForNextLevel = 50 * (level + 1) * level;
-
-    // Compute the maximum skill points to spend -------------------------------
-    data.leveling.maxSkillPoints = data.leveling.levelIntelligences.reduce(
-      (skillPoints, intelligence) =>
-        skillPoints + Math.floor(intelligence / 2) + 10,
-      0
-    );
-
-    // Compute the SPECIALs ----------------------------------------------------
-    for (const special of SpecialNames) {
-      data.specials[special].points = data.leveling.specialPoints[special];
-    }
-
-    // Modify SPECIALS from Radiation sickness ---------------------------------
-    applyRadiationSickness(this);
   }
 
   override prepareEmbeddedDocuments(): void {
@@ -482,113 +454,29 @@ export default class WvActor extends Actor {
   }
 
   override prepareDerivedData(): void {
-    const data = this.data.data;
+    this.data.data.vitals.applySpecials(this.data.data.specials);
+    this.data.data.vitals.applyLevel(this.data.data.leveling.level);
 
-    // Compute the maximum hit points ------------------------------------------
-    data.vitals.hitPoints.source =
-      this.data.data.specials.endurance.permTotal + 10;
+    this.data.data.secondary.criticals.applyLuck(this.data.data.specials.luck);
+    this.data.data.secondary.applyStrength(this.data.data.specials.strength);
 
-    // Compute the maximum healing rate ----------------------------------------
-    data.vitals.healingRate.source = 1;
-    if (this.data.data.specials.endurance.tempTotal >= 8) {
-      data.vitals.healingRate.source = 3;
-    } else if (this.data.data.specials.endurance.tempTotal >= 4) {
-      data.vitals.healingRate.source = 2;
-    }
-
-    // Compute the maximum action points ---------------------------------------
-    data.vitals.actionPoints.source =
-      Math.floor(this.data.data.specials.agility.tempTotal / 2) + 10;
-
-    // Compute the maximum strain ----------------------------------------------
-    data.vitals.strain.source = 20 + Math.floor(data.leveling.level / 5) * 5;
-
-    // Compute the maximum insanity --------------------------------------------
-    data.vitals.insanity.source =
-      Math.floor(this.data.data.specials.intelligence.tempTotal / 2) + 5;
-
-    // Compute the critical values ---------------------------------------------
-    const luck = this.data.data.specials.luck.tempTotal;
-    data.secondary.criticals.success.source = Math.max(1, luck);
-    data.secondary.criticals.failure.source = Math.min(100, 90 + luck);
-
-    // Compute the maximum carry weight ----------------------------------------
-    data.secondary.maxCarryWeight.source =
-      this.data.data.specials.strength.tempTotal * 5 + 10;
-
-    // Compute the skills ------------------------------------------------------
-    let skill: SkillName;
-    for (skill in CONSTANTS.skillSpecials) {
-      data.skills[skill] = this.computeBaseSkill(skill);
-    }
-    data.skills["thaumaturgy"] = this.computeBaseSkill("thaumaturgy");
+    this.data.data.skills.setBaseValues(
+      this.data.data.specials,
+      this.data.data.magic.thaumSpecial,
+      this.data.data.leveling
+    );
 
     this.applyRuleElementsForHook("afterSkills");
 
-    // Calculate data derived from equipment -----------------------------------
-    this.equippedApparel.forEach((apparel) => {
-      if (apparel.data.data.damageThreshold)
-        data.equipment.damageThreshold.add({
-          value: apparel.data.data.damageThreshold.total,
-          labelComponents: [{ text: apparel.name ?? "" }]
-        });
+    this.data.data.equipment.applyEquippedApparel(this.equippedApparel);
 
-      if (apparel.data.data.quickSlots)
-        data.equipment.quickSlots.add({
-          value: apparel.data.data.quickSlots.total,
-          labelComponents: [{ text: apparel.name ?? "" }]
-        });
-    });
-
-    // Modify values based on the size -----------------------------------------
     // TODO: hit chance, combat trick mods
-    let maxCarryWeightSizeBonus = 0;
-    let hitPointsSizeBonus = 0;
-    switch (data.background.size.total) {
-      case 4:
-        hitPointsSizeBonus += 4;
-        maxCarryWeightSizeBonus = 60;
-        break;
-      case 3:
-        hitPointsSizeBonus += 2;
-        maxCarryWeightSizeBonus = 40;
-        break;
-      case 2:
-        hitPointsSizeBonus += 1;
-        maxCarryWeightSizeBonus = 10;
-        break;
-      case 1:
-        maxCarryWeightSizeBonus = 5;
-        break;
-      case -1:
-        maxCarryWeightSizeBonus = -5;
-        break;
-      case -2:
-        hitPointsSizeBonus -= 1;
-        maxCarryWeightSizeBonus = -10;
-        break;
-      case -3:
-        hitPointsSizeBonus -= 2;
-        maxCarryWeightSizeBonus = -40;
-        break;
-      case -4:
-        hitPointsSizeBonus -= 4;
-        maxCarryWeightSizeBonus = -60;
-        break;
-      case 0:
-      default:
-    }
-    if (maxCarryWeightSizeBonus)
-      data.secondary.maxCarryWeight.add({
-        value: maxCarryWeightSizeBonus,
-        labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
-      });
-
-    if (hitPointsSizeBonus)
-      data.vitals.hitPoints.add({
-        value: hitPointsSizeBonus,
-        labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
-      });
+    this.data.data.secondary.applySizeCategory(
+      this.data.data.background.size.total
+    );
+    this.data.data.vitals.applySizeCategory(
+      this.data.data.background.size.total
+    );
 
     this.applyRuleElementsForHook("afterComputation");
     this.items.forEach((item) => {
@@ -618,29 +506,6 @@ export default class WvActor extends Actor {
         inplace: false
       })
     );
-  }
-
-  /**
-   * Compute the initial Skill for the given skill name. This includes the
-   * SPECIAL derived starting value and the final value only increased by skill
-   * point ranks.
-   * @param skill - the name of the skill
-   */
-  protected computeBaseSkill(skill: SkillName): CompositeNumber {
-    const baseSkill =
-      this.data.data.specials[
-        skill === "thaumaturgy"
-          ? this.data.data.magic.thaumSpecial
-          : CONSTANTS.skillSpecials[skill]
-      ].permTotal *
-        2 +
-      Math.floor(this.data.data.specials.luck.permTotal / 2);
-    const composite = new CompositeNumber(baseSkill);
-    composite.add({
-      value: this.data.data.leveling.skillRanks[skill],
-      labelComponents: [{ key: "wv.rules.skills.points.short" }]
-    });
-    return composite;
   }
 
   /** Validate passed source system data. */

@@ -32,6 +32,15 @@ export const FlyingRaceNames = [
 export type WingedRaceName = typeof WingedRaceNames[number];
 export const WingedRaceNames = [...FlyingRaceNames] as const;
 
+export type RadiationSicknessLevel = typeof RadiationSicknessLevels[number];
+export const RadiationSicknessLevels = [
+  "none",
+  "minor",
+  "moderate",
+  "major",
+  "critical"
+] as const;
+
 export type SpecialName = typeof SpecialNames[number];
 export const SpecialNames = [
   "strength",

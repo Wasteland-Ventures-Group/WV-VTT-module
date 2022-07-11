@@ -8,6 +8,19 @@ import {
 import { CompositeNumber } from "../../../common.js";
 import BackgroundSource from "./source.js";
 
+export default class BackgroundProperties extends BackgroundSource {
+  constructor(source: BackgroundSource) {
+    super();
+    foundry.utils.mergeObject(this, source);
+    this.size = CompositeNumber.from(source.size);
+    this.race = new Race(source.raceName);
+  }
+
+  override size: CompositeNumber;
+
+  race: Race;
+}
+
 /** A race in the system */
 export class Race {
   constructor(
@@ -24,17 +37,4 @@ export class Race {
   get hasWings(): boolean {
     return WingedRaceNames.includes(this.name as WingedRaceName);
   }
-}
-
-export default class BackgroundProperties extends BackgroundSource {
-  constructor(source: BackgroundSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    this.size = CompositeNumber.from(source.size);
-    this.race = new Race(source.raceName);
-  }
-
-  override size: CompositeNumber;
-
-  race: Race;
 }

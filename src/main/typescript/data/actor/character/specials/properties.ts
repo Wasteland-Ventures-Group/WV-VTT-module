@@ -1,5 +1,8 @@
-import type { SpecialName } from "../../../../constants.js";
-import { ComponentSource, Component } from "../../../common.js";
+import type {
+  RadiationSicknessLevel,
+  SpecialName
+} from "../../../../constants.js";
+import { ComponentSource, Component, LabelComponent } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
 export default class SpecialsProperties
@@ -25,6 +28,35 @@ export default class SpecialsProperties
 
   /** The Luck SPECIAL of the character */
   luck = new Special();
+
+  /** Apply the given radiation sickness level and modify the temp SPECIALs. */
+  applyRadiationSickness(sicknessLevel: RadiationSicknessLevel) {
+    const labelComponents: LabelComponent[] = [
+      { key: "wv.rules.radiation.name" }
+    ];
+
+    switch (sicknessLevel) {
+      case "none":
+        return;
+      case "minor":
+        this.endurance.addTemp({ value: -1, labelComponents });
+        return;
+      case "moderate":
+        this.endurance.addTemp({ value: -2, labelComponents });
+        this.agility.addTemp({ value: -1, labelComponents });
+        return;
+      case "major":
+        this.endurance.addTemp({ value: -3, labelComponents });
+        this.agility.addTemp({ value: -2, labelComponents });
+        this.strength.addTemp({ value: -1, labelComponents });
+        return;
+      case "critical":
+        this.endurance.addTemp({ value: -3, labelComponents });
+        this.agility.addTemp({ value: -3, labelComponents });
+        this.strength.addTemp({ value: -2, labelComponents });
+        return;
+    }
+  }
 }
 
 /** The layout for a serialized Special. */

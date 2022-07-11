@@ -1,5 +1,11 @@
-import type { SkillName } from "../../../../constants.js";
+import {
+  CONSTANTS,
+  SkillName,
+  ThaumaturgySpecial
+} from "../../../../constants.js";
 import { CompositeNumber } from "../../../common.js";
+import type LevelingProperties from "../leveling/properties.js";
+import type SpecialsProperties from "../specials/properties.js";
 
 export default class SkillsProperties
   implements Record<SkillName, CompositeNumber>
@@ -51,4 +57,47 @@ export default class SkillsProperties
 
   /** The Unarmed skill of the character */
   unarmed = new CompositeNumber();
+
+  /** Set the base values and skill points for all skills. */
+  setBaseValues(
+    specials: SpecialsProperties,
+    thaumSpecial: ThaumaturgySpecial,
+    leveling: LevelingProperties
+  ) {
+    let skill: SkillName;
+    for (skill in CONSTANTS.skillSpecials) {
+      this[skill] = this.computeBaseSkill(
+        skill,
+        specials,
+        thaumSpecial,
+        leveling
+      );
+    }
+    this["thaumaturgy"] = this.computeBaseSkill(
+      "thaumaturgy",
+      specials,
+      thaumSpecial,
+      leveling
+    );
+  }
+
+  private computeBaseSkill(
+    skill: SkillName,
+    specials: SpecialsProperties,
+    thaumSpecial: ThaumaturgySpecial,
+    leveling: LevelingProperties
+  ): CompositeNumber {
+    const baseSkill =
+      specials[
+        skill === "thaumaturgy" ? thaumSpecial : CONSTANTS.skillSpecials[skill]
+      ].permTotal *
+        2 +
+      Math.floor(specials.luck.permTotal / 2);
+    const composite = new CompositeNumber(baseSkill);
+    composite.add({
+      value: leveling.skillRanks[skill],
+      labelComponents: [{ key: "wv.rules.skills.points.short" }]
+    });
+    return composite;
+  }
 }

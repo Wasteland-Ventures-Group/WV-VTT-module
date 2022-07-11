@@ -7,14 +7,24 @@ export default class LevelingProperties extends LevelingSource {
   }
 
   /** The current level of the character */
-  level = 0;
+  get level(): number {
+    return Math.floor((1 + Math.sqrt(this.experience / 12.5 + 1)) / 2);
+  }
 
   /** The maximum skill points of the character */
-  maxSkillPoints = 0;
+  get maxSkillPoints(): number {
+    return this.levelIntelligences.reduce(
+      (skillPoints, intelligence) =>
+        skillPoints + Math.floor(intelligence / 2) + 10,
+      0
+    );
+  }
 
   /**
    * The amount of experience needed for the character to advance to the next
    * level
    */
-  xpForNextLevel = 0;
+  get xpForNextLevel(): number {
+    return 50 * (this.level + 1) * this.level;
+  }
 }

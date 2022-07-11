@@ -1,7 +1,8 @@
 import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
+import type { WeaponAttackDragData } from "../dragData.js";
+import type { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Weapon from "../item/weapon.js";
-import * as attack from "../item/weapon/attack.js";
 import SystemDataSchemaError from "../systemDataSchemaError.js";
 
 /**
@@ -13,7 +14,7 @@ import SystemDataSchemaError from "../systemDataSchemaError.js";
  */
 export default async function assignWeaponAttackMacro(
   slot: number,
-  data: attack.WeaponAttackDragData
+  data: WeaponAttackDragData
 ): Promise<void> {
   const macro = await getOrCreateWeaponAttackMacro(data);
   getGame().user?.assignHotbarMacro(macro ?? null, slot);
@@ -26,7 +27,7 @@ export default async function assignWeaponAttackMacro(
  * @returns a Weapon Attack Macro
  */
 async function getOrCreateWeaponAttackMacro(
-  data: attack.WeaponAttackDragData
+  data: WeaponAttackDragData
 ): Promise<Macro | undefined> {
   const actor = data.actorId ? getGame().actors?.get(data.actorId) : null;
 
@@ -77,7 +78,7 @@ function createMacroName(
  * @param data - the Weapon Attack drag data
  * @returns the Macro command
  */
-function createMacroCommand(data: attack.WeaponAttackDragData): string {
+function createMacroCommand(data: WeaponAttackDragData): string {
   const args = [data.weaponId, data.attackName];
   if (data.actorId) args.push(data.actorId);
 
@@ -107,10 +108,10 @@ export function executeWeaponAttack(
   }
   if (!(weapon instanceof Weapon)) return;
 
-  const atk = weapon.data.data.attacks.attacks[attackName];
-  if (!(atk instanceof attack.default)) return;
+  const attack = weapon.data.data.attacks.attacks[attackName];
+  if (!attack) return;
 
-  atk.execute();
+  attack.execute();
 }
 
 /**
@@ -122,7 +123,7 @@ export function executeWeaponAttack(
 export async function executeWeaponAttackFromSource(
   data: ItemDataConstructorData,
   attackName: string,
-  options: attack.RollOptions = {}
+  options: RollOptions = {}
 ): Promise<void> {
   let weapon;
   try {
@@ -142,12 +143,17 @@ export async function executeWeaponAttackFromSource(
     });
     return;
   }
+  weapon.finalizeData();
+
   const attack = weapon.data.data.attacks.attacks[attackName];
-  if (attack) attack.execute(options);
-  else
+  if (!attack) {
     ui?.notifications?.error(
       getGame().i18n.format("wv.system.messages.attackNotFound", {
         name: attackName
       })
     );
+    return;
+  }
+
+  attack.execute(options);
 }

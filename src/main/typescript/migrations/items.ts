@@ -137,12 +137,18 @@ type OldRuleElementSource = Omit<
   selector: string;
 };
 
+const oldAttackPathRegExp = /^attacks\.attacks\..*data\./;
+
 function ruleElementsNeedMigration(ruleElements: RuleElementSource[]): boolean {
   if (ruleElements.length < 1) return false;
 
   return (
     isLastMigrationOlderThan("0.17.2") ||
-    ruleElements.some((rule) => isOldRuleElementPostComposedNumbers(rule))
+    ruleElements.some(
+      (rule) =>
+        isOldRuleElementPostComposedNumbers(rule) ||
+        isRuleElementWithOldAttackTargetPath(rule)
+    )
   );
 }
 
@@ -152,6 +158,12 @@ function isOldRuleElementPostComposedNumbers(
   return (
     "selector" in rule || !("conditions" in rule) || !("selectors" in rule)
   );
+}
+
+function isRuleElementWithOldAttackTargetPath(
+  rule: OldRuleElementSource | RuleElementSource
+): boolean {
+  return oldAttackPathRegExp.test(rule.target);
 }
 
 function migrateRuleElementPreComposedNumbers(
@@ -214,6 +226,7 @@ function migrateRuleElementPostComposedNumbers(
       rule.target === "actor" ? ["actor", "parent"] : ["item", "this"];
     target = rule.selector;
   }
+  if (oldAttackPathRegExp.test(target)) target = target.replace("data.", "");
 
   return {
     conditions:

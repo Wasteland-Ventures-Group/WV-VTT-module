@@ -181,3 +181,18 @@ export default class Formulator {
 }
 
 type RollType = "check" | "damage";
+
+/** Options for modifying rolls. */
+export interface RollOptions {
+  /**
+   * An ad-hoc modifier to roll with. When undefined, no modifier is applied.
+   * @defaultValue `undefined`
+   */
+  modifier?: number;
+
+  /**
+   * Whether to whisper the roll to GMs.
+   * @defaultValue `false`
+   */
+  whisperToGms?: boolean;
+}

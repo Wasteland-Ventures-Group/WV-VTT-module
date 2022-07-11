@@ -1,6 +1,8 @@
 import type { DefinedError } from "ajv";
+import type WvActor from "../../actor/wvActor.js";
 import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
+import type WvItem from "../../item/wvItem.js";
 import type { DocumentRelation } from "../../item/wvItem.js";
 import AdditionalPropMessage from "../../ruleEngine/messages/additionalPropMessage.js";
 import MissingPropMessage from "../../ruleEngine/messages/missingPropMessage.js";
@@ -318,8 +320,9 @@ export default class WvItemSheet extends ItemSheet {
     } else {
       messages = rule.messages;
       source = JSON.stringify(rule.source, null, 2);
-      documentMessages = Object.entries(rule.documentMessages).map(
-        ([id, value]) => this.mapToSheetDataDocumentMessages(id, value)
+      documentMessages = [...rule.documentMessages.entries()].map(
+        ([document, value]) =>
+          this.mapToSheetDataDocumentMessages(document, value)
       );
     }
 
@@ -331,8 +334,9 @@ export default class WvItemSheet extends ItemSheet {
       documentMessages,
       label: rule.label,
       messages,
-      selectedDocuments: Object.entries(rule.selectedDocuments).map(
-        ([id, value]) => this.mapToSheetDataSelectedDocument(id, value)
+      selectedDocuments: [...rule.selectedDocuments.entries()].map(
+        ([document, value]) =>
+          this.mapToSheetDataSelectedDocument(document, value)
       ),
       source
     };
@@ -343,13 +347,12 @@ export default class WvItemSheet extends ItemSheet {
    * SheetDataDocumentMessages.
    */
   private mapToSheetDataDocumentMessages(
-    docId: string,
+    document: WvActor | WvItem,
     value: re.DocumentMessagesValue
   ): SheetDataDocumentMessages {
     return {
-      docId,
-      docName:
-        this.item.getRelatedDoc(value.causeDocRelation, docId)?.name ?? "",
+      docId: document.id ?? "",
+      docName: document.name ?? "",
       messages: value.messages,
       docRelation: getGame().i18n.localize(
         `wv.system.ruleEngine.documentMessages.relations.${value.causeDocRelation}`
@@ -358,12 +361,12 @@ export default class WvItemSheet extends ItemSheet {
   }
 
   private mapToSheetDataSelectedDocument(
-    docId: string,
-    { name, relation }: { name: string; relation: DocumentRelation }
+    document: WvActor | WvItem,
+    { relation }: { relation: DocumentRelation }
   ): SheetDataSelectedDocument {
     return {
-      docId,
-      docName: name,
+      docId: document.id ?? "",
+      docName: document.name ?? "",
       docRelation: getGame().i18n.localize(
         `wv.system.ruleEngine.documentMessages.relations.${relation}`
       )

@@ -12,7 +12,7 @@ import {
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
 import { CompositeNumber, CompositeResource } from "../data/common.js";
-import Formulator from "../formulator.js";
+import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Apparel from "../item/apparel.js";
 import Weapon from "../item/weapon.js";
@@ -672,23 +672,6 @@ export default class WvActor extends Actor {
   ): void {
     rule.apply([this, ...this.items], options);
   }
-}
-
-/**
- * Options for modifying actor rolls.
- */
-interface RollOptions {
-  /**
-   * An ad-hoc modifier to roll with. When undefined, no modifier is applied.
-   * @defaultValue `undefined`
-   */
-  modifier?: number;
-
-  /**
-   * Whether to whisper the roll to GMs.
-   * @defaultValue `false`
-   */
-  whisperToGms?: boolean;
 }
 
 /** The type of the update data for WvActors. */

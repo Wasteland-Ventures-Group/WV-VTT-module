@@ -1,7 +1,6 @@
 import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
 import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
-import type WvActor from "../actor/wvActor.js";
 import {
   CONSTANTS,
   ProtoItemTypes,
@@ -98,21 +97,6 @@ export default class WvItem extends Item {
         .sort(ruleElementSort)
         .forEach((ruleElement) => ruleElement.apply([this]));
       this.apps && this.render();
-    }
-  }
-
-  /** Get the related Document from the given relation. */
-  getRelatedDoc(
-    relation: DocumentRelation,
-    id: string
-  ): WvActor | WvItem | null {
-    switch (relation) {
-      case "thisItem":
-        return this;
-      case "parentActor":
-        return this.actor;
-      case "parentOwnedItem":
-        return this.actor?.items.get(id) ?? null;
     }
   }
 

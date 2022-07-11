@@ -27,14 +27,10 @@ export default class Weapon extends WvItem {
       );
     }
 
-    Object.values(this.data.data.attacks.attacks).forEach((attack) => {
-      if (!this.actor) return;
+    if (this.data.data.tags.includes(TAGS.skillDamageBonus))
+      this.data.data.attacks.applySkillDamageDiceMod(this.actor, this);
 
-      attack.applyStrengthDamageDiceMod(this.actor);
-
-      if (this.data.data.tags.includes(TAGS.skillDamageBonus))
-        attack.applySkillDamageDiceMod(this.actor);
-    });
+    this.data.data.attacks.applyStrengthDamageDiceMod(this.actor);
 
     this.data.data.ranges.applySizeCategoryReachBonus(this.actor);
   }

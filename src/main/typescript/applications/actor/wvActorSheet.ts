@@ -26,7 +26,6 @@ import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
 import Apparel from "../../item/apparel.js";
 import Weapon from "../../item/weapon.js";
-import Attack from "../../item/weapon/attack.js";
 import WvItem from "../../item/wvItem.js";
 import { WvItemProxy } from "../../item/wvItemProxy.js";
 import { getI18nRadiationSicknessLevel } from "../../radiation.js";
@@ -580,8 +579,8 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attackKey = attackElement.dataset.weaponAttackName;
-    if (!attackKey) {
+    const attackName = attackElement.dataset.weaponAttackName;
+    if (!attackName) {
       LOG.warn("Could not get the attack name.");
       return;
     }
@@ -603,8 +602,8 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attack = weapon.data.data.attacks.attacks[attackKey];
-    if (!(attack instanceof Attack)) {
+    const attack = weapon.data.data.attacks.attacks[attackName];
+    if (!attack) {
       LOG.warn("Could not find the attack on the weapon.");
       return;
     }

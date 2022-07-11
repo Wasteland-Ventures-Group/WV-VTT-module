@@ -8,7 +8,6 @@ import {
 } from "../foundryHelpers.js";
 import type { DocumentRelation } from "../item/wvItem.js";
 import WvItem from "../item/wvItem.js";
-import { LOG } from "../systemLogger.js";
 import DocumentSelector, { createSelector } from "./documentSelector.js";
 import ChangedTypeMessage from "./messages/changedTypeMessage.js";
 import NotMatchingTargetMessage from "./messages/notMatchingTargetMessage.js";
@@ -73,22 +72,14 @@ export default class RuleElement {
    * Document IDs mapping to arrays of messages, specific to the respective
    * Document.
    */
-  documentMessages: Record<string, DocumentMessagesValue> = {};
-
-  /**
-   * Whether there was at least one considered ephemeral document that had
-   * errors.
-   */
-  hasEphemeralDocumentErrors = false;
+  documentMessages: Map<WvActor | WvItem, DocumentMessagesValue> = new Map();
 
   /** Get the filtering selectors of the RuleElement. */
   selectors: DocumentSelector[];
 
   /** Selected document IDs, mapping to their names */
-  selectedDocuments: Record<
-    string,
-    { name: string; relation: DocumentRelation }
-  > = {};
+  selectedDocuments: Map<WvActor | WvItem, { relation: DocumentRelation }> =
+    new Map();
 
   /** A potential RegExp match against the attacks target pattern */
   attackRegexpMatch: RegExpExecArray | null;
@@ -172,24 +163,24 @@ export default class RuleElement {
 
   /** Whether this RuleElement has selected documents */
   get hasSelectedDocuments(): boolean {
-    return !foundry.utils.isObjectEmpty(this.selectedDocuments);
+    return this.selectedDocuments.size > 0;
   }
 
   /** Whether this RuleElement has document messages */
   get hasDocumentMessages(): boolean {
-    return !foundry.utils.isObjectEmpty(this.documentMessages);
+    return this.documentMessages.size > 0;
   }
 
   /** Whether the RuleElement has document related errors */
   get hasDocumentErrors(): boolean {
-    return Object.values(this.documentMessages).some((value) =>
+    return [...this.documentMessages.values()].some((value) =>
       hasErrors(value.messages)
     );
   }
 
   /** Whether the RuleElement has document related warnings */
   get hasDocumentWarnings(): boolean {
-    return Object.values(this.documentMessages).some((value) =>
+    return [...this.documentMessages.values()].some((value) =>
       hasWarnings(value.messages)
     );
   }
@@ -307,23 +298,14 @@ export default class RuleElement {
     document: WvActor | WvItem,
     message: RuleElementMessage
   ): void {
-    if (document.id === null) {
-      if (message.isError()) this.hasEphemeralDocumentErrors = true;
-
-      LOG.warn(
-        "Can't add document messages for ephemeral documents.",
-        document
-      );
-      return;
-    }
-
-    const value = this.documentMessages[document.id];
-    if (value === undefined)
-      this.documentMessages[document.id] = {
+    if (this.documentMessages.has(document)) {
+      this.documentMessages.get(document)?.messages.push(message);
+    } else {
+      this.documentMessages.set(document, {
         causeDocRelation: this.getDocRelation(document),
         messages: [message]
-      };
-    else value.messages.push(message);
+      });
+    }
   }
 
   /**
@@ -464,15 +446,9 @@ export default class RuleElement {
 
   /** Add the document to the tracked list of selected documents. */
   private addSelectedDocument(document: WvActor | WvItem) {
-    if (document.id === null) {
-      LOG.warn("Can't track selection of ephemeral documents.");
-      return;
-    }
-
-    this.selectedDocuments[document.id] = {
-      name: document.name ?? "",
+    this.selectedDocuments.set(document, {
       relation: this.getDocRelation(document)
-    };
+    });
   }
 
   /**
@@ -481,13 +457,7 @@ export default class RuleElement {
    * general.
    */
   private shouldApplyTo(document: WvActor | WvItem): boolean {
-    if (document.id === null && this.hasEphemeralDocumentErrors) return false;
-
-    return !hasErrors(
-      document.id === null
-        ? []
-        : this.documentMessages[document.id]?.messages ?? []
-    );
+    return !hasErrors(this.documentMessages.get(document)?.messages ?? []);
   }
 }
 

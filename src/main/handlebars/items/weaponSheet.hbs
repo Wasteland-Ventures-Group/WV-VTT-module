@@ -26,12 +26,12 @@
               <th scope="row" class="align-left">
                 <button class="min-width no-wrap" type="button" title="{{localize 'wv.system.rolls.modifierExplanation'}}" data-weapon-attack-name="{{@key}}">{{@key}}</button>
               </th>
-              <td class="align-left">{{attack.damageFormula}} = {{attack.damageRange}}</td>
-              <td class="align-right">{{attack.data.dtReduction.total}}</td>
-              <td class="align-right">{{attack.data.ap.total}}</td>
-              <td class="align-right">{{attack.data.rounds.total}}</td>
+              <td class="align-left">{{attack.damage.damageFormula}} = {{attack.damage.damageRange}}</td>
+              <td class="align-right">{{attack.dtReduction.total}}</td>
+              <td class="align-right">{{attack.ap.total}}</td>
+              <td class="align-right">{{attack.rounds.total}}</td>
               <td class="align-left tags">
-                {{~#each attack.data.tags as |tag|~}}
+                {{~#each attack.tags as |tag|~}}
                   <span class="fas fa-tag tag">{{tag}}</span>
                 {{~/each~}}
               </td>
@@ -232,26 +232,26 @@
                 <input type="text" name="sheet.attacks.name.{{@key}}" value="{{@key}}" />
               </th>
               <td class="align-left">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.base.source" value="{{attack.data.damage.base.source}}" min="0" title="{{localize 'wv.rules.damage.baseDamage'}}" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.base.source" value="{{attack.damage.base.source}}" min="0" title="{{localize 'wv.rules.damage.baseDamage'}}" />
                 <span>+</span>
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.dice.source" value="{{attack.data.damage.dice.source}}" min="0" title="{{localize 'wv.rules.damage.damageDice'}}" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.damage.dice.source" value="{{attack.damage.dice.source}}" min="0" title="{{localize 'wv.rules.damage.damageDice'}}" />
                 <span>d6</span>
-                <input type="checkbox" name="data.attacks.sources.{{@key}}.damage.diceRange" {{checked attack.data.damage.diceRange}} title="{{localize 'wv.rules.damage.diceRange'}}" />
+                <input type="checkbox" name="data.attacks.sources.{{@key}}.damage.diceRange" {{checked attack.damage.diceRange}} title="{{localize 'wv.rules.damage.diceRange'}}" />
                 <select name="data.attacks.sources.{{@key}}.damage.damageFallOff" title="{{localize 'wv.rules.damage.fallOff.name'}}">
-                  {{~selectOptions ../sheet.damageFallOffTypes selected=attack.data.damage.damageFallOff~}}
+                  {{~selectOptions ../sheet.damageFallOffTypes selected=attack.damage.damageFallOff~}}
                 </select>
               </td>
               <td class="align-left">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.dtReduction.source" value="{{attack.data.dtReduction.source}}" min="0" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.dtReduction.source" value="{{attack.dtReduction.source}}" min="0" />
               </td>
               <td class="align-left">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.rounds.source" value="{{attack.data.rounds.source}}" min="0" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.rounds.source" value="{{attack.rounds.source}}" min="0" />
               </td>
               <td class="align-left">
-                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.ap.source" value="{{attack.data.ap.source}}" min="0" />
+                <input type="number" class="size-2" name="data.attacks.sources.{{@key}}.ap.source" value="{{attack.ap.source}}" min="0" />
               </td>
               <td class="align-left">
-                <input type="text" name="data.attacks.sources.{{@key}}.tags" value="{{attack.data.tags}}" />
+                <input type="text" name="data.attacks.sources.{{@key}}.tags" value="{{attack.tags}}" />
               </td>
               <td class="align-right">
                 <button type="button" class="control small weapon-attack-control fas fa-minus" data-action="delete" data-attack="{{@key}}" title="{{localize 'wv.system.actions.delete'}}"></button>

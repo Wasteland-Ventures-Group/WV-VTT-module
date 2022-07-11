@@ -25,12 +25,12 @@
                 {{@key}}
               {{~/if~}}
             </th>
-            <td class="align-right no-wrap">{{attack.damageFormula}} = {{attack.damageRange}}</td>
-            <td class="align-right">{{attack.data.dtReduction.total}}</td>
-            <td class="align-right">{{attack.data.ap.total}}</td>
-            <td class="align-right">{{attack.data.rounds.total}}</td>
+            <td class="align-right no-wrap">{{attack.damage.damageFormula}} = {{attack.damage.damageRange}}</td>
+            <td class="align-right">{{attack.dtReduction.total}}</td>
+            <td class="align-right">{{attack.ap.total}}</td>
+            <td class="align-right">{{attack.rounds.total}}</td>
             <td class="align-left tags">
-              {{~#each attack.data.tags as |tag|~}}
+              {{~#each attack.tags as |tag|~}}
                 <span class="fas fa-tag tag">{{tag}}</span>
               {{~/each~}}
             </td>

@@ -3,10 +3,9 @@ import {
   AttackSource,
   ATTACK_JSON_SCHEMA
 } from "../../data/item/weapon/attack/source.js";
+import type { WeaponAttackDragData } from "../../dragData.js";
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../../item/weapon.js";
-import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
-import Attack from "../../item/weapon/attack.js";
 import { isOfItemType } from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, {
@@ -196,14 +195,14 @@ export default class WeaponSheet extends WvItemSheet {
       return;
     }
 
-    const attackKey = attackElement.dataset.weaponAttackName;
-    if (!attackKey) {
+    const attackName = attackElement.dataset.weaponAttackName;
+    if (!attackName) {
       LOG.warn("Could not get the attack name.");
       return;
     }
 
-    const attack = this.item.data.data.attacks.attacks[attackKey];
-    if (!(attack instanceof Attack)) {
+    const attack = this.item.data.data.attacks.attacks[attackName];
+    if (!attack) {
       LOG.warn("Could not find the attack on the weapon.");
       return;
     }
@@ -247,7 +246,7 @@ export default class WeaponSheet extends WvItemSheet {
     if (!attackName) return;
 
     const attack = this.item.data.data.attacks.attacks[attackName];
-    if (attack === undefined) {
+    if (!attack) {
       ui?.notifications?.error(
         getGame().i18n.format("wv.system.messages.attackNotFound", {
           name: attackName

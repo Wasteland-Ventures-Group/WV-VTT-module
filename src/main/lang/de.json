@@ -209,6 +209,7 @@
         "health": "Gesundheit",
         "healingRate": "Heilungsrate"
       },
+      "initiative": "Initiative",
       "insanity": "Wahnsinn",
       "karma": "Karma",
       "leveling": {

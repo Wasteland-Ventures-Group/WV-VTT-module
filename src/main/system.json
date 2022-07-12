@@ -56,7 +56,7 @@
     }
   ],
   "socket": false,
-  "initiative": "1d10 + (@specials.perception.tempTotal)",
+  "initiative": "1d10 + @secondary.initiative.total",
   "primaryTokenAttribute": "vitals.hitPoints",
   "secondaryTokenAttribute": "vitals.actionPoints",
   "gridDistance": 2,

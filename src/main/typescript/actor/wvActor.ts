@@ -457,8 +457,7 @@ export default class WvActor extends Actor {
     this.data.data.vitals.applySpecials(this.data.data.specials);
     this.data.data.vitals.applyLevel(this.data.data.leveling.level);
 
-    this.data.data.secondary.criticals.applyLuck(this.data.data.specials.luck);
-    this.data.data.secondary.applyStrength(this.data.data.specials.strength);
+    this.data.data.secondary.applySpecials(this.data.data.specials);
 
     this.data.data.skills.setBaseValues(
       this.data.data.specials,

@@ -220,6 +220,8 @@ export interface LangSchema {
         /** The label for the healing rate */
         healingRate: string;
       };
+      /** Label for the initiative */
+      initiative: string;
       /** Label for the insanity field */
       insanity: string;
       /** Label for the karma field */

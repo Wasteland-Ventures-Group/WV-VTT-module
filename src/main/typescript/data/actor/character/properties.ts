@@ -39,12 +39,17 @@ export class SecondaryStatisticsProperties {
   /** The criticals of the character */
   criticals = new CriticalsProperties();
 
+  /** The fixed part of the initiative formula. */
+  initiative = new CompositeNumber();
+
   /** The maximum carry weight of the character in kg */
   maxCarryWeight = new CompositeNumber();
 
   /** Apply Strength and set the base value for carry weight. */
-  applyStrength(strength: Special) {
-    this.maxCarryWeight.source = strength.tempTotal * 5 + 10;
+  applySpecials(specials: SpecialsProperties) {
+    this.criticals.applyLuck(specials.luck);
+    this.initiative.source = specials.perception.tempTotal;
+    this.maxCarryWeight.source = specials.strength.tempTotal * 5 + 10;
   }
 
   /** Apply the size category to the max carry weight. */

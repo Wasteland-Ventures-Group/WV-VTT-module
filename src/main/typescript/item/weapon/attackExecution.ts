@@ -67,7 +67,7 @@ export default class AttackExecution {
       executionActor = clonedActor;
 
       const weaponId = executionActor.data.update({
-        items: [executionWeapon.toObject(true)]
+        items: [executionWeapon.toObject()]
       }).items?.[0]?._id;
       if (!weaponId) throw new Error("Could not embed the weapon.");
 

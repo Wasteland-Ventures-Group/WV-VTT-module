@@ -524,8 +524,8 @@ export interface LangSchema {
         descriptive: string;
         /** A capitalized, imperative verb for rolling dice */
         imperative: string;
-        /** An explanation for modifier keys used for roll buttons */
-        modifierExplanation: string;
+        /** A description for whispering to GMs */
+        whisperToGms: string;
       };
       /** Labels related to the Rule Engine */
       ruleEngine: {

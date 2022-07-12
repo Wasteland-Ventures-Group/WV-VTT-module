@@ -10,6 +10,31 @@ export default function registerPromptTests(
 ): void {
   const { describe, before, it, expect } = context;
 
+  describe("When prompting for a boolean", function () {
+    let result: boolean;
+
+    before(async function () {
+      result = await new Promise((resolve, reject) => {
+        new Prompt(
+          { bool: { label: "", type: "checkbox" } },
+          (data) => resolve(data["bool"]),
+          reject
+        )
+          // @ts-expect-error We need to use this to use Promises.
+          ._render(true)
+          .then(() => setAndSubmit({ bool: true }));
+      });
+    });
+
+    it("returns a boolean.", async function () {
+      expect(result).to.be.a("boolean");
+    });
+
+    it("returns the correct boolean.", function () {
+      expect(result).to.be.eq(true);
+    });
+  });
+
   describe("When prompting for a number", function () {
     let result: number;
 
@@ -96,7 +121,7 @@ export default function registerPromptTests(
  * in the app.
  * @param values - form names pointing to values to set
  */
-function setAndSubmit(values: Record<string, string>) {
+function setAndSubmit(values: Record<string, string | boolean>) {
   const prompt = document.querySelector(promptSelector);
   if (!(prompt instanceof HTMLFormElement))
     throw "The prompt was not an HTMLFormElement.";
@@ -105,7 +130,8 @@ function setAndSubmit(values: Record<string, string>) {
     const input = prompt.querySelector(`input[name=${name}]`);
     if (!(input instanceof HTMLInputElement))
       throw "The input was not an HTMLInputElement.";
-    input.value = value;
+    if (typeof value === "string") input.value = value;
+    if (typeof value === "boolean") input.checked = value;
   });
 
   const button = prompt.querySelector("button");

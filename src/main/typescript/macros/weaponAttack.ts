@@ -1,6 +1,5 @@
 import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
 import type { WeaponAttackDragData } from "../dragData.js";
-import type { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Weapon from "../item/weapon.js";
 import SystemDataSchemaError from "../systemDataSchemaError.js";
@@ -118,12 +117,10 @@ export function executeWeaponAttack(
  * Execute a Weapon Attack from the provided Weapon source.
  * @param data - the source data of the weapon
  * @param attackName - the name of the weapon attack in the source data
- * @param options - additional roll options
  */
 export async function executeWeaponAttackFromSource(
   data: ItemDataConstructorData,
-  attackName: string,
-  options: RollOptions = {}
+  attackName: string
 ): Promise<void> {
   let weapon;
   try {
@@ -155,5 +152,5 @@ export async function executeWeaponAttackFromSource(
     return;
   }
 
-  attack.execute(options);
+  attack.execute();
 }

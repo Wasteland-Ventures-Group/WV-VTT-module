@@ -439,7 +439,7 @@
       "rolls": {
         "descriptive": "Rolling {what}",
         "imperative": "Roll",
-        "modifierExplanation": "Ctrl-Click to whisper to game masters"
+        "whisperToGms": "Whisper to game masters?"
       },
       "ruleEngine": {
         "documentMessages": {

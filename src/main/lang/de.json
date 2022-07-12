@@ -439,7 +439,7 @@
       "rolls": {
         "descriptive": "Rolle {what}",
         "imperative": "Rolle",
-        "modifierExplanation": "Strg-Klick um an Spielleiter zu Flüstern"
+        "whisperToGms": "An Spielleiter flüstern?"
       },
       "ruleEngine": {
         "documentMessages": {

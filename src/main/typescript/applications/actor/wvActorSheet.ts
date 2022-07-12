@@ -100,56 +100,44 @@ export default class WvActorSheet extends ActorSheet {
 
     // stat rolls
     sheetForm.querySelectorAll("button[data-special]").forEach((element) => {
-      element.addEventListener("click", (event) => {
-        if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen.");
-        this.onClickRollSpecial(event);
-      });
+      element.addEventListener("click", (event) =>
+        this.onClickRollSpecial(event)
+      );
     });
     sheetForm.querySelectorAll("button[data-skill]").forEach((element) => {
-      element.addEventListener("click", (event) => {
-        if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen.");
-        this.onClickRollSkill(event);
-      });
+      element.addEventListener("click", (event) =>
+        this.onClickRollSkill(event)
+      );
     });
 
     // item handling
     sheetForm
       .querySelectorAll("button[data-action=create]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickCreateItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickCreateItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-action=edit]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickEditItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickEditItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-action=delete]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickDeleteItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickDeleteItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-weapon-attack-name]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickAttackExecute(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickAttackExecute(event)
+        );
       });
     sheetForm
       .querySelectorAll("input[data-action=edit-amount]")
@@ -503,7 +491,7 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   /** Handle a click event on the SPECIAL roll buttons. */
-  protected async onClickRollSpecial(event: MouseEvent): Promise<void> {
+  protected async onClickRollSpecial(event: Event): Promise<void> {
     event.preventDefault();
 
     if (!(event.target instanceof HTMLElement))
@@ -515,23 +503,31 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    if (event.shiftKey) {
-      const modifier = await Prompt.getNumber({
-        label: WvI18n.getSpecialModifierDescription(special),
-        min: -100,
-        max: 100
-      });
-      this.actor.rollSpecial(special, {
-        modifier: modifier,
-        whisperToGms: event.ctrlKey
-      });
-    } else {
-      this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
+    try {
+      this.actor.rollSpecial(
+        special,
+        await Prompt.get({
+          modifier: {
+            type: "number",
+            label: WvI18n.getSpecialModifierDescription(special),
+            value: 0,
+            min: -100,
+            max: 100
+          },
+          whisperToGms: {
+            type: "checkbox",
+            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
+            value: getGame().user?.isGM
+          }
+        })
+      );
+    } catch (e) {
+      if (e !== "closed") throw e;
     }
   }
 
   /** Handle a click event on the Skill roll buttons. */
-  protected async onClickRollSkill(event: MouseEvent): Promise<void> {
+  protected async onClickRollSkill(event: Event): Promise<void> {
     event.preventDefault();
 
     if (!(event.target instanceof HTMLElement))
@@ -543,23 +539,31 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    if (event.shiftKey) {
-      const modifier = await Prompt.getNumber({
-        label: WvI18n.getSkillModifierDescription(skill),
-        min: -100,
-        max: 100
-      });
-      this.actor.rollSkill(skill, {
-        modifier: modifier,
-        whisperToGms: event.ctrlKey
-      });
-    } else {
-      this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
+    try {
+      this.actor.rollSkill(
+        skill,
+        await Prompt.get({
+          modifier: {
+            type: "number",
+            label: WvI18n.getSkillModifierDescription(skill),
+            value: 0,
+            min: -100,
+            max: 100
+          },
+          whisperToGms: {
+            type: "checkbox",
+            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
+            value: getGame().user?.isGM
+          }
+        })
+      );
+    } catch (e) {
+      if (e !== "closed") throw e;
     }
   }
 
   /** Handle a click event on an Attack execute button. */
-  protected async onClickAttackExecute(event: MouseEvent): Promise<void> {
+  protected async onClickAttackExecute(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement)) {
       LOG.warn("The target was not an HTMLElement.");
       return;
@@ -606,11 +610,11 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    attack.execute({ whisperToGms: event.ctrlKey });
+    attack.execute();
   }
 
   /** Handle a click event on a create item button. */
-  protected async onClickCreateItem(event: MouseEvent): Promise<void> {
+  protected async onClickCreateItem(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
@@ -636,7 +640,7 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   /** Handle a click event on an edit item button. */
-  protected onClickEditItem(event: MouseEvent): void {
+  protected onClickEditItem(event: Event): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
@@ -654,7 +658,7 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   /** Handle a click event on a delete item button. */
-  protected onClickDeleteItem(event: MouseEvent): void {
+  protected onClickDeleteItem(event: Event): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 

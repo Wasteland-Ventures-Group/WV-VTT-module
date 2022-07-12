@@ -59,6 +59,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - equipped items can now be edited directly from the equipment page
 - modifiable initiative
   ([#383](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/383))
+- make SPECIAL and skill rolls always ask for a modifier and add a checkbox to
+  prompts to whisper to GMs
+  ([#388](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/388))
 
 ### Changed
 

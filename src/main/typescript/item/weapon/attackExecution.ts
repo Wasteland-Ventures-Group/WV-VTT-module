@@ -1,13 +1,14 @@
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
 import Prompt, {
+  CheckboxInputSpec,
   NumberInputSpec,
   TextInputSpec
 } from "../../applications/prompt.js";
 import { CONSTANTS, RangeBracket } from "../../constants.js";
 import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
-import Formulator, { RollOptions } from "../../formulator.js";
+import Formulator from "../../formulator.js";
 import { getGame } from "../../foundryHelpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
@@ -23,24 +24,19 @@ export default class AttackExecution {
    * @param name - the identifier name of the attack
    * @param attackProperties - the attack properties
    * @param weapon - the Weapon the attack belongs to
-   * @param rollOptions - options for the roll
    */
   static async execute(
     name: string,
     attackProperties: AttackProperties,
-    weapon: Weapon,
-    rollOptions: RollOptions = {}
+    weapon: Weapon
   ): Promise<void> {
-    await (
-      await AttackExecution.new(name, attackProperties, weapon, rollOptions)
-    ).execute();
+    await (await AttackExecution.new(name, attackProperties, weapon)).execute();
   }
 
   static async new(
     name: string,
     attackProperties: AttackProperties,
-    weapon: Weapon,
-    rollOptions: RollOptions = {}
+    weapon: Weapon
   ): Promise<AttackExecution> {
     let token = interact.getFirstControlledToken();
 
@@ -93,8 +89,7 @@ export default class AttackExecution {
       executionAttackProperties,
       executionWeapon,
       token,
-      interact.getFirstTarget(),
-      rollOptions
+      interact.getFirstTarget()
     );
   }
 
@@ -103,15 +98,13 @@ export default class AttackExecution {
    * @param name - the identifier name of the attack
    * @param attackProperties - the attack properties
    * @param weapon - the Weapon the attack belongs to (this and its actor should already be finalized)
-   * @param rollOptions - options for the roll
    */
   constructor(
     public name: string,
     public attackProperties: AttackProperties,
     public weapon: Weapon,
     public token: Token | undefined,
-    public target: Token | undefined,
-    public rollOptions: RollOptions = {}
+    public target: Token | undefined
   ) {
     const actor = this.weapon.actor;
     if (!actor)
@@ -137,7 +130,7 @@ export default class AttackExecution {
       if (e === "closed") return;
       else throw e;
     }
-    const { alias, modifier, range } = externalData;
+    const { alias, modifier, range, whisperToGms } = externalData;
 
     // Create common chat message data -----------------------------------------
     const commonData: ChatMessageDataConstructorData =
@@ -148,7 +141,7 @@ export default class AttackExecution {
           token: this.token?.id ?? null,
           alias
         },
-        this.rollOptions
+        whisperToGms
       );
 
     // Get range bracket -------------------------------------------------------
@@ -291,6 +284,11 @@ export default class AttackExecution {
           value: interact.getDistance(token, target) ?? 0,
           min: 0,
           max: 99999
+        },
+        whisperToGms: {
+          type: "checkbox",
+          label: i18n.localize("wv.system.rolls.whisperToGms"),
+          value: getGame().user?.isGM
         }
       },
       { title: `${this.weapon.data.name} - ${this.name}` }
@@ -339,13 +337,11 @@ export default class AttackExecution {
   /** Create the default message data for weapon attack messages. */
   private createDefaultMessageData(
     speaker: foundry.data.ChatMessageData["speaker"]["_source"],
-    options?: RollOptions
+    whisperToGms: boolean
   ): ChatMessageDataConstructorData {
     return {
       speaker,
-      whisper: options?.whisperToGms
-        ? ChatMessage.getWhisperRecipients("gm")
-        : null
+      whisper: whisperToGms ? ChatMessage.getWhisperRecipients("gm") : null
     };
   }
 
@@ -431,6 +427,7 @@ type PromptSpec = {
   alias: TextInputSpec;
   modifier: NumberInputSpec;
   range: NumberInputSpec;
+  whisperToGms: CheckboxInputSpec;
 };
 
 /** Data external to the attack */
@@ -443,4 +440,7 @@ interface ExternalData {
 
   /** The range to the target in meters */
   range: number;
+
+  /** Whether to whisper to GMs */
+  whisperToGms: boolean;
 }

@@ -7,7 +7,6 @@ import {
   isRangePickingTag,
   RangeBracket
 } from "../../../../constants.js";
-import type { RollOptions } from "../../../../formulator.js";
 import AttackExecution from "../../../../item/weapon/attackExecution.js";
 
 export default class AttacksProperties extends AttacksSource {
@@ -92,8 +91,8 @@ export class AttackProperties extends AttackSource {
     return !tags.some((tag) => !this.tags.includes(tag));
   }
 
-  async execute(rollOptions: RollOptions = {}): Promise<void> {
-    await AttackExecution.execute(this.#name, this, this.#weapon, rollOptions);
+  async execute(): Promise<void> {
+    await AttackExecution.execute(this.#name, this, this.#weapon);
   }
 }
 

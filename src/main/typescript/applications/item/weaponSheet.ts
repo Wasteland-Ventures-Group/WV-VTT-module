@@ -84,11 +84,9 @@ export default class WeaponSheet extends WvItemSheet {
     sheetForm
       .querySelectorAll("button[data-weapon-attack-name]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickAttackExecute(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickAttackExecute(event)
+        );
       });
 
     sheetForm
@@ -103,11 +101,9 @@ export default class WeaponSheet extends WvItemSheet {
     sheetForm
       .querySelectorAll(".weapon-attack-control[data-action=delete]")
       .forEach((element) =>
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickDeleteWeaponAttack(event);
-        })
+        element.addEventListener("click", (event) =>
+          this.onClickDeleteWeaponAttack(event)
+        )
       );
 
     if (this.item.hasEnabledCompendiumLink)
@@ -183,7 +179,7 @@ export default class WeaponSheet extends WvItemSheet {
   }
 
   /** Handle a click event on an Attack execute button. */
-  protected async onClickAttackExecute(event: MouseEvent): Promise<void> {
+  protected async onClickAttackExecute(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement)) {
       LOG.warn("The target was not an HTMLElement.");
       return;
@@ -207,14 +203,20 @@ export default class WeaponSheet extends WvItemSheet {
       return;
     }
 
-    attack.execute({ whisperToGms: event.ctrlKey });
+    attack.execute();
   }
 
   /** Handle a click click event on a create weapon attack button. */
   protected async onClickCreateWeaponAttack(): Promise<void> {
-    const newName = await Prompt.getString({
-      label: getGame().i18n.localize("wv.system.misc.name")
-    });
+    let newName: string;
+    try {
+      newName = await Prompt.getString({
+        label: getGame().i18n.localize("wv.system.misc.name")
+      });
+    } catch (e) {
+      if (e === "closed") return;
+      else throw e;
+    }
 
     if (this.item.data.data.attacks.sources[newName]) {
       ui?.notifications?.error(
@@ -238,7 +240,7 @@ export default class WeaponSheet extends WvItemSheet {
   }
 
   /** Handle a click click event on a delete weapon attack button. */
-  protected onClickDeleteWeaponAttack(event: MouseEvent): void {
+  protected onClickDeleteWeaponAttack(event: Event): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 

@@ -2,22 +2,16 @@
 
 .wasteland-ventures.document-sheet.item-sheet
 
-  .sheet-header
+  .document-info
+    margin-bottom: constants.$spacing-distance
 
-    .document-img
-      max-height: 100px
+    .general-info
 
-    .document-info
+      > :not(:last-child)
+        margin-right: constants.$spacing-distance * 5
 
-      .header-fields
-
-        .general-info
-
-          > :not(:last-child)
-            margin-right: constants.$spacing-distance * 5
-
-        .proto-name
-          margin-bottom: 0
+    .proto-name
+      margin-bottom: 0
 
   .general-info
     align-items: baseline

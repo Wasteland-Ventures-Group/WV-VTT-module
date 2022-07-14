@@ -83,12 +83,13 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
   }
 
   static override get defaultOptions(): ApplicationOptions {
-    return {
-      ...super.defaultOptions,
-      classes: [CONSTANTS.systemId, "prompt"],
-      template: `${CONSTANTS.systemPath}/handlebars/prompt.hbs`,
-      title: getGame().i18n.localize("wv.system.prompt.defaults.title")
-    };
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes.push(...[CONSTANTS.systemId, "prompt"]);
+    defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/prompt.hbs`;
+    defaultOptions.title = getGame().i18n.localize(
+      "wv.system.prompt.defaults.title"
+    );
+    return defaultOptions;
   }
 
   /**

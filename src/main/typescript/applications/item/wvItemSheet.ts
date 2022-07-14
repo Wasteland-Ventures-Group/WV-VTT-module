@@ -19,14 +19,16 @@ import WvI18n from "../../wvI18n.js";
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"],
-      height: 410,
-      tabs: [
-        { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
-      ],
-      width: 600
-    } as typeof ItemSheet["defaultOptions"]);
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes.push(
+      ...[CONSTANTS.systemId, "document-sheet", "item-sheet"]
+    );
+    defaultOptions.height = 410;
+    defaultOptions.tabs = [
+      { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
+    ];
+    defaultOptions.width = 600;
+    return defaultOptions;
   }
 
   /**

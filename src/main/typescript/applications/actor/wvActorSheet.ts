@@ -41,11 +41,9 @@ import Prompt from "../prompt.js";
 export default class WvActorSheet extends ActorSheet {
   static override get defaultOptions(): ActorSheet.Options {
     const defaultOptions = super.defaultOptions;
-    defaultOptions.classes = [
-      CONSTANTS.systemId,
-      "document-sheet",
-      "actor-sheet"
-    ];
+    defaultOptions.classes.push(
+      ...[CONSTANTS.systemId, "document-sheet", "actor-sheet"]
+    );
     defaultOptions.dragDrop = [
       { dragSelector: "button[data-special]" },
       { dragSelector: "button[data-skill]" },

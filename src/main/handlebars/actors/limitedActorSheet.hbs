@@ -1,21 +1,19 @@
 <form class="{{cssClass}} limited" autocomplete="off">
   <img class="document-img" src="{{actor.img}}" title="{{actor.name}}" />
-  <div class="document-info">
-    <h1 class="document-name">{{actor.name}}</h1>
-    <section class="flexrow">
-      <p>{{localize "wv.rules.race.singular"}}: {{sheet.background.raceName}}</p>
-      <p>{{localize "wv.rules.background.gender"}}: {{data.data.background.gender}}</p>
-      <p>{{localize "wv.rules.background.age"}}: {{data.data.background.age}}</p>
+  <h1>{{actor.name}}</h1>
+  <section class="flexrow">
+    <p>{{localize "wv.rules.race.singular"}}: {{sheet.background.raceName}}</p>
+    <p>{{localize "wv.rules.background.gender"}}: {{data.data.background.gender}}</p>
+    <p>{{localize "wv.rules.background.age"}}: {{data.data.background.age}}</p>
+  </section>
+  <section>
+    <section>
+      <h2>{{localize "wv.rules.background.appearance"}}</h2>
+      {{{enrichHTML data.data.background.appearance}}}
     </section>
     <section>
-      <section>
-        <h2>{{localize "wv.rules.background.appearance"}}</h2>
-        {{{enrichHTML data.data.background.appearance}}}
-      </section>
-      <section>
-        <h2>{{localize "wv.rules.background.cutieMark"}}</h2>
-        {{{enrichHTML data.data.background.cutieMark}}}
-      </section>
+      <h2>{{localize "wv.rules.background.cutieMark"}}</h2>
+      {{{enrichHTML data.data.background.cutieMark}}}
     </section>
-  </div>
+  </section>
 </form>

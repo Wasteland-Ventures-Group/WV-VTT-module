@@ -84,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ammo and apparel compendiums not being validated against their schemas
 - NumberComponents no longer both show a "property does not exist" and "property
   is not a CompositeNumber" error
+- fixed actor and item sheet not using base CSS classes and refactored headers
 
 ## [0.18.0] - 2022-05-29
 

@@ -1,9 +1,12 @@
+{{! this is pretty much using the foundry baked-in layout and styling }}
 <header class="sheet-header flex-fixed">
   <img src="{{data.img}}" data-edit="img" title="{{data.name}}" />
   <h1><input name="name" type="text" value="{{data.name}}" placeholder="{{localize 'wv.system.misc.name'}}" /></h1>
 </header>
-<div class="document-info flex-fixed">
-  <div class="general-info flexrow spacing-bottom">
+
+{{! our own stuff starts here }}
+<div class="document-info flex-fixed flexcol flex-gapped">
+  <div class="general-info flex-fixed flexrow">
     {{~#if data.data.name~}}
       <h3 class="proto-name">{{data.data.name}}</h3>
     {{~/if~}}
@@ -29,11 +32,11 @@
     {{~/if~}}
   </div>
   {{~#if data.data.description~}}
-    <section class="spacing-bottom">{{data.data.description}}</section>
+    <section class="flex-fixed">{{data.data.description}}</section>
   {{~/if~}}
-  <div class="tags">
+  <div class="flex-fixed flexrow flex-gapped">
     {{~#each data.data.tags as |tag|~}}
-      <span class="fas fa-tag tag">{{tag}}</span>
+      <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
     {{~/each~}}
   </div>
 </div>

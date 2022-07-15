@@ -2,23 +2,10 @@
 
 .wasteland-ventures.document-sheet.actor-sheet .equipment
 
-  > :not(:last-child)
-    margin-bottom: constants.$spacing-distance * 2
+  &.active
+    display: flex
+    flex-direction: column
+    gap: constants.$spacing-distance * 2
 
-  .weapon-slots,.apparel-slots
-    display: grid
-    grid-column-gap: constants.$spacing-distance * 2
-    grid-row-gap: constants.$spacing-distance
-    justify-content: space-between
-
-    > *
-      margin: 0
-
-  .weapon-slots
-    grid-template-columns: repeat(auto-fit, 410px)
-
-  .apparel-slots
-    grid-template-columns: repeat(auto-fit, 250px)
-
-    > *
-      margin: 0
+  .apparel-slot
+    min-width: 200px

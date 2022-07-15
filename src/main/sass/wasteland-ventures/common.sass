@@ -51,6 +51,9 @@
   .flex-j-spaced
     justify-content: space-between
 
+  .flex-gapped
+    gap: constants.$spacing-distance
+
   .spacing-bottom
     margin-bottom: constants.$spacing-distance
 
@@ -97,13 +100,10 @@
     display: flex
     justify-content: space-between
     white-space: nowrap
-
-    > :first-child
-      margin-left: 1ch
+    gap: 1ch
 
     &.flex-center
       align-items: center
-
 
   .standard-grid-gaps
     column-gap: constants.$spacing-distance * 2
@@ -189,10 +189,6 @@
 
     td *
       vertical-align: middle
-
-  .tags
-    > :not(:last-child)
-      margin-right: constants.$spacing-distance
 
   .tag
     background-color: constants.$shade-lighter

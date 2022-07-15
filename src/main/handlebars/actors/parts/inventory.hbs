@@ -1,7 +1,7 @@
 <div class="flexrow">
-  <section class="flex-fixed equipment-slots">
-    <h4>{{localize "wv.rules.equipment.slots.plural"}}</h4>
-    <div class="lighter-block equipment-slot" data-equipment-slot="readiedItem">
+  <section class="flex-fixed equipment-slots flexcol flex-gapped">
+    <h4 class="flex-fixed no-margin">{{localize "wv.rules.equipment.slots.plural"}}</h4>
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="readiedItem">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</div>
       <div class="equipment-slot-status">
         <span>{{sheet.equipment.readiedItem.name}}</span>
@@ -18,31 +18,31 @@
         </div>
       </div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="weaponSlot1" data-item-id="{{sheet.equipment.weaponSlots.[0]._id}}">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="weaponSlot1" data-item-id="{{sheet.equipment.weaponSlots.[0]._id}}">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.weaponSlot1"}}</div>
       <div>{{sheet.equipment.weaponSlots.[0].name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="weaponSlot2" data-item-id="{{sheet.equipment.weaponSlots.[1]._id}}">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="weaponSlot2" data-item-id="{{sheet.equipment.weaponSlots.[1]._id}}">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.weaponSlot2"}}</div>
       <div>{{sheet.equipment.weaponSlots.[1].name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="armor">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="armor">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.armor"}}</div>
       <div>{{sheet.equipment.armor.name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="clothing">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="clothing">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.clothing"}}</div>
       <div>{{sheet.equipment.clothing.name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="eyes">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="eyes">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.eyes"}}</div>
       <div>{{sheet.equipment.eyes.name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="mouth">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="mouth">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.mouth"}}</div>
       <div>{{sheet.equipment.mouth.name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="belt">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="belt">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.belt"}}</div>
       <div>{{sheet.equipment.belt.name}}</div>
     </div>

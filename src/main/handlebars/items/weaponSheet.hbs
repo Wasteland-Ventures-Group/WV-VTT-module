@@ -24,15 +24,15 @@
           {{~#each data.data.attacks.attacks as |attack|~}}
             <tr>
               <th scope="row" class="align-left">
-                <button class="min-width no-wrap" type="button" title="{{localize 'wv.system.rolls.modifierExplanation'}}" data-weapon-attack-name="{{@key}}">{{@key}}</button>
+                <button class="min-width no-wrap" type="button" data-weapon-attack-name="{{@key}}">{{@key}}</button>
               </th>
               <td class="align-left">{{attack.damage.damageFormula}} = {{attack.damage.damageRange}}</td>
               <td class="align-right">{{attack.dtReduction.total}}</td>
               <td class="align-right">{{attack.ap.total}}</td>
               <td class="align-right">{{attack.rounds.total}}</td>
-              <td class="align-left tags">
+              <td class="align-left flexrow flex-gapped">
                 {{~#each attack.tags as |tag|~}}
-                  <span class="fas fa-tag tag">{{tag}}</span>
+                  <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
                 {{~/each~}}
               </td>
             </tr>
@@ -53,9 +53,9 @@
             <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.short.long"}}</th>
             <td class="align-right">{{sheet.displayRanges.short}}{{sheet.systemGridUnit}}</td>
             <td class="align-right">{{data.data.ranges.short.modifier.total}}</td>
-            <td class="align-left tags">
+            <td class="align-left flexrow flex-gapped">
               {{~#each data.data.ranges.short.tags as |tag|~}}
-                <span class="fas fa-tag tag">{{tag}}</span>
+                <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
               {{~/each~}}
             </td>
           </tr>
@@ -64,9 +64,9 @@
               <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.medium.long"}}</th>
               <td class="align-right">{{sheet.displayRanges.medium}}{{sheet.systemGridUnit}}</td>
               <td class="align-right">{{data.data.ranges.medium.modifier.total}}</td>
-              <td class="align-left tags">
+              <td class="align-left flexrow flex-gapped">
                 {{~#each data.data.ranges.medium.tags as |tag|~}}
-                  <span class="fas fa-tag tag">{{tag}}</span>
+                  <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
                 {{~/each~}}
               </td>
             </tr>
@@ -76,9 +76,9 @@
               <th scope="row" class="align-left">{{localize "wv.rules.range.ranges.long.long"}}</th>
               <td class="align-right">{{sheet.displayRanges.long}}{{sheet.systemGridUnit}}</td>
               <td class="align-right">{{data.data.ranges.long.modifier.total}}</td>
-              <td class="align-left tags">
+              <td class="align-left flexrow flex-gapped">
                 {{~#each data.data.ranges.long.tags as |tag|~}}
-                  <span class="fas fa-tag tag">{{tag}}</span>
+                  <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
                 {{~/each~}}
               </td>
             </tr>

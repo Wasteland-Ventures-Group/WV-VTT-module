@@ -17,9 +17,9 @@
         {{~/if~}}
       </div>
       {{~#if apparel.data.tags.length~}}
-        <section class="tags">
+        <section class="flexrow flex-gapped">
           {{~#each apparel.data.tags as |tag|~}}
-            <span class="fas fa-tag tag">{{tag}}</span>
+            <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
           {{~/each~}}
         </section>
       {{~/if~}}

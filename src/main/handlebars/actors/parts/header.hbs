@@ -1,9 +1,12 @@
+{{! this is pretty much using the foundry baked-in layout and styling }}
 <header class="sheet-header flex-fixed">
   <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
   <h1><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'wv.system.misc.name'}}" /></h1>
 </header>
+
+{{! our own stuff starts here }}
 <div class="document-info flex-fixed">
-  <div class="leveling-and-karma flexrow">
+  <div class="leveling-and-karma flexrow flex-j-spaced flex-gapped">
     <div class="lighter-block resource-block resource-block-line flex-fixed">
       <label class="contained-target-inline">
         {{~localize "wv.rules.leveling.level"~}}
@@ -37,7 +40,7 @@
       </label>
     </div>
   </div>
-  <div class="main-resources flexrow">
+  <div class="flexrow flex-center flex-j-spaced flex-gapped">
     <div class="health lighter-block resource-block flex-fixed">
       <label class="contained-target-inline resource-block-line">
         {{~localize "wv.rules.health.health"~}}

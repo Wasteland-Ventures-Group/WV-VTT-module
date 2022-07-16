@@ -47,7 +47,7 @@ export default class WvActorSheet extends ActorSheet {
     defaultOptions.dragDrop = [
       { dragSelector: "button[data-special]" },
       { dragSelector: "button[data-skill]" },
-      { dragSelector: ".fvtt-item-table .fvtt-item" },
+      { dragSelector: ".fvtt-item-table [data-item-id]" },
       { dragSelector: "[data-equipment-slot][data-item-id]" }
     ];
     defaultOptions.height = 1000;

@@ -259,7 +259,11 @@ export default class RuleElement {
       foundry.utils.getProperty(document.data.data, this.target)
     );
     if (modifiedProperty !== undefined)
-      foundry.utils.setProperty(document, this.target, modifiedProperty);
+      foundry.utils.setProperty(
+        document.data.data,
+        this.target,
+        modifiedProperty
+      );
   }
 
   /**

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - some broken layout in weapon source values
 - some broken layout in weapon attack component listings
 - items in the inventory not being draggable
+- FlatModifier and ReplaceValue not modifying the correct properties
 
 ## 0.19.0 - 2022-07-16
 

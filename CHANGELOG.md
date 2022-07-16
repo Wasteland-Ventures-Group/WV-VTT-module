@@ -23,22 +23,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - "sibling": selects siblings in the parent document of the document the
     selector is attached to
   - "this": selects only the document the selector is attached to
-  - `{ "tag": "&lt;some tag&gt;" }`: selects only items that have the specified
+  - `{ "tag": "<some tag>" }`: selects only items that have the specified
     tag
-  - `{ "type": "&lt;some type&gt;" }`: selects only documents that have the
+  - `{ "type": "<some type>" }`: selects only documents that have the
     specified type
-  - `{ "usesSkill": "&lt;some skill name&gt;" }`: selects only skill-using
+  - `{ "usesSkill": "<some skill name>" }`: selects only skill-using
     documents that use the specified skill
-  - `{ "or": [&lt;selectors&gt;] }`: selects documents where at least one of the
+  - `{ "or": [<selectors>] }`: selects documents where at least one of the
     specified selectors matches (can not be nested)
 - special target keywords
-  - `@attacks|&lt;path&gt;`: applies to the same property on all attacks of a
+  - `@attacks|<path>`: applies to the same property on all attacks of a
     weapon
-  - `@attacks[&lt;tags list&gt;]|&lt;path&gt;`: applies to the same property on
+  - `@attacks[<tags list>]|<path>`: applies to the same property on
     all attacks of a weapon, that have the given tags
-  - `@ranges|&lt;path&gt;`: applies to the same property on all ranges of a
+  - `@ranges|<path>`: applies to the same property on all ranges of a
     weapon
-  - `@ranges[&lt;tags list&gt;]|&lt;path&gt;`: applies to the same property on
+  - `@ranges[<tags list>]|<path>`: applies to the same property on
     all ranges of a weapon, that have the given tags
 - conditions for RuleElements. The first and so far only one is "whenEquipped"
   and only applies RuleElements when they are equipped in an apparel slot,

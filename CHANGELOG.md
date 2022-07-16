@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - some broken layout in weapon source values
+- some broken layout in weapon attack component listings
 
 ## 0.19.0 - 2022-07-16
 

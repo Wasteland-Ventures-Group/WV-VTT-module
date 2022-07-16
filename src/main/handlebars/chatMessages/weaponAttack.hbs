@@ -44,19 +44,19 @@
       <tbody>
         <tr>
           <th scope="row">{{localize "wv.system.values.base"}}</th>
-          <td class="align-right">{{details.hit.source}}</td>
+          <td class="align-right zero-width no-wrap">{{details.hit.source}}</td>
         </tr>
         {{#each details.hit.components as |component|~}}
           <tr>
             <th scope="row">{{component.label}}</th>
-            <td class="align-right">{{component.value}}</td>
+            <td class="align-right zero-width no-wrap">{{component.value}}</td>
           </tr>
         {{~/each}}
       </tbody>
       <tfoot>
         <tr>
           <th scope="row">{{localize "wv.system.values.total"}}</th>
-          <td class="align-right">{{details.hit.total}}</td>
+          <td class="align-right zero-width no-wrap">{{details.hit.total}}</td>
         </tr>
       </tfoot>
     </table>
@@ -69,19 +69,19 @@
       <tbody>
         <tr>
           <th scope="row">{{localize "wv.system.values.base"}}</th>
-          <td class="align-right">{{details.damage.base.source}}</td>
+          <td class="align-right zero-width no-wrap">{{details.damage.base.source}}</td>
         </tr>
         {{#each details.damage.base.components as |component|~}}
           <tr>
             <th scope="row">{{component.label}}</th>
-            <td class="align-right">{{component.value}}</td>
+            <td class="align-right zero-width no-wrap">{{component.value}}</td>
           </tr>
         {{~/each}}
       </tbody>
       <tfoot>
         <tr>
           <th scope="row">{{localize "wv.system.values.total"}}</th>
-          <td class="align-right">{{details.damage.base.total}}</td>
+          <td class="align-right zero-width no-wrap">{{details.damage.base.total}}</td>
         </tr>
       </tfoot>
     </table>
@@ -94,19 +94,19 @@
       <tbody>
         <tr>
           <th scope="row">{{localize "wv.system.values.base"}}</th>
-          <td class="align-right">{{details.damage.dice.source}}</td>
+          <td class="align-right zero-width no-wrap">{{details.damage.dice.source}}</td>
         </tr>
         {{#each details.damage.dice.components as |component|~}}
           <tr>
             <th scope="row">{{component.label}}</th>
-            <td class="align-right">{{component.value}}</td>
+            <td class="align-right zero-width no-wrap">{{component.value}}</td>
           </tr>
         {{~/each}}
       </tbody>
       <tfoot>
         <tr class="listing-total">
           <th scope="row">{{localize "wv.system.values.total"}}</th>
-          <td class="align-right">{{details.damage.dice.total}}</td>
+          <td class="align-right zero-width no-wrap">{{details.damage.dice.total}}</td>
         </tr>
       </tfoot>
     </table>

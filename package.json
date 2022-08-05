@@ -31,7 +31,7 @@
     "@types/gulp-dart-sass": "^1.0.0",
     "@types/gulp-zip": "^4.0.1",
     "@types/mocha": "^9.1.1",
-    "@types/node": "^18.6.3",
+    "@types/node": "^18.6.4",
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
     "ajv": "^8.11.0",

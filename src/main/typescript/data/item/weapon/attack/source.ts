@@ -1,4 +1,5 @@
 import type { JSONSchemaType } from "ajv";
+import { SplashSize, SplashSizes } from "../../../../constants.js";
 import {
   CompositeNumberSource,
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
@@ -20,7 +21,7 @@ export class AttackSource {
   dtReduction?: CompositeNumberSource = { source: 0 };
 
   /** The splash radius */
-  splash?: "TODO"; // TODO: implement an enum or similar
+  splash?: SplashSize;
 
   /** The amount of action points needed to attack */
   ap: CompositeNumberSource = { source: 0 };
@@ -142,8 +143,9 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
         "The splash of the weapon. This is still work in progress and has no " +
         "effect.",
       type: "string",
+      enum: SplashSizes,
       nullable: true,
-      default: "TODO"
+      default: null
     },
     ap: {
       ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,

@@ -13,6 +13,10 @@ import {
 } from "../../foundryCommon.js";
 import { RangeSource, RANGES_JSON_SCHEMA } from "./ranges/source.js";
 import { TargetSource, TARGET_JSON_SCHEMA } from "./target/source.js";
+import {
+  CompositeNumberSource,
+  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
+} from "../../common.js";
 
 /** The Magic Item data-source */
 export default interface MagicDataSource {
@@ -23,9 +27,9 @@ export default interface MagicDataSource {
 export class MagicDataSourceData extends BaseItemSource {
   school: GeneralMagicSchool = "general";
 
-  apCost: number = 0;
+  apCost: CompositeNumberSource = { source: 0 };
 
-  strainCost: number = 0;
+  strainCost: CompositeNumberSource = { source: 0 };
 
   range: RangeSource = new RangeSource();
 
@@ -46,13 +50,11 @@ export const MAGIC_SOURCE_JSON_SCHEMA: JSONSchemaType<MagicDataSourceData> = {
     },
     apCost: {
       description: "The ability point cost of the spell",
-      type: "number",
-      default: 0
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
     },
     strainCost: {
       description: "The strain cost of the spell",
-      type: "number",
-      default: 0
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
     },
     range: {
       ...RANGES_JSON_SCHEMA

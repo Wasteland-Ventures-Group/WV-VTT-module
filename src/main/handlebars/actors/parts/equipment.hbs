@@ -1,4 +1,4 @@
-<section>
+<section class="flex-fixed">
   <h3>{{localize "wv.rules.equipment.slots.names.readiedItem"}}</h3>
   <div class="lighter-block equipment-slot" data-equipment-slot="readiedItem">
     <div class="equipment-slot-status">
@@ -23,9 +23,9 @@
     </div>
   </div>
 </section>
-<section>
+<section class="flex-fixed">
   <h3>{{localize "wv.rules.equipment.slots.weaponSlot.plural"}}</h3>
-  <div class="flexrow weapon-slots">
+  <div class="flexrow flex-gapped">
     <div class="lighter-block equipment-slot" data-equipment-slot="weaponSlot1" data-item-id="{{sheet.equipment.weaponSlots.[0]._id}}">
       {{~#if sheet.equipment.weaponSlots.[0]~}}
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.weaponSlots.[0] readied=false}}
@@ -42,9 +42,9 @@
     </div>
   </div>
 </section>
-<section>
+<section class="flex-fixed">
   <h3>{{localize "wv.rules.equipment.apparel.name"}}</h3>
-  <div class="apparel-slots">
+  <div class="flexrow flex-gapped">
     <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="armor">
       {{~#if sheet.equipment.armor~}}
 {{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.armor}}

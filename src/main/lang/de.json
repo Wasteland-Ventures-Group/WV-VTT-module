@@ -15,7 +15,7 @@
         "fears": "Ängste",
         "gender": "Geschlecht",
         "personality": "Persöhnlichkeit",
-        "size": "Größe",
+        "sizeCategory": "Größenkategorie",
         "socialContacts": "Soziale Kontakte",
         "specialTalent": "Besonderes Talent",
         "virtue": "Tugend"
@@ -209,6 +209,7 @@
         "health": "Gesundheit",
         "healingRate": "Heilungsrate"
       },
+      "initiative": "Initiative",
       "insanity": "Wahnsinn",
       "karma": "Karma",
       "leveling": {
@@ -426,6 +427,7 @@
         "sourceValues": "Grundwerte",
         "speakerAlias": "Sprecheralias",
         "statistics": "Statistiken",
+        "tags": "Tags",
         "toggleCompendiumLink": "Comp.-Verknüpfung",
         "updateFromCompendium": "Aktualisieren"
       },
@@ -437,25 +439,34 @@
       "rolls": {
         "descriptive": "Rolle {what}",
         "imperative": "Rolle",
-        "modifierExplanation": "Strg-Klick um an Spielleiter zu Flüstern"
+        "whisperToGms": "An Spielleiter flüstern?"
       },
       "ruleEngine": {
+        "documentMessages": {
+          "name": "Dokumentenbezogene Meldungen",
+          "relations": {
+            "thisItem": "Dieser Gegenstand",
+            "parentActor": "Elternaktor",
+            "parentOwnedItem": "Gegenstand im besitz des Elternaktors"
+          }
+        },
         "errors": {
           "logical": {
-            "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
-            "notCompositeNumber": "Das Feld \"{path}\" in \"{name}\" ist keine zusammengesetzte Zahl.",
-            "notMatchingSelector": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
-            "wrongSelectedType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
+            "notCompositeNumber": "Das Feld \"{path}\" ist keine zusammengesetzte Zahl.",
+            "notMatchingTarget": "Das Feld \"{path}\" existiert nicht.",
+            "wrongDocumentType": "Das Dokument ist nicht vom erwarteten Typ \"{type}\".",
+            "wrongTargetType": "Das Feld \"{path}\" hat nicht den benötigten Typ \"{type}\".",
             "wrongValueType": "Der Wert dieser Regel sollte vom Typ \"{type}\" sein."
           },
           "semantic": {
             "additional": "Das Feld \"{property}\" ist nicht erlaubt an Stelle \"{path}\".",
             "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
             "unknown": "Ein unbekannter Fehler is aufgetreten.",
+            "unknownCondition": "Der Typ der Bedingung ist nicht bekannt.",
             "unknownHook": "Der Typ des Hooks ist nicht bekannt.",
             "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
             "unknownSpecialName": "Der SPECIAL-Name ist nicht bekannt.",
-            "unknownTarget": "Das Ziel ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
+            "unknownSelector": "Der Selektor ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
             "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
           },
           "syntax": "Syntaxfehler: {message}"
@@ -464,8 +475,11 @@
           "singular": "Regelelement",
           "plural": "Regelelemente"
         },
+        "selectors": {
+          "selectedDocuments": "Ausgewählte Dokumente"
+        },
         "warnings": {
-          "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert.",
+          "changedType": "Der Typ von \"{path}\" wurde von \"{original}\" zu \"{new}\" geändert.",
           "notSaved": "Die Änderungen wurden wegen Fehlern nicht gespeichert. Du kannst dieses Foundry Fenster schließen und die Fehler später beheben. Die Änderungen gehen verloren, wenn Foundry neu geladen wird."
         }
       },

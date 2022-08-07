@@ -13,13 +13,15 @@
           "hook": "afterSkills",
           "label": "Survival Bonus",
           "priority": 100,
-          "selector": "skills.survival",
-          "target": "actor",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.survival",
           "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
     "value": {
       "source": 80

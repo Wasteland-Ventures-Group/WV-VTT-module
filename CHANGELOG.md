@@ -7,11 +7,72 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.19.1 - 2022-07-16
+
+### Fixed
+
+- some broken layout in weapon source values
+- some broken layout in weapon attack component listings
+- items in the inventory not being draggable
+- FlatModifier and ReplaceValue not modifying the correct properties
+
+## 0.19.0 - 2022-07-16
+
 ### Added
 
 - a total SPECIAL points display to the character sheet
 - a total Skill points display to the character sheet
 - a finalize data step for items
+- the ability for RuleElements to affect multiple documents
+- DocumentSelectors:
+  - "actor": selects only actors
+  - "item": selects only items
+  - "parent": selects only the parent of the document the selector is attached
+    to
+  - "sibling": selects siblings in the parent document of the document the
+    selector is attached to
+  - "this": selects only the document the selector is attached to
+  - `{ "tag": "<some tag>" }`: selects only items that have the specified
+    tag
+  - `{ "type": "<some type>" }`: selects only documents that have the
+    specified type
+  - `{ "usesSkill": "<some skill name>" }`: selects only skill-using
+    documents that use the specified skill
+  - `{ "or": [<selectors>] }`: selects documents where at least one of the
+    specified selectors matches (can not be nested)
+- special target keywords
+  - `@attacks|<path>`: applies to the same property on all attacks of a
+    weapon
+  - `@attacks[<tags list>]|<path>`: applies to the same property on
+    all attacks of a weapon, that have the given tags
+  - `@ranges|<path>`: applies to the same property on all ranges of a
+    weapon
+  - `@ranges[<tags list>]|<path>`: applies to the same property on
+    all ranges of a weapon, that have the given tags
+- conditions for RuleElements. The first and so far only one is "whenEquipped"
+  and only applies RuleElements when they are equipped in an apparel slot,
+  weapon slot or the readied item
+- tags in the source data of items
+- automatic bonus damage dice modifier for skillful weapons
+- tag display in item sheet header
+- tag input field to edit free-form tags
+- RuleElements now show their selected documents in their sheets
+- ability for RuleElements to modify multiple properties on a document
+- tags in the sources of weapon attacks and ranges
+- weapons with attacks that are tagged as "melee" or "thrown" now only pick
+  ranges that also have the corresponding tag, when executing the attack
+  ([#131](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/131))
+- size category based range bonus now automatically applies to weapon ranges
+  tagged with "melee"
+- show size category on the statistics tab on the character sheet
+- make tags editable on attacks and ranges
+- show tags on equipment tab
+- equipped items can now be edited directly from the equipment page
+- modifiable initiative
+  ([#383](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/383))
+- make SPECIAL and skill rolls always ask for a modifier and add a checkbox to
+  prompts to whisper to GMs
+  ([#388](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/388))
 
 ### Changed
 
@@ -21,10 +82,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#331](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/331))
 - the modifier listings in weapon attacks to use tables
   ([#130](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/130))
+- weapon attacks and their chat messages now use CompositeNumbers as well
+- CompositeNumber components now have an array of LabelComponents instead of a
+  simple string label
+- replaces the item constructor hack with a Proxy
+- swapped RuleElements' target and selector properties
+- renamed RuleElements' "selector" property to "selectors"
 
 ### Fixed
 
-- the race no showing on limited actor sheets
+- the race not showing on limited actor sheets
+- ammo and apparel compendiums not being validated against their schemas
+- NumberComponents no longer both show a "property does not exist" and "property
+  is not a CompositeNumber" error
+- fixed actor and item sheet not using base CSS classes and refactored headers
 
 ## [0.18.0] - 2022-05-29
 
@@ -738,7 +809,9 @@ version, then continue with upgrading to the next version.
 
 - basic character Actor implementation with editable SPECIALs
 
-[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.18.0...HEAD
+[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.1...HEAD
+[0.19.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.0...v0.19.1
+[0.19.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.2...v0.18.0
 [0.17.2]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.1...v0.17.2
 [0.17.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.0...v0.17.1

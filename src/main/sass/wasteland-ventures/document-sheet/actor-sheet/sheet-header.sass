@@ -1,27 +1,15 @@
 @use "../../../constants.sass" as constants
 
-.wasteland-ventures.document-sheet.actor-sheet .sheet-header
+.wasteland-ventures.document-sheet.actor-sheet
 
   .document-info
+    margin-bottom: constants.$spacing-distance
 
-    .header-fields
-
-      .leveling-and-karma
-        border:
-          bottom:
-            color: constants.$shade-darker
-            style: solid
-            width: 1px
-        justify-content: space-between
-        margin-bottom: constants.$spacing-distance
-        padding-bottom: constants.$spacing-distance
-
-        > :not(:last-child)
-          margin-right: constants.$spacing-distance
-
-      .main-resources
-        align-items: center
-        justify-content: space-between
-
-        > :not(:last-child)
-          margin-right: constants.$spacing-distance
+    .leveling-and-karma
+      border:
+        bottom:
+          color: constants.$shade-darker
+          style: solid
+          width: 1px
+      margin-bottom: constants.$spacing-distance
+      padding-bottom: constants.$spacing-distance

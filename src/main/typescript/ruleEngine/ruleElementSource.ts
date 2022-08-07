@@ -1,5 +1,8 @@
 import type { JSONSchemaType } from "ajv";
-import { RuleElementId, RULE_ELEMENTS } from "./ruleElements.js";
+import {
+  DocumentSelectorSource,
+  DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA
+} from "./documentSelectorSource.js";
 
 /** The RuleElement raw data layout */
 export default interface RuleElementSource {
@@ -15,13 +18,17 @@ export default interface RuleElementSource {
   /** The place in the order of application, starting with lowest */
   priority: number;
 
-  /** The selector of the element */
-  selector: string;
+  /** The filter to determine applicable documents with */
+  selectors: DocumentSelectorSource[];
 
   /**
-   * Whether the RuleElement applies to the the Document or the Owning document
+   * Optional conditions when this RuleElement should apply. All of the
+   * conditions need to be met for the RuleElement to apply.
    */
-  target: RuleElementTarget;
+  conditions: RuleElementCondition[];
+
+  /** The target property on the selected document */
+  target: string;
 
   /** The type identifier of the element. */
   type: RuleElementId;
@@ -30,19 +37,24 @@ export default interface RuleElementSource {
   value: boolean | number | string;
 }
 
+export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
+export const RULE_ELEMENT_IDS = [
+  "WV.RuleElement.FlatModifier",
+  "WV.RuleElement.NumberComponent",
+  "WV.RuleElement.PermSpecialComponent",
+  "WV.RuleElement.ReplaceValue",
+  "WV.RuleElement.TempSpecialComponent"
+] as const;
+
+export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
 export const RULE_ELEMENT_HOOKS = [
   "afterSpecial",
   "afterSkills",
   "afterComputation"
 ] as const;
 
-export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
-
-/** The valid values of a RuleElement target property */
-export const RULE_ELEMENT_TARGETS = ["item", "actor"] as const;
-
-/** The type of the valid values for a RuleElement target property */
-export type RuleElementTarget = typeof RULE_ELEMENT_TARGETS[number];
+export type RuleElementCondition = typeof RULE_ELEMENT_CONDITIONS[number];
+export const RULE_ELEMENT_CONDITIONS = ["whenEquipped"] as const;
 
 /** A JSON schema for RuleElementSource objects */
 export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> =
@@ -74,24 +86,31 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
         type: "number",
         default: 0
       },
-      selector: {
+      selectors: {
+        description: "The filter to determine applicable documents with",
+        type: "array",
+        items: DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA,
+        default: ["this"]
+      },
+      conditions: {
         description:
-          "A property selector to pick the property the rule element should be " +
-          "applied to",
-        type: "string",
-        default: ""
+          "Optional conditions when this RuleElement should apply. All of the conditions need to be met for the RuleElement to apply.",
+        type: "array",
+        items: {
+          type: "string",
+          enum: RULE_ELEMENT_CONDITIONS
+        },
+        default: []
       },
       target: {
-        description:
-          "Whether the rule element applies to its own item or the owning actor",
+        description: "The target property on the selected document",
         type: "string",
-        enum: RULE_ELEMENT_TARGETS,
-        default: "item"
+        default: ""
       },
       type: {
         description: "The identifier of the type or rule element to use",
         type: "string",
-        enum: Object.keys(RULE_ELEMENTS) as RuleElementId[],
+        enum: RULE_ELEMENT_IDS,
         default: "WV.RuleElement.NumberComponent"
       },
       value: {
@@ -105,7 +124,8 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       "hook",
       "label",
       "priority",
-      "selector",
+      "selectors",
+      "conditions",
       "target",
       "type",
       "value"
@@ -116,8 +136,9 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       hook: "afterSpecial",
       label: "New Rule Element",
       priority: 100,
-      selector: "",
-      target: "item",
+      selectors: ["item", "this"],
+      conditions: [],
+      target: "",
       type: "WV.RuleElement.NumberComponent",
       value: 0
     }

@@ -23,7 +23,8 @@
           },
           "rounds": {
             "source": 1
-          }
+          },
+          "tags": []
         }
       }
     },
@@ -40,7 +41,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       },
       "medium": {
         "distance": {
@@ -54,7 +56,8 @@
         },
         "modifier": {
           "source": -10
-        }
+        },
+        "tags": []
       },
       "long": {
         "distance": {
@@ -68,7 +71,8 @@
         },
         "modifier": {
           "source": -20
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "uncommon",
@@ -92,6 +96,7 @@
     "weight": {
       "source": 1.5
     },
+    "tags": [],
     "rules": {
       "sources": []
     }

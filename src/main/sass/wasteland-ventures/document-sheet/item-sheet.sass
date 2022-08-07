@@ -2,31 +2,18 @@
 
 .wasteland-ventures.document-sheet.item-sheet
 
-  .sheet-header
+  .document-info
+    margin-bottom: constants.$spacing-distance
 
-    .document-img
-      max-height: 100px
+    .general-info
+      align-items: baseline
+      gap: constants.$spacing-distance * 5
 
-    .document-info
+      .general-info-element
+        white-space: nowrap
 
-      .header-fields
+        .fas
+          margin-right: constants.$spacing-distance
 
-        .general-info
-
-          > :not(:last-child)
-            margin-right: constants.$spacing-distance * 5
-
-        .proto-name
-          margin-bottom: 0
-
-  .general-info
-    align-items: baseline
-
-    > :not(:last-child)
-      margin-right: constants.$spacing-distance * 2
-
-    .general-info-element
-      white-space: nowrap
-
-      .fas
-        margin-right: constants.$spacing-distance
+    .proto-name
+      margin-bottom: 0

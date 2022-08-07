@@ -30,6 +30,14 @@ import type {
 import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
 import type * as settings from "./settings.js";
 import type { WvI18nKey } from "./lang.js";
+import type RuleElement from "./ruleEngine/ruleElement.js";
+import type { RuleElementId } from "./ruleEngine/ruleElementSource.js";
+import type { KeywordSelectorWord } from "./ruleEngine/documentSelectorSource.js";
+import type DocumentSelector from "./ruleEngine/documentSelector.js";
+import type TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
+import type TypeSelector from "./ruleEngine/documentSelectors/typeSelector.js";
+import type UsesSkillSelector from "./ruleEngine/documentSelectors/usesSkillSelector.js";
+import type OrSelector from "./ruleEngine/documentSelectors/orSelector.js";
 
 declare global {
   interface SourceConfig {
@@ -55,16 +63,26 @@ declare global {
       ajv: Ajv;
       /** Wasteland Ventures macros */
       macros: typeof macros;
+      ruleEngine: {
+        elements: Record<RuleElementId, typeof RuleElement>;
+        selectors: {
+          keyword: Record<KeywordSelectorWord, typeof DocumentSelector>;
+          or: typeof OrSelector;
+          tag: typeof TagSelector;
+          type: typeof TypeSelector;
+          usesSkill: typeof UsesSkillSelector;
+        };
+      };
       typeConstructors: {
         actor: {
-          character: typeof WvActor;
+          [TYPES.ACTOR.CHARACTER]: typeof WvActor;
         };
         item: {
-          ammo: typeof Ammo;
-          apparel: typeof Apparel;
-          effect: typeof Effect;
-          magic: typeof Magic;
-          weapon: typeof Weapon;
+          [TYPES.ITEM.AMMO]: typeof Ammo;
+          [TYPES.ITEM.APPAREL]: typeof Apparel;
+          [TYPES.ITEM.EFFECT]: typeof Effect;
+          [TYPES.ITEM.MAGIC]: typeof Magic;
+          [TYPES.ITEM.WEAPON]: typeof Weapon;
         };
       };
       /** Wasteland Ventures system data JSON validators */

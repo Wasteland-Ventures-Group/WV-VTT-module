@@ -26,9 +26,8 @@ import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
 import Apparel from "../../item/apparel.js";
 import Weapon from "../../item/weapon.js";
-import Attack from "../../item/weapon/attack.js";
 import WvItem from "../../item/wvItem.js";
-import { getI18nRadiationSicknessLevel } from "../../radiation.js";
+import { WvItemProxy } from "../../item/wvItemProxy.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
 import WvI18n, { I18nRaceNames, I18nSpecial } from "../../wvI18n.js";
@@ -42,15 +41,13 @@ import Prompt from "../prompt.js";
 export default class WvActorSheet extends ActorSheet {
   static override get defaultOptions(): ActorSheet.Options {
     const defaultOptions = super.defaultOptions;
-    defaultOptions.classes = [
-      CONSTANTS.systemId,
-      "document-sheet",
-      "actor-sheet"
-    ];
+    defaultOptions.classes.push(
+      ...[CONSTANTS.systemId, "document-sheet", "actor-sheet"]
+    );
     defaultOptions.dragDrop = [
       { dragSelector: "button[data-special]" },
       { dragSelector: "button[data-skill]" },
-      { dragSelector: ".fvtt-item-table .fvtt-item" },
+      { dragSelector: ".fvtt-item-table [data-item-id]" },
       { dragSelector: "[data-equipment-slot][data-item-id]" }
     ];
     defaultOptions.height = 1000;
@@ -58,7 +55,7 @@ export default class WvActorSheet extends ActorSheet {
     defaultOptions.tabs = [
       { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
     ];
-    defaultOptions.width = 800;
+    defaultOptions.width = 900;
     return defaultOptions;
   }
 
@@ -101,56 +98,44 @@ export default class WvActorSheet extends ActorSheet {
 
     // stat rolls
     sheetForm.querySelectorAll("button[data-special]").forEach((element) => {
-      element.addEventListener("click", (event) => {
-        if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen.");
-        this.onClickRollSpecial(event);
-      });
+      element.addEventListener("click", (event) =>
+        this.onClickRollSpecial(event)
+      );
     });
     sheetForm.querySelectorAll("button[data-skill]").forEach((element) => {
-      element.addEventListener("click", (event) => {
-        if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen.");
-        this.onClickRollSkill(event);
-      });
+      element.addEventListener("click", (event) =>
+        this.onClickRollSkill(event)
+      );
     });
 
     // item handling
     sheetForm
       .querySelectorAll("button[data-action=create]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickCreateItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickCreateItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-action=edit]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickEditItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickEditItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-action=delete]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickDeleteItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickDeleteItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-weapon-attack-name]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickAttackExecute(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickAttackExecute(event)
+        );
       });
     sheetForm
       .querySelectorAll("input[data-action=edit-amount]")
@@ -271,7 +256,6 @@ export default class WvActorSheet extends ActorSheet {
           stats: HANDLEBARS.partPaths.actor.stats,
           weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
         },
-        radiationSicknessLevel: getI18nRadiationSicknessLevel(this.actor),
         specials: SpecialNames.reduce((specials, specialName) => {
           const special = this.actor.data.data.specials[specialName];
           specials[specialName] = {
@@ -397,7 +381,7 @@ export default class WvActorSheet extends ActorSheet {
   ): Promise<unknown> {
     if (!this.actor.isOwner) return false;
 
-    const item = await WvItem.fromDropData(data);
+    const item = await WvItemProxy.fromDropData(data);
     if (!(item instanceof WvItem))
       throw new Error("The item was not created successfully.");
 
@@ -505,7 +489,7 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   /** Handle a click event on the SPECIAL roll buttons. */
-  protected async onClickRollSpecial(event: MouseEvent): Promise<void> {
+  protected async onClickRollSpecial(event: Event): Promise<void> {
     event.preventDefault();
 
     if (!(event.target instanceof HTMLElement))
@@ -517,23 +501,31 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    if (event.shiftKey) {
-      const modifier = await Prompt.getNumber({
-        label: WvI18n.getSpecialModifierDescription(special),
-        min: -100,
-        max: 100
-      });
-      this.actor.rollSpecial(special, {
-        modifier: modifier,
-        whisperToGms: event.ctrlKey
-      });
-    } else {
-      this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
+    try {
+      this.actor.rollSpecial(
+        special,
+        await Prompt.get({
+          modifier: {
+            type: "number",
+            label: WvI18n.getSpecialModifierDescription(special),
+            value: 0,
+            min: -100,
+            max: 100
+          },
+          whisperToGms: {
+            type: "checkbox",
+            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
+            value: getGame().user?.isGM
+          }
+        })
+      );
+    } catch (e) {
+      if (e !== "closed") throw e;
     }
   }
 
   /** Handle a click event on the Skill roll buttons. */
-  protected async onClickRollSkill(event: MouseEvent): Promise<void> {
+  protected async onClickRollSkill(event: Event): Promise<void> {
     event.preventDefault();
 
     if (!(event.target instanceof HTMLElement))
@@ -545,23 +537,31 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    if (event.shiftKey) {
-      const modifier = await Prompt.getNumber({
-        label: WvI18n.getSkillModifierDescription(skill),
-        min: -100,
-        max: 100
-      });
-      this.actor.rollSkill(skill, {
-        modifier: modifier,
-        whisperToGms: event.ctrlKey
-      });
-    } else {
-      this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
+    try {
+      this.actor.rollSkill(
+        skill,
+        await Prompt.get({
+          modifier: {
+            type: "number",
+            label: WvI18n.getSkillModifierDescription(skill),
+            value: 0,
+            min: -100,
+            max: 100
+          },
+          whisperToGms: {
+            type: "checkbox",
+            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
+            value: getGame().user?.isGM
+          }
+        })
+      );
+    } catch (e) {
+      if (e !== "closed") throw e;
     }
   }
 
   /** Handle a click event on an Attack execute button. */
-  protected async onClickAttackExecute(event: MouseEvent): Promise<void> {
+  protected async onClickAttackExecute(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement)) {
       LOG.warn("The target was not an HTMLElement.");
       return;
@@ -579,8 +579,8 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attackKey = attackElement.dataset.weaponAttackName;
-    if (!attackKey) {
+    const attackName = attackElement.dataset.weaponAttackName;
+    if (!attackName) {
       LOG.warn("Could not get the attack name.");
       return;
     }
@@ -602,17 +602,17 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attack = weapon.systemData.attacks.attacks[attackKey];
-    if (!(attack instanceof Attack)) {
+    const attack = weapon.data.data.attacks.attacks[attackName];
+    if (!attack) {
       LOG.warn("Could not find the attack on the weapon.");
       return;
     }
 
-    attack.execute({ whisperToGms: event.ctrlKey });
+    attack.execute();
   }
 
   /** Handle a click event on a create item button. */
-  protected async onClickCreateItem(event: MouseEvent): Promise<void> {
+  protected async onClickCreateItem(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
@@ -638,11 +638,11 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   /** Handle a click event on an edit item button. */
-  protected onClickEditItem(event: MouseEvent): void {
+  protected onClickEditItem(event: Event): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
@@ -656,11 +656,11 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   /** Handle a click event on a delete item button. */
-  protected onClickDeleteItem(event: MouseEvent): void {
+  protected onClickDeleteItem(event: Event): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
@@ -670,7 +670,7 @@ export default class WvActorSheet extends ActorSheet {
     const item = this.actor.items.get(id);
     if (item) {
       item.delete();
-      this.render(false);
+      this.render();
     }
   }
 
@@ -679,7 +679,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLInputElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
@@ -692,8 +692,8 @@ export default class WvActorSheet extends ActorSheet {
     const item = this.actor.items.get(id);
     if (item) {
       item.update({ data: { amount } });
-      item.render(false);
-      this.render(false);
+      item.render();
+      this.render();
     }
   }
 
@@ -981,7 +981,6 @@ interface SheetData extends ActorSheet.Data {
       stats: string;
       weaponSlot: string;
     };
-    radiationSicknessLevel: string;
     skills: Record<SkillName, SheetSkill>;
     specials: Record<SpecialName, SheetSpecial>;
     systemGridUnit: string | undefined;

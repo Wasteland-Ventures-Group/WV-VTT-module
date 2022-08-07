@@ -4,6 +4,7 @@ import {
   CompositeNumberSource,
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
 } from "../../../common.js";
+import { TAGS_SOURCE_JSON_SCHEMA } from "../../common/baseItem/source.js";
 
 export default class RangesSource {
   /** The short range of the weapon */
@@ -22,6 +23,9 @@ export class RangeSource {
 
   /** The skill check modifier associated with this range */
   modifier: CompositeNumberSource = { source: 0 };
+
+  /** Tags of the range */
+  tags: string[] = [];
 }
 
 export class DistanceSource {
@@ -104,9 +108,13 @@ const RANGE_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
       default: {
         source: 0
       }
+    },
+    tags: {
+      ...TAGS_SOURCE_JSON_SCHEMA,
+      description: "Tags of the range"
     }
   },
-  required: ["distance", "modifier"],
+  required: ["distance", "modifier", "tags"],
   additionalProperties: false,
   default: {
     distance: {
@@ -120,7 +128,8 @@ const RANGE_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
     },
     modifier: {
       source: 0
-    }
+    },
+    tags: []
   }
 };
 
@@ -163,7 +172,8 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
         },
         modifier: {
           source: 0
-        }
+        },
+        tags: ["melee"]
       },
       medium: {
         distance: {
@@ -177,7 +187,8 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
         },
         modifier: {
           source: 0
-        }
+        },
+        tags: []
       },
       long: {
         distance: {
@@ -191,7 +202,8 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
         },
         modifier: {
           source: 0
-        }
+        },
+        tags: []
       }
     },
     {
@@ -207,7 +219,8 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
         },
         modifier: {
           source: 0
-        }
+        },
+        tags: []
       },
       medium: {
         distance: {
@@ -221,7 +234,8 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
         },
         modifier: {
           source: -10
-        }
+        },
+        tags: []
       },
       long: {
         distance: {
@@ -235,7 +249,8 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
         },
         modifier: {
           source: -20
-        }
+        },
+        tags: []
       }
     }
   ]

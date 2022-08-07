@@ -24,12 +24,26 @@ import Magic from "./item/magic.js";
 import Apparel from "./item/apparel.js";
 import Effect from "./item/effect.js";
 import Weapon from "./item/weapon.js";
-import WvItem from "./item/wvItem.js";
+import { WvItemProxy } from "./item/wvItemProxy.js";
 import { macros } from "./macros/index.js";
 import {
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
+import ActorSelector from "./ruleEngine/documentSelectors/actorSelector.js";
+import ItemSelector from "./ruleEngine/documentSelectors/itemSelector.js";
+import OrSelector from "./ruleEngine/documentSelectors/orSelector.js";
+import ParentSelector from "./ruleEngine/documentSelectors/parentSelector.js";
+import SiblingSelector from "./ruleEngine/documentSelectors/siblingSelector.js";
+import TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
+import ThisSelector from "./ruleEngine/documentSelectors/thisSelector.js";
+import TypeSelector from "./ruleEngine/documentSelectors/typeSelector.js";
+import UsesSkillSelector from "./ruleEngine/documentSelectors/usesSkillSelector.js";
+import FlatModifier from "./ruleEngine/ruleElements/flatModifier.js";
+import NumberComponent from "./ruleEngine/ruleElements/numberComponent.js";
+import PermSpecialComponent from "./ruleEngine/ruleElements/permSpecialComponent.js";
+import ReplaceValue from "./ruleEngine/ruleElements/replaceValue.js";
+import TempSpecialComponent from "./ruleEngine/ruleElements/tempSpecialComponent.js";
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "./ruleEngine/ruleElementSource.js";
 import { initializedSettingName } from "./settings.js";
 
@@ -39,6 +53,28 @@ export function configureFoundryOnInit(): void {
   getGame().wv = {
     ajv,
     macros,
+    ruleEngine: {
+      elements: {
+        "WV.RuleElement.FlatModifier": FlatModifier,
+        "WV.RuleElement.NumberComponent": NumberComponent,
+        "WV.RuleElement.PermSpecialComponent": PermSpecialComponent,
+        "WV.RuleElement.ReplaceValue": ReplaceValue,
+        "WV.RuleElement.TempSpecialComponent": TempSpecialComponent
+      },
+      selectors: {
+        keyword: {
+          actor: ActorSelector,
+          item: ItemSelector,
+          parent: ParentSelector,
+          sibling: SiblingSelector,
+          this: ThisSelector
+        },
+        or: OrSelector,
+        tag: TagSelector,
+        type: TypeSelector,
+        usesSkill: UsesSkillSelector
+      }
+    },
     typeConstructors: {
       actor: {
         character: WvActor
@@ -69,7 +105,7 @@ export function configureFoundryOnInit(): void {
 
   // Register our own Document classes.
   CONFIG.Actor.documentClass = WvActor;
-  CONFIG.Item.documentClass = WvItem;
+  CONFIG.Item.documentClass = WvItemProxy;
 
   // Register our override classes.
   CONFIG.Combat.documentClass = WvCombat;

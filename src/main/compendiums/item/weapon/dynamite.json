@@ -23,7 +23,8 @@
           "rounds": {
             "source": 1
           },
-          "splash": "tiny"
+          "splash": "tiny",
+          "tags": ["thrown"]
         }
       }
     },
@@ -40,7 +41,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": ["thrown"]
       },
       "medium": {
         "distance": {
@@ -54,7 +56,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       },
       "long": {
         "distance": {
@@ -68,7 +71,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "common",
@@ -93,6 +97,7 @@
     "weight": {
       "source": 0.5
     },
+    "tags": [],
     "rules": {
       "sources": []
     }

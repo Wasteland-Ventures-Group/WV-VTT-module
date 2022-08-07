@@ -32,6 +32,15 @@ export const FlyingRaceNames = [
 export type WingedRaceName = typeof WingedRaceNames[number];
 export const WingedRaceNames = [...FlyingRaceNames] as const;
 
+export type RadiationSicknessLevel = typeof RadiationSicknessLevels[number];
+export const RadiationSicknessLevels = [
+  "none",
+  "minor",
+  "moderate",
+  "major",
+  "critical"
+] as const;
+
 export type SpecialName = typeof SpecialNames[number];
 export const SpecialNames = [
   "strength",
@@ -256,6 +265,22 @@ export const TYPES = {
   }
 } as const;
 
+export type SystemDocumentType =
+  | ValueOf<typeof TYPES.ACTOR>
+  | ValueOf<typeof TYPES.ITEM>;
+export const SystemDocumentTypes: SystemDocumentType[] = [
+  ...Object.values(TYPES.ACTOR),
+  ...Object.values(TYPES.ITEM)
+];
+
+/** A type representing the different range brackets */
+export enum RangeBracket {
+  SHORT,
+  MEDIUM,
+  LONG,
+  OUT_OF_RANGE
+}
+
 export type ProtoItemType = typeof ProtoItemTypes[number];
 export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
   TYPES.ITEM.AMMO,
@@ -398,7 +423,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.18.0",
+  needsMigrationVersion: "0.18.1",
 
   /** The number of fixed decimals to round floating point numbers to. */
   fixedDecimals: 2,
@@ -469,6 +494,18 @@ export const CONSTANTS = {
   systemPath: "systems/wasteland-ventures"
 } as const;
 
+export type RangePickingTag = typeof TAGS.rangePicking[number];
+export const TAGS = {
+  rangePicking: ["melee", "thrown"],
+  skillDamageBonus: "skillful",
+  sizeCategoryReachBonus: "melee"
+} as const;
+
+/** Check whether the given tag is one of the range picking tags. */
+export function isRangePickingTag(tag: string): tag is RangePickingTag {
+  return TAGS.rangePicking.includes(tag as RangePickingTag);
+}
+
 export const SYSTEM_COMPENDIUM_SOURCE_ID_REGEX = new RegExp(
   `^Compendium\\.(${CONSTANTS.systemId}\\.\\w+)\\.([a-zA-Z0-9]{16})$`
 );
@@ -487,6 +524,7 @@ export const HANDLEBARS = {
       weaponSlot: `${CONSTANTS.systemPath}/handlebars/actors/parts/weaponSlot.hbs`
     },
     item: {
+      baseItemInputs: `${CONSTANTS.systemPath}/handlebars/items/parts/baseItemInputs.hbs`,
       header: `${CONSTANTS.systemPath}/handlebars/items/parts/header.hbs`,
       physicalItemInputs: `${CONSTANTS.systemPath}/handlebars/items/parts/physicalItemInputs.hbs`,
       rules: `${CONSTANTS.systemPath}/handlebars/items/parts/ruleElements.hbs`

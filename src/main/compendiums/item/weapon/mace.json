@@ -21,7 +21,8 @@
           },
           "ap": {
             "source": 5
-          }
+          },
+          "tags": ["melee"]
         }
       }
     },
@@ -38,7 +39,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": ["melee"]
       },
       "medium": {
         "distance": {
@@ -52,7 +54,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       },
       "long": {
         "distance": {
@@ -66,7 +69,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "uncommon",
@@ -90,6 +94,7 @@
     "weight": {
       "source": 2
     },
+    "tags": [],
     "rules": {
       "sources": []
     }

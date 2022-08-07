@@ -31,7 +31,7 @@ export default class AmmoSheet extends WvItemSheet {
       ...data,
       sheet: {
         ...data.sheet,
-        caliber: calibersI18n[this.item.systemData.caliber],
+        caliber: calibersI18n[this.item.data.data.caliber],
         calibers: calibersI18n
       }
     };

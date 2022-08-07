@@ -1,45 +1,42 @@
+import type WvActor from "../../actor/wvActor.js";
 import { isSpecialName } from "../../constants.js";
-import type { Special } from "../../data/actor/character/specials/properties.js";
+import { Special } from "../../data/actor/character/specials/properties.js";
+import type WvItem from "../../item/wvItem.js";
+import NotActorMessage from "../messages/notActorMessage.js";
 import WrongSpecialNameMessage from "../messages/wrongSpecialNameMessage.js";
 import RuleElement from "../ruleElement.js";
 
 /** A RuleElement that adds a temporary component to a SPECIAL. */
 export default class TempSpecialComponent extends RuleElement {
-  protected override checkIfSelectorIsValid(): void {
-    if (!isSpecialName(this.source.selector)) {
+  override get target(): string {
+    return `specials.${this.source.target}`;
+  }
+
+  protected override validate(): void {
+    super.validate();
+    this.checkValueIsOfType("number");
+
+    if (!isSpecialName(this.source.target)) {
       this.messages.push(new WrongSpecialNameMessage());
     }
   }
 
-  override get selector(): string {
-    return `specials.${this.source.selector}`;
+  protected override validateAgainstDocument(document: WvActor | WvItem): void {
+    if (document instanceof Actor) return;
+
+    this.addDocumentMessage(document, new NotActorMessage());
   }
 
-  override get targetDoc(): Actor {
-    if (this.item.actor === null)
-      throw new Error("The actor of the RuleElement's item is null.");
-
-    return this.item.actor;
-  }
-
-  protected override _onAfterSpecial(): void {
-    this.apply();
-  }
-
-  protected override _onAfterSkills(): void {
-    this.apply();
-  }
-
-  protected override _onAfterComputation(): void {
-    this.apply();
-  }
-
-  protected apply(): void {
+  protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
-    (this.property as Special).addTemp({
-      value: this.value,
-      labelComponents: this.labelComponents
+    this.mapProperties(document, (value) => {
+      if (!(value instanceof Special) || typeof this.value !== "number") return;
+
+      value.addTemp({
+        value: this.value,
+        labelComponents: this.labelComponents
+      });
     });
   }
 }

@@ -10,6 +10,7 @@ import {
   getUpdateDataFromCompendium,
   hasEnabledCompendiumLink
 } from "../item/wvItem.js";
+import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import SystemLogger, { LOG } from "../systemLogger.js";
 import { isLastMigrationOlderThan } from "./world.js";
 
@@ -76,36 +77,36 @@ async function migrateItem(
       );
     }
 
-    const updateData = {};
+    let updateData = {};
     migrateRuleElements(item, updateData);
 
     if (
       ProtoItemTypes.includes(item.data.type) &&
       hasEnabledCompendiumLink(item)
     ) {
-      await migrateFromCompendium(item, updateData, currentVersion);
+      updateData = await migrateFromCompendium(item, updateData);
     } else {
       migrateAmmoFix(item, updateData);
       migrateRanges(item, updateData);
       migrateMandatoryReload(item, updateData);
       migrateToCompositeNumbers(item, updateData);
-      if (!foundry.utils.isObjectEmpty(updateData)) {
-        LOG.info(
-          `Migrating Item ${SystemLogger.getItemIdent(item)} with`,
-          updateData
-        );
-        await item.update(updateData);
-        await item.setFlag(
-          CONSTANTS.systemId,
-          "lastMigrationVersion",
-          currentVersion
-        );
-      }
+    }
+    if (!foundry.utils.isObjectEmpty(updateData)) {
+      LOG.info(
+        `Migrating Item ${SystemLogger.getItemIdent(item)} with`,
+        updateData
+      );
+      await item.update(updateData);
+      await item.setFlag(
+        CONSTANTS.systemId,
+        "lastMigrationVersion",
+        currentVersion
+      );
     }
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
     LOG.error(
-      `Failed migration for Item ${SystemLogger.getItemIdent(item)}: ${message}`
+      `Failed migration for Item ${SystemLogger.getItemIdent(item)}.`,
+      err
     );
   }
 }
@@ -114,96 +115,149 @@ function migrateRuleElements(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
-  if (isLastMigrationOlderThan("0.17.2"))
-    migrateRuleElementsPreComposedNumbers(item, updateData);
-}
-
-function migrateRuleElementsPreComposedNumbers(
-  item: foundry.documents.BaseItem,
-  updateData: Record<string, unknown>
-) {
-  if (item.data._source.data.rules.sources.length > 0) {
+  if (ruleElementsNeedMigration(item.data._source.data.rules.sources)) {
     updateData["data.rules.sources"] = item.data._source.data.rules.sources.map(
       (rule) => {
-        let enabled = false;
-
-        const hook = rule.hook ?? "afterSpecial";
-
-        let selector = rule.selector;
-        let type = rule.type;
-        const specialMatch = /^specials\.(\w+)\.(\w+)/.exec(selector);
-        if (specialMatch) {
-          enabled = true;
-          selector = specialMatch[1] as string;
-          if ("permTotal" === specialMatch[2]) {
-            type = "WV.RuleElement.PermSpecialComponent";
-          } else {
-            type = "WV.RuleElement.TempSpecialComponent";
-          }
-        }
-        const skillMatch = /^skills\.(\w+)/.exec(selector);
-        if (skillMatch) {
-          enabled = true;
-          selector = `skills.${skillMatch[1] as string}`;
-          type = "WV.RuleElement.NumberComponent";
-        }
-
-        if (
-          [
-            "WV.RuleElement.PermSpecialComponent",
-            "WV.RuleElement.TempSpecialComponent",
-            "WV.RuleElement.NumberComponent"
-          ].includes(type)
-        ) {
-          enabled = true;
-        }
-
-        return {
-          ...rule,
-          enabled,
-          hook,
-          selector,
-          type
-        };
+        const transformed = isLastMigrationOlderThan("0.17.2")
+          ? migrateRuleElementPreComposedNumbers(
+              rule as unknown as OldRuleElementSource
+            )
+          : rule;
+        return migrateRuleElementPostComposedNumbers(transformed);
       }
     );
   }
 }
 
-async function migrateFromCompendium(
-  item: foundry.documents.BaseItem,
-  updateData: Record<string, unknown>,
-  currentVersion: string
-): Promise<void> {
-  const compendiumUpdateData = await getUpdateDataFromCompendium(item);
-  if (!foundry.utils.isObjectEmpty(compendiumUpdateData)) {
-    LOG.info(
-      `Updating Item ${SystemLogger.getItemIdent(item)} from Compendium with`,
-      updateData
-    );
-    await item.update(
-      { ...compendiumUpdateData },
-      { recursive: false, diff: false }
-    );
-    await item.setFlag(
-      CONSTANTS.systemId,
-      "lastMigrationVersion",
-      currentVersion
-    );
+type OldRuleElementSource = Omit<
+  RuleElementSource,
+  "conditions" | "selectors"
+> & {
+  target: "actor" | "item";
+  selector: string;
+};
+
+const oldAttackPathRegExp = /^attacks\.attacks\..*data\./;
+
+function ruleElementsNeedMigration(ruleElements: RuleElementSource[]): boolean {
+  if (ruleElements.length < 1) return false;
+
+  return (
+    isLastMigrationOlderThan("0.17.2") ||
+    ruleElements.some(
+      (rule) =>
+        isOldRuleElementPostComposedNumbers(rule) ||
+        isRuleElementWithOldAttackTargetPath(rule)
+    )
+  );
+}
+
+function isOldRuleElementPostComposedNumbers(
+  rule: OldRuleElementSource | RuleElementSource
+): rule is OldRuleElementSource {
+  return (
+    "selector" in rule || !("conditions" in rule) || !("selectors" in rule)
+  );
+}
+
+function isRuleElementWithOldAttackTargetPath(
+  rule: OldRuleElementSource | RuleElementSource
+): boolean {
+  return oldAttackPathRegExp.test(rule.target);
+}
+
+function migrateRuleElementPreComposedNumbers(
+  rule: OldRuleElementSource
+): OldRuleElementSource {
+  let enabled = false;
+
+  const hook = rule.hook ?? "afterSpecial";
+
+  let selector = rule.selector as unknown as string;
+  let type: typeof rule.type = rule.type;
+  const specialMatch = /^specials\.(\w+)\.(\w+)/.exec(selector);
+  if (specialMatch) {
+    enabled = true;
+    selector = specialMatch[1] as string;
+    if ("permTotal" === specialMatch[2]) {
+      type = "WV.RuleElement.PermSpecialComponent";
+    } else {
+      type = "WV.RuleElement.TempSpecialComponent";
+    }
+  }
+  const skillMatch = /^skills\.(\w+)/.exec(selector);
+  if (skillMatch) {
+    enabled = true;
+    selector = `skills.${skillMatch[1] as string}`;
+    type = "WV.RuleElement.NumberComponent";
   }
 
-  if (!foundry.utils.isObjectEmpty(updateData)) {
-    LOG.info(
-      `Migrating Item ${SystemLogger.getItemIdent(item)} with`,
-      updateData
-    );
-    await item.update(updateData);
-    await item.setFlag(
-      CONSTANTS.systemId,
-      "lastMigrationVersion",
-      currentVersion
-    );
+  if (
+    [
+      "WV.RuleElement.PermSpecialComponent",
+      "WV.RuleElement.TempSpecialComponent",
+      "WV.RuleElement.NumberComponent"
+    ].includes(type)
+  ) {
+    enabled = true;
   }
+
+  return {
+    ...rule,
+    enabled,
+    hook,
+    selector,
+    type
+  };
+}
+
+function migrateRuleElementPostComposedNumbers(
+  rule: OldRuleElementSource | RuleElementSource
+): RuleElementSource {
+  if (!isOldRuleElementPostComposedNumbers(rule)) return rule;
+
+  let selectors: RuleElementSource["selectors"];
+  let target: RuleElementSource["target"];
+  if ("selectors" in rule) {
+    target = (rule as RuleElementSource).target;
+    selectors = (rule as RuleElementSource).selectors;
+  } else {
+    selectors =
+      rule.target === "actor" ? ["actor", "parent"] : ["item", "this"];
+    target = rule.selector;
+  }
+  if (oldAttackPathRegExp.test(target)) target = target.replace("data.", "");
+
+  return {
+    conditions:
+      "conditions" in rule ? (rule as RuleElementSource).conditions : [],
+    enabled: rule.enabled,
+    hook: rule.hook,
+    label: rule.label,
+    priority: rule.priority,
+    selectors,
+    target,
+    type: rule.type,
+    value: rule.value
+  };
+}
+
+async function migrateFromCompendium(
+  item: foundry.documents.BaseItem,
+  updateData: Record<string, unknown>
+): Promise<Record<string, unknown>> {
+  const compendiumUpdateData = await getUpdateDataFromCompendium(item);
+  if (compendiumUpdateData === null) return updateData;
+
+  const ruleElementsUpdateData = updateData["data.rules.sources"];
+  if (
+    !item.getFlag(CONSTANTS.systemId, "overwriteRulesWithCompendium") &&
+    Array.isArray(ruleElementsUpdateData)
+  ) {
+    compendiumUpdateData.data.rules.sources = ruleElementsUpdateData;
+  }
+
+  return compendiumUpdateData;
 }
 
 function migrateAmmoFix(
@@ -270,7 +324,8 @@ function transformRange(
       },
       modifier: {
         source: 0
-      }
+      },
+      tags: []
     };
   }
 
@@ -285,7 +340,8 @@ function transformRange(
         },
         special: ""
       },
-      modifier: range.modifier
+      modifier: range.modifier,
+      tags: ["melee"]
     };
   }
 
@@ -300,7 +356,8 @@ function transformRange(
         },
         special: ""
       },
-      modifier: range.modifier
+      modifier: range.modifier,
+      tags: []
     };
   }
 

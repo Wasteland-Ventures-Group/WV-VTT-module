@@ -1,13 +1,13 @@
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
 import Prompt, {
+  CheckboxInputSpec,
   NumberInputSpec,
   TextInputSpec
 } from "../../applications/prompt.js";
-import { CONSTANTS } from "../../constants.js";
+import { CONSTANTS, RangeBracket } from "../../constants.js";
 import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
-import type DragData from "../../dragData.js";
 import Formulator from "../../formulator.js";
 import { getGame } from "../../foundryHelpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
@@ -15,109 +15,153 @@ import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 import * as interact from "../../interaction.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
-import type Weapon from "../weapon.js";
-import * as ranges from "./ranges.js";
+import Weapon from "../weapon.js";
 
-/** An attack of a Weapon Item. */
-export default class Attack {
+/** An execution flow of a weapon attack. */
+export default class AttackExecution {
   /**
-   * Create an Attack from the given data.
+   * Create and execute an execution flow of an attack.
    * @param name - the identifier name of the attack
-   * @param data - the attack data
-   * @param weapon - the Weapon this Attack belongs to
+   * @param attackProperties - the attack properties
+   * @param weapon - the Weapon the attack belongs to
    */
-  constructor(
-    public name: string,
-    public data: AttackProperties,
-    public weapon: Weapon
-  ) {}
+  static async execute(
+    name: string,
+    attackProperties: AttackProperties,
+    weapon: Weapon
+  ): Promise<void> {
+    await (await AttackExecution.new(name, attackProperties, weapon)).execute();
+  }
 
-  /**
-   * Execute the attack
-   * @param options - options for the roll
-   */
-  async execute(options: RollOptions = {}): Promise<void> {
-    // Get owners and data -----------------------------------------------------
-    let weapon = this.weapon;
+  static async new(
+    name: string,
+    attackProperties: AttackProperties,
+    weapon: Weapon
+  ): Promise<AttackExecution> {
     let token = interact.getFirstControlledToken();
-    let actor = weapon.actor ?? interact.getActor(token);
-    token ??= interact.getActorToken(actor);
-    const target = interact.getFirstTarget();
 
-    if (!actor)
+    let executionAttackProperties = attackProperties;
+    let executionWeapon = weapon;
+    let executionActor = executionWeapon.actor ?? interact.getActor(token);
+    if (!executionActor)
       throw new SystemRulesError(
         "Can not execute a weapon attack without an actor!"
       );
 
-    // Clone the weapon, so we can finalize it with the selected actor and other
-    // external data.
-    const originalActor = actor;
-    actor = await actor.clone();
-    if (!actor) {
-      LOG.error("Could not clone the actor: ", originalActor);
-      return;
+    if (!executionWeapon.actor) {
+      LOG.debug(
+        "Setting up a new ephemeral Weapon/Actor pair.",
+        executionWeapon,
+        executionActor
+      );
+
+      const clonedActor = await executionActor.clone();
+      if (!clonedActor) {
+        LOG.error("Could not clone the actor.", executionActor);
+        throw new Error("Could not clone the actor.");
+      }
+      executionActor = clonedActor;
+
+      const weaponId = executionActor.data.update({
+        items: [executionWeapon.toObject()]
+      }).items?.[0]?._id;
+      if (!weaponId) throw new Error("Could not embed the weapon.");
+
+      executionActor.prepareData();
+
+      const embeddedWeapon = executionActor.items.get(weaponId);
+      if (!(embeddedWeapon instanceof Weapon))
+        throw new Error("Could not find the embedded weapon.");
+
+      executionWeapon = embeddedWeapon;
+
+      const ephAttackProps = executionWeapon.data.data.attacks.attacks[name];
+      if (!ephAttackProps)
+        throw new Error("Could not find the attack on the ephemeral weapon.");
+
+      executionAttackProperties = ephAttackProps;
     }
 
-    const originalWeapon = weapon;
-    const clonedWeapon = await weapon.clone({ parent: actor });
-    if (!clonedWeapon) {
-      LOG.error("Could not clone the weapon: ", originalWeapon);
-      return;
-    }
-    weapon = clonedWeapon;
+    token ??= interact.getActorToken(executionActor);
 
-    // Only finalize, if the weapon hasn't already been finalized
-    if (!this.weapon.actor) {
-      weapon.finalizeData();
-    }
+    return new this(
+      name,
+      executionAttackProperties,
+      executionWeapon,
+      token,
+      interact.getFirstTarget()
+    );
+  }
 
-    const attack = weapon.systemData.attacks.attacks[this.name];
-    if (!attack) {
-      LOG.error(`Could not find attack "${this.name}" on: `, weapon);
-      return;
-    }
+  /**
+   * Create an execution flow of an attack.
+   * @param name - the identifier name of the attack
+   * @param attackProperties - the attack properties
+   * @param weapon - the Weapon the attack belongs to (this and its actor should already be finalized)
+   */
+  constructor(
+    public name: string,
+    public attackProperties: AttackProperties,
+    public weapon: Weapon,
+    public token: Token | undefined,
+    public target: Token | undefined
+  ) {
+    const actor = this.weapon.actor;
+    if (!actor)
+      throw new SystemRulesError(
+        "Can not create an AttackExecution for a weapon without an actor!"
+      );
+    this.actor = actor;
+  }
 
+  actor: WvActor;
+
+  /** Execute the attack */
+  async execute(): Promise<void> {
     // Get needed external data ------------------------------------------------
     let externalData: ExternalData;
     try {
-      externalData = await this.getExternalData(actor, token, target);
+      externalData = await this.getExternalData(
+        this.actor,
+        this.token,
+        this.target
+      );
     } catch (e) {
       if (e === "closed") return;
       else throw e;
     }
-    const { alias, modifier, range } = externalData;
+    const { alias, modifier, range, whisperToGms } = externalData;
 
     // Create common chat message data -----------------------------------------
     const commonData: ChatMessageDataConstructorData =
       this.createDefaultMessageData(
         {
           scene: null,
-          actor: actor.id,
-          token: token?.id ?? null,
+          actor: this.actor.id,
+          token: this.token?.id ?? null,
           alias
         },
-        options
+        whisperToGms
       );
 
     // Get range bracket -------------------------------------------------------
-    const rangeBracket = ranges.getRangeBracket(
-      weapon.systemData.ranges,
+    const rangeBracket = this.weapon.data.data.ranges.getRangeBracket(
       range,
-      actor.data.data.specials
+      this.attackProperties.rangePickingTags,
+      this.actor.data.data.specials
     );
-    const isOutOfRange = ranges.RangeBracket.OUT_OF_RANGE === rangeBracket;
-    attack.applyRangeDamageDiceMod(range);
+    const isOutOfRange = RangeBracket.OUT_OF_RANGE === rangeBracket;
+    const damageDice =
+      this.attackProperties.damage.getRangeModifiedDamageDice(range);
 
     // Calculate hit roll target -----------------------------------------------
-    const rangeModifier = ranges.getRangeModifier(
-      weapon.systemData.ranges,
-      rangeBracket
-    );
+    const rangeModifier =
+      this.weapon.data.data.ranges.getRangeModifier(rangeBracket);
 
-    const critSuccess = actor.data.data.secondary.criticals.success;
-    const critFailure = actor.data.data.secondary.criticals.failure;
-    const hitChance = attack.getHitRollTarget(
-      actor.data.data.skills[weapon.systemData.skill],
+    const critSuccess = this.actor.data.data.secondary.criticals.success;
+    const critFailure = this.actor.data.data.secondary.criticals.failure;
+    const hitChance = this.getHitRollTarget(
+      this.actor.data.data.skills[this.weapon.data.data.skill],
       rangeModifier,
       modifier,
       critSuccess.total,
@@ -125,20 +169,21 @@ export default class Attack {
     );
 
     // Calculate AP ------------------------------------------------------------
-    const previousAp = actor.data.data.vitals.actionPoints.value;
+    const previousAp = this.actor.data.data.vitals.actionPoints.value;
+    const apCost = this.attackProperties.ap.total;
     const remainingAp = isOutOfRange
       ? previousAp
-      : token?.inCombat
-      ? previousAp - this.data.ap.total
+      : this.token?.inCombat
+      ? previousAp - apCost
       : previousAp;
-    const notEnoughAp = 0 > remainingAp;
+    const notEnoughAp = remainingAp < 0;
 
     // Create common attack flags ----------------------------------------------
     const commonFlags: Required<deco.CommonWeaponAttackFlags> = {
       type: "weaponAttack",
       details: {
         ap: {
-          cost: this.data.ap.total,
+          cost: apCost,
           previous: previousAp,
           remaining: remainingAp
         },
@@ -147,8 +192,8 @@ export default class Attack {
           success: critSuccess.toObject(false)
         },
         damage: {
-          base: this.data.damage.base.toObject(false),
-          dice: this.data.damage.dice.toObject(false)
+          base: this.attackProperties.damage.base.toObject(false),
+          dice: damageDice.toObject(false)
         },
         hit: hitChance.toObject(false),
         range: {
@@ -158,9 +203,9 @@ export default class Attack {
       },
       weapon: {
         display: {
-          ranges: ranges.getDisplayRanges(
-            this.weapon.systemData,
-            actor.data.data.specials
+          ranges: this.weapon.data.data.ranges.getDisplayRanges(
+            this.attackProperties.rangePickingTags,
+            this.actor.data.data.specials
           )
         },
         image: this.weapon.img,
@@ -181,12 +226,12 @@ export default class Attack {
     }
 
     // Check AP and subtract in combat -----------------------------------------
-    if (token?.inCombat) {
+    if (this.token?.inCombat) {
       if (notEnoughAp) {
         this.createNotEnoughApMessage(commonData, commonFlags);
         return;
       }
-      actor?.updateActionPoints(remainingAp);
+      this.actor.updateActionPoints(remainingAp);
     }
 
     // Hit roll ----------------------------------------------------------------
@@ -199,8 +244,8 @@ export default class Attack {
     // Damage roll -------------------------------------------------------------
     const damageRoll = new Roll(
       Formulator.damage(
-        this.data.damage.base.total,
-        this.data.damage.dice.total
+        this.attackProperties.damage.base.total,
+        damageDice.total
       ).toString()
     ).evaluate({ async: false });
 
@@ -208,76 +253,14 @@ export default class Attack {
     this.createAttackMessage(commonData, commonFlags, hitRoll, damageRoll);
   }
 
-  /** Get the system formula representation of the damage of this attack. */
-  get damageFormula(): string {
-    if (!this.data.damage.diceRange || this.weapon.actor)
-      return `${this.data.damage.base.total}+(${this.data.damage.dice.total})`;
-
-    const low =
-      this.data.damage.dice.total +
-      this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.min);
-    const high =
-      this.data.damage.dice.total +
-      this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.max);
-    return `${this.data.damage.base.total}+(${low}-${high})`;
-  }
-
-  /**
-   * Get the string representation of the potential damage range of the attack.
-   */
-  get damageRange(): string {
-    const low = this.data.damage.base.total;
-    let high = low + this.data.damage.dice.total;
-
-    if (this.data.damage.diceRange && !this.weapon.actor) {
-      high += this.getStrengthDamageDiceMod(
-        CONSTANTS.bounds.special.points.max
-      );
-    }
-
-    return `${low} - ${high}`;
-  }
-
-  /**
-   * Apply a Strength damage dice modifier to the attack, based on the Strength
-   * of the given Actor.
-   */
-  applyStrengthDamageDiceMod(actor: WvActor): void {
-    const value = this.getStrengthDamageDiceMod(
-      actor.data.data.specials.strength.tempTotal
-    );
-    if (value)
-      this.data.damage.dice.add({
-        value,
-        labelComponents: [
-          { key: "wv.rules.special.names.strength.long" },
-          { text: "-" },
-          { key: "wv.rules.damage.damageDice" }
-        ]
-      });
-  }
-
-  protected applyRangeDamageDiceMod(range: ranges.RangeBracket): void {
-    const value = this.getRangeDamageDiceMod(range);
-    if (value)
-      this.data.damage.dice.add({
-        value,
-        labelComponents: [
-          { key: "wv.rules.range.singular" },
-          { text: "-" },
-          { key: "wv.rules.damage.damageDice" }
-        ]
-      });
-  }
-
   /**
    * Get the data external to the attack.
    * @throws If the potential Prompt is closed without submitting
    */
-  protected async getExternalData(
+  private async getExternalData(
     actor: WvActor,
-    token: Token | null | undefined,
-    target: Token | null | undefined
+    token: Token | undefined,
+    target: Token | undefined
   ): Promise<ExternalData> {
     const i18n = getGame().i18n;
 
@@ -298,9 +281,14 @@ export default class Attack {
         range: {
           type: "number",
           label: i18n.localize("wv.rules.range.distance.name"),
-          value: interact.getRange(token, target) ?? 0,
+          value: interact.getDistance(token, target) ?? 0,
           min: 0,
           max: 99999
+        },
+        whisperToGms: {
+          type: "checkbox",
+          label: i18n.localize("wv.system.rolls.whisperToGms"),
+          value: getGame().user?.isGM
         }
       },
       { title: `${this.weapon.data.name} - ${this.name}` }
@@ -308,7 +296,7 @@ export default class Attack {
   }
 
   /** Get the hit roll target. */
-  protected getHitRollTarget(
+  private getHitRollTarget(
     skill: CompositeNumber,
     rangeModifier: number,
     promptHitModifier: number,
@@ -346,52 +334,19 @@ export default class Attack {
     return hitChance;
   }
 
-  /** Get the Strength damage modifier dice for the given Strength value. */
-  protected getStrengthDamageDiceMod(strength: number): number {
-    if (!this.data.damage.diceRange) {
-      return 0;
-    }
-
-    if (strength > 10) {
-      return 3;
-    } else if (strength >= 8) {
-      return 2;
-    } else if (strength >= 4) {
-      return 1;
-    }
-
-    return 0;
-  }
-
-  /** Get the range damage modifier dice for the given range bracket. */
-  protected getRangeDamageDiceMod(range: ranges.RangeBracket): number {
-    if (this.data.damage.damageFallOff === "shotgun") {
-      switch (range) {
-        case ranges.RangeBracket.LONG:
-          return -4;
-        case ranges.RangeBracket.MEDIUM:
-          return -2;
-      }
-    }
-
-    return 0;
-  }
-
   /** Create the default message data for weapon attack messages. */
-  protected createDefaultMessageData(
+  private createDefaultMessageData(
     speaker: foundry.data.ChatMessageData["speaker"]["_source"],
-    options?: RollOptions
+    whisperToGms: boolean
   ): ChatMessageDataConstructorData {
     return {
       speaker,
-      whisper: options?.whisperToGms
-        ? ChatMessage.getWhisperRecipients("gm")
-        : null
+      whisper: whisperToGms ? ChatMessage.getWhisperRecipients("gm") : null
     };
   }
 
   /** Create a weapon attack message, signaling out of range. */
-  protected createOutOfRangeMessage(
+  private createOutOfRangeMessage(
     commonData: ChatMessageDataConstructorData,
     commonFlags: deco.CommonWeaponAttackFlags
   ): void {
@@ -408,7 +363,7 @@ export default class Attack {
   }
 
   /** Create a weapon attack message, signaling insufficient AP. */
-  protected createNotEnoughApMessage(
+  private createNotEnoughApMessage(
     commonData: ChatMessageDataConstructorData,
     commonFlags: deco.CommonWeaponAttackFlags
   ): void {
@@ -425,7 +380,7 @@ export default class Attack {
   }
 
   /** Create a chat message for an executed attack. */
-  protected async createAttackMessage(
+  private async createAttackMessage(
     commonData: ChatMessageDataConstructorData,
     commonFlags: deco.CommonWeaponAttackFlags,
     hitRoll: Roll,
@@ -449,7 +404,7 @@ export default class Attack {
           formula: damageRoll.formula,
           results:
             damageRoll.dice[0]?.results.map((result) => result.result) ?? [],
-          total: damageRoll.total ?? this.data.damage.base.total
+          total: damageRoll.total ?? this.attackProperties.damage.base.total
         },
         hit: {
           critical: hitRoll.dice[0]?.results[0]?.critical,
@@ -467,41 +422,12 @@ export default class Attack {
   }
 }
 
-/** The drag data of a Weapon Attack */
-export interface WeaponAttackDragData extends DragData {
-  /** The ID of the Actor, owning the Weapon */
-  actorId?: string | null | undefined;
-
-  /** The name of the Attack on the Weapon */
-  attackName: string;
-
-  type: "weaponAttack";
-
-  /** The ID of the Weapon on the Actor */
-  weaponId: string;
-}
-
-/**
- * A custom typeguard, to check whether an unknown object is a
- * WeaponAttackDragData.
- * @param data - the unknown object
- * @returns whether it is a WeaponAttackDragData
- */
-export function isWeaponAttackDragData(
-  data: Record<string, unknown>
-): data is WeaponAttackDragData {
-  return (
-    data.type === "weaponAttack" &&
-    typeof data.attackName === "string" &&
-    typeof data.weaponId === "string"
-  );
-}
-
 /** The Prompt input spec for an attack prompt */
 type PromptSpec = {
   alias: TextInputSpec;
   modifier: NumberInputSpec;
   range: NumberInputSpec;
+  whisperToGms: CheckboxInputSpec;
 };
 
 /** Data external to the attack */
@@ -514,13 +440,7 @@ interface ExternalData {
 
   /** The range to the target in meters */
   range: number;
-}
 
-/** Options for modifying Attack rolls. */
-export interface RollOptions {
-  /**
-   * Whether to whisper the Attack to GMs.
-   * @defaultValue `false`
-   */
-  whisperToGms?: boolean;
+  /** Whether to whisper to GMs */
+  whisperToGms: boolean;
 }

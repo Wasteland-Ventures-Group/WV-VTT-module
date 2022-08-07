@@ -20,7 +20,8 @@
               "source": 1
             },
             "diceRange": true
-          }
+          },
+          "tags": ["melee"]
         },
         "Throw": {
           "ap": {
@@ -37,7 +38,8 @@
           },
           "rounds": {
             "source": 1
-          }
+          },
+          "tags": ["thrown"]
         }
       }
     },
@@ -55,7 +57,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": ["melee", "thrown"]
       },
       "medium": {
         "distance": {
@@ -69,7 +72,8 @@
         },
         "modifier": {
           "source": -10
-        }
+        },
+        "tags": ["thrown"]
       },
       "long": {
         "distance": {
@@ -83,7 +87,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "common",
@@ -100,6 +105,7 @@
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "melee",
     "strengthRequirement": {
       "source": 1

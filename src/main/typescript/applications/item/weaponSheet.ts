@@ -3,11 +3,9 @@ import {
   AttackSource,
   ATTACK_JSON_SCHEMA
 } from "../../data/item/weapon/attack/source.js";
+import type { WeaponAttackDragData } from "../../dragData.js";
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../../item/weapon.js";
-import type { WeaponAttackDragData } from "../../item/weapon/attack.js";
-import Attack from "../../item/weapon/attack.js";
-import * as ranges from "../../item/weapon/ranges.js";
 import { isOfItemType } from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, {
@@ -23,8 +21,8 @@ export default class WeaponSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("weapon-sheet");
-    defaultOptions.height = 390;
-    defaultOptions.width = 700;
+    defaultOptions.height = 500;
+    defaultOptions.width = 800;
     return foundry.utils.mergeObject(defaultOptions, {
       dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }]
     } as typeof ItemSheet["defaultOptions"]);
@@ -43,27 +41,24 @@ export default class WeaponSheet extends WvItemSheet {
         ...i18nDamageFallOffTypes
       },
       displayRanges: {
-        short: ranges.getDisplayRangeDistance(
-          weapon.systemData.ranges.short.distance,
+        short: weapon.data.data.ranges.short.distance.getDisplayRangeDistance(
           weapon.actor?.data.data.specials
         ),
-        medium: ranges.getDisplayRangeDistance(
-          weapon.systemData.ranges.medium.distance,
+        medium: weapon.data.data.ranges.medium.distance.getDisplayRangeDistance(
           weapon.actor?.data.data.specials
         ),
-        long: ranges.getDisplayRangeDistance(
-          weapon.systemData.ranges.long.distance,
+        long: weapon.data.data.ranges.long.distance.getDisplayRangeDistance(
           weapon.actor?.data.data.specials
         )
       },
       reload: {
-        caliber: i18nCalibers[weapon.systemData.reload.caliber],
+        caliber: i18nCalibers[weapon.data.data.reload.caliber],
         calibers: i18nCalibers,
         containerType:
-          i18nContainerTypes[weapon.systemData.reload.containerType],
+          i18nContainerTypes[weapon.data.data.reload.containerType],
         containerTypes: i18nContainerTypes
       },
-      skill: i18nSkills[weapon.systemData.skill],
+      skill: i18nSkills[weapon.data.data.skill],
       skills: i18nSkills,
       specials: {
         "": "",
@@ -89,11 +84,9 @@ export default class WeaponSheet extends WvItemSheet {
     sheetForm
       .querySelectorAll("button[data-weapon-attack-name]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickAttackExecute(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickAttackExecute(event)
+        );
       });
 
     sheetForm
@@ -108,11 +101,9 @@ export default class WeaponSheet extends WvItemSheet {
     sheetForm
       .querySelectorAll(".weapon-attack-control[data-action=delete]")
       .forEach((element) =>
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickDeleteWeaponAttack(event);
-        })
+        element.addEventListener("click", (event) =>
+          this.onClickDeleteWeaponAttack(event)
+        )
       );
 
     if (this.item.hasEnabledCompendiumLink)
@@ -171,11 +162,24 @@ export default class WeaponSheet extends WvItemSheet {
     formData: Record<string, unknown>
   ): Promise<unknown> {
     this.addAttackRenameUpdateData(formData);
+    for (const rangeName of ["short", "medium", "long"]) {
+      this.sanitizeTags(formData, `data.ranges.${rangeName}.tags`);
+    }
+    Object.keys(this.item.data.data.attacks.sources).forEach((attackName) => {
+      this.sanitizeTags(formData, `data.attacks.sources.${attackName}.tags`);
+    });
     return super._updateObject(event, formData);
   }
 
+  protected override disableCompendiumLinkInputs(form: HTMLFormElement): void {
+    super.disableCompendiumLinkInputs(form);
+    form
+      .querySelectorAll(".weapon-attack-control[data-action]")
+      .forEach((element) => element.setAttribute("disabled", ""));
+  }
+
   /** Handle a click event on an Attack execute button. */
-  protected async onClickAttackExecute(event: MouseEvent): Promise<void> {
+  protected async onClickAttackExecute(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement)) {
       LOG.warn("The target was not an HTMLElement.");
       return;
@@ -187,28 +191,34 @@ export default class WeaponSheet extends WvItemSheet {
       return;
     }
 
-    const attackKey = attackElement.dataset.weaponAttackName;
-    if (!attackKey) {
+    const attackName = attackElement.dataset.weaponAttackName;
+    if (!attackName) {
       LOG.warn("Could not get the attack name.");
       return;
     }
 
-    const attack = this.item.systemData.attacks.attacks[attackKey];
-    if (!(attack instanceof Attack)) {
+    const attack = this.item.data.data.attacks.attacks[attackName];
+    if (!attack) {
       LOG.warn("Could not find the attack on the weapon.");
       return;
     }
 
-    attack.execute({ whisperToGms: event.ctrlKey });
+    attack.execute();
   }
 
   /** Handle a click click event on a create weapon attack button. */
   protected async onClickCreateWeaponAttack(): Promise<void> {
-    const newName = await Prompt.getString({
-      label: getGame().i18n.localize("wv.system.misc.name")
-    });
+    let newName: string;
+    try {
+      newName = await Prompt.getString({
+        label: getGame().i18n.localize("wv.system.misc.name")
+      });
+    } catch (e) {
+      if (e === "closed") return;
+      else throw e;
+    }
 
-    if (this.item.systemData.attacks.sources[newName]) {
+    if (this.item.data.data.attacks.sources[newName]) {
       ui?.notifications?.error(
         getGame().i18n.format("wv.system.messages.attackAlreadyExists", {
           name: newName
@@ -230,15 +240,15 @@ export default class WeaponSheet extends WvItemSheet {
   }
 
   /** Handle a click click event on a delete weapon attack button. */
-  protected onClickDeleteWeaponAttack(event: MouseEvent): void {
+  protected onClickDeleteWeaponAttack(event: Event): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
     const attackName = event.target.dataset.attack;
     if (!attackName) return;
 
-    const attack = this.item.systemData.attacks.attacks[attackName];
-    if (attack === undefined) {
+    const attack = this.item.data.data.attacks.attacks[attackName];
+    if (!attack) {
       ui?.notifications?.error(
         getGame().i18n.format("wv.system.messages.attackNotFound", {
           name: attackName
@@ -263,8 +273,8 @@ export default class WeaponSheet extends WvItemSheet {
       if (typeof newAttackName !== "string") continue;
       if (oldAttackName === newAttackName) continue;
 
-      const oldAttack = this.item.systemData.attacks.sources[oldAttackName];
-      const newAttack = this.item.systemData.attacks.sources[newAttackName];
+      const oldAttack = this.item.data.data.attacks.sources[oldAttackName];
+      const newAttack = this.item.data.data.attacks.sources[newAttackName];
       if (newAttack !== undefined) {
         ui?.notifications?.error(
           getGame().i18n.format("wv.system.messages.attackAlreadyExists", {
@@ -282,13 +292,6 @@ export default class WeaponSheet extends WvItemSheet {
         formData[`data.attacks.sources.${newAttackName}`] = oldAttack;
       }
     }
-  }
-
-  protected override disableCompendiumLinkInputs(form: HTMLFormElement): void {
-    super.disableCompendiumLinkInputs(form);
-    form
-      .querySelectorAll(".weapon-attack-control[data-action]")
-      .forEach((element) => element.setAttribute("disabled", ""));
   }
 }
 

@@ -20,7 +20,8 @@
               "source": 0
             },
             "diceRange": true
-          }
+          },
+          "tags": ["melee"]
         }
       }
     },
@@ -38,7 +39,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": ["melee"]
       },
       "medium": {
         "distance": {
@@ -52,7 +54,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       },
       "long": {
         "distance": {
@@ -66,7 +69,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "common",
@@ -83,6 +87,7 @@
     "rules": {
       "sources": []
     },
+    "tags": ["skillful"],
     "skill": "unarmed",
     "strengthRequirement": {
       "source": 2

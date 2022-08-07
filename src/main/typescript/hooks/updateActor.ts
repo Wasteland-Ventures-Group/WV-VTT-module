@@ -7,5 +7,5 @@ export default function registerForUpdateActor(): void {
 function reRenderItemSheetsOfActor(
   actor: Parameters<Hooks.UpdateDocument<typeof Actor>>[0]
 ): void {
-  actor.items.forEach((item) => item.render(false));
+  actor.items.forEach((item) => item.render());
 }

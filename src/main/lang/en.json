@@ -15,7 +15,7 @@
         "fears": "Fears",
         "gender": "Gender",
         "personality": "Personality",
-        "size": "Size",
+        "sizeCategory": "Size Category",
         "socialContacts": "Social Contacts",
         "specialTalent": "Special Talent",
         "virtue": "Virtue"
@@ -209,6 +209,7 @@
         "health": "Health",
         "healingRate": "Healing Rate"
       },
+      "initiative": "Initiative",
       "insanity": "Insanity",
       "karma": "Karma",
       "leveling": {
@@ -466,6 +467,7 @@
         "sourceValues": "Source Values",
         "speakerAlias": "Speaker alias",
         "statistics": "Statistics",
+        "tags": "Tags",
         "toggleCompendiumLink": "Comp. Link",
         "updateFromCompendium": "Update"
       },
@@ -477,25 +479,34 @@
       "rolls": {
         "descriptive": "Rolling {what}",
         "imperative": "Roll",
-        "modifierExplanation": "Ctrl-Click to whisper to game masters"
+        "whisperToGms": "Whisper to game masters?"
       },
       "ruleEngine": {
+        "documentMessages": {
+          "name": "Document related messages",
+          "relations": {
+            "thisItem": "This Item",
+            "parentActor": "Parent Actor",
+            "parentOwnedItem": "Parent Actor owned Item"
+          }
+        },
         "errors": {
           "logical": {
-            "noActor": "The target is set to \"actor\", but the item has no actor.",
-            "notCompositeNumber": "The property \"{path}\" on \"{name}\" is not a modifiable number.",
-            "notMatchingSelector": "The property \"{path}\" on \"{name}\" does not exist.",
-            "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\".",
+            "notCompositeNumber": "The property \"{path}\" is not a composite number.",
+            "notMatchingTarget": "The property \"{path}\" does not exist.",
+            "wrongDocumentType": "The Document is not of the expected type \"{type}\".",
+            "wrongTargetType": "The property \"{path}\" is not of the needed type \"{type}\".",
             "wrongValueType": "The value for this rule should be of type \"{type}\"."
           },
           "semantic": {
             "additional": "The property \"{property}\" is not allowed at \"{path}\".",
             "missing": "The property \"{property}\" is missing at \"{path}\".",
             "unknown": "An unknown error occurred.",
+            "unknownCondition": "The type of condition is unknown.",
             "unknownHook": "The type of hook is unknown.",
             "unknownRuleElement": "The type of RuleElement is unknown.",
             "unknownSpecialName": "The SPECIAL name is unknown.",
-            "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
+            "unknownSelector": "The selector is wrong. It has to be either \"item\" or \"actor\".",
             "wrongType": "The property \"{path}\" is not of type \"{type}\"."
           },
           "syntax": "Syntax error: {message}"
@@ -504,8 +515,11 @@
           "singular": "Rule Element",
           "plural": "Rule Elements"
         },
+        "selectors": {
+          "selectedDocuments": "Selected Documents"
+        },
         "warnings": {
-          "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\".",
+          "changedType": "The type of \"{path}\" changed from \"{original}\" to \"{new}\".",
           "notSaved": "This rule element was not saved due to errors. It is save to close this Foundry window and fix this later. Though the changes will be lost once Foundry is reloaded."
         }
       },

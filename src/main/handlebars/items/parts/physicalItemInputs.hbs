@@ -1,40 +1,24 @@
-<div class="general-info flexrow spacing-bottom">
-  <label class="contained-target-inline">
-    {{~localize "wv.system.misc.name"~}}
-    <input type="text" name="data.name" value="{{data.data.name}}" />
-  </label>
+<div class="general-info flexrow spacing-bottom flex-j-spaced">
   {{~#if sheet.rarity~}}
-    <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.rarity.name"}}">
+    <span class="flex-center flex-fixed flex-gapped flexrow no-wrap" title="{{localize "wv.rules.equipment.rarity.name"}}">
       <span class="fas fa-gem"></span><select name="data.rarity">
         {{~selectOptions sheet.rarity.rarities selected=data.data.rarity~}}
       </select>
     </span>
   {{~/if~}}
   {{~#if data.data.value.source includeZero=true ~}}
-    <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.value.name"}}">
+    <span class="flex-center flex-fixed flex-gapped flexrow no-wrap" title="{{localize "wv.rules.equipment.value.name"}}">
       <span class="fas fa-coins"></span><input class="size-4" type="number" name="data.value.source" value="{{data.data.value.source}}" />
     </span>
   {{~/if~}}
   {{~#if data.data.weight.source includeZero=true ~}}
-    <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.weight.name"}}">
+    <span class="flex-center flex-fixed flex-gapped flexrow no-wrap" title="{{localize "wv.rules.equipment.weight.name"}}">
       <span class="fas fa-weight"></span><input class="size-3" type="number" name="data.weight.source" value="{{data.data.weight.source}}" />
     </span>
   {{~/if~}}
   {{~#if data.data.amount includeZero=true ~}}
-    <span class="general-info-element flex-fixed" title="{{localize "wv.system.values.amount"}}">
+    <span class="flex-center flex-fixed flex-gapped flexrow no-wrap" title="{{localize "wv.system.values.amount"}}">
       <span class="fas fa-hashtag"></span><input class="size-3" type="number" name="data.amount" value="{{data.data.amount}}" />
     </span>
   {{~/if~}}
-</div>
-<div class="resource-block flex-fixed spacing-bottom">
-  <label>
-    {{~localize "wv.system.misc.description"~}}
-    <textarea name="data.description">{{data.data.description}}</textarea>
-  </label>
-</div>
-<div class="resource-block flex-fixed spacing-bottom">
-  <label>
-    {{~localize "wv.system.misc.notes"~}}
-    <textarea name="data.notes">{{data.data.notes}}</textarea>
-  </label>
 </div>

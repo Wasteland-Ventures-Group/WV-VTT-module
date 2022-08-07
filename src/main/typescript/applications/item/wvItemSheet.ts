@@ -1,6 +1,9 @@
 import type { DefinedError } from "ajv";
+import type WvActor from "../../actor/wvActor.js";
 import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
+import type WvItem from "../../item/wvItem.js";
+import type { DocumentRelation } from "../../item/wvItem.js";
 import AdditionalPropMessage from "../../ruleEngine/messages/additionalPropMessage.js";
 import MissingPropMessage from "../../ruleEngine/messages/missingPropMessage.js";
 import NotSavedMessage from "../../ruleEngine/messages/notSavedMessage.js";
@@ -16,14 +19,16 @@ import WvI18n from "../../wvI18n.js";
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"],
-      height: 410,
-      tabs: [
-        { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
-      ],
-      width: 600
-    } as typeof ItemSheet["defaultOptions"]);
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes.push(
+      ...[CONSTANTS.systemId, "document-sheet", "item-sheet"]
+    );
+    defaultOptions.height = 410;
+    defaultOptions.tabs = [
+      { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
+    ];
+    defaultOptions.width = 600;
+    return defaultOptions;
   }
 
   /**
@@ -84,6 +89,7 @@ export default class WvItemSheet extends ItemSheet {
       sheet: {
         rarity,
         parts: {
+          baseItemInputs: HANDLEBARS.partPaths.item.baseItemInputs,
           header: HANDLEBARS.partPaths.item.header,
           physicalItemInputs: HANDLEBARS.partPaths.item.physicalItemInputs,
           rules: HANDLEBARS.partPaths.item.rules
@@ -262,10 +268,29 @@ export default class WvItemSheet extends ItemSheet {
 
   protected override async _updateObject(
     event: Event,
-    formData: Record<string, string | RuleElementSource[] | unknown>
+    formData: Record<string, unknown>
   ): Promise<unknown> {
+    this.sanitizeTags(formData, "data.tags");
     this.parseRuleElementSources(formData);
     return super._updateObject(event, formData);
+  }
+
+  /** Sanitize the tags on the given property in the form data. */
+  protected sanitizeTags(
+    formData: Record<string, unknown>,
+    name: string
+  ): void {
+    const value = formData[name];
+    if (typeof value === "string") {
+      formData[name] = [
+        ...new Set(
+          value
+            .split(",")
+            .map((string) => string.trim())
+            .filter((string) => string.length > 0)
+        )
+      ].sort((a, b) => a.localeCompare(b));
+    }
   }
 
   /**
@@ -289,6 +314,7 @@ export default class WvItemSheet extends ItemSheet {
 
     let messages: RuleElementMessage[];
     let source: string;
+    let documentMessages: SheetDataDocumentMessages[] = [];
     if (hasSyntaxError) {
       messages = [syntaxError, new NotSavedMessage()];
       source = syntaxErrorTuple[1] ?? "";
@@ -298,14 +324,56 @@ export default class WvItemSheet extends ItemSheet {
     } else {
       messages = rule.messages;
       source = JSON.stringify(rule.source, null, 2);
+      documentMessages = [...rule.documentMessages.entries()].map(
+        ([document, value]) =>
+          this.mapToSheetDataDocumentMessages(document, value)
+      );
     }
 
     return {
-      hasErrors: re.hasErrors(messages),
-      hasWarnings: re.hasWarnings(messages),
-      label: rule.source.label,
+      hasDocumentMessages: rule.hasDocumentMessages,
+      hasErrors: re.hasErrors(messages) || rule.hasDocumentErrors,
+      hasSelectedDocuments: rule.hasSelectedDocuments,
+      hasWarnings: re.hasWarnings(messages) || rule.hasDocumentWarnings,
+      documentMessages,
+      label: rule.label,
       messages,
+      selectedDocuments: [...rule.selectedDocuments.entries()].map(
+        ([document, value]) =>
+          this.mapToSheetDataSelectedDocument(document, value)
+      ),
       source
+    };
+  }
+
+  /**
+   * Map an entry in a RuleElement's documentMessages to a
+   * SheetDataDocumentMessages.
+   */
+  private mapToSheetDataDocumentMessages(
+    document: WvActor | WvItem,
+    value: re.DocumentMessagesValue
+  ): SheetDataDocumentMessages {
+    return {
+      docId: document.id ?? "",
+      docName: document.name ?? "",
+      messages: value.messages,
+      docRelation: getGame().i18n.localize(
+        `wv.system.ruleEngine.documentMessages.relations.${value.causeDocRelation}`
+      )
+    };
+  }
+
+  private mapToSheetDataSelectedDocument(
+    document: WvActor | WvItem,
+    { relation }: { relation: DocumentRelation }
+  ): SheetDataSelectedDocument {
+    return {
+      docId: document.id ?? "",
+      docName: document.name ?? "",
+      docRelation: getGame().i18n.localize(
+        `wv.system.ruleEngine.documentMessages.relations.${relation}`
+      )
     };
   }
 
@@ -316,9 +384,7 @@ export default class WvItemSheet extends ItemSheet {
    * arrays of this class and their updates are not added to the update data.
    * @param formData - the data of the submitted form
    */
-  private parseRuleElementSources(
-    formData: Record<string, string | RuleElementSource[] | unknown>
-  ) {
+  private parseRuleElementSources(formData: Record<string, unknown>) {
     // Prepare for a new parse
     this.ruleElementSyntaxErrors = [];
     this.ruleElementSchemaErrors = [];
@@ -365,7 +431,7 @@ export default class WvItemSheet extends ItemSheet {
     if (!ruleSources.length) {
       // If the rule elements were the only thing that was changed, but all of
       // them contained errors, preventing save, we need to rerender manually.
-      if (!Object.keys(formData).keys.length) this.render(false);
+      if (!Object.keys(formData).keys.length) this.render();
       return;
     }
 
@@ -410,9 +476,7 @@ export default class WvItemSheet extends ItemSheet {
     rawSource: string
   ): void {
     this.ruleElementSyntaxErrors[index] = [
-      new SyntaxErrorMessage(
-        error.message.split(": ")[1] ?? "Unable to get specific message"
-      ),
+      new SyntaxErrorMessage(error.message),
       rawSource
     ];
     LOG.warn(
@@ -464,14 +528,19 @@ export default class WvItemSheet extends ItemSheet {
               "wv.system.ruleEngine.errors.semantic.unknownHook",
               "error"
             );
-          case "#/properties/target/enum":
+          case "#/properties/selector/enum":
             return new RuleElementMessage(
-              "wv.system.ruleEngine.errors.semantic.unknownTarget",
+              "wv.system.ruleEngine.errors.semantic.unknownSelector",
               "error"
             );
           case "#/properties/type/enum":
             return new RuleElementMessage(
               "wv.system.ruleEngine.errors.semantic.unknownRuleElement",
+              "error"
+            );
+          case "#/properties/conditions/items/enum":
+            return new RuleElementMessage(
+              "wv.system.ruleEngine.errors.semantic.unknownCondition",
               "error"
             );
         }
@@ -488,6 +557,7 @@ export interface SheetData extends ItemSheet.Data {
   sheet: {
     rarity: SheetDataRarity | undefined;
     parts: {
+      baseItemInputs: string;
       header: string;
       physicalItemInputs: string;
       rules: string;
@@ -505,11 +575,25 @@ export interface SheetDataRarity {
 }
 
 export interface SheetDataRuleElement {
+  hasDocumentMessages: boolean;
   hasErrors: boolean;
+  hasSelectedDocuments: boolean;
   hasWarnings: boolean;
+  documentMessages: SheetDataDocumentMessages[];
   label: string;
   messages: SheetDataMessage[];
+  selectedDocuments: SheetDataSelectedDocument[];
   source: string;
+}
+
+export interface SheetDataDocumentMessages extends SheetDataSelectedDocument {
+  messages: SheetDataMessage[];
+}
+
+export interface SheetDataSelectedDocument {
+  docId: string;
+  docName: string;
+  docRelation: string;
 }
 
 export interface SheetDataMessage {

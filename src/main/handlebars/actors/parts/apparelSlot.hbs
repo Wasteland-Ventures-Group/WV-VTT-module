@@ -1,6 +1,9 @@
 {{~#if apparel~}}
-  <div class="apparel-slot">
-    <h3>{{apparel.name}}</h3>
+  <div class="apparel-slot" data-item-id="{{apparel._id}}">
+    <h3 class="flexrow flex-j-spaced">
+      <span>{{apparel.name}}</span>
+      <button type="button" class="control small item-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+    </h3>
     <div class="detail-groups">
       <div class="details">
         {{~#if apparel.sheet.type~}}
@@ -13,6 +16,13 @@
           <span>{{localize "wv.rules.equipment.slots.quickSlot.plural"}}: {{apparel.data.quickSlots.total}}</span>
         {{~/if~}}
       </div>
+      {{~#if apparel.data.tags.length~}}
+        <section class="flexrow flex-gapped">
+          {{~#each apparel.data.tags as |tag|~}}
+            <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
+          {{~/each~}}
+        </section>
+      {{~/if~}}
       {{~#if apparel.data.notes~}}
         <div>{{apparel.data.notes}}</div>
       {{~/if~}}

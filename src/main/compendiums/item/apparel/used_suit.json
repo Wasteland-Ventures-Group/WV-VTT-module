@@ -13,13 +13,15 @@
           "hook": "afterSkills",
           "label": "Diplomacy bonus",
           "priority": 100,
-          "selector": "skills.diplomacy",
-          "target": "actor",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.diplomacy",
           "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
     "value": {
       "source": 40

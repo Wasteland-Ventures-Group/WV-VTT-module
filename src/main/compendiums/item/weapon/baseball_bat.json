@@ -21,7 +21,8 @@
           },
           "ap": {
             "source": 7
-          }
+          },
+          "tags": ["melee"]
         }
       }
     },
@@ -38,7 +39,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": ["melee"]
       },
       "medium": {
         "distance": {
@@ -52,7 +54,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       },
       "long": {
         "distance": {
@@ -66,7 +69,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "common",
@@ -83,6 +87,7 @@
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "melee",
     "strengthRequirement": {
       "source": 4

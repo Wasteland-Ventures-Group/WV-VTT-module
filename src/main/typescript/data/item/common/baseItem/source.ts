@@ -19,7 +19,16 @@ export default abstract class BaseItemSource {
 
   /** The RuleElement sources of the item */
   rules = new RulesSource();
+
+  /** Tags of the item */
+  tags: string[] = [];
 }
+
+export const TAGS_SOURCE_JSON_SCHEMA: JSONSchemaType<string[]> = {
+  type: "array",
+  items: { type: "string" },
+  default: []
+};
 
 /** A JSON schema for base item objects */
 export const BASE_ITEM_SOURCE_JSON_SCHEMA: JSONSchemaType<BaseItemSource> = {
@@ -59,14 +68,19 @@ export const BASE_ITEM_SOURCE_JSON_SCHEMA: JSONSchemaType<BaseItemSource> = {
       required: ["sources"],
       additionalProperties: false,
       default: { sources: [] }
+    },
+    tags: {
+      ...TAGS_SOURCE_JSON_SCHEMA,
+      description: "Tags of the item"
     }
   },
-  required: ["name", "description", "notes", "rules"],
+  required: ["name", "description", "notes", "rules", "tags"],
   additionalProperties: false,
   default: {
     name: "",
     description: "",
     notes: "",
-    rules: { sources: [] }
+    rules: { sources: [] },
+    tags: []
   }
 };

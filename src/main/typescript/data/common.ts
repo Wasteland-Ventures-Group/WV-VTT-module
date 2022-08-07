@@ -214,7 +214,6 @@ export class Component implements ComponentSource, FoundrySerializable {
       .join(" ");
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   toObject(_source?: boolean): ComponentSource {
     return {
       value: this.value,

@@ -1,4 +1,6 @@
+import type WvActor from "../../actor/wvActor.js";
 import { CompositeNumber } from "../../data/common.js";
+import type WvItem from "../../item/wvItem.js";
 import NotCompositeNumberMessage from "../messages/notCompositeNumberMessage.js";
 import RuleElement from "../ruleElement.js";
 
@@ -6,41 +8,46 @@ import RuleElement from "../ruleElement.js";
 export default class NumberComponent extends RuleElement {
   protected override validate(): void {
     super.validate();
-
-    if (this.hasErrors()) return;
-
-    this.checkSelectedIsCompositeNumber();
+    this.checkValueIsOfType("number");
   }
 
-  protected override _onAfterSpecial(): void {
-    this.apply();
+  protected override validateAgainstDocument(document: WvActor | WvItem): void {
+    super.validateAgainstDocument(document);
+    this.checkTargetIsCompositeNumber(document);
   }
 
-  protected override _onAfterSkills(): void {
-    this.apply();
-  }
-
-  protected override _onAfterComputation(): void {
-    this.apply();
-  }
-
-  protected checkSelectedIsCompositeNumber() {
-    const property = this.property;
-
-    if (property instanceof CompositeNumber) return;
-    if (CompositeNumber.isSource(property)) return;
-
-    this.messages.push(
-      new NotCompositeNumberMessage(this.targetName, this.selector)
-    );
-  }
-
-  /** Apply the rule element to the target Document. */
-  protected apply(): void {
+  protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
-    const modNumber = CompositeNumber.from(this.property);
-    modNumber.add({ value: this.value, labelComponents: this.labelComponents });
-    this.property = modNumber;
+    this.mapProperties(document, (value) => {
+      if (typeof this.value !== "number" || !(value instanceof CompositeNumber))
+        return;
+
+      value.add({
+        value: this.value,
+        labelComponents: this.labelComponents
+      });
+    });
+  }
+
+  /**
+   * Check whether the target property is a CompositeNumber or
+   * CompositeNumberSource.
+   *
+   * If the type is incorrect, an error message is added to the RuleElement.
+   * @remarks When this is called, it should already be verified that the
+   *          target actually matches a property.
+   */
+  protected checkTargetIsCompositeNumber(document: WvActor | WvItem) {
+    for (const property of this.getProperties(document)) {
+      if (property === undefined) continue;
+      if (property instanceof CompositeNumber) continue;
+
+      this.addDocumentMessage(
+        document,
+        new NotCompositeNumberMessage(this.target)
+      );
+      break;
+    }
   }
 }

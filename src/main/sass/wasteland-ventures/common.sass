@@ -51,6 +51,9 @@
   .flex-j-spaced
     justify-content: space-between
 
+  .flex-gapped
+    gap: constants.$spacing-distance
+
   .spacing-bottom
     margin-bottom: constants.$spacing-distance
 
@@ -59,6 +62,9 @@
 
   .no-margin
     margin: 0
+
+  .resize-vertical
+    resize: vertical
 
   input[type=number]
     justify-self: right
@@ -94,13 +100,10 @@
     display: flex
     justify-content: space-between
     white-space: nowrap
-
-    > :first-child
-      margin-left: 1ch
+    gap: 1ch
 
     &.flex-center
       align-items: center
-
 
   .standard-grid-gaps
     column-gap: constants.$spacing-distance * 2
@@ -186,3 +189,18 @@
 
     td *
       vertical-align: middle
+
+  .tag
+    background-color: constants.$shade-lighter
+    border:
+      color: constants.$shade-darker
+      style: solid
+      width: 1px
+    padding:
+      bottom: 3px
+      left: 5px
+      right: 5px
+      top: 3px
+
+    &.fas:before
+      margin-right: constants.$spacing-distance

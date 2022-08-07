@@ -9,59 +9,17 @@ import {
 import { MiscDataPropertiesData } from "../data/item/misc/properties.js";
 import { getGame } from "../foundryHelpers.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
+import {
+  ruleElementSort,
+  withoutConditions
+} from "../ruleEngine/ruleElement.js";
+import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import { LOG } from "../systemLogger.js";
 import validateSystemData from "../validation/validateSystemData.js";
 
 /** The basic Wasteland Ventures Item. */
 export default class WvItem extends Item {
-  /** The ready flag for the constructor context. */
-  private static readonly READY = { wastelandVentures: { ready: true } };
-
-  /**
-   * Decorate the passed context with the context ready flag.
-   * @param context - the originally passed constructor context
-   * @returns the decorated context
-   */
-  private static readyContext(
-    context: ConstructorParameters<typeof Item>[1]
-  ): ItemContext {
-    return { ...WvItem.READY, ...context };
-  }
-
-  /**
-   * Create a new WvItem or subclass registered in
-   * {@link TYPE_CONSTRUCTORS.ITEM}.
-   * @see Item.constructor
-   */
-  constructor(
-    data?: ConstructorParameters<typeof Item>[0],
-    context?: ItemContext
-  ) {
-    // This whole thing needs to break the recursion that happens by calling the
-    // super constructor, since we just return something of our own.
-
-    // Check if we have been through the other branch at least once, if so just
-    // call super.
-    if (context?.wastelandVentures?.ready) {
-      super(data, context);
-    } else {
-      if (data && isMappedItemType(data.type)) {
-        // If we are able to find a mapped constructor, then use that one
-        // instead and instantiate a subclass of WvItem with the readied
-        // context to break out of the recursion.
-        return new (getGame().wv.typeConstructors.item[data.type])(
-          data,
-          WvItem.readyContext(context)
-        );
-      }
-
-      // If we are not able to, just instantiate a WvItem with the readied
-      // context to break out of the recursion.
-      super(data, WvItem.readyContext(context));
-    }
-  }
-
   /** Get an identifying string for this Item. */
   get ident(): string {
     const thisIdent = `[${this.id}] "${this.name}"`;
@@ -75,13 +33,6 @@ export default class WvItem extends Item {
   /** Get the amount of the item, if it has any. */
   get amount(): number | undefined {
     return "amount" in this.data.data ? this.data.data.amount : undefined;
-  }
-
-  /** Get RuleElements that apply to this Item. */
-  get applicableRuleElements(): RuleElement[] {
-    return this.data.data.rules.elements.filter(
-      (rule) => rule.target === "item"
-    );
   }
 
   /** Check whether the item has a compendium link in its flags. */
@@ -140,9 +91,20 @@ export default class WvItem extends Item {
   }
 
   override prepareEmbeddedDocuments(): void {
-    this.applicableRuleElements
-      .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onAfterSpecial());
+    if (this.actor === null) {
+      this.data.data.rules.elements
+        .filter(withoutConditions)
+        .sort(ruleElementSort)
+        .forEach((ruleElement) => ruleElement.apply([this]));
+      this.apps && this.render();
+    }
+  }
+
+  /** Get the RuleElements of this Item for the given hook. */
+  getRuleElementsForHook(hook: RuleElementHook): RuleElement[] {
+    return this.data.data.rules.elements.filter(
+      (ruleElement) => ruleElement.hook === hook
+    );
   }
 
   /**
@@ -214,15 +176,6 @@ export default class WvItem extends Item {
   }
 }
 
-/**
- * An expanded document constructor context, to hold the ready flag for items.
- */
-type ItemContext = ConstructorParameters<typeof Item>[1] & {
-  wastelandVentures?: {
-    ready?: boolean;
-  };
-};
-
 /** Flags for items. */
 export type ItemFlags = {
   disableCompendiumLink?: boolean;
@@ -253,18 +206,20 @@ export function hasEnabledCompendiumLink(item: foundry.documents.BaseItem) {
 /** Fetch update data for an item from its compendium prototype. */
 export async function getUpdateDataFromCompendium(
   item: foundry.documents.BaseItem
-): Promise<Record<string, unknown>> {
+): Promise<{
+  data: foundry.documents.BaseItem["data"]["_source"]["data"];
+} | null> {
   const sourceId = item.getFlag("core", "sourceId");
-  if (typeof sourceId !== "string") return {};
+  if (typeof sourceId !== "string") return null;
 
   const match = SYSTEM_COMPENDIUM_SOURCE_ID_REGEX.exec(sourceId);
-  if (!match || !match[1] || !match[2]) return {};
+  if (!match || !match[1] || !match[2]) return null;
 
   const compendium = getGame().packs.get(match[1]);
-  if (!compendium) return {};
+  if (!compendium) return null;
 
   const document = await compendium.getDocument(match[2]);
-  if (!(document instanceof WvItem)) return {};
+  if (!(document instanceof WvItem)) return null;
 
   const updateData = { data: document.toObject().data };
   if (!item.getFlag(CONSTANTS.systemId, "overwriteNotesWithCompendium")) {
@@ -307,3 +262,6 @@ export function isOfItemType<
 ): item is InstanceType<Game["wv"]["typeConstructors"]["item"][T]> {
   return item instanceof getGame().wv.typeConstructors.item[type];
 }
+
+/** The relation of the owning item to the document that caused a message */
+export type DocumentRelation = "thisItem" | "parentActor" | "parentOwnedItem";

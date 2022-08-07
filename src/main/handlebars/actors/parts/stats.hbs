@@ -1,37 +1,61 @@
-<div class="flexrow flex-j-spaced">
-  <div class="flexcol flex-j-spaced flex-fixed">
-    <table class="flex-fixed no-margin">
-      <thead>
-        <tr>
-          <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.rules.special.tempTotal"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.rules.special.permTotal"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.rules.special.points.short"}}</th>
-          <th scope="col" class="align-right">{{localize "wv.system.rolls.imperative"}}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{~#each sheet.specials as |special|~}}
+<div class="flexrow flex-j-spaced flex-gapped">
+  <table class="no-margin">
+    <thead>
+      <tr>
+        <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.special.tempTotal"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.special.permTotal"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.special.points.short"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.system.rolls.imperative"}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{~#each sheet.specials as |special|~}}
         <tr>
           <th scope="row" class="align-left">{{special.long}}</th>
           <td class="align-right">{{special.tempTotal}}</td>
           <td class="align-right">{{special.permTotal}}</td>
+          <td class="align-right">{{special.points}}</td>
           <td class="align-right">
-            <input class="size-2" type="number" name="data.leveling.specialPoints.{{@key}}" value="{{special.points}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
-          </td>
-          <td class="align-right">
-            <button class="min-width no-wrap" data-special="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
+            <button class="min-width no-wrap" data-special="{{@key}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
           </td>
         </tr>
-        {{~/each~}}
-      </tbody>
-      <tfoot>
-        <th scope="row" colspan="3" class="align-right">{{localize "wv.system.values.total"}}</th>
-        <td class="align-right">{{sheet.leveling.totalSpecialPoints}}</td>
-        <td></td>
-      </tfoot>
-    </table>
-    <table class="flex-fixed no-margin">
+      {{~/each~}}
+    </tbody>
+  </table>
+  <table class="no-margin">
+    <thead>
+      <tr>
+        <th scope="col" class="align-left no-wrap">{{localize "wv.rules.skills.singular"}}</th>
+        <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.system.values.total"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.rules.skills.points.short"}}</th>
+        <th scope="col" class="align-right">{{localize "wv.system.rolls.imperative"}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{~#each sheet.skills as |skill|~}}
+      <tr>
+        <th scope="row" class="no-wrap align-left">{{skill.name}}</th>
+        <td class="align-left">{{skill.special}}</td>
+        <td class="align-right">{{skill.total}}</td>
+        <td class="align-right">
+          <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
+        </td>
+        <td class="align-right">
+          <button class="min-width no-wrap" data-skill="{{@key}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
+        </td>
+      </tr>
+      {{~/each~}}
+    </tbody>
+    <tfoot>
+      <th scope="row" colspan="3" class="align-right">{{localize "wv.system.values.total"}}</th>
+      <td class="align-right">{{sheet.leveling.totalSkillPoints}}</td>
+      <td></td>
+    </tfoot>
+  </table>
+  <div class="flexcol flex-j-spaced flex-gapped">
+    <table class="no-margin">
       <tbody>
         <tr>
           <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.torso"}}</th>
@@ -69,7 +93,7 @@
         {{~/if~}}
       </tbody>
     </table>
-    <table class="flex-fixed no-margin">
+    <table class="no-margin">
       <tbody>
         <tr>
           <th scope="row" class="align-left">{{localize "wv.rules.damage.threshold.long"}}</th>
@@ -84,6 +108,10 @@
           <td class="align-right">{{data.data.resistances.radiation.total}}%</td>
         </tr>
         <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.initiative"}}</th>
+          <td class="align-right">1d10 + {{data.data.secondary.initiative.total}}</td>
+        </tr>
+        <tr>
           <th scope="row" class="align-left">{{localize "wv.rules.equipment.slots.quickSlot.plural"}}</th>
           <td class="align-right">{{data.data.equipment.quickSlots.max}}</td>
         </tr>
@@ -95,38 +123,11 @@
           <th scope="row" class="align-left">{{localize "wv.rules.criticals.failureChance"}}</th>
           <td class="align-right">&gt;={{data.data.secondary.criticals.failure.total}}</td>
         </tr>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.rules.background.sizeCategory"}}</th>
+          <td class="align-right">{{data.data.background.size.total}}</td>
+        </tr>
       </tbody>
     </table>
   </div>
-  <table class="flex-fixed no-margin">
-    <thead>
-      <tr>
-        <th scope="col" class="min-width no-wrap align-left">{{localize "wv.rules.skills.singular"}}</th>
-        <th scope="col" class="min-width no-wrap align-left">{{localize "wv.rules.special.singular"}}</th>
-        <th scope="col" class="min-width no-wrap align-right">{{localize "wv.system.values.total"}}</th>
-        <th scope="col" class="min-width no-wrap align-right">{{localize "wv.rules.skills.points.short"}}</th>
-        <th scope="col" class="min-width no-wrap align-right">{{localize "wv.system.rolls.imperative"}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{~#each sheet.skills as |skill|~}}
-      <tr>
-        <th scope="row" class="min-width no-wrap align-left">{{skill.name}}</th>
-        <td class="min-width no-wrap align-left">{{skill.special}}</td>
-        <td class="min-width no-wrap align-right">{{skill.total}}</td>
-        <td class="min-width no-wrap align-right">
-          <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
-        </td>
-        <td class="align-right">
-          <button class="min-width no-wrap" data-skill="{{@key}}" title="{{localize 'wv.system.rolls.modifierExplanation'}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
-        </td>
-      </tr>
-      {{~/each~}}
-    </tbody>
-    <tfoot>
-      <th scope="row" colspan="3" class="align-right">{{localize "wv.system.values.total"}}</th>
-      <td class="align-right">{{sheet.leveling.totalSkillPoints}}</td>
-      <td></td>
-    </tfoot>
-  </table>
 </div>

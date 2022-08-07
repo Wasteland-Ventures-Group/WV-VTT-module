@@ -22,7 +22,8 @@
           },
           "rounds": {
             "source": 1
-          }
+          },
+          "tags": []
         },
         "Burst": {
           "damage": {
@@ -38,7 +39,8 @@
           },
           "rounds": {
             "source": 3
-          }
+          },
+          "tags": []
         }
       }
     },
@@ -55,7 +57,8 @@
         },
         "modifier": {
           "source": 0
-        }
+        },
+        "tags": []
       },
       "medium": {
         "distance": {
@@ -69,7 +72,8 @@
         },
         "modifier": {
           "source": -10
-        }
+        },
+        "tags": []
       },
       "long": {
         "distance": {
@@ -83,7 +87,8 @@
         },
         "modifier": {
           "source": -20
-        }
+        },
+        "tags": []
       }
     },
     "rarity": "common",
@@ -108,6 +113,7 @@
     "weight": {
       "source": 2
     },
+    "tags": [],
     "rules": {
       "sources": []
     }

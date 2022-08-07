@@ -1,8 +1,7 @@
-import { CONSTANTS } from "../../../constants.js";
+import { CONSTANTS, RangeBracket } from "../../../constants.js";
 import type { SerializedCompositeNumber } from "../../../data/common.js";
 import { CompositeNumber } from "../../../data/common.js";
 import { scrollChatToBottom } from "../../../foundryHelpers.js";
-import { RangeBracket } from "../../../item/weapon/ranges.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
 import type { HookParams } from "../index.js";
 import { getContentElement } from "./index.js";

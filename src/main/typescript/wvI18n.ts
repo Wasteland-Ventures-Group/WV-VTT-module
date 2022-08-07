@@ -9,13 +9,13 @@ import {
   ApparelSlot,
   ApparelType,
   EquipmentSlot,
+  RadiationSicknessLevel,
   GeneralMagicSchool,
-  MagicType
+  MagicType,
 } from "./constants.js";
 import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
 import { getGame } from "./foundryHelpers.js";
-import type { RadiationSicknessLevel } from "./radiation.js";
 
 /** The internationalization structure of a single SPECIAL. */
 export interface I18nSpecial {

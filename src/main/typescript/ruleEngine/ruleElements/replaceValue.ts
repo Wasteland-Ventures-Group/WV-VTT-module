@@ -1,29 +1,15 @@
+import type WvActor from "../../actor/wvActor.js";
+import type WvItem from "../../item/wvItem.js";
 import RuleElement from "../ruleElement.js";
 
-/** A RuleElement that replaces the value of the selected data point. */
+/** A RuleElement that replaces the value of the target data point. */
 export default class ReplaceValue extends RuleElement {
-  protected override validate(): void {
-    super.validate();
-
-    if (this.hasErrors()) return;
-
-    this.checkTypeChanged();
+  protected override validateAgainstDocument(document: WvActor | WvItem): void {
+    super.validateAgainstDocument(document);
+    this.checkTypeChanged(document);
   }
 
-  protected override _onAfterSpecial(): void {
-    this.apply();
-  }
-
-  protected override _onAfterSkills(): void {
-    this.apply();
-  }
-
-  protected override _onAfterComputation(): void {
-    this.apply();
-  }
-
-  /** Apply the rule element to the target Document. */
-  protected apply(): void {
-    this.property = this.value;
+  protected override innerApply(document: WvActor | WvItem): void {
+    this.mapProperties(document, () => this.value);
   }
 }

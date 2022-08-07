@@ -241,6 +241,8 @@ export interface LangSchema {
         magic: string;
         /** The label for the strain */
         strain: string;
+        /** The label for the strain use */
+        strainUse: string;
         /** The label of the types of magic */
         type: QuantityNames & {
           names: I18nMagicTypes;

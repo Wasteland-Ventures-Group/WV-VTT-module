@@ -219,6 +219,7 @@
       "magic": {
         "magic": "Magic",
         "strain": "Strain",
+        "strainUse": "Strain use",
         "type": {
           "singular": "Magic Type",
           "plural": "Magic Types",

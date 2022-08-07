@@ -219,6 +219,7 @@
       "magic": {
         "magic": "Magie",
         "strain": "Anstrengung",
+        "strainUse": "Anstrengungskosten",
         "type": {
           "singular": "Art",
           "plural": "Arten",

@@ -11,7 +11,7 @@ import {
   EquipmentSlot,
   RadiationSicknessLevel,
   GeneralMagicSchool,
-  MagicType,
+  MagicType
 } from "./constants.js";
 import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";

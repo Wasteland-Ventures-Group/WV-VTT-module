@@ -1,5 +1,4 @@
 import { TYPES } from "../constants.js";
-import type MagicDataProperties from "../data/item/magic/properties.js";
 import { MagicDataPropertiesData } from "../data/item/magic/properties.js";
 import WvItem from "./wvItem";
 

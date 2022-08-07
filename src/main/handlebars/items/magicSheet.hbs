@@ -29,16 +29,7 @@
           </select>
         </label>
       </div>
-      <label>
-        {{~localize "wv.system.misc.description"~}}
-        <textarea name="data.description">{{data.data.description}}</textarea>
-      </label>
-      <div class="resource-block flex-fixed spacing-bottom">
-        <label>
-          {{~localize "wv.system.misc.notes"~}}
-          <textarea name="data.notes">{{data.data.notes}}</textarea>
-        </label>
-      </div>
+{{> (get . "sheet.parts.baseItemInputs")}}
     </div>
 
     <div class="tab" data-group="primary" data-tab="rules">

@@ -28,6 +28,12 @@
             {{~selectOptions sheet.schools selected=data.data.school~}}
           </select>
         </label>
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.rules.magic.type.singular"~}}
+          <select class="type">
+            {{~selectOptions sheet.types selected=data.data.type~}}
+          </select>
+        </label>
       </div>
 {{> (get . "sheet.parts.baseItemInputs")}}
     </div>

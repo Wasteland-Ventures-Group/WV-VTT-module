@@ -11,7 +11,8 @@ import {
   EquipmentSlot,
   RadiationSicknessLevel,
   GeneralMagicSchool,
-  MagicType
+  MagicType,
+  SchoolByMagicType
 } from "./constants.js";
 import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
@@ -101,11 +102,20 @@ export default class WvI18n {
   }
 
   /** Get the internationalisation of the magic schools */
-  static get magicSchools(): I18nMagicSchools {
-    return foundry.utils.getProperty(
+  static getMagicSchools(type?: MagicType): Partial<I18nMagicSchools> {
+    const allSchools = foundry.utils.getProperty(
       getGame().i18n.translations,
       "wv.rules.magic.school.names"
     ) as I18nMagicSchools;
+    if (type) {
+      const result: Partial<I18nMagicSchools> = {};
+      SchoolByMagicType[type].forEach(
+        (school) => (result[school] = allSchools[school])
+      );
+      return result;
+    } else {
+      return allSchools;
+    }
   }
 
   /** Get the internationalisation of the magic types */

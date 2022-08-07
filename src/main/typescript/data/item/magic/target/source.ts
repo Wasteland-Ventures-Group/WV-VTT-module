@@ -4,11 +4,11 @@ import {
   SplashSizes,
   TargetType,
   TargetTypes
-} from "../../../../constants";
+} from "../../../../constants.js";
 import {
   CompositeNumberSource,
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-} from "../../../common";
+} from "../../../common.js";
 
 const AOETypes = ["none", "fixed", "varies"] as const;
 type AOEType = typeof AOETypes[number];

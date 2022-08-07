@@ -32,11 +32,13 @@ export const TARGET_JSON_SCHEMA: JSONSchemaType<TargetSource> = {
       default: "none"
     },
     count: {
+      description:
+        "The number of creatures this spell can individually target. Only applies when `type` is `creature`",
       ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
     },
     aoeType: {
       description:
-        "Whether or not a spell has an area of effect, and if it is fixed or varies based on potency",
+        "Whether or not a spell has an area of effect, and if it is fixed or varies based on potency.",
       type: "string",
       enum: AOETypes,
       default: "none"

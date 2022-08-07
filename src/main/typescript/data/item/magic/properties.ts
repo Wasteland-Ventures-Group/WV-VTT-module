@@ -22,5 +22,5 @@ export class MagicDataPropertiesData
 
   override rules = new RulesProperties();
 
-  type: MagicType = getMagicType(this.school);
+  type: MagicType;
 }

@@ -20,20 +20,27 @@ export default class MagicSheet extends WvItemSheet {
     return super.item;
   }
 
+  static getMagicSheetData(magic: Magic) {
+    const schoolsI18n = WvI18n.magicSchools;
+    const school = schoolsI18n[magic.data.data.school];
+    const typesI18n = WvI18n.magicTypes;
+    const type = typesI18n[magic.data.data.type];
+
+    return {
+      school: school,
+      schools: schoolsI18n,
+      type: type
+    };
+  }
+
   override async getData(): Promise<SheetData> {
     const data = await super.getData();
-    const schoolsI18n = WvI18n.magicSchools;
-
-    const school: string = schoolsI18n[this.item.systemData.school];
-    const magicType: string = WvI18n.magicTypes[this.item.systemData.type];
 
     return {
       ...data,
       sheet: {
         ...data.sheet,
-        schools: schoolsI18n,
-        school: school,
-        type: magicType
+        ...MagicSheet.getMagicSheetData(this.item)
       }
     };
   }

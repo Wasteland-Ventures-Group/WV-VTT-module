@@ -16,15 +16,14 @@ export default class Magic extends WvItem {
     super(data, context);
   }
 
-  /** Get the system data of this effect. */
-  get systemData(): MagicDataProperties["data"] {
-    if (!this.data || this.data.type !== TYPES.ITEM.MAGIC)
-      throw new Error(`This data's data type is not ${TYPES.ITEM.MAGIC}.`);
-
-    return this.data.data;
-  }
-
   override prepareBaseData(): void {
-    this.data.data = new MagicDataPropertiesData(this.systemData, this);
+    this.data.data = new MagicDataPropertiesData(this.data.data, this);
   }
+}
+
+export default interface Magic {
+  data: foundry.data.ItemData & {
+    type: typeof TYPES.ITEM.MAGIC;
+    _source: { type: typeof TYPES.ITEM.MAGIC };
+  };
 }

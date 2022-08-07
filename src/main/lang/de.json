@@ -218,7 +218,47 @@
       },
       "magic": {
         "magic": "Magie",
-        "strain": "Anstrengung"
+        "strain": "Anstrengung",
+        "type": {
+          "singular": "Art",
+          "plural": "Arten",
+          "names": {
+            "earthPony": "Erdponymagie",
+            "maneuver": "Flugmanöver",
+            "spirit": "Geistmagie",
+            "unicorn": "Einhornmagie"
+          }
+        },
+        "school": {
+          "names": {
+            "agility": "Geschicksmanöver",
+            "charm": "Liebreizbranche",
+            "conjuration": "Beschwörungsmagie",
+            "dark": "Dunkle Magie",
+            "embers": "Geist der Glut",
+            "endurance": "Ausdauermanöver",
+            "enhancement": "Verbesserungsmagie",
+            "general": "Allgemeinmagie",
+            "illusion": "Illusionsmagie",
+            "incantations": "Beschwörungen",
+            "machines": "Geist der Machinen",
+            "medical": "Medizinsmagie",
+            "might": "Stärkebranche",
+            "nature": "Geist der Natur",
+            "perception": "Wahrnehmungsmagie",
+            "protective": "Schutzmagie",
+            "serenity": "Geist der Heiterkeit",
+            "shadows": "Geist der Schatten",
+            "sight": "Sehensbranche",
+            "streams": "Geist der Flüsse",
+            "transmutation": "Verwandlungsmagie",
+            "trust": "Geist des Vertrauens",
+            "whispers": "Geist der Geflüster",
+            "wonderboltAndTalon": "Wonderbolt und Talon Manöver"
+          },
+          "plural": "Fächer",
+          "singular": "Fach"
+        }
       },
       "race": {
         "names": {

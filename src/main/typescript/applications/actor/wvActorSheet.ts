@@ -686,12 +686,9 @@ export default class WvActorSheet extends ActorSheet {
     const id = itemElement.dataset.itemId;
     if (!(typeof id === "string") || !id) return;
 
-    const amount = parseInt(event.target.value);
-    if (isNaN(amount)) throw new Error("The value was not a number.");
-
     const item = this.actor.items.get(id);
     if (item) {
-      item.update({ data: { amount } });
+      item.update({ data: { amount: event.target.valueAsNumber } });
       item.render();
       this.render();
     }

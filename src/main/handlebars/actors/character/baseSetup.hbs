@@ -1,0 +1,32 @@
+<form class="{{cssClass}} flexcol flex-gapped" autocomplete="off">
+  <div class="flex-fixed">
+    <table class="no-margin">
+      <thead>
+        <tr>
+          <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
+          <th scope="col" class="align-right zero-width no-wrap">{{localize "wv.rules.special.points.long"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{~#each sheet.specials as |special|~}}
+        <tr>
+          <th scope="row" class="align-left">{{special.long}}</th>
+          <td class="align-right zero-width no-wrap">
+            <input class="size-2" data-special-points="{{@key}}" type="number" name="special.{{@key}}" value="{{special.points}}" min="{{../sheet.bounds.special.points.min}}" max="{{../sheet.bounds.special.points.max}}" />
+          </td>
+        </tr>
+        {{~/each~}}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row" class="align-left">{{localize "wv.system.values.total"}}</th>
+          <td class="align-right zero-width no-wrap">
+            <span data-special-points-total>{{data.data.leveling.totalSpecialPoints}}</span>
+            <span> / {{sheet.bounds.special.points.total}}</span>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <button type="submit">{{localize "wv.system.actions.submit"}}</button>
+</form>

@@ -36,6 +36,7 @@ import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
 import Prompt from "../prompt.js";
+import BaseSetup from "./character/baseSetup.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
@@ -95,6 +96,11 @@ export default class WvActorSheet extends ActorSheet {
     });
 
     sheetForm.addEventListener("dragend", () => this.resetEquipmentSlots());
+
+    // setup windows
+    sheetForm
+      .querySelector('button[data-action="initial-setup"]')
+      ?.addEventListener("click", this.onClickInitialSetup.bind(this));
 
     // stat rolls
     sheetForm.querySelectorAll("button[data-special]").forEach((element) => {
@@ -237,11 +243,6 @@ export default class WvActorSheet extends ActorSheet {
           totalSkillPoints: SkillNames.reduce(
             (points, skillName) =>
               this.actor.data.data.skills[skillName].source + points,
-            0
-          ),
-          totalSpecialPoints: SpecialNames.reduce(
-            (points, specialName) =>
-              this.actor.data.data.specials[specialName].points + points,
             0
           )
         },
@@ -486,6 +487,11 @@ export default class WvActorSheet extends ActorSheet {
       ...weapon.toObject(false),
       sheet: WeaponSheet.getWeaponSheetData(weapon)
     };
+  }
+
+  /** Open the initial setup application. */
+  protected onClickInitialSetup() {
+    new BaseSetup(this.actor).render(true);
   }
 
   /** Handle a click event on the SPECIAL roll buttons. */
@@ -886,7 +892,6 @@ interface SheetBound {
 
 interface SheetBounds {
   skills: SheetBound;
-  special: SheetBound;
 }
 
 interface SheetEffect {
@@ -938,7 +943,6 @@ interface SheetInventory {
 
 interface SheetLeveling {
   totalSkillPoints: number;
-  totalSpecialPoints: number;
 }
 
 interface SheetMagic {

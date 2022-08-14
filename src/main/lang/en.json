@@ -396,6 +396,14 @@
         "singular": "Effect",
         "plural": "Effects"
       },
+      "initialCharacterSetup": {
+        "openButton": "Initial Character Setup",
+        "title": "Initial Character Setup for {name}",
+        "messages": {
+          "tooFewSpecialPointsSpent": "Too few SPECIAL points spent!",
+          "tooManySpecialPointsSpent": "Too many SPECIAL points spent!"
+        }
+      },
       "item": {
         "singular": "Item",
         "plural": "Items"

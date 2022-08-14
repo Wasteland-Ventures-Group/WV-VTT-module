@@ -396,6 +396,14 @@
         "singular": "Effekt",
         "plural": "Effekte"
       },
+      "initialCharacterSetup": {
+        "openButton": "Basischaracteraufbau",
+        "title": "Basischaracteraufbau für {name}",
+        "messages": {
+          "tooFewSpecialPointsSpent": "Zu wenige SPECIAL-Punkte ausgegeben!",
+          "tooManySpecialPointsSpent": "Zu viele SPECIAL-Punkte ausgegeben!"
+        }
+      },
       "item": {
         "singular": "Gegenstand",
         "plural": "Gegenstände"

@@ -1,133 +1,138 @@
-<div class="flexrow flex-j-spaced flex-gapped">
-  <table class="no-margin">
-    <thead>
-      <tr>
-        <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
-        <th scope="col" class="align-right">{{localize "wv.rules.special.tempTotal"}}</th>
-        <th scope="col" class="align-right">{{localize "wv.rules.special.permTotal"}}</th>
-        <th scope="col" class="align-right">{{localize "wv.rules.special.points.short"}}</th>
-        <th scope="col" class="align-right">{{localize "wv.system.rolls.imperative"}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{~#each sheet.specials as |special|~}}
-        <tr>
-          <th scope="row" class="align-left">{{special.long}}</th>
-          <td class="align-right">{{special.tempTotal}}</td>
-          <td class="align-right">{{special.permTotal}}</td>
-          <td class="align-right">{{special.points}}</td>
-          <td class="align-right">
-            <button class="min-width no-wrap" data-special="{{@key}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
-          </td>
-        </tr>
-      {{~/each~}}
-    </tbody>
-  </table>
-  <table class="no-margin">
-    <thead>
-      <tr>
-        <th scope="col" class="align-left no-wrap">{{localize "wv.rules.skills.singular"}}</th>
-        <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
-        <th scope="col" class="align-right">{{localize "wv.system.values.total"}}</th>
-        <th scope="col" class="align-right">{{localize "wv.rules.skills.points.short"}}</th>
-        <th scope="col" class="align-right">{{localize "wv.system.rolls.imperative"}}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{~#each sheet.skills as |skill|~}}
-      <tr>
-        <th scope="row" class="no-wrap align-left">{{skill.name}}</th>
-        <td class="align-left">{{skill.special}}</td>
-        <td class="align-right">{{skill.total}}</td>
-        <td class="align-right">
-          <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
-        </td>
-        <td class="align-right">
-          <button class="min-width no-wrap" data-skill="{{@key}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
-        </td>
-      </tr>
-      {{~/each~}}
-    </tbody>
-    <tfoot>
-      <th scope="row" colspan="3" class="align-right">{{localize "wv.system.values.total"}}</th>
-      <td class="align-right">{{sheet.leveling.totalSkillPoints}}</td>
-      <td></td>
-    </tfoot>
-  </table>
-  <div class="flexcol flex-j-spaced flex-gapped">
+<div class="flexcol flex-gapped">
+  <div class="flexrow flex-j-spaced flex-gapped">
+    <button data-action="initial-setup" type="button">{{localize "wv.system.initialCharacterSetup.openButton"}}</button>
+  </div>
+  <div class="flexrow flex-j-spaced flex-gapped">
     <table class="no-margin">
+      <thead>
+        <tr>
+          <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.special.tempTotal"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.special.permTotal"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.special.points.short"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.system.rolls.imperative"}}</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.torso"}}</th>
-          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.torso" {{checked data.data.vitals.crippledLimbs.torso}} /></td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.head"}}</th>
-          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.head" {{checked data.data.vitals.crippledLimbs.head}} /></td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.frontLeftLeg"}}</th>
-          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.front.left" {{checked data.data.vitals.crippledLimbs.legs.front.left}} /></td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.frontRightLeg"}}</th>
-          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.front.right" {{checked data.data.vitals.crippledLimbs.legs.front.right}} /></td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rearLeftLeg"}}</th>
-          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.rear.left" {{checked data.data.vitals.crippledLimbs.legs.rear.left}} /></td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rearRightLeg"}}</th>
-          <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.rear.right" {{checked data.data.vitals.crippledLimbs.legs.rear.right}} /></td>
-        </tr>
-        {{~#if data.data.background.race.hasWings~}}
+        {{~#each sheet.specials as |special|~}}
           <tr>
-            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.leftWing"}}</th>
-            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.wings.left" {{checked data.data.vitals.crippledLimbs.wings.left}} /></td>
+            <th scope="row" class="align-left">{{special.long}}</th>
+            <td class="align-right">{{special.tempTotal}}</td>
+            <td class="align-right">{{special.permTotal}}</td>
+            <td class="align-right">{{special.points}}</td>
+            <td class="align-right">
+              <button class="min-width no-wrap" data-special="{{@key}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
+            </td>
           </tr>
-          <tr>
-            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rightWing"}}</th>
-            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.wings.right" {{checked data.data.vitals.crippledLimbs.wings.right}} /></td>
-          </tr>
-        {{~/if~}}
+        {{~/each~}}
       </tbody>
     </table>
     <table class="no-margin">
+      <thead>
+        <tr>
+          <th scope="col" class="align-left no-wrap">{{localize "wv.rules.skills.singular"}}</th>
+          <th scope="col" class="align-left">{{localize "wv.rules.special.singular"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.system.values.total"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.rules.skills.points.short"}}</th>
+          <th scope="col" class="align-right">{{localize "wv.system.rolls.imperative"}}</th>
+        </tr>
+      </thead>
       <tbody>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.damage.threshold.long"}}</th>
-          <td class="align-right">{{data.data.equipment.damageThreshold.total}}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.resistances.poison.long"}}</th>
-          <td class="align-right">{{data.data.resistances.poison.total}}%</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.resistances.radiation.long"}}</th>
-          <td class="align-right">{{data.data.resistances.radiation.total}}%</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.initiative"}}</th>
-          <td class="align-right">1d10 + {{data.data.secondary.initiative.total}}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.equipment.slots.quickSlot.plural"}}</th>
-          <td class="align-right">{{data.data.equipment.quickSlots.max}}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.criticals.successChance"}}</th>
-          <td class="align-right">&lt;={{data.data.secondary.criticals.success.total}}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.criticals.failureChance"}}</th>
-          <td class="align-right">&gt;={{data.data.secondary.criticals.failure.total}}</td>
-        </tr>
-        <tr>
-          <th scope="row" class="align-left">{{localize "wv.rules.background.sizeCategory"}}</th>
-          <td class="align-right">{{data.data.background.size.total}}</td>
-        </tr>
+        {{~#each sheet.skills as |skill|~}}
+          <tr>
+            <th scope="row" class="no-wrap align-left">{{skill.name}}</th>
+            <td class="align-left">{{skill.special}}</td>
+            <td class="align-right">{{skill.total}}</td>
+            <td class="align-right">
+              <input class="size-3" type="number" name="data.leveling.skillRanks.{{@key}}" value="{{skill.ranks}}" min="{{../sheet.bounds.skills.points.min}}" max="{{../sheet.bounds.skills.points.max}}" />
+            </td>
+            <td class="align-right">
+              <button class="min-width no-wrap" data-skill="{{@key}}" type="button">{{localize "wv.system.rolls.imperative"}}</button>
+            </td>
+          </tr>
+        {{~/each~}}
       </tbody>
+      <tfoot>
+        <th scope="row" colspan="3" class="align-right">{{localize "wv.system.values.total"}}</th>
+        <td class="align-right">{{sheet.leveling.totalSkillPoints}}</td>
+        <td></td>
+      </tfoot>
     </table>
+    <div class="flexcol flex-j-spaced flex-gapped">
+      <table class="no-margin">
+        <tbody>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.torso"}}</th>
+            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.torso" {{checked data.data.vitals.crippledLimbs.torso}} /></td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.head"}}</th>
+            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.head" {{checked data.data.vitals.crippledLimbs.head}} /></td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.frontLeftLeg"}}</th>
+            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.front.left" {{checked data.data.vitals.crippledLimbs.legs.front.left}} /></td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.frontRightLeg"}}</th>
+            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.front.right" {{checked data.data.vitals.crippledLimbs.legs.front.right}} /></td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rearLeftLeg"}}</th>
+            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.rear.left" {{checked data.data.vitals.crippledLimbs.legs.rear.left}} /></td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rearRightLeg"}}</th>
+            <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.rear.right" {{checked data.data.vitals.crippledLimbs.legs.rear.right}} /></td>
+          </tr>
+          {{~#if data.data.background.race.hasWings~}}
+            <tr>
+              <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.leftWing"}}</th>
+              <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.wings.left" {{checked data.data.vitals.crippledLimbs.wings.left}} /></td>
+            </tr>
+            <tr>
+              <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rightWing"}}</th>
+              <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.wings.right" {{checked data.data.vitals.crippledLimbs.wings.right}} /></td>
+            </tr>
+          {{~/if~}}
+        </tbody>
+      </table>
+      <table class="no-margin">
+        <tbody>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.damage.threshold.long"}}</th>
+            <td class="align-right">{{data.data.equipment.damageThreshold.total}}</td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.resistances.poison.long"}}</th>
+            <td class="align-right">{{data.data.resistances.poison.total}}%</td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.resistances.radiation.long"}}</th>
+            <td class="align-right">{{data.data.resistances.radiation.total}}%</td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.initiative"}}</th>
+            <td class="align-right">1d10 + {{data.data.secondary.initiative.total}}</td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.equipment.slots.quickSlot.plural"}}</th>
+            <td class="align-right">{{data.data.equipment.quickSlots.max}}</td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.criticals.successChance"}}</th>
+            <td class="align-right">&lt;={{data.data.secondary.criticals.success.total}}</td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.criticals.failureChance"}}</th>
+            <td class="align-right">&gt;={{data.data.secondary.criticals.failure.total}}</td>
+          </tr>
+          <tr>
+            <th scope="row" class="align-left">{{localize "wv.rules.background.sizeCategory"}}</th>
+            <td class="align-right">{{data.data.background.size.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

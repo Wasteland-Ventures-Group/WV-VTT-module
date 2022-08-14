@@ -20,6 +20,13 @@ export default class LevelingProperties extends LevelingSource {
     );
   }
 
+  get totalSpecialPoints(): number {
+    return Object.values(this.specialPoints).reduce(
+      (total, points) => total + points,
+      0
+    );
+  }
+
   /**
    * The amount of experience needed for the character to advance to the next
    * level

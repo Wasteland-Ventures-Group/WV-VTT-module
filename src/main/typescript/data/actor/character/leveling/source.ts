@@ -152,8 +152,8 @@ export const LEVELING_JSON_SCHEMA: JSONSchemaType<LevelingSource> = {
       type: "array",
       items: {
         type: "integer",
-        maximum: CONSTANTS.bounds.special.points.max,
-        minimum: CONSTANTS.bounds.special.points.min
+        maximum: CONSTANTS.bounds.special.value.max,
+        minimum: CONSTANTS.bounds.special.value.min
       },
       minItems: 0,
       maxItems: 29

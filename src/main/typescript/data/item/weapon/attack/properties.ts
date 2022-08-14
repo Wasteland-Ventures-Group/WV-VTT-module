@@ -119,10 +119,10 @@ export class DamageProperties extends DamageSource {
 
     const low =
       this.dice.total +
-      this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.min);
+      this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.value.min);
     const high =
       this.dice.total +
-      this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.points.max);
+      this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.value.max);
     return `${this.base.total}+(${low}-${high})`;
   }
 
@@ -134,9 +134,7 @@ export class DamageProperties extends DamageSource {
     let high = low + this.dice.total;
 
     if (this.diceRange && !this.#weapon.actor) {
-      high += this.getStrengthDamageDiceMod(
-        CONSTANTS.bounds.special.points.max
-      );
+      high += this.getStrengthDamageDiceMod(CONSTANTS.bounds.special.value.max);
     }
 
     return `${low} - ${high}`;

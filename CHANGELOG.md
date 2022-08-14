@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## 0.19.1 - 2022-07-16
+### Changed
+
+- direct SPECIAL editing on the character sheet has been replaced with a
+  separate initial character setup window
+  ([#385](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/385))
+
+## [0.19.1] - 2022-07-16
 
 ### Fixed
 
@@ -16,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - items in the inventory not being draggable
 - FlatModifier and ReplaceValue not modifying the correct properties
 
-## 0.19.0 - 2022-07-16
+## [0.19.0] - 2022-07-16
 
 ### Added
 

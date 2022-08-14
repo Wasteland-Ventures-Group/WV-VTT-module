@@ -1,5 +1,5 @@
 import dartSass from "gulp-dart-sass";
-import del from "del";
+import { deleteAsync } from "del";
 import * as esbuild from "esbuild";
 import gulp from "gulp";
 import log from "fancy-log";
@@ -207,7 +207,7 @@ export const watchAll = gulp.parallel(
 watchAll.description = "Run all watch tasks.";
 
 export function clean(): Promise<string[]> {
-  return del(`${distPrefix}/**`, { force: true });
+  return deleteAsync(`${distPrefix}/**`);
 }
 clean.description = "Clean the dist dir.";
 

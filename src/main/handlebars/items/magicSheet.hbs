@@ -28,13 +28,7 @@
           <label class="contained-target-inline flex-fixed">
             {{~localize "wv.rules.magic.school.singular"~}}
             <select name="data.school">
-              {{~selectOptions sheet.schools selected=data.data.school~}}
-            </select>
-          </label>
-          <label class="contained-target-inline flex-fixed">
-            {{~localize "wv.rules.magic.type.singular"~}}
-            <select class="type">
-              {{~selectOptions sheet.types selected=data.data.type~}}
+              {{~selectGroupOptions sheet.schools selected=data.data.school~}}
             </select>
           </label>
         </div>
@@ -43,11 +37,11 @@
         <div class="flexrow flex-j-spaced">
           <label class="contained-target-inline flex-fixed">
             {{~localize "wv.rules.actionPoints.use"~}}
-            <input type="number" name="data.data.apCost.source" value="{{data.data.apCost.source}}"/>
+            <input type="number" name="data.apCost.source" value="{{data.data.apCost.source}}"/>
           </label>
           <label class="contained-target-inline flex-fixed">
             {{~localize "wv.rules.magic.strainUse"~}}
-            <input type="number" name="data.data.strainCost.source" value="{{data.data.strainCost.source}}"/>
+            <input type="number" name="data.strainCost.source" value="{{data.data.strainCost.source}}"/>
           </label>
         </div>
       </div>

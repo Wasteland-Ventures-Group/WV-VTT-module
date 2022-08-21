@@ -101,21 +101,22 @@ export default class WvI18n {
     ) as I18nCalibers;
   }
 
-  /** Get the internationalisation of the magic schools */
-  static getMagicSchools(type?: MagicType): Partial<I18nMagicSchools> {
-    const allSchools = foundry.utils.getProperty(
+  /** Get the internationalisation of the magic schools of a certain type*/
+  static getMagicSchools(type: MagicType): Partial<I18nMagicSchools> {
+    const result: Partial<I18nMagicSchools> = {};
+    const allSchools = WvI18n.magicSchools;
+    SchoolByMagicType[type].forEach(
+      (school) => (result[school] = allSchools[school])
+    );
+    return result;
+  }
+
+  /** Get the internationalisation of all the magic schools */
+  static get magicSchools(): I18nMagicSchools {
+    return foundry.utils.getProperty(
       getGame().i18n.translations,
       "wv.rules.magic.school.names"
     ) as I18nMagicSchools;
-    if (type) {
-      const result: Partial<I18nMagicSchools> = {};
-      SchoolByMagicType[type].forEach(
-        (school) => (result[school] = allSchools[school])
-      );
-      return result;
-    } else {
-      return allSchools;
-    }
   }
 
   /** Get the internationalisation of the magic types */

@@ -1,8 +1,14 @@
-import { isMagicType, SchoolByMagicType, TYPES } from "../../constants";
+import {
+  isMagicType,
+  MagicType,
+  MagicTypes,
+  SchoolByMagicType,
+  TYPES
+} from "../../constants";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet";
 import { isOfItemType } from "../../item/wvItem.js";
 import type Magic from "../../item/magic";
-import WvI18n, { I18nMagicSchools, I18nMagicTypes } from "../../wvI18n";
+import WvI18n, { I18nMagicSchools } from "../../wvI18n";
 
 export default class MagicSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
@@ -23,19 +29,23 @@ export default class MagicSheet extends WvItemSheet {
   static getMagicSheetData(magic: Magic) {
     const typesI18n = WvI18n.magicTypes;
     const type = magic.data.data.type;
-    const typeI18n = typesI18n[type];
-    const schoolsI18n = WvI18n.getMagicSchools(type);
+    const schoolsI18n = WvI18n.magicSchools;
     const school = magic.data.data.school;
     const schoolI18n = schoolsI18n[school];
     if (!schoolI18n) {
       throw new Error(`Invalid value of school (${school}) for type ${type}`);
     }
 
+    // const schools = new Map<MagicType, {label: string, schools: Partial<I18nMagicSchools>}>();
+    const schools = MagicTypes.reduce((acc, type) => {
+      const typeI18n = typesI18n[type];
+      acc[type] = { label: typeI18n, options: WvI18n.getMagicSchools(type) };
+      return acc;
+    }, {} as SheetMagicSchools);
+
     return {
       school: schoolI18n,
-      schools: schoolsI18n,
-      type: typeI18n,
-      types: typesI18n
+      schools
     };
   }
 
@@ -85,11 +95,14 @@ export default class MagicSheet extends WvItemSheet {
   }
 }
 
+type SheetMagicSchools = Record<
+  MagicType,
+  { label: string; options: Partial<I18nMagicSchools> }
+>;
+
 export interface SheetMagic {
   school: string;
-  schools: Partial<I18nMagicSchools>;
-  type: string;
-  types: I18nMagicTypes;
+  schools: SheetMagicSchools;
 }
 
 export interface SheetData extends ItemSheetData {

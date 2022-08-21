@@ -16,7 +16,6 @@ import { WEAPON_SOURCE_JSON_SCHEMA } from "./data/item/weapon/source.js";
 import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvRuler from "./foundryOverrides/wvRuler.js";
-import WvToken from "./foundryOverrides/wvToken.js";
 import Ammo from "./item/ammo.js";
 import Apparel from "./item/apparel.js";
 import Effect from "./item/effect.js";
@@ -104,7 +103,6 @@ export function configureFoundryOnInit(): void {
 
   // Register our override classes.
   CONFIG.Combat.documentClass = WvCombat;
-  CONFIG.Token.objectClass = WvToken;
   // @ts-expect-error This is currently the only way to override Ruler
   Ruler = WvRuler;
 

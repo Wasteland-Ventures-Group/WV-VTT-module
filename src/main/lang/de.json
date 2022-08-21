@@ -492,23 +492,25 @@
         }
       },
       "settings": {
-        "enforceApDragDrop": {
+        "alwaysNeverSetting": {
           "choices": {
-            "disabled": "Deaktiviert",
-            "playersAndGameMaster": "Spieler und Spielleiter",
-            "players": "Spieler"
-          },
-          "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit Drag and Drop bewegt werden.",
-          "name": "Erzwinge AP für Drag and Drop Bewegungen"
+            "always": "Immer",
+            "never": "Nie"
+          }
         },
-        "enforceApRuler": {
-          "choices": {
-            "disabled": "Deaktiviert",
-            "playersAndGameMaster": "Spieler und Spielleiter",
-            "players": "Spieler"
+        "movement": {
+          "enforceAndSubtractApForPlayers": {
+            "hint": "Erzwinge AP Kontrollen und ziehe AP für Spielerbewegungen im Kampf ab.",
+            "name": "Spieler Kampfbewegungs-AP"
           },
-          "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit dem Messwerkzeug bewegt werden.",
-          "name": "Erzwinge AP für Messwerkzeug Bewegungen"
+          "enforceApForGameMasters": {
+            "hint": "Erzwinge AP Kontrollen für Spielleiterbewegungen im Kampf.",
+            "name": "GM Kampfbewegungs-AP Kontrollen"
+          },
+          "subtractApForGameMasters": {
+            "hint": "Ziehe AP für Spielleiterbewegungen im Kampf ab.",
+            "name": "GM Kampfbewegungs-AP Abzug"
+          }
         },
         "skillPointsMinBounds": {
           "hint": "Das Minimum für Skillpunkte, die in einen Aktorbogen eingegeben werden können.",

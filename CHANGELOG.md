@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - direct SPECIAL editing on the character sheet has been replaced with a
   separate initial character setup window
   ([#385](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/385))
+- the AP enforcement and subtraction has changed
+  ([#415](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/415))
+  - it now checks all methods of changing a token's position
+  - the settings are now per player level and check or subtraction, not per
+    movement method
 
 ## [0.19.1] - 2022-07-16
 

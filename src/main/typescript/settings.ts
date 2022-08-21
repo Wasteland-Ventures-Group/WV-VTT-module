@@ -1,10 +1,14 @@
 import { CONSTANTS } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 
+export const Movement = {
+  enforceAndSubtractApForPlayers: "movement.enforceAndSubtractApForPlayers",
+  enforceApForGameMasters: "movement.enforceApForGameMasters",
+  subtractApForGameMasters: "movement.subtractApForGameMasters"
+} as const;
+
 export const initializedSettingName = "initialized" as const;
 export const migrVerSettingName = "systemMigrationVersion" as const;
-export const enforceApDragDropSettingName = "enforceApDragDrop" as const;
-export const enforceApRulerSettingName = "enforceApRuler" as const;
 
 export function registerSystemSettings(): void {
   const game = getGame();
@@ -29,51 +33,54 @@ export function registerSystemSettings(): void {
     type: String
   });
 
-  let i18nPrefix = "wv.system.settings.enforceApDragDrop";
-  settings.register(CONSTANTS.systemId, enforceApDragDropSettingName, {
-    choices: {
-      [EnforceApSetting.DISABLED]: i18n.localize(
-        `${i18nPrefix}.choices.disabled`
-      ),
-      [EnforceApSetting.PLAYERS]: i18n.localize(
-        `${i18nPrefix}.choices.players`
-      ),
-      [EnforceApSetting.PLAYERS_AND_GAMEMASTER]: i18n.localize(
-        `${i18nPrefix}.choices.playersAndGameMaster`
-      )
-    },
+  const alwaysNeverSettingChoices = {
+    [AlwaysNeverSetting.ALWAYS]: i18n.localize(
+      "wv.system.settings.alwaysNeverSetting.choices.always"
+    ),
+    [AlwaysNeverSetting.NEVER]: i18n.localize(
+      "wv.system.settings.alwaysNeverSetting.choices.never"
+    )
+  };
+
+  let i18nPrefix = "wv.system.settings.movement.enforceAndSubtractApForPlayers";
+  settings.register(
+    CONSTANTS.systemId,
+    Movement.enforceAndSubtractApForPlayers,
+    {
+      choices: alwaysNeverSettingChoices,
+      config: true,
+      default: AlwaysNeverSetting.ALWAYS,
+      hint: i18n.localize(`${i18nPrefix}.hint`),
+      name: i18n.localize(`${i18nPrefix}.name`),
+      scope: "world",
+      type: Number
+    }
+  );
+
+  i18nPrefix = "wv.system.settings.movement.enforceApForGameMasters";
+  settings.register(CONSTANTS.systemId, Movement.enforceApForGameMasters, {
+    choices: alwaysNeverSettingChoices,
     config: true,
-    default: EnforceApSetting.PLAYERS,
+    default: AlwaysNeverSetting.ALWAYS,
     hint: i18n.localize(`${i18nPrefix}.hint`),
     name: i18n.localize(`${i18nPrefix}.name`),
-    scope: "world",
+    scope: "client",
     type: Number
   });
 
-  i18nPrefix = "wv.system.settings.enforceApRuler";
-  settings.register(CONSTANTS.systemId, enforceApRulerSettingName, {
-    choices: {
-      [EnforceApSetting.DISABLED]: i18n.localize(
-        `${i18nPrefix}.choices.disabled`
-      ),
-      [EnforceApSetting.PLAYERS]: i18n.localize(
-        `${i18nPrefix}.choices.players`
-      ),
-      [EnforceApSetting.PLAYERS_AND_GAMEMASTER]: i18n.localize(
-        `${i18nPrefix}.choices.playersAndGameMaster`
-      )
-    },
+  i18nPrefix = "wv.system.settings.movement.subtractApForGameMasters";
+  settings.register(CONSTANTS.systemId, Movement.subtractApForGameMasters, {
+    choices: alwaysNeverSettingChoices,
     config: true,
-    default: EnforceApSetting.PLAYERS_AND_GAMEMASTER,
+    default: AlwaysNeverSetting.ALWAYS,
     hint: i18n.localize(`${i18nPrefix}.hint`),
     name: i18n.localize(`${i18nPrefix}.name`),
-    scope: "world",
+    scope: "client",
     type: Number
   });
 }
 
-export enum EnforceApSetting {
-  DISABLED,
-  PLAYERS,
-  PLAYERS_AND_GAMEMASTER
+export enum AlwaysNeverSetting {
+  ALWAYS,
+  NEVER
 }

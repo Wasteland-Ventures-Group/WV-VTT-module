@@ -492,23 +492,25 @@
         }
       },
       "settings": {
-        "enforceApDragDrop": {
+        "alwaysNeverSetting": {
           "choices": {
-            "disabled": "Disabled",
-            "playersAndGameMaster": "Players and game masters",
-            "players": "Players only"
-          },
-          "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with Drag and Drop.",
-          "name": "Enforce AP for Drag and Drop movement"
+            "always": "Always",
+            "never": "Never"
+          }
         },
-        "enforceApRuler": {
-          "choices": {
-            "disabled": "Disabled",
-            "playersAndGameMaster": "Players and game masters",
-            "players": "Players only"
+        "movement": {
+          "enforceAndSubtractApForPlayers": {
+            "hint": "Enforce AP checks and subtract AP from Actors moved by players in combat.",
+            "name": "Player Combat Movement AP"
           },
-          "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with the Ruler tool.",
-          "name": "Enforce AP for Ruler movement"
+          "enforceApForGameMasters": {
+            "hint": "Enforce AP checks for Actors moved by Game Masters in combat.",
+            "name": "GM Combat Movment AP Checks"
+          },
+          "subtractApForGameMasters": {
+            "hint": "Subtract AP from Actors moved by Game Masters in combat.",
+            "name": "GM Combat Movement AP subtract"
+          }
         },
         "skillPointsMinBounds": {
           "hint": "The minimum allowed amount of Skill points, that can be entered into an actor sheet.",

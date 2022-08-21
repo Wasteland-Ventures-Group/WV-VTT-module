@@ -685,14 +685,27 @@ export interface LangSchema {
       };
       /** Labels related to settings. */
       settings: {
+        /** Labels relating to an always/never setting */
+        alwaysNeverSetting: {
+          /** The choices for the setting */
+          choices: {
+            always: string;
+            never: string;
+          };
+        };
+        /** Movement related setting labels */
+        movement: {
+          /** The enforcement and subtract setting for players */
+          enforceAndSubtractApForPlayers: Setting;
+          /** The enforcement setting for game masters */
+          enforceApForGameMasters: Setting;
+          /** The subtract setting for game masters */
+          subtractApForGameMasters: Setting;
+        };
         /** The Skill Points minimum bounds setting */
         skillPointsMinBounds: Setting;
         /** The SPECIAL Points minimum bounds setting */
         specialPointsMinBounds: Setting;
-        /** The enforce AP on drag and drop setting */
-        enforceApDragDrop: EnforceApSetting;
-        /** The enforce AP on ruler move setting */
-        enforceApRuler: EnforceApSetting;
       };
       /** Labels relating to sheets */
       sheets: {

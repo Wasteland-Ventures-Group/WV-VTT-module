@@ -1,10 +1,4 @@
-import {
-  isMagicType,
-  MagicType,
-  MagicTypes,
-  SchoolByMagicType,
-  TYPES
-} from "../../constants";
+import { MagicType, MagicTypes, TYPES } from "../../constants";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet";
 import { isOfItemType } from "../../item/wvItem.js";
 import type Magic from "../../item/magic";
@@ -36,7 +30,6 @@ export default class MagicSheet extends WvItemSheet {
       throw new Error(`Invalid value of school (${school}) for type ${type}`);
     }
 
-    // const schools = new Map<MagicType, {label: string, schools: Partial<I18nMagicSchools>}>();
     const schools = MagicTypes.reduce((acc, type) => {
       const typeI18n = typesI18n[type];
       acc[type] = { label: typeI18n, options: WvI18n.getMagicSchools(type) };
@@ -59,39 +52,6 @@ export default class MagicSheet extends WvItemSheet {
         ...MagicSheet.getMagicSheetData(this.item)
       }
     };
-  }
-
-  onTypeChange(event: Event) {
-    if (!(event.target instanceof HTMLSelectElement))
-      throw new Error("The target was not an HTMLSelectElement.");
-
-    const selectedTypes = event.target.selectedOptions;
-    const selectedType = selectedTypes[0]?.value;
-    const itemData = this.item.data.data;
-    if (!isMagicType(selectedType)) {
-      throw new Error("The selected type is not a valid MagicType.");
-    }
-
-    // No change
-    if (itemData.type == selectedType) {
-      return;
-    }
-
-    // Change of type, reset to the first appropriate school
-    this.item.update({
-      data: { school: SchoolByMagicType[selectedType][0] }
-    });
-  }
-
-  override activateListeners(html: JQuery<HTMLFormElement>): void {
-    super.activateListeners(html);
-    const sheetForm = html[0];
-    if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element.");
-
-    sheetForm
-      .querySelector("select.type")
-      ?.addEventListener("change", (event) => this.onTypeChange(event));
   }
 }
 

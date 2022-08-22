@@ -114,7 +114,8 @@ export const COMPENDIUM_JSON_SCHEMA = {
         "should be a path to an image file, that users can fetch from the " +
         "game server.",
       type: "string",
-      default: ""
+      minLength: 1,
+      default: "icons/svg/item-bag.svg"
     },
     effects: {
       description: "Foundry active effects on the entry",
@@ -134,7 +135,7 @@ export const COMPENDIUM_JSON_SCHEMA = {
     name: "",
     type: "",
     data: {},
-    img: "",
+    img: "icons/svg/item-bag.svg",
     effects: [],
     flags: {}
   }

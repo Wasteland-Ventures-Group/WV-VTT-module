@@ -96,6 +96,6 @@ export const COMP_MAGIC_JSON_SCHEMA: JSONSchemaType<CompendiumMagic> = {
     ...COMPENDIUM_JSON_SCHEMA.default,
     type: TYPES.ITEM.MAGIC,
     data: MAGIC_SOURCE_JSON_SCHEMA.default,
-    img: "icons/weapons/wands/wand-totem.webp"
+    img: "icons/svg/daze.svg"
   }
 };

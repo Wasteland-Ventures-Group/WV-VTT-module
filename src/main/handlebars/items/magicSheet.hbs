@@ -15,7 +15,7 @@
           <span>{{localize "wv.rules.magic.school.singular"}}: {{sheet.school}}</span>
         </section>
         <section class="details">
-          <span>{{localize "wv.rules.magic.apUse"}}: {{data.data.apCost.source}}</span>
+          <span>{{localize "wv.rules.actionPoints.use"}}: {{data.data.apCost.source}}</span>
           <span>{{localize "wv.rules.magic.strainUse"}}: {{data.data.strainCost.source}}</span>
         </section>
         {{~#if data.data.notes~}}
@@ -41,17 +41,18 @@
         <div class="flexrow flex-j-spaced">
           <label class="contained-target-inline flex-fixed">
             {{~localize "wv.rules.actionPoints.use"~}}
-            <input type="number" name="data.apCost.source" value="{{data.data.apCost.source}}"/>
+            <input type="number" name="data.apCost.source" value="{{data.data.apCost.source}}" />
           </label>
           <label class="contained-target-inline flex-fixed">
             {{~localize "wv.rules.magic.strainUse"~}}
-            <input type="number" name="data.strainCost.source" value="{{data.data.strainCost.source}}"/>
+            <input type="number" name="data.strainCost.source" value="{{data.data.strainCost.source}}" />
           </label>
         </div>
       </div>
     </div>
+
     <div class="tab" data-group="primary" data-tab="rules">
-      {{> (get . "sheet.parts.rules")}}
+{{> (get . "sheet.parts.rules")}}
     </div>
   </section>
 </form>

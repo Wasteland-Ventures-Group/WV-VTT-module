@@ -224,8 +224,8 @@
           "singular": "Magic Type",
           "plural": "Magic Types",
           "names": {
-            "maneuver": "Aerial Maneuver",
             "earthPony": "Earth Pony Magic",
+            "maneuver": "Aerial Maneuver",
             "spirit": "Spirit Magic",
             "unicorn": "Unicorn Magic"
           }

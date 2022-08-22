@@ -14,31 +14,29 @@ export default class MagicSheet extends WvItemSheet {
   }
 
   override get item(): Magic {
-    if (!isOfItemType(super.item, TYPES.ITEM.MAGIC)) {
+    if (!isOfItemType(super.item, TYPES.ITEM.MAGIC))
       throw new Error("The used Item is not a Magic.");
-    }
+
     return super.item;
   }
 
   static getMagicSheetData(magic: Magic) {
     const typesI18n = WvI18n.magicTypes;
     const type = magic.data.data.type;
-    const schoolsI18n = WvI18n.magicSchools;
     const school = magic.data.data.school;
-    const schoolI18n = schoolsI18n[school];
-    if (!schoolI18n) {
+    const schoolI18n = WvI18n.magicSchools[school];
+    if (!schoolI18n)
       throw new Error(`Invalid value of school (${school}) for type ${type}`);
-    }
-
-    const schools = MagicTypes.reduce((acc, type) => {
-      const typeI18n = typesI18n[type];
-      acc[type] = { label: typeI18n, options: WvI18n.getMagicSchools(type) };
-      return acc;
-    }, {} as SheetMagicSchools);
 
     return {
       school: schoolI18n,
-      schools,
+      schools: MagicTypes.reduce((acc, type) => {
+        acc[type] = {
+          label: typesI18n[type],
+          options: WvI18n.getMagicSchools(type)
+        };
+        return acc;
+      }, {} as SheetMagicSchools),
       type: typesI18n[type]
     };
   }

@@ -4,14 +4,21 @@
   "type": "magic",
   "data": {
     "name": "Telekinesis",
-    "description": "The easiest and most basic spell, Telekinesis is usually the first spell learned by a unicorn.  They envelope a target with a colorful grasp, and can then physically move or manipulate the target.\n This spell is known by all unicorns, with the exception of One Trick Pony -trait, and does not take a spot on their known spells list. Telekinesis is divided in two categories, Power and Precision. Power Telekinesis is the art of moving and manipulating a single heavy object, and Precision focuses on manipulating multiple small objects at once.\n Upon learning the spell, the character chooses one of the two styles for which they specialize in. The style they specialize in gets full Potency in casting, and the other gets half of the Caster’s Potency, to the minimum of 1 and rounded down.\n When casting the spell in combat, Strain and AP cost apply only at the turn the spell is cast on. On consecutive turns the caster doesn’t suffer from additional Strain or AP cost. However, if they wish to cast another spell, they have to end their Telekinesis for 0 AP cost. If they want to continue levitat- ing objects afterwards, they need to spend the AP and Strain cost again. They can, however, mouth-operate a weapon while holding items in telekinesis without a problem. If the caster enters a Pain Threshold while levitating ob- jects, the telekinesis ends.\n When using Telekinesis to deal attacks with weapons, the weapon’s skill is utilized to determine if the attack hits, for instance guns utilize Firearms. When using Improvised weapons, Thaumaturgy is used to determine if it hits.  If the Thaumaturgy roll for the Improvised weapons fails, the weapon goes awry by 2 me- ters (1 Hex) of intended target.\n Outside of combat, the spell only costs Strain, and lasts until the caster ends the spell, rests, or falls unconscious.",
+    "description": "The easiest and most basic spell, Telekinesis is usually the first spell learned by a unicorn. They envelope a target with a colorful grasp, and can then physically move or manipulate the target.\nThis spell is known by all unicorns, with the exception of One Trick Pony-trait, and does not take a spot on their known spells list. Telekinesis is divided in two categories, Power and Precision. Power Telekinesis is the art of moving and manipulating a single heavy object, and Precision focuses on manipulating multiple small objects at once.\n Upon learning the spell, the character chooses one of the two styles for which they specialize in. The style they specialize in gets full Potency in casting, and the other gets half of the Caster’s Potency, to the minimum of 1 and rounded down.\nWhen casting the spell in combat, Strain and AP cost apply only at the turn the spell is cast on. On consecutive turns the caster doesn’t suffer from additional Strain or AP cost. However, if they wish to cast another spell, they have to end their Telekinesis for 0 AP cost. If they want to continue levitating objects afterwards, they need to spend the AP and Strain cost again. They can, however, mouth-operate a weapon while holding items in telekinesis without a problem. If the caster enters a Pain Threshold while levitating objects, the telekinesis ends.\nWhen using Telekinesis to deal attacks with weapons, the weapon’s skill is utilized to determine if the attack hits, for instance guns utilize Firearms. When using Improvised weapons, Thaumaturgy is used to determine if it hits. If the Thaumaturgy roll for the Improvised weapons fails, the weapon goes awry by 2 meters (1 Hex) of intended target.\nOutside of combat, the spell only costs Strain, and lasts until the caster ends the spell, rests, or falls unconscious.",
     "notes": "",
     "school": "general",
+    "apCost": {
+      "source": 2
+    },
+    "strainCost": {
+      "source": 1
+    },
     "rules": {
       "sources": []
-    }
+    },
+    "tags": []
   },
-  "img": "",
+  "img": "icons/magic/water/orb-water-bubbles-teal.webp",
   "effects": [],
   "flags": {}
 }

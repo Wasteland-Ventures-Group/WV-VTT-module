@@ -221,8 +221,8 @@
         "strain": "Anstrengung",
         "strainUse": "Anstrengungskosten",
         "type": {
-          "singular": "Art",
-          "plural": "Arten",
+          "singular": "Magieart",
+          "plural": "Magiearten",
           "names": {
             "earthPony": "Erdponymagie",
             "maneuver": "Flugmanöver",
@@ -231,9 +231,11 @@
           }
         },
         "school": {
+          "singular": "Schule",
+          "plural": "Schulen",
           "names": {
-            "agility": "Geschicksmanöver",
-            "charm": "Liebreizbranche",
+            "agility": "Geschickmanöver",
+            "charm": "Zweig der Betörung",
             "conjuration": "Beschwörungsmagie",
             "dark": "Dunkle Magie",
             "embers": "Geist der Glut",
@@ -242,23 +244,21 @@
             "general": "Allgemeinmagie",
             "illusion": "Illusionsmagie",
             "incantations": "Inkantationen",
-            "machines": "Geist der Machinen",
+            "machines": "Geist der Maschinen",
             "medical": "Medizinsmagie",
-            "might": "Stärkebranche",
+            "might": "Zweig der Macht",
             "nature": "Geist der Natur",
             "perception": "Wahrnehmungsmagie",
             "protective": "Schutzmagie",
             "serenity": "Geist der inneren Stille",
             "shadows": "Geist der Schatten",
-            "sight": "Sehensbranche",
-            "streams": "Geist der Flüsse",
-            "transmutation": "Verwandlungsmagie",
+            "sight": "Zweig der Sicht",
+            "streams": "Geist der Ströme",
+            "transmutation": "Umwandlungsmagie",
             "trust": "Geist des Vertrauens",
             "whispers": "Geist der Geflüster",
             "wonderboltAndTalon": "Wonderbolt und Talon Manöver"
-          },
-          "plural": "Fächer",
-          "singular": "Fach"
+          }
         }
       },
       "race": {

@@ -2,6 +2,16 @@ import { HANDLEBARS } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
 import { z } from "zod";
 
+const SELECT_GROUP_PARAMS_SCHEMA = z.record(
+  z.string(),
+  z
+    .object({
+      label: z.string(),
+      options: z.record(z.string(), z.string())
+    })
+    .strict()
+);
+
 /** This registers various Handlebars helpers. */
 export function registerHelpers(): void {
   Handlebars.registerHelper("disabled", (testValue) => {
@@ -12,17 +22,7 @@ export function registerHelpers(): void {
   Handlebars.registerHelper(
     "selectGroupOptions",
     (optionsGroups, { hash: { selected } }) => {
-      const schema = z.record(
-        z.string(),
-        z
-          .object({
-            label: z.string(),
-            options: z.record(z.string(), z.string())
-          })
-          .strict()
-      );
-
-      const groups = schema.parse(optionsGroups);
+      const groups = SELECT_GROUP_PARAMS_SCHEMA.parse(optionsGroups);
       const selectGroupOptions: string[] = [];
       for (const group of Object.values(groups)) {
         const selectGroup: string[] = [];

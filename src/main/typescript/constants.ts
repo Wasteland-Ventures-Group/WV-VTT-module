@@ -110,16 +110,6 @@ export const MagicTypes = [
   "maneuver"
 ] as const;
 
-/**
- * A custom typeguard to check whether an arbitrary string is a MagicType
- * @param arg - the string to check
- * @returns whether the string refers to a MagicType
- */
-export function isMagicType(arg?: string): arg is MagicType {
-  if (!arg) return false;
-  else return MagicTypes.includes(arg as MagicType);
-}
-
 export const SchoolByMagicType = {
   unicorn: Schools as unknown,
   maneuver: Maneuvers as unknown,

@@ -1,5 +1,6 @@
 import { HANDLEBARS } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
+import { z } from "zod";
 
 /** This registers various Handlebars helpers. */
 export function registerHelpers(): void {
@@ -11,21 +12,22 @@ export function registerHelpers(): void {
   Handlebars.registerHelper(
     "selectGroupOptions",
     (optionsGroups, { hash: { selected } }) => {
+      const schema = z.record(
+        z.string(),
+        z
+          .object({
+            label: z.string(),
+            options: z.record(z.string(), z.string())
+          })
+          .strict()
+      );
+
+      const groups = schema.parse(optionsGroups);
       const selectGroupOptions: string[] = [];
-      for (const groupRaw of Object.values(optionsGroups)) {
+      for (const group of Object.values(groups)) {
         const selectGroup: string[] = [];
 
-        // Basic typechecking
-        if (typeof groupRaw !== "object")
-          throw Error("Provided group is not an object");
-        const group = groupRaw as { options: object; label: string };
-        const suboptions = group.options;
-        if (typeof suboptions !== "object")
-          throw Error("Group's options aren't an object");
-        if (typeof group.label !== "string")
-          throw Error("Provided label was not a string");
-
-        for (const [key, label] of Object.entries(suboptions)) {
+        for (const [key, label] of Object.entries(group.options)) {
           const option = `<option value="${key}"${
             key === selected ? "selected" : ""
           }>${label}</option>`;

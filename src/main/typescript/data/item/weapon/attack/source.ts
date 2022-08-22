@@ -149,7 +149,7 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
       type: "string",
       enum: SplashSizes,
       nullable: true,
-      default: null
+      default: "tiny"
     },
     ap: {
       ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,

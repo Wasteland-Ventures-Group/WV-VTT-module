@@ -38,7 +38,8 @@ export default class MagicSheet extends WvItemSheet {
 
     return {
       school: schoolI18n,
-      schools
+      schools,
+      type: typesI18n[type]
     };
   }
 
@@ -63,6 +64,7 @@ type SheetMagicSchools = Record<
 export interface SheetMagic {
   school: string;
   schools: SheetMagicSchools;
+  type: string;
 }
 
 export interface SheetData extends ItemSheetData {

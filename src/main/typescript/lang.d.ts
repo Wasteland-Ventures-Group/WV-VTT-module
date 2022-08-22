@@ -380,6 +380,26 @@ export interface LangSchema {
       effect: QuantityNames;
       /** Labels related to generic Misc Items */
       item: QuantityNames;
+      /** Labels used in the initial character setup app */
+      initialCharacterSetup: {
+        /** The label for the open button on the character sheet */
+        openButton: string;
+        /**
+         * The title for the window
+         *
+         * Parameters:
+         * - name: the name of the character
+         * @pattern (?=.*\{name\})
+         */
+        title: string;
+        /** Labels relating to the initial character setup */
+        messages: {
+          /** A message for when the user spent too few SPECIAL points */
+          tooFewSpecialPointsSpent: string;
+          /** A message for when the user spent too many SPECIAL points */
+          tooManySpecialPointsSpent: string;
+        };
+      };
       /** Different system messages. */
       messages: {
         /**
@@ -676,14 +696,27 @@ export interface LangSchema {
       };
       /** Labels related to settings. */
       settings: {
+        /** Labels relating to an always/never setting */
+        alwaysNeverSetting: {
+          /** The choices for the setting */
+          choices: {
+            always: string;
+            never: string;
+          };
+        };
+        /** Movement related setting labels */
+        movement: {
+          /** The enforcement and subtract setting for players */
+          enforceAndSubtractApForPlayers: Setting;
+          /** The enforcement setting for game masters */
+          enforceApForGameMasters: Setting;
+          /** The subtract setting for game masters */
+          subtractApForGameMasters: Setting;
+        };
         /** The Skill Points minimum bounds setting */
         skillPointsMinBounds: Setting;
         /** The SPECIAL Points minimum bounds setting */
         specialPointsMinBounds: Setting;
-        /** The enforce AP on drag and drop setting */
-        enforceApDragDrop: EnforceApSetting;
-        /** The enforce AP on ruler move setting */
-        enforceApRuler: EnforceApSetting;
       };
       /** Labels relating to sheets */
       sheets: {

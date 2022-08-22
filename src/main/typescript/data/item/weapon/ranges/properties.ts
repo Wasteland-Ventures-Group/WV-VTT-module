@@ -167,8 +167,8 @@ export class DistanceProperties extends DistanceSource {
         return this.getSpecialRangeDistance(specialValue).toString();
       } else {
         return [
-          this.getSpecialRangeDistance(CONSTANTS.bounds.special.points.min),
-          this.getSpecialRangeDistance(CONSTANTS.bounds.special.points.max)
+          this.getSpecialRangeDistance(CONSTANTS.bounds.special.value.min),
+          this.getSpecialRangeDistance(CONSTANTS.bounds.special.value.max)
         ].join("-");
       }
     }

@@ -107,10 +107,9 @@ declare global {
     interface Values {
       "wasteland-ventures.initialized": boolean;
       "wasteland-ventures.systemMigrationVersion": string;
-      "wasteland-ventures.bounds.skills.points.min": number;
-      "wasteland-ventures.bounds.special.points.min": number;
-      "wasteland-ventures.enforceApDragDrop": settings.EnforceApSetting;
-      "wasteland-ventures.enforceApRuler": settings.EnforceApSetting;
+      "wasteland-ventures.movement.enforceAndSubtractApForPlayers": settings.AlwaysNeverSetting;
+      "wasteland-ventures.movement.enforceApForGameMasters": settings.AlwaysNeverSetting;
+      "wasteland-ventures.movement.subtractApForGameMasters": settings.AlwaysNeverSetting;
     }
   }
 

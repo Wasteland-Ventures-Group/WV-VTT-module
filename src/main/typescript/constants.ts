@@ -295,6 +295,7 @@ export type ProtoItemType = typeof ProtoItemTypes[number];
 export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
   TYPES.ITEM.AMMO,
   TYPES.ITEM.APPAREL,
+  TYPES.ITEM.MAGIC,
   TYPES.ITEM.MISC,
   TYPES.ITEM.WEAPON
 ] as const;

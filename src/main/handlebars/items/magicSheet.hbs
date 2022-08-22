@@ -14,6 +14,10 @@
           <span>{{localize "wv.rules.magic.type.singular"}}: {{sheet.type}}</span>
           <span>{{localize "wv.rules.magic.school.singular"}}: {{sheet.school}}</span>
         </section>
+        <section class="details">
+          <span>{{localize "wv.rules.magic.apUse"}}: {{data.data.apCost.source}}</span>
+          <span>{{localize "wv.rules.magic.strainUse"}}: {{data.data.strainCost.source}}</span>
+        </section>
         {{~#if data.data.notes~}}
           <section>{{data.data.notes}}</section>
         {{~/if~}}

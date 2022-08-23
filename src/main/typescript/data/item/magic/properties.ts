@@ -6,7 +6,7 @@ import RulesProperties from "../common/rules/properties.js";
 import RangeProperties from "./ranges/properties.js";
 import type MagicDataSource from "./source.js";
 import { MagicDataSourceData } from "./source.js";
-import { TargetProperties } from "./target/target.js";
+import TargetProperties from "./target/properties.js";
 
 export default interface MagicDataProperties extends MagicDataSource {
   data: MagicDataPropertiesData;

@@ -5,6 +5,7 @@ import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-
 import {
   ApparelSlot,
   CONSTANTS,
+  getPainThreshold,
   SkillName,
   SpecialName
 } from "../constants.js";
@@ -493,12 +494,23 @@ export default class WvActor extends Actor {
     this.validateSystemData(this.data._source.data);
   }
 
+  protected checkPT(changed: DeepPartial<ActorDataConstructorData>) {
+    const hitPoints = changed.data?.vitals?.hitPoints?.value;
+    if (hitPoints) {
+      const newPT = getPainThreshold(hitPoints);
+      if (newPT > this.data.data.vitals.painThreshold) {
+        ui.notifications?.info("Pain threshold reached");
+      }
+    }
+  }
+
   protected override async _preUpdate(
     changed: DeepPartial<ActorDataConstructorData>,
     options: DocumentModificationOptions,
     user: BaseUser
   ): Promise<void> {
     super._preUpdate(changed, options, user);
+    this.checkPT(changed);
     this.validateSystemData(
       foundry.utils.mergeObject(this.data._source.data, changed.data ?? {}, {
         recursive: options.recursive,

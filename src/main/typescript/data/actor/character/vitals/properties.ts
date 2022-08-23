@@ -1,4 +1,8 @@
-import type { RadiationSicknessLevel } from "../../../../constants.js";
+import {
+  getPainThreshold,
+  PainThreshold,
+  RadiationSicknessLevel
+} from "../../../../constants.js";
 import WvI18n from "../../../../wvI18n.js";
 import { CompositeNumber, CompositeResource } from "../../../common.js";
 import type SpecialsProperties from "../specials/properties.js";
@@ -9,10 +13,13 @@ export default class VitalsProperties extends VitalsSource {
     super();
     foundry.utils.mergeObject(this, source);
     this.hitPoints = CompositeResource.from(source.hitPoints);
+    this.painThreshold = getPainThreshold(this.hitPoints.value);
     this.actionPoints = CompositeResource.from(source.actionPoints);
     this.insanity = CompositeResource.from(source.insanity);
     this.strain = CompositeResource.from(source.strain);
   }
+
+  painThreshold: PainThreshold;
 
   override hitPoints: CompositeResource;
 

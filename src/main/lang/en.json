@@ -207,6 +207,7 @@
       },
       "health": {
         "health": "Health",
+        "hp": "HP",
         "healingRate": "Healing Rate"
       },
       "initiative": "Initiative",
@@ -260,6 +261,11 @@
             "wonderboltAndTalon": "Wonderbolt and Talon Maneuver"
           }
         }
+      },
+      "painThreshold": {
+        "reached": "Pain Threshold entered",
+        "singular": "Pain Threshold",
+        "plural": "Pain Thresholds"
       },
       "race": {
         "names": {

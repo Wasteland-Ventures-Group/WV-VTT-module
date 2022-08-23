@@ -9,7 +9,10 @@ import {
   ApparelSlot,
   ApparelType,
   EquipmentSlot,
-  RadiationSicknessLevel
+  RadiationSicknessLevel,
+  GeneralMagicSchool,
+  MagicType,
+  SchoolByMagicType
 } from "./constants.js";
 import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
@@ -32,6 +35,12 @@ export type I18nApparelTypes = Record<ApparelType, string>;
 
 /** The internationalization structure for calibers */
 export type I18nCalibers = Record<Caliber, string>;
+
+/** The internationalisation structure of the magic types */
+export type I18nMagicTypes = Record<MagicType, string>;
+
+/** The internationalisation structure of the magic schools */
+export type I18nMagicSchools = Record<GeneralMagicSchool, string>;
 
 /** The internationalization structure for ammo container types */
 export type I18nAmmoContainerTypes = Record<AmmoContainerType, string>;
@@ -90,6 +99,32 @@ export default class WvI18n {
       getGame().i18n.translations,
       "wv.rules.equipment.ammo.calibers"
     ) as I18nCalibers;
+  }
+
+  /** Get the internationalisation of the magic schools of a certain type*/
+  static getMagicSchools(type: MagicType): Partial<I18nMagicSchools> {
+    const result: Partial<I18nMagicSchools> = {};
+    const allSchools = WvI18n.magicSchools;
+    SchoolByMagicType[type].forEach(
+      (school) => (result[school] = allSchools[school])
+    );
+    return result;
+  }
+
+  /** Get the internationalisation of all the magic schools */
+  static get magicSchools(): I18nMagicSchools {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.magic.school.names"
+    ) as I18nMagicSchools;
+  }
+
+  /** Get the internationalisation of the magic types */
+  static get magicTypes(): I18nMagicTypes {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.magic.type.names"
+    ) as I18nMagicTypes;
   }
 
   /** Get the internationalization of the ammo container types. */

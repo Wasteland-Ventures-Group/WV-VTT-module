@@ -218,7 +218,48 @@
       },
       "magic": {
         "magic": "Magie",
-        "strain": "Anstrengung"
+        "strain": "Anstrengung",
+        "strainUse": "Anstrengungskosten",
+        "type": {
+          "singular": "Magieart",
+          "plural": "Magiearten",
+          "names": {
+            "earthPony": "Erdponymagie",
+            "maneuver": "Flugmanöver",
+            "spirit": "Geistmagie",
+            "unicorn": "Einhornmagie"
+          }
+        },
+        "school": {
+          "singular": "Schule",
+          "plural": "Schulen",
+          "names": {
+            "agility": "Geschickmanöver",
+            "charm": "Zweig der Betörung",
+            "conjuration": "Beschwörungsmagie",
+            "dark": "Dunkle Magie",
+            "embers": "Geist der Glut",
+            "endurance": "Ausdauermanöver",
+            "enhancement": "Verbesserungsmagie",
+            "general": "Allgemeinmagie",
+            "illusion": "Illusionsmagie",
+            "incantations": "Inkantationen",
+            "machines": "Geist der Maschinen",
+            "medical": "Medizinsmagie",
+            "might": "Zweig der Macht",
+            "nature": "Geist der Natur",
+            "perception": "Wahrnehmungsmagie",
+            "protective": "Schutzmagie",
+            "serenity": "Geist der inneren Stille",
+            "shadows": "Geist der Schatten",
+            "sight": "Zweig der Sicht",
+            "streams": "Geist der Ströme",
+            "transmutation": "Umwandlungsmagie",
+            "trust": "Geist des Vertrauens",
+            "whispers": "Geist der Geflüster",
+            "wonderboltAndTalon": "Wonderbolt und Talon Manöver"
+          }
+        }
       },
       "race": {
         "names": {

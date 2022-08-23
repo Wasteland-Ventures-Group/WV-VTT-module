@@ -2,6 +2,7 @@ import Ajv from "ajv";
 import WvActor from "./actor/wvActor.js";
 import WvActorSheet from "./applications/actor/wvActorSheet.js";
 import AmmoSheet from "./applications/item/ammoSheet.js";
+import MagicSheet from "./applications/item/magicSheet.js";
 import ApparelSheet from "./applications/item/apparelSheet.js";
 import EffectSheet from "./applications/item/effectSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
@@ -9,6 +10,7 @@ import WvItemSheet from "./applications/item/wvItemSheet.js";
 import { CONSTANTS, TYPES } from "./constants.js";
 import { CHARACTER_JSON_SCHEMA } from "./data/actor/character/source.js";
 import { AMMO_SOURCE_JSON_SCHEMA } from "./data/item/ammo/source.js";
+import { MAGIC_SOURCE_JSON_SCHEMA } from "./data/item/magic/source.js";
 import { APPAREL_SOURCE_JSON_SCHEMA } from "./data/item/apparel/source.js";
 import { BASE_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/baseItem/source.js";
 import { STACK_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/stackableItem/source.js";
@@ -17,6 +19,7 @@ import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvRuler from "./foundryOverrides/wvRuler.js";
 import Ammo from "./item/ammo.js";
+import Magic from "./item/magic.js";
 import Apparel from "./item/apparel.js";
 import Effect from "./item/effect.js";
 import Weapon from "./item/weapon.js";
@@ -79,6 +82,7 @@ export function configureFoundryOnInit(): void {
         ammo: Ammo,
         apparel: Apparel,
         effect: Effect,
+        magic: Magic,
         weapon: Weapon
       }
     },
@@ -90,6 +94,7 @@ export function configureFoundryOnInit(): void {
         ammo: ajv.compile(AMMO_SOURCE_JSON_SCHEMA),
         apparel: ajv.compile(APPAREL_SOURCE_JSON_SCHEMA),
         effect: ajv.compile(BASE_ITEM_SOURCE_JSON_SCHEMA),
+        magic: ajv.compile(MAGIC_SOURCE_JSON_SCHEMA),
         misc: ajv.compile(STACK_ITEM_SOURCE_JSON_SCHEMA),
         weapon: ajv.compile(WEAPON_SOURCE_JSON_SCHEMA)
       },
@@ -135,6 +140,11 @@ export function configureFoundryOnInit(): void {
     label: "wv.system.sheets.names.apparelSheet",
     makeDefault: true,
     types: [TYPES.ITEM.APPAREL]
+  });
+  Items.registerSheet(CONSTANTS.systemId, MagicSheet, {
+    label: "wv.system.sheets.names.magicSheet",
+    makeDefault: true,
+    types: [TYPES.ITEM.MAGIC]
   });
   Items.registerSheet(CONSTANTS.systemId, WeaponSheet, {
     label: "wv.system.sheets.names.weaponSheet",

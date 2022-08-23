@@ -66,6 +66,159 @@ export const ThaumaturgySpecials = SpecialNames.filter(
   (special) => special !== "luck"
 ) as ThaumaturgySpecial[];
 
+export type Spirit = typeof Spirits[number];
+export const Spirits = [
+  "incantations",
+  "embers",
+  "machines",
+  "nature",
+  "serenity",
+  "shadows",
+  "streams",
+  "trust",
+  "whispers"
+] as const;
+
+export type Maneuver = typeof Maneuvers[number];
+export const Maneuvers = [
+  "agility",
+  "endurance",
+  "wonderboltAndTalon"
+] as const;
+
+export type Branch = typeof Branches[number];
+export const Branches = ["charm", "might", "sight"] as const;
+
+export type School = typeof Schools[number];
+export const Schools = [
+  "general",
+  "conjuration",
+  "dark",
+  "enhancement",
+  "illusion",
+  "medical",
+  "perception",
+  "protective",
+  "transmutation"
+] as const;
+
+export type MagicType = typeof MagicTypes[number];
+export const MagicTypes = [
+  "spirit",
+  "unicorn",
+  "earthPony",
+  "maneuver"
+] as const;
+
+export const SchoolByMagicType = {
+  unicorn: Schools as unknown,
+  maneuver: Maneuvers as unknown,
+  earthPony: Branches as unknown,
+  spirit: Spirits as unknown
+} as Record<MagicType, typeof GeneralMagicSchools>;
+
+/**
+ * Determines the type of magic based on its school
+ * @param school - the school to categorise
+ * @returns the type
+ */
+export function getMagicType(school: GeneralMagicSchool): MagicType {
+  for (const magicType of MagicTypes) {
+    const schoolFamily = SchoolByMagicType[magicType];
+    if (schoolFamily.includes(school)) {
+      return magicType;
+    }
+  }
+
+  throw new Error("Unreachable Code");
+}
+
+export type GeneralMagicSchool = typeof GeneralMagicSchools[number];
+export const MagicSpecials = {
+  agility: ["agility"],
+  endurance: ["endurance"],
+  wonderboltAndTalon: ["agility", "endurance", "charisma"],
+  charm: ["charisma"],
+  might: ["strength"],
+  sight: ["perception"],
+  general: [
+    "strength",
+    "perception",
+    "endurance",
+    "charisma",
+    "intelligence",
+    "agility",
+    "luck"
+  ],
+  conjuration: ["intelligence"],
+  dark: ["endurance"],
+  enhancement: ["charisma"],
+  illusion: ["charisma"],
+  medical: ["intelligence"],
+  perception: ["perception"],
+  transmutation: ["endurance"],
+  incantations: [
+    "strength",
+    "perception",
+    "endurance",
+    "charisma",
+    "intelligence",
+    "agility",
+    "luck"
+  ],
+  embers: ["agility"],
+  machines: ["intelligence"],
+  nature: ["endurance"],
+  serenity: ["perception"],
+  shadows: ["intelligence"],
+  streams: ["endurance"],
+  trust: ["charisma"],
+  whispers: ["charisma"]
+} as Record<GeneralMagicSchool, SpecialName[]>;
+
+export const SpellRanges = [
+  "none",
+  "self",
+  "touch",
+  "other",
+  "distance",
+  "splash"
+] as const;
+export type SpellRange = typeof SpellRanges[number];
+
+export const SplashSizes = ["tiny", "small", "large", "huge"] as const;
+export type SplashSize = typeof SplashSizes[number];
+
+export const TargetTypes = ["none", "self", "creature", "tile"] as const;
+export type TargetType = typeof TargetTypes[number];
+
+export const GeneralMagicSchools = [
+  "general",
+  "conjuration",
+  "dark",
+  "enhancement",
+  "illusion",
+  "medical",
+  "perception",
+  "protective",
+  "transmutation",
+  "agility",
+  "endurance",
+  "wonderboltAndTalon",
+  "incantations",
+  "embers",
+  "machines",
+  "nature",
+  "serenity",
+  "shadows",
+  "streams",
+  "trust",
+  "whispers",
+  "charm",
+  "might",
+  "sight"
+] as const;
+
 export type SkillName = typeof SkillNames[number];
 export const SkillNames = [
   "barter",
@@ -107,7 +260,8 @@ export const TYPES = {
     APPAREL: "apparel",
     EFFECT: "effect",
     MISC: "misc",
-    WEAPON: "weapon"
+    WEAPON: "weapon",
+    MAGIC: "magic"
   }
 } as const;
 
@@ -131,6 +285,7 @@ export type ProtoItemType = typeof ProtoItemTypes[number];
 export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
   TYPES.ITEM.AMMO,
   TYPES.ITEM.APPAREL,
+  TYPES.ITEM.MAGIC,
   TYPES.ITEM.MISC,
   TYPES.ITEM.WEAPON
 ] as const;

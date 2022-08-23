@@ -10,6 +10,10 @@
       "url": "./src/main/schemas/item/ammo.json"
     },
     {
+      "fileMatch": ["/src/main/compendiums/item/magic/*.json"],
+      "url": "./src/main/schemas/item/magic.json"
+    },
+    {
       "fileMatch": ["/src/main/compendiums/item/apparel/*.json"],
       "url": "./src/main/schemas/item/apparel.json"
     },

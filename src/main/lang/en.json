@@ -218,7 +218,48 @@
       },
       "magic": {
         "magic": "Magic",
-        "strain": "Strain"
+        "strain": "Strain",
+        "strainUse": "Strain use",
+        "type": {
+          "singular": "Magic Type",
+          "plural": "Magic Types",
+          "names": {
+            "earthPony": "Earth Pony Magic",
+            "maneuver": "Aerial Maneuver",
+            "spirit": "Spirit Magic",
+            "unicorn": "Unicorn Magic"
+          }
+        },
+        "school": {
+          "singular": "School",
+          "plural": "Schools",
+          "names": {
+            "agility": "Agility Maneuver",
+            "charm": "Branch of Charm",
+            "conjuration": "Conjuration Magic",
+            "dark": "Dark Magic",
+            "embers": "Spirit of Embers",
+            "endurance": "Endurance Maneuver",
+            "enhancement": "Enhancement Magic",
+            "general": "General Magic",
+            "illusion": "Illusion Magic",
+            "incantations": "Incantations",
+            "machines": "Spirit of Machines",
+            "medical": "Medical Magic",
+            "might": "Branch of Might",
+            "nature": "Spirit of Nature",
+            "perception": "Perception Magic",
+            "protective": "Protective Magic",
+            "serenity": "Spirit of Serenity",
+            "shadows": "Spirit of Shadows",
+            "sight": "Branch of Sight",
+            "streams": "Spirit of Streams",
+            "transmutation": "Transmutation Magic",
+            "trust": "Spirit of Trust",
+            "whispers": "Spirit of Whispers",
+            "wonderboltAndTalon": "Wonderbolt and Talon Maneuver"
+          }
+        }
       },
       "race": {
         "names": {

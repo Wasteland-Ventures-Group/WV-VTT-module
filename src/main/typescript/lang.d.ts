@@ -4,6 +4,8 @@ import type {
   I18nApparelTypes,
   I18nCalibers,
   I18nEquipmentSlots,
+  I18nMagicTypes,
+  I18nMagicSchools,
   I18nRaceNames,
   I18nRarities,
   I18nSkills,
@@ -239,6 +241,15 @@ export interface LangSchema {
         magic: string;
         /** The label for the strain */
         strain: string;
+        /** The label for the strain use */
+        strainUse: string;
+        /** The label of the types of magic */
+        type: QuantityNames & {
+          names: I18nMagicTypes;
+        };
+        school: QuantityNames & {
+          names: I18nMagicSchools;
+        };
       };
       /** Labels related to races */
       race: QuantityNames & {

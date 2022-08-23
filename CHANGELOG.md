@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added magic data and its sheet, though character sheets still do not support
   a known spell list
   ([#141])(https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/141)
+- added pain thresholds to character sheets, as well as automatic chat messages
+  when they are reached ([#417](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/417))
 
 ## [0.19.1] - 2022-07-16
 

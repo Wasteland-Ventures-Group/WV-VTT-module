@@ -5,9 +5,11 @@ import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-
 import {
   ApparelSlot,
   CONSTANTS,
+  getPainThreshold,
   SkillName,
   SpecialName
 } from "../constants.js";
+import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
 import type { CompositeResource } from "../data/common.js";
@@ -499,6 +501,7 @@ export default class WvActor extends Actor {
     user: BaseUser
   ): Promise<void> {
     super._preUpdate(changed, options, user);
+    await this.checkPT(changed);
     this.validateSystemData(
       foundry.utils.mergeObject(this.data._source.data, changed.data ?? {}, {
         recursive: options.recursive,
@@ -535,6 +538,29 @@ export default class WvActor extends Actor {
     options: { metConditions: RuleElementCondition[] } = { metConditions: [] }
   ): void {
     rule.apply([this, ...this.items], options);
+  }
+
+  private async checkPT(changed: DeepPartial<ActorDataConstructorData>) {
+    const hitPoints = changed.data?.vitals?.hitPoints?.value;
+    if (hitPoints) {
+      const newPT = getPainThreshold(hitPoints);
+      const oldPT = this.data.data.vitals.painThreshold;
+      if (newPT !== oldPT && newPT > 0) {
+        ui.notifications?.info("Pain threshold reached");
+
+        // Create chat message to post the pain threshold
+        const flags: Required<PainThresholdFlags> = {
+          type: "painThreshold",
+          newPainThreshold: newPT,
+          oldPainThreshold: oldPT
+        };
+        const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
+          speaker: ChatMessage.getSpeaker({ actor: this }),
+          flags: { [CONSTANTS.systemId]: flags }
+        };
+        await ChatMessage.create(msgOptions);
+      }
+    }
   }
 }
 

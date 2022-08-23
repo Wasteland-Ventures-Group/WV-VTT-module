@@ -1,5 +1,6 @@
 import { CONSTANTS } from "../../../constants.js";
 import type { HookParams } from "../index.js";
+import decoratePTMessage, { PainThresholdFlags } from "./decoratePTMessage.js";
 import decorateWeaponAttack, {
   WeaponAttackFlags
 } from "./decorateWeaponAttack.js";
@@ -17,7 +18,10 @@ export default function decorateSystemMessage(
   html.addClass([CONSTANTS.systemId, "system-message"]);
   switch (systemFlags?.type) {
     case "weaponAttack":
-      decorateWeaponAttack(systemFlags, html);
+      decorateWeaponAttack(systemFlags as WeaponAttackFlags, html);
+      break;
+    case "painThreshold":
+      decoratePTMessage(systemFlags as PainThresholdFlags, html);
       break;
   }
 }
@@ -28,4 +32,4 @@ export function getContentElement(html: HookParams[1]): JQuery<HTMLElement> {
 }
 
 /** A type for system chat message flags */
-export type SystemChatMessageFlags = WeaponAttackFlags;
+export type SystemChatMessageFlags = WeaponAttackFlags | PainThresholdFlags;

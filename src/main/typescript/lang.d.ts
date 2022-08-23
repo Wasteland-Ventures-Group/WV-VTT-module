@@ -219,6 +219,8 @@ export interface LangSchema {
       health: {
         /** The label for the health */
         health: string;
+        /** The label for the short version of "health points" */
+        hp: string;
         /** The label for the healing rate */
         healingRate: string;
       };
@@ -250,6 +252,9 @@ export interface LangSchema {
         school: QuantityNames & {
           names: I18nMagicSchools;
         };
+      };
+      painThreshold: QuantityNames & {
+        reached: string;
       };
       /** Labels related to races */
       race: QuantityNames & {

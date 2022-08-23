@@ -192,6 +192,21 @@ export type SplashSize = typeof SplashSizes[number];
 export const TargetTypes = ["none", "self", "creature", "tile"] as const;
 export type TargetType = typeof TargetTypes[number];
 
+export const PainThresholds = [0, 1, 2, 3] as const;
+export type PainThreshold = typeof PainThresholds[number];
+
+export function getPainThreshold(hp: number): PainThreshold {
+  if (hp > 5) {
+    return 0;
+  } else if (hp >= 4) {
+    return 1;
+  } else if (hp >= 2) {
+    return 2;
+  } else {
+    return 3;
+  }
+}
+
 export const GeneralMagicSchools = [
   "general",
   "conjuration",

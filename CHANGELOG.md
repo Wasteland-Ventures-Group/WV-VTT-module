@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - it now checks all methods of changing a token's position
   - the settings are now per player level and check or subtraction, not per
     movement method
+- added magic data and its sheet, though character sheets still do not support
+  a known spell list
+  ([#141])(https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/141)
 
 ## [0.19.1] - 2022-07-16
 

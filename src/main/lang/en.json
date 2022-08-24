@@ -221,6 +221,7 @@
         "magic": "Magic",
         "strain": "Strain",
         "strainUse": "Strain use",
+        "potency": "Potency",
         "type": {
           "singular": "Magic Type",
           "plural": "Magic Types",

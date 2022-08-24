@@ -239,6 +239,8 @@ export interface LangSchema {
       };
       /** Labels related to magic */
       magic: {
+        /** The label for potency */
+        potency: string;
         /** The name of "Magic" */
         magic: string;
         /** The label for the strain */

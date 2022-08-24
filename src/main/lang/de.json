@@ -218,6 +218,7 @@
         "experience": "Erfahrung"
       },
       "magic": {
+        "potency": "Wirksamkeit",
         "magic": "Magie",
         "strain": "Anstrengung",
         "strainUse": "Anstrengungskosten",

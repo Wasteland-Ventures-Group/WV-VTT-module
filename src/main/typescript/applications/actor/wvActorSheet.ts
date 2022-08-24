@@ -25,6 +25,7 @@ import {
 import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
 import Apparel from "../../item/apparel.js";
+import type Magic from "../../item/magic.js";
 import Weapon from "../../item/weapon.js";
 import WvItem from "../../item/wvItem.js";
 import { WvItemProxy } from "../../item/wvItemProxy.js";
@@ -156,6 +157,7 @@ export default class WvActorSheet extends ActorSheet {
     const i18nRaceNames = WvI18n.raceNames;
     const i18nSpecials = WvI18n.specials;
     const i18nSkills = WvI18n.skills;
+    console.log("sntoaehu");
 
     const actorReadiedItem = this.actor.readiedItem;
     const readiedItem =
@@ -206,6 +208,23 @@ export default class WvActorSheet extends ActorSheet {
           totalWeight: helpers.toFixed(item.totalWeight)
         };
       });
+
+    const spells = this.actor.items
+      .filter(
+        (item): item is StoredDocument<Magic> =>
+          typeof item.id === "string" && item.type === TYPES.ITEM.MAGIC
+      )
+      .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
+      .map((spell) => {
+        return {
+          id: spell.id,
+          img: spell.img,
+          name: spell.name,
+          apCost: spell.data.data.apCost.total,
+          strainCost: spell.data.data.strainCost.total
+        };
+      });
+    console.log(spells);
 
     const sheetData: SheetData = {
       ...(await super.getData()),
@@ -290,7 +309,8 @@ export default class WvActorSheet extends ActorSheet {
               return thaumSpecials;
             },
             {} as Record<ThaumaturgySpecial, string>
-          )
+          ),
+          spells
         },
         effects: this.actor.items
           .filter(
@@ -947,7 +967,16 @@ interface SheetLeveling {
 
 interface SheetMagic {
   thaumSpecials: Record<ThaumaturgySpecial, string>;
+  spells: SheetSpell[];
 }
+
+type SheetSpell = {
+  id: string;
+  apCost: number;
+  strainCost: number;
+  img: string | null;
+  name: string | null;
+};
 
 interface SheetSpecial extends I18nSpecial {
   points: number;

@@ -157,7 +157,6 @@ export default class WvActorSheet extends ActorSheet {
     const i18nRaceNames = WvI18n.raceNames;
     const i18nSpecials = WvI18n.specials;
     const i18nSkills = WvI18n.skills;
-    console.log("sntoaehu");
 
     const actorReadiedItem = this.actor.readiedItem;
     const readiedItem =
@@ -216,15 +215,18 @@ export default class WvActorSheet extends ActorSheet {
       )
       .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
       .map((spell) => {
+        const spellData = spell.data.data;
+        const schoolI18n = WvI18n.magicSchools[spellData.school];
         return {
           id: spell.id,
           img: spell.img,
           name: spell.name,
-          apCost: spell.data.data.apCost.total,
-          strainCost: spell.data.data.strainCost.total
+          school: schoolI18n,
+          potency: spellData.potency.total,
+          apCost: spellData.apCost.total,
+          strainCost: spellData.strainCost.total
         };
       });
-    console.log(spells);
 
     const sheetData: SheetData = {
       ...(await super.getData()),
@@ -974,6 +976,8 @@ type SheetSpell = {
   id: string;
   apCost: number;
   strainCost: number;
+  potency: number;
+  school: string;
   img: string | null;
   name: string | null;
 };

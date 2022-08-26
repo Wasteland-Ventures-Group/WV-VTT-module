@@ -1,5 +1,6 @@
-import { TYPES } from "../constants.js";
+import { extraPotency, TYPES } from "../constants.js";
 import { MagicDataPropertiesData } from "../data/item/magic/properties.js";
+import { LOG } from "../systemLogger.js";
 import WvItem from "./wvItem";
 
 /** An Item that can represent a spell of any school and type. */
@@ -17,6 +18,22 @@ export default class Magic extends WvItem {
 
   override prepareBaseData(): void {
     this.data.data = new MagicDataPropertiesData(this.data.data, this);
+  }
+
+  override finalizeData(): void {
+    if (!this.actor) {
+      LOG.warn(
+        `Trying to finalise a magic item without a parent actor. ${this.ident}`
+      );
+      return;
+    }
+    const actorData = this.actor.data.data;
+    const relevantSpecialName =
+      actorData.magic.magicSpecials[this.data.data.school];
+    const relevantSpecialValue =
+      actorData.specials[relevantSpecialName].tempTotal;
+    this.data.data.potency.source =
+      actorData.leveling.level + extraPotency(relevantSpecialValue);
   }
 }
 

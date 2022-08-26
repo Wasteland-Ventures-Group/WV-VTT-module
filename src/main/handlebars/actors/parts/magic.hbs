@@ -9,6 +9,7 @@
     <tr>
       <th scope="col" class="align-left"></th>
       <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
+      <th scope="col" class="align-left">{{localize "wv.rules.magic.school.singular"}}</th>
       <th scope="col" class="align-left">{{localize "wv.rules.magic.potency"}}</th>
       <th scope="col" class="align-left">{{localize "wv.rules.actionPoints.use"}}</th>
       <th scope="col" class="align-left">{{localize "wv.rules.magic.strainUse"}}</th>
@@ -16,9 +17,7 @@
     </tr>
   </thead>
   <tbody>
-    {{log sheet}}
     {{#each sheet.magic.spells as |spell|~}}
-    {{log spell}}
     <tr data-item-id="{{spell.id}}">
       <td class="align-left">
         {{#if spell.img}}
@@ -26,6 +25,7 @@
         {{/if}}
       </td>
       <td class="align-left">{{spell.name}}</td>
+      <td class="align-left">{{spell.school}}</td>
       <td class="align-left">{{spell.potency}}</td>
       <td class="align-left">{{spell.apCost}}</td>
       <td class="align-left">{{spell.strainCost}}</td>

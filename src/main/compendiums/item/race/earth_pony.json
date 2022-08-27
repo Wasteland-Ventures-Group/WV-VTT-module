@@ -1,0 +1,75 @@
+{
+  "_id": "WVRace0000000001",
+  "name": "Earth Pony",
+  "type": "race",
+  "data": {
+    "name": "Earth Pony",
+    "description": "Your basic pony. Four legs, two eyes, mane and tail. Earth ponies have neither wings nor horns. Instead, they are generally stronger, larger, and have more stamina than the other two pony races - having to do everything by hoof or by mouth. By far the most common race alongside unicorns in the Equestrian Wasteland, as long as only Equestria is accounted for. A common sight in both big and small settlements, earth ponies tend to make their home nearly anywhere, excluding crater sides and the Canterlot Ruins. Many of the earth ponies survived either due to their own home-built bomb-shelters, or in the many Stables from which they made their way to the post-apocalyptic Wasteland. Not being ones to lay on their laurels, many earth ponies took to rebuilding settlements or making new ones. One such testament is New Appleloosa, built a stone’s throw away from the old one, now overtaken by raiders.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterComputation",
+          "label": "The Hard Way",
+          "priority": 100,
+          "selectors": [
+            "item",
+            "sibling",
+            {
+              "type": "weapon"
+            },
+            {
+              "usesSkill": "firearms"
+            }
+          ],
+          "conditions": [],
+          "target": "strengthRequirement",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": -1
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": true,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["earthPony"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 2
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 5,
+        "amount": 1
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/environment/creatures/horse-brown.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -307,9 +307,10 @@ export const TYPES = {
     AMMO: "ammo",
     APPAREL: "apparel",
     EFFECT: "effect",
+    MAGIC: "magic",
     MISC: "misc",
-    WEAPON: "weapon",
-    MAGIC: "magic"
+    RACE: "race",
+    WEAPON: "weapon"
   }
 } as const;
 
@@ -335,6 +336,7 @@ export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
   TYPES.ITEM.APPAREL,
   TYPES.ITEM.MAGIC,
   TYPES.ITEM.MISC,
+  TYPES.ITEM.RACE,
   TYPES.ITEM.WEAPON
 ] as const;
 

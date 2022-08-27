@@ -218,6 +218,7 @@
         "experience": "Erfahrung"
       },
       "magic": {
+        "potency": "Potenz",
         "magic": "Magie",
         "strain": "Anstrengung",
         "strainUse": "Anstrengungskosten",
@@ -577,6 +578,10 @@
           "itemSheet": "Gegenstandsbogen",
           "weaponSheet": "Waffenbogen"
         }
+      },
+      "spell": {
+        "singular": "Beschwörung",
+        "plural": "Beschwörungen"
       },
       "thaumSpecial": "SPECIA für Thaumaturgie",
       "values": {

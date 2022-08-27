@@ -63,6 +63,7 @@
   },
   "scripts": {
     "lint": "eslint --ext .d.ts,.ts,.test-d.ts,.cjs . && prettier --check ./src/main/compendiums/**/*.json ./src/main/lang/*.json",
+    "lint-fix": "eslint --ext .d.ts,.ts,.test-d.ts,.cjs . --fix && prettier --check ./src/main/compendiums/**/*.json ./src/main/lang/*.json",
     "prepare": "husky install",
     "test": "mocha && cd ./src/main/typescript && tsd",
     "typecheck": "tsc --project ./src/main/typescript/tsconfig.json --noEmit"

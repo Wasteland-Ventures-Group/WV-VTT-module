@@ -221,6 +221,7 @@
         "magic": "Magic",
         "strain": "Strain",
         "strainUse": "Strain use",
+        "potency": "Potency",
         "type": {
           "singular": "Magic Type",
           "plural": "Magic Types",
@@ -577,6 +578,10 @@
           "itemSheet": "Item Sheet",
           "weaponSheet": "Weapon Sheet"
         }
+      },
+      "spell": {
+        "singular": "Spell",
+        "plural": "Spells"
       },
       "thaumSpecial": "SPECIA for Thaumaturgy",
       "values": {

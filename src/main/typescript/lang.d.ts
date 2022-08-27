@@ -239,6 +239,8 @@ export interface LangSchema {
       };
       /** Labels related to magic */
       magic: {
+        /** The label for potency */
+        potency: string;
         /** The name of "Magic" */
         magic: string;
         /** The label for the strain */
@@ -741,6 +743,7 @@ export interface LangSchema {
           weaponSheet: string;
         };
       };
+      spell: QuantityNames;
       /** The label for the Thaumaturgy special select */
       thaumSpecial: string;
       /** Labels for describing different values */

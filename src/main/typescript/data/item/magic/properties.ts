@@ -39,5 +39,7 @@ export class MagicDataPropertiesData
 
   override target: TargetProperties;
 
+  potency: CompositeNumber = new CompositeNumber();
+
   type: MagicType;
 }

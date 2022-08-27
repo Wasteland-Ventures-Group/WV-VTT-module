@@ -8,7 +8,7 @@ export default class MagicSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push("magic-sheet");
-    defaultOptions.height = 480;
+    defaultOptions.height = 700;
     defaultOptions.width = 670;
     return defaultOptions;
   }

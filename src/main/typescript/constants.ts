@@ -134,7 +134,7 @@ export function getMagicType(school: GeneralMagicSchool): MagicType {
 }
 
 export type GeneralMagicSchool = typeof GeneralMagicSchools[number];
-export const MagicSpecials = {
+export const MagicSpecials: Record<GeneralMagicSchool, SpecialName[]> = {
   agility: ["agility"],
   endurance: ["endurance"],
   wonderboltAndTalon: ["agility", "endurance", "charisma"],
@@ -156,6 +156,7 @@ export const MagicSpecials = {
   illusion: ["charisma"],
   medical: ["intelligence"],
   perception: ["perception"],
+  protective: ["endurance"],
   transmutation: ["endurance"],
   incantations: [
     "strength",
@@ -174,8 +175,40 @@ export const MagicSpecials = {
   streams: ["endurance"],
   trust: ["charisma"],
   whispers: ["charisma"]
-} as Record<GeneralMagicSchool, SpecialName[]>;
+};
 
+/**
+ * Get the first element of all arrays present in `MagicSpecials`
+ * @returns A record mapping a magic school to its default SPECIAL
+ */
+export function defaultMagicSpecial(): Record<GeneralMagicSchool, SpecialName> {
+  return GeneralMagicSchools.reduce((acc, magicSchool) => {
+    const magicSpecial = MagicSpecials[magicSchool][0];
+    if (magicSpecial !== undefined) {
+      acc[magicSchool] = magicSpecial;
+    } else {
+      throw Error(`School ${magicSchool} has no special attached to it`);
+    }
+    return acc;
+  }, {} as Record<GeneralMagicSchool, SpecialName>);
+}
+
+/**
+ * Computes the bonus to potency based on the value of the relevant SPECIAL
+ * @param special - the value of the relevant SPECIAL
+ * @returns the extra potency
+ */
+export function extraPotency(special: number): number {
+  if (special >= 8) {
+    return 3;
+  } else if (special >= 4) {
+    return 2;
+  } else if (special >= 1) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
 export const SpellRanges = [
   "none",
   "self",

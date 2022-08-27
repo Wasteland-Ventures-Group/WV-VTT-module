@@ -3,6 +3,7 @@ import { CompositeNumber } from "../../common.js";
 import BackgroundProperties from "./background/properties.js";
 import EquipmentProperties from "./equipment/properties.js";
 import LevelingProperties from "./leveling/properties.js";
+import MagicProperties from "./magic/properties.js";
 import SkillsProperties from "./skills/properties.js";
 import { CharacterDataSourceData } from "./source.js";
 import SpecialsProperties, { Special } from "./specials/properties.js";
@@ -86,6 +87,7 @@ export class CharacterDataPropertiesData extends CharacterDataSourceData {
     this.background = new BackgroundProperties(source.background);
     this.equipment = new EquipmentProperties(source.equipment);
     this.vitals = new VitalsProperties(source.vitals);
+    this.magic = new MagicProperties(source.magic);
   }
 
   override background: BackgroundProperties;
@@ -95,6 +97,8 @@ export class CharacterDataPropertiesData extends CharacterDataSourceData {
   override leveling: LevelingProperties;
 
   override vitals: VitalsProperties;
+
+  override magic: MagicProperties;
 
   /** The secondary statistics of the character */
   secondary = new SecondaryStatisticsProperties();

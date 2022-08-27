@@ -25,6 +25,7 @@ import {
 import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
 import Apparel from "../../item/apparel.js";
+import type Magic from "../../item/magic.js";
 import Weapon from "../../item/weapon.js";
 import WvItem from "../../item/wvItem.js";
 import { WvItemProxy } from "../../item/wvItemProxy.js";
@@ -207,6 +208,27 @@ export default class WvActorSheet extends ActorSheet {
         };
       });
 
+    // filter, sort, and transform items into sheet data
+    const spells = this.actor.items
+      .filter(
+        (item): item is StoredDocument<Magic> =>
+          typeof item.id === "string" && item.type === TYPES.ITEM.MAGIC
+      )
+      .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
+      .map((spell) => {
+        const spellData = spell.data.data;
+        const schoolI18n = WvI18n.magicSchools[spellData.school];
+        return {
+          id: spell.id,
+          img: spell.img,
+          name: spell.name,
+          school: schoolI18n,
+          potency: spellData.potency.total,
+          apCost: spellData.apCost.total,
+          strainCost: spellData.strainCost.total
+        };
+      });
+
     const sheetData: SheetData = {
       ...(await super.getData()),
       sheet: {
@@ -290,7 +312,8 @@ export default class WvActorSheet extends ActorSheet {
               return thaumSpecials;
             },
             {} as Record<ThaumaturgySpecial, string>
-          )
+          ),
+          spells
         },
         effects: this.actor.items
           .filter(
@@ -637,6 +660,13 @@ export default class WvActorSheet extends ActorSheet {
         }),
         type: event.target.dataset.type
       };
+    } else if (event.target.dataset.type === TYPES.ITEM.MAGIC) {
+      data = {
+        name: getGame().i18n.format("wv.system.misc.newName", {
+          what: getGame().i18n.localize("wv.system.spell.singular")
+        }),
+        type: event.target.dataset.type
+      };
     } else return;
 
     const item = await Item.create(data, { parent: this.actor });
@@ -947,7 +977,18 @@ interface SheetLeveling {
 
 interface SheetMagic {
   thaumSpecials: Record<ThaumaturgySpecial, string>;
+  spells: SheetSpell[];
 }
+
+type SheetSpell = {
+  id: string;
+  apCost: number;
+  strainCost: number;
+  potency: number;
+  school: string;
+  img: string | null;
+  name: string | null;
+};
 
 interface SheetSpecial extends I18nSpecial {
   points: number;

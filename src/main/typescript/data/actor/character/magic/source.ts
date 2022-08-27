@@ -1,12 +1,12 @@
 import type { JSONSchemaType } from "ajv";
 import {
-  GeneralMagicSchool,
   SpecialName,
+  SpecialNames,
   ThaumaturgySpecial,
   ThaumaturgySpecials
 } from "../../../../constants.js";
 
-type CharacterMagicSpecials = Partial<Record<GeneralMagicSchool, SpecialName>>;
+type CharacterMagicSpecials = Partial<Record<string, SpecialName>>;
 export default class MagicSource {
   /** The SPECIAL of the character associated with the Thaumaturgy skill */
   thaumSpecial: ThaumaturgySpecial = "intelligence";
@@ -25,7 +25,10 @@ export const MAGIC_JSON_SCHEMA: JSONSchemaType<MagicSource> = {
     },
     magicSpecials: {
       type: "object",
-      additionalProperties: true
+      additionalProperties: {
+        type: "string",
+        enum: SpecialNames
+      }
     }
   },
   required: ["thaumSpecial"],

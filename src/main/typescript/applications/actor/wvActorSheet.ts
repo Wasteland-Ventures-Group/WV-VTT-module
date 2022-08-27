@@ -208,6 +208,7 @@ export default class WvActorSheet extends ActorSheet {
         };
       });
 
+    // filter, sort, and transform items into sheet data
     const spells = this.actor.items
       .filter(
         (item): item is StoredDocument<Magic> =>

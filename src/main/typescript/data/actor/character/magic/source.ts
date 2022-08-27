@@ -31,7 +31,7 @@ export const MAGIC_JSON_SCHEMA: JSONSchemaType<MagicSource> = {
       }
     }
   },
-  required: ["thaumSpecial"],
+  required: ["thaumSpecial", "magicSpecials"],
   additionalProperties: false,
   default: {
     thaumSpecial: "intelligence"

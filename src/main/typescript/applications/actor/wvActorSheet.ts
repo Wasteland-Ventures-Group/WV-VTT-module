@@ -660,6 +660,13 @@ export default class WvActorSheet extends ActorSheet {
         }),
         type: event.target.dataset.type
       };
+    } else if (event.target.dataset.type === TYPES.ITEM.MAGIC) {
+      data = {
+        name: getGame().i18n.format("wv.system.misc.newName", {
+          what: getGame().i18n.localize("wv.system.spell.singular")
+        }),
+        type: event.target.dataset.type
+      };
     } else return;
 
     const item = await Item.create(data, { parent: this.actor });

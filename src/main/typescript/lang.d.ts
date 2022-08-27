@@ -743,6 +743,7 @@ export interface LangSchema {
           weaponSheet: string;
         };
       };
+      spell: QuantityNames;
       /** The label for the Thaumaturgy special select */
       thaumSpecial: string;
       /** Labels for describing different values */

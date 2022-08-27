@@ -579,6 +579,10 @@
           "weaponSheet": "Waffenbogen"
         }
       },
+      "spell": {
+        "singular": "Beschwörung",
+        "plural": "Beschwörungen"
+      },
       "thaumSpecial": "SPECIA für Thaumaturgie",
       "values": {
         "amount": "Menge",

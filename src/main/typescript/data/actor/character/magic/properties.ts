@@ -20,7 +20,9 @@ export default class MagicProperties extends MagicSource {
     });
   }
 
-  /** The record of which special a character uses to compute
-   *  potency for a given school of magic */
+  /**
+   * The record of which special a character uses to compute
+   * potency for a given school of magic
+   */
   magicSpecials: Record<GeneralMagicSchool, SpecialName>;
 }

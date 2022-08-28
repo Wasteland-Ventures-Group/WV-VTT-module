@@ -554,9 +554,25 @@ export default class WvActor extends Actor {
           newPainThreshold: newPT,
           oldPainThreshold: oldPT
         };
+        const allUsers: User[] = getGame().users?.contents ?? [];
+        const authorisedUsers: string[] = allUsers.flatMap((user) => {
+          const id = user.data._id;
+          if (id !== null) {
+            const userLevel = this.getUserLevel(user);
+            if (
+              (userLevel !== null &&
+                userLevel >= CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER) ||
+              user.isGM
+            ) {
+              return [id];
+            }
+          }
+          return [];
+        });
         const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
           speaker: ChatMessage.getSpeaker({ actor: this }),
-          flags: { [CONSTANTS.systemId]: flags }
+          flags: { [CONSTANTS.systemId]: flags },
+          whisper: authorisedUsers
         };
         await ChatMessage.create(msgOptions);
       }

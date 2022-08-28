@@ -18,7 +18,10 @@
       "url": "./src/main/schemas/item/magic.json"
     },
     {
-      "fileMatch": ["/src/main/compendiums/item/race/*.json"],
+      "fileMatch": [
+        "/src/main/compendiums/item/race_core/*.json",
+        "/src/main/compendiums/item/race_wanderer/*.json"
+      ],
       "url": "./src/main/schemas/item/race.json"
     },
     {

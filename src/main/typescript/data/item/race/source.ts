@@ -42,7 +42,7 @@ export const FREE_ON_CREATION_SCHEMA: JSONSchemaType<FreeOnCreation> = {
   type: "object",
   properties: {
     allOf: {
-      definition: "The character gets all of these on creation",
+      description: "The character gets all of these on creation",
       type: "array",
       items: { type: "string" },
       default: []

@@ -492,6 +492,18 @@
           "title": "Abfrage"
         }
       },
+      "races": {
+        "physical": {
+          "canFly": "Kann fliegen",
+          "canUseMagic": "Kann Magie benutzen",
+          "hasSecondHead": "Hat zweiten Kopf",
+          "hasSpecialTalent": "Hat besonderes Talent",
+          "hasWings": "Hat Flügel"
+        },
+        "creation": {
+          "startingSpecialPoints": "Start-SPECIAL-Punkte"
+        }
+      },
       "rolls": {
         "descriptive": "Rolle {what}",
         "imperative": "Rolle",
@@ -576,6 +588,8 @@
           "apparelSheet": "Bekleidungsbogen",
           "effectSheet": "Effektbogen",
           "itemSheet": "Gegenstandsbogen",
+          "magicSheet": "Magiebogen",
+          "raceSheet": "Rassenbogen",
           "weaponSheet": "Waffenbogen"
         }
       },

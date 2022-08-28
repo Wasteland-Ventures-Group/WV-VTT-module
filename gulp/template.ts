@@ -12,6 +12,7 @@ export default async function templateTask(): Promise<void> {
     import("../src/main/typescript/data/item/effect/source.js"),
     import("../src/main/typescript/data/item/magic/source.js"),
     import("../src/main/typescript/data/item/misc/source.js"),
+    import("../src/main/typescript/data/item/race/source.js"),
     import("../src/main/typescript/data/item/weapon/source.js")
   ]);
   await fs.mkdir(distWvPrefix, { recursive: true });
@@ -22,6 +23,7 @@ export default async function templateTask(): Promise<void> {
     effectSource,
     magicSource,
     miscSource,
+    raceSource,
     weaponSource
   ] = await imports;
 
@@ -34,6 +36,7 @@ export default async function templateTask(): Promise<void> {
     [TYPES.ITEM.EFFECT, new effectSource.EffectDataSourceData()],
     [TYPES.ITEM.MAGIC, new magicSource.MagicDataSourceData()],
     [TYPES.ITEM.MISC, new miscSource.MiscDataSourceData()],
+    [TYPES.ITEM.RACE, new raceSource.RaceDataSourceData()],
     [TYPES.ITEM.WEAPON, new weaponSource.WeaponDataSourceData()]
   ];
   return fs.writeFile(

@@ -492,6 +492,18 @@
           "title": "Prompt"
         }
       },
+      "races": {
+        "physical": {
+          "canFly": "Can fly",
+          "canUseMagic": "Can use magic",
+          "hasSecondHead": "Has second head",
+          "hasSpecialTalent": "Has special talent",
+          "hasWings": "Has wings"
+        },
+        "creation": {
+          "startingSpecialPoints": "Starting SPECIAL points"
+        }
+      },
       "rolls": {
         "descriptive": "Rolling {what}",
         "imperative": "Roll",
@@ -576,6 +588,8 @@
           "apparelSheet": "Apparel Sheet",
           "effectSheet": "Effect Sheet",
           "itemSheet": "Item Sheet",
+          "magicSheet": "Magic Sheet",
+          "raceSheet": "Race Sheet",
           "weaponSheet": "Weapon Sheet"
         }
       },

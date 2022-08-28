@@ -29,6 +29,13 @@
       "system": "wasteland-ventures"
     },
     {
+      "name": "apparel",
+      "label": "Wasteland Ventures Apparel",
+      "path": "compendiums/item/apparel.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
       "name": "magic",
       "label": "Wasteland Ventures Magic",
       "path": "compendiums/item/magic.db",
@@ -36,9 +43,9 @@
       "system": "wasteland-ventures"
     },
     {
-      "name": "apparel",
-      "label": "Wasteland Ventures Apparel",
-      "path": "compendiums/item/apparel.db",
+      "name": "race_core",
+      "label": "Wasteland Ventures Core Races",
+      "path": "compendiums/item/race_core.db",
       "type": "Item",
       "system": "wasteland-ventures"
     },

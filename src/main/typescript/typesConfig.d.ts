@@ -6,38 +6,40 @@ import type { CharacterDataSourceData } from "./data/actor/character/source.js";
 import { WvActorDataProperties } from "./data/actor/properties.js";
 import { WvActorDataSource } from "./data/actor/source.js";
 import type { AmmoDataSourceData } from "./data/item/ammo/source.js";
-import type { MagicDataSourceData } from "./data/item/magic/source.js";
 import type { ApparelDataSourceData } from "./data/item/apparel/source.js";
 import type BaseItemSource from "./data/item/common/baseItem/source.js";
-import { WvItemDataProperties } from "./data/item/properties.js";
-import { WvItemDataSource } from "./data/item/source.js";
 import type StackableItemSource from "./data/item/common/stackableItem/source.js";
+import type { MagicDataSourceData } from "./data/item/magic/source.js";
+import { WvItemDataProperties } from "./data/item/properties.js";
+import type { RaceDataSourceData } from "./data/item/race/source.js";
+import { WvItemDataSource } from "./data/item/source.js";
 import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage/index.js";
 import type Ammo from "./item/ammo.js";
-import type Magic from "./item/magic.js";
 import type Apparel from "./item/apparel.js";
 import type Effect from "./item/effect.js";
+import type Magic from "./item/magic.js";
+import type Race from "./item/race.js";
 import type Weapon from "./item/weapon.js";
 import WvItem, { ItemFlags } from "./item/wvItem.js";
+import type { WvI18nKey } from "./lang.js";
 import { macros } from "./macros/index.js";
 import type {
   Critical,
   flagCriticalFailure,
   flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
-import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
-import type * as settings from "./settings.js";
-import type { WvI18nKey } from "./lang.js";
-import type RuleElement from "./ruleEngine/ruleElement.js";
-import type { RuleElementId } from "./ruleEngine/ruleElementSource.js";
-import type { KeywordSelectorWord } from "./ruleEngine/documentSelectorSource.js";
 import type DocumentSelector from "./ruleEngine/documentSelector.js";
+import type OrSelector from "./ruleEngine/documentSelectors/orSelector.js";
 import type TagSelector from "./ruleEngine/documentSelectors/tagSelector.js";
 import type TypeSelector from "./ruleEngine/documentSelectors/typeSelector.js";
 import type UsesSkillSelector from "./ruleEngine/documentSelectors/usesSkillSelector.js";
-import type OrSelector from "./ruleEngine/documentSelectors/orSelector.js";
+import type { KeywordSelectorWord } from "./ruleEngine/documentSelectorSource.js";
+import type RuleElement from "./ruleEngine/ruleElement.js";
+import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
+import type { RuleElementId } from "./ruleEngine/ruleElementSource.js";
+import type * as settings from "./settings.js";
 
 declare global {
   interface SourceConfig {
@@ -82,6 +84,7 @@ declare global {
           [TYPES.ITEM.APPAREL]: typeof Apparel;
           [TYPES.ITEM.EFFECT]: typeof Effect;
           [TYPES.ITEM.MAGIC]: typeof Magic;
+          [TYPES.ITEM.RACE]: typeof Race;
           [TYPES.ITEM.WEAPON]: typeof Weapon;
         };
       };
@@ -96,6 +99,7 @@ declare global {
           [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItemSource>;
           [TYPES.ITEM.MAGIC]: ValidateFunction<MagicDataSourceData>;
           [TYPES.ITEM.MISC]: ValidateFunction<StackableItemSource>;
+          [TYPES.ITEM.RACE]: ValidateFunction<RaceDataSourceData>;
           [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;
         };
         ruleElement: ValidateFunction<RuleElementSource>;

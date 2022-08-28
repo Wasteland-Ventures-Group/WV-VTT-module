@@ -1,15 +1,9 @@
-import type { JSONSchemaType } from "ajv";
-import {
-  SpellRange,
-  SpellRanges,
-  SplashSize,
-  SplashSizes
-} from "../../../../constants.js";
-import {
-  CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-} from "../../../common.js";
+import { z } from "zod";
+import zodToJsonSchema from "zod-to-json-schema";
+import { SpellRanges, SplashSizes } from "../../../../constants.js";
+import { CompositeNumberSchema } from "../../../common.js";
 
+/*
 export class RangeSource {
   type: SpellRange = "none";
 
@@ -21,7 +15,21 @@ export class RangeSource {
 
   description: string = "";
 }
+*/
 
+export type RangeSource = z.infer<typeof RangeSchema>;
+
+export const RangeSchema = z
+  .object({
+    type: z.enum(SpellRanges).default("none"),
+    distanceScale: CompositeNumberSchema,
+    distanceBase: CompositeNumberSchema,
+    splashSize: z.enum(SplashSizes).default("tiny"),
+    description: z.string().default("")
+  })
+  .default({});
+
+/*
 export const RANGES_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
   description: "Description of how a spell's range operations",
   type: "object",
@@ -77,3 +85,5 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
   ],
   additionalProperties: false
 };
+
+*/

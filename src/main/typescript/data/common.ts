@@ -1,4 +1,5 @@
 import type { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import { getGame } from "../foundryHelpers.js";
 import type { WvI18nKey } from "../lang.js";
 import { FoundrySerializable, Resource } from "./foundryCommon.js";
@@ -13,6 +14,10 @@ export interface CompositeNumberBounds {
   min?: number | undefined;
   max?: number | undefined;
 }
+
+export const CompositeNumberSchema = z
+  .object({ source: z.number().default(0) })
+  .default({});
 
 /** The data layout for a serialized composite number. */
 export interface SerializedCompositeNumber extends CompositeNumberSource {

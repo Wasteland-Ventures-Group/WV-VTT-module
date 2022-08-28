@@ -1,22 +1,13 @@
-import type { JSONSchemaType } from "ajv";
+import { TYPES, GeneralMagicSchools } from "../../../constants.js";
+import { RangeSchema } from "./ranges/source.js";
+import { TargetSchema } from "./target/source.js";
+import { CompositeNumberSchema } from "../../common.js";
+import { z } from "zod";
 import {
-  GeneralMagicSchools,
-  TYPES,
-  GeneralMagicSchool
-} from "../../../constants.js";
-import BaseItemSource, {
-  BASE_ITEM_SOURCE_JSON_SCHEMA
-} from "../common/baseItem/source.js";
-import {
-  COMPENDIUM_JSON_SCHEMA,
+  compDataZodSchema,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
-import { RangeSource, RANGES_JSON_SCHEMA } from "./ranges/source.js";
-import { TargetSource, TARGET_JSON_SCHEMA } from "./target/source.js";
-import {
-  CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-} from "../../common.js";
+import zodToJsonSchema from "zod-to-json-schema";
 
 /** The Magic Item data-source */
 export default interface MagicDataSource {
@@ -24,19 +15,28 @@ export default interface MagicDataSource {
   data: MagicDataSourceData;
 }
 
-export class MagicDataSourceData extends BaseItemSource {
-  school: GeneralMagicSchool = "general";
+const MagicDataSchema = z
+  .object({
+    school: z.enum(GeneralMagicSchools).default("general"),
+    apCost: CompositeNumberSchema,
+    strainCost: CompositeNumberSchema,
+    range: RangeSchema,
+    target: TargetSchema
+  })
+  .default({});
 
-  apCost: CompositeNumberSource = { source: 0 };
-
-  strainCost: CompositeNumberSource = { source: 0 };
-
-  range: RangeSource = new RangeSource();
-
-  target: TargetSource = new TargetSource();
+export interface CompendiumMagic
+  extends FoundryCompendiumData<MagicDataSourceData> {
+  type: typeof TYPES.ITEM.MAGIC;
 }
 
+export const COMP_MAGIC_JSON_SCHEMA = zodToJsonSchema(
+  compDataZodSchema(MagicDataSchema, "icons/svg/daze.svg", "")
+);
+
+export type MagicDataSourceData = z.infer<typeof MagicDataSchema>;
 /** A JSON schema for magic source objects */
+/*
 export const MAGIC_SOURCE_JSON_SCHEMA: JSONSchemaType<MagicDataSourceData> = {
   description: "The system data for a magic Item",
   type: "object",
@@ -71,12 +71,6 @@ export const MAGIC_SOURCE_JSON_SCHEMA: JSONSchemaType<MagicDataSourceData> = {
   }
 };
 
-export interface CompendiumMagic
-  extends FoundryCompendiumData<MagicDataSourceData> {
-  type: typeof TYPES.ITEM.MAGIC;
-}
-
-/** A JSON schema for compendium magic objects */
 export const COMP_MAGIC_JSON_SCHEMA: JSONSchemaType<CompendiumMagic> = {
   description: "The compendium data for a magic Item",
   type: "object",
@@ -99,3 +93,5 @@ export const COMP_MAGIC_JSON_SCHEMA: JSONSchemaType<CompendiumMagic> = {
     img: "icons/svg/daze.svg"
   }
 };
+
+*/

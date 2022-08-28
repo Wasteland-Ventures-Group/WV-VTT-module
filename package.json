@@ -73,5 +73,8 @@
   },
   "tsd": {
     "directory": "../../test/typescript/tsd"
+  },
+  "dependencies": {
+    "zod-to-json-schema": "^3.17.1"
   }
 }

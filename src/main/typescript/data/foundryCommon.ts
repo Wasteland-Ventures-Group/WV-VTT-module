@@ -1,4 +1,5 @@
 import type { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import { TYPES } from "../constants.js";
 
 /** The source data of a foundry resource. */
@@ -67,6 +68,26 @@ export interface FoundryCompendiumData<T> {
   effects: object[];
   /** Custom flags on the entry */
   flags: Record<string, unknown>;
+}
+
+export function compDataZodSchema(
+  dataSchema: z.Schema,
+  defaultImg: string,
+  defaultName: string
+): z.Schema {
+  return z
+    .object({
+      _id: z.string().default(""), // TODO: figure out how this should be handled
+      name: z.string().default(defaultName),
+      type: z
+        .enum(["character", "ammo", "apparel", "misc", "weapon", "magic"])
+        .default("character"), // TODO: find a way to DRY this up
+      data: dataSchema.default({}),
+      img: z.string().default(defaultImg),
+      effects: z.object({}).default([]), // TODO: figure out wtf to put in here
+      flags: z.array(z.object({})).default([]) // TODO: figure out wtf to put in here
+    })
+    .default({});
 }
 
 /**

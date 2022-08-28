@@ -7,7 +7,8 @@ import {
   CONSTANTS,
   getPainThreshold,
   SkillName,
-  SpecialName
+  SpecialName,
+  TYPES
 } from "../constants.js";
 import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
@@ -28,6 +29,8 @@ import type {
 import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n from "../wvI18n.js";
+import Race from "../item/race.js";
+import { RaceDataSourceData } from "../data/item/race/source.js";
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
@@ -49,6 +52,23 @@ export default class WvActor extends Actor {
   /** A convenience getter for the Actor's strain. */
   get strain(): CompositeResource {
     return this.data.data.vitals.strain;
+  }
+
+  /** Get the race of the Actor. */
+  get race(): Race {
+    return (
+      this.items.find(
+        (item): item is Race => item.data.type === TYPES.ITEM.RACE
+      ) ??
+      new Race(
+        {
+          type: TYPES.ITEM.RACE,
+          name: getGame().i18n.localize("wv.system.races.noRace"),
+          data: new RaceDataSourceData()
+        },
+        { parent: this }
+      )
+    );
   }
 
   /** Get the amount of crippled legs of the character. */
@@ -440,6 +460,22 @@ export default class WvActor extends Actor {
           rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
         })
       );
+  }
+
+  /** Remove all race items from this actor. */
+  async removeAllRaces() {
+    // This deletes all persisted races
+    await this.deleteEmbeddedDocuments(
+      "Item",
+      this.itemTypes.race
+        .filter((item): item is StoredDocument<WvItem> => item.id !== null)
+        .map((item) => item.id)
+    );
+
+    // This deletes all stragglers that might still be there in memory
+    for (const race of this.itemTypes.race) {
+      await race.delete();
+    }
   }
 
   override prepareBaseData(): void {

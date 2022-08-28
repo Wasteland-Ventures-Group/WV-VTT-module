@@ -551,7 +551,9 @@ export interface LangSchema {
         };
       };
       /** Labels relating to race items */
-      races: {
+      races: QuantityNames & {
+        /** Label for the fallback race */
+        noRace: string;
         /** Labels for physical attributes */
         physical: {
           /** Label for the "canFly" attribute */

@@ -1,3 +1,7 @@
+import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs.js";
+import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData.js";
+import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs/baseUser.js";
+import WvActor from "../actor/wvActor.js";
 import { TYPES } from "../constants.js";
 import { RaceDataPropertiesData } from "../data/item/race/properties.js";
 import WvItem from "./wvItem.js";
@@ -17,6 +21,22 @@ export default class Race extends WvItem {
 
   override prepareBaseData(): void {
     this.data.data = new RaceDataPropertiesData(this.data.data, this);
+  }
+
+  protected override async _preCreate(
+    data: ItemDataConstructorData,
+    options: DocumentModificationOptions,
+    user: BaseUser
+  ): Promise<void> {
+    super._preCreate(data, options, user);
+    await this.removeRacesFromParent();
+  }
+
+  /** Check if there is a parent and remove existing races from them. */
+  protected async removeRacesFromParent() {
+    if (!(this.parent instanceof WvActor)) return;
+
+    await this.parent.removeAllRaces();
   }
 }
 

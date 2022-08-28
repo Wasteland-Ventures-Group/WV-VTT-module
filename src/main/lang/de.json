@@ -493,6 +493,9 @@
         }
       },
       "races": {
+        "singular": "Rasse",
+        "plural": "Rassen",
+        "noRace": "Keine Rasse",
         "physical": {
           "canFly": "Kann fliegen",
           "canUseMagic": "Kann Magie benutzen",

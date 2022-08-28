@@ -7,7 +7,10 @@ import { LOG } from "../systemLogger.js";
 
 /** Register system callbacks for the preUpdateToken hook. */
 export default function registerForPreUpdateToken(): void {
-  Hooks.on("preUpdateToken", checkApCostForMovement);
+  Hooks.on<Hooks.PreUpdateDocument<typeof TokenDocument>>(
+    "preUpdateToken",
+    checkApCostForMovement
+  );
 }
 
 type HookParams = Parameters<Hooks.PreUpdateDocument<typeof TokenDocument>>;

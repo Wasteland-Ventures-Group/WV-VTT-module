@@ -101,6 +101,9 @@ export default class WvActorSheet extends ActorSheet {
 
     // setup windows
     sheetForm
+      .querySelector('button[data-action="edit-race"]')
+      ?.addEventListener("click", this.onClickEditRace.bind(this));
+    sheetForm
       .querySelector('button[data-action="initial-setup"]')
       ?.addEventListener("click", this.onClickInitialSetup.bind(this));
 
@@ -512,6 +515,14 @@ export default class WvActorSheet extends ActorSheet {
       ...weapon.toObject(false),
       sheet: WeaponSheet.getWeaponSheetData(weapon)
     };
+  }
+
+  /** Open the item sheet of the actor's race. */
+  protected onClickEditRace() {
+    const race = this.actor.race;
+    if (!race.id) return;
+
+    race.sheet?.render(true);
   }
 
   /** Open the initial setup application. */

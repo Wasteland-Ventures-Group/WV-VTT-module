@@ -1,6 +1,15 @@
 <div class="flexcol flex-gapped">
   <div class="flexrow flex-j-spaced flex-gapped flex-center">
-    <span>{{localize "wv.system.races.singular"}}: {{sheet.race.name}}</span>
+    <div class="flexrow flex-gapped flex-center lighter-block race-display">
+      <span class="flex-fixed no-wrap">{{localize "wv.system.races.singular"}}:</span>
+      {{~#if sheet.race.id~}}
+        <img class="flex-fixed" src="{{sheet.race.img}}" />
+      {{~/if~}}
+      <span>{{sheet.race.name}}</span>
+      {{~#if sheet.race.id~}}
+        <button type="button" class="control small fas fa-pen" data-action="edit-race" title="{{localize 'wv.system.actions.edit'}}"></button>
+      {{~/if~}}
+    </div>
     <button data-action="initial-setup" type="button">{{localize "wv.system.initialCharacterSetup.openButton"}}</button>
   </div>
   <div class="flexrow flex-j-spaced flex-gapped">

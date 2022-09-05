@@ -64,6 +64,7 @@ export default class WvActor extends Actor {
         {
           type: TYPES.ITEM.RACE,
           name: getGame().i18n.localize("wv.system.races.noRace"),
+          img: "icons/svg/mystery-man.svg",
           data: new RaceDataSourceData()
         },
         { parent: this }

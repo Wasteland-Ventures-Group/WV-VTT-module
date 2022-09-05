@@ -28,6 +28,10 @@ const compendiumConfigs: CompendiumConfig[] = [
     outputPath: `${itemOutputBasePath}/race_core.db`
   },
   {
+    inputGlob: `${itemInputBasePath}/race_wanderer/*.json`,
+    outputPath: `${itemOutputBasePath}/race_wanderer.db`
+  },
+  {
     inputGlob: `${itemInputBasePath}/weapon/*.json`,
     outputPath: `${itemOutputBasePath}/weapons.db`
   }

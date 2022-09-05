@@ -1,0 +1,54 @@
+{
+  "_id": "WVRaceCore000002",
+  "name": "Pegasus",
+  "type": "race",
+  "data": {
+    "name": "Pegasus",
+    "description": "Pegasi are characterized by the feathered wings that grow above and slightly behind the front legs. Though small in appearance, they allow these ponies to fly. Pegasi are normally associated with control of the weather - they are the only pony able to interact with clouds as if they were tangible, allowing them to disperse clouds for extra sunlight or gather clouds for various forms of precipitation. During the Balefire attack that destroyed Equestria, the pegasi closed off the sky with a cloud barrier. Due to this, pegasi are a relatively rare sight in the Wasteland. The few that dot the Equestrian Wasteland are either Dashites - traitors to the Grand Pegasus Enclave, a militaristic faction above the cloudbarrier - or born from the surviving Stabledwellers. Some may be a kink in the genetic code, where a pegasus gene suddenly surfaced after generations of laying dormant... Much to the surprise of the parents.",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "physical": {
+      "canFly": true,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": true,
+      "hasWings": true
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["maneuver"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 3
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 5,
+        "amount": 1
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/commodities/biological/wing-bird-white.webp",
+  "effects": [],
+  "flags": {}
+}

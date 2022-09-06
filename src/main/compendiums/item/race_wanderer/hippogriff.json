@@ -1,0 +1,77 @@
+{
+  "_id": "WvRaceWanderer11",
+  "name": "Hippogriff",
+  "type": "race",
+  "data": {
+    "name": "Hippogriff",
+    "description": "Originating from Mount Aris, the hippogriff have become slightly more commonplace amongst the ponies after the Last Day. Much like deer, hippogriff remained impartial to the conflict, though unlike deer, this didn’t come back to bite them in the flank, as Mount Aris was spared from a direct hit. During the few hours that was the apocalypse, the hippogriff with their leader, Queen Skystar, disappeared underwater with the use of their magical pearl, transformed into seaponies. Perhaps due to this, hippogriffs/seaponies were spared from much of magical fallout that was eventually blown in their direction by wind. Several generations later, the hippogriffs made their way up to the surface and began to traverse the Equestrian Wasteland.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Bird Brained",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "intelligence",
+          "type": "WV.RuleElement.PermSpecialComponent",
+          "value": -1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Quick Runner",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "secondary.initiative",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 2
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": true,
+      "canUseMagic": false,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": true
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["maneuver"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 2
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 6,
+        "amount": 1
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/abilities/wings-birdlike-blue.webp",
+  "effects": [],
+  "flags": {}
+}

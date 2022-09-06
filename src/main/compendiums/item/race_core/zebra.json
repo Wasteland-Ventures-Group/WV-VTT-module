@@ -31,7 +31,7 @@
     },
     "creation": {
       "startingSpecialPoints": 40,
-      "magicTypes": [],
+      "magicTypes": ["spirit"],
       "freeSpells": {
         "allOf": [],
         "anyOf": {

@@ -1,0 +1,77 @@
+{
+  "_id": "WvRaceWanderer03",
+  "name": "Brahmin",
+  "type": "race",
+  "data": {
+    "name": "Brahmin",
+    "description": "Brahmin are the descendants of mutated cows and bulls of wartime Equestria, most notable of their features being two heads. As brahmin can be -though it is a rather rare instance- sentient, they often wear armor to protect themselves. And perhaps due to their large size and strong physique, they are excellent at hauling heavy weights. Out of the two heads brahmin possesses only one of the heads is sentient, the other has devolved to be little more than an animal working on instinct. Sometimes, the non-developed head can act on its own, but rarely does much harm on purpose. Though brahmin cows are more common sight in the Equestrian Wasteland, brahmin bulls also exist. Aside from lacking female brahmin’s bloated udders, they are similar in general appearance, only larger and perhaps a bit more hearty in stature. Both genders have horns, often in mismatched places, that continue to grow all throughout the brahmin’s life. Brahmin, much like the wartime cows and bulls, get along well with ponies, usually finding their stay in pony-centered cities leisurely and accommodated, even if it is technically a livestock stable...",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Easy Load",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "secondary.maxCarryWeight",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 20
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Great Beast",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "background.size",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": false,
+      "hasSecondHead": true,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 41,
+      "magicTypes": [],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/ox-bull-horned-glowing-orange.webp",
+  "effects": [],
+  "flags": {}
+}

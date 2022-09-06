@@ -1,0 +1,110 @@
+{
+  "_id": "WvRaceWanderer07",
+  "name": "Deer",
+  "type": "race",
+  "data": {
+    "name": "Deer",
+    "description": "Deer used to inhabit many of the Equestrian forests with their own kingdoms. Rather a rare sight, as most ponies are used to seeing the deer’s unfortunate mutation, the Radstag. However, despite the popular notion that sane deer didn’t make it out of the magical fallout, some of the population did survive in a bunker of their own making. As the decades rolled on and the once lush forests either grew too hostile or died, the deer can sometimes be spotted in settlements surrounding their abandoned and overtaken kingdoms. However, the deer are still ruled by their community’s king, which is a hereditary position, unless the heir is too young or unfit to rule. Outwardly, the deer are tall and lithe, their movements graceful and cautious. Around their necks, deer carry a cask, that can vary in shape and size. This cask contains a potion of their own making. However, unlike ponies, deer fare worse against the magical fallout, and due to this one can often find deer wearing a breather of sorts to protect their lungs from irradiated air. Deer’s Cask functions as a Quick Slot.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "conditions": [],
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Purity Flaw",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "resistances.poison",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "conditions": [],
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Purity Flaw",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": -5
+        },
+        {
+          "conditions": [],
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Purity Flaw",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "vitals.healingRate",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        },
+        {
+          "conditions": [],
+          "enabled": true,
+          "hook": "afterComputation",
+          "label": "Deer Cask",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "equipment.quickSlots",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Quick Runner",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "secondary.initiative",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 2
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": false,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": [],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": ["brewBase"],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 3
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 5,
+        "amount": 2
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/deer-movement-leap-green.webp",
+  "effects": [],
+  "flags": {}
+}

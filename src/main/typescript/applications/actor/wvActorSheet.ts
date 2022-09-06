@@ -7,7 +7,6 @@ import {
   isPhysicalItemType,
   isSkillName,
   isSpecialName,
-  RaceName,
   SkillName,
   SkillNames,
   SpecialName,
@@ -32,7 +31,7 @@ import WvItem from "../../item/wvItem.js";
 import { WvItemProxy } from "../../item/wvItemProxy.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
-import WvI18n, { I18nRaceNames, I18nSpecial } from "../../wvI18n.js";
+import WvI18n, { I18nSpecial } from "../../wvI18n.js";
 import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
@@ -158,7 +157,6 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   override async getData(): Promise<SheetData> {
-    const i18nRaceNames = WvI18n.raceNames;
     const i18nSpecials = WvI18n.specials;
     const i18nSkills = WvI18n.skills;
 
@@ -236,15 +234,6 @@ export default class WvActorSheet extends ActorSheet {
     const sheetData: SheetData = {
       ...(await super.getData()),
       sheet: {
-        background: {
-          raceName: i18nRaceNames[this.actor.data.data.background.raceName],
-          raceNames: Object.entries(i18nRaceNames)
-            .sort((a, b) => a[1].localeCompare(b[1]))
-            .reduce((racesNames, [raceName, i18nRaceName]) => {
-              racesNames[raceName as RaceName] = i18nRaceName;
-              return racesNames;
-            }, {} as I18nRaceNames)
-        },
         bounds: CONSTANTS.bounds,
         equipment: {
           readyItemCost: CONSTANTS.rules.equipment.readyItemCost,
@@ -922,11 +911,6 @@ export default class WvActorSheet extends ActorSheet {
   }
 }
 
-interface SheetBackground {
-  raceName: string;
-  raceNames: I18nRaceNames;
-}
-
 interface SheetBound {
   points: {
     min: number;
@@ -1018,7 +1002,6 @@ interface SheetSkill {
 
 interface SheetData extends ActorSheet.Data {
   sheet: {
-    background: SheetBackground;
     bounds: SheetBounds;
     effects: SheetEffect[];
     equipment: SheetEquipment;

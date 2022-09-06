@@ -1,37 +1,3 @@
-export type RaceName = typeof RaceNames[number];
-export const RaceNames = [
-  "earthPony",
-  "pegasus",
-  "unicorn",
-  "griffon",
-  "zebra",
-  "abyssinian",
-  "batPony",
-  "brahmin",
-  "buffalo",
-  "changeling",
-  "crystalPony",
-  "deer",
-  "diamondDog",
-  "donkey",
-  "harpy",
-  "hippogriff",
-  "kirin",
-  "minotaur",
-  "yak"
-] as const;
-
-export type FlyingRaceName = typeof FlyingRaceNames[number];
-export const FlyingRaceNames = [
-  "pegasus",
-  "griffon",
-  "batPony",
-  "hippogriff"
-] as const;
-
-export type WingedRaceName = typeof WingedRaceNames[number];
-export const WingedRaceNames = [...FlyingRaceNames] as const;
-
 export type RadiationSicknessLevel = typeof RadiationSicknessLevels[number];
 export const RadiationSicknessLevels = [
   "none",
@@ -479,7 +445,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.18.1",
+  needsMigrationVersion: "0.20.0",
 
   /** The number of fixed decimals to round floating point numbers to. */
   fixedDecimals: 2,

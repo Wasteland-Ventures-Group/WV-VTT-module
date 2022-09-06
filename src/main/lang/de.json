@@ -24,6 +24,7 @@
         "status": {
           "torso": "Verkrüppelter Torso",
           "head": "Verkrüppelter Kopf",
+          "secondHead": "Verkrüppelter zweiter Kopf",
           "frontLeftLeg": "Verkrüppeltes Bein Vorne Links",
           "frontRightLeg": "Verkrüppeltes Bein Vorne Rechts",
           "rearLeftLeg": "Verkrüppeltes Bein Hinten Links",
@@ -267,31 +268,6 @@
         "reached": "Schmerzschwelle erreicht",
         "singular": "Schmerzschwelle",
         "plural": "Schmerzschwellen"
-      },
-      "race": {
-        "names": {
-          "earthPony": "Erdpony",
-          "pegasus": "Pegasuspony",
-          "unicorn": "Einhornpony",
-          "griffon": "Greif",
-          "zebra": "Zebra",
-          "abyssinian": "Abyssinian",
-          "batPony": "Fledermauspony",
-          "brahmin": "Brahmin",
-          "buffalo": "Büffel",
-          "changeling": "Wechselpony",
-          "crystalPony": "Kristallpony",
-          "deer": "Hirsch",
-          "diamondDog": "Diamanthund",
-          "donkey": "Esel",
-          "harpy": "Harpyie",
-          "hippogriff": "Hippogreif",
-          "kirin": "Kirin",
-          "minotaur": "Minotaurus",
-          "yak": "Yak"
-        },
-        "plural": "Rassen",
-        "singular": "Rasse"
       },
       "radiation": {
         "name": "Strahlung",

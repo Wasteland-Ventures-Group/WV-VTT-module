@@ -1,14 +1,11 @@
 import type { JSONSchemaType } from "ajv";
-import { CONSTANTS, RaceName, RaceNames } from "../../../../constants.js";
+import { CONSTANTS } from "../../../../constants.js";
 import {
   CompositeNumberSource,
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
 } from "../../../common.js";
 
 export default class BackgroundSource {
-  /** The race name of the character */
-  raceName: RaceName = "earthPony";
-
   /** The age of the character */
   age = "";
 
@@ -53,11 +50,6 @@ export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
   description: "A background specification",
   type: "object",
   properties: {
-    raceName: {
-      description: "The race name of the character",
-      type: "string",
-      enum: RaceNames
-    },
     age: {
       description: "The age of the character",
       type: "string"
@@ -125,10 +117,9 @@ export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
       type: "string"
     }
   },
-  required: ["raceName", "karma", "size"],
+  required: ["karma", "size"],
   additionalProperties: false,
   default: {
-    raceName: "earthPony",
     age: "",
     gender: "",
     cutieMark: "",

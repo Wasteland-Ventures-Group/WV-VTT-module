@@ -6,7 +6,6 @@ import type {
   I18nEquipmentSlots,
   I18nMagicTypes,
   I18nMagicSchools,
-  I18nRaceNames,
   I18nRarities,
   I18nSkills,
   I18nSpecials
@@ -58,6 +57,7 @@ export interface LangSchema {
         status: {
           torso: string;
           head: string;
+          secondHead: string;
           frontLeftLeg: string;
           frontRightLeg: string;
           rearLeftLeg: string;
@@ -257,11 +257,6 @@ export interface LangSchema {
       };
       painThreshold: QuantityNames & {
         reached: string;
-      };
-      /** Labels related to races */
-      race: QuantityNames & {
-        /** The names of races */
-        names: I18nRaceNames;
       };
       /** Labels related to radiation */
       radiation: {

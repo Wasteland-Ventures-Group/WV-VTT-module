@@ -141,10 +141,9 @@ function migrateRace(
   updateData: Record<string, unknown>
 ) {
   const background = actor.data._source.data.background as unknown as {
-    race: string;
+    raceName: string;
   };
-  if (typeof background.race === "string") {
-    updateData["data.background.raceName"] = background.race;
-    updateData["data.background.-=race"] = null;
+  if (typeof background.raceName === "string") {
+    updateData["data.background.-=raceName"] = null;
   }
 }

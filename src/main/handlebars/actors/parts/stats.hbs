@@ -3,7 +3,7 @@
     <div class="flexrow flex-gapped flex-center lighter-block race-display">
       <span class="flex-fixed no-wrap">{{localize "wv.system.races.singular"}}:</span>
       {{~#if sheet.race.id~}}
-        <img class="flex-fixed" src="{{sheet.race.img}}" />
+        <img class="flex-fixed double-size-inline" src="{{sheet.race.img}}" />
       {{~/if~}}
       <span>{{sheet.race.name}}</span>
       {{~#if sheet.race.id~}}
@@ -79,6 +79,12 @@
             <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.head"}}</th>
             <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.head" {{checked data.data.vitals.crippledLimbs.head}} /></td>
           </tr>
+          {{~#if sheet.race.data.data.physical.hasSecondHead~}}
+            <tr>
+              <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.secondHead"}}</th>
+              <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.secondHead" {{checked data.data.vitals.crippledLimbs.secondHead}} /></td>
+            </tr>
+          {{~/if~}}
           <tr>
             <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.frontLeftLeg"}}</th>
             <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.front.left" {{checked data.data.vitals.crippledLimbs.legs.front.left}} /></td>
@@ -95,7 +101,7 @@
             <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rearRightLeg"}}</th>
             <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.rear.right" {{checked data.data.vitals.crippledLimbs.legs.rear.right}} /></td>
           </tr>
-          {{~#if data.data.background.race.hasWings~}}
+          {{~#if sheet.race.data.data.physical.hasWings~}}
             <tr>
               <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.leftWing"}}</th>
               <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.wings.left" {{checked data.data.vitals.crippledLimbs.wings.left}} /></td>

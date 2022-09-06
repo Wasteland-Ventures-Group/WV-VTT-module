@@ -24,6 +24,7 @@
         "status": {
           "torso": "Crippled Torso",
           "head": "Crippled Head",
+          "secondHead": "Crippled Second Head",
           "frontLeftLeg": "Crippled Front Left Leg",
           "frontRightLeg": "Crippled Front Right Leg",
           "rearLeftLeg": "Crippled Rear Left Leg",
@@ -267,31 +268,6 @@
         "reached": "Pain Threshold entered",
         "singular": "Pain Threshold",
         "plural": "Pain Thresholds"
-      },
-      "race": {
-        "names": {
-          "earthPony": "Earth Pony",
-          "pegasus": "Pegasus",
-          "unicorn": "Unicorn",
-          "griffon": "Griffon",
-          "zebra": "Zebra",
-          "abyssinian": "Abyssinian",
-          "batPony": "Bat Pony",
-          "brahmin": "Brahmin",
-          "buffalo": "Buffalo",
-          "changeling": "Changeling",
-          "crystalPony": "Crystal Pony",
-          "deer": "Deer",
-          "diamondDog": "Diamond Dog",
-          "donkey": "Donkey",
-          "harpy": "Harpy",
-          "hippogriff": "Hippogriff",
-          "kirin": "Kirin",
-          "minotaur": "Minotaur",
-          "yak": "Yak"
-        },
-        "plural": "Races",
-        "singular": "Race"
       },
       "radiation": {
         "name": "Radiation",

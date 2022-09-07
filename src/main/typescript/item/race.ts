@@ -19,6 +19,31 @@ export default class Race extends WvItem {
     super(data, context);
   }
 
+  /** Whether this race can fly */
+  get canFly(): boolean {
+    return this.data.data.physical.canFly;
+  }
+
+  /** Whether this race can use some form of magic */
+  get canUseMagic(): boolean {
+    return this.data.data.physical.canUseMagic;
+  }
+
+  /** Whether this race has a second head */
+  get hasSecondHead(): boolean {
+    return this.data.data.physical.hasSecondHead;
+  }
+
+  /** Whether this race has a Special Talent */
+  get hasSpecialTalent(): boolean {
+    return this.data.data.physical.hasSpecialTalent;
+  }
+
+  /** Whether this race has wings */
+  get hasWings(): boolean {
+    return this.data.data.physical.hasWings;
+  }
+
   override prepareBaseData(): void {
     this.data.data = new RaceDataPropertiesData(this.data.data, this);
   }

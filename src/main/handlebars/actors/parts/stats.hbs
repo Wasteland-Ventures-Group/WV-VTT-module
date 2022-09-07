@@ -79,7 +79,7 @@
             <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.head"}}</th>
             <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.head" {{checked data.data.vitals.crippledLimbs.head}} /></td>
           </tr>
-          {{~#if sheet.race.data.data.physical.hasSecondHead~}}
+          {{~#if sheet.race.hasSecondHead~}}
             <tr>
               <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.secondHead"}}</th>
               <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.secondHead" {{checked data.data.vitals.crippledLimbs.secondHead}} /></td>
@@ -101,7 +101,7 @@
             <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.rearRightLeg"}}</th>
             <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.legs.rear.right" {{checked data.data.vitals.crippledLimbs.legs.rear.right}} /></td>
           </tr>
-          {{~#if sheet.race.data.data.physical.hasWings~}}
+          {{~#if sheet.race.hasWings~}}
             <tr>
               <th scope="row" class="align-left">{{localize "wv.rules.crippledLimbs.status.leftWing"}}</th>
               <td class="align-right"><input type="checkbox" name="data.vitals.crippledLimbs.wings.left" {{checked data.data.vitals.crippledLimbs.wings.left}} /></td>

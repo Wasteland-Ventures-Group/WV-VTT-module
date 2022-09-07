@@ -1,0 +1,47 @@
+{
+  "_id": "WvApparelCloth27",
+  "name": "Zebra Commando",
+  "type": "apparel",
+  "data": {
+    "name": "Zebra Commando",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Unarmed bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.unarmed",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Survival bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.survival",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "rarity": "uncommon",
+    "value": { "source": 400 },
+    "weight": { "source": 1 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/robe-layered-purple.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,47 @@
+{
+  "_id": "WvApparelCloth31",
+  "name": "Earth Enforcer",
+  "type": "apparel",
+  "data": {
+    "name": "Earth Enforcer",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Melee bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.melee",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Intimidation bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.intimidation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "rarity": "uncommon",
+    "value": { "source": 400 },
+    "weight": { "source": 1 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+  "effects": [],
+  "flags": {}
+}

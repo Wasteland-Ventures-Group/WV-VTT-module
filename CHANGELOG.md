@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.20.0] - 2022-08-28
+
 ### Changed
 
 - direct SPECIAL editing on the character sheet has been replaced with a
@@ -825,7 +827,8 @@ version, then continue with upgrading to the next version.
 
 - basic character Actor implementation with editable SPECIALs
 
-[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.1...HEAD
+[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.1...v0.20.0
 [0.19.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.0...v0.19.1
 [0.19.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.2...v0.18.0

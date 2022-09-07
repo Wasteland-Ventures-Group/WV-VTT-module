@@ -553,7 +553,7 @@
           },
           "enforceApForGameMasters": {
             "hint": "Enforce AP checks for Actors moved by Game Masters in combat.",
-            "name": "GM Combat Movment AP Checks"
+            "name": "GM Combat Movement AP checks"
           },
           "subtractApForGameMasters": {
             "hint": "Subtract AP from Actors moved by Game Masters in combat.",

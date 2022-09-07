@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- a typo in the GM movement settings
+  ([#451](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/451))
+
 ## [0.20.0] - 2022-08-28
 
 ### Changed

@@ -426,8 +426,7 @@ export const CONSTANTS = {
       /** The bounds for points invested in a SPECIAL. */
       points: {
         max: 10,
-        min: 1,
-        total: 40
+        min: 1
       },
       value: {
         max: 15,

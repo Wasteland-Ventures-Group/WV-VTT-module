@@ -44,6 +44,13 @@ export default class Race extends WvItem {
     return this.data.data.physical.hasWings;
   }
 
+  /**
+   * How many SPECIAL points can be spent with this race at character creation
+   */
+  get creationSpecialPoints(): number {
+    return this.data.data.creation.startingSpecialPoints;
+  }
+
   override prepareBaseData(): void {
     this.data.data = new RaceDataPropertiesData(this.data.data, this);
   }

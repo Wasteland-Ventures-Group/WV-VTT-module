@@ -37,7 +37,6 @@ import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
 import Prompt from "../prompt.js";
-import BaseSetup from "./character/baseSetup.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
@@ -516,7 +515,7 @@ export default class WvActorSheet extends ActorSheet {
 
   /** Open the initial setup application. */
   protected onClickInitialSetup() {
-    new BaseSetup(this.actor).render(true);
+    this.actor.baseSetup.render(true);
   }
 
   /** Handle a click event on the SPECIAL roll buttons. */

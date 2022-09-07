@@ -2,6 +2,7 @@ import type { DocumentModificationOptions } from "@league-of-foundry-developers/
 import type { ActorDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
+import BaseSetup from "../applications/actor/character/baseSetup.js";
 import {
   ApparelSlot,
   CONSTANTS,
@@ -10,13 +11,15 @@ import {
   SpecialName,
   TYPES
 } from "../constants.js";
-import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
 import type { CompositeResource } from "../data/common.js";
+import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
+import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import Apparel from "../item/apparel.js";
+import Race from "../item/race.js";
 import Weapon from "../item/weapon.js";
 import WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
@@ -29,11 +32,19 @@ import type {
 import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n from "../wvI18n.js";
-import Race from "../item/race.js";
-import { RaceDataSourceData } from "../data/item/race/source.js";
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
+  /** The cached base setup application for this actor */
+  protected baseSetupApp: BaseSetup | null = null;
+
+  /** Lazily obtain the base setup application for this actor. */
+  get baseSetup(): BaseSetup {
+    if (this.baseSetupApp) return this.baseSetupApp;
+
+    return (this.baseSetupApp = new BaseSetup(this));
+  }
+
   /** Get an identifying string for this Actor. */
   get ident(): string {
     return `[${this.id}] "${this.name}"`;

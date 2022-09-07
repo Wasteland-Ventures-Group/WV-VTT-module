@@ -444,7 +444,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.20.0",
+  needsMigrationVersion: "0.21.0",
 
   /** The number of fixed decimals to round floating point numbers to. */
   fixedDecimals: 2,

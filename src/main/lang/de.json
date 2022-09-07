@@ -552,11 +552,11 @@
             "name": "Spieler Kampfbewegungs-AP"
           },
           "enforceApForGameMasters": {
-            "hint": "Erzwinge AP Kontrollen für Spielleiterbewegungen im Kampf.",
+            "hint": "Erzwinge AP Kontrollen für deine Spielleiterbewegungen im Kampf. Dies hat nur dann einen Effekt, wenn du Spielleiter bist.",
             "name": "GM Kampfbewegungs-AP Kontrollen"
           },
           "subtractApForGameMasters": {
-            "hint": "Ziehe AP für Spielleiterbewegungen im Kampf ab.",
+            "hint": "Ziehe AP für deine Spielleiterbewegungen im Kampf ab. Dies hat nur dann einen Effekt, wenn du Spielleiter bist.",
             "name": "GM Kampfbewegungs-AP Abzug"
           }
         },

@@ -10,40 +10,93 @@
       "sources": {
         "Burst": {
           "damage": {
-            "base": 4,
-            "dice": 5
+            "base": {
+              "source": 4
+            },
+            "dice": {
+              "source": 5
+            }
           },
-          "ap": 6,
-          "rounds": 3,
-          "splash": "small"
+          "ap": {
+            "source": 6
+          },
+          "rounds": {
+            "source": 3
+          },
+          "splash": "small",
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 50,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 50
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 100,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 100
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 150,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 150
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "exotic",
     "reload": {
-      "ap": 6,
+      "ap": {
+        "source": 6
+      },
       "caliber": "rifleGrenade",
       "containerType": "magazine",
-      "size": 30
+      "size": {
+        "source": 30
+      }
     },
     "skill": "explosives",
-    "strengthRequirement": 14,
-    "value": 9999,
-    "weight": 18,
+    "strengthRequirement": {
+      "source": 14
+    },
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 18
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

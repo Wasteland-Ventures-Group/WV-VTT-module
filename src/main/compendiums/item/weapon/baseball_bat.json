@@ -11,28 +11,93 @@
       "sources": {
         "Strike": {
           "damage": {
-            "base": 1,
-            "dice": 2,
+            "base": {
+              "source": 1
+            },
+            "dice": {
+              "source": 2
+            },
             "diceRange": true
           },
-          "ap": 7
+          "ap": {
+            "source": 7
+          },
+          "tags": ["melee"]
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": "melee",
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 2
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": ["melee"]
+      },
+      "medium": {
+        "distance": {
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
+      },
+      "long": {
+        "distance": {
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       }
     },
     "rarity": "common",
+    "reload": {
+      "ap": {
+        "source": 0
+      },
+      "caliber": "308cal",
+      "containerType": "magazine",
+      "size": {
+        "source": 0
+      }
+    },
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "melee",
-    "strengthRequirement": 4,
-    "value": 80,
-    "weight": 1.5
+    "strengthRequirement": {
+      "source": 4
+    },
+    "value": {
+      "source": 80
+    },
+    "weight": {
+      "source": 1.5
+    }
   },
   "effects": [],
   "flags": {}

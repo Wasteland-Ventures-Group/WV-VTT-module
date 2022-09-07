@@ -1,113 +1,135 @@
 import type { JSONSchemaType } from "ajv";
 import { SpecialName, SpecialNames } from "../../../../constants.js";
+import {
+  CompositeNumberSource,
+  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
+} from "../../../common.js";
+import { TAGS_SOURCE_JSON_SCHEMA } from "../../common/baseItem/source.js";
 
-/** An interface that represents the source ranges of a weapon. */
-export default interface RangesSource {
+export default class RangesSource {
   /** The short range of the weapon */
-  short: RangeSource;
+  short = new RangeSource();
 
-  /**
-   * The medium range of the weapon. By default the weapon has no medium range.
-   */
-  medium?: RangeSource;
+  /** The medium range of the weapon */
+  medium = new RangeSource();
 
-  /** The long range of the weapon. By default the weapon has no long range. */
-  long?: RangeSource;
+  /** The long range of the weapon */
+  long = new RangeSource();
 }
 
-/** An interface to represent values needed for an weapon's range */
-export interface RangeSource {
-  /**
-   * The maximum distance of this range in meters. It can either be a number,
-   * which represents a distance in meters, "melee" or a SPECIAL based range,
-   * with a base range, a multiplier and a SPECIAL name.
-   */
-  distance: DistanceSource;
+export class RangeSource {
+  /** The distance of the range */
+  distance = new DistanceSource();
 
   /** The skill check modifier associated with this range */
-  modifier: number;
+  modifier: CompositeNumberSource = { source: 0 };
+
+  /** Tags of the range */
+  tags: string[] = [];
 }
 
-/** A distance specifier for a weapon range. */
-export type DistanceSource = number | "melee" | SpecialBasedRangeSource;
+export class DistanceSource {
+  /** The base distance of the range distance in meters */
+  base: CompositeNumberSource = { source: 0 };
 
-/** A SPECIAL based range */
-export interface SpecialBasedRangeSource {
-  /** The base range of the range in meters */
-  base: number;
+  /** The SPECIAL multiplier of the range distance */
+  multiplier: CompositeNumberSource = { source: 0 };
 
-  /** The SPECIAL multiplier */
-  multiplier: number;
-
-  /** The name of the SPECIAL to use */
-  special: SpecialName;
+  /** The name of the SPECIAL to use for the range distance */
+  special: SpecialName | "" = "";
 }
 
-/** A JSON schema for a single range object */
 const RANGE_JSON_SCHEMA: JSONSchemaType<RangeSource> = {
   description: "A range definition",
   type: "object",
   properties: {
     distance: {
-      description:
-        "The distance of the range. This can either be a number for a " +
-        'distance in meters, the word "melee" for melee range or an object ' +
-        "for a SPECIAL based distance.",
-      oneOf: [
-        {
-          description: "A distance in meters",
-          type: "integer",
-          default: 0
-        },
-        {
-          description: "A distance in melee range",
-          type: "string",
-          const: "melee",
-          default: "melee"
-        },
-        {
-          description: "A SPECIAL based distance",
-          type: "object",
+      description: "The distance of the range",
+      type: "object",
+      properties: {
+        base: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
+          description: "The flat base distance of the distance in meters",
           properties: {
-            base: {
-              description: "The flat base distance of the distance in meters",
+            source: {
+              ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
               type: "integer",
               default: 0
-            },
-            multiplier: {
-              description: "The SPECIAL multiplier for the distance",
-              type: "integer",
-              default: 1
-            },
-            special: {
-              description:
-                "The SPECIAL to multiply and add to the base distance",
-              type: "string",
-              enum: SpecialNames,
-              default: "strength"
             }
           },
-          required: ["base", "multiplier", "special"],
-          additionalProperties: false,
           default: {
-            base: 0,
-            multiplier: 1,
-            special: "strength"
+            source: 0
           }
+        },
+        multiplier: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
+          description: "The SPECIAL multiplier for the distance, can be 0.",
+          properties: {
+            source: {
+              ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+              type: "integer",
+              default: 0
+            }
+          },
+          default: {
+            source: 0
+          }
+        },
+        special: {
+          description:
+            "The SPECIAL to multiply and add to the base distance, can be empty.",
+          type: "string",
+          enum: ["", ...SpecialNames],
+          default: ""
         }
-      ]
+      },
+      required: ["base", "multiplier", "special"],
+      additionalProperties: false,
+      default: {
+        base: {
+          source: 0
+        },
+        multiplier: {
+          source: 0
+        },
+        special: ""
+      }
     },
     modifier: {
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
       description: "A hit chance modifier, active on this range",
-      type: "integer",
-      default: 0
+      properties: {
+        source: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
+    },
+    tags: {
+      ...TAGS_SOURCE_JSON_SCHEMA,
+      description: "Tags of the range"
     }
   },
-  required: ["distance", "modifier"],
+  required: ["distance", "modifier", "tags"],
   additionalProperties: false,
   default: {
-    distance: 20,
-    modifier: 0
+    distance: {
+      base: {
+        source: 0
+      },
+      multiplier: {
+        source: 0
+      },
+      special: ""
+    },
+    modifier: {
+      source: 0
+    },
+    tags: []
   }
 };
 
@@ -122,26 +144,114 @@ export const RANGES_JSON_SCHEMA: JSONSchemaType<RangesSource> = {
     },
     medium: {
       ...RANGE_JSON_SCHEMA,
-      description: "The medium range specification",
-      nullable: true,
-      default: {
-        distance: 40,
-        modifier: -10
-      }
+      description: "The medium range specification"
     },
     long: {
       ...RANGE_JSON_SCHEMA,
-      description: "The long range specification",
-      nullable: true,
-      default: {
-        distance: 60,
-        modifier: -20
-      }
+      description: "The long range specification"
     }
   },
-  required: ["short"],
+  required: ["short", "medium", "long"],
   additionalProperties: false,
   default: {
-    short: RANGE_JSON_SCHEMA.default
-  }
+    short: RANGE_JSON_SCHEMA.default,
+    medium: RANGE_JSON_SCHEMA.default,
+    long: RANGE_JSON_SCHEMA.default
+  },
+  examples: [
+    {
+      short: {
+        distance: {
+          base: {
+            source: 2
+          },
+          multiplier: {
+            source: 0
+          },
+          special: ""
+        },
+        modifier: {
+          source: 0
+        },
+        tags: ["melee"]
+      },
+      medium: {
+        distance: {
+          base: {
+            source: 0
+          },
+          multiplier: {
+            source: 0
+          },
+          special: ""
+        },
+        modifier: {
+          source: 0
+        },
+        tags: []
+      },
+      long: {
+        distance: {
+          base: {
+            source: 0
+          },
+          multiplier: {
+            source: 0
+          },
+          special: ""
+        },
+        modifier: {
+          source: 0
+        },
+        tags: []
+      }
+    },
+    {
+      short: {
+        distance: {
+          base: {
+            source: 20
+          },
+          multiplier: {
+            source: 0
+          },
+          special: ""
+        },
+        modifier: {
+          source: 0
+        },
+        tags: []
+      },
+      medium: {
+        distance: {
+          base: {
+            source: 40
+          },
+          multiplier: {
+            source: 0
+          },
+          special: ""
+        },
+        modifier: {
+          source: -10
+        },
+        tags: []
+      },
+      long: {
+        distance: {
+          base: {
+            source: 60
+          },
+          multiplier: {
+            source: 0
+          },
+          special: ""
+        },
+        modifier: {
+          source: -20
+        },
+        tags: []
+      }
+    }
+  ]
 };

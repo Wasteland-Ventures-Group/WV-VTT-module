@@ -1,36 +1,42 @@
-<header class="sheet-header flexrow flex-fixed">
-  <img class="document-img item-img flex-fixed" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
-  <div class="document-info">
-    <h1 class="document-name"><input name="name" type="text" value="{{data.name}}" placeholder="{{localize 'wv.system.misc.name'}}" /></h1>
-    <div class="header-fields">
-      <div class="general-info flexrow spacing-bottom">
-        {{~#if data.data.name~}}
-          <h3 class="proto-name">{{data.data.name}}</h3>
-        {{~/if~}}
-        {{~#if sheet.rarity~}}
-          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.rarity.name"}}">
-            <span class="fas fa-gem"></span><span>{{sheet.rarity.selectedName}}</span>
-          </span>
-        {{~/if~}}
-        {{~#if data.data.value includeZero=true ~}}
-          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.value.name"}}">
-            <span class="fas fa-coins"></span><span>{{data.data.value}}</span>
-          </span>
-        {{~/if~}}
-        {{~#if data.data.weight includeZero=true ~}}
-          <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.weight.name"}}">
-            <span class="fas fa-weight"></span><span>{{data.data.weight}}</span>
-          </span>
-        {{~/if~}}
-        {{~#if data.data.amount includeZero=true ~}}
-          <span class="general-info-element flex-fixed" title="{{localize "wv.system.values.amount"}}">
-            <span class="fas fa-hashtag"></span><span>{{data.data.amount}}</span>
-          </span>
-        {{~/if~}}
-      </div>
-      {{~#if data.data.description~}}
-        <section>{{data.data.description}}</section>
-      {{~/if~}}
-    </div>
-  </div>
+{{! this is pretty much using the foundry baked-in layout and styling }}
+<header class="sheet-header flex-fixed">
+  <img src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+  <h1><input name="name" type="text" value="{{data.name}}" placeholder="{{localize 'wv.system.misc.name'}}" /></h1>
 </header>
+
+{{! our own stuff starts here }}
+<div class="document-info flex-fixed flexcol flex-gapped">
+  <div class="general-info flex-fixed flexrow">
+    {{~#if data.data.name~}}
+      <h3 class="proto-name">{{data.data.name}}</h3>
+    {{~/if~}}
+    {{~#if sheet.rarity~}}
+      <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.rarity.name"}}">
+        <span class="fas fa-gem"></span><span>{{sheet.rarity.selectedName}}</span>
+      </span>
+    {{~/if~}}
+    {{~#if data.data.value.total includeZero=true ~}}
+      <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.value.name"}}">
+        <span class="fas fa-coins"></span><span>{{data.data.value.total}}</span>
+      </span>
+    {{~/if~}}
+    {{~#if data.data.weight.total includeZero=true ~}}
+      <span class="general-info-element flex-fixed" title="{{localize "wv.rules.equipment.weight.name"}}">
+        <span class="fas fa-weight"></span><span>{{data.data.weight.total}}</span>
+      </span>
+    {{~/if~}}
+    {{~#if data.data.amount includeZero=true ~}}
+      <span class="general-info-element flex-fixed" title="{{localize "wv.system.values.amount"}}">
+        <span class="fas fa-hashtag"></span><span>{{data.data.amount}}</span>
+      </span>
+    {{~/if~}}
+  </div>
+  {{~#if data.data.description~}}
+    <section class="flex-fixed">{{data.data.description}}</section>
+  {{~/if~}}
+  <div class="flex-fixed flexrow flex-gapped">
+    {{~#each data.data.tags as |tag|~}}
+      <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
+    {{~/each~}}
+  </div>
+</div>

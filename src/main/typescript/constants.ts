@@ -1,5 +1,5 @@
-export type Race = typeof Races[number];
-export const Races = [
+export type RaceName = typeof RaceNames[number];
+export const RaceNames = [
   "earthPony",
   "pegasus",
   "unicorn",
@@ -19,6 +19,26 @@ export const Races = [
   "kirin",
   "minotaur",
   "yak"
+] as const;
+
+export type FlyingRaceName = typeof FlyingRaceNames[number];
+export const FlyingRaceNames = [
+  "pegasus",
+  "griffon",
+  "batPony",
+  "hippogriff"
+] as const;
+
+export type WingedRaceName = typeof WingedRaceNames[number];
+export const WingedRaceNames = [...FlyingRaceNames] as const;
+
+export type RadiationSicknessLevel = typeof RadiationSicknessLevels[number];
+export const RadiationSicknessLevels = [
+  "none",
+  "minor",
+  "moderate",
+  "major",
+  "critical"
 ] as const;
 
 export type SpecialName = typeof SpecialNames[number];
@@ -45,6 +65,207 @@ export type ThaumaturgySpecial = Exclude<SpecialName, "luck">;
 export const ThaumaturgySpecials = SpecialNames.filter(
   (special) => special !== "luck"
 ) as ThaumaturgySpecial[];
+
+export type Spirit = typeof Spirits[number];
+export const Spirits = [
+  "incantations",
+  "embers",
+  "machines",
+  "nature",
+  "serenity",
+  "shadows",
+  "streams",
+  "trust",
+  "whispers"
+] as const;
+
+export type Maneuver = typeof Maneuvers[number];
+export const Maneuvers = [
+  "agility",
+  "endurance",
+  "wonderboltAndTalon"
+] as const;
+
+export type Branch = typeof Branches[number];
+export const Branches = ["charm", "might", "sight"] as const;
+
+export type School = typeof Schools[number];
+export const Schools = [
+  "general",
+  "conjuration",
+  "dark",
+  "enhancement",
+  "illusion",
+  "medical",
+  "perception",
+  "protective",
+  "transmutation"
+] as const;
+
+export type MagicType = typeof MagicTypes[number];
+export const MagicTypes = [
+  "spirit",
+  "unicorn",
+  "earthPony",
+  "maneuver"
+] as const;
+
+export const SchoolByMagicType = {
+  unicorn: Schools as unknown,
+  maneuver: Maneuvers as unknown,
+  earthPony: Branches as unknown,
+  spirit: Spirits as unknown
+} as Record<MagicType, typeof GeneralMagicSchools>;
+
+/**
+ * Determines the type of magic based on its school
+ * @param school - the school to categorise
+ * @returns the type
+ */
+export function getMagicType(school: GeneralMagicSchool): MagicType {
+  for (const magicType of MagicTypes) {
+    const schoolFamily = SchoolByMagicType[magicType];
+    if (schoolFamily.includes(school)) {
+      return magicType;
+    }
+  }
+
+  throw new Error("Unreachable Code");
+}
+
+export type GeneralMagicSchool = typeof GeneralMagicSchools[number];
+export const MagicSpecials: Record<GeneralMagicSchool, SpecialName[]> = {
+  agility: ["agility"],
+  endurance: ["endurance"],
+  wonderboltAndTalon: ["agility", "endurance", "charisma"],
+  charm: ["charisma"],
+  might: ["strength"],
+  sight: ["perception"],
+  general: [
+    "strength",
+    "perception",
+    "endurance",
+    "charisma",
+    "intelligence",
+    "agility",
+    "luck"
+  ],
+  conjuration: ["intelligence"],
+  dark: ["endurance"],
+  enhancement: ["charisma"],
+  illusion: ["charisma"],
+  medical: ["intelligence"],
+  perception: ["perception"],
+  protective: ["endurance"],
+  transmutation: ["endurance"],
+  incantations: [
+    "strength",
+    "perception",
+    "endurance",
+    "charisma",
+    "intelligence",
+    "agility",
+    "luck"
+  ],
+  embers: ["agility"],
+  machines: ["intelligence"],
+  nature: ["endurance"],
+  serenity: ["perception"],
+  shadows: ["intelligence"],
+  streams: ["endurance"],
+  trust: ["charisma"],
+  whispers: ["charisma"]
+};
+
+/**
+ * Get the first element of all arrays present in `MagicSpecials`
+ * @returns A record mapping a magic school to its default SPECIAL
+ */
+export function defaultMagicSpecial(): Record<GeneralMagicSchool, SpecialName> {
+  return GeneralMagicSchools.reduce((acc, magicSchool) => {
+    const magicSpecial = MagicSpecials[magicSchool][0];
+    if (magicSpecial !== undefined) {
+      acc[magicSchool] = magicSpecial;
+    } else {
+      throw Error(`School ${magicSchool} has no special attached to it`);
+    }
+    return acc;
+  }, {} as Record<GeneralMagicSchool, SpecialName>);
+}
+
+/**
+ * Computes the bonus to potency based on the value of the relevant SPECIAL
+ * @param special - the value of the relevant SPECIAL
+ * @returns the extra potency
+ */
+export function extraPotency(special: number): number {
+  if (special >= 8) {
+    return 3;
+  } else if (special >= 4) {
+    return 2;
+  } else if (special >= 1) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+export const SpellRanges = [
+  "none",
+  "self",
+  "touch",
+  "other",
+  "distance",
+  "splash"
+] as const;
+export type SpellRange = typeof SpellRanges[number];
+
+export const SplashSizes = ["tiny", "small", "large", "huge"] as const;
+export type SplashSize = typeof SplashSizes[number];
+
+export const TargetTypes = ["none", "self", "creature", "tile"] as const;
+export type TargetType = typeof TargetTypes[number];
+
+export const PainThresholds = [0, 1, 2, 3] as const;
+export type PainThreshold = typeof PainThresholds[number];
+
+export function getPainThreshold(hp: number): PainThreshold {
+  if (hp > 5) {
+    return 0;
+  } else if (hp >= 4) {
+    return 1;
+  } else if (hp >= 2) {
+    return 2;
+  } else {
+    return 3;
+  }
+}
+
+export const GeneralMagicSchools = [
+  "general",
+  "conjuration",
+  "dark",
+  "enhancement",
+  "illusion",
+  "medical",
+  "perception",
+  "protective",
+  "transmutation",
+  "agility",
+  "endurance",
+  "wonderboltAndTalon",
+  "incantations",
+  "embers",
+  "machines",
+  "nature",
+  "serenity",
+  "shadows",
+  "streams",
+  "trust",
+  "whispers",
+  "charm",
+  "might",
+  "sight"
+] as const;
 
 export type SkillName = typeof SkillNames[number];
 export const SkillNames = [
@@ -87,14 +308,32 @@ export const TYPES = {
     APPAREL: "apparel",
     EFFECT: "effect",
     MISC: "misc",
-    WEAPON: "weapon"
+    WEAPON: "weapon",
+    MAGIC: "magic"
   }
 } as const;
+
+export type SystemDocumentType =
+  | ValueOf<typeof TYPES.ACTOR>
+  | ValueOf<typeof TYPES.ITEM>;
+export const SystemDocumentTypes: SystemDocumentType[] = [
+  ...Object.values(TYPES.ACTOR),
+  ...Object.values(TYPES.ITEM)
+];
+
+/** A type representing the different range brackets */
+export enum RangeBracket {
+  SHORT,
+  MEDIUM,
+  LONG,
+  OUT_OF_RANGE
+}
 
 export type ProtoItemType = typeof ProtoItemTypes[number];
 export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
   TYPES.ITEM.AMMO,
   TYPES.ITEM.APPAREL,
+  TYPES.ITEM.MAGIC,
   TYPES.ITEM.MISC,
   TYPES.ITEM.WEAPON
 ] as const;
@@ -140,6 +379,15 @@ export const ApparelSlots = [
   "mouth"
 ] as const;
 
+/**
+ * A custom typeguard to check whether a given strings is an apparel slot name.
+ * @param slot - the name of the slot to test
+ * @returns whether the given name is an apparel slot name
+ */
+export function isApparelSlot(slot: string): slot is ApparelSlot {
+  return ApparelSlots.includes(slot as ApparelSlot);
+}
+
 export type EquipmentSlot = typeof EquipmentSlots[number];
 export const EquipmentSlots = [
   "readiedItem",
@@ -156,7 +404,7 @@ export const EquipmentSlots = [
  * A custom typeguard to check whether a given strings is an equipment slot
  * name.
  * @param slot - the name of the slot to test
- * @returns whether the given name is a slot name
+ * @returns whether the given name is an equipment slot name
  */
 export function isEquipmentSlot(slot: string): slot is EquipmentSlot {
   return EquipmentSlots.includes(slot as EquipmentSlot);
@@ -209,6 +457,11 @@ export const CONSTANTS = {
     special: {
       /** The bounds for points invested in a SPECIAL. */
       points: {
+        max: 10,
+        min: 1,
+        total: 40
+      },
+      value: {
         max: 15,
         min: 0
       }
@@ -224,7 +477,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.14.2",
+  needsMigrationVersion: "0.18.1",
 
   /** The number of fixed decimals to round floating point numbers to. */
   fixedDecimals: 2,
@@ -251,19 +504,15 @@ export const CONSTANTS = {
       }
     },
 
-    /** Rule constants related to melee */
-    melee: {
-      /** The melee maximum distance */
-      distance: 2
-    },
-
     /** Rule constants related to movement */
     movement: {
+      /** The amount of AP needed to walk one meter. */
+      apPerMeter: 0.5,
+
       /**
-       * The amount of meters one AP spent in movement can move an actor by
-       * default.
+       * The amount of additional AP needed to walk one meter per crippled leg.
        */
-      metersPerAp: 2
+      penaltyPerCrippledLeg: 0.5
     }
   },
 
@@ -299,6 +548,18 @@ export const CONSTANTS = {
   systemPath: "systems/wasteland-ventures"
 } as const;
 
+export type RangePickingTag = typeof TAGS.rangePicking[number];
+export const TAGS = {
+  rangePicking: ["melee", "thrown"],
+  skillDamageBonus: "skillful",
+  sizeCategoryReachBonus: "melee"
+} as const;
+
+/** Check whether the given tag is one of the range picking tags. */
+export function isRangePickingTag(tag: string): tag is RangePickingTag {
+  return TAGS.rangePicking.includes(tag as RangePickingTag);
+}
+
 export const SYSTEM_COMPENDIUM_SOURCE_ID_REGEX = new RegExp(
   `^Compendium\\.(${CONSTANTS.systemId}\\.\\w+)\\.([a-zA-Z0-9]{16})$`
 );
@@ -317,6 +578,7 @@ export const HANDLEBARS = {
       weaponSlot: `${CONSTANTS.systemPath}/handlebars/actors/parts/weaponSlot.hbs`
     },
     item: {
+      baseItemInputs: `${CONSTANTS.systemPath}/handlebars/items/parts/baseItemInputs.hbs`,
       header: `${CONSTANTS.systemPath}/handlebars/items/parts/header.hbs`,
       physicalItemInputs: `${CONSTANTS.systemPath}/handlebars/items/parts/physicalItemInputs.hbs`,
       rules: `${CONSTANTS.systemPath}/handlebars/items/parts/ruleElements.hbs`

@@ -1,8 +1,7 @@
-import { CONSTANTS } from "../../../constants.js";
-import type Specials from "../../../data/actor/character/specials/properties.js";
-import type WeaponDataProperties from "../../../data/item/weapon/properties.js";
+import { CONSTANTS, RangeBracket } from "../../../constants.js";
+import type { SerializedCompositeNumber } from "../../../data/common.js";
+import { CompositeNumber } from "../../../data/common.js";
 import { scrollChatToBottom } from "../../../foundryHelpers.js";
-import { getDisplayRanges, RangeBracket } from "../../../item/weapon/ranges.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
 import type { HookParams } from "../index.js";
 import { getContentElement } from "./index.js";
@@ -20,23 +19,31 @@ export default async function decorateWeaponAttack(
 
   const commonData: CommonWeaponAttackTemplateData = {
     ...flags,
+    details: {
+      ...flags.details,
+      criticals: {
+        failure: CompositeNumber.from(flags.details.criticals.failure),
+        success: CompositeNumber.from(flags.details.criticals.success)
+      },
+      damage: {
+        base: CompositeNumber.from(flags.details.damage.base),
+        dice: CompositeNumber.from(flags.details.damage.dice)
+      },
+      hit: CompositeNumber.from(flags.details.hit)
+    },
     template: {
       keys: {
         rangeBracket: getRangeBracketKey(flags)
       },
       raw: {
-        displayRanges: getDisplayRanges(
-          flags.weaponSystemData,
-          flags.ownerSpecials
-        ),
         mainHeading:
-          flags.weaponName !== flags.weaponSystemData.name
-            ? flags.weaponName
-            : flags.weaponSystemData.name,
+          flags.weapon.name !== flags.weapon.system.name
+            ? flags.weapon.name ?? ""
+            : flags.weapon.system.name,
         subHeading:
-          flags.weaponName !== flags.weaponSystemData.name
-            ? `${flags.weaponSystemData.name} - ${flags.attackName}`
-            : flags.attackName
+          flags.weapon.name !== flags.weapon.system.name
+            ? `${flags.weapon.system.name} - ${flags.weapon.system.attack.name}`
+            : flags.weapon.system.attack.name
       }
     }
   };
@@ -107,7 +114,7 @@ function getHitResultKey(flags: ExecutedAttackFlags): string {
 function getRangeBracketKey(
   flags: CommonWeaponAttackFlags
 ): string | undefined {
-  switch (flags.details?.range.bracket) {
+  switch (flags.details.range.bracket) {
     case RangeBracket.OUT_OF_RANGE:
       return "wv.rules.range.ranges.outOfRange.long";
     case RangeBracket.LONG:
@@ -125,7 +132,6 @@ export type WeaponAttackFlags = NotExecutedAttackFlags | ExecutedAttackFlags;
 /** The common weapon attack chat message flags */
 export interface CommonWeaponAttackFlags {
   type: "weaponAttack";
-  attackName: string;
   details: {
     ap: {
       previous: number;
@@ -133,23 +139,32 @@ export interface CommonWeaponAttackFlags {
       remaining: number;
     };
     criticals: {
-      failure: number;
-      success: number;
+      failure: SerializedCompositeNumber;
+      success: SerializedCompositeNumber;
     };
     damage: {
-      base: DetailsListingInfo;
-      dice: DetailsListingInfo;
+      base: SerializedCompositeNumber;
+      dice: SerializedCompositeNumber;
     };
-    hit: DetailsListingInfo;
+    hit: SerializedCompositeNumber;
     range: {
       bracket: RangeBracket;
       distance: number;
     };
   };
-  ownerSpecials?: Partial<Specials> | undefined;
-  weaponImage: string | null;
-  weaponName: string;
-  weaponSystemData: WeaponDataProperties["data"];
+  weapon: {
+    display: {
+      ranges: string;
+    };
+    image: string | null;
+    name: string | null;
+    system: {
+      attack: {
+        name: string;
+      };
+      name: string;
+    };
+  };
 }
 
 /** The attack chat message flags for a unexecuted attack */
@@ -176,25 +191,24 @@ export type ExecutedAttackFlags = CommonWeaponAttackFlags & {
   };
 };
 
-export interface ModifierFlags {
-  amount: number;
-  key: string;
-}
-
-interface DetailsListingInfo {
-  base: number;
-  modifiers: ModifierFlags[];
-  total: number;
-}
-
 /** The template data common for both executed and not executed attacks. */
 type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
+  details: CommonWeaponAttackFlags["details"] & {
+    criticals: {
+      failure: CompositeNumber;
+      success: CompositeNumber;
+    };
+    damage: {
+      base: CompositeNumber;
+      dice: CompositeNumber;
+    };
+    hit: CompositeNumber;
+  };
   template: {
     keys: {
       rangeBracket: string | undefined;
     };
     raw: {
-      displayRanges: string;
       mainHeading: string;
       subHeading: string;
     };

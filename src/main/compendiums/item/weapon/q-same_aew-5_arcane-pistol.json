@@ -9,44 +9,99 @@
     "attacks": {
       "sources": {
         "Single": {
-          "ap": 4,
-          "damage": {
-            "base": 1,
-            "dice": 2
+          "ap": {
+            "source": 4
           },
-          "dtReduction": 1,
-          "rounds": 1
+          "damage": {
+            "base": {
+              "source": 1
+            },
+            "dice": {
+              "source": 2
+            }
+          },
+          "dtReduction": {
+            "source": 1
+          },
+          "rounds": {
+            "source": 1
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 20,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 20
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 40,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 40
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 60,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 60
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "common",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "gemPack",
       "containerType": "magazine",
-      "size": 30
+      "size": {
+        "source": 30
+      }
     },
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 1,
-    "value": 150,
-    "weight": 1,
+    "strengthRequirement": {
+      "source": 1
+    },
+    "value": {
+      "source": 150
+    },
+    "weight": {
+      "source": 1
+    },
     "holdout": true
   },
   "effects": [],

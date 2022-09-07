@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000048",
+  "name": "Flamer Fuel (Drake Oil)",
+  "type": "ammo",
+  "data": {
+    "name": "Flamer Fuel (Drake Oil)",
+    "description": "",
+    "notes": "Causes Burning with END -2 to resist",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "uncommon",
+    "value": {
+      "source": 0.5
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 10,
+    "caliber": "flamerFuel",
+    "type": "drakeOil"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

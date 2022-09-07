@@ -9,11 +9,229 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- an explanation to game master movement settings, that they only affect the
+  current user and only if they are a game master
+  ([#452](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/452))
+
+### Fixed
+
+- a typo in the GM movement settings
+  ([#451](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/451))
+
+## [0.20.0] - 2022-08-28
+
+### Changed
+
+- direct SPECIAL editing on the character sheet has been replaced with a
+  separate initial character setup window
+  ([#385](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/385))
+- the AP enforcement and subtraction has changed
+  ([#415](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/415))
+  - it now checks all methods of changing a token's position
+  - the settings are now per player level and check or subtraction, not per
+    movement method
+- added magic data and its sheet, though character sheets still do not support
+  a known spell list
+  ([#141])(https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/141)
+- added pain thresholds to character sheets, as well as automatic chat messages
+  when they are reached ([#417](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/417))
+
+## [0.19.1] - 2022-07-16
+
+### Fixed
+
+- some broken layout in weapon source values
+- some broken layout in weapon attack component listings
+- items in the inventory not being draggable
+- FlatModifier and ReplaceValue not modifying the correct properties
+
+## [0.19.0] - 2022-07-16
+
+### Added
+
+- a total SPECIAL points display to the character sheet
+- a total Skill points display to the character sheet
+- a finalize data step for items
+- the ability for RuleElements to affect multiple documents
+- DocumentSelectors:
+  - "actor": selects only actors
+  - "item": selects only items
+  - "parent": selects only the parent of the document the selector is attached
+    to
+  - "sibling": selects siblings in the parent document of the document the
+    selector is attached to
+  - "this": selects only the document the selector is attached to
+  - `{ "tag": "<some tag>" }`: selects only items that have the specified
+    tag
+  - `{ "type": "<some type>" }`: selects only documents that have the
+    specified type
+  - `{ "usesSkill": "<some skill name>" }`: selects only skill-using
+    documents that use the specified skill
+  - `{ "or": [<selectors>] }`: selects documents where at least one of the
+    specified selectors matches (can not be nested)
+- special target keywords
+  - `@attacks|<path>`: applies to the same property on all attacks of a
+    weapon
+  - `@attacks[<tags list>]|<path>`: applies to the same property on
+    all attacks of a weapon, that have the given tags
+  - `@ranges|<path>`: applies to the same property on all ranges of a
+    weapon
+  - `@ranges[<tags list>]|<path>`: applies to the same property on
+    all ranges of a weapon, that have the given tags
+- conditions for RuleElements. The first and so far only one is "whenEquipped"
+  and only applies RuleElements when they are equipped in an apparel slot,
+  weapon slot or the readied item
+- tags in the source data of items
+- automatic bonus damage dice modifier for skillful weapons
+- tag display in item sheet header
+- tag input field to edit free-form tags
+- RuleElements now show their selected documents in their sheets
+- ability for RuleElements to modify multiple properties on a document
+- tags in the sources of weapon attacks and ranges
+- weapons with attacks that are tagged as "melee" or "thrown" now only pick
+  ranges that also have the corresponding tag, when executing the attack
+  ([#131](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/131))
+- size category based range bonus now automatically applies to weapon ranges
+  tagged with "melee"
+- show size category on the statistics tab on the character sheet
+- make tags editable on attacks and ranges
+- show tags on equipment tab
+- equipped items can now be edited directly from the equipment page
+- modifiable initiative
+  ([#383](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/383))
+- make SPECIAL and skill rolls always ask for a modifier and add a checkbox to
+  prompts to whisper to GMs
+  ([#388](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/388))
+
+### Changed
+
+- limited actor sheets now render in a smaller size
+  ([#330](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/330))
+- background descriptions now support rich text editing
+  ([#331](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/331))
+- the modifier listings in weapon attacks to use tables
+  ([#130](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/130))
+- weapon attacks and their chat messages now use CompositeNumbers as well
+- CompositeNumber components now have an array of LabelComponents instead of a
+  simple string label
+- replaces the item constructor hack with a Proxy
+- swapped RuleElements' target and selector properties
+- renamed RuleElements' "selector" property to "selectors"
+
+### Fixed
+
+- the race not showing on limited actor sheets
+- ammo and apparel compendiums not being validated against their schemas
+- NumberComponents no longer both show a "property does not exist" and "property
+  is not a CompositeNumber" error
+- fixed actor and item sheet not using base CSS classes and refactored headers
+
+## [0.18.0] - 2022-05-29
+
+### Added
+
+- crippled limb status to character sheets
+  ([#248](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/248))
+- walk movement penalties for crippled legs
+
+### Changed
+
+- race handling in characters
+  - source data changed from `background.race` to `background.raceName`
+  - runtime data added `background.race`, which is an instance of `Race`
+
+## [0.17.2] - 2022-05-28
+
+### Added
+
+- migrations for rule elements pre 0.17.0
+
+## [0.17.1] - 2022-05-28
+
+### Fixed
+
+- some miscellaneous bugs
+
+## [0.17.0] - 2022-05-28
+
+### Added
+
+- new rule elements
+  - WV.RuleElement.NumberComponent: allows modifying a number and tracking the
+    modifier
+  - WV.RuleElement.PermSpecialComponent: allows modifying a permanent SPECIAL by
+    name instead of path and tracks the modifier
+  - WV.RuleElement.TempSpecialComponent: allows modifying a temporary SPECIAL by
+    name instead of path and tracks the modifier
+- apparel sheets now allow editing blocked apparel slots
+- insanity to the character sheet
+  ([#327](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/327))
+- resistances to the character sheet
+  ([#327](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/327))
+- character sheets now show the XP needed for the next level
+  ([#297](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/297))
+
+### Changed
+
+- most actor and item numbers are now easily modifiable and keep track of their
+  original source and all contributing modifiers
+  ([#301](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/301))
+- changes to permanent SPECIAL also change the temporary SPECIAL before its own
+  modifiers
+- item sheets now show their final stats on the stats tab and allow editing on
+  the source values tab
+- moved damage threshold and quick slots max to statistics page
+- expanded the criticals block on statistics page to hold other statistics
+
+### Fixed
+
+- migrations using derived values, they are now only using source values and are
+  more robust because of that
+  ([#315](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/315))
+- limited character sheets not scrolling and showing images in huge sizes
+  ([#299](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/299))
+
+## [0.16.1] - 2022-04-24
+
+### Fixed
+
+- weapon sheets not disabling their inputs with active compendium link
+
+## [0.16.0] - 2022-04-24
+
+### Added
+
+- grid units to the range display on the equipment page
+
+### Changed
+
+- amounts of stackable items with compendium link are no longer overwritten by
+  default
+  ([#249](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/249))
+- added an "onAfterComputation" hook for rule elements that is called after all
+  other computations on an actor are done
+  ([#247](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/247))
+- rule elements created on effect items now target the actor by default
+- the way weapon ranges are saved
+  ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+- made weapons editable via their sheets
+  ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
+
+### Fixed
+
+- item migrations throwing intermittent errors
+  ([#238](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/238))
+
+## [0.15.0] - 2022-04-03
+
+### Added
+
 - default icons for item schemas
 - a dedicated ammo sheet
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
 - automatic radiation sickness effects and sickness level display
   ([#209](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/209))
+- remaining ammo to ammo compendium
 
 ### Changed
 
@@ -111,7 +329,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - basic support for ammo items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
 - a basic inventory tab to actors
-- misscellaneous items
+- miscellaneous items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
 - ability to add misc items to an actor from the actor sheet
 
@@ -620,7 +838,17 @@ version, then continue with upgrading to the next version.
 
 - basic character Actor implementation with editable SPECIALs
 
-[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.3...HEAD
+[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.1...v0.20.0
+[0.19.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.0...v0.19.1
+[0.19.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.18.0...v0.19.0
+[0.18.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.2...v0.18.0
+[0.17.2]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.1...v0.17.2
+[0.17.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.17.0...v0.17.1
+[0.17.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.16.1...v0.17.0
+[0.16.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.16.0...v0.16.1
+[0.16.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.15.0...v0.16.0
+[0.15.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.3...v0.15.0
 [0.14.3]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.2...v0.14.3
 [0.14.2]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.1...v0.14.2
 [0.14.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.14.0...v0.14.1

@@ -10,47 +10,109 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 2,
-            "dice": 5
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 5
+            }
           },
-          "ap": 5,
-          "rounds": 1
+          "ap": {
+            "source": 5
+          },
+          "rounds": {
+            "source": 1
+          },
+          "tags": []
         },
         "Burst": {
           "damage": {
-            "base": 3,
-            "dice": 10
+            "base": {
+              "source": 3
+            },
+            "dice": {
+              "source": 10
+            }
           },
-          "ap": 8,
-          "rounds": 5
+          "ap": {
+            "source": 8
+          },
+          "rounds": {
+            "source": 5
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 100,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 100
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 200,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 200
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 300,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 300
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "308cal",
       "containerType": "magazine",
-      "size": 20
+      "size": {
+        "source": 20
+      }
     },
     "skill": "firearms",
-    "strengthRequirement": 8,
-    "value": 650,
-    "weight": 8,
+    "strengthRequirement": {
+      "source": 8
+    },
+    "value": {
+      "source": 650
+    },
+    "weight": {
+      "source": 8
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

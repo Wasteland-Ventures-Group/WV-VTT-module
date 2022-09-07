@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000055",
+  "name": "Arrow (Piercing)",
+  "type": "ammo",
+  "data": {
+    "name": "Arrow (Piercing)",
+    "description": "",
+    "notes": "DT Reduction 1",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "uncommon",
+    "value": {
+      "source": 0.6
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 5,
+    "caliber": "arrow",
+    "type": "piercing"
+  },
+  "img": "icons/weapons/ammunition/arrows-war-white.webp",
+  "effects": [],
+  "flags": {}
+}

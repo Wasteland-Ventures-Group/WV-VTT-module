@@ -10,40 +10,93 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 10,
-            "dice": 20
+            "base": {
+              "source": 10
+            },
+            "dice": {
+              "source": 20
+            }
           },
-          "ap": 5,
-          "rounds": 1,
-          "splash": "huge"
+          "ap": {
+            "source": 5
+          },
+          "rounds": {
+            "source": 1
+          },
+          "splash": "huge",
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 40,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 40
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 80,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 80
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 120,
-        "modifier": -40
+        "distance": {
+          "base": {
+            "source": 120
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -40
+        },
+        "tags": []
       }
     },
     "rarity": "exotic",
     "reload": {
-      "ap": 8,
+      "ap": {
+        "source": 8
+      },
       "caliber": "balefireEgg",
       "containerType": "internal",
-      "size": 1
+      "size": {
+        "source": 1
+      }
     },
     "skill": "explosives",
-    "strengthRequirement": 8,
-    "value": 9999,
-    "weight": 15,
+    "strengthRequirement": {
+      "source": 8
+    },
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 15
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

@@ -86,8 +86,8 @@ export function getFirstTarget(): Token | undefined {
   return targets[0];
 }
 
-/** Get the range between a token and a target. */
-export function getRange(
+/** Get the distance in meters between a token and a target. */
+export function getDistance(
   token: Token | null | undefined,
   target: Token | null | undefined
 ): number | undefined {

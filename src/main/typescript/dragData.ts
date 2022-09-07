@@ -121,3 +121,33 @@ export function isWeaponItemDragData(
 
   return false;
 }
+
+/** The drag data of a Weapon Attack */
+export interface WeaponAttackDragData extends DragData {
+  /** The ID of the Actor, owning the Weapon */
+  actorId?: string | null | undefined;
+
+  /** The name of the Attack on the Weapon */
+  attackName: string;
+
+  type: "weaponAttack";
+
+  /** The ID of the Weapon on the Actor */
+  weaponId: string;
+}
+
+/**
+ * A custom typeguard, to check whether an unknown object is a
+ * WeaponAttackDragData.
+ * @param data - the unknown object
+ * @returns whether it is a WeaponAttackDragData
+ */
+export function isWeaponAttackDragData(
+  data: Record<string, unknown>
+): data is WeaponAttackDragData {
+  return (
+    data.type === "weaponAttack" &&
+    typeof data.attackName === "string" &&
+    typeof data.weaponId === "string"
+  );
+}

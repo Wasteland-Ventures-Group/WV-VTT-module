@@ -9,43 +9,96 @@
     "attacks": {
       "sources": {
         "Single": {
-          "ap": 6,
-          "damage": {
-            "base": 4,
-            "dice": 2
+          "ap": {
+            "source": 6
           },
-          "rounds": 1
+          "damage": {
+            "base": {
+              "source": 4
+            },
+            "dice": {
+              "source": 2
+            }
+          },
+          "rounds": {
+            "source": 1
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 100,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 100
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 200,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 200
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 300,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 300
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "uncommon",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "5_56mm",
       "containerType": "magazine",
-      "size": 20
+      "size": {
+        "source": 20
+      }
     },
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "firearms",
-    "strengthRequirement": 4,
-    "value": 500,
-    "weight": 4
+    "strengthRequirement": {
+      "source": 4
+    },
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 4
+    }
   },
   "effects": [],
   "flags": {},

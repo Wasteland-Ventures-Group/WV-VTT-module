@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000052",
+  "name": "Arrow (Arcane)",
+  "type": "ammo",
+  "data": {
+    "name": "Arrow (Arcane)",
+    "description": "",
+    "notes": "Damage +1",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "uncommon",
+    "value": {
+      "source": 1
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 5,
+    "caliber": "arrow",
+    "type": "arcane"
+  },
+  "img": "icons/weapons/ammunition/arrows-war-white.webp",
+  "effects": [],
+  "flags": {}
+}

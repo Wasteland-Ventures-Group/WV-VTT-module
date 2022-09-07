@@ -2,6 +2,11 @@
 
 .wasteland-ventures.document-sheet.actor-sheet .background
 
+  &.active
+    display: flex
+    flex-direction: column
+    gap: constants.$spacing-distance
+
   > :first-child
     display: grid
     grid-column-gap: constants.$spacing-distance * 2
@@ -9,5 +14,9 @@
     grid-template-columns: repeat(auto-fit, 35ch)
     justify-content: space-between
 
-  > :not(:first-child)
-    margin-top: constants.$spacing-distance
+  .editor
+    min-height: 40px
+
+    > .tox.tox-tinymce
+      min-height: 130px
+      resize: vertical

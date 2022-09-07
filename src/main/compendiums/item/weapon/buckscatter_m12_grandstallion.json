@@ -9,53 +9,115 @@
     "attacks": {
       "sources": {
         "Single": {
-          "ap": 4,
+          "ap": {
+            "source": 4
+          },
           "damage": {
-            "base": 1,
-            "dice": 7,
+            "base": {
+              "source": 1
+            },
+            "dice": {
+              "source": 7
+            },
             "damageFallOff": "shotgun"
           },
-          "rounds": 1
+          "rounds": {
+            "source": 1
+          },
+          "tags": []
         },
         "Burst": {
-          "ap": 5,
+          "ap": {
+            "source": 5
+          },
           "damage": {
-            "base": 2,
-            "dice": 10,
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 10
+            },
             "damageFallOff": "shotgun"
           },
-          "rounds": 2
+          "rounds": {
+            "source": 2
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 12,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 12
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 24,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 24
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 36,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 36
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "uncommon",
     "reload": {
-      "ap": 3,
+      "ap": {
+        "source": 3
+      },
       "caliber": "shotgunShell",
       "containerType": "internal",
-      "size": 2
+      "size": {
+        "source": 2
+      }
     },
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "firearms",
-    "strengthRequirement": 6,
-    "value": 500,
-    "weight": 3.5
+    "strengthRequirement": {
+      "source": 6
+    },
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 3.5
+    }
   },
   "effects": [],
   "flags": {},

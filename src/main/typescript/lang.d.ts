@@ -1,12 +1,19 @@
+import type { Join, PathsToStringProps } from "./helperTypes.js";
+import type { DocumentRelation } from "./item/wvItem.js";
 import type {
   I18nApparelTypes,
   I18nCalibers,
   I18nEquipmentSlots,
-  I18nRaces,
+  I18nMagicTypes,
+  I18nMagicSchools,
+  I18nRaceNames,
   I18nRarities,
   I18nSkills,
   I18nSpecials
 } from "./wvI18n.js";
+
+/** A union of possible i18n keys. */
+export type WvI18nKey = Join<PathsToStringProps<LangSchema>, ".">;
 
 export interface LangSchema {
   /** The root element for the Wasteland Ventures system localization */
@@ -36,12 +43,28 @@ export interface LangSchema {
         gender: string;
         /** Label for the personality */
         personality: string;
+        /** Label for the size */
+        sizeCategory: string;
         /** Label for the social contacts */
         socialContacts: string;
         /** Label for the special talent */
         specialTalent: string;
         /** Label for the virtue */
         virtue: string;
+      };
+      /** Labels relating to crippled limbs */
+      crippledLimbs: {
+        /** Status labels for different limbs */
+        status: {
+          torso: string;
+          head: string;
+          frontLeftLeg: string;
+          frontRightLeg: string;
+          rearLeftLeg: string;
+          rearRightLeg: string;
+          leftWing: string;
+          rightWing: string;
+        };
       };
       /** Labels relating to criticals */
       criticals: {
@@ -62,6 +85,17 @@ export interface LangSchema {
         baseDamage: string;
         /** Label for the damage dice */
         damageDice: string;
+        /** Label for the Strength based dice range */
+        diceRange: string;
+        /** Labels related to damage fall-off */
+        fallOff: {
+          /** The name of the damage fall-off concept */
+          name: string;
+          /** The names for the fall-off types */
+          types: {
+            shotgun: string;
+          };
+        };
         /** Labels related to damage threshold */
         threshold: ShortLongNames & {
           /** Names for damage threshold reduction */
@@ -134,6 +168,8 @@ export interface LangSchema {
         slots: QuantityNames & {
           /** The name for the apparel slot concept */
           apparelSlot: string;
+          /** The names for blocked apparel slots */
+          blockedSlots: QuantityNames;
           /** The names for mod slots */
           modSlot: QuantityNames;
           /** The names for quick slots */
@@ -183,9 +219,15 @@ export interface LangSchema {
       health: {
         /** The label for the health */
         health: string;
+        /** The label for the short version of "health points" */
+        hp: string;
         /** The label for the healing rate */
         healingRate: string;
       };
+      /** Label for the initiative */
+      initiative: string;
+      /** Label for the insanity field */
+      insanity: string;
       /** Label for the karma field */
       karma: string;
       /** Labels related to leveling */
@@ -197,15 +239,29 @@ export interface LangSchema {
       };
       /** Labels related to magic */
       magic: {
+        /** The label for potency */
+        potency: string;
         /** The name of "Magic" */
         magic: string;
         /** The label for the strain */
         strain: string;
+        /** The label for the strain use */
+        strainUse: string;
+        /** The label of the types of magic */
+        type: QuantityNames & {
+          names: I18nMagicTypes;
+        };
+        school: QuantityNames & {
+          names: I18nMagicSchools;
+        };
+      };
+      painThreshold: QuantityNames & {
+        reached: string;
       };
       /** Labels related to races */
       race: QuantityNames & {
         /** The names of races */
-        names: I18nRaces;
+        names: I18nRaceNames;
       };
       /** Labels related to radiation */
       radiation: {
@@ -226,8 +282,11 @@ export interface LangSchema {
       };
       /** Labels related to range */
       range: QuantityNames & {
-        /** The name for a measured distance */
-        distance: string;
+        /** Labels relating to the distance */
+        distance: {
+          /** The name for the concept of distance */
+          name: string;
+        };
         /** Names for different ranges */
         ranges: {
           /** The name for out of range */
@@ -239,6 +298,12 @@ export interface LangSchema {
           /** The name for short range */
           short: ShortLongNames;
         };
+      };
+      resistances: {
+        /** Labels for the poison resistance */
+        poison: ShortLongNames;
+        /** Labels for the radiation resistance */
+        radiation: ShortLongNames;
       };
       /** Rules labels related to rolls */
       rolls: {
@@ -322,16 +387,43 @@ export interface LangSchema {
       effect: QuantityNames;
       /** Labels related to generic Misc Items */
       item: QuantityNames;
+      /** Labels used in the initial character setup app */
+      initialCharacterSetup: {
+        /** The label for the open button on the character sheet */
+        openButton: string;
+        /**
+         * The title for the window
+         *
+         * Parameters:
+         * - name: the name of the character
+         * @pattern (?=.*\{name\})
+         */
+        title: string;
+        /** Labels relating to the initial character setup */
+        messages: {
+          /** A message for when the user spent too few SPECIAL points */
+          tooFewSpecialPointsSpent: string;
+          /** A message for when the user spent too many SPECIAL points */
+          tooManySpecialPointsSpent: string;
+        };
+      };
       /** Different system messages. */
       messages: {
         /**
          * The message when a specified attack could not be found on a weapon.
          *
          * Parameters:
-         * - name: the name of the weapon
+         * - name: the name of the attack
          * @pattern (?=.*\{name\})
          */
         attackNotFound: string;
+        /**
+         * The message when a specified attack already exists on a weapon.
+         * Parameters:
+         * - name: the name of the attack
+         * @pattern (?=.*\{name\})
+         */
+        attackAlreadyExists: string;
         /**
          * A general message that an apparel slot is already blocked by another
          * apparel item.
@@ -437,10 +529,14 @@ export interface LangSchema {
         newName: string;
         /** The label for user provided notes */
         notes: string;
+        /** The label for source values */
+        sourceValues: string;
         /** The label for a speaker alias */
         speakerAlias: string;
         /** A collective name for miscellaneous statistics */
         statistics: string;
+        /** A collective name for tags */
+        tags: string;
         /** A label for toggling a compendium link */
         toggleCompendiumLink: string;
         /** A label for updating an item from a compendium */
@@ -466,41 +562,59 @@ export interface LangSchema {
         descriptive: string;
         /** A capitalized, imperative verb for rolling dice */
         imperative: string;
-        /** An explanation for modifier keys used for roll buttons */
-        modifierExplanation: string;
+        /** A description for whispering to GMs */
+        whisperToGms: string;
       };
       /** Labels related to the Rule Engine */
       ruleEngine: {
+        /** Labels for document related rule element messages */
+        documentMessages: {
+          /** The descriptive name for document related rule element messages */
+          name: string;
+          /** Labels for different document relations */
+          relations: Record<DocumentRelation, string>;
+        };
         /** Labels for different errors */
         errors: {
           /** Various logical errors */
           logical: {
             /**
-             * An error message when the target is set to "actor", but the item
-             * of the RuleElement has no actor.
-             */
-            noActor: string;
-            /**
-             * An error message when the selector does not match a property on
-             * the target.
-             *
-             * Parameters
-             * - name: the name of the target document
-             * - path: the selector path
-             * @pattern (?=.*\{name\})(?=.*\{path\})
-             */
-            notMatchingSelector: string;
-            /**
-             * An error message when the selected property on the target is of
-             * the wrong type.
+             * An error message when the selected property on the target is not
+             * a CompositeNumber.
              *
              * Parameters:
-             * - name: the name of the target
              * - path: the selector path
-             * - type: the expected type of the rule element type
-             * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{type\})
+             * @pattern (?=.*\{path\})
              */
-            wrongSelectedType: string;
+            notCompositeNumber: string;
+            /**
+             * An error message when the target does not match a property on a
+             * selected Document.
+             *
+             * Parameters
+             * - path: the target path
+             * @pattern (?=.*\{path\})
+             */
+            notMatchingTarget: string;
+            /**
+             * An error message when a selected document is not of the expected
+             * type.
+             *
+             * Parameters
+             * - type: the expected type
+             * @pattern (?=.*\{type\})
+             */
+            wrongDocumentType: string;
+            /**
+             * An error message when the target property on the selected
+             * Document is of the wrong type.
+             *
+             * Parameters:
+             * - path: the target path
+             * - type: the expected type of the rule element type
+             * @pattern (?=.*\{path\})(?=.*\{type\})
+             */
+            wrongTargetType: string;
             /**
              * An error message when the value of a rule is of the wrong type.
              *
@@ -532,12 +646,16 @@ export interface LangSchema {
             missing: string;
             /** An error message for an unknown error. */
             unknown: string;
+            /** An error message for an unknown RuleElement condition. */
+            unknownCondition: string;
             /** An error message for an unknown RuleElement hook. */
             unknownHook: string;
             /** An error message for an unknown RuleElement type. */
             unknownRuleElement: string;
-            /** An error message for an unknown RuleElement target. */
-            unknownTarget: string;
+            /** An error message for an unknown SPECIAL name. */
+            unknownSpecialName: string;
+            /** An error message for an unknown RuleElement selector. */
+            unknownSelector: string;
             /**
              * An error message for fields that are of the wrong type.
              *
@@ -559,17 +677,21 @@ export interface LangSchema {
         };
         /** Labels for rule elements */
         ruleElement: QuantityNames;
+        /** Labels related to selectors */
+        selectors: {
+          /** A summary label for selected documents */
+          selectedDocuments: string;
+        };
         /** Labels for different warnings */
         warnings: {
           /**
            * A warning, stating that the type of a property was changed.
            *
            * Parameters:
-           * - name: the target name
            * - path: the path of the property on the target
            * - original: the original type of the property
            * - new: the new type of the property
-           * @pattern (?=.*\{name\})(?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
+           * @pattern (?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
            */
           changedType: string;
           /**
@@ -581,14 +703,27 @@ export interface LangSchema {
       };
       /** Labels related to settings. */
       settings: {
+        /** Labels relating to an always/never setting */
+        alwaysNeverSetting: {
+          /** The choices for the setting */
+          choices: {
+            always: string;
+            never: string;
+          };
+        };
+        /** Movement related setting labels */
+        movement: {
+          /** The enforcement and subtract setting for players */
+          enforceAndSubtractApForPlayers: Setting;
+          /** The enforcement setting for game masters */
+          enforceApForGameMasters: Setting;
+          /** The subtract setting for game masters */
+          subtractApForGameMasters: Setting;
+        };
         /** The Skill Points minimum bounds setting */
         skillPointsMinBounds: Setting;
         /** The SPECIAL Points minimum bounds setting */
         specialPointsMinBounds: Setting;
-        /** The enforce AP on drag and drop setting */
-        enforceApDragDrop: EnforceApSetting;
-        /** The enforce AP on ruler move setting */
-        enforceApRuler: EnforceApSetting;
       };
       /** Labels relating to sheets */
       sheets: {
@@ -608,6 +743,7 @@ export interface LangSchema {
           weaponSheet: string;
         };
       };
+      spell: QuantityNames;
       /** The label for the Thaumaturgy special select */
       thaumSpecial: string;
       /** Labels for describing different values */

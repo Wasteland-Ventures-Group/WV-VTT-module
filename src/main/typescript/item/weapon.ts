@@ -1,6 +1,6 @@
-import { TYPES } from "../constants.js";
-import type WeaponDataProperties from "../data/item/weapon/properties.js";
-import Attack from "./weapon/attack.js";
+import { TAGS, TYPES } from "../constants.js";
+import { WeaponDataPropertiesData } from "../data/item/weapon/properties.js";
+import { LOG } from "../systemLogger.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent a weapon in the Wasteland Ventures system. */
@@ -16,20 +16,29 @@ export default class Weapon extends WvItem {
     super(data, context);
   }
 
-  /** Get the system data of this weapon. */
-  get systemData(): WeaponDataProperties["data"] {
-    if (!this.data || this.data.type !== TYPES.ITEM.WEAPON)
-      throw new Error(`This data's data type is not ${TYPES.ITEM.WEAPON}.`);
-
-    return this.data.data;
-  }
-
   override prepareBaseData(): void {
-    super.prepareBaseData();
-    this.systemData.attacks.attacks = {};
-    Object.entries(this.systemData.attacks.sources).forEach(
-      ([name, source]) =>
-        (this.systemData.attacks.attacks[name] = new Attack(name, source, this))
-    );
+    this.data.data = new WeaponDataPropertiesData(this.data.data, this);
   }
+
+  override finalizeData(): void {
+    if (!this.actor) {
+      LOG.warn(
+        `Trying to finalize a weapon without a parent actor. ${this.ident}`
+      );
+    }
+
+    if (this.data.data.tags.includes(TAGS.skillDamageBonus))
+      this.data.data.attacks.applySkillDamageDiceMod(this.actor, this);
+
+    this.data.data.attacks.applyStrengthDamageDiceMod(this.actor);
+
+    this.data.data.ranges.applySizeCategoryReachBonus(this.actor);
+  }
+}
+
+export default interface Weapon {
+  data: foundry.data.ItemData & {
+    type: typeof TYPES.ITEM.WEAPON;
+    _source: { type: typeof TYPES.ITEM.WEAPON };
+  };
 }

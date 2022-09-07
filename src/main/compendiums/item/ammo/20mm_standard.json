@@ -9,9 +9,14 @@
     "rules": {
       "sources": []
     },
+    "tags": [],
     "rarity": "exotic",
-    "value": 1,
-    "weight": 0,
+    "value": {
+      "source": 1
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 10,
     "caliber": "20mm",
     "type": "standard"

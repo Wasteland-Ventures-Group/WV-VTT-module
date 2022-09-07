@@ -1,3 +1,4 @@
+import type WvActor from "../../actor/wvActor.js";
 import {
   CONSTANTS,
   EquipmentSlot,
@@ -6,7 +7,7 @@ import {
   isPhysicalItemType,
   isSkillName,
   isSpecialName,
-  Race,
+  RaceName,
   SkillName,
   SkillNames,
   SpecialName,
@@ -15,7 +16,6 @@ import {
   ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
-import type { Special } from "../../data/actor/character/specials/properties.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
@@ -25,43 +25,63 @@ import {
 import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
 import Apparel from "../../item/apparel.js";
+import type Magic from "../../item/magic.js";
 import Weapon from "../../item/weapon.js";
-import Attack from "../../item/weapon/attack.js";
 import WvItem from "../../item/wvItem.js";
-import { getI18nRadiationSicknessLevel } from "../../radiation.js";
+import { WvItemProxy } from "../../item/wvItemProxy.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
-import WvI18n, { I18nRaces, I18nSpecial } from "../../wvI18n.js";
+import WvI18n, { I18nRaceNames, I18nSpecial } from "../../wvI18n.js";
 import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
 import Prompt from "../prompt.js";
+import BaseSetup from "./character/baseSetup.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
   static override get defaultOptions(): ActorSheet.Options {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: [CONSTANTS.systemId, "document-sheet", "actor-sheet"],
-      dragDrop: [
-        { dragSelector: "button[data-special]" },
-        { dragSelector: "button[data-skill]" },
-        { dragSelector: ".fvtt-item-table .fvtt-item" },
-        { dragSelector: "[data-equipment-slot][data-item-id]" }
-      ],
-      height: 1000,
-      scrollY: [".content"],
-      tabs: [
-        { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
-      ],
-      width: 740
-    } as typeof ActorSheet["defaultOptions"]);
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes.push(
+      ...[CONSTANTS.systemId, "document-sheet", "actor-sheet"]
+    );
+    defaultOptions.dragDrop = [
+      { dragSelector: "button[data-special]" },
+      { dragSelector: "button[data-skill]" },
+      { dragSelector: ".fvtt-item-table [data-item-id]" },
+      { dragSelector: "[data-equipment-slot][data-item-id]" }
+    ];
+    defaultOptions.height = 1000;
+    defaultOptions.scrollY = [".content"];
+    defaultOptions.tabs = [
+      { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
+    ];
+    defaultOptions.width = 900;
+    return defaultOptions;
+  }
+
+  constructor(
+    object: WvActor,
+    options?: Partial<ActorSheet.Options> | undefined
+  ) {
+    super(object, options);
+
+    const defaultOptions = WvActorSheet.defaultOptions;
+    if (!options?.height) {
+      const height = this.limited ? "auto" : defaultOptions.height;
+      this.options.height = height;
+      this.position.height = height;
+    }
+    if (!options?.width) {
+      const width = this.limited ? 600 : defaultOptions.width;
+      this.options.width = width;
+      this.position.width = width;
+    }
   }
 
   override get template(): string {
-    const isGm = getGame().user?.isGM ?? false;
-    const showLimited = !isGm && this.actor.limited;
-    const sheetName = (showLimited ? "limitedA" : "a") + "ctorSheet.hbs";
+    const sheetName = (this.limited ? "limitedA" : "a") + "ctorSheet.hbs";
     return `${CONSTANTS.systemPath}/handlebars/actors/${sheetName}`;
   }
 
@@ -70,7 +90,7 @@ export default class WvActorSheet extends ActorSheet {
 
     const sheetForm = html[0];
     if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element!");
+      throw new Error("The element passed was not a form element.");
 
     ["change", "submit"].forEach((eventType) => {
       sheetForm.addEventListener(eventType, () => sheetForm.reportValidity());
@@ -78,58 +98,51 @@ export default class WvActorSheet extends ActorSheet {
 
     sheetForm.addEventListener("dragend", () => this.resetEquipmentSlots());
 
+    // setup windows
+    sheetForm
+      .querySelector('button[data-action="initial-setup"]')
+      ?.addEventListener("click", this.onClickInitialSetup.bind(this));
+
     // stat rolls
     sheetForm.querySelectorAll("button[data-special]").forEach((element) => {
-      element.addEventListener("click", (event) => {
-        if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen!");
-        this.onClickRollSpecial(event);
-      });
+      element.addEventListener("click", (event) =>
+        this.onClickRollSpecial(event)
+      );
     });
     sheetForm.querySelectorAll("button[data-skill]").forEach((element) => {
-      element.addEventListener("click", (event) => {
-        if (!(event instanceof MouseEvent))
-          throw new Error("This should not happen!");
-        this.onClickRollSkill(event);
-      });
+      element.addEventListener("click", (event) =>
+        this.onClickRollSkill(event)
+      );
     });
 
     // item handling
     sheetForm
       .querySelectorAll("button[data-action=create]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
-          this.onClickCreateItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickCreateItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-action=edit]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
-          this.onClickEditItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickEditItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-action=delete]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
-          this.onClickDeleteItem(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickDeleteItem(event)
+        );
       });
     sheetForm
       .querySelectorAll("button[data-weapon-attack-name]")
       .forEach((element) => {
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
-          this.onClickAttackExecute(event);
-        });
+        element.addEventListener("click", (event) =>
+          this.onClickAttackExecute(event)
+        );
       });
     sheetForm
       .querySelectorAll("input[data-action=edit-amount]")
@@ -141,15 +154,15 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   override async getData(): Promise<SheetData> {
-    const racesI18ns = WvI18n.races;
-    const specialI18ns = WvI18n.specials;
-    const skillI18ns = WvI18n.skills;
+    const i18nRaceNames = WvI18n.raceNames;
+    const i18nSpecials = WvI18n.specials;
+    const i18nSkills = WvI18n.skills;
 
     const actorReadiedItem = this.actor.readiedItem;
     const readiedItem =
       actorReadiedItem instanceof Weapon
         ? this.toSheetWeapon(actorReadiedItem)
-        : actorReadiedItem?.toJSON() ?? null;
+        : actorReadiedItem?.toObject(false) ?? null;
     const armor =
       this.actor.armor instanceof Apparel
         ? this.toSheetApparel(this.actor.armor)
@@ -195,17 +208,38 @@ export default class WvActorSheet extends ActorSheet {
         };
       });
 
+    // filter, sort, and transform items into sheet data
+    const spells = this.actor.items
+      .filter(
+        (item): item is StoredDocument<Magic> =>
+          typeof item.id === "string" && item.type === TYPES.ITEM.MAGIC
+      )
+      .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
+      .map((spell) => {
+        const spellData = spell.data.data;
+        const schoolI18n = WvI18n.magicSchools[spellData.school];
+        return {
+          id: spell.id,
+          img: spell.img,
+          name: spell.name,
+          school: schoolI18n,
+          potency: spellData.potency.total,
+          apCost: spellData.apCost.total,
+          strainCost: spellData.strainCost.total
+        };
+      });
+
     const sheetData: SheetData = {
       ...(await super.getData()),
       sheet: {
         background: {
-          race: racesI18ns[this.actor.data.data.background.race],
-          races: Object.entries(racesI18ns)
+          raceName: i18nRaceNames[this.actor.data.data.background.raceName],
+          raceNames: Object.entries(i18nRaceNames)
             .sort((a, b) => a[1].localeCompare(b[1]))
-            .reduce((races, [race, name]) => {
-              races[race as Race] = name;
-              return races;
-            }, {} as I18nRaces)
+            .reduce((racesNames, [raceName, i18nRaceName]) => {
+              racesNames[raceName as RaceName] = i18nRaceName;
+              return racesNames;
+            }, {} as I18nRaceNames)
         },
         bounds: CONSTANTS.bounds,
         equipment: {
@@ -227,6 +261,13 @@ export default class WvActorSheet extends ActorSheet {
           ),
           totalWeight: helpers.toFixed(totalWeight)
         },
+        leveling: {
+          totalSkillPoints: SkillNames.reduce(
+            (points, skillName) =>
+              this.actor.data.data.skills[skillName].source + points,
+            0
+          )
+        },
         parts: {
           apparelSlot: HANDLEBARS.partPaths.actor.apparelSlot,
           background: HANDLEBARS.partPaths.actor.background,
@@ -238,12 +279,14 @@ export default class WvActorSheet extends ActorSheet {
           stats: HANDLEBARS.partPaths.actor.stats,
           weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
         },
-        radiationSicknessLevel: getI18nRadiationSicknessLevel(this.actor),
         specials: SpecialNames.reduce((specials, specialName) => {
+          const special = this.actor.data.data.specials[specialName];
           specials[specialName] = {
-            ...this.actor.getSpecial(specialName),
-            long: specialI18ns[specialName].long,
-            short: specialI18ns[specialName].short
+            ...special,
+            permTotal: special.permTotal,
+            tempTotal: special.tempTotal,
+            long: i18nSpecials[specialName].long,
+            short: i18nSpecials[specialName].short
           };
           return specials;
         }, {} as Record<SpecialName, SheetSpecial>),
@@ -253,22 +296,24 @@ export default class WvActorSheet extends ActorSheet {
               ? this.actor.data.data.magic.thaumSpecial
               : CONSTANTS.skillSpecials[skillName];
           skills[skillName] = {
-            name: skillI18ns[skillName],
+            name: i18nSkills[skillName],
             ranks: this.actor.data.data.leveling.skillRanks[skillName],
-            special: specialI18ns[specialName].short,
+            special: i18nSpecials[specialName].short,
             total: this.actor.data.data.skills[skillName]?.total
           };
           return skills;
         }, {} as Record<SkillName, SheetSkill>),
+        systemGridUnit: getGame().system.data.gridUnits,
         magic: {
           thaumSpecials: ThaumaturgySpecials.reduce(
             (thaumSpecials, thaumSpecialName) => {
               thaumSpecials[thaumSpecialName] =
-                specialI18ns[thaumSpecialName].long;
+                i18nSpecials[thaumSpecialName].long;
               return thaumSpecials;
             },
             {} as Record<ThaumaturgySpecial, string>
-          )
+          ),
+          spells
         },
         effects: this.actor.items
           .filter(
@@ -289,10 +334,10 @@ export default class WvActorSheet extends ActorSheet {
   override _onDragStart(event: DragEvent): void {
     const listenerElement = event.currentTarget;
     if (!(listenerElement instanceof HTMLElement))
-      throw new Error("The listener was not an HTMLElement!");
+      throw new Error("The listener was not an HTMLElement.");
 
     if (!(event.target instanceof HTMLElement))
-      throw new Error("The target was not an HTMLElement!");
+      throw new Error("The target was not an HTMLElement.");
 
     if (event.target.classList.contains("content-link")) return;
 
@@ -360,7 +405,7 @@ export default class WvActorSheet extends ActorSheet {
   ): Promise<unknown> {
     if (!this.actor.isOwner) return false;
 
-    const item = await WvItem.fromDropData(data);
+    const item = await WvItemProxy.fromDropData(data);
     if (!(item instanceof WvItem))
       throw new Error("The item was not created successfully.");
 
@@ -446,9 +491,15 @@ export default class WvActorSheet extends ActorSheet {
     return this.actor.updateEmbeddedDocuments("Item", updateData);
   }
 
+  /** Check whether the sheet is limited for the current user. */
+  get limited(): boolean {
+    const isGm = getGame().user?.isGM ?? false;
+    return !isGm && this.actor.limited;
+  }
+
   protected toSheetApparel(apparel: Apparel): SheetApparel {
     return {
-      ...apparel.toJSON(),
+      ...apparel.toObject(false),
       sheet: ApparelSheet.getApparelSheetData(apparel)
     };
   }
@@ -456,13 +507,18 @@ export default class WvActorSheet extends ActorSheet {
   /** Transform a Weapon into a sheet weapon. */
   protected toSheetWeapon(weapon: Weapon): SheetWeapon {
     return {
-      ...weapon.toJSON(),
+      ...weapon.toObject(false),
       sheet: WeaponSheet.getWeaponSheetData(weapon)
     };
   }
 
+  /** Open the initial setup application. */
+  protected onClickInitialSetup() {
+    new BaseSetup(this.actor).render(true);
+  }
+
   /** Handle a click event on the SPECIAL roll buttons. */
-  protected async onClickRollSpecial(event: MouseEvent): Promise<void> {
+  protected async onClickRollSpecial(event: Event): Promise<void> {
     event.preventDefault();
 
     if (!(event.target instanceof HTMLElement))
@@ -474,23 +530,31 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    if (event.shiftKey) {
-      const modifier = await Prompt.getNumber({
-        label: WvI18n.getSpecialModifierDescription(special),
-        min: -100,
-        max: 100
-      });
-      this.actor.rollSpecial(special, {
-        modifier: modifier,
-        whisperToGms: event.ctrlKey
-      });
-    } else {
-      this.actor.rollSpecial(special, { whisperToGms: event.ctrlKey });
+    try {
+      this.actor.rollSpecial(
+        special,
+        await Prompt.get({
+          modifier: {
+            type: "number",
+            label: WvI18n.getSpecialModifierDescription(special),
+            value: 0,
+            min: -100,
+            max: 100
+          },
+          whisperToGms: {
+            type: "checkbox",
+            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
+            value: getGame().user?.isGM
+          }
+        })
+      );
+    } catch (e) {
+      if (e !== "closed") throw e;
     }
   }
 
   /** Handle a click event on the Skill roll buttons. */
-  protected async onClickRollSkill(event: MouseEvent): Promise<void> {
+  protected async onClickRollSkill(event: Event): Promise<void> {
     event.preventDefault();
 
     if (!(event.target instanceof HTMLElement))
@@ -502,23 +566,31 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    if (event.shiftKey) {
-      const modifier = await Prompt.getNumber({
-        label: WvI18n.getSkillModifierDescription(skill),
-        min: -100,
-        max: 100
-      });
-      this.actor.rollSkill(skill, {
-        modifier: modifier,
-        whisperToGms: event.ctrlKey
-      });
-    } else {
-      this.actor.rollSkill(skill, { whisperToGms: event.ctrlKey });
+    try {
+      this.actor.rollSkill(
+        skill,
+        await Prompt.get({
+          modifier: {
+            type: "number",
+            label: WvI18n.getSkillModifierDescription(skill),
+            value: 0,
+            min: -100,
+            max: 100
+          },
+          whisperToGms: {
+            type: "checkbox",
+            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
+            value: getGame().user?.isGM
+          }
+        })
+      );
+    } catch (e) {
+      if (e !== "closed") throw e;
     }
   }
 
   /** Handle a click event on an Attack execute button. */
-  protected async onClickAttackExecute(event: MouseEvent): Promise<void> {
+  protected async onClickAttackExecute(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement)) {
       LOG.warn("The target was not an HTMLElement.");
       return;
@@ -536,8 +608,8 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attackKey = attackElement.dataset.weaponAttackName;
-    if (!attackKey) {
+    const attackName = attackElement.dataset.weaponAttackName;
+    if (!attackName) {
       LOG.warn("Could not get the attack name.");
       return;
     }
@@ -549,7 +621,7 @@ export default class WvActorSheet extends ActorSheet {
     }
 
     if (weaponId !== this.actor.data.data.equipment.readiedItemId) {
-      LOG.warn("The weapon was not readied!");
+      LOG.warn("The weapon was not readied.");
       return;
     }
 
@@ -559,17 +631,17 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attack = weapon.systemData.attacks.attacks[attackKey];
-    if (!(attack instanceof Attack)) {
+    const attack = weapon.data.data.attacks.attacks[attackName];
+    if (!attack) {
       LOG.warn("Could not find the attack on the weapon.");
       return;
     }
 
-    attack.execute({ whisperToGms: event.ctrlKey });
+    attack.execute();
   }
 
   /** Handle a click event on a create item button. */
-  protected async onClickCreateItem(event: MouseEvent): Promise<void> {
+  protected async onClickCreateItem(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
@@ -588,6 +660,13 @@ export default class WvActorSheet extends ActorSheet {
         }),
         type: event.target.dataset.type
       };
+    } else if (event.target.dataset.type === TYPES.ITEM.MAGIC) {
+      data = {
+        name: getGame().i18n.format("wv.system.misc.newName", {
+          what: getGame().i18n.localize("wv.system.spell.singular")
+        }),
+        type: event.target.dataset.type
+      };
     } else return;
 
     const item = await Item.create(data, { parent: this.actor });
@@ -595,11 +674,11 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   /** Handle a click event on an edit item button. */
-  protected onClickEditItem(event: MouseEvent): void {
+  protected onClickEditItem(event: Event): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
@@ -613,11 +692,11 @@ export default class WvActorSheet extends ActorSheet {
   }
 
   /** Handle a click event on a delete item button. */
-  protected onClickDeleteItem(event: MouseEvent): void {
+  protected onClickDeleteItem(event: Event): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
@@ -627,7 +706,7 @@ export default class WvActorSheet extends ActorSheet {
     const item = this.actor.items.get(id);
     if (item) {
       item.delete();
-      this.render(false);
+      this.render();
     }
   }
 
@@ -636,21 +715,18 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLInputElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const itemElement = event.target.closest(".fvtt-item");
+    const itemElement = event.target.closest("[data-item-id]");
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
     const id = itemElement.dataset.itemId;
     if (!(typeof id === "string") || !id) return;
 
-    const amount = parseInt(event.target.value);
-    if (isNaN(amount)) throw new Error("The value was not a number.");
-
     const item = this.actor.items.get(id);
     if (item) {
-      item.update({ data: { amount } });
-      item.render(false);
-      this.render(false);
+      item.update({ data: { amount: event.target.valueAsNumber } });
+      item.render();
+      this.render();
     }
   }
 
@@ -834,8 +910,8 @@ export default class WvActorSheet extends ActorSheet {
 }
 
 interface SheetBackground {
-  race: string;
-  races: I18nRaces;
+  raceName: string;
+  raceNames: I18nRaceNames;
 }
 
 interface SheetBound {
@@ -846,7 +922,6 @@ interface SheetBound {
 
 interface SheetBounds {
   skills: SheetBound;
-  special: SheetBound;
 }
 
 interface SheetEffect {
@@ -880,13 +955,13 @@ interface SheetEquipment {
   belt: SheetApparel | null;
 }
 
-type ReadiedItem = ReturnType<WvItem["toJSON"]> | SheetWeapon;
+type ReadiedItem = ReturnType<WvItem["toObject"]> | SheetWeapon;
 
-type SheetApparel = ReturnType<Apparel["toJSON"]> & {
+type SheetApparel = ReturnType<Apparel["toObject"]> & {
   sheet: SheetApparelData;
 };
 
-type SheetWeapon = ReturnType<Weapon["toJSON"]> & {
+type SheetWeapon = ReturnType<Weapon["toObject"]> & {
   sheet: SheetWeaponData;
 };
 
@@ -896,11 +971,30 @@ interface SheetInventory {
   totalWeight: string;
 }
 
-interface SheetMagic {
-  thaumSpecials: Record<ThaumaturgySpecial, string>;
+interface SheetLeveling {
+  totalSkillPoints: number;
 }
 
-type SheetSpecial = I18nSpecial & Special;
+interface SheetMagic {
+  thaumSpecials: Record<ThaumaturgySpecial, string>;
+  spells: SheetSpell[];
+}
+
+type SheetSpell = {
+  id: string;
+  apCost: number;
+  strainCost: number;
+  potency: number;
+  school: string;
+  img: string | null;
+  name: string | null;
+};
+
+interface SheetSpecial extends I18nSpecial {
+  points: number;
+  permTotal: number;
+  tempTotal: number;
+}
 
 interface SheetSkill {
   name: string;
@@ -916,6 +1010,7 @@ interface SheetData extends ActorSheet.Data {
     effects: SheetEffect[];
     equipment: SheetEquipment;
     inventory: SheetInventory;
+    leveling: SheetLeveling;
     magic: SheetMagic;
     parts: {
       apparelSlot: string;
@@ -928,8 +1023,8 @@ interface SheetData extends ActorSheet.Data {
       stats: string;
       weaponSlot: string;
     };
-    radiationSicknessLevel: string;
     skills: Record<SkillName, SheetSkill>;
     specials: Record<SpecialName, SheetSpecial>;
+    systemGridUnit: string | undefined;
   };
 }

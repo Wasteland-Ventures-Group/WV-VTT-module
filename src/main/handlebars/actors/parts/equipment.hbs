@@ -1,4 +1,4 @@
-<section>
+<section class="flex-fixed">
   <h3>{{localize "wv.rules.equipment.slots.names.readiedItem"}}</h3>
   <div class="lighter-block equipment-slot" data-equipment-slot="readiedItem">
     <div class="equipment-slot-status">
@@ -10,7 +10,7 @@
         <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</div>
       {{~/if~}}
     </div>
-    <div class="equipment-slot-target lighter-block">
+    <div class="equipment-slot-target lighter-block parchment-bg">
       <div class="ready-item-cost direct">{{sheet.equipment.readyItemCost.direct}} {{localize "wv.rules.actionPoints.short"}}</div>
       <div class="lighter-block ready-item-cost from-quick-slot" data-equipment-slot-extra="quickSlot">
         <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
@@ -23,9 +23,9 @@
     </div>
   </div>
 </section>
-<section>
+<section class="flex-fixed">
   <h3>{{localize "wv.rules.equipment.slots.weaponSlot.plural"}}</h3>
-  <div class="flexrow weapon-slots">
+  <div class="flexrow flex-gapped">
     <div class="lighter-block equipment-slot" data-equipment-slot="weaponSlot1" data-item-id="{{sheet.equipment.weaponSlots.[0]._id}}">
       {{~#if sheet.equipment.weaponSlots.[0]~}}
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.weaponSlots.[0] readied=false}}
@@ -42,13 +42,9 @@
     </div>
   </div>
 </section>
-<section>
+<section class="flex-fixed">
   <h3>{{localize "wv.rules.equipment.apparel.name"}}</h3>
-  <div class="details spacing-bottom">
-    <span>{{localize "wv.rules.damage.threshold.long"}} {{data.data.equipment.damageThreshold}}</span>
-    <span>{{localize "wv.rules.equipment.slots.quickSlot.plural"}} {{data.data.equipment.quickSlots.max}}</span>
-  </div>
-  <div class="apparel-slots">
+  <div class="flexrow flex-gapped">
     <div class="lighter-block equipment-slot apparel-slot" data-equipment-slot="armor">
       {{~#if sheet.equipment.armor~}}
 {{>(get . "sheet.parts.apparelSlot") apparel=sheet.equipment.armor}}

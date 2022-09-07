@@ -1,70 +1,114 @@
-import type { TYPES } from "../../../constants.js";
-import Equipment from "./equipment/properties.js";
-import Leveling from "./leveling/properties.js";
-import Skills from "./skills/properties.js";
+import { SpecialNames, TYPES } from "../../../constants.js";
+import { CompositeNumber } from "../../common.js";
+import BackgroundProperties from "./background/properties.js";
+import EquipmentProperties from "./equipment/properties.js";
+import LevelingProperties from "./leveling/properties.js";
+import MagicProperties from "./magic/properties.js";
+import SkillsProperties from "./skills/properties.js";
 import { CharacterDataSourceData } from "./source.js";
-import Specials from "./specials/properties.js";
-import Vitals from "./vitals/properties.js";
+import SpecialsProperties, { Special } from "./specials/properties.js";
+import VitalsProperties from "./vitals/properties.js";
 
-/** The character data-properties */
 export default interface CharacterDataProperties {
   type: typeof TYPES.ACTOR.CHARACTER;
   data: CharacterDataPropertiesData;
 }
 
-/** Derived resistance values */
-export class Resistances {
-  /** The basic poison resitance of an Actor */
-  poison = 10;
+export class ResistancesProperties {
+  /** The poison resistance of the character */
+  poison = new CompositeNumber(10);
 
-  /** The basic radiation resistance of an Actor */
-  radiation = 5;
+  /** The radiation resistance of the character */
+  radiation = new CompositeNumber(5);
 }
 
-/** Stats related to critical success and failure */
-export class Criticals {
-  /**
-   * Create a new Criticals.
-   * @param success - the critical success chance
-   * @param failure - the critical failure chance
-   */
-  constructor(success = 1, failure = 100) {
-    this.success = success;
-    this.failure = failure;
+export class CriticalsProperties {
+  /** The critical failure chance of the character */
+  failure = new CompositeNumber(100);
+
+  /** The critical success chance of the character */
+  success = new CompositeNumber(1);
+
+  /** Apply Luck and set the base values for the crit chances. */
+  applyLuck(luck: Special) {
+    this.success.source = Math.max(1, luck.tempTotal);
+    this.failure.source = Math.min(100, 90 + luck.tempTotal);
+  }
+}
+
+export class SecondaryStatisticsProperties {
+  /** The criticals of the character */
+  criticals = new CriticalsProperties();
+
+  /** The fixed part of the initiative formula. */
+  initiative = new CompositeNumber();
+
+  /** The maximum carry weight of the character in kg */
+  maxCarryWeight = new CompositeNumber();
+
+  /** Apply Strength and set the base value for carry weight. */
+  applySpecials(specials: SpecialsProperties) {
+    this.criticals.applyLuck(specials.luck);
+    this.initiative.source = specials.perception.tempTotal;
+    this.maxCarryWeight.source = specials.strength.tempTotal * 5 + 10;
   }
 
-  /** The critical success chance */
-  success: number = 1;
+  /** Apply the size category to the max carry weight. */
+  applySizeCategory(sizeCategory: number) {
+    const value = {
+      4: 60,
+      3: 40,
+      2: 10,
+      1: 5,
+      [-1]: -5,
+      [-2]: -10,
+      [-3]: -40,
+      [-4]: -60
+    }[sizeCategory];
 
-  /** The critical failure chance */
-  failure: number = 100;
+    if (value)
+      this.maxCarryWeight.add({
+        value,
+        labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
+      });
+  }
 }
 
-/** Derived secondary statistics */
-export class SecondaryStatistics {
-  /** The criticals of the Actor */
-  criticals: Criticals = new Criticals();
-
-  /** The maximum carry weight of an Actor in kg */
-  maxCarryWeight?: number;
-}
-
-/** The character data-properties data */
 export class CharacterDataPropertiesData extends CharacterDataSourceData {
-  override vitals: Vitals = new Vitals();
+  constructor(source: CharacterDataSourceData) {
+    super();
+    foundry.utils.mergeObject(this, source);
+    this.leveling = new LevelingProperties(source.leveling);
 
-  override leveling: Leveling = new Leveling();
+    for (const special of SpecialNames) {
+      this.specials[special].points = this.leveling.specialPoints[special];
+    }
 
-  override equipment: Equipment = new Equipment();
+    this.background = new BackgroundProperties(source.background);
+    this.equipment = new EquipmentProperties(source.equipment);
+    this.vitals = new VitalsProperties(source.vitals);
+    this.magic = new MagicProperties(source.magic);
+  }
 
-  specials: Specials = new Specials();
+  override background: BackgroundProperties;
 
-  /** The skills of an Actor */
-  skills: Skills = new Skills();
+  override equipment: EquipmentProperties;
 
-  /** The resistances of an Actor */
-  resistances: Resistances = new Resistances();
+  override leveling: LevelingProperties;
 
-  /** The secondary statistics of an Actor */
-  secondary: SecondaryStatistics = new SecondaryStatistics();
+  override vitals: VitalsProperties;
+
+  override magic: MagicProperties;
+
+  /** The secondary statistics of the character */
+  secondary = new SecondaryStatisticsProperties();
+
+  /** The resistances of the character */
+  resistances = new ResistancesProperties();
+
+  /** The skills of the character */
+  skills = new SkillsProperties();
+
+  /** The SPECIALs of the character */
+  specials = new SpecialsProperties();
 }

@@ -1,41 +1,29 @@
+import type WvActor from "../../actor/wvActor.js";
+import type WvItem from "../../item/wvItem.js";
 import RuleElement from "../ruleElement.js";
 
 /**
- * A RuleElement that applies a flat positive or negative value to the selected
+ * A RuleElement that applies a flat positive or negative value to the target
  * data point.
  */
 export default class FlatModifier extends RuleElement {
   protected override validate(): void {
     super.validate();
-
-    if (this.hasErrors()) return;
-
-    this.checkSelectedIsOfType("number");
     this.checkValueIsOfType("number");
   }
 
-  protected override _onAfterSpecial(): void {
-    this.apply();
+  protected override validateAgainstDocument(document: WvActor | WvItem): void {
+    super.validateAgainstDocument(document);
+    this.checkTargetIsOfType(document, "number");
   }
 
-  protected override _onAfterSkills(): void {
-    this.apply();
-  }
-
-  /** Apply the rule element to the target Document. */
-  protected apply(): void {
+  protected override innerApply(document: WvActor | WvItem): void {
     if (typeof this.value !== "number") return;
 
-    const oldValue: number = foundry.utils.getProperty(
-      this.targetDoc.data.data,
-      this.selector
-    );
+    this.mapProperties(document, (value) => {
+      if (typeof value !== "number" || typeof this.value !== "number") return;
 
-    const newValue = oldValue + this.value;
-    foundry.utils.setProperty(
-      this.targetDoc.data.data,
-      this.selector,
-      newValue
-    );
+      return value + this.value;
+    });
   }
 }

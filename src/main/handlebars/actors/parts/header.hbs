@@ -1,75 +1,90 @@
-<header class="sheet-header flexrow flex-fixed">
-  <img class="document-img flex-fixed" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-  <div class="document-info">
-    <h1 class="document-name"><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'wv.system.misc.name'}}" /></h1>
-    <div class="header-fields">
-      <div class="leveling-and-karma flexrow">
-        <div class="lighter-block resource-block resource-block-line flex-fixed">
-          <label class="contained-target-inline">
-            {{~localize "wv.rules.leveling.level"~}}
-            <span class="resource-display size-2">{{data.data.leveling.level}}</span>
-          </label>
+{{! this is pretty much using the foundry baked-in layout and styling }}
+<header class="sheet-header flex-fixed">
+  <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+  <h1><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'wv.system.misc.name'}}" /></h1>
+</header>
+
+{{! our own stuff starts here }}
+<div class="document-info flex-fixed">
+  <div class="leveling-and-karma flexrow flex-j-spaced flex-gapped">
+    <div class="lighter-block resource-block resource-block-line flex-fixed">
+      <label class="contained-target-inline">
+        {{~localize "wv.rules.leveling.level"~}}
+        <span class="resource-display size-2">{{data.data.leveling.level}}</span>
+      </label>
+    </div>
+    <div class="lighter-block resource-block resource-block-line flex-fixed">
+      <label class="contained-target-inline">
+        {{~localize "wv.rules.leveling.experience"~}}
+        <div class="resource-display">
+          <input class="size-5" type="number" name="data.leveling.experience" value="{{data.data.leveling.experience}}" min="{{sheet.bounds.experience.min}}" max="{{sheet.bounds.experience.max}}" />
+          <span>&nbsp;/&nbsp;</span>
+          <span>{{data.data.leveling.xpForNextLevel}}</span>
         </div>
-        <div class="lighter-block resource-block resource-block-line flex-fixed">
-          <label class="contained-target-inline">
-            {{~localize "wv.rules.leveling.experience"~}}
-            <input class="size-5" type="number" name="data.leveling.experience" value="{{data.data.leveling.experience}}" min="{{sheet.bounds.experience.min}}" max="{{sheet.bounds.experience.max}}" />
-          </label>
+      </label>
+    </div>
+    <div class="lighter-block resource-block resource-block-line flex-fixed">
+      <label class="contained-target-inline">
+        {{~localize "wv.rules.insanity"~}}
+        <div class="resource-display">
+          <input class="size-2" type="number" name="data.vitals.insanity.value" value="{{data.data.vitals.insanity.value}}" min="0" max="{{data.data.vitals.insanity.max}}" />
+          <span>&nbsp;/&nbsp;</span>
+          <span class="size-2">{{data.data.vitals.insanity.max}}</span>
         </div>
-        <div class="lighter-block resource-block resource-block-line flex-fixed">
-          <label class="contained-target-inline">
-            {{~localize "wv.rules.karma"~}}
-            <input class="size-4" type="number" name="data.background.karma" value="{{data.data.background.karma}}" min="{{sheet.bounds.karma.min}}" max="{{sheet.bounds.karma.max}}" />
-          </label>
-        </div>
-      </div>
-      <div class="main-resources flexrow">
-        <div class="health lighter-block resource-block flex-fixed">
-          <label class="contained-target-inline resource-block-line">
-            {{~localize "wv.rules.health.health"~}}
-            <div class="resource-display">
-              <input class="size-2" type="number" name="data.vitals.hitPoints.value" value="{{data.data.vitals.hitPoints.value}}" min="0" max="{{data.data.vitals.hitPoints.max}}" />
-              <span>&nbsp;/&nbsp;</span>
-              <span class="size-2">{{data.data.vitals.hitPoints.max}}</span>
-            </div>
-          </label>
-          <label class="contained-target-inline resource-block-line">
-            {{~localize "wv.rules.health.healingRate"~}}
-            <span class="resource-display size-1">{{data.data.vitals.healingRate}}</span>
-          </label>
-        </div>
-        <div class="action-points lighter-block resource-block flex-fixed resource-block-line">
-          <label class="contained-target-inline">
-            {{~localize "wv.rules.actionPoints.long"~}}
-            <div class="resource-display">
-              <input class="size-2" type="number" name="data.vitals.actionPoints.value" value="{{data.data.vitals.actionPoints.value}}" min="0" max="{{data.data.vitals.actionPoints.max}}" />
-              <span>&nbsp;/&nbsp;</span>
-              <span class="size-2">{{data.data.vitals.actionPoints.max}}</span>
-            </div>
-          </label>
-        </div>
-        <div class="strain lighter-block resource-block flex-fixed resource-block-line">
-          <label class="contained-target-inline">
-            {{~localize "wv.rules.magic.strain"~}}
-            <div class="resource-display">
-              <input class="size-2" type="number" name="data.vitals.strain.value" value="{{data.data.vitals.strain.value}}" min="0" max="{{data.data.vitals.strain.max}}" />
-              <span>&nbsp;/&nbsp;</span>
-              <span class="resource-display size-2">{{data.data.vitals.strain.max}}</span>
-            </div>
-          </label>
-        </div>
-        <div class="radiation lighter-block resource-block flex-fixed">
-          <span class="contained-target-inline resource-block-line">{{~localize "wv.rules.radiation.name"~}}</span>
-          <label class="contained-target-inline resource-block-line">
-            {{~localize "wv.rules.radiation.dose"~}}
-            <input class="size-2" type="number" name="data.vitals.radiationDose" value="{{data.data.vitals.radiationDose}}" min="0" />
-          </label>
-          <label class="contained-target-inline resource-block-line">
-            {{~localize "wv.rules.radiation.sicknessLevel"~}}
-            <span class="resource-display">{{sheet.radiationSicknessLevel}}</span>
-          </label>
-        </div>
-      </div>
+      </label>
+    </div>
+    <div class="lighter-block resource-block resource-block-line flex-fixed">
+      <label class="contained-target-inline">
+        {{~localize "wv.rules.karma"~}}
+        <input class="size-4" type="number" name="data.background.karma" value="{{data.data.background.karma}}" min="{{sheet.bounds.karma.min}}" max="{{sheet.bounds.karma.max}}" />
+      </label>
     </div>
   </div>
-</header>
+  <div class="flexrow flex-center flex-j-spaced flex-gapped">
+    <div class="health lighter-block resource-block flex-fixed">
+      <label class="contained-target-inline resource-block-line">
+        {{~localize "wv.rules.health.health"~}}
+        <div class="resource-display">
+          <input class="size-2" type="number" name="data.vitals.hitPoints.value" value="{{data.data.vitals.hitPoints.value}}" min="0" max="{{data.data.vitals.hitPoints.max}}" />
+          <span>&nbsp;/&nbsp;</span>
+          <span class="size-2">{{data.data.vitals.hitPoints.max}}</span>
+        </div>
+      </label>
+      <label class="contained-target-inline resource-block-line">
+        {{~localize "wv.rules.health.healingRate"~}}
+        <span class="resource-display size-1">{{data.data.vitals.healingRate.total}}</span>
+      </label>
+    </div>
+    <div class="action-points lighter-block resource-block flex-fixed resource-block-line">
+      <label class="contained-target-inline">
+        {{~localize "wv.rules.actionPoints.long"~}}
+        <div class="resource-display">
+          <input class="size-2" type="number" name="data.vitals.actionPoints.value" value="{{data.data.vitals.actionPoints.value}}" min="0" max="{{data.data.vitals.actionPoints.max}}" />
+          <span>&nbsp;/&nbsp;</span>
+          <span class="size-2">{{data.data.vitals.actionPoints.max}}</span>
+        </div>
+      </label>
+    </div>
+    <div class="strain lighter-block resource-block flex-fixed resource-block-line">
+      <label class="contained-target-inline">
+        {{~localize "wv.rules.magic.strain"~}}
+        <div class="resource-display">
+          <input class="size-2" type="number" name="data.vitals.strain.value" value="{{data.data.vitals.strain.value}}" min="0" max="{{data.data.vitals.strain.max}}" />
+          <span>&nbsp;/&nbsp;</span>
+          <span class="resource-display size-2">{{data.data.vitals.strain.max}}</span>
+        </div>
+      </label>
+    </div>
+    <div class="radiation lighter-block resource-block flex-fixed">
+      <span class="contained-target-inline resource-block-line">{{~localize "wv.rules.radiation.name"~}}</span>
+      <label class="contained-target-inline resource-block-line">
+        {{~localize "wv.rules.radiation.dose"~}}
+        <input class="size-2" type="number" name="data.vitals.radiationDose" value="{{data.data.vitals.radiationDose}}" min="0" />
+      </label>
+      <label class="contained-target-inline resource-block-line">
+        {{~localize "wv.rules.radiation.sicknessLevel"~}}
+        <span class="resource-display">{{data.data.vitals.i18nRadiationSicknessLevel}}</span>
+      </label>
+    </div>
+  </div>
+</div>

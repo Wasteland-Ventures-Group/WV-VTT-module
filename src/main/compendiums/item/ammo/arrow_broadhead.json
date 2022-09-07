@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000056",
+  "name": "Arrow (Broadhead)",
+  "type": "ammo",
+  "data": {
+    "name": "Arrow (Broadhead)",
+    "description": "",
+    "notes": "DT increase +1, Causes Bleeding, 2 AP to remove arrow",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "common",
+    "value": {
+      "source": 1
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 5,
+    "caliber": "arrow",
+    "type": "broadhead"
+  },
+  "img": "icons/weapons/ammunition/arrows-war-white.webp",
+  "effects": [],
+  "flags": {}
+}

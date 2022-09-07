@@ -1,10 +1,37 @@
 import LevelingSource from "./source.js";
 
-/** Derived leveling related data */
-export default class Leveling extends LevelingSource {
-  /** The current level of an Actor */
-  level?: number;
+export default class LevelingProperties extends LevelingSource {
+  constructor(source: LevelingSource) {
+    super();
+    foundry.utils.mergeObject(this, source);
+  }
 
-  /** The maximum skill points of an Actor */
-  maxSkillPoints?: number;
+  /** The current level of the character */
+  get level(): number {
+    return Math.floor((1 + Math.sqrt(this.experience / 12.5 + 1)) / 2);
+  }
+
+  /** The maximum skill points of the character */
+  get maxSkillPoints(): number {
+    return this.levelIntelligences.reduce(
+      (skillPoints, intelligence) =>
+        skillPoints + Math.floor(intelligence / 2) + 10,
+      0
+    );
+  }
+
+  get totalSpecialPoints(): number {
+    return Object.values(this.specialPoints).reduce(
+      (total, points) => total + points,
+      0
+    );
+  }
+
+  /**
+   * The amount of experience needed for the character to advance to the next
+   * level
+   */
+  get xpForNextLevel(): number {
+    return 50 * (this.level + 1) * this.level;
+  }
 }

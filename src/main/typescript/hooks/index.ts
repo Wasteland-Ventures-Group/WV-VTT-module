@@ -1,6 +1,7 @@
 import registerForDragRulerReady from "./dragRuler/ready.js";
 import registerForHotbarDrop from "./hotbarDrop.js";
 import registerForInit from "./init.js";
+import registerForPreUpdateToken from "./preUpdateToken.js";
 import registerForQuenchReady from "./quench/ready.js";
 import registerForReady from "./ready.js";
 import registerForRenderChatLog from "./renderChatLog.js";
@@ -15,6 +16,8 @@ export default function registerForHooks(): void {
   registerForHotbarDrop();
   registerForRenderChatLog();
   registerForRenderChatMessage();
+
+  registerForPreUpdateToken();
 
   registerForUpdateActor();
 

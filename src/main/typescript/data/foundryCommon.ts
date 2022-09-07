@@ -1,20 +1,35 @@
 import type { JSONSchemaType } from "ajv";
 import { TYPES } from "../constants.js";
 
-/**
- * A class for what Foundry VTT will automatically recognize as a "resource".
- */
-export class Resource {
-  constructor(
-    /** The current value of a resource */
-    public value: number,
-
-    /** The maximum value of a resource */
-    public max?: number
-  ) {}
+/** The source data of a foundry resource. */
+export interface ResourceSource {
+  value: number;
+  max?: number;
 }
 
-export const RESOURCE_JSON_SCHEMA: JSONSchemaType<Resource> = {
+/** A full resource, including a defined max. */
+export interface Resource extends ResourceSource {
+  max: number;
+}
+
+/** A helper class for Resources. */
+export class Resource {
+  /**
+   * Test whether the given source is a ResourceSource.
+   * @param source - the source to test
+   * @returns whether the source is a ResourceSource
+   */
+  static isSource(source: unknown): source is ResourceSource {
+    return (
+      typeof source === "object" &&
+      null !== source &&
+      "value" in source &&
+      typeof (source as ResourceSource).value === "number"
+    );
+  }
+}
+
+export const RESOURCE_SOURCE_JSON_SCHEMA: JSONSchemaType<ResourceSource> = {
   description: "A schema for a Foundry resource",
   type: "object",
   properties: {
@@ -24,6 +39,17 @@ export const RESOURCE_JSON_SCHEMA: JSONSchemaType<Resource> = {
   required: ["value"],
   additionalProperties: false
 };
+
+export interface FoundrySerializable {
+  /**
+   * Copy and transform the DocumentData into a plain object. Draw the values of
+   * the extracted object from the data source (by default) otherwise from its
+   * transformed values.
+   * @param source - Draw values from the underlying data source rather than transformed values
+   * @returns The extracted primitive object
+   */
+  toObject(source: boolean): unknown;
+}
 
 /** An interface to model Foundry's compendium layout. */
 export interface FoundryCompendiumData<T> {
@@ -88,7 +114,8 @@ export const COMPENDIUM_JSON_SCHEMA = {
         "should be a path to an image file, that users can fetch from the " +
         "game server.",
       type: "string",
-      default: ""
+      minLength: 1,
+      default: "icons/svg/item-bag.svg"
     },
     effects: {
       description: "Foundry active effects on the entry",
@@ -108,7 +135,7 @@ export const COMPENDIUM_JSON_SCHEMA = {
     name: "",
     type: "",
     data: {},
-    img: "",
+    img: "icons/svg/item-bag.svg",
     effects: [],
     flags: {}
   }

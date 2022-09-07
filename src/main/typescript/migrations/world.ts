@@ -53,8 +53,8 @@ export async function migrateWorld(): Promise<void> {
     `Migrating this world to ${currentVersion}. Last migration was ${lastMigrVersion}`
   );
 
-  await migrateActors(currentVersion);
-  await migrateItems(currentVersion);
+  migrateActors(currentVersion);
+  migrateItems(currentVersion);
 
   setMigrationCurrentVersion();
 

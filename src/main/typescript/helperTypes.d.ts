@@ -1,17 +1,23 @@
-/** A helper type to specify some kind of constructor function */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types
-export type AnyConstructor = new (...args: any[]) => {};
+/**
+ * A type to convert nested properties of an object type into arrays of
+ * strings.
+ */
+export type PathsToStringProps<T> = T extends string
+  ? []
+  : {
+      [Key in Extract<keyof T, string>]: [Key, ...PathsToStringProps<T[Key]>];
+    }[Extract<keyof T, string>];
 
-export type FlattenedKeys<
-  T extends Record<string, string | Record<string, unknown>>
-> = keyof InnerFlattenedKeys<T>;
-
-type InnerFlattenedKeys<T> = {
-  [K in keyof T]: K extends string | number
-    ? T[K] extends string | number | boolean
-      ? K
-      : InnerFlattenedKeys<T[K]> extends string | number
-      ? `${K}.${InnerFlattenedKeys<T[K]>}`
-      : never
-    : never;
-};
+/** A type to join string arrays into single strings with a delimiter. */
+export type Join<
+  Array extends string[],
+  Delimiter extends string
+> = Array extends []
+  ? never
+  : Array extends [infer First]
+  ? First
+  : Array extends [infer First, ...infer Rest]
+  ? First extends string
+    ? `${First}${Delimiter}${Join<Extract<Rest, string[]>, Delimiter>}`
+    : never
+  : string;

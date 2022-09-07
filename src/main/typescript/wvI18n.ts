@@ -3,15 +3,20 @@ import {
   SpecialName,
   isSpecialName,
   isSkillName,
-  Race,
+  RaceName,
   Caliber,
   Rarity,
   ApparelSlot,
   ApparelType,
-  EquipmentSlot
+  EquipmentSlot,
+  RadiationSicknessLevel,
+  GeneralMagicSchool,
+  MagicType,
+  SchoolByMagicType
 } from "./constants.js";
+import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
+import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
 import { getGame } from "./foundryHelpers.js";
-import type { RadiationSicknessLevel } from "./radiation.js";
 
 /** The internationalization structure of a single SPECIAL. */
 export interface I18nSpecial {
@@ -31,11 +36,23 @@ export type I18nApparelTypes = Record<ApparelType, string>;
 /** The internationalization structure for calibers */
 export type I18nCalibers = Record<Caliber, string>;
 
+/** The internationalisation structure of the magic types */
+export type I18nMagicTypes = Record<MagicType, string>;
+
+/** The internationalisation structure of the magic schools */
+export type I18nMagicSchools = Record<GeneralMagicSchool, string>;
+
+/** The internationalization structure for ammo container types */
+export type I18nAmmoContainerTypes = Record<AmmoContainerType, string>;
+
+/** The internationalization structure for damage fall-off types */
+export type I18nDamageFallOffTypes = Record<DamageFallOffType, string>;
+
 /** The internationalization structure for equipment slots */
 export type I18nEquipmentSlots = Record<EquipmentSlot, string>;
 
-/** The internationalization structure of the Races */
-export type I18nRaces = Record<Race, string>;
+/** The internationalization structure of the Race names */
+export type I18nRaceNames = Record<RaceName, string>;
 
 /** The internationalization structure of radiation sickness levels. */
 export type I18nRadSicknessLevels = Record<RadiationSicknessLevel, string>;
@@ -84,12 +101,54 @@ export default class WvI18n {
     ) as I18nCalibers;
   }
 
-  /** Get the internationalization of the Races. */
-  static get races(): I18nRaces {
+  /** Get the internationalisation of the magic schools of a certain type*/
+  static getMagicSchools(type: MagicType): Partial<I18nMagicSchools> {
+    const result: Partial<I18nMagicSchools> = {};
+    const allSchools = WvI18n.magicSchools;
+    SchoolByMagicType[type].forEach(
+      (school) => (result[school] = allSchools[school])
+    );
+    return result;
+  }
+
+  /** Get the internationalisation of all the magic schools */
+  static get magicSchools(): I18nMagicSchools {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.magic.school.names"
+    ) as I18nMagicSchools;
+  }
+
+  /** Get the internationalisation of the magic types */
+  static get magicTypes(): I18nMagicTypes {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.magic.type.names"
+    ) as I18nMagicTypes;
+  }
+
+  /** Get the internationalization of the ammo container types. */
+  static get ammoContainerTypes(): I18nAmmoContainerTypes {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.equipment.weapon.reload.containerTypes"
+    ) as I18nAmmoContainerTypes;
+  }
+
+  /** Get the internationalization of the damage fall-off types. */
+  static get damageFallOffTypes(): I18nDamageFallOffTypes {
+    return foundry.utils.getProperty(
+      getGame().i18n.translations,
+      "wv.rules.damage.fallOff.types"
+    ) as I18nDamageFallOffTypes;
+  }
+
+  /** Get the internationalization of the Race names. */
+  static get raceNames(): I18nRaceNames {
     return foundry.utils.getProperty(
       getGame().i18n.translations,
       "wv.rules.race.names"
-    ) as I18nRaces;
+    ) as I18nRaceNames;
   }
 
   /** Get the internationalization of radiation sickness levels. */
@@ -114,6 +173,20 @@ export default class WvI18n {
       getGame().i18n.translations,
       "wv.rules.special.names"
     ) as I18nSpecials;
+  }
+
+  /** Get the internationalization of the long names for SPECIALs. */
+  static get longSpecials(): Record<SpecialName, string> {
+    const specials = WvI18n.specials;
+    return {
+      strength: specials.strength.long,
+      perception: specials.perception.long,
+      endurance: specials.endurance.long,
+      charisma: specials.charisma.long,
+      intelligence: specials.intelligence.long,
+      agility: specials.agility.long,
+      luck: specials.luck.long
+    };
   }
 
   /** Get the internationalization of the Skills. */

@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000053",
+  "name": "Arrow (Lightweight)",
+  "type": "ammo",
+  "data": {
+    "name": "Arrow (Lightweight)",
+    "description": "",
+    "notes": "Negates 10 from Range Penalties (moves faster), Damage -(1)",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "common",
+    "value": {
+      "source": 0.2
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 10,
+    "caliber": "arrow",
+    "type": "lightweight"
+  },
+  "img": "icons/weapons/ammunition/arrows-war-white.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -4,18 +4,16 @@ import {
   COMPENDIUM_JSON_SCHEMA,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
-import StackableBaseItem, {
-  STACK_BASE_ITEM_JSON_SCHEMA
-} from "../stackableBaseItem.js";
+import StackableItemSource, {
+  STACK_ITEM_SOURCE_JSON_SCHEMA
+} from "../common/stackableItem/source.js";
 
-/** The Ammo Item data-source */
 export default interface AmmoDataSource {
   type: typeof TYPES.ITEM.AMMO;
   data: AmmoDataSourceData;
 }
 
-/** The Ammo Item data-source data */
-export class AmmoDataSourceData extends StackableBaseItem {
+export class AmmoDataSourceData extends StackableItemSource {
   /** The caliber of the ammo */
   caliber: Caliber = "308cal";
 
@@ -23,12 +21,11 @@ export class AmmoDataSourceData extends StackableBaseItem {
   type: string = "";
 }
 
-/** A JSON schema for ammo source objects */
 export const AMMO_SOURCE_JSON_SCHEMA: JSONSchemaType<AmmoDataSourceData> = {
   description: "The system data for an ammo Item",
   type: "object",
   properties: {
-    ...STACK_BASE_ITEM_JSON_SCHEMA.properties,
+    ...STACK_ITEM_SOURCE_JSON_SCHEMA.properties,
     caliber: {
       description: "The caliber of the ammo",
       type: "string",
@@ -40,10 +37,10 @@ export const AMMO_SOURCE_JSON_SCHEMA: JSONSchemaType<AmmoDataSourceData> = {
       type: "string"
     }
   },
-  required: [...STACK_BASE_ITEM_JSON_SCHEMA.required, "caliber", "type"],
+  required: [...STACK_ITEM_SOURCE_JSON_SCHEMA.required, "caliber", "type"],
   additionalProperties: false,
   default: {
-    ...STACK_BASE_ITEM_JSON_SCHEMA.default,
+    ...STACK_ITEM_SOURCE_JSON_SCHEMA.default,
     caliber: "308cal",
     type: ""
   }
@@ -54,7 +51,6 @@ export interface CompendiumAmmo
   type: typeof TYPES.ITEM.AMMO;
 }
 
-/** A JSON schema for compendium ammo objects */
 export const COMP_AMMO_JSON_SCHEMA: JSONSchemaType<CompendiumAmmo> = {
   description: "The compendium data for an ammo Item",
   type: "object",

@@ -1,9 +1,58 @@
 import { HANDLEBARS } from "./constants.js";
+import { getGame } from "./foundryHelpers.js";
+import { z } from "zod";
+
+const SELECT_GROUP_PARAMS_SCHEMA = z.record(
+  z.string(),
+  z
+    .object({
+      label: z.string(),
+      options: z.record(z.string(), z.string())
+    })
+    .strict()
+);
 
 /** This registers various Handlebars helpers. */
 export function registerHelpers(): void {
+  Handlebars.registerHelper("disabled", (testValue) => {
+    const result = testValue instanceof Function ? testValue() : testValue;
+    return result ? "disabled" : "";
+  });
+
+  Handlebars.registerHelper(
+    "selectGroupOptions",
+    (optionsGroups, { hash: { selected } }) => {
+      const groups = SELECT_GROUP_PARAMS_SCHEMA.parse(optionsGroups);
+      const selectGroupOptions: string[] = [];
+      for (const group of Object.values(groups)) {
+        const selectGroup: string[] = [];
+
+        for (const [key, label] of Object.entries(group.options)) {
+          const option = `<option value="${key}"${
+            key === selected ? "selected" : ""
+          }>${label}</option>`;
+          selectGroup.push(option);
+        }
+
+        const optString = selectGroup.join("");
+        const groupString = `<optgroup label="${group.label}">${optString}</groupopt>`;
+        selectGroupOptions.push(groupString);
+      }
+      return new Handlebars.SafeString(selectGroupOptions.join(""));
+    }
+  );
+
+  Handlebars.registerHelper("enrichHTML", (html) => {
+    return TextEditor.enrichHTML(html, {
+      secrets: getGame().user?.isGM ?? false
+    });
+  });
+
   Handlebars.registerHelper("get", (context, path) =>
-    foundry.utils.getProperty(context, path)
+    foundry.utils.getProperty(
+      context,
+      path instanceof Handlebars.SafeString ? path.toString() : path
+    )
   );
 
   Handlebars.registerHelper("ternary", (testValue, ...results) => {
@@ -27,6 +76,7 @@ export function preloadTemplates(): void {
     HANDLEBARS.partPaths.actor.magic,
     HANDLEBARS.partPaths.actor.stats,
     HANDLEBARS.partPaths.actor.weaponSlot,
+    HANDLEBARS.partPaths.item.baseItemInputs,
     HANDLEBARS.partPaths.item.header,
     HANDLEBARS.partPaths.item.physicalItemInputs,
     HANDLEBARS.partPaths.item.rules

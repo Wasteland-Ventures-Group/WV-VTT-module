@@ -15,9 +15,22 @@
         "fears": "Fears",
         "gender": "Gender",
         "personality": "Personality",
+        "sizeCategory": "Size Category",
         "socialContacts": "Social Contacts",
         "specialTalent": "Special Talent",
         "virtue": "Virtue"
+      },
+      "crippledLimbs": {
+        "status": {
+          "torso": "Crippled Torso",
+          "head": "Crippled Head",
+          "frontLeftLeg": "Crippled Front Left Leg",
+          "frontRightLeg": "Crippled Front Right Leg",
+          "rearLeftLeg": "Crippled Rear Left Leg",
+          "rearRightLeg": "Crippled Rear Right Leg",
+          "leftWing": "Crippled Left Wing",
+          "rightWing": "Crippled Right Wing"
+        }
       },
       "criticals": {
         "title": "Criticals",
@@ -29,6 +42,13 @@
       "damage": {
         "baseDamage": "Base Damage",
         "damageDice": "Damage Dice",
+        "diceRange": "Strength-based Dice Range",
+        "fallOff": {
+          "name": "Damage Fall-Off",
+          "types": {
+            "shotgun": "Shotgun"
+          }
+        },
         "long": "Damage",
         "short": "DMG",
         "threshold": {
@@ -128,6 +148,10 @@
           "singular": "Equipment Slot",
           "plural": "Equipment Slots",
           "apparelSlot": "Apparel Slot",
+          "blockedSlots": {
+            "singular": "Blocked Slot",
+            "plural": "Blocked Slots"
+          },
           "modSlot": {
             "singular": "Mod Slot",
             "plural": "Mod Slots"
@@ -183,8 +207,11 @@
       },
       "health": {
         "health": "Health",
+        "hp": "HP",
         "healingRate": "Healing Rate"
       },
+      "initiative": "Initiative",
+      "insanity": "Insanity",
       "karma": "Karma",
       "leveling": {
         "level": "Level",
@@ -192,7 +219,54 @@
       },
       "magic": {
         "magic": "Magic",
-        "strain": "Strain"
+        "strain": "Strain",
+        "strainUse": "Strain use",
+        "potency": "Potency",
+        "type": {
+          "singular": "Magic Type",
+          "plural": "Magic Types",
+          "names": {
+            "earthPony": "Earth Pony Magic",
+            "maneuver": "Aerial Maneuver",
+            "spirit": "Spirit Magic",
+            "unicorn": "Unicorn Magic"
+          }
+        },
+        "school": {
+          "singular": "School",
+          "plural": "Schools",
+          "names": {
+            "agility": "Agility Maneuver",
+            "charm": "Branch of Charm",
+            "conjuration": "Conjuration Magic",
+            "dark": "Dark Magic",
+            "embers": "Spirit of Embers",
+            "endurance": "Endurance Maneuver",
+            "enhancement": "Enhancement Magic",
+            "general": "General Magic",
+            "illusion": "Illusion Magic",
+            "incantations": "Incantations",
+            "machines": "Spirit of Machines",
+            "medical": "Medical Magic",
+            "might": "Branch of Might",
+            "nature": "Spirit of Nature",
+            "perception": "Perception Magic",
+            "protective": "Protective Magic",
+            "serenity": "Spirit of Serenity",
+            "shadows": "Spirit of Shadows",
+            "sight": "Branch of Sight",
+            "streams": "Spirit of Streams",
+            "transmutation": "Transmutation Magic",
+            "trust": "Spirit of Trust",
+            "whispers": "Spirit of Whispers",
+            "wonderboltAndTalon": "Wonderbolt and Talon Maneuver"
+          }
+        }
+      },
+      "painThreshold": {
+        "reached": "Pain Threshold entered",
+        "singular": "Pain Threshold",
+        "plural": "Pain Thresholds"
       },
       "race": {
         "names": {
@@ -232,7 +306,9 @@
         }
       },
       "range": {
-        "distance": "Distance",
+        "distance": {
+          "name": "Distance"
+        },
         "plural": "Ranges",
         "ranges": {
           "outOfRange": {
@@ -253,6 +329,16 @@
           }
         },
         "singular": "Range"
+      },
+      "resistances": {
+        "poison": {
+          "short": "Poi Res",
+          "long": "Poison Resistance"
+        },
+        "radiation": {
+          "short": "Rad Res",
+          "long": "Radiation Resistance"
+        }
       },
       "rolls": {
         "results": {
@@ -358,12 +444,21 @@
         "singular": "Effect",
         "plural": "Effects"
       },
+      "initialCharacterSetup": {
+        "openButton": "Initial Character Setup",
+        "title": "Initial Character Setup for {name}",
+        "messages": {
+          "tooFewSpecialPointsSpent": "Too few SPECIAL points spent!",
+          "tooManySpecialPointsSpent": "Too many SPECIAL points spent!"
+        }
+      },
       "item": {
         "singular": "Item",
         "plural": "Items"
       },
       "messages": {
-        "attackNotFound": "The attack with the name \"{name}\" could not be found in the Weapon.",
+        "attackNotFound": "The attack with the name \"{name}\" could not be found on the Weapon.",
+        "attackAlreadyExists": "An attack with the name \"{name}\" already exists on the Weapon.",
         "blockedByAnotherApparel": "The apparel's slot is blocked by another apparel.",
         "canNotDoInCombat": "This can not be done in combat.",
         "couldNotCreateDocument": "Could not create a Document with the provided data.",
@@ -385,8 +480,10 @@
         "name": "Name",
         "newName": "New {what}",
         "notes": "Notes",
+        "sourceValues": "Source Values",
         "speakerAlias": "Speaker alias",
         "statistics": "Statistics",
+        "tags": "Tags",
         "toggleCompendiumLink": "Comp. Link",
         "updateFromCompendium": "Update"
       },
@@ -398,23 +495,34 @@
       "rolls": {
         "descriptive": "Rolling {what}",
         "imperative": "Roll",
-        "modifierExplanation": "Ctrl-Click to whisper to game masters"
+        "whisperToGms": "Whisper to game masters?"
       },
       "ruleEngine": {
+        "documentMessages": {
+          "name": "Document related messages",
+          "relations": {
+            "thisItem": "This Item",
+            "parentActor": "Parent Actor",
+            "parentOwnedItem": "Parent Actor owned Item"
+          }
+        },
         "errors": {
           "logical": {
-            "noActor": "The target is set to \"actor\", but the item has no actor.",
-            "notMatchingSelector": "The property \"{path}\" on \"{name}\" does not exist.",
-            "wrongSelectedType": "The property \"{path}\" on \"{name}\" is not of the needed type \"{type}\".",
+            "notCompositeNumber": "The property \"{path}\" is not a composite number.",
+            "notMatchingTarget": "The property \"{path}\" does not exist.",
+            "wrongDocumentType": "The Document is not of the expected type \"{type}\".",
+            "wrongTargetType": "The property \"{path}\" is not of the needed type \"{type}\".",
             "wrongValueType": "The value for this rule should be of type \"{type}\"."
           },
           "semantic": {
             "additional": "The property \"{property}\" is not allowed at \"{path}\".",
             "missing": "The property \"{property}\" is missing at \"{path}\".",
             "unknown": "An unknown error occurred.",
+            "unknownCondition": "The type of condition is unknown.",
             "unknownHook": "The type of hook is unknown.",
             "unknownRuleElement": "The type of RuleElement is unknown.",
-            "unknownTarget": "The target is wrong. It has to be either \"item\" or \"actor\".",
+            "unknownSpecialName": "The SPECIAL name is unknown.",
+            "unknownSelector": "The selector is wrong. It has to be either \"item\" or \"actor\".",
             "wrongType": "The property \"{path}\" is not of type \"{type}\"."
           },
           "syntax": "Syntax error: {message}"
@@ -423,29 +531,34 @@
           "singular": "Rule Element",
           "plural": "Rule Elements"
         },
+        "selectors": {
+          "selectedDocuments": "Selected Documents"
+        },
         "warnings": {
-          "changedType": "The type of \"{path}\" on \"{name}\" changed from \"{original}\" to \"{new}\".",
+          "changedType": "The type of \"{path}\" changed from \"{original}\" to \"{new}\".",
           "notSaved": "This rule element was not saved due to errors. It is save to close this Foundry window and fix this later. Though the changes will be lost once Foundry is reloaded."
         }
       },
       "settings": {
-        "enforceApDragDrop": {
+        "alwaysNeverSetting": {
           "choices": {
-            "disabled": "Disabled",
-            "playersAndGameMaster": "Players and game masters",
-            "players": "Players only"
-          },
-          "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with Drag and Drop.",
-          "name": "Enforce AP for Drag and Drop movement"
+            "always": "Always",
+            "never": "Never"
+          }
         },
-        "enforceApRuler": {
-          "choices": {
-            "disabled": "Disabled",
-            "playersAndGameMaster": "Players and game masters",
-            "players": "Players only"
+        "movement": {
+          "enforceAndSubtractApForPlayers": {
+            "hint": "Enforce AP checks and subtract AP from Actors moved by players in combat.",
+            "name": "Player Combat Movement AP"
           },
-          "hint": "Enforce AP checks and subtract AP from Token Actors in Combat, when moving with the Ruler tool.",
-          "name": "Enforce AP for Ruler movement"
+          "enforceApForGameMasters": {
+            "hint": "Enforce AP checks for Actors moved by you as a Game Master in combat. This only has an effect if you are a Game Master.",
+            "name": "GM Combat Movement AP checks"
+          },
+          "subtractApForGameMasters": {
+            "hint": "Subtract AP from Actors moved by you as a Game Master in combat. This only has an effect if you are a Game Master.",
+            "name": "GM Combat Movement AP subtract"
+          }
         },
         "skillPointsMinBounds": {
           "hint": "The minimum allowed amount of Skill points, that can be entered into an actor sheet.",
@@ -465,6 +578,10 @@
           "itemSheet": "Item Sheet",
           "weaponSheet": "Weapon Sheet"
         }
+      },
+      "spell": {
+        "singular": "Spell",
+        "plural": "Spells"
       },
       "thaumSpecial": "SPECIA for Thaumaturgy",
       "values": {

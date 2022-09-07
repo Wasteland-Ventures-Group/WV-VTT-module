@@ -1,0 +1,58 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+{{> (get . "sheet.parts.header")}}
+
+  <nav class="tabs flex-fixed" data-group="primary">
+    <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
+    <a class="item" data-tab="sources">{{localize "wv.system.misc.sourceValues"}}</a>
+    <a class="item" data-tab="rules">{{localize "wv.system.ruleEngine.ruleElement.plural"}}</a>
+  </nav>
+
+  <section class="content">
+    <div class="tab active" data-group="primary" data-tab="stats">
+      <div class="detail-groups">
+        <section class="details">
+          <span>{{localize "wv.rules.magic.type.singular"}}: {{sheet.type}}</span>
+          <span>{{localize "wv.rules.magic.school.singular"}}: {{sheet.school}}</span>
+        </section>
+        <section class="details">
+          <span>{{localize "wv.rules.actionPoints.use"}}: {{data.data.apCost.source}}</span>
+          <span>{{localize "wv.rules.magic.strainUse"}}: {{data.data.strainCost.source}}</span>
+        </section>
+        {{~#if data.data.notes~}}
+          <section>{{data.data.notes}}</section>
+        {{~/if~}}
+      </div>
+    </div>
+
+    <div class="tab active" data-group="primary" data-tab="sources">
+
+{{> (get . "sheet.parts.baseItemInputs")}}
+      <div class="resource-block flex-fixed spacing-bottom">
+        <div class="flexrow flex-j-spaced">
+          <label class="contained-target-inline flex-fixed">
+            {{~localize "wv.rules.magic.school.singular"~}}
+            <select name="data.school">
+              {{~selectGroupOptions sheet.schools selected=data.data.school~}}
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="resource-block flex-fixed spacing-bottom">
+        <div class="flexrow flex-j-spaced">
+          <label class="contained-target-inline flex-fixed">
+            {{~localize "wv.rules.actionPoints.use"~}}
+            <input type="number" name="data.apCost.source" value="{{data.data.apCost.source}}" />
+          </label>
+          <label class="contained-target-inline flex-fixed">
+            {{~localize "wv.rules.magic.strainUse"~}}
+            <input type="number" name="data.strainCost.source" value="{{data.data.strainCost.source}}" />
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="rules">
+{{> (get . "sheet.parts.rules")}}
+    </div>
+  </section>
+</form>

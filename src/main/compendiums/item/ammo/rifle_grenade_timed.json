@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000061",
+  "name": "Rifle Grenade (Timed)",
+  "type": "ammo",
+  "data": {
+    "name": "Rifle Grenade (Timed)",
+    "description": "",
+    "notes": "Detonates next round, no detonation on impact",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "common",
+    "value": {
+      "source": 20
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 1,
+    "caliber": "rifleGrenade",
+    "type": "timed"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

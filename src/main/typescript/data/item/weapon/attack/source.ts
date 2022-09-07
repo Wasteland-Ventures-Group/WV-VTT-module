@@ -1,51 +1,56 @@
 import type { JSONSchemaType } from "ajv";
+import { SplashSize, SplashSizes } from "../../../../constants.js";
+import {
+  CompositeNumberSource,
+  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
+} from "../../../common.js";
+import { TAGS_SOURCE_JSON_SCHEMA } from "../../common/baseItem/source.js";
 
-/** A Weapon Attacks DB container */
 export default class AttacksSource {
   /** The source objects for the Attacks */
   sources: Record<string, AttackSource> = {};
 }
 
-/** The Attack raw data layout */
-export interface AttackSource {
+export class AttackSource {
   /** The values related to the damage the weapon causes */
-  damage: {
-    /** The base damage amount */
-    base: number;
-
-    /** The number of d6 to throw for variable damage */
-    dice: number;
-
-    /** Whether the damage uses a dice range based on actor Strength */
-    diceRange?: boolean;
-
-    /** The optional damage fall-off type of the attack */
-    damageFallOff?: DamageFallOffSource;
-  };
+  damage = new DamageSource();
 
   /** The amount of rounds used with the attack */
-  rounds?: number;
+  rounds?: CompositeNumberSource = { source: 0 };
 
-  /**
-   * The damage threshold reduction of the attack. By default the attack has no
-   * DT reduction.
-   */
-  dtReduction?: number;
+  /** The damage threshold reduction of the attack */
+  dtReduction?: CompositeNumberSource = { source: 0 };
 
-  /** The splash radius. By default the attack has no splash. */
-  splash?: "TODO"; // TODO: implement an enum or similar
+  /** The splash radius */
+  splash?: SplashSize;
 
   /** The amount of action points needed to attack */
-  ap: number;
+  ap: CompositeNumberSource = { source: 0 };
+
+  /** Tags of the attack */
+  tags: string[] = [];
 }
 
-/** A type representing different damage fall-off rules */
-type DamageFallOffSource = "shotgun";
+/** The source data for weapon damage */
+export class DamageSource {
+  /** The base damage amount */
+  base: CompositeNumberSource = { source: 0 };
 
-/** The default value for the damage object */
-const DAMAGE_DEFAULT = { base: 0, dice: 0 };
+  /** The number of d6 to throw for variable damage */
+  dice: CompositeNumberSource = { source: 0 };
 
-/** A JSON schema for attack source objects */
+  /** Whether the damage uses a dice range based on actor Strength */
+  diceRange?: boolean;
+
+  /** The optional damage fall-off type of the attack */
+  damageFallOff?: DamageFallOffType | "";
+}
+
+export type DamageFallOffType = typeof DamageFallOffTypes[number];
+const DamageFallOffTypes = ["shotgun"] as const;
+
+const DAMAGE_DEFAULT = { base: { source: 0 }, dice: { source: 0 } };
+
 export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
   description: "A single attack definition",
   type: "object",
@@ -55,14 +60,32 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
       type: "object",
       properties: {
         base: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
           description: "The flat base damage of the attack",
-          type: "integer",
-          default: 0
+          properties: {
+            source: {
+              ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+              type: "integer",
+              default: 0
+            }
+          },
+          default: {
+            source: 0
+          }
         },
         dice: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
           description: "The amount of d6 to throw for variable damage",
-          type: "integer",
-          default: 0
+          properties: {
+            source: {
+              ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+              type: "integer",
+              default: 0
+            }
+          },
+          default: {
+            source: 0
+          }
         },
         diceRange: {
           description:
@@ -74,13 +97,11 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
           default: true
         },
         damageFallOff: {
-          description:
-            "The type of damage fall-off for the attack. If this is not " +
-            "specified, the attack has no damage fall-off.",
+          description: "The type of damage fall-off for the attack.",
           type: "string",
-          enum: ["shotgun"],
+          enum: ["", ...DamageFallOffTypes],
           nullable: true,
-          default: "shotgun"
+          default: ""
         }
       },
       required: ["base", "dice"],
@@ -88,39 +109,72 @@ export const ATTACK_JSON_SCHEMA: JSONSchemaType<AttackSource> = {
       default: DAMAGE_DEFAULT
     },
     rounds: {
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
       description:
         "The amount of ammo used by the attack. If this is not specified " +
         "the attack does not consume ammo.",
-      type: "integer",
       nullable: true,
-      default: 1
+      properties: {
+        source: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     },
     dtReduction: {
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
       description:
         "The amount of DT reduction on the target. If this is not specified " +
         "the attack has no DT reduction.",
-      type: "integer",
       nullable: true,
-      default: 1
+      properties: {
+        source: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
     },
     splash: {
       description:
         "The splash of the weapon. This is still work in progress and has no " +
         "effect.",
       type: "string",
+      enum: SplashSizes,
       nullable: true,
-      default: "TODO"
+      default: "tiny"
     },
     ap: {
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
       description: "The amount of action points used by the attack.",
-      type: "integer",
-      default: 0
+      properties: {
+        source: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 0
+      }
+    },
+    tags: {
+      ...TAGS_SOURCE_JSON_SCHEMA,
+      description: "Tags of the attack"
     }
   },
-  required: ["damage", "ap"],
+  required: ["damage", "ap", "tags"],
   additionalProperties: false,
   default: {
     damage: DAMAGE_DEFAULT,
-    ap: 0
+    ap: { source: 0 },
+    tags: []
   }
 };

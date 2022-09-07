@@ -9,9 +9,14 @@
     "rules": {
       "sources": []
     },
+    "tags": [],
     "rarity": "uncommon",
-    "value": 2.4,
-    "weight": 0,
+    "value": {
+      "source": 2.4
+    },
+    "weight": {
+      "source": 0
+    },
     "amount": 5,
     "caliber": "shotgunShell",
     "type": "pulseSlug"

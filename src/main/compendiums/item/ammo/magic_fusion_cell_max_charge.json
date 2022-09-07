@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000041",
+  "name": "Magic Fusion Cell (Max Charge)",
+  "type": "ammo",
+  "data": {
+    "name": "Magic Fusion Cell (Max Charge)",
+    "description": "",
+    "notes": "Damage +1, Crit. Fail chance +5",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "uncommon",
+    "value": {
+      "source": 0.8
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 10,
+    "caliber": "magicFusionCell",
+    "type": "maxCharge"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000035",
+  "name": "Alien Gem Pack",
+  "type": "ammo",
+  "data": {
+    "name": "Alien Gem Pack",
+    "description": "What in Celestia's name are you talking about",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "exotic",
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 10,
+    "caliber": "alienGemPack",
+    "type": "standard"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "flags": {},
+  "effects": []
+}

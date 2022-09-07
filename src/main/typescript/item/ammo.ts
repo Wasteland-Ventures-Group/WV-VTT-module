@@ -1,5 +1,5 @@
 import { TYPES } from "../constants.js";
-import type AmmoDataProperties from "../data/item/ammo/properties.js";
+import { AmmoDataPropertiesData } from "../data/item/ammo/properties.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent an ammo item in the Wasteland Ventures system. */
@@ -14,11 +14,14 @@ export default class Ammo extends WvItem {
     super(data, context);
   }
 
-  /** Get the system data of this weapon. */
-  get systemData(): AmmoDataProperties["data"] {
-    if (!this.data || this.data.type !== TYPES.ITEM.AMMO)
-      throw new Error(`This data's data type is not ${TYPES.ITEM.AMMO}.`);
-
-    return this.data.data;
+  override prepareBaseData(): void {
+    this.data.data = new AmmoDataPropertiesData(this.data.data, this);
   }
+}
+
+export default interface Ammo {
+  data: foundry.data.ItemData & {
+    type: typeof TYPES.ITEM.AMMO;
+    _source: { type: typeof TYPES.ITEM.AMMO };
+  };
 }

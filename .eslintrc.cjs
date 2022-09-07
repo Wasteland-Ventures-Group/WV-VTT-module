@@ -22,7 +22,7 @@ module.exports = {
       rules: {
         "eslint/lines-between-class-members": "off",
         "tsdoc/syntax": "warn",
-        "@typescript-eslint/lines-between-class-members": ["error"],
+        "@typescript-eslint/lines-between-class-members": ["warn"],
         "@typescript-eslint/member-ordering": [
           "warn",
           {
@@ -81,6 +81,10 @@ module.exports = {
               ]
             }
           }
+        ],
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          { argsIgnorePattern: "^_" }
         ]
       },
       overrides: [

@@ -2,6 +2,21 @@ import { CONSTANTS } from "./constants.js";
 
 /** A logger for the system, decorating log messages with a given context. */
 export default class SystemLogger {
+  /** Get the document ident string for the given document. */
+  static getActorIdent(actor: foundry.documents.BaseActor): string {
+    return `[${actor.id}] "${actor.name}"`;
+  }
+
+  /** Get the item ident string for the given Item. */
+  static getItemIdent(item: foundry.documents.BaseItem): string {
+    const itemIdent = `[${item.id}] "${item.name}"`;
+    if (item.parent) {
+      return `${this.getActorIdent(item.parent)} -> ${itemIdent}`;
+    } else {
+      return itemIdent;
+    }
+  }
+
   /** @param context - the context to set for this instance */
   constructor(context: string) {
     this.context = context;

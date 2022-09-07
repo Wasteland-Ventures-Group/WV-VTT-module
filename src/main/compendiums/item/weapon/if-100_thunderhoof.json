@@ -9,43 +9,96 @@
     "attacks": {
       "sources": {
         "Single": {
-          "ap": 8,
-          "damage": {
-            "base": 6,
-            "dice": 3
+          "ap": {
+            "source": 8
           },
-          "rounds": 1
+          "damage": {
+            "base": {
+              "source": 6
+            },
+            "dice": {
+              "source": 3
+            }
+          },
+          "rounds": {
+            "source": 1
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 250,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 250
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 500,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 500
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 750,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 750
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "50cal",
       "containerType": "magazine",
-      "size": 8
+      "size": {
+        "source": 8
+      }
     },
     "rules": {
       "sources": []
     },
+    "tags": [],
     "skill": "firearms",
-    "strengthRequirement": 11,
-    "value": 750,
-    "weight": 15
+    "strengthRequirement": {
+      "source": 11
+    },
+    "value": {
+      "source": 750
+    },
+    "weight": {
+      "source": 15
+    }
   },
   "effects": [],
   "flags": {},

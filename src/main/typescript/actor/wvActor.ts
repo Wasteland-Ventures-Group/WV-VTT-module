@@ -5,47 +5,55 @@ import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-
 import {
   ApparelSlot,
   CONSTANTS,
+  getPainThreshold,
   SkillName,
-  SpecialName,
-  SpecialNames
+  SpecialName
 } from "../constants.js";
-import {
-  Criticals,
-  SecondaryStatistics
-} from "../data/actor/character/properties.js";
-import Skills, { Skill } from "../data/actor/character/skills/properties.js";
+import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
+import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
-import Specials, {
-  Special
-} from "../data/actor/character/specials/properties.js";
-import type { Resource } from "../data/foundryCommon.js";
-import Formulator from "../formulator.js";
+import type { CompositeResource } from "../data/common.js";
+import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import Apparel from "../item/apparel.js";
 import Weapon from "../item/weapon.js";
-import type WvItem from "../item/wvItem.js";
+import WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
-import { applyRadiationSickness } from "../radiation.js";
 import type RuleElement from "../ruleEngine/ruleElement.js";
+import { ruleElementSort } from "../ruleEngine/ruleElement.js";
+import type {
+  RuleElementCondition,
+  RuleElementHook
+} from "../ruleEngine/ruleElementSource.js";
 import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n from "../wvI18n.js";
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
+  /** Get an identifying string for this Actor. */
+  get ident(): string {
+    return `[${this.id}] "${this.name}"`;
+  }
+
   /** A convenience getter for the Actor's hit points. */
-  get hitPoints(): Resource {
+  get hitPoints(): CompositeResource {
     return this.data.data.vitals.hitPoints;
   }
 
   /** A convenience getter for the Actor's action points. */
-  get actionPoints(): Resource {
+  get actionPoints(): CompositeResource {
     return this.data.data.vitals.actionPoints;
   }
 
   /** A convenience getter for the Actor's strain. */
-  get strain(): Resource {
+  get strain(): CompositeResource {
     return this.data.data.vitals.strain;
+  }
+
+  /** Get the amount of crippled legs of the character. */
+  get crippledLegs(): number {
+    return this.data.data.vitals.crippledLegs;
   }
 
   /** Get the ground movement range of the actor. */
@@ -77,7 +85,7 @@ export default class WvActor extends Actor {
 
   /** Get the damage threshold of the actor. */
   get damageThreshold(): number {
-    return this.data.data.equipment.damageThreshold ?? 0;
+    return this.data.data.equipment.damageThreshold.total;
   }
 
   /** Get the readied Item of this actor, if it exists. */
@@ -93,12 +101,12 @@ export default class WvActor extends Actor {
     return [this.getWeaponSlotWeapon(1), this.getWeaponSlotWeapon(2)];
   }
 
-  /** Get the slots that are blocked by other apparel items. */
+  /** Get the slots that are blocked by apparel items. */
   get blockedApparelSlots(): ApparelSlot[] {
     const slots: Set<ApparelSlot> = new Set();
 
     this.equippedApparel.forEach((apparel) => {
-      apparel.systemData.blockedSlots?.forEach((slot) => slots.add(slot));
+      apparel.blockedApparelSlots.forEach(slots.add, slots);
     });
 
     return [...slots];
@@ -171,27 +179,15 @@ export default class WvActor extends Actor {
   }
 
   /**
-   * Get a SPECIAL from this actor.
-   * @throws If the SPECIALS have not been calculated yet.
+   * Get all equipped items. This includes the readied item, weapon slot
+   * weapons and equipped apparel.
    */
-  getSpecial(name: SpecialName): Special {
-    const special = this.data.data.specials[name];
-    if (special === undefined)
-      throw new Error("The SPECIALs have not been calculated yet!");
-
-    return special;
-  }
-
-  /**
-   * Get a Skill from this actor.
-   * @throws If the Skills have not been calculated yet.
-   */
-  getSkill(name: SkillName): Skill {
-    const skill = this.data.data.skills[name];
-    if (skill === undefined)
-      throw new Error("The Skills have not been calculated yet!");
-
-    return skill;
+  get equippedItems(): WvItem[] {
+    return [
+      this.readiedItem,
+      ...this.weaponSlotWeapons,
+      ...this.equippedApparel
+    ].filter((item): item is WvItem => item instanceof WvItem);
   }
 
   /** Get the weapon of the given weapon slot. */
@@ -244,7 +240,7 @@ export default class WvActor extends Actor {
 
     if (this.actionPoints.value < apCost) {
       throw new SystemRulesError(
-        "Not enough action points!",
+        "Not enough action points.",
         "wv.system.messages.notEnoughAp"
       );
     }
@@ -272,7 +268,7 @@ export default class WvActor extends Actor {
   async slotWeapon(id: string | null, slot: 1 | 2): Promise<void> {
     if (this.inCombat)
       throw new SystemRulesError(
-        "Can not slot a weapon in combat!",
+        "Can not slot a weapon in combat.",
         "wv.system.messages.canNotDoInCombat"
       );
 
@@ -303,7 +299,7 @@ export default class WvActor extends Actor {
   async equipApparel(id: string | null): Promise<void> {
     if (this.inCombat)
       throw new SystemRulesError(
-        "Can not slot a weapon in combat!",
+        "Can not equip an apparel in combat.",
         "wv.system.messages.canNotDoInCombat"
       );
 
@@ -312,10 +308,10 @@ export default class WvActor extends Actor {
     const item = this.items.get(id);
     if (!(item instanceof Apparel)) return;
 
-    const slot = item.systemData.slot;
+    const slot = item.data.data.slot;
     if (this.blockedApparelSlots.includes(slot))
       throw new SystemRulesError(
-        "The apparel's slot is blocked by another apparel!",
+        "The apparel's slot is blocked by another apparel.",
         "wv.system.messages.blockedByAnotherApparel"
       );
 
@@ -403,9 +399,12 @@ export default class WvActor extends Actor {
     };
 
     new Roll(
-      Formulator.special(this.getSpecial(name).tempTotal)
+      Formulator.special(this.data.data.specials[name].tempTotal)
         .modify(options?.modifier)
-        .criticals(this.data.data.secondary.criticals)
+        .criticals({
+          success: this.data.data.secondary.criticals.success.total,
+          failure: this.data.data.secondary.criticals.failure.total
+        })
         .toString()
     )
       .roll({ async: true })
@@ -427,9 +426,12 @@ export default class WvActor extends Actor {
     };
 
     new Roll(
-      Formulator.skill(this.getSkill(name).total)
+      Formulator.skill(this.data.data.skills[name].total)
         .modify(options?.modifier)
-        .criticals(this.data.data.secondary.criticals)
+        .criticals({
+          success: this.data.data.secondary.criticals.success.total,
+          failure: this.data.data.secondary.criticals.failure.total
+        })
         .toString()
     )
       .roll({ async: true })
@@ -441,147 +443,47 @@ export default class WvActor extends Actor {
   }
 
   override prepareBaseData(): void {
-    const data = this.data.data;
+    this.data.data = new CharacterDataPropertiesData(this.data.data);
 
-    // Compute the level -------------------------------------------------------
-    data.leveling.level = Math.floor(
-      (1 + Math.sqrt(data.leveling.experience / 12.5 + 1)) / 2
+    this.data.data.specials.applyRadiationSickness(
+      this.data.data.vitals.radiationSicknessLevel
     );
-
-    // Compute the maximum skill points to spend -------------------------------
-    data.leveling.maxSkillPoints = data.leveling.levelIntelligences.reduce(
-      (skillPoints, intelligence) =>
-        skillPoints + Math.floor(intelligence / 2) + 10,
-      0
-    );
-
-    // Compute the SPECIALs ----------------------------------------------------
-    data.specials = new Specials();
-    for (const special of SpecialNames) {
-      const points = data.leveling.specialPoints[special];
-      data.specials[special] = new Special(points, points, points);
-    }
-
-    // Modify SPECIALS from Radiation sickness ---------------------------------
-    applyRadiationSickness(this);
   }
 
   override prepareEmbeddedDocuments(): void {
     super.prepareEmbeddedDocuments();
-    this.applicableRuleElements
-      .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onAfterSpecial());
+    this.applyRuleElementsForHook("afterSpecial");
   }
 
   override prepareDerivedData(): void {
-    const data = this.data.data;
+    this.data.data.vitals.applySpecials(this.data.data.specials);
+    this.data.data.vitals.applyLevel(this.data.data.leveling.level);
 
-    // Compute the maximum hit points ------------------------------------------
-    data.vitals.hitPoints.max = this.getSpecial("endurance").permTotal + 10;
+    this.data.data.secondary.applySpecials(this.data.data.specials);
 
-    // Compute the maximum healing rate ----------------------------------------
-    const endurance = this.getSpecial("endurance");
-    if (endurance.tempTotal >= 8) {
-      data.vitals.healingRate = 3;
-    } else if (endurance.tempTotal >= 4) {
-      data.vitals.healingRate = 2;
-    } else {
-      data.vitals.healingRate = 1;
-    }
-
-    // Compute the maximum action points ---------------------------------------
-    data.vitals.actionPoints.max =
-      Math.floor(this.getSpecial("agility").tempTotal / 2) + 10;
-
-    // Compute the maximum strain ----------------------------------------------
-    const level = data.leveling.level;
-    if (level === undefined)
-      throw new Error("The level should be computed before computing strain.");
-    data.vitals.strain.max = 20 + Math.floor(level / 5) * 5;
-
-    // Compute the maximum insanity --------------------------------------------
-    data.vitals.insanity.max =
-      Math.floor(this.getSpecial("intelligence").tempTotal / 2) + 5;
-
-    // Init the secondary statistics -------------------------------------------
-    data.secondary = new SecondaryStatistics();
-
-    // Compute the critical values ---------------------------------------------
-    const luck = this.getSpecial("luck").tempTotal;
-    data.secondary.criticals = new Criticals(
-      Math.max(1, luck),
-      Math.min(100, 90 + luck)
+    this.data.data.skills.setBaseValues(
+      this.data.data.specials,
+      this.data.data.magic.thaumSpecial,
+      this.data.data.leveling
     );
 
-    // Compute the maximum carry weight ----------------------------------------
-    data.secondary.maxCarryWeight =
-      this.getSpecial("strength").tempTotal * 5 + 10;
+    this.applyRuleElementsForHook("afterSkills");
 
-    // Compute the skills ------------------------------------------------------
-    data.skills = new Skills();
-    let skill: SkillName;
-    for (skill in CONSTANTS.skillSpecials) {
-      data.skills[skill] = this.computeBaseSkill(skill);
-    }
-    data.skills["thaumaturgy"] = this.computeBaseSkill("thaumaturgy");
+    this.data.data.equipment.applyEquippedApparel(this.equippedApparel);
 
-    this.applicableRuleElements
-      .sort((a, b) => a.priority - b.priority)
-      .forEach((rule) => rule.onAfterSkills());
-
-    // Calculate data derived from equipment -----------------------------------
-    data.equipment.damageThreshold = this.equippedApparel.reduce(
-      (dt, apparel) => {
-        dt += apparel.systemData.damageThreshold ?? 0;
-        return dt;
-      },
-      0
+    // TODO: hit chance, combat trick mods
+    this.data.data.secondary.applySizeCategory(
+      this.data.data.background.size.total
+    );
+    this.data.data.vitals.applySizeCategory(
+      this.data.data.background.size.total
     );
 
-    data.equipment.quickSlots.max = this.equippedApparel.reduce(
-      (qs, apparel) => {
-        qs += apparel.systemData.quickSlots ?? 0;
-        return qs;
-      },
-      0
-    );
-
-    // Modify values based on the size -----------------------------------------
-    // TODO: hit chance, reach, combat trick mods
-    switch (data.background.size) {
-      case 4:
-        data.vitals.hitPoints.max += 4;
-        data.secondary.maxCarryWeight += 60;
-        break;
-      case 3:
-        data.vitals.hitPoints.max += 2;
-        data.secondary.maxCarryWeight += 40;
-        break;
-      case 2:
-        data.vitals.hitPoints.max += 1;
-        data.secondary.maxCarryWeight += 10;
-        break;
-      case 1:
-        data.secondary.maxCarryWeight += 5;
-        break;
-      case -1:
-        data.secondary.maxCarryWeight -= 5;
-        break;
-      case -2:
-        data.vitals.hitPoints.max -= 1;
-        data.secondary.maxCarryWeight -= 10;
-        break;
-      case -3:
-        data.vitals.hitPoints.max -= 2;
-        data.secondary.maxCarryWeight -= 40;
-        break;
-      case -4:
-        data.vitals.hitPoints.max -= 4;
-        data.secondary.maxCarryWeight -= 60;
-        break;
-      case 0:
-      default:
-    }
+    this.applyRuleElementsForHook("afterComputation");
+    this.items.forEach((item) => {
+      item.finalizeData();
+      item.apps && item.render();
+    });
   }
 
   protected override async _preCreate(
@@ -599,6 +501,7 @@ export default class WvActor extends Actor {
     user: BaseUser
   ): Promise<void> {
     super._preUpdate(changed, options, user);
+    await this.checkPT(changed);
     this.validateSystemData(
       foundry.utils.mergeObject(this.data._source.data, changed.data ?? {}, {
         recursive: options.recursive,
@@ -607,67 +510,74 @@ export default class WvActor extends Actor {
     );
   }
 
-  /** Get RuleElements that apply to this Actor. */
-  protected get applicableRuleElements(): RuleElement[] {
-    const rules: RuleElement[] = [];
-
-    this.itemTypes.effect.forEach((effect) => {
-      effect.data.data.rules.elements.forEach((rule) => {
-        if (rule.target === "actor") rules.push(rule);
-      });
-    });
-
-    this.equippedApparel.forEach((apparel) => {
-      apparel.data.data.rules.elements.forEach((rule) => {
-        if (rule.target === "actor") rules.push(rule);
-      });
-    });
-
-    return rules;
-  }
-
-  /**
-   * Compute the initial Skill for the given skill name. This includes the
-   * SPECIAL derived starting value and the final value only increased by skill
-   * point ranks.
-   * @param skill - the name of the skill
-   */
-  protected computeBaseSkill(skill: SkillName): Skill {
-    const baseSkill =
-      this.getSpecial(
-        skill === "thaumaturgy"
-          ? this.data.data.magic.thaumSpecial
-          : CONSTANTS.skillSpecials[skill]
-      ).permTotal *
-        2 +
-      Math.floor(this.getSpecial("luck").permTotal / 2);
-    return new Skill(
-      baseSkill,
-      baseSkill + this.data.data.leveling.skillRanks[skill]
-    );
-  }
-
   /** Validate passed source system data. */
   protected validateSystemData(data: unknown): void {
     validateSystemData(data, getGame().wv.validators.actor[this.data.type]);
   }
-}
 
-/**
- * Options for modifying actor rolls.
- */
-interface RollOptions {
-  /**
-   * An ad-hoc modifier to roll with. When undefined, no modifier is applied.
-   * @defaultValue `undefined`
-   */
-  modifier?: number;
+  /** Apply the RuleElements of this Actor's Items to itself and its Items. */
+  protected applyRuleElementsForHook(hook: RuleElementHook): void {
+    const equippedItemIds = this.equippedItems
+      .map((item) => item.id)
+      .filter((id): id is string => typeof id === "string");
 
-  /**
-   * Whether to whisper the roll to GMs.
-   * @defaultValue `false`
-   */
-  whisperToGms?: boolean;
+    this.items
+      .map((item) => item.getRuleElementsForHook(hook))
+      .deepFlatten()
+      .sort(ruleElementSort)
+      .forEach((rule) => {
+        if (equippedItemIds.includes(rule.item.id ?? ""))
+          this.applyRuleElement(rule, { metConditions: ["whenEquipped"] });
+        else this.applyRuleElement(rule);
+      });
+  }
+
+  /** A function to apply a RuleElement to this actor and its items */
+  protected applyRuleElement(
+    rule: RuleElement,
+    options: { metConditions: RuleElementCondition[] } = { metConditions: [] }
+  ): void {
+    rule.apply([this, ...this.items], options);
+  }
+
+  private async checkPT(changed: DeepPartial<ActorDataConstructorData>) {
+    const hitPoints = changed.data?.vitals?.hitPoints?.value;
+    if (hitPoints) {
+      const newPT = getPainThreshold(hitPoints);
+      const oldPT = this.data.data.vitals.painThreshold;
+      if (newPT !== oldPT && newPT > 0) {
+        ui.notifications?.info("Pain threshold reached");
+
+        // Create chat message to post the pain threshold
+        const flags: Required<PainThresholdFlags> = {
+          type: "painThreshold",
+          newPainThreshold: newPT,
+          oldPainThreshold: oldPT
+        };
+        const allUsers: User[] = getGame().users?.contents ?? [];
+        const authorisedUsers: string[] = allUsers.flatMap((user) => {
+          const id = user.data._id;
+          if (id !== null) {
+            const userLevel = this.getUserLevel(user);
+            if (
+              (userLevel !== null &&
+                userLevel >= CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER) ||
+              user.isGM
+            ) {
+              return [id];
+            }
+          }
+          return [];
+        });
+        const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
+          speaker: ChatMessage.getSpeaker({ actor: this }),
+          flags: { [CONSTANTS.systemId]: flags },
+          whisper: authorisedUsers
+        };
+        await ChatMessage.create(msgOptions);
+      }
+    }
+  }
 }
 
 /** The type of the update data for WvActors. */

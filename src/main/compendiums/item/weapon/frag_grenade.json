@@ -10,31 +10,94 @@
       "sources": {
         "Throw": {
           "damage": {
-            "base": 3,
-            "dice": 3
+            "base": {
+              "source": 3
+            },
+            "dice": {
+              "source": 3
+            }
           },
-          "ap": 7,
-          "rounds": 1,
-          "splash": "small"
+          "ap": {
+            "source": 7
+          },
+          "rounds": {
+            "source": 1
+          },
+          "splash": "small",
+          "tags": ["thrown"]
         }
       }
     },
     "ranges": {
       "short": {
         "distance": {
-          "base": 10,
-          "special": "strength",
-          "multiplier": 2
+          "base": {
+            "source": 10
+          },
+          "multiplier": {
+            "source": 2
+          },
+          "special": "strength"
         },
-        "modifier": 0
+        "modifier": {
+          "source": 0
+        },
+        "tags": ["thrown"]
+      },
+      "medium": {
+        "distance": {
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
+      },
+      "long": {
+        "distance": {
+          "base": {
+            "source": 0
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       }
     },
     "rarity": "uncommon",
+    "reload": {
+      "ap": {
+        "source": 0
+      },
+      "caliber": "308cal",
+      "containerType": "magazine",
+      "size": {
+        "source": 0
+      }
+    },
     "holdout": true,
     "skill": "explosives",
-    "strengthRequirement": 2,
-    "value": 12,
-    "weight": 0.2,
+    "strengthRequirement": {
+      "source": 2
+    },
+    "value": {
+      "source": 12
+    },
+    "weight": {
+      "source": 0.2
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

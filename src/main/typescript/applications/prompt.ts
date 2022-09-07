@@ -23,6 +23,26 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
   }
 
   /**
+   * Get a boolean by prompting the user.
+   * @param spec - the input specification for the Prompt
+   * @param options - additional options for the Prompt
+   * @returns the boolean if resolved or an error message if rejected
+   */
+  static async getBoolean(
+    spec: Omit<CheckboxInputSpec, "type">,
+    options?: Partial<ApplicationOptions>
+  ): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      new this(
+        { value: { type: "checkbox", ...spec } },
+        (data) => resolve(data["value"]),
+        reject,
+        options
+      ).render(true);
+    });
+  }
+
+  /**
    * Get a number by prompting the user.
    * @param spec - the input specification for the Prompt
    * @param options - additional options for the Prompt
@@ -63,11 +83,13 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
   }
 
   static override get defaultOptions(): ApplicationOptions {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: [CONSTANTS.systemId, "prompt"],
-      template: `${CONSTANTS.systemPath}/handlebars/prompt.hbs`,
-      title: getGame().i18n.localize("wv.system.prompt.defaults.title")
-    } as typeof ActorSheet["defaultOptions"]);
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes.push(...[CONSTANTS.systemId, "prompt"]);
+    defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/prompt.hbs`;
+    defaultOptions.title = getGame().i18n.localize(
+      "wv.system.prompt.defaults.title"
+    );
+    return defaultOptions;
   }
 
   /**
@@ -160,24 +182,55 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
 
     Object.keys(this.specs).forEach((key: keyof Specs) => {
       const inputValue = data.get(key as string);
-      if (typeof inputValue !== "string")
-        throw Error(`The value of input ${key} is missing!`);
+      if (this.specs[key].type !== "checkbox" && typeof inputValue !== "string")
+        throw Error(`The value of input ${String(key)} is missing.`);
 
       switch (this.specs[key]["type"]) {
         case "number": {
-          const value = parseInt(inputValue);
-          if (isNaN(value))
-            throw Error(`The input of ${key} was not a number!`);
-          values[key] = value as InputSpecReturnType<Specs[typeof key]>;
+          values[key] = this.convertNumberValue(key, inputValue);
+          break;
+        }
+        case "checkbox": {
+          values[key] = this.convertCheckboxValue(key, inputValue);
           break;
         }
         default:
-          values[key] = inputValue as InputSpecReturnType<Specs[typeof key]>;
+          values[key] = this.convertStringValue(key, inputValue);
       }
     });
 
     await this.close({ runCallback: false });
     this.onSubmitCallback(values as InputSpecsReturnType<Specs>);
+  }
+
+  protected convertCheckboxValue(
+    key: keyof Specs,
+    inputValue: FormDataEntryValue | null
+  ): InputSpecReturnType<Specs[typeof key]> {
+    return (inputValue === "on") as InputSpecReturnType<Specs[typeof key]>;
+  }
+
+  protected convertNumberValue(
+    key: keyof Specs,
+    inputValue: FormDataEntryValue | null
+  ): InputSpecReturnType<Specs[typeof key]> {
+    if (typeof inputValue !== "string")
+      throw Error(`The value of input ${String(key)} is missing.`);
+
+    const value = parseInt(inputValue);
+    if (isNaN(value))
+      throw Error(`The input of ${String(key)} was not a number.`);
+    return value as InputSpecReturnType<Specs[typeof key]>;
+  }
+
+  protected convertStringValue(
+    key: keyof Specs,
+    inputValue: FormDataEntryValue | null
+  ): InputSpecReturnType<Specs[typeof key]> {
+    if (typeof inputValue !== "string")
+      throw Error(`The value of input ${String(key)} is missing.`);
+
+    return inputValue as InputSpecReturnType<Specs[typeof key]>;
   }
 }
 
@@ -201,7 +254,7 @@ type RenderSpec<Spec extends InputSpec> = Spec & {
 export type InputSpecs = Record<string, InputSpec>;
 
 /** A single input specification for a Prompt */
-export type InputSpec = NumberInputSpec | TextInputSpec;
+export type InputSpec = CheckboxInputSpec | NumberInputSpec | TextInputSpec;
 
 /** A common input specification for a Prompt */
 export interface CommonInputSpec {
@@ -212,7 +265,7 @@ export interface CommonInputSpec {
   type: string;
 
   /** The initial value of the input */
-  value?: string | number | null | undefined;
+  value?: string | number | boolean | null | undefined;
 }
 
 /** A number input specification for a Prompt  */
@@ -228,6 +281,12 @@ export interface NumberInputSpec extends CommonInputSpec {
   value?: number | null | undefined;
 }
 
+export interface CheckboxInputSpec extends CommonInputSpec {
+  type: "checkbox";
+
+  value?: boolean | null | undefined;
+}
+
 /** A text input specification for a Prompt  */
 export interface TextInputSpec extends CommonInputSpec {
   type: "text";
@@ -240,7 +299,11 @@ export type InputSpecsReturnType<Specs extends InputSpecs> = {
 
 /** A type that maps an InputSpec to its corresponding return type */
 export type InputSpecReturnType<Spec extends InputSpec> =
-  Spec["type"] extends "number" ? number : string;
+  Spec["type"] extends "number"
+    ? number
+    : Spec["type"] extends "checkbox"
+    ? boolean
+    : string;
 
 /**
  * A type for the Callback of the Prompt Application.

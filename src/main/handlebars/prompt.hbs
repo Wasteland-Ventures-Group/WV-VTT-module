@@ -1,12 +1,28 @@
 <form>
-  {{#each inputs as |input|}}
-    <label class="contained-target-inline">
-      {{input.label}}
-      <input required name="{{@key}}" type="{{input.type}}" value="{{input.value}}"
-        {{~#if class}} class="{{class}}"{{/if~}}
-        {{~#if input.max includeZero=true}} max="{{input.max}}"{{/if~}}
-        {{~#if input.min includeZero=true}} min="{{input.min}}"{{/if}} />
-    </label>
-  {{/each}}
+  {{~#each inputs as |input|~}}
+    {{~#if (eq input.type "checkbox")~}}
+      <label class="contained-target-inline flex-center">
+        {{input.label}}
+        <input name="{{@key}}" type="checkbox" {{checked input.value}}
+          {{~#if class}} class="{{class}}"{{/if}} />
+      </label>
+    {{~/if~}}
+    {{~#if (eq input.type "number")~}}
+      <label class="contained-target-inline">
+        {{input.label}}
+        <input required name="{{@key}}" type="number" value="{{input.value}}"
+          {{~#if class}} class="{{class}}"{{/if~}}
+          {{~#if input.max includeZero=true}} max="{{input.max}}"{{/if~}}
+          {{~#if input.min includeZero=true}} min="{{input.min}}"{{/if}} />
+      </label>
+    {{~/if~}}
+    {{~#if (eq input.type "text")~}}
+      <label class="contained-target-inline">
+        {{input.label}}
+        <input required name="{{@key}}" type="text" value="{{input.value}}"
+          {{~#if class}} class="{{class}}"{{/if}} />
+      </label>
+    {{~/if~}}
+  {{~/each~}}
   <button>{{localize "wv.system.actions.submit"}}</button>
 </form>

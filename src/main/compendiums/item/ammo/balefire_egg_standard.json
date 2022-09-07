@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000065",
+  "name": "Balefire Egg",
+  "type": "ammo",
+  "data": {
+    "name": "Balefire Egg",
+    "description": "",
+    "notes": "Limited availability",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "exotic",
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 1,
+    "caliber": "balefireEgg",
+    "type": "standard"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,22 +1,19 @@
-import { CONSTANTS } from "../constants.js";
-import { LOG } from "../systemLogger.js";
-import { isLastMigrationOlderThan } from "./world.js";
+import { CONSTANTS, SpecialName, SpecialNames } from "../constants.js";
+import SystemLogger, { LOG } from "../systemLogger.js";
 
-export default async function migrateActors(
-  currentVersion: string
-): Promise<void> {
+export default function migrateActors(currentVersion: string): void {
   if (!(game instanceof Game)) {
-    LOG.error("Game was not yet initialized!");
+    LOG.error("Game was not yet initialized.");
     return;
   }
 
   if (!game.actors) {
-    LOG.error("Actors was not yet defined!");
+    LOG.error("Actors was not yet defined.");
     return;
   }
 
   if (!game.scenes) {
-    LOG.error("Scenes was not yet defined!");
+    LOG.error("Scenes was not yet defined.");
     return;
   }
 
@@ -39,103 +36,115 @@ async function migrateActor(
   currentVersion: string
 ): Promise<void> {
   try {
-    LOG.info(`Collecting update data for Actor [${actor.id}] "${actor.name}"`);
-    const updateData = migrateActorData(actor.toObject());
+    LOG.info(
+      `Collecting update data for Actor ${SystemLogger.getActorIdent(actor)}`
+    );
+    const updateData = migrateActorData(actor);
     if (!foundry.utils.isObjectEmpty(updateData)) {
-      LOG.info(`Migrating Actor [${actor.id}] "${actor.name}"`);
-      updateData[`flags.${CONSTANTS.systemId}.lastMigrationVersion`] =
-        currentVersion;
+      LOG.info(
+        `Migrating Actor ${SystemLogger.getActorIdent(actor)} with`,
+        updateData
+      );
       await actor.update(updateData, { enforceTypes: false });
+      await actor.setFlag(
+        CONSTANTS.systemId,
+        "lastMigrationVersion",
+        currentVersion
+      );
     }
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    LOG.error(`Failed migration for Actor [${actor.id}]: ${message}`);
+    LOG.error(
+      `Failed migration for Actor ${SystemLogger.getActorIdent(actor)}.`,
+      err
+    );
   }
 }
 
-function migrateActorData(oldActorData: {
-  type: string;
-  data: object;
-}): Record<string, unknown> {
+function migrateActorData(
+  actor: foundry.documents.BaseActor
+): Record<string, unknown> {
   const updateData = {};
 
-  migrateTo_0_2_0(oldActorData, updateData);
-  migrateTo_0_10_0(oldActorData, updateData);
+  migrateVitalsToResources(actor, updateData);
+  migratePlayerCharacterToCharacter(actor, updateData);
+  removeHistory(actor, updateData);
+  migrateSpecials(actor, updateData);
+  migrateToCompositeNumbers(actor, updateData);
+  migrateRace(actor, updateData);
 
   return updateData;
 }
 
-interface ActorPre_0_2_0 {
-  vitals?: {
-    actionPoints?: number;
-    hitPoints?: number;
-    insanity?: number;
-    strain?: number;
-  };
-}
-
-function migrateTo_0_2_0(
-  oldActorData: { data: ActorPre_0_2_0 },
+function migrateVitalsToResources(
+  actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ): void {
-  if (!isLastMigrationOlderThan("0.2.0")) return;
-
-  LOG.info(`Migrating to 0.2.0`);
-
-  const oldVitals = oldActorData.data.vitals;
-  if (typeof oldVitals?.actionPoints === "number") {
-    updateData["data.vitals.actionPoints.value"] = oldVitals.actionPoints;
-  }
-  if (typeof oldVitals?.hitPoints === "number") {
-    updateData["data.vitals.hitPoints.value"] = oldVitals.hitPoints;
-  }
-  if (typeof oldVitals?.insanity === "number") {
-    updateData["data.vitals.insanity.value"] = oldVitals.insanity;
-  }
-  if (typeof oldVitals?.strain === "number") {
-    updateData["data.vitals.strain.value"] = oldVitals.strain;
-  }
+  const vitals = actor.data._source.data.vitals;
+  if (typeof vitals?.actionPoints === "number")
+    updateData["data.vitals.actionPoints.value"] = vitals.actionPoints;
+  if (typeof vitals?.hitPoints === "number")
+    updateData["data.vitals.hitPoints.value"] = vitals.hitPoints;
+  if (typeof vitals?.insanity === "number")
+    updateData["data.vitals.insanity.value"] = vitals.insanity;
+  if (typeof vitals?.strain === "number")
+    updateData["data.vitals.strain.value"] = vitals.strain;
 }
 
-interface ActorPre_0_10_0 {
-  specials?: {
-    strength?: number;
-    perception?: number;
-    endurance?: number;
-    charisma?: number;
-    intelligence?: number;
-    agility?: number;
-    luck?: number;
-  };
-}
-
-function migrateTo_0_10_0(
-  oldActorData: { type: string; data: ActorPre_0_10_0 },
+function migratePlayerCharacterToCharacter(
+  actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ): void {
-  if (!isLastMigrationOlderThan("0.10.0")) return;
+  // @ts-expect-error This will always error, since it is no longer a valid type
+  if (actor.type === "playerCharacter") {
+    updateData["type"] = "character";
+  }
+}
 
-  LOG.info(`Migrating to 0.10.0`);
+function removeHistory(
+  actor: foundry.documents.BaseActor,
+  updateData: Record<string, unknown>
+): void {
+  if ("history" in actor.data._source.data.background)
+    updateData["data.background.-=history"] = null;
+}
 
-  if (oldActorData.type === "playerCharacter") updateData["type"] = "character";
+function migrateSpecials(
+  actor: foundry.documents.BaseActor,
+  updateData: Record<string, unknown>
+): void {
+  const sourceData = actor.data._source.data;
+  if (!("specials" in sourceData)) return;
 
-  updateData["data.background.-=history"] = null;
+  const specials = (sourceData as { specials: Record<SpecialName, number> })
+    .specials;
 
-  const oldSpecial = oldActorData.data.specials;
-  for (const special of [
-    "strength",
-    "perception",
-    "endurance",
-    "charisma",
-    "intelligence",
-    "agility",
-    "luck"
-  ] as const) {
-    if (typeof oldSpecial?.[special] === "number") {
-      updateData[`data.leveling.specialPoints.${special}`] =
-        oldSpecial[special];
-      updateData[`data.specials.-=${special}`] = null;
+  for (const special of SpecialNames) {
+    if (typeof specials?.[special] === "number") {
+      updateData[`data.leveling.specialPoints.${special}`] = specials[special];
     }
   }
+
   updateData["data.-=specials"] = null;
+}
+
+function migrateToCompositeNumbers(
+  actor: foundry.documents.BaseActor,
+  updateData: Record<string, unknown>
+) {
+  const background = actor.data._source.data.background;
+  if (typeof background.size === "number")
+    updateData["data.background.size.source"] = background.size;
+}
+
+function migrateRace(
+  actor: foundry.documents.BaseActor,
+  updateData: Record<string, unknown>
+) {
+  const background = actor.data._source.data.background as unknown as {
+    race: string;
+  };
+  if (typeof background.race === "string") {
+    updateData["data.background.raceName"] = background.race;
+    updateData["data.background.-=race"] = null;
+  }
 }

@@ -1,31 +1,38 @@
 import { promises as fs } from "fs";
-import { COMP_AMMO_JSON_SCHEMA } from "../src/main/typescript/data/item/ammo/source.js";
-import { COMP_APPAREL_JSON_SCHEMA } from "../src/main/typescript/data/item/apparel/source.js";
-import { COMP_WEAPON_JSON_SCHEMA } from "../src/main/typescript/data/item/weapon/source.js";
 
 // The paths here are relative to the project root
 const outputBasePath = "./src/main/schemas";
 const itemOutputBasePath = `${outputBasePath}/item`;
 
-const schemaConfigs: SchemaConfig[] = [
-  {
-    fileName: "ammo",
-    outputBasePath: itemOutputBasePath,
-    schema: COMP_AMMO_JSON_SCHEMA
-  },
-  {
-    fileName: "apparel",
-    outputBasePath: itemOutputBasePath,
-    schema: COMP_APPAREL_JSON_SCHEMA
-  },
-  {
-    fileName: "weapon",
-    outputBasePath: itemOutputBasePath,
-    schema: COMP_WEAPON_JSON_SCHEMA
-  }
-];
-
 export default async function compendiumSchemasTask(): Promise<void[]> {
+  const schemaConfigs: SchemaConfig[] = [
+    {
+      fileName: "ammo",
+      outputBasePath: itemOutputBasePath,
+      schema: (await import("../src/main/typescript/data/item/ammo/source.js"))
+        .COMP_AMMO_JSON_SCHEMA
+    },
+    {
+      fileName: "magic",
+      outputBasePath: itemOutputBasePath,
+      schema: (await import("../src/main/typescript/data/item/magic/source.js"))
+        .COMP_MAGIC_JSON_SCHEMA
+    },
+    {
+      fileName: "apparel",
+      outputBasePath: itemOutputBasePath,
+      schema: (
+        await import("../src/main/typescript/data/item/apparel/source.js")
+      ).COMP_APPAREL_JSON_SCHEMA
+    },
+    {
+      fileName: "weapon",
+      outputBasePath: itemOutputBasePath,
+      schema: (
+        await import("../src/main/typescript/data/item/weapon/source.js")
+      ).COMP_WEAPON_JSON_SCHEMA
+    }
+  ];
   return Promise.all(schemaConfigs.map((config) => createSchema(config)));
 }
 compendiumSchemasTask.description =

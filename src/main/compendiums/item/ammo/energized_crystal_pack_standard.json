@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000043",
+  "name": "Energized Crystal Pack (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": "Energized Crystal Pack (Standard)",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "uncommon",
+    "value": {
+      "source": 0.4
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 10,
+    "caliber": "energizedCrystalPack",
+    "type": "standard"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

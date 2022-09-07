@@ -1,4 +1,5 @@
 import { TYPES } from "../constants.js";
+import { EffectDataPropertiesData } from "../data/item/effect/properties.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent an arbitrary effect, using RuleElements. */
@@ -13,4 +14,15 @@ export default class Effect extends WvItem {
 
     super(data, context);
   }
+
+  override prepareBaseData(): void {
+    this.data.data = new EffectDataPropertiesData(this.data.data, this);
+  }
+}
+
+export default interface Effect {
+  data: foundry.data.ItemData & {
+    type: typeof TYPES.ITEM.EFFECT;
+    _source: { type: typeof TYPES.ITEM.EFFECT };
+  };
 }

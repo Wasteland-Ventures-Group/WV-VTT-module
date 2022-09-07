@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000047",
+  "name": "Flamer Fuel (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": "Flamer Fuel (Standard)",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "common",
+    "value": {
+      "source": 0.2
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 10,
+    "caliber": "flamerFuel",
+    "type": "standard"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

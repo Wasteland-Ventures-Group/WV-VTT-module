@@ -10,39 +10,92 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 2,
-            "dice": 2
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 2
+            }
           },
-          "ap": 5,
-          "rounds": 1
+          "ap": {
+            "source": 5
+          },
+          "rounds": {
+            "source": 1
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 16,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 16
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 32,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 32
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 48,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 48
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "exotic",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "cloud",
       "containerType": "magazine",
-      "size": 4
+      "size": {
+        "source": 4
+      }
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 2,
-    "value": 9999,
-    "weight": 1,
+    "strengthRequirement": {
+      "source": 2
+    },
+    "value": {
+      "source": 9999
+    },
+    "weight": {
+      "source": 1
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

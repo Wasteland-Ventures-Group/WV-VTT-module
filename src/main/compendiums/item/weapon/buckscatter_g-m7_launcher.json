@@ -10,40 +10,93 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 4,
-            "dice": 2
+            "base": {
+              "source": 4
+            },
+            "dice": {
+              "source": 2
+            }
           },
-          "ap": 6,
-          "rounds": 1,
-          "splash": "small"
+          "ap": {
+            "source": 6
+          },
+          "rounds": {
+            "source": 1
+          },
+          "splash": "small",
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 20,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 20
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 40,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 40
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 60,
-        "modifier": -40
+        "distance": {
+          "base": {
+            "source": 60
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -40
+        },
+        "tags": []
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 5,
+      "ap": {
+        "source": 5
+      },
       "caliber": "rifleGrenade",
       "containerType": "internal",
-      "size": 4
+      "size": {
+        "source": 4
+      }
     },
     "skill": "explosives",
-    "strengthRequirement": 6,
-    "value": 500,
-    "weight": 6,
+    "strengthRequirement": {
+      "source": 6
+    },
+    "value": {
+      "source": 500
+    },
+    "weight": {
+      "source": 6
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

@@ -3,23 +3,7 @@
 .wasteland-ventures.document-sheet
 
   .sheet-header
-
-    .document-img
-      align-self: start
-      margin:
-        bottom: constants.$spacing-distance
-        right: constants.$spacing-distance
-      max-height: 200px
-
-    .document-info
-      align-self: start
-
-      .document-name > input
-        height: unset
-        width: 100%
-
-  .sheet-header + *
-    margin-top: constants.$spacing-distance
+    margin-bottom: constants.$spacing-distance
 
   .resource-block
     box-sizing: content-box
@@ -63,6 +47,24 @@
     display: flex
     justify-content: space-between
 
+  th,tr
+
+    button,img,input,select
+      box-sizing: content-box
+      max-height: 1em
+
+    button
+      line-height: unset
+      padding: constants.$block-padding
+
+    img
+      max-width: 1em
+
+    select
+      padding:
+        bottom: 1px
+        top: 1px
+
   .fvtt-item-list
 
     .fvtt-item
@@ -71,32 +73,3 @@
         float: left
         margin-right: constants.$spacing-distance
         max-width: constants.$icon-size-medium
-
-  .fvtt-item-table
-    margin: 0
-
-    thead
-      vertical-align: baseline
-
-    th,td
-      &:not(:last-child)
-        padding-right: constants.$spacing-distance
-
-    .fvtt-item
-
-      button,img,input
-        box-sizing: content-box
-        max-height: 1em
-        max-width: 1em
-
-      button
-        padding: 0
-
-      img
-        vertical-align: middle
-
-      input
-        max-width: unset
-
-      .fvtt-item-controls
-        flex-wrap: nowrap

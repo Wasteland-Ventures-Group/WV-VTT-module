@@ -10,40 +10,95 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 5,
-            "dice": 3
+            "base": {
+              "source": 5
+            },
+            "dice": {
+              "source": 3
+            }
           },
-          "ap": 5,
-          "dtReduction": 1,
-          "rounds": 1
+          "ap": {
+            "source": 5
+          },
+          "dtReduction": {
+            "source": 1
+          },
+          "rounds": {
+            "source": 1
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 40,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 40
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 80,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 80
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 120,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 120
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 4,
+      "ap": {
+        "source": 4
+      },
       "caliber": "energizedCrystalPack",
       "containerType": "magazine",
-      "size": 6
+      "size": {
+        "source": 6
+      }
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 2,
-    "value": 600,
-    "weight": 1,
+    "strengthRequirement": {
+      "source": 2
+    },
+    "value": {
+      "source": 600
+    },
+    "weight": {
+      "source": 1
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

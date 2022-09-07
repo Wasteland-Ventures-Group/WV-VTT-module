@@ -15,9 +15,22 @@
         "fears": "Ängste",
         "gender": "Geschlecht",
         "personality": "Persöhnlichkeit",
+        "sizeCategory": "Größenkategorie",
         "socialContacts": "Soziale Kontakte",
         "specialTalent": "Besonderes Talent",
         "virtue": "Tugend"
+      },
+      "crippledLimbs": {
+        "status": {
+          "torso": "Verkrüppelter Torso",
+          "head": "Verkrüppelter Kopf",
+          "frontLeftLeg": "Verkrüppeltes Bein Vorne Links",
+          "frontRightLeg": "Verkrüppeltes Bein Vorne Rechts",
+          "rearLeftLeg": "Verkrüppeltes Bein Hinten Links",
+          "rearRightLeg": "Verkrüppeltes Bein Hinten Rechts",
+          "leftWing": "Verkrüppelter Flügel Links",
+          "rightWing": "Verkrüppelter Flügel Rechts"
+        }
       },
       "equipment": {
         "ammo": {
@@ -107,6 +120,10 @@
           "singular": "Ausrüstungplatz",
           "plural": "Ausrüstungsplätze",
           "apparelSlot": "Bekleidungsplatz",
+          "blockedSlots": {
+            "singular": "Blockierter Platz",
+            "plural": "Blockierte Plätze"
+          },
           "modSlot": {
             "singular": "Modifikationsplatz",
             "plural": "Modifikationsplätze"
@@ -170,6 +187,13 @@
       "damage": {
         "baseDamage": "Grundschaden",
         "damageDice": "Schadenswürfel",
+        "diceRange": "Stärke-basierter Schadensbereich",
+        "fallOff": {
+          "name": "Schadensabfall",
+          "types": {
+            "shotgun": "Schrotflinte"
+          }
+        },
         "long": "Schaden",
         "short": "DMG",
         "threshold": {
@@ -183,16 +207,66 @@
       },
       "health": {
         "health": "Gesundheit",
+        "hp": "HP",
         "healingRate": "Heilungsrate"
       },
+      "initiative": "Initiative",
+      "insanity": "Wahnsinn",
       "karma": "Karma",
       "leveling": {
         "level": "Level",
         "experience": "Erfahrung"
       },
       "magic": {
+        "potency": "Potenz",
         "magic": "Magie",
-        "strain": "Anstrengung"
+        "strain": "Anstrengung",
+        "strainUse": "Anstrengungskosten",
+        "type": {
+          "singular": "Magieart",
+          "plural": "Magiearten",
+          "names": {
+            "earthPony": "Erdponymagie",
+            "maneuver": "Flugmanöver",
+            "spirit": "Geistmagie",
+            "unicorn": "Einhornmagie"
+          }
+        },
+        "school": {
+          "singular": "Schule",
+          "plural": "Schulen",
+          "names": {
+            "agility": "Geschickmanöver",
+            "charm": "Zweig der Betörung",
+            "conjuration": "Beschwörungsmagie",
+            "dark": "Dunkle Magie",
+            "embers": "Geist der Glut",
+            "endurance": "Ausdauermanöver",
+            "enhancement": "Verbesserungsmagie",
+            "general": "Allgemeinmagie",
+            "illusion": "Illusionsmagie",
+            "incantations": "Inkantationen",
+            "machines": "Geist der Maschinen",
+            "medical": "Medizinsmagie",
+            "might": "Zweig der Macht",
+            "nature": "Geist der Natur",
+            "perception": "Wahrnehmungsmagie",
+            "protective": "Schutzmagie",
+            "serenity": "Geist der inneren Stille",
+            "shadows": "Geist der Schatten",
+            "sight": "Zweig der Sicht",
+            "streams": "Geist der Ströme",
+            "transmutation": "Umwandlungsmagie",
+            "trust": "Geist des Vertrauens",
+            "whispers": "Geist der Geflüster",
+            "wonderboltAndTalon": "Wonderbolt und Talon Manöver"
+          }
+        }
+      },
+      "painThreshold": {
+        "reached": "Schmerzschwelle erreicht",
+        "singular": "Schmerzschwelle",
+        "plural": "Schmerzschwellen"
       },
       "race": {
         "names": {
@@ -232,7 +306,9 @@
         }
       },
       "range": {
-        "distance": "Distanz",
+        "distance": {
+          "name": "Distanz"
+        },
         "plural": "Reichweiten",
         "ranges": {
           "outOfRange": {
@@ -253,6 +329,16 @@
           }
         },
         "singular": "Reichweite"
+      },
+      "resistances": {
+        "poison": {
+          "short": "Gift-Res",
+          "long": "Gift-Resistenz"
+        },
+        "radiation": {
+          "short": "Strahl-Res",
+          "long": "Strahlungsresistenz"
+        }
       },
       "rolls": {
         "results": {
@@ -358,12 +444,21 @@
         "singular": "Effekt",
         "plural": "Effekte"
       },
+      "initialCharacterSetup": {
+        "openButton": "Basischaracteraufbau",
+        "title": "Basischaracteraufbau für {name}",
+        "messages": {
+          "tooFewSpecialPointsSpent": "Zu wenige SPECIAL-Punkte ausgegeben!",
+          "tooManySpecialPointsSpent": "Zu viele SPECIAL-Punkte ausgegeben!"
+        }
+      },
       "item": {
         "singular": "Gegenstand",
         "plural": "Gegenstände"
       },
       "messages": {
-        "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte in der Waffe nicht gefunden werden.",
+        "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte auf der Waffe nicht gefunden werden.",
+        "attackAlreadyExists": "Eine Attacke mit Namen \"{name}\" existiert schon auf der Waffe.",
         "blockedByAnotherApparel": "Der Platz für dieses Kleidungsstück ist von einem Anderen blockiert.",
         "canNotDoInCombat": "Dies kann nicht im Kampf getan werden.",
         "couldNotCreateDocument": "Konnte kein Dokument mit den gegebenen Daten erstellen.",
@@ -385,8 +480,10 @@
         "name": "Name",
         "newName": "{what} (Neu)",
         "notes": "Notizen",
+        "sourceValues": "Grundwerte",
         "speakerAlias": "Sprecheralias",
         "statistics": "Statistiken",
+        "tags": "Tags",
         "toggleCompendiumLink": "Comp.-Verknüpfung",
         "updateFromCompendium": "Aktualisieren"
       },
@@ -398,23 +495,34 @@
       "rolls": {
         "descriptive": "Rolle {what}",
         "imperative": "Rolle",
-        "modifierExplanation": "Strg-Klick um an Spielleiter zu Flüstern"
+        "whisperToGms": "An Spielleiter flüstern?"
       },
       "ruleEngine": {
+        "documentMessages": {
+          "name": "Dokumentenbezogene Meldungen",
+          "relations": {
+            "thisItem": "Dieser Gegenstand",
+            "parentActor": "Elternaktor",
+            "parentOwnedItem": "Gegenstand im besitz des Elternaktors"
+          }
+        },
         "errors": {
           "logical": {
-            "noActor": "Das Ziel is auf \"actor\" gestellt, aber das Item hat keinen Actor.",
-            "notMatchingSelector": "Das Feld \"{path}\" existiert nicht in \"{name}\".",
-            "wrongSelectedType": "Das Feld \"{path}\" in \"{name}\" hat nicht den benötigten Typ \"{type}\".",
+            "notCompositeNumber": "Das Feld \"{path}\" ist keine zusammengesetzte Zahl.",
+            "notMatchingTarget": "Das Feld \"{path}\" existiert nicht.",
+            "wrongDocumentType": "Das Dokument ist nicht vom erwarteten Typ \"{type}\".",
+            "wrongTargetType": "Das Feld \"{path}\" hat nicht den benötigten Typ \"{type}\".",
             "wrongValueType": "Der Wert dieser Regel sollte vom Typ \"{type}\" sein."
           },
           "semantic": {
             "additional": "Das Feld \"{property}\" ist nicht erlaubt an Stelle \"{path}\".",
             "missing": "Das Feld \"{property}\" fehlt an Stelle \"{path}\".",
             "unknown": "Ein unbekannter Fehler is aufgetreten.",
+            "unknownCondition": "Der Typ der Bedingung ist nicht bekannt.",
             "unknownHook": "Der Typ des Hooks ist nicht bekannt.",
             "unknownRuleElement": "Der Typ des Regelelements ist nicht bekannt.",
-            "unknownTarget": "Das Ziel ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
+            "unknownSpecialName": "Der SPECIAL-Name ist nicht bekannt.",
+            "unknownSelector": "Der Selektor ist falsch. Es muss entweder \"item\" oder \"actor\" sein.",
             "wrongType": "Das Feld \"{path}\" hat nicht den Typ \"{type}\"."
           },
           "syntax": "Syntaxfehler: {message}"
@@ -423,29 +531,34 @@
           "singular": "Regelelement",
           "plural": "Regelelemente"
         },
+        "selectors": {
+          "selectedDocuments": "Ausgewählte Dokumente"
+        },
         "warnings": {
-          "changedType": "Der Typ von \"{path}\" in \"{name}\" wurde von \"{original}\" zu \"{new}\" geändert.",
+          "changedType": "Der Typ von \"{path}\" wurde von \"{original}\" zu \"{new}\" geändert.",
           "notSaved": "Die Änderungen wurden wegen Fehlern nicht gespeichert. Du kannst dieses Foundry Fenster schließen und die Fehler später beheben. Die Änderungen gehen verloren, wenn Foundry neu geladen wird."
         }
       },
       "settings": {
-        "enforceApDragDrop": {
+        "alwaysNeverSetting": {
           "choices": {
-            "disabled": "Deaktiviert",
-            "playersAndGameMaster": "Spieler und Spielleiter",
-            "players": "Spieler"
-          },
-          "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit Drag and Drop bewegt werden.",
-          "name": "Erzwinge AP für Drag and Drop Bewegungen"
+            "always": "Immer",
+            "never": "Nie"
+          }
         },
-        "enforceApRuler": {
-          "choices": {
-            "disabled": "Deaktiviert",
-            "playersAndGameMaster": "Spieler und Spielleiter",
-            "players": "Spieler"
+        "movement": {
+          "enforceAndSubtractApForPlayers": {
+            "hint": "Erzwinge AP Kontrollen und ziehe AP für Spielerbewegungen im Kampf ab.",
+            "name": "Spieler Kampfbewegungs-AP"
           },
-          "hint": "Erzwinge AP Kontrollen und ziehe AP von Token Aktoren im Kampf ab, wenn sie mit dem Messwerkzeug bewegt werden.",
-          "name": "Erzwinge AP für Messwerkzeug Bewegungen"
+          "enforceApForGameMasters": {
+            "hint": "Erzwinge AP Kontrollen für deine Spielleiterbewegungen im Kampf. Dies hat nur dann einen Effekt, wenn du Spielleiter bist.",
+            "name": "GM Kampfbewegungs-AP Kontrollen"
+          },
+          "subtractApForGameMasters": {
+            "hint": "Ziehe AP für deine Spielleiterbewegungen im Kampf ab. Dies hat nur dann einen Effekt, wenn du Spielleiter bist.",
+            "name": "GM Kampfbewegungs-AP Abzug"
+          }
         },
         "skillPointsMinBounds": {
           "hint": "Das Minimum für Skillpunkte, die in einen Aktorbogen eingegeben werden können.",
@@ -465,6 +578,10 @@
           "itemSheet": "Gegenstandsbogen",
           "weaponSheet": "Waffenbogen"
         }
+      },
+      "spell": {
+        "singular": "Beschwörung",
+        "plural": "Beschwörungen"
       },
       "thaumSpecial": "SPECIA für Thaumaturgie",
       "values": {

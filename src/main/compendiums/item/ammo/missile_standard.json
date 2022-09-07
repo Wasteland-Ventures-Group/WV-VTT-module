@@ -1,0 +1,27 @@
+{
+  "_id": "WVAmmo0000000062",
+  "name": "Missile (Standard)",
+  "type": "ammo",
+  "data": {
+    "name": "Missile (Standard)",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "rarity": "uncommon",
+    "value": {
+      "source": 50
+    },
+    "weight": {
+      "source": 0
+    },
+    "amount": 1,
+    "caliber": "missile",
+    "type": "standard"
+  },
+  "img": "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "effects": [],
+  "flags": {}
+}

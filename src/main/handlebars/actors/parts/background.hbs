@@ -1,8 +1,8 @@
 <section>
   <label class="contained-target-inline">
     {{~localize "wv.rules.race.singular"~}}
-    <select name="data.background.race">
-      {{selectOptions sheet.background.races selected=data.data.background.race}}
+    <select name="data.background.raceName">
+      {{selectOptions sheet.background.raceNames selected=data.data.background.race.name}}
     </select>
   </label>
   <label class="contained-target-inline">
@@ -23,44 +23,30 @@
   </label>
 </section>
 <section>
-  <label>
-    {{~localize "wv.rules.background.appearance"~}}
-    <textarea name="data.background.appearance">{{data.data.background.appearance}}</textarea>
-  </label>
+  <label>{{localize "wv.rules.background.appearance"}}</label>
+  {{editor target="data.background.appearance" content=data.data.background.appearance owner=owner editable=editable button=true}}
 </section>
 <section>
-  <label>
-    {{~localize "wv.rules.background.cutieMark"~}}
-    <textarea name="data.background.cutieMark">{{data.data.background.cutieMark}}</textarea>
-  </label>
+  <label>{{localize "wv.rules.background.cutieMark"}}</label>
+  {{editor target="data.background.cutieMark" content=data.data.background.cutieMark owner=owner editable=editable button=true}}
 </section>
 <section>
-  <label>
-    {{~localize "wv.rules.background.background"~}}
-    <textarea name="data.background.background">{{data.data.background.background}}</textarea>
-  </label>
+  <label>{{localize "wv.rules.background.background"}}</label>
+  {{editor target="data.background.background" content=data.data.background.background owner=owner editable=editable button=true}}
 </section>
 <section>
-  <label>
-    {{~localize "wv.rules.background.personality"~}}
-    <textarea name="data.background.personality">{{data.data.background.personality}}</textarea>
-  </label>
+  <label>{{localize "wv.rules.background.personality"}}</label>
+  {{editor target="data.background.personality" content=data.data.background.personality owner=owner editable=editable button=true}}
 </section>
 <section>
-  <label>
-    {{~localize "wv.rules.background.fears"~}}
-    <textarea name="data.background.fears">{{data.data.background.fears}}</textarea>
-  </label>
+  <label>{{localize "wv.rules.background.fears"}}</label>
+  {{editor target="data.background.fears" content=data.data.background.fears owner=owner editable=editable button=true}}
 </section>
 <section>
-  <label>
-    {{~localize "wv.rules.background.dreams"~}}
-    <textarea name="data.background.dreams">{{data.data.background.dreams}}</textarea>
-  </label>
+  <label>{{localize "wv.rules.background.dreams"}}</label>
+  {{editor target="data.background.dreams" content=data.data.background.dreams owner=owner editable=editable button=true}}
 </section>
 <section>
-  <label>
-    {{~localize "wv.rules.background.socialContacts"~}}
-    <textarea name="data.background.socialContacts">{{data.data.background.socialContacts}}</textarea>
-  </label>
+  <label>{{localize "wv.rules.background.socialContacts"}}</label>
+  {{editor target="data.background.socialContacts" content=data.data.background.socialContacts owner=owner editable=editable button=true}}
 </section>

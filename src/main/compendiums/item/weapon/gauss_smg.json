@@ -10,49 +10,115 @@
       "sources": {
         "Single": {
           "damage": {
-            "base": 2,
-            "dice": 5
+            "base": {
+              "source": 2
+            },
+            "dice": {
+              "source": 5
+            }
           },
-          "ap": 6,
-          "dtReduction": 1,
-          "rounds": 1
+          "ap": {
+            "source": 6
+          },
+          "dtReduction": {
+            "source": 1
+          },
+          "rounds": {
+            "source": 1
+          },
+          "tags": []
         },
         "Burst": {
           "damage": {
-            "base": 3,
-            "dice": 10
+            "base": {
+              "source": 3
+            },
+            "dice": {
+              "source": 10
+            }
           },
-          "ap": 8,
-          "dtReduction": 1,
-          "rounds": 5
+          "ap": {
+            "source": 8
+          },
+          "dtReduction": {
+            "source": 1
+          },
+          "rounds": {
+            "source": 5
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 30,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 30
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 60,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 60
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 80,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 80
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 5,
+      "ap": {
+        "source": 5
+      },
       "caliber": "energizedCrystalPack",
       "containerType": "magazine",
-      "size": 30
+      "size": {
+        "source": 30
+      }
     },
     "skill": "magicalEnergyWeapons",
-    "strengthRequirement": 6,
-    "value": 700,
-    "weight": 4.5,
+    "strengthRequirement": {
+      "source": 6
+    },
+    "value": {
+      "source": 700
+    },
+    "weight": {
+      "source": 4.5
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

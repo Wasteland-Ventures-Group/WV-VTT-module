@@ -1,12 +1,12 @@
 <div class="flexrow">
-  <section class="flex-fixed equipment-slots">
-    <h4>{{localize "wv.rules.equipment.slots.plural"}}</h4>
-    <div class="lighter-block equipment-slot" data-equipment-slot="readiedItem">
+  <section class="flex-fixed equipment-slots flexcol flex-gapped">
+    <h4 class="flex-fixed no-margin">{{localize "wv.rules.equipment.slots.plural"}}</h4>
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="readiedItem">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</div>
       <div class="equipment-slot-status">
         <span>{{sheet.equipment.readiedItem.name}}</span>
       </div>
-      <div class="equipment-slot-target lighter-block">
+      <div class="equipment-slot-target lighter-block parchment-bg">
         <div class="ready-item-cost direct">{{sheet.equipment.readyItemCost.direct}} {{localize "wv.rules.actionPoints.short"}}</div>
         <div class="lighter-block ready-item-cost from-quick-slot" data-equipment-slot-extra="quickSlot">
           <div>{{sheet.equipment.readyItemCost.fromSlot}} {{localize "wv.rules.actionPoints.short"}}</div>
@@ -18,31 +18,31 @@
         </div>
       </div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="weaponSlot1" data-item-id="{{sheet.equipment.weaponSlots.[0]._id}}">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="weaponSlot1" data-item-id="{{sheet.equipment.weaponSlots.[0]._id}}">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.weaponSlot1"}}</div>
       <div>{{sheet.equipment.weaponSlots.[0].name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="weaponSlot2" data-item-id="{{sheet.equipment.weaponSlots.[1]._id}}">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="weaponSlot2" data-item-id="{{sheet.equipment.weaponSlots.[1]._id}}">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.weaponSlot2"}}</div>
       <div>{{sheet.equipment.weaponSlots.[1].name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="armor">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="armor">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.armor"}}</div>
       <div>{{sheet.equipment.armor.name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="clothing">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="clothing">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.clothing"}}</div>
       <div>{{sheet.equipment.clothing.name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="eyes">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="eyes">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.eyes"}}</div>
       <div>{{sheet.equipment.eyes.name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="mouth">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="mouth">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.mouth"}}</div>
       <div>{{sheet.equipment.mouth.name}}</div>
     </div>
-    <div class="lighter-block equipment-slot" data-equipment-slot="belt">
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="belt">
       <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.belt"}}</div>
       <div>{{sheet.equipment.belt.name}}</div>
     </div>
@@ -58,39 +58,37 @@
     <table class="fvtt-item-table">
       <thead>
         <tr>
-          <th scope="col"></th>
+          <th scope="col" class="align-left"></th>
           <th scope="col" class="align-left">{{localize "wv.system.misc.name"}}</th>
           <th scope="col" class="align-right">{{localize "wv.rules.equipment.value.name"}}</th>
           <th scope="col" class="align-right">{{localize "wv.rules.equipment.weight.name"}}</th>
           <th scope="col" class="align-right">{{localize "wv.system.values.amount"}}</th>
           <th scope="col" class="align-right">{{localize "wv.rules.equipment.value.name"}}<br />({{localize "wv.system.values.total"}})</th>
           <th scope="col" class="align-right">{{localize "wv.rules.equipment.weight.name"}}<br />({{localize "wv.system.values.total"}})</th>
-          <th scope="col"></th>
+          <th scope="col" class="align-right"></th>
         </tr>
       </thead>
       <tbody>
         {{#each sheet.inventory.items as |item|~}}
-          <tr class="fvtt-item" data-item-id="{{item.id}}">
-            <td class="min-width">
+          <tr data-item-id="{{item.id}}">
+            <td class="align-left">
               {{~#if item.img~}}
                 <img src="{{item.img}}" />
               {{~/if~}}
             </td>
             <td>{{item.name}}</td>
-            <td class="align-right min-width">{{item.value}}</td>
-            <td class="align-right min-width">{{item.weight}}</td>
-            <td class="align-right min-width zero-width">
-              {{#if item.amount~}}
+            <td class="align-right">{{item.value}}</td>
+            <td class="align-right">{{item.weight}}</td>
+            <td class="align-right zero-width">
+              {{~#if item.amount~}}
                 <input type="number" data-action="edit-amount" value="{{item.amount}}" />
-              {{~/if}}
+              {{~/if~}}
             </td>
-            <td class="align-right min-width">{{item.totalValue}}</td>
-            <td class="align-right min-width">{{item.totalWeight}}</td>
-            <td class="min-width">
-              <div class="fvtt-item-controls flexrow">
-                <button type="button" class="control item-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
-                <button type="button" class="control item-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
-              </div>
+            <td class="align-right">{{item.totalValue}}</td>
+            <td class="align-right">{{item.totalWeight}}</td>
+            <td class="align-right no-wrap">
+              <button type="button" class="control small item-control fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button
+              ><button type="button" class="control small item-control fas fa-minus" data-action="delete" title="{{localize 'wv.system.actions.delete'}}"></button>
             </td>
           </tr>
         {{~/each}}
@@ -99,7 +97,7 @@
         <tr>
           <th scope="row" colspan="5" class="align-right">{{localize "wv.system.values.total"}}</th>
           <td class="align-right">{{sheet.inventory.totalValue}}</td>
-          <td class="align-right">{{sheet.inventory.totalWeight}}/{{data.data.secondary.maxCarryWeight}}</td>
+          <td class="align-right">{{sheet.inventory.totalWeight}}/{{data.data.secondary.maxCarryWeight.total}}</td>
           <td></td>
         </tr>
       </tfoot>

@@ -1,6 +1,9 @@
 import type { DefinedError } from "ajv";
+import type WvActor from "../../actor/wvActor.js";
 import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
+import type WvItem from "../../item/wvItem.js";
+import type { DocumentRelation } from "../../item/wvItem.js";
 import AdditionalPropMessage from "../../ruleEngine/messages/additionalPropMessage.js";
 import MissingPropMessage from "../../ruleEngine/messages/missingPropMessage.js";
 import NotSavedMessage from "../../ruleEngine/messages/notSavedMessage.js";
@@ -16,14 +19,16 @@ import WvI18n from "../../wvI18n.js";
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: [CONSTANTS.systemId, "document-sheet", "item-sheet"],
-      height: 500,
-      tabs: [
-        { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
-      ],
-      width: 670
-    } as typeof ItemSheet["defaultOptions"]);
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes.push(
+      ...[CONSTANTS.systemId, "document-sheet", "item-sheet"]
+    );
+    defaultOptions.height = 410;
+    defaultOptions.tabs = [
+      { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
+    ];
+    defaultOptions.width = 600;
+    return defaultOptions;
   }
 
   /**
@@ -57,6 +62,8 @@ export default class WvItemSheet extends ItemSheet {
         return root + "effectSheet.hbs";
       case "weapon":
         return root + "weaponSheet.hbs";
+      case "magic":
+        return root + "magicSheet.hbs";
       default:
         return root + "itemSheet.hbs";
     }
@@ -82,15 +89,17 @@ export default class WvItemSheet extends ItemSheet {
       sheet: {
         rarity,
         parts: {
+          baseItemInputs: HANDLEBARS.partPaths.item.baseItemInputs,
           header: HANDLEBARS.partPaths.item.header,
           physicalItemInputs: HANDLEBARS.partPaths.item.physicalItemInputs,
           rules: HANDLEBARS.partPaths.item.rules
         },
         rules: {
-          elements: data.data.data.rules.elements.map(
+          elements: this.item.data.data.rules.elements.map(
             this.mapSheetDataRuleElement.bind(this)
           )
-        }
+        },
+        systemGridUnit: getGame().system.data.gridUnits
       }
     };
   }
@@ -100,7 +109,7 @@ export default class WvItemSheet extends ItemSheet {
 
     const sheetForm = html[0];
     if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element!");
+      throw new Error("The element passed was not a form element.");
 
     sheetForm
       .querySelectorAll(".rule-element-control[data-action=create]")
@@ -116,7 +125,7 @@ export default class WvItemSheet extends ItemSheet {
       .forEach((element) =>
         element.addEventListener("click", (event) => {
           if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen!");
+            throw new Error("This should not happen.");
           this.onClickDeleteRuleElement(event);
         })
       );
@@ -128,11 +137,14 @@ export default class WvItemSheet extends ItemSheet {
   /** Handle a click event on a create rule element button. */
   protected onClickCreateRuleElement(): void {
     const sources = this.item.data.data.rules.sources;
-    sources.push(RULE_ELEMENT_SOURCE_JSON_SCHEMA.default);
+    sources.push(this.getDefaultRuleElementSource());
     this.item.updateRuleSources(sources);
     LOG.debug(`Created RuleElement on item with id [${this.item.id}]`);
-    this.item.prepareData();
-    this.render(false);
+  }
+
+  /** Get the default rule element source for newly created rule elements. */
+  protected getDefaultRuleElementSource(): RuleElementSource {
+    return { ...RULE_ELEMENT_SOURCE_JSON_SCHEMA.default };
   }
 
   /** Handle a click event on a delete rule element button. */
@@ -145,7 +157,7 @@ export default class WvItemSheet extends ItemSheet {
       throw new Error("The rule element element was not an HTMLElement.");
 
     const index = parseInt(ruleElementElement.dataset.index ?? "");
-    if (isNaN(index)) throw new Error("The index was not a number!");
+    if (isNaN(index)) throw new Error("The index was not a number.");
 
     const sources = this.item.data.data.rules.sources;
     sources.splice(index, 1);
@@ -153,12 +165,14 @@ export default class WvItemSheet extends ItemSheet {
     this.ruleElementSchemaErrors.splice(index, 1);
     this.item.updateRuleSources(sources);
     LOG.debug(`Deleted RuleElement on item with id [${this.item.id}]`);
-    this.item.prepareData();
-    this.render(false);
   }
 
   /** Disable all inputs that would be overwritten by a compendium update. */
   protected disableCompendiumLinkInputs(form: HTMLFormElement): void {
+    const disableAmount = !!this.item.getFlag(
+      CONSTANTS.systemId,
+      "overwriteAmountWithCompendium"
+    );
     const disableNotes = !!this.item.getFlag(
       CONSTANTS.systemId,
       "overwriteNotesWithCompendium"
@@ -187,6 +201,7 @@ export default class WvItemSheet extends ItemSheet {
           if (!el.name.startsWith("data.") && !el.name.startsWith("sheet."))
             continue;
 
+          if (el.name === "data.amount" && !disableAmount) continue;
           if (el.name === "data.notes" && !disableNotes) continue;
           if (el.name.startsWith("sheet.rules.") && !disableRules) continue;
 
@@ -253,10 +268,29 @@ export default class WvItemSheet extends ItemSheet {
 
   protected override async _updateObject(
     event: Event,
-    formData: Record<string, string | RuleElementSource[] | unknown>
+    formData: Record<string, unknown>
   ): Promise<unknown> {
+    this.sanitizeTags(formData, "data.tags");
     this.parseRuleElementSources(formData);
     return super._updateObject(event, formData);
+  }
+
+  /** Sanitize the tags on the given property in the form data. */
+  protected sanitizeTags(
+    formData: Record<string, unknown>,
+    name: string
+  ): void {
+    const value = formData[name];
+    if (typeof value === "string") {
+      formData[name] = [
+        ...new Set(
+          value
+            .split(",")
+            .map((string) => string.trim())
+            .filter((string) => string.length > 0)
+        )
+      ].sort((a, b) => a.localeCompare(b));
+    }
   }
 
   /**
@@ -280,6 +314,7 @@ export default class WvItemSheet extends ItemSheet {
 
     let messages: RuleElementMessage[];
     let source: string;
+    let documentMessages: SheetDataDocumentMessages[] = [];
     if (hasSyntaxError) {
       messages = [syntaxError, new NotSavedMessage()];
       source = syntaxErrorTuple[1] ?? "";
@@ -289,14 +324,56 @@ export default class WvItemSheet extends ItemSheet {
     } else {
       messages = rule.messages;
       source = JSON.stringify(rule.source, null, 2);
+      documentMessages = [...rule.documentMessages.entries()].map(
+        ([document, value]) =>
+          this.mapToSheetDataDocumentMessages(document, value)
+      );
     }
 
     return {
-      hasErrors: re.hasErrors(messages),
-      hasWarnings: re.hasWarnings(messages),
-      label: rule.source.label,
+      hasDocumentMessages: rule.hasDocumentMessages,
+      hasErrors: re.hasErrors(messages) || rule.hasDocumentErrors,
+      hasSelectedDocuments: rule.hasSelectedDocuments,
+      hasWarnings: re.hasWarnings(messages) || rule.hasDocumentWarnings,
+      documentMessages,
+      label: rule.label,
       messages,
+      selectedDocuments: [...rule.selectedDocuments.entries()].map(
+        ([document, value]) =>
+          this.mapToSheetDataSelectedDocument(document, value)
+      ),
       source
+    };
+  }
+
+  /**
+   * Map an entry in a RuleElement's documentMessages to a
+   * SheetDataDocumentMessages.
+   */
+  private mapToSheetDataDocumentMessages(
+    document: WvActor | WvItem,
+    value: re.DocumentMessagesValue
+  ): SheetDataDocumentMessages {
+    return {
+      docId: document.id ?? "",
+      docName: document.name ?? "",
+      messages: value.messages,
+      docRelation: getGame().i18n.localize(
+        `wv.system.ruleEngine.documentMessages.relations.${value.causeDocRelation}`
+      )
+    };
+  }
+
+  private mapToSheetDataSelectedDocument(
+    document: WvActor | WvItem,
+    { relation }: { relation: DocumentRelation }
+  ): SheetDataSelectedDocument {
+    return {
+      docId: document.id ?? "",
+      docName: document.name ?? "",
+      docRelation: getGame().i18n.localize(
+        `wv.system.ruleEngine.documentMessages.relations.${relation}`
+      )
     };
   }
 
@@ -307,9 +384,7 @@ export default class WvItemSheet extends ItemSheet {
    * arrays of this class and their updates are not added to the update data.
    * @param formData - the data of the submitted form
    */
-  private parseRuleElementSources(
-    formData: Record<string, string | RuleElementSource[] | unknown>
-  ) {
+  private parseRuleElementSources(formData: Record<string, unknown>) {
     // Prepare for a new parse
     this.ruleElementSyntaxErrors = [];
     this.ruleElementSchemaErrors = [];
@@ -356,7 +431,7 @@ export default class WvItemSheet extends ItemSheet {
     if (!ruleSources.length) {
       // If the rule elements were the only thing that was changed, but all of
       // them contained errors, preventing save, we need to rerender manually.
-      if (!Object.keys(formData).keys.length) this.render(false);
+      if (!Object.keys(formData).keys.length) this.render();
       return;
     }
 
@@ -367,7 +442,7 @@ export default class WvItemSheet extends ItemSheet {
       if (ruleSources[index] === undefined) {
         const originalSource = originalSources[index];
         if (originalSource === undefined)
-          throw new Error("An original rule element source was undefined!");
+          throw new Error("An original rule element source was undefined.");
 
         ruleSources[index] = originalSource;
       }
@@ -401,9 +476,7 @@ export default class WvItemSheet extends ItemSheet {
     rawSource: string
   ): void {
     this.ruleElementSyntaxErrors[index] = [
-      new SyntaxErrorMessage(
-        error.message.split(": ")[1] ?? "Unable to get specific message"
-      ),
+      new SyntaxErrorMessage(error.message),
       rawSource
     ];
     LOG.warn(
@@ -455,14 +528,19 @@ export default class WvItemSheet extends ItemSheet {
               "wv.system.ruleEngine.errors.semantic.unknownHook",
               "error"
             );
-          case "#/properties/target/enum":
+          case "#/properties/selector/enum":
             return new RuleElementMessage(
-              "wv.system.ruleEngine.errors.semantic.unknownTarget",
+              "wv.system.ruleEngine.errors.semantic.unknownSelector",
               "error"
             );
           case "#/properties/type/enum":
             return new RuleElementMessage(
               "wv.system.ruleEngine.errors.semantic.unknownRuleElement",
+              "error"
+            );
+          case "#/properties/conditions/items/enum":
+            return new RuleElementMessage(
+              "wv.system.ruleEngine.errors.semantic.unknownCondition",
               "error"
             );
         }
@@ -479,6 +557,7 @@ export interface SheetData extends ItemSheet.Data {
   sheet: {
     rarity: SheetDataRarity | undefined;
     parts: {
+      baseItemInputs: string;
       header: string;
       physicalItemInputs: string;
       rules: string;
@@ -486,6 +565,7 @@ export interface SheetData extends ItemSheet.Data {
     rules: {
       elements: SheetDataRuleElement[];
     };
+    systemGridUnit: string | undefined;
   };
 }
 
@@ -495,11 +575,25 @@ export interface SheetDataRarity {
 }
 
 export interface SheetDataRuleElement {
+  hasDocumentMessages: boolean;
   hasErrors: boolean;
+  hasSelectedDocuments: boolean;
   hasWarnings: boolean;
+  documentMessages: SheetDataDocumentMessages[];
   label: string;
   messages: SheetDataMessage[];
+  selectedDocuments: SheetDataSelectedDocument[];
   source: string;
+}
+
+export interface SheetDataDocumentMessages extends SheetDataSelectedDocument {
+  messages: SheetDataMessage[];
+}
+
+export interface SheetDataSelectedDocument {
+  docId: string;
+  docName: string;
+  docRelation: string;
 }
 
 export interface SheetDataMessage {

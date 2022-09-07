@@ -10,39 +10,92 @@
       "sources": {
         "Burst": {
           "damage": {
-            "base": 3,
-            "dice": 9
+            "base": {
+              "source": 3
+            },
+            "dice": {
+              "source": 9
+            }
           },
-          "ap": 9,
-          "rounds": 10
+          "ap": {
+            "source": 9
+          },
+          "rounds": {
+            "source": 10
+          },
+          "tags": []
         }
       }
     },
     "ranges": {
       "short": {
-        "distance": 30,
-        "modifier": 0
+        "distance": {
+          "base": {
+            "source": 30
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": 0
+        },
+        "tags": []
       },
       "medium": {
-        "distance": 60,
-        "modifier": -10
+        "distance": {
+          "base": {
+            "source": 60
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -10
+        },
+        "tags": []
       },
       "long": {
-        "distance": 90,
-        "modifier": -20
+        "distance": {
+          "base": {
+            "source": 90
+          },
+          "multiplier": {
+            "source": 0
+          },
+          "special": ""
+        },
+        "modifier": {
+          "source": -20
+        },
+        "tags": []
       }
     },
     "rarity": "rare",
     "reload": {
-      "ap": 11,
+      "ap": {
+        "source": 11
+      },
       "caliber": "5mm",
       "containerType": "magazine",
-      "size": 240
+      "size": {
+        "source": 240
+      }
     },
     "skill": "firearms",
-    "strengthRequirement": 9,
-    "value": 750,
-    "weight": 15,
+    "strengthRequirement": {
+      "source": 9
+    },
+    "value": {
+      "source": 750
+    },
+    "weight": {
+      "source": 15
+    },
+    "tags": [],
     "rules": {
       "sources": []
     }

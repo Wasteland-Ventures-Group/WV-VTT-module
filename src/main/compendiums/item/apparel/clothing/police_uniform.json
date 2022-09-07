@@ -13,9 +13,10 @@
           "hook": "afterSkills",
           "label": "Melee bonus",
           "priority": 100,
-          "selector": "skills.melee.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.melee",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         },
         {
@@ -23,22 +24,24 @@
           "hook": "afterSkills",
           "label": "Intimidation bonus",
           "priority": 100,
-          "selector": "skills.intimidation.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.intimidation",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
-    "value": 150,
-    "weight": 1,
-    "quickSlots": 3,
-    "modSlots": 2,
+    "value": { "source": 150 },
+    "weight": { "source": 1 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 2 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/robe-collared-blue.webp",
   "effects": [],
   "flags": {}
 }

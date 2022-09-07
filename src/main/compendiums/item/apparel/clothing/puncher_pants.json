@@ -13,9 +13,10 @@
           "hook": "afterSpecial",
           "label": "Strength bonus",
           "priority": 100,
-          "selector": "specials.strength.tempTotal",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "strength",
+          "type": "WV.RuleElement.TempSpecialComponent",
           "value": 1
         },
         {
@@ -23,22 +24,24 @@
           "hook": "afterSkills",
           "label": "Unarmed bonus",
           "priority": 100,
-          "selector": "skills.unarmed.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.unarmed",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "uncommon",
-    "value": 200,
-    "weight": 1.5,
-    "quickSlots": 1,
-    "modSlots": 3,
+    "value": { "source": 200 },
+    "weight": { "source": 1.5 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/leg/pants-bronze-metal-belt-purple-pants.webp",
   "effects": [],
   "flags": {}
 }

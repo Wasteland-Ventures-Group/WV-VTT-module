@@ -13,9 +13,10 @@
           "hook": "afterSkills",
           "label": "Mechanics bonus",
           "priority": 100,
-          "selector": "skills.mechanics.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.mechanics",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         },
         {
@@ -23,22 +24,24 @@
           "hook": "afterSkills",
           "label": "Lockpick bonus",
           "priority": 100,
-          "selector": "skills.lockpick.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.lockpick",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "uncommon",
-    "value": 100,
-    "weight": 0.5,
-    "quickSlots": 2,
-    "modSlots": 3,
+    "value": { "source": 100 },
+    "weight": { "source": 0.5 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/coat-leather-blue.webp",
   "effects": [],
   "flags": {}
 }

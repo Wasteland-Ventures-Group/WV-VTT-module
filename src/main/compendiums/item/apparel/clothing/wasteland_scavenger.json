@@ -13,22 +13,24 @@
           "hook": "afterSkills",
           "label": "Survival bonus",
           "priority": 100,
-          "selector": "skills.survival.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.survival",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
-    "value": 35,
-    "weight": 0.5,
-    "quickSlots": 3,
-    "modSlots": 3,
+    "value": { "source": 35 },
+    "weight": { "source": 0.5 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/vest-leather-tattered-white.webp",
   "effects": [],
   "flags": {}
 }

@@ -13,9 +13,10 @@
           "hook": "afterSkills",
           "label": "Science bonus",
           "priority": 100,
-          "selector": "skills.science.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.science",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         },
         {
@@ -23,22 +24,23 @@
           "hook": "afterSkills",
           "label": "Medicine bonus",
           "priority": 100,
-          "selector": "skills.medicine.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.medicine",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
     "rarity": "uncommon",
-    "value": 100,
-    "weight": 0.5,
-    "quickSlots": 2,
-    "modSlots": 3,
+    "value": { "source": 100 },
+    "weight": { "source": 0.5 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/back/cloak-collared-grey.webp",
   "effects": [],
   "flags": {}
 }

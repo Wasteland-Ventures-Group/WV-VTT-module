@@ -13,9 +13,10 @@
           "hook": "afterSkills",
           "label": "MEW bonus",
           "priority": 100,
-          "selector": "skills.magialEnergyWeapons.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "target": "skills.magialEnergyWeapons",
+          "conditions": ["whenEquipped"],
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         },
         {
@@ -23,22 +24,24 @@
           "hook": "afterSkills",
           "label": "Thaumaturgy bonus",
           "priority": 100,
-          "selector": "skills.thaumaturgy.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.thaumaturgy",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "uncommon",
-    "value": 200,
-    "weight": 1.5,
-    "quickSlots": 2,
-    "modSlots": 3,
+    "value": { "source": 200 },
+    "weight": { "source": 1.5 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/robe-layered-teal.webp",
   "effects": [],
   "flags": {}
 }

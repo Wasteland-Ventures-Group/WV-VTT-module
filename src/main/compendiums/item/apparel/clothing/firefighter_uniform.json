@@ -13,22 +13,24 @@
           "hook": "afterSpecial",
           "label": "Endurance bonus",
           "priority": 100,
-          "selector": "specials.endurance.tempTotal",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "endurance",
+          "type": "WV.RuleElement.TempSpecialComponent",
           "value": 1
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
-    "value": 100,
-    "weight": 3,
-    "quickSlots": 1,
-    "modSlots": 3,
+    "value": { "source": 100 },
+    "weight": { "source": 3 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/robe-layered-red.webp",
   "effects": [],
   "flags": {}
 }

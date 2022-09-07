@@ -3,7 +3,7 @@
   "name": "Butcher Barding",
   "type": "apparel",
   "data": {
-    "name": "Sharpshooter's Suit",
+    "name": "Butcher Barding",
     "description": "Hackin' and whackin' and slashin'",
     "notes": "",
     "rules": {
@@ -13,9 +13,10 @@
           "hook": "afterSkills",
           "label": "Melee bonus",
           "priority": 100,
-          "selector": "skills.melee.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.melee",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         },
         {
@@ -23,22 +24,24 @@
           "hook": "afterSkills",
           "label": "Survival bonus",
           "priority": 100,
-          "selector": "skills.survival.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.survival",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "uncommon",
-    "value": 200,
-    "weight": 1.5,
-    "quickSlots": 2,
-    "modSlots": 3,
+    "value": { "source": 200 },
+    "weight": { "source": 1.5 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/coat-collared-red.webp",
   "effects": [],
   "flags": {}
 }

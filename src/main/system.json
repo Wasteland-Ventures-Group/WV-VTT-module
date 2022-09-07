@@ -29,16 +29,16 @@
       "system": "wasteland-ventures"
     },
     {
-      "name": "magic",
-      "label": "Wasteland Ventures Magic",
-      "path": "compendiums/item/magic.db",
+      "name": "apparel_clothing",
+      "label": "Wasteland Ventures Clothing",
+      "path": "compendiums/item/apparel/clothing.db",
       "type": "Item",
       "system": "wasteland-ventures"
     },
     {
-      "name": "apparel",
-      "label": "Wasteland Ventures Apparel",
-      "path": "compendiums/item/apparel.db",
+      "name": "magic",
+      "label": "Wasteland Ventures Magic",
+      "path": "compendiums/item/magic.db",
       "type": "Item",
       "system": "wasteland-ventures"
     },

@@ -11,22 +11,14 @@
     },
     "tags": [],
     "rarity": "common",
-    "value": {
-      "source": 15
-    },
-    "weight": {
-      "source": 0.5
-    },
-    "quickSlots": {
-      "source": 2
-    },
-    "modSlots": {
-      "source": 2
-    },
+    "value": { "source": 15 },
+    "weight": { "source": 0.5 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/shirt-simple-grey.webp",
   "effects": [],
   "flags": {}
 }

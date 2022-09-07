@@ -13,9 +13,10 @@
           "hook": "afterSpecial",
           "label": "Luck bonus",
           "priority": 100,
-          "selector": "specials.luck.tempTotal",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "luck",
+          "type": "WV.RuleElement.TempSpecialComponent",
           "value": 2
         },
         {
@@ -23,22 +24,24 @@
           "hook": "afterSpecial",
           "label": "Endurance malus",
           "priority": 100,
-          "selector": "specials.endurance.tempTotal",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "endurance",
+          "type": "WV.RuleElement.TempSpecialComponent",
           "value": -1
         }
       ]
     },
+    "tags": [],
     "rarity": "uncommon",
-    "value": 100,
-    "weight": 0.5,
-    "quickSlots": 2,
-    "modSlots": 3,
+    "value": { "source": 100 },
+    "weight": { "source": 0.5 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/breastplate-layered-leather-blue.webp",
   "effects": [],
   "flags": {}
 }

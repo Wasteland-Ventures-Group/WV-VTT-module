@@ -13,22 +13,24 @@
           "hook": "afterSpecial",
           "label": "Intelligence bonus",
           "priority": 100,
-          "selector": "specials.intelligence.tempTotal",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "intelligence",
+          "type": "WV.RuleElement.TempSpecialComponent",
           "value": 1
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
-    "value": 50,
-    "weight": 0.1,
-    "quickSlots": 2,
-    "modSlots": 1,
+    "value": { "source": 50 },
+    "weight": { "source": 0.1 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 1 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/shirt-collared-grey.webp",
   "effects": [],
   "flags": {}
 }

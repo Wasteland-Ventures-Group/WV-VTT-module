@@ -13,17 +13,17 @@ export default async function compendiumSchemasTask(): Promise<void[]> {
         .COMP_AMMO_JSON_SCHEMA
     },
     {
-      fileName: "magic",
-      outputBasePath: itemOutputBasePath,
-      schema: (await import("../src/main/typescript/data/item/magic/source.js"))
-        .COMP_MAGIC_JSON_SCHEMA
-    },
-    {
       fileName: "apparel",
       outputBasePath: itemOutputBasePath,
       schema: (
         await import("../src/main/typescript/data/item/apparel/source.js")
       ).COMP_APPAREL_JSON_SCHEMA
+    },
+    {
+      fileName: "magic",
+      outputBasePath: itemOutputBasePath,
+      schema: (await import("../src/main/typescript/data/item/magic/source.js"))
+        .COMP_MAGIC_JSON_SCHEMA
     },
     {
       fileName: "weapon",

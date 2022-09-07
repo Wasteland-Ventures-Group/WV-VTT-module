@@ -13,9 +13,10 @@
           "hook": "afterSkills",
           "label": "Explosives bonus",
           "priority": 100,
-          "selector": "skills.explosives.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.explosives",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         },
         {
@@ -23,22 +24,24 @@
           "hook": "afterSkills",
           "label": "Lockpick bonus",
           "priority": 100,
-          "selector": "skills.lockpick.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.lockpick",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "uncommon",
-    "value": 200,
-    "weight": 2,
-    "quickSlots": 4,
-    "modSlots": 2,
+    "value": { "source": 200 },
+    "weight": { "source": 2 },
+    "quickSlots": { "source": 4 },
+    "modSlots": { "source": 2 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
   "effects": [],
   "flags": {}
 }

@@ -13,22 +13,24 @@
           "hook": "afterSkills",
           "label": "Sleight bonus",
           "priority": 100,
-          "selector": "skills.sleight.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.sleight",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
-    "value": 100,
-    "weight": 0.5,
-    "quickSlots": 2,
-    "modSlots": 2,
+    "value": { "source": 100 },
+    "weight": { "source": 0.5 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/back/cloak-collared-grey-gold.webp",
   "effects": [],
   "flags": {}
 }

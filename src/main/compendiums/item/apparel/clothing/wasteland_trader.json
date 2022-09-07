@@ -13,22 +13,24 @@
           "hook": "afterSkills",
           "label": "Barter bonus",
           "priority": 100,
-          "selector": "skills.barter.total",
-          "target": "actor",
-          "type": "WV.RuleElement.FlatModifier",
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.barter",
+          "type": "WV.RuleElement.NumberComponent",
           "value": 5
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
-    "value": 25,
-    "weight": 0.5,
-    "quickSlots": 2,
-    "modSlots": 3,
+    "value": { "source": 25 },
+    "weight": { "source": 0.5 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/vest-leather-brown-gold.webp",
   "effects": [],
   "flags": {}
 }

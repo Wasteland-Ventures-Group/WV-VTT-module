@@ -543,11 +543,11 @@
             "name": "Player Combat Movement AP"
           },
           "enforceApForGameMasters": {
-            "hint": "Enforce AP checks for Actors moved by Game Masters in combat.",
-            "name": "GM Combat Movment AP Checks"
+            "hint": "Enforce AP checks for Actors moved by you as a Game Master in combat. This only has an effect if you are a Game Master.",
+            "name": "GM Combat Movement AP checks"
           },
           "subtractApForGameMasters": {
-            "hint": "Subtract AP from Actors moved by Game Masters in combat.",
+            "hint": "Subtract AP from Actors moved by you as a Game Master in combat. This only has an effect if you are a Game Master.",
             "name": "GM Combat Movement AP subtract"
           }
         },

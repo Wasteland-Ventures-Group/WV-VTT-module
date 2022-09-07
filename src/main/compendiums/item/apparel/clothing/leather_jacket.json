@@ -1,5 +1,5 @@
 {
-  "_id": "WvApparel0000008",
+  "_id": "WvApparelCloth08",
   "name": "Leather Jacket",
   "type": "apparel",
   "data": {
@@ -32,6 +32,7 @@
         }
       ]
     },
+    "tags": [],
     "rarity": "common",
     "value": { "source": 100 },
     "weight": { "source": 1 },

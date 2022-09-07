@@ -1,5 +1,5 @@
 {
-  "_id": "WvApparel0000014",
+  "_id": "WvApparelCloth14",
   "name": "PhD Attire",
   "type": "apparel",
   "data": {
@@ -32,6 +32,7 @@
         }
       ]
     },
+    "tags": [],
     "rarity": "uncommon",
     "value": { "source": 100 },
     "weight": { "source": 0.5 },

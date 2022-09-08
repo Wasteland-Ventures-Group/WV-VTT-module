@@ -78,6 +78,20 @@
       "system": "wasteland-ventures"
     },
     {
+      "name": "race_core",
+      "label": "Wasteland Ventures Core Races",
+      "path": "compendiums/item/race/core.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "race_wanderer",
+      "label": "Wasteland Ventures Wanderer's Files Races",
+      "path": "compendiums/item/race/wanderer.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
       "name": "weapons",
       "label": "Wasteland Ventures Weapons",
       "path": "compendiums/item/weapons.db",

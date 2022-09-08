@@ -6,7 +6,6 @@ import type {
   I18nEquipmentSlots,
   I18nMagicTypes,
   I18nMagicSchools,
-  I18nRaceNames,
   I18nRarities,
   I18nSkills,
   I18nSpecials
@@ -58,6 +57,7 @@ export interface LangSchema {
         status: {
           torso: string;
           head: string;
+          secondHead: string;
           frontLeftLeg: string;
           frontRightLeg: string;
           rearLeftLeg: string;
@@ -257,11 +257,6 @@ export interface LangSchema {
       };
       painThreshold: QuantityNames & {
         reached: string;
-      };
-      /** Labels related to races */
-      race: QuantityNames & {
-        /** The names of races */
-        names: I18nRaceNames;
       };
       /** Labels related to radiation */
       radiation: {
@@ -550,6 +545,29 @@ export interface LangSchema {
           title: string;
         };
       };
+      /** Labels relating to race items */
+      races: QuantityNames & {
+        /** Label for the fallback race */
+        noRace: string;
+        /** Labels for physical attributes */
+        physical: {
+          /** Label for the "canFly" attribute */
+          canFly: string;
+          /** Label for the "canUseMagic" attribute */
+          canUseMagic: string;
+          /** Label for the "hasSecondHead" attribute */
+          hasSecondHead: string;
+          /** Label for the "hasSpecialTalent" attribute */
+          hasSpecialTalent: string;
+          /** Label for the "hasWings" attribute */
+          hasWings: string;
+        };
+        /** Labels for character creation attributes */
+        creation: {
+          /** Label for the "startingSpecialPoints" attribute */
+          startingSpecialPoints: string;
+        };
+      };
       /** System labels related to rolls */
       rolls: {
         /**
@@ -739,6 +757,10 @@ export interface LangSchema {
           effectSheet: string;
           /** The label for the generic Item Sheet */
           itemSheet: string;
+          /** The label for the Magic sheet */
+          magicSheet: string;
+          /** The label for the Race sheet */
+          raceSheet: string;
           /** The label for the Weapon sheet */
           weaponSheet: string;
         };

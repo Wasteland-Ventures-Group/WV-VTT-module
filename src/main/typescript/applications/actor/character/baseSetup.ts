@@ -2,6 +2,7 @@ import type WvActor from "../../../actor/wvActor.js";
 import { CONSTANTS, SpecialName, SpecialNames } from "../../../constants.js";
 import type CharacterDataProperties from "../../../data/actor/character/properties.js";
 import { getGame } from "../../../foundryHelpers.js";
+import type Race from "../../../item/race.js";
 import WvI18n, { I18nSpecial } from "../../../wvI18n.js";
 
 export default class BaseSetup extends FormApplication<
@@ -45,6 +46,7 @@ export default class BaseSetup extends FormApplication<
       data: this.character.data,
       sheet: {
         bounds: CONSTANTS.bounds,
+        race: this.character.race,
         specials: SpecialNames.reduce((specials, specialName) => {
           const points = this.character.data.data.specials[specialName].points;
           specials[specialName] = {
@@ -113,7 +115,7 @@ export default class BaseSetup extends FormApplication<
 
     this.setSpecialPointsTotal(total);
 
-    if (total > CONSTANTS.bounds.special.points.total) {
+    if (total > this.character.race.creationSpecialPoints) {
       this.#specialPointsInputs.forEach((input) =>
         input.setCustomValidity(
           getGame().i18n.localize(
@@ -121,7 +123,7 @@ export default class BaseSetup extends FormApplication<
           )
         )
       );
-    } else if (total < CONSTANTS.bounds.special.points.total) {
+    } else if (total < this.character.race.creationSpecialPoints) {
       this.#specialPointsInputs.forEach((input) =>
         input.setCustomValidity(
           getGame().i18n.localize(
@@ -154,6 +156,7 @@ interface TemplateData {
   data: CharacterDataProperties;
   sheet: {
     bounds: typeof CONSTANTS["bounds"];
+    race: Race;
     specials: Record<SpecialName, TemplateSpecial>;
   };
 }

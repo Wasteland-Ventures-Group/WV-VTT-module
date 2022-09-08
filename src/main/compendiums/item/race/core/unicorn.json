@@ -1,0 +1,66 @@
+{
+  "_id": "WVRaceCore000003",
+  "name": "Unicorn",
+  "type": "race",
+  "data": {
+    "name": "Unicorn",
+    "description": "Unicorns stand out among ponies with their ability to wield and manipulate magic. They are identified by a single horn growing from the forehead. The use of magic allows unicorns to perform delicate tasks easily, such as lock picking. Second most common sight in the Equestrian Wasteland, unicorns tend to take the kind of jobs that magical finesse is better suited for than hooves. Though they might rely a bit on their magic even in most basic of tasks, they have a wide array of spells at their disposal, which makes them handy for many situations and jobs. Due to the balefire missiles that decimated Canterlot, the Equestrian capital, unicorns no longer have a place purely of their own. Many of the unicorns alive today are the descendants of Stable dwellers, Stable dwellers themselves or the few lucky ones who found themselves a bomb shelter of their own.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Death's Offspring",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": true,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["unicorn"],
+      "freeSpells": {
+        "allOf": ["light", "telekinesis"],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 3
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 5,
+        "amount": 2
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/unicorn-horned-white.webp",
+  "effects": [],
+  "flags": {}
+}

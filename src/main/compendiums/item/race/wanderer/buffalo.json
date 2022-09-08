@@ -1,0 +1,77 @@
+{
+  "_id": "WvRaceWanderer04",
+  "name": "Buffalo",
+  "type": "race",
+  "data": {
+    "name": "Buffalo",
+    "description": "Buffalo are the offspring of the tribals that roamed the southernmost plains and arid ranges of Equestria, especially around the old towns of Appleloosa and Dodge Junction. Still holding tradition close to their hearts, buffalo maintain their identity strongly through their customs, such as an annual roam through a specific route in the mid-west Equestria, that has been roamed for countless generations. This adherence to tradition is still seen as odd in eyes of ponies, but most buffalo would agree that tradition makes them stronger and creates unity in a tribe. Shamanism is strong with buffalo, being the only other race to communicate with spirits on a regular basis alongside zebra. Much like with zebra, this gift is highly respected in their communities as though many buffalo see and interact with spirits daily, but only a proper shaman can barter with them. Buffalo Shamans are often high in the social order, being the one to link the buffalo to their ancestry and to the nature around them and to give advice to the community by spirit counseling. Buffalo may take Shaman perks, if they possess Tribal Shaman trait.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Easy Load",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "secondary.maxCarryWeight",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 20
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Great Beast",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "background.size",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 41,
+      "magicTypes": ["spirit"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/ox-buffalo-horned-green.webp",
+  "effects": [],
+  "flags": {}
+}

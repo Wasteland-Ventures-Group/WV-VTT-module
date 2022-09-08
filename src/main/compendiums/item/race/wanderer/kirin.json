@@ -1,0 +1,54 @@
+{
+  "_id": "WvRaceWanderer12",
+  "name": "Kirin",
+  "type": "race",
+  "data": {
+    "name": "Kirin",
+    "description": "The elusive and near mythical kirin are dragonlike equines with a single red branch-like horn protruding from their forehead, a fluffy mane that circles around their neck and dragon-like scales on their backs. They have cleft hooves and an ox-like tail as opposed to the pony-like tails. Like ponies, they come in a rainbow of colors. Discovered shortly before the war, kirin saw limited service at frontlines but made scary berserker-units using their Nirik-forms. In exchange for their service, kirins got their own Stable near their village in Peaks of Peril. The Stable was almost finished before last day - it was fully operational but not fully reinforced, which quickly lead to some issues. The unfinished work caused some of the Stable’s water-supply to become tainted with the water from Lake of Silence. While not catastrophic to the Stable, the magical properties of the lakewater rendered those who were exposed to it to hold their tongues and express their emotions with the bare minimum, dubbed Silent Ones. Most would consider their quiet, calm disposition unnerving, though they can also be stable and powerful mentally. Silent Ones almost never can enter Nirik state - one would need to be put in ultimately fatal position to achieve it. Though still operational, eventually some kirins decided to begin exploring the Wastes around them and left the Stable.",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["unicorn"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": ["elementalOrb", "elementalCoat"],
+          "amount": 1
+        },
+        "amount": 2
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 6,
+        "amount": 1
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/reptiles/dragon-horned-blue.webp",
+  "effects": [],
+  "flags": {}
+}

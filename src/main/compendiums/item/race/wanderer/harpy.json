@@ -1,0 +1,66 @@
+{
+  "_id": "WvRaceWanderer10",
+  "name": "Harpy",
+  "type": "race",
+  "data": {
+    "name": "Harpy",
+    "description": "Harpies are bipedal parrots with talons for legs and arms, and though rarely seen in the Equestrian Wasteland, some have made the derelict wastes their home, the situation of their homeland shrouded in mystery. Unlike pegasi, griffon, hippogriffs and bat ponies, harpies are not able to fly or use cloud technology and they have no functional wings. Despite this, the harpies have spread far, found in the Southern Equestria’s cloudcovered mountains, to the coastal towns in the west coast, and the deep, wild jungles that surround the Badlands. The harpies have established some settlements in the Equestrian Wasteland, but these are more considered pit-stops rather than permanent settling, as harpies often move in near-nomadic fashion. Often armed with an adventurous spirit, they travel far and wide in search of experiences, even if it doesn’t always turn out so well for them. Because of this, it is quite common to see harpies with cybernetics that lack the refinement and smoothness of earth pony made cybernetics, but work just as well. The talons on the harpy’s legs and arms are sharp, and often used to fend for themselves if they run out of other weaponry.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Delicate Claws",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "skills.sleight",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": false,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": [],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/birds/songbird-yellow-flying.webp",
+  "effects": [],
+  "flags": {}
+}

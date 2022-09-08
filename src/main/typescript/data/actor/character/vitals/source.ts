@@ -27,6 +27,9 @@ export class LimbsCrippledStatus {
   /** The crippled limb status of the head */
   head = false;
 
+  /** The crippled limb status of the second head */
+  secondHead = false;
+
   /** The crippled limb status of the legs */
   legs = new LegsCrippledStatus();
 
@@ -106,6 +109,11 @@ export const VITALS_JSON_SCHEMA: JSONSchemaType<VitalsSource> = {
           type: "boolean",
           default: false
         },
+        secondHead: {
+          description: "The crippled limb status of the second head",
+          type: "boolean",
+          default: false
+        },
         legs: {
           description: "The crippled limb status of the legs",
           type: "object",
@@ -136,6 +144,7 @@ export const VITALS_JSON_SCHEMA: JSONSchemaType<VitalsSource> = {
       default: {
         torso: false,
         head: false,
+        secondHead: false,
         legs: {
           front: {
             left: false,

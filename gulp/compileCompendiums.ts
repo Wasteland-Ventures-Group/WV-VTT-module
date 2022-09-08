@@ -41,12 +41,20 @@ const compendiumConfigs: CompendiumConfig[] = [
     outputPath: `${itemOutputBasePath}/apparel/premium_armor.db`
   },
   {
-    inputGlob: `${itemInputBasePath}/weapon/*.json`,
-    outputPath: `${itemOutputBasePath}/weapons.db`
-  },
-  {
     inputGlob: `${itemInputBasePath}/magic/*.json`,
     outputPath: `${itemOutputBasePath}/magic.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/race/core/*.json`,
+    outputPath: `${itemOutputBasePath}/race/core.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/race/wanderer/*.json`,
+    outputPath: `${itemOutputBasePath}/race/wanderer.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/weapon/*.json`,
+    outputPath: `${itemOutputBasePath}/weapons.db`
   }
 ];
 

@@ -3,6 +3,7 @@ import type ApparelDataProperties from "./apparel/properties.js";
 import type EffectDataProperties from "./effect/properties.js";
 import type MagicDataProperties from "./magic/properties.js";
 import type MiscDataProperties from "./misc/properties.js";
+import type RaceDataProperties from "./race/properties.js";
 import type WeaponDataProperties from "./weapon/properties.js";
 
 export type WvItemDataProperties =
@@ -11,4 +12,5 @@ export type WvItemDataProperties =
   | EffectDataProperties
   | MagicDataProperties
   | MiscDataProperties
+  | RaceDataProperties
   | WeaponDataProperties;

@@ -26,6 +26,12 @@ export default async function compendiumSchemasTask(): Promise<void[]> {
         .COMP_MAGIC_JSON_SCHEMA
     },
     {
+      fileName: "race",
+      outputBasePath: itemOutputBasePath,
+      schema: (await import("../src/main/typescript/data/item/race/source.js"))
+        .COMP_RACE_JSON_SCHEMA
+    },
+    {
       fileName: "weapon",
       outputBasePath: itemOutputBasePath,
       schema: (

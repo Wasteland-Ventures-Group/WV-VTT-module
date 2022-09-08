@@ -1,0 +1,73 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+{{> (get . "sheet.parts.header")}}
+
+  <nav class="tabs flex-fixed" data-group="primary">
+    <a class="item" data-tab="stats">{{localize "wv.system.misc.statistics"}}</a>
+    <a class="item" data-tab="sources">{{localize "wv.system.misc.sourceValues"}}</a>
+    <a class="item" data-tab="rules">{{localize "wv.system.ruleEngine.ruleElement.plural"}}</a>
+  </nav>
+
+  <section class="content">
+    <div class="tab active" data-group="primary" data-tab="stats">
+      <div class="detail-groups">
+        <section class="details">
+          {{~#if data.data.physical.canFly~}}
+            <span>{{localize "wv.system.races.physical.canFly"}}</span>
+          {{~/if~}}
+          {{~#if data.data.physical.canUseMagic~}}
+            <span>{{localize "wv.system.races.physical.canUseMagic"}}</span>
+          {{~/if~}}
+          {{~#if data.data.physical.hasSecondHead~}}
+            <span>{{localize "wv.system.races.physical.hasSecondHead"}}</span>
+          {{~/if~}}
+          {{~#if data.data.physical.hasSpecialTalent~}}
+            <span>{{localize "wv.system.races.physical.hasSpecialTalent"}}</span>
+          {{~/if~}}
+          {{~#if data.data.physical.hasWings~}}
+            <span>{{localize "wv.system.races.physical.hasWings"}}</span>
+          {{~/if~}}
+          <span>{{localize "wv.system.races.creation.startingSpecialPoints"}}: {{data.data.creation.startingSpecialPoints}}</span>
+        </section>
+        {{~#if data.data.notes~}}
+          <section>{{data.data.notes}}</section>
+        {{~/if~}}
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="sources">
+{{> (get . "sheet.parts.baseItemInputs")}}
+      <div class="flexrow flex-j-spaced spacing-bottom">
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.system.races.physical.canFly"~}}
+          <input type="checkbox" name="data.physical.canFly" {{checked data.data.physical.canFly}} />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.system.races.physical.canUseMagic"~}}
+          <input type="checkbox" name="data.physical.canUseMagic" {{checked data.data.physical.canUseMagic}} />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.system.races.physical.hasSecondHead"~}}
+          <input type="checkbox" name="data.physical.hasSecondHead" {{checked data.data.physical.hasSecondHead}} />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.system.races.physical.hasSpecialTalent"~}}
+          <input type="checkbox" name="data.physical.hasSpecialTalent" {{checked data.data.physical.hasSpecialTalent}} />
+        </label>
+        <label class="contained-target-inline flex-fixed flex-center">
+          {{~localize "wv.system.races.physical.hasWings"~}}
+          <input type="checkbox" name="data.physical.hasWings" {{checked data.data.physical.hasWings}} />
+        </label>
+      </div>
+      <div class="flexrow flex-j-spaced spacing-bottom">
+        <label class="contained-target-inline flex-fixed">
+          {{~localize "wv.system.races.creation.startingSpecialPoints"~}}
+          <input class="size-2" type="number" name="data.creation.startingSpecialPoints" value="{{data.data.creation.startingSpecialPoints}}" min="0" />
+        </label>
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="rules">
+{{> (get . "sheet.parts.rules")}}
+    </div>
+  </section>
+</form>

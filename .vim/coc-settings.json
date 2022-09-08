@@ -18,6 +18,10 @@
       "url": "./src/main/schemas/item/magic.json"
     },
     {
+      "fileMatch": ["/src/main/compendiums/item/race/**/*.json"],
+      "url": "./src/main/schemas/item/race.json"
+    },
+    {
       "fileMatch": ["/src/main/compendiums/item/weapon/**/*.json"],
       "url": "./src/main/schemas/item/weapon.json"
     }

@@ -1,0 +1,25 @@
+{
+  "_id": "WvPremiumArmor04",
+  "name": "MWT Combat Armor",
+  "type": "apparel",
+  "data": {
+    "name": "MWT Combat Armor",
+    "description": "",
+    "notes": "+1 END against Status Effects | +1 DT against Explosives",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "damageThreshold": { "source": 4 },
+    "weight": { "source": 15 },
+    "rarity": "rare",
+    "value": { "source": 9000 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 3 },
+    "slot": "armor",
+    "type": "premiumArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-sculpted-green.webp",
+  "effects": [],
+  "flags": {}
+}

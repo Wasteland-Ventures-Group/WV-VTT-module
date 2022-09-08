@@ -33,9 +33,9 @@
       ]
     },
     "tags": [],
+    "weight": { "source": 1 },
     "rarity": "common",
     "value": { "source": 100 },
-    "weight": { "source": 1 },
     "quickSlots": { "source": 2 },
     "modSlots": { "source": 2 },
     "slot": "clothing",

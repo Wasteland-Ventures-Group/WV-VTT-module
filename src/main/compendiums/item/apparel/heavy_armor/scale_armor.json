@@ -1,0 +1,24 @@
+{
+  "_id": "WvHeavyArmor0004",
+  "name": "Scale Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Scale Armor",
+    "description": "",
+    "notes": "User is Encumbered",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "damageThreshold": { "source": 3 },
+    "weight": { "source": 15 },
+    "rarity": "uncommon",
+    "value": { "source": 1000 },
+    "modSlots": { "source": 4 },
+    "slot": "armor",
+    "type": "heavyArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+  "effects": [],
+  "flags": {}
+}

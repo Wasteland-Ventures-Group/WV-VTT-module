@@ -17,8 +17,28 @@ const compendiumConfigs: CompendiumConfig[] = [
     outputPath: `${itemOutputBasePath}/ammo.db`
   },
   {
+    inputGlob: `${itemInputBasePath}/apparel/accessories/*.json`,
+    outputPath: `${itemOutputBasePath}/apparel/accessories.db`
+  },
+  {
     inputGlob: `${itemInputBasePath}/apparel/clothing/*.json`,
     outputPath: `${itemOutputBasePath}/apparel/clothing.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/apparel/heavy_armor/*.json`,
+    outputPath: `${itemOutputBasePath}/apparel/heavy_armor.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/apparel/light_armor/*.json`,
+    outputPath: `${itemOutputBasePath}/apparel/light_armor.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/apparel/power_armor/*.json`,
+    outputPath: `${itemOutputBasePath}/apparel/power_armor.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/apparel/premium_armor/*.json`,
+    outputPath: `${itemOutputBasePath}/apparel/premium_armor.db`
   },
   {
     inputGlob: `${itemInputBasePath}/weapon/*.json`,

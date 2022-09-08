@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparelCloth41",
+  "name": "Thaumic Suit",
+  "type": "apparel",
+  "data": {
+    "name": "Thaumic Suit",
+    "description": "",
+    "notes": "+10 Thaumaturgy for Spell performance",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 1.5 },
+    "rarity": "rare",
+    "value": { "source": 200 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/coat-collared-red-gold.webp",
+  "effects": [],
+  "flags": {}
+}

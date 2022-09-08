@@ -1,0 +1,37 @@
+{
+  "_id": "WvLightArmor0001",
+  "name": "Tribal Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Tribal Armor",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Survival Bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.survival",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "damageThreshold": { "source": 1 },
+    "weight": { "source": 4 },
+    "rarity": "common",
+    "value": { "source": 80 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 2 },
+    "slot": "armor",
+    "type": "lightArmor"
+  },
+  "img": "icons/equipment/shoulder/shoulderguard-segmented-studded-leather-brown.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,24 @@
+{
+  "_id": "WvApparelCloth40",
+  "name": "Flight Suit",
+  "type": "apparel",
+  "data": {
+    "name": "Flight Suit",
+    "description": "",
+    "notes": "+10 Thaumaturgy for Aerial Maneuver performance",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 1.5 },
+    "rarity": "uncommon",
+    "value": { "source": 200 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/coat-leather-blue.webp",
+  "effects": [],
+  "flags": {}
+}

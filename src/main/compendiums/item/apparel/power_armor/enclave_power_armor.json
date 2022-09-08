@@ -1,0 +1,59 @@
+{
+  "_id": "WvPowerArmor0003",
+  "name": "Enclave Power Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Enclave Power Armor",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Poison Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.poison",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 20
+        },
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Radiation Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 40
+        },
+        {
+          "conditions": [],
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Carry Weight Bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "secondary.maxCarryWeight",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 15
+        }
+      ]
+    },
+    "tags": [],
+    "damageThreshold": { "source": 5 },
+    "weight": { "source": 25 },
+    "rarity": "exotic",
+    "value": { "source": 9999 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
+    "slot": "armor",
+    "type": "powerArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-banded-steel-grey.webp",
+  "effects": [],
+  "flags": {}
+}

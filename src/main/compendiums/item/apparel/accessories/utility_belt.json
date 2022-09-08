@@ -1,0 +1,23 @@
+{
+  "_id": "WvAccessories001",
+  "name": "Utility Belt",
+  "type": "apparel",
+  "data": {
+    "name": "Utility Belt",
+    "description": "",
+    "notes": "Top layer",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 1.5 },
+    "rarity": "common",
+    "value": { "source": 25 },
+    "quickSlots": { "source": 2 },
+    "slot": "belt",
+    "type": "accessory"
+  },
+  "img": "icons/equipment/waist/belt-buckle-round-red.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,23 @@
+{
+  "_id": "WvAccessories002",
+  "name": "Tactical Harness",
+  "type": "apparel",
+  "data": {
+    "name": "Tactical Harness",
+    "description": "",
+    "notes": "Top layer",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 3 },
+    "rarity": "rare",
+    "value": { "source": 100 },
+    "quickSlots": { "source": 4 },
+    "slot": "belt",
+    "type": "accessory"
+  },
+  "img": "icons/equipment/waist/belt-buckle-gold-green.webp",
+  "effects": [],
+  "flags": {}
+}

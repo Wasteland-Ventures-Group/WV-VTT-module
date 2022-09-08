@@ -1,0 +1,22 @@
+{
+  "_id": "WvAccessories007",
+  "name": "Eyeglasses",
+  "type": "apparel",
+  "data": {
+    "name": "Eyeglasses",
+    "description": "Put these on to look cool, or to look at all",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 0 },
+    "rarity": "common",
+    "value": { "source": 20 },
+    "slot": "eyes",
+    "type": "accessory"
+  },
+  "img": "icons/tools/scribal/spectacles-glasses.webp",
+  "effects": [],
+  "flags": {}
+}

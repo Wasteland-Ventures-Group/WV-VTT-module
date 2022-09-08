@@ -1,0 +1,25 @@
+{
+  "_id": "WvLightArmor0003",
+  "name": "Leather Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Leather Armor",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "damageThreshold": { "source": 2 },
+    "weight": { "source": 4 },
+    "rarity": "uncommon",
+    "value": { "source": 500 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 5 },
+    "slot": "armor",
+    "type": "lightArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-leather-studded-brown.webp",
+  "effects": [],
+  "flags": {}
+}

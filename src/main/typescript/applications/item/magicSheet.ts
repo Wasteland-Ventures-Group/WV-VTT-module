@@ -4,6 +4,7 @@ import { isOfItemType } from "../../item/wvItem.js";
 import type Magic from "../../item/magic";
 import WvI18n, { I18nMagicSchools } from "../../wvI18n";
 
+/** An Item Sheet for Magic items. */
 export default class MagicSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
     const defaultOptions = super.defaultOptions;

@@ -24,6 +24,7 @@
         "status": {
           "torso": "Crippled Torso",
           "head": "Crippled Head",
+          "secondHead": "Crippled Second Head",
           "frontLeftLeg": "Crippled Front Left Leg",
           "frontRightLeg": "Crippled Front Right Leg",
           "rearLeftLeg": "Crippled Rear Left Leg",
@@ -268,31 +269,6 @@
         "singular": "Pain Threshold",
         "plural": "Pain Thresholds"
       },
-      "race": {
-        "names": {
-          "earthPony": "Earth Pony",
-          "pegasus": "Pegasus",
-          "unicorn": "Unicorn",
-          "griffon": "Griffon",
-          "zebra": "Zebra",
-          "abyssinian": "Abyssinian",
-          "batPony": "Bat Pony",
-          "brahmin": "Brahmin",
-          "buffalo": "Buffalo",
-          "changeling": "Changeling",
-          "crystalPony": "Crystal Pony",
-          "deer": "Deer",
-          "diamondDog": "Diamond Dog",
-          "donkey": "Donkey",
-          "harpy": "Harpy",
-          "hippogriff": "Hippogriff",
-          "kirin": "Kirin",
-          "minotaur": "Minotaur",
-          "yak": "Yak"
-        },
-        "plural": "Races",
-        "singular": "Race"
-      },
       "radiation": {
         "name": "Radiation",
         "dose": "Absorbed Dose",
@@ -492,6 +468,21 @@
           "title": "Prompt"
         }
       },
+      "races": {
+        "singular": "Race",
+        "plural": "Races",
+        "noRace": "No Race",
+        "physical": {
+          "canFly": "Can fly",
+          "canUseMagic": "Can use magic",
+          "hasSecondHead": "Has second head",
+          "hasSpecialTalent": "Has special talent",
+          "hasWings": "Has wings"
+        },
+        "creation": {
+          "startingSpecialPoints": "Starting SPECIAL points"
+        }
+      },
       "rolls": {
         "descriptive": "Rolling {what}",
         "imperative": "Roll",
@@ -576,6 +567,8 @@
           "apparelSheet": "Apparel Sheet",
           "effectSheet": "Effect Sheet",
           "itemSheet": "Item Sheet",
+          "magicSheet": "Magic Sheet",
+          "raceSheet": "Race Sheet",
           "weaponSheet": "Weapon Sheet"
         }
       },

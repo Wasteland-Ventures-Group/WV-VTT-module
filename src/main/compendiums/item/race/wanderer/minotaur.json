@@ -1,0 +1,66 @@
+{
+  "_id": "WvRaceWanderer13",
+  "name": "Minotaur",
+  "type": "race",
+  "data": {
+    "name": "Minotaur",
+    "description": "Minotaurs hail from two side-by-side islands between the zebra nation and Equestria in the Luna ocean and have their own city states. These two city states, Pasiphaerium and Asterpolis, have had their differences from the first day of construction. It is no surprise that this feud escalated during the Great War, with both cities helping a different side of the conflict despite officially stated to be neutral. As both cities boasted impressive fleets of merchant ships and warships, as well as their leanings towards shrewd business practices, the cities grew richer than ever before. After the bombs fell, both Pasiphaerium and Asterpolis were saved from any direct attacks, but the apocalypse soon came to them as well; with most of the pony and zebra populous either dead or hidden inside Stables, the money sources went scarce. After the winds brought over the magical fallout, it was time for the minotaur to make their way to the mainlands, to seek out revenue before the ocean around them turned too hostile for travel. New cities, aptly named Nopos Pasiphaerium and Nopos Asterpolis, were constructed soon after, which hold a sizeable population of the minotaur. Both the old and new cities are ruled by their respective kings and queens.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Great Beast",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "background.size",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": false,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 41,
+      "magicTypes": [],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/bull-horned-blue.webp",
+  "effects": [],
+  "flags": {}
+}

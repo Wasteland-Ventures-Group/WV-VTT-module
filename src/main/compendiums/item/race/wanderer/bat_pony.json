@@ -1,0 +1,54 @@
+{
+  "_id": "WvRaceWanderer02",
+  "name": "Bat Pony",
+  "type": "race",
+  "data": {
+    "name": "Bat Pony",
+    "description": "Bat ponies, though possessing same flight capabilities as pegasi, are otherwise a distinct race of their own. Most remaining tribes of bat ponies have kept to their ancestral homes deep in the cavernous Equestrian mountains. However, the Enclave and several mutated cavedwellers have forced some tribes to come into view, so to speak. Some of the bat ponies were employed by Princess Luna as her personal guard and chariot-pullers. Perhaps due to both Princess Luna’s influence and their isolation from much of the Wasteland, the bat ponies’ speech can sometimes sound archaic, though many do make a conscious effort to leave this habit into the past. Equipped with leathery bat wings -hence the name- and slit pupils, bat ponies are further divided from the other pony brethren by their relatively subdued and neutral color schemes of their mane and coat, though exceptions have been known to happen. Bat ponies’ eyes react to light much like any dark-dwelling creature’s would, outwardly seeming quite cat-like, with their pupil changing size depending on amount of light the eye detects. Due to this, they have an excellent dark-vision, but color vision is quite poor.",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "physical": {
+      "canFly": true,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": true,
+      "hasWings": true
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["maneuver"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 2
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 6,
+        "amount": 1
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/bat-giant-tattered-purple.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,66 @@
+{
+  "_id": "WVRaceCore000004",
+  "name": "Griffon",
+  "type": "race",
+  "data": {
+    "name": "Griffon",
+    "description": "Griffins, griffons or gryphons - they all mean the same, the amalgamation that is the front of a bird and the behind of a feline creature. Griffons were often employed by the warring sides as mercenaries, a line of profession many still continue to the present day. The collective Talon Company has in it many different groups of griffons, often varied in morality. Much like ponies, they can be of many various colors and various feline species. Griffons are a fairly common sight in the Equestrian wasteland, though their home is in Griffonstone, a former city-state of Equestria. Unlike other Equestrian cities, Griffonstone was spared from bombing and is notable in that it has seemed to find prosperity during and after the war, likely due to griffons’ entrepreneustic attitude to life.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Great Beast",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "background.size",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": true,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": true
+    },
+    "creation": {
+      "startingSpecialPoints": 41,
+      "magicTypes": ["maneuver"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 2
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 6,
+        "amount": 1
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/birds/raptor-hawk-flying.webp",
+  "effects": [],
+  "flags": {}
+}

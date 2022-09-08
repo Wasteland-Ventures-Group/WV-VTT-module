@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   current user and only if they are a game master
   ([#452](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/452))
 
+### Changed
+
+- direct SPECIAL editing on the character sheet has been replaced with a
+  separate initial character setup window
+  ([#385](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/385))
+- character's race is no longer a predetermined list of names, but an actual
+  item, this also allows homebrew races
+  ([#384](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/384))
+
 ### Fixed
 
 - a typo in the GM movement settings
@@ -22,9 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- direct SPECIAL editing on the character sheet has been replaced with a
-  separate initial character setup window
-  ([#385](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/385))
 - the AP enforcement and subtraction has changed
   ([#415](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/415))
   - it now checks all methods of changing a token's position

@@ -1,37 +1,3 @@
-export type RaceName = typeof RaceNames[number];
-export const RaceNames = [
-  "earthPony",
-  "pegasus",
-  "unicorn",
-  "griffon",
-  "zebra",
-  "abyssinian",
-  "batPony",
-  "brahmin",
-  "buffalo",
-  "changeling",
-  "crystalPony",
-  "deer",
-  "diamondDog",
-  "donkey",
-  "harpy",
-  "hippogriff",
-  "kirin",
-  "minotaur",
-  "yak"
-] as const;
-
-export type FlyingRaceName = typeof FlyingRaceNames[number];
-export const FlyingRaceNames = [
-  "pegasus",
-  "griffon",
-  "batPony",
-  "hippogriff"
-] as const;
-
-export type WingedRaceName = typeof WingedRaceNames[number];
-export const WingedRaceNames = [...FlyingRaceNames] as const;
-
 export type RadiationSicknessLevel = typeof RadiationSicknessLevels[number];
 export const RadiationSicknessLevels = [
   "none",
@@ -307,9 +273,10 @@ export const TYPES = {
     AMMO: "ammo",
     APPAREL: "apparel",
     EFFECT: "effect",
+    MAGIC: "magic",
     MISC: "misc",
-    WEAPON: "weapon",
-    MAGIC: "magic"
+    RACE: "race",
+    WEAPON: "weapon"
   }
 } as const;
 
@@ -335,6 +302,7 @@ export const ProtoItemTypes: readonly ValueOf<typeof TYPES.ITEM>[] = [
   TYPES.ITEM.APPAREL,
   TYPES.ITEM.MAGIC,
   TYPES.ITEM.MISC,
+  TYPES.ITEM.RACE,
   TYPES.ITEM.WEAPON
 ] as const;
 
@@ -458,8 +426,7 @@ export const CONSTANTS = {
       /** The bounds for points invested in a SPECIAL. */
       points: {
         max: 10,
-        min: 1,
-        total: 40
+        min: 1
       },
       value: {
         max: 15,
@@ -477,7 +444,7 @@ export const CONSTANTS = {
   },
 
   /** The version number where the last migration was needed */
-  needsMigrationVersion: "0.18.1",
+  needsMigrationVersion: "0.21.0",
 
   /** The number of fixed decimals to round floating point numbers to. */
   fixedDecimals: 2,

@@ -1,5 +1,6 @@
 import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
 import type { ActorDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
+import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData.js";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import BaseSetup from "../applications/actor/character/baseSetup.js";
@@ -17,6 +18,7 @@ import type { CompositeResource } from "../data/common.js";
 import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
+import type { GeneralRollFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateGeneralRoll.js";
 import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import Apparel from "../item/apparel.js";
 import Race from "../item/race.js";
@@ -420,6 +422,25 @@ export default class WvActor extends Actor {
     return updateData;
   }
 
+  async createCheckMessage(
+    commonData: ChatMessageDataConstructorData,
+    checkRoll: Roll
+  ): Promise<void> {
+    const flags: GeneralRollFlags = {
+      type: "roll",
+      roll: {
+        formula: checkRoll.formula,
+        critical: checkRoll.dice[0]?.results[0]?.critical,
+        result: checkRoll.dice[0]?.results[0]?.result ?? 0,
+        total: checkRoll.total ?? 0
+      }
+    };
+    ChatMessage.create({
+      ...commonData,
+      flags: { [CONSTANTS.systemId]: flags }
+    });
+  }
+
   /**
    * Roll a SPECIAL for this Actor.
    * @param name - the name of the SPECIAL to roll
@@ -430,7 +451,7 @@ export default class WvActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
 
-    new Roll(
+    const roll = new Roll(
       Formulator.special(this.data.data.specials[name].tempTotal)
         .modify(options?.modifier)
         .criticals({
@@ -438,13 +459,13 @@ export default class WvActor extends Actor {
           failure: this.data.data.secondary.criticals.failure.total
         })
         .toString()
-    )
-      .roll({ async: true })
-      .then((r) =>
-        r.toMessage(msgOptions, {
-          rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
-        })
-      );
+    ).roll({ async: false });
+    //.then((r) =>
+    //  r.toMessage(msgOptions, {
+    //    rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
+    //  })
+    //);
+    this.createCheckMessage(msgOptions, roll);
   }
 
   /**

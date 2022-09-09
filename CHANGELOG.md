@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - a typo in the GM movement settings
   ([#451](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/451))
+- the apparel sheet unchecking blocked apparel slots
 
 ## [0.20.0] - 2022-08-28
 

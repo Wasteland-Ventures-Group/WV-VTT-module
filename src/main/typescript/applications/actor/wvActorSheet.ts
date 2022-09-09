@@ -666,6 +666,10 @@ export default class WvActorSheet extends ActorSheet {
     try {
       if (slotName === "readiedItem") {
         await this.actor.unreadyItem();
+      } else if (slotName === "weaponSlot1") {
+        await this.actor.unslotWeapon(1);
+      } else if (slotName === "weaponSlot2") {
+        await this.actor.unslotWeapon(2);
       } else if (isApparelSlot(slotName)) {
         await this.actor.unequipApparel(slotName);
       }

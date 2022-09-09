@@ -349,6 +349,30 @@ export default class WvActor extends Actor {
   }
 
   /**
+   * Unslot a weapon from a weapon slot. No update is made in the following
+   * cases:
+   * - the given weapon slot is already empty
+   *
+   * @param slot - the number of the weapon slot
+   * @returns a promise that resolves once the update is done, rejects if this
+   *   is attempted in combat
+   */
+  async unslotWeapon(slot: 1 | 2): Promise<void> {
+    if (this.inCombat)
+      throw new SystemRulesError(
+        "Can not slot a weapon in combat.",
+        "wv.system.messages.canNotDoInCombat"
+      );
+
+    const index = slot - 1;
+    const slots = this.data.data.equipment.weaponSlotIds;
+    if (slots[index] === null) return;
+
+    slots[index] = null;
+    await this.update({ data: { equipment: { weaponSlotIds: slots } } });
+  }
+
+  /**
    * Equip an apparel into its slot. No update is made in the following cases:
    * - the given ID is null
    * - the actor has no item with the given ID

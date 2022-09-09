@@ -34,6 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - trying to equip an apparel with blocked slots will now fail if one of the
   blocked slots is already occupied
   ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- ready item costs to properties tracked on characters, instead of hard-coded
+  values
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
 
 ### Fixed
 

@@ -262,14 +262,16 @@ export default class WvActor extends Actor {
       return;
     }
 
-    let apCost = CONSTANTS.rules.equipment.readyItemCost.direct;
+    let apCostComposite = this.data.data.equipment.equipActionCosts.readyDirect;
     if (item.type === "weapon") {
       if (this.data.data.equipment.weaponSlotIds.includes(id)) {
-        apCost = CONSTANTS.rules.equipment.readyItemCost.fromSlot;
+        apCostComposite =
+          this.data.data.equipment.equipActionCosts.readyFromSlot;
       }
     } else if (useQuickSlot) {
-      apCost = CONSTANTS.rules.equipment.readyItemCost.fromSlot;
+      apCostComposite = this.data.data.equipment.equipActionCosts.readyFromSlot;
     }
+    const apCost = apCostComposite.total;
 
     if (this.actionPoints.value < apCost)
       throw new SystemRulesError(

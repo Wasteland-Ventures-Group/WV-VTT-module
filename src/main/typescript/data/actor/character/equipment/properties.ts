@@ -41,4 +41,10 @@ export default class EquipmentProperties extends EquipmentSource {
 export class EquipActionCosts {
   /** The cost for unreadying an item or weapon */
   unready = new CompositeNumber(0);
+
+  /** The cost for readying an item from the inventory */
+  readyDirect = new CompositeNumber(8);
+
+  /** The cost for readying an item with a slot */
+  readyFromSlot = new CompositeNumber(3);
 }

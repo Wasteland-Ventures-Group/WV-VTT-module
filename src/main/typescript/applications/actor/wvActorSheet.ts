@@ -243,7 +243,13 @@ export default class WvActorSheet extends ActorSheet {
       sheet: {
         bounds: CONSTANTS.bounds,
         equipment: {
-          readyItemCost: CONSTANTS.rules.equipment.readyItemCost,
+          readyItemCost: {
+            direct:
+              this.actor.data.data.equipment.equipActionCosts.readyDirect.total,
+            fromSlot:
+              this.actor.data.data.equipment.equipActionCosts.readyFromSlot
+                .total
+          },
           readiedItem,
           weaponSlots: this.actor.weaponSlotWeapons.map((weapon) =>
             weapon ? this.toSheetWeapon(weapon) : null

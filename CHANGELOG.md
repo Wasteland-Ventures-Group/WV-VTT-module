@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - an explanation to game master movement settings, that they only affect the
   current user and only if they are a game master
   ([#452](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/452))
+- ability to edit equipped items from equipment slots in inventory
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- ability to unequip apparel from equipment slots
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
 
 ### Changed
 

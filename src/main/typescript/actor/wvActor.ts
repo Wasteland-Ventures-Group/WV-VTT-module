@@ -364,6 +364,23 @@ export default class WvActor extends Actor {
   }
 
   /**
+   * Unequip an apparel from the designated slot.
+   *
+   * @param slot - the slot to unequip from
+   * @returns a promise that resolves once the update is done, rejects if this
+   *   is attempted in combat
+   */
+  async unequipApparel(slot: ApparelSlot): Promise<void> {
+    if (this.inCombat)
+      throw new SystemRulesError(
+        "Can not equip an apparel in combat.",
+        "wv.system.messages.canNotDoInCombat"
+      );
+
+    await this.update({ data: { equipment: { [`${slot}SlotId`]: null } } });
+  }
+
+  /**
    * Create update data for updating the hit points and optionally update the
    * Actor.
    * @param hitPoints - the new hit points value

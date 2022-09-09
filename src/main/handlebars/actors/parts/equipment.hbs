@@ -1,7 +1,7 @@
 <section class="flex-fixed">
   <h3>{{localize "wv.rules.equipment.slots.names.readiedItem"}}</h3>
   <div class="lighter-block equipment-slot" data-equipment-slot="readiedItem">
-    <div class="equipment-slot-status">
+    <div>
       {{~#if sheet.equipment.readiedItem~}}
         {{~#if (eq sheet.equipment.readiedItem.type "weapon")~}}
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.readiedItem readied=true}}

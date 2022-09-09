@@ -360,6 +360,7 @@ export interface LangSchema {
         edit: string;
         execute: string;
         submit: string;
+        unequip: string;
         update: string;
       };
       /** Labels relating to different dialogs */

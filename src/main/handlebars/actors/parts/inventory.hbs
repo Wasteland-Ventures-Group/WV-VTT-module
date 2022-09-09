@@ -1,11 +1,17 @@
 <div class="flexrow">
   <section class="flex-fixed equipment-slots flexcol flex-gapped">
     <h4 class="flex-fixed no-margin">{{localize "wv.rules.equipment.slots.plural"}}</h4>
-    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="readiedItem">
-      <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</div>
-      <div class="equipment-slot-status">
-        <span>{{sheet.equipment.readiedItem.name}}</span>
+    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="readiedItem" data-item-id="{{sheet.equipment.readiedItem._id}}">
+      <div class="flexrow flex-j-spaced">
+        <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</span>
+        <nav class="flex-fixed flexrow no-wrap">
+          {{~#if sheet.equipment.readiedItem~}}
+            <button type="button" class="control small fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+            <button type="button" class="control small fas fa-minus" data-action="unequip" title="{{localize 'wv.system.actions.unequip'}}"></button>
+          {{~/if~}}
+        </nav>
       </div>
+      <div>{{sheet.equipment.readiedItem.name}}</div>
       <div class="equipment-slot-target lighter-block parchment-bg">
         <div class="ready-item-cost direct">{{sheet.equipment.readyItemCost.direct}} {{localize "wv.rules.actionPoints.short"}}</div>
         <div class="lighter-block ready-item-cost from-quick-slot" data-equipment-slot-extra="quickSlot">
@@ -18,34 +24,13 @@
         </div>
       </div>
     </div>
-    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="weaponSlot1" data-item-id="{{sheet.equipment.weaponSlots.[0]._id}}">
-      <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.weaponSlot1"}}</div>
-      <div>{{sheet.equipment.weaponSlots.[0].name}}</div>
-    </div>
-    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="weaponSlot2" data-item-id="{{sheet.equipment.weaponSlots.[1]._id}}">
-      <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.weaponSlot2"}}</div>
-      <div>{{sheet.equipment.weaponSlots.[1].name}}</div>
-    </div>
-    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="armor">
-      <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.armor"}}</div>
-      <div>{{sheet.equipment.armor.name}}</div>
-    </div>
-    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="clothing">
-      <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.clothing"}}</div>
-      <div>{{sheet.equipment.clothing.name}}</div>
-    </div>
-    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="eyes">
-      <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.eyes"}}</div>
-      <div>{{sheet.equipment.eyes.name}}</div>
-    </div>
-    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="mouth">
-      <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.mouth"}}</div>
-      <div>{{sheet.equipment.mouth.name}}</div>
-    </div>
-    <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="belt">
-      <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.belt"}}</div>
-      <div>{{sheet.equipment.belt.name}}</div>
-    </div>
+{{>(get . "sheet.parts.inventoryEquipmentSlot") item=sheet.equipment.weaponSlots.[0] slotName="weaponSlot1" i18nSlotName=(localize "wv.rules.equipment.slots.names.weaponSlot1")}}
+{{>(get . "sheet.parts.inventoryEquipmentSlot") item=sheet.equipment.weaponSlots.[1] slotName="weaponSlot2" i18nSlotName=(localize "wv.rules.equipment.slots.names.weaponSlot2")}}
+{{>(get . "sheet.parts.inventoryEquipmentSlot") item=sheet.equipment.armor slotName="armor" i18nSlotName=(localize "wv.rules.equipment.slots.names.armor")}}
+{{>(get . "sheet.parts.inventoryEquipmentSlot") item=sheet.equipment.clothing slotName="clothing" i18nSlotName=(localize "wv.rules.equipment.slots.names.clothing")}}
+{{>(get . "sheet.parts.inventoryEquipmentSlot") item=sheet.equipment.eyes slotName="eyes" i18nSlotName=(localize "wv.rules.equipment.slots.names.eyes")}}
+{{>(get . "sheet.parts.inventoryEquipmentSlot") item=sheet.equipment.mouth slotName="mouth" i18nSlotName=(localize "wv.rules.equipment.slots.names.mouth")}}
+{{>(get . "sheet.parts.inventoryEquipmentSlot") item=sheet.equipment.belt slotName="belt" i18nSlotName=(localize "wv.rules.equipment.slots.names.belt")}}
   </section>
   <div>
     <div class="flexrow controls-and-caps">

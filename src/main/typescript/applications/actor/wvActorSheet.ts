@@ -3,6 +3,7 @@ import {
   CONSTANTS,
   EquipmentSlot,
   HANDLEBARS,
+  isApparelSlot,
   isEquipmentSlot,
   isPhysicalItemType,
   isSkillName,
@@ -140,6 +141,13 @@ export default class WvActorSheet extends ActorSheet {
         );
       });
     sheetForm
+      .querySelectorAll("button[data-action=unequip]")
+      .forEach((element) => {
+        element.addEventListener("click", (event) =>
+          this.onClickUnequipItem(event)
+        );
+      });
+    sheetForm
       .querySelectorAll("button[data-weapon-attack-name]")
       .forEach((element) => {
         element.addEventListener("click", (event) =>
@@ -267,6 +275,8 @@ export default class WvActorSheet extends ActorSheet {
           equipment: HANDLEBARS.partPaths.actor.equipment,
           header: HANDLEBARS.partPaths.actor.header,
           inventory: HANDLEBARS.partPaths.actor.inventory,
+          inventoryEquipmentSlot:
+            HANDLEBARS.partPaths.actor.inventoryEquipmentSlot,
           magic: HANDLEBARS.partPaths.actor.magic,
           stats: HANDLEBARS.partPaths.actor.stats,
           weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
@@ -639,6 +649,29 @@ export default class WvActorSheet extends ActorSheet {
     }
 
     attack.execute();
+  }
+
+  /** Handle a click event on an unequip item button. */
+  protected async onClickUnequipItem(event: Event): Promise<void> {
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const itemElement = event.target.closest("[data-equipment-slot]");
+    if (!(itemElement instanceof HTMLElement))
+      throw new Error("The item element parent is not an HTMLElement.");
+
+    const slotName = itemElement.dataset.equipmentSlot;
+    if (typeof slotName !== "string") return;
+
+    try {
+      if (isApparelSlot(slotName)) {
+        await this.actor.unequipApparel(slotName);
+      }
+    } catch (e) {
+      if (e instanceof SystemRulesError && e.key) {
+        ui.notifications?.error(e.key, { localize: true });
+      }
+    }
   }
 
   /** Handle a click event on a create item button. */
@@ -1014,6 +1047,7 @@ interface SheetData extends ActorSheet.Data {
       equipment: string;
       header: string;
       inventory: string;
+      inventoryEquipmentSlot: string;
       magic: string;
       stats: string;
       weaponSlot: string;

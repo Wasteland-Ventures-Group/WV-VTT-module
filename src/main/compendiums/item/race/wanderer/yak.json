@@ -1,0 +1,66 @@
+{
+  "_id": "WvRaceWanderer14",
+  "name": "Yak",
+  "type": "race",
+  "data": {
+    "name": "Yak",
+    "description": "Originally from the frozen mountains near Crystal Empire, the yak kingdom of Yakyakistan was swayed to ally from both sides of the conflict, but ultimately the yaks allied with Equestria; some suspect the Ministry mare of MoM may have had a hoof in this. Though allies, yak forces were scarcely utilized during the war. And once the bombs dropped, the yak forces that still remained in Equestria headed home. Home, however, was not as it was remembered. A stray balefire missile had landed far too close for comfort to Yakyakistan, resulting in a nuclear winter the yaks could barely survive from. After much thought, stomping and screaming, a decision was made. The yaks would build a new Yakyakistan further south and settle there. The New Yakyakistan proved to be a sturdy, if a little on the small and simple side, settlement, and has remained from nearly as long as the Wasteland itself. Many of the yaks still hail from this city. Despite moving southward, yaks have not lost their thick, well-insulated fur or their strong disposition. Many yaks still hold tradition close to their heart, with their armors often taking cues from their history, though now made out of scrap metal. Many wartime armors have been passed down from generation to generation. Likewise, much of the yak fabric and culture -such as log-smashing or elaborate, earth-shattering dances- have been passed down from yak to the next.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Great Beast",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "background.size",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": false,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 41,
+      "magicTypes": [],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/ox-buffalo-horned-green.webp",
+  "effects": [],
+  "flags": {}
+}

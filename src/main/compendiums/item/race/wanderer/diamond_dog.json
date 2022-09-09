@@ -1,0 +1,66 @@
+{
+  "_id": "WvRaceWanderer08",
+  "name": "Diamond Dog",
+  "type": "race",
+  "data": {
+    "name": "Diamond Dog",
+    "description": "Though many diamond dogs have mutated into the fearsome hellhounds, some packs have eluded this fate. Retaining their form largely unchanged, diamond dogs are canine creatures that can walk on both four legs or two, giving them ample choices for weaponry. They have long thick claws they use for digging, and while not quite as strong and sharp as hellhound’s, they can dig through most common rock material and soil. Like their name implies, they have a great greed for gemstones. Due to this, they mostly inhabit caves and caverns, with strict hierarchy defining their way of life. Most packs of diamond dogs are led by an alpha, or by their companion the matriarch. The alpha and matriarch both have a high social standing, with the alpha upholding and planning daily hunts and gem hauls, as well as having the final say on tasks. The matriarch makes sure the community works well together, negotiating and solving disputes; she also handles issues in pup-caring. Much like pony societies, each pack has their own characteristics. Due to wartime stories of second-class citizenship that mothers pass on to their pups, diamond dogs do not mingle well with ponies; they are usually cautious and wary of any pony, and take a while to warm up to them. Other races however rarely encounter this cautious behavior.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "All Ears",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "secondary.initiative",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 2
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": false,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": [],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/dog-husky-white-blue.webp",
+  "effects": [],
+  "flags": {}
+}

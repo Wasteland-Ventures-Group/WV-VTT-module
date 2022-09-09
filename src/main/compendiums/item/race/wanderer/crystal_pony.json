@@ -1,0 +1,77 @@
+{
+  "_id": "WvRaceWanderer06",
+  "name": "Crystal Pony",
+  "type": "race",
+  "data": {
+    "name": "Crystal Pony",
+    "description": "Crystal ponies resemble earth ponies in outward appearance, but their shiny, crystal-like coat and gradiented manes set them apart from their earthy cousins. Hailing from the northern Crystal Empire, these ponies remained impartial to the conflict of the warring Equestria, though it was rumored that the empire was assisting them under the table, so to speak. The Crystal Empire’s ample defenses ensured that the stray bomb that hit near Yakyakistan would not cause as much harm on them as it did on the yaks. For the first half a century, the Crystal Empire skies were sunny and the climate warm and the only sign of adversity were from an occasional feral ghoul here and there. However, the force field surrounding the empire did not stop all of the magical fallout and the nuclear winter it brought with it from seeping in eventually. Emergency measures were taken to power the Crystal Heart, the core of Crystal Empire’s defenses, but they ultimately proved futile. As the radiation and freezing cold engulfed the city, the crystal ponies found themselves with an empire unable to sustain itself properly. Despite this, the Crystal Empire still has some few stubborn individuals remaining to this day.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "conditions": [],
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "One with the Glow",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "resistances.poison",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "conditions": [],
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "One with the Glow",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": true,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["earthPony"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 3
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 6,
+        "amount": 1
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/commodities/gems/gem-rough-heart-pink.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import glob from "glob-promise";
 import gulp from "gulp";
+import path from "path";
 import { logChange } from "../gulpfile.js";
 
 const inputBasePath = "./src/main/compendiums";
@@ -20,18 +21,24 @@ const compendiumConfigs: CompendiumConfig[] = [
     outputPath: `${itemOutputBasePath}/apparel.db`
   },
   {
-    inputGlob: `${itemInputBasePath}/weapon/*.json`,
-    outputPath: `${itemOutputBasePath}/weapons.db`
-  },
-  {
     inputGlob: `${itemInputBasePath}/magic/*.json`,
     outputPath: `${itemOutputBasePath}/magic.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/race/core/*.json`,
+    outputPath: `${itemOutputBasePath}/race/core.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/race/wanderer/*.json`,
+    outputPath: `${itemOutputBasePath}/race/wanderer.db`
+  },
+  {
+    inputGlob: `${itemInputBasePath}/weapon/*.json`,
+    outputPath: `${itemOutputBasePath}/weapons.db`
   }
 ];
 
 export default async function compileCompendiumsTask(): Promise<void[]> {
-  await Promise.all([fs.mkdir(itemOutputBasePath, { recursive: true })]);
-
   return Promise.all(
     compendiumConfigs.map((config) => {
       return compileCompendium(config);
@@ -75,6 +82,8 @@ async function compileCompendium(config: CompendiumConfig): Promise<void> {
 
     return Promise.reject(new Error(errorMessage));
   }
+
+  await fs.mkdir(path.dirname(config.outputPath), { recursive: true });
 
   return fs.writeFile(config.outputPath, contents.join("\n"));
 }

@@ -1,0 +1,66 @@
+{
+  "_id": "WVRaceCore000005",
+  "name": "Zebra",
+  "type": "race",
+  "data": {
+    "name": "Zebra",
+    "description": "Zebras are distinguishable by their unique black-and-white striped coats and the glyphlike Cutie Mark that adorns their haunch. Their manes are also black and white in color. Close to their pony cousins, zebras have their own customs and methods of magic. Many zebras still cling to their beliefs, which seem preposterous and bizarre to many Equestrians, such as their fear of the stars. Zebras are capable of their own kind of magic; alchemy, the art of creating concoctions to alter one’s self - or another, for that matter. In addition to this, some have acquired skills in dealing with the often-invisible spirits that inhabit the post-apocalyptic Equestria. It is entirely possible for a zebra to be both an alchemist and a shaman, though they must go through rigorous amount of training and personal sacrifices to do so.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Witchy Wards",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "resistances.poison",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": true,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["spirit"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": ["brewBase"],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 3
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 5,
+        "amount": 2
+      }
+    }
+  },
+  "img": "icons/commodities/biological/head-zebra.webp",
+  "effects": [],
+  "flags": {}
+}

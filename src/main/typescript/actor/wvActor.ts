@@ -2,20 +2,24 @@ import type { DocumentModificationOptions } from "@league-of-foundry-developers/
 import type { ActorDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
+import BaseSetup from "../applications/actor/character/baseSetup.js";
 import {
   ApparelSlot,
   CONSTANTS,
   getPainThreshold,
   SkillName,
-  SpecialName
+  SpecialName,
+  TYPES
 } from "../constants.js";
-import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
 import type { CompositeResource } from "../data/common.js";
+import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
+import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import Apparel from "../item/apparel.js";
+import Race from "../item/race.js";
 import Weapon from "../item/weapon.js";
 import WvItem from "../item/wvItem.js";
 import { getGroundMoveRange, getGroundSprintMoveRange } from "../movement.js";
@@ -31,6 +35,16 @@ import WvI18n from "../wvI18n.js";
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
+  /** The cached base setup application for this actor */
+  protected baseSetupApp: BaseSetup | null = null;
+
+  /** Lazily obtain the base setup application for this actor. */
+  get baseSetup(): BaseSetup {
+    if (this.baseSetupApp) return this.baseSetupApp;
+
+    return (this.baseSetupApp = new BaseSetup(this));
+  }
+
   /** Get an identifying string for this Actor. */
   get ident(): string {
     return `[${this.id}] "${this.name}"`;
@@ -49,6 +63,24 @@ export default class WvActor extends Actor {
   /** A convenience getter for the Actor's strain. */
   get strain(): CompositeResource {
     return this.data.data.vitals.strain;
+  }
+
+  /** Get the race of the Actor. */
+  get race(): Race {
+    return (
+      this.items.find(
+        (item): item is Race => item.data.type === TYPES.ITEM.RACE
+      ) ??
+      new Race(
+        {
+          type: TYPES.ITEM.RACE,
+          name: getGame().i18n.localize("wv.system.races.noRace"),
+          img: "icons/svg/mystery-man.svg",
+          data: new RaceDataSourceData()
+        },
+        { parent: this }
+      )
+    );
   }
 
   /** Get the amount of crippled legs of the character. */
@@ -442,6 +474,22 @@ export default class WvActor extends Actor {
       );
   }
 
+  /** Remove all race items from this actor. */
+  async removeAllRaces() {
+    // This deletes all persisted races
+    await this.deleteEmbeddedDocuments(
+      "Item",
+      this.itemTypes.race
+        .filter((item): item is StoredDocument<WvItem> => item.id !== null)
+        .map((item) => item.id)
+    );
+
+    // This deletes all stragglers that might still be there in memory
+    for (const race of this.itemTypes.race) {
+      await race.delete();
+    }
+  }
+
   override prepareBaseData(): void {
     this.data.data = new CharacterDataPropertiesData(this.data.data);
 
@@ -554,9 +602,25 @@ export default class WvActor extends Actor {
           newPainThreshold: newPT,
           oldPainThreshold: oldPT
         };
+        const allUsers: User[] = getGame().users?.contents ?? [];
+        const authorisedUsers: string[] = allUsers.flatMap((user) => {
+          const id = user.data._id;
+          if (id !== null) {
+            const userLevel = this.getUserLevel(user);
+            if (
+              (userLevel !== null &&
+                userLevel >= CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER) ||
+              user.isGM
+            ) {
+              return [id];
+            }
+          }
+          return [];
+        });
         const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
           speaker: ChatMessage.getSpeaker({ actor: this }),
-          flags: { [CONSTANTS.systemId]: flags }
+          flags: { [CONSTANTS.systemId]: flags },
+          whisper: authorisedUsers
         };
         await ChatMessage.create(msgOptions);
       }

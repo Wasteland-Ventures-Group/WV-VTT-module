@@ -1,0 +1,77 @@
+{
+  "_id": "WvRaceWanderer09",
+  "name": "Donkey",
+  "type": "race",
+  "data": {
+    "name": "Donkey",
+    "description": "Though they’re hardly the next beauty queen winner, or even the runner-up, donkeys do have their place in the Equestrian Wasteland. Due to their sturdy nature, they’ve fared quite well despite the magical fallout. Unlike ponies and various other magical creatures, donkeys are inherently magicless, making up for it with their tenacity and stubborn determination to see that their goals succeed. Donkey culture doesn’t vary much from pony culture, which is why donkeys often assimilate to society easily. The only key difference is the donkey societies’ more inward approach to strangers, not being quite as eager to befriend as ponies are. This usually means they’re slow to warm up to others they do not know well, but once one gains their trust, they prove a loyal friend through thick and thin. This of course, varies depending on individual. The most well-known settlement is Jennysburg, an old pre-war town mostly populated by donkeys, though a few other races from nearby have settled in, such as harpies. Reinforced and maintained with available scrap, the town sports a fairly standard Wasteland look to it, with every resource carefully maintained, harnessing what little the arid prairies have to offer.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Never Say Die",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "vitals.hitPoints",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 2
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Beast of Burden",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "secondary.maxCarryWeight",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": false,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": [],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/environment/creatures/horses.webp",
+  "effects": [],
+  "flags": {}
+}

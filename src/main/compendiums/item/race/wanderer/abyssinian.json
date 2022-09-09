@@ -1,0 +1,66 @@
+{
+  "_id": "WvRaceWanderer01",
+  "name": "Abyssinian",
+  "type": "race",
+  "data": {
+    "name": "Abyssinian",
+    "description": "A race of bipedal cats, abyssinians hail from a kingdom outside of Equestria’s borders. Hence why this race is rarely seen in the Wastes, as not many were present during the Last Day. However, while Equestria is now little more than a dead wasteland, Abyssinia has thrived, building their nation further. Yet, perhaps compelled by the feline curiosity, some make their way to the Equestrian Wasteland... Though food and shelter is plenty in Abyssinia, the various magitech constructs they developed during the war are scarce and in bad shape, due to Abyssinia being low in magic-amplifying gems, which the Equestrian Wasteland still has in droves. Being feline in origin, abyssinians have the smooth, graceful moves of a cat, often bending and moving in ways ponies cannot. In addition to this, they have sharp claws on their paws that they can and often use to fend for themselves, and, much like bat ponies, abyssinians have slit pupils, and can see much better in dark than most equine species. The witches’ black cats know tricks, as abyssinians wield magic like Unicorns. Their bodies and minds are also more adapted to magic, having greater resistance to arcane fatigue. Instead of having a horn like the equine spellcasters, abyssinians use trinkets, wands and staffs to focus the magical energies they harness. Though abyssinians can cast magic without a catalyst -a magical artifact unique to each caster-, their delivery of the spell weakens considerably. Traditionally, each abyssinian mage crafts their own catalyst, as it is believed that this allows the mage to channel their magic best. These catalysts are considered to reflect the mage’s virtue and personality. Should the catalyst break, they have to craft a new one (Thaumaturgy roll) with materials they feel reflect their personality the most.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Sorcerer",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": [],
+          "target": "vitals.strain",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": false,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": false
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["unicorn"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 3
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 0,
+        "amount": 0
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/mammals/cat-hunched-glowing-red.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -7,7 +7,9 @@
     <a class="item" data-tab="effects">{{localize "wv.system.effect.plural"}}</a>
     <a class="item" data-tab="equipment">{{localize "wv.rules.equipment.name"}}</a>
     <a class="item" data-tab="inventory">{{localize "wv.rules.equipment.inventory"}}</a>
-    <a class="item" data-tab="magic">{{localize "wv.rules.magic.magic"}}</a>
+    {{~#if sheet.race.canUseMagic~}}
+      <a class="item" data-tab="magic">{{localize "wv.rules.magic.magic"}}</a>
+    {{~/if~}}
     <a class="item" data-tab="background">{{localize "wv.rules.background.background"}}</a>
   </nav>
 
@@ -28,9 +30,11 @@
 {{>(get . "sheet.parts.inventory")}}
     </section>
 
-    <section class="tab magic" data-group="primary" data-tab="magic">
+    {{~#if sheet.race.canUseMagic~}}
+      <section class="tab magic" data-group="primary" data-tab="magic">
 {{>(get . "sheet.parts.magic")}}
-    </section>
+      </section>
+    {{~/if~}}
 
     <section class="tab background" data-group="primary" data-tab="background">
 {{>(get . "sheet.parts.background")}}

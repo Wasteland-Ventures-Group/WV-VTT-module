@@ -1,0 +1,66 @@
+{
+  "_id": "WvRaceWanderer05",
+  "name": "Changeling",
+  "type": "race",
+  "data": {
+    "name": "Changeling",
+    "description": "One of the more evasive races in the Equestrian Wasteland, the changelings are shapeshifters whose original form resembles a thin insect and pony hybrid. Commonly seen as Equestria’s version of the boogeyman due to their transformative magic, many independent hives began to break out of their old molds after the Last Day; some for the better, some for the worse. Most settlements in Wasteland regard changelings with suspicion and fear, though there are exceptions. Changelings are unique in that they do not get the bulk of their nutrients from regular food, but rather they gather and eat emotions (Strain in this system) from ponies. To successfully steal emotions from them, they take the form of the pony’s loved one and feed off of the pony’s affections for that person. Changelings do not need to eat solid food-items like vegetables, but they need to drink water or other fluids twice a day just like ponies do. While ineffective for sating their hunger, food items do, when consumed, still give them stat bonuses and HP back. Changeling hives rarely have contact with one another. The hive is often ran by a changeling queen, a taller and more powerful creature than the common changeling. She makes the decisions in the hive, with or without input from her subjects, and tend to live longer than her subjects.",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "conditions": [],
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Healing Shell",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "vitals.healingRate",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "physical": {
+      "canFly": true,
+      "canUseMagic": true,
+      "hasSecondHead": false,
+      "hasSpecialTalent": false,
+      "hasWings": true
+    },
+    "creation": {
+      "startingSpecialPoints": 40,
+      "magicTypes": ["unicorn"],
+      "freeSpells": {
+        "allOf": [],
+        "anyOf": {
+          "choices": ["shapeshift1", "shapeshift2", "shapeshift3"],
+          "amount": 1
+        },
+        "amount": 3
+      },
+      "freeAlchemy": {
+        "allOf": [],
+        "anyOf": {
+          "choices": [],
+          "amount": 0
+        },
+        "amount": 0
+      }
+    },
+    "leveling": {
+      "freeSpells": {
+        "period": 5,
+        "amount": 1
+      },
+      "freeAlchemy": {
+        "period": 0,
+        "amount": 0
+      }
+    }
+  },
+  "img": "icons/creatures/invertebrates/fly-wasp-mosquito-green.webp",
+  "effects": [],
+  "flags": {}
+}

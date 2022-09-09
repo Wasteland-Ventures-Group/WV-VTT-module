@@ -60,10 +60,12 @@ export default class WvItemSheet extends ItemSheet {
         return root + "apparelSheet.hbs";
       case "effect":
         return root + "effectSheet.hbs";
-      case "weapon":
-        return root + "weaponSheet.hbs";
       case "magic":
         return root + "magicSheet.hbs";
+      case "race":
+        return root + "raceSheet.hbs";
+      case "weapon":
+        return root + "weaponSheet.hbs";
       default:
         return root + "itemSheet.hbs";
     }

@@ -9,6 +9,16 @@
   h5
     margin: 0 0 0.5rem
 
+  img
+
+    &.inline
+      max-height: 1em
+      max-width: 1em
+
+    &.double-size-inline
+      max-height: 2em
+      max-width: 2em
+
   @for $i from 1 through constants.$max-input-chars
     .size-#{$i}
       $width: #{$i}ch

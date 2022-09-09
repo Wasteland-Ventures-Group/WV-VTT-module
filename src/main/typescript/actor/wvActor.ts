@@ -145,7 +145,7 @@ export default class WvActor extends Actor {
   }
 
   /** Get the equipped armor of the actor. */
-  get armor(): Apparel | null {
+  get armorApparel(): Apparel | null {
     const armorId = this.data.data.equipment.armorSlotId;
     if (armorId === null) return null;
 
@@ -156,7 +156,7 @@ export default class WvActor extends Actor {
   }
 
   /** Get the equipped clothing of the actor. */
-  get clothing(): Apparel | null {
+  get clothingApparel(): Apparel | null {
     const clothingId = this.data.data.equipment.clothingSlotId;
     if (clothingId === null) return null;
 
@@ -202,8 +202,8 @@ export default class WvActor extends Actor {
   /** Get all equipped apparel items of the actor.  */
   get equippedApparel(): Apparel[] {
     return [
-      this.armor,
-      this.clothing,
+      this.armorApparel,
+      this.clothingApparel,
       this.eyesApparel,
       this.mouthApparel,
       this.beltApparel
@@ -326,7 +326,7 @@ export default class WvActor extends Actor {
    *
    * @param id - the ID of the actor owned apparel to equip
    * @returns a promise that resolves once the update is done, rejects if this
-   *   is attempted in combat or the apparel slot is blocked
+   *   is attempted in combat or there is a blocked slot collission
    */
   async equipApparel(id: string | null): Promise<void> {
     if (this.inCombat)
@@ -347,30 +347,20 @@ export default class WvActor extends Actor {
         "wv.system.messages.blockedByAnotherApparel"
       );
 
-    let updateData: Partial<ActorDataConstructorData>;
-    switch (slot) {
-      case "armor":
-        if (this.data.data.equipment.armorSlotId === id) return;
-        updateData = { data: { equipment: { armorSlotId: id } } };
-        break;
-      case "clothing":
-        if (this.data.data.equipment.clothingSlotId === id) return;
-        updateData = { data: { equipment: { clothingSlotId: id } } };
-        break;
-      case "eyes":
-        if (this.data.data.equipment.eyesSlotId === id) return;
-        updateData = { data: { equipment: { eyesSlotId: id } } };
-        break;
-      case "mouth":
-        if (this.data.data.equipment.mouthSlotId === id) return;
-        updateData = { data: { equipment: { mouthSlotId: id } } };
-        break;
-      case "belt":
-        if (this.data.data.equipment.beltSlotId === id) return;
-        updateData = { data: { equipment: { beltSlotId: id } } };
-    }
+    let blockedSlotCollision = false;
+    item.blockedApparelSlots.forEach((slot) => {
+      if (blockedSlotCollision) return;
 
-    await this.update(updateData);
+      blockedSlotCollision ||= !!this[`${slot}Apparel`];
+    });
+    if (blockedSlotCollision)
+      throw new SystemRulesError(
+        "The apparel's blocked slots include an occupied slot.",
+        "wv.system.messages.blockedApparelSlotIsOccupied"
+      );
+
+    if (this.data.data.equipment[`${slot}SlotId`] === id) return;
+    await this.update({ data: { equipment: { [`${slot}SlotId`]: id } } });
   }
 
   /**

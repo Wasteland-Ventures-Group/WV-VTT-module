@@ -420,6 +420,11 @@ export interface LangSchema {
          */
         attackAlreadyExists: string;
         /**
+         * A general message that a slot a newly equipped apparel would block,
+         * is already occupied by another apparel.
+         */
+        blockedApparelSlotIsOccupied: string;
+        /**
          * A general message that an apparel slot is already blocked by another
          * apparel item.
          */

@@ -165,12 +165,12 @@ export default class WvActorSheet extends ActorSheet {
         ? this.toSheetWeapon(actorReadiedItem)
         : actorReadiedItem?.toObject(false) ?? null;
     const armor =
-      this.actor.armor instanceof Apparel
-        ? this.toSheetApparel(this.actor.armor)
+      this.actor.armorApparel instanceof Apparel
+        ? this.toSheetApparel(this.actor.armorApparel)
         : null;
     const clothing =
-      this.actor.clothing instanceof Apparel
-        ? this.toSheetApparel(this.actor.clothing)
+      this.actor.clothingApparel instanceof Apparel
+        ? this.toSheetApparel(this.actor.clothingApparel)
         : null;
     const eyes =
       this.actor.eyesApparel instanceof Apparel

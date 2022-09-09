@@ -435,6 +435,7 @@
       "messages": {
         "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte auf der Waffe nicht gefunden werden.",
         "attackAlreadyExists": "Eine Attacke mit Namen \"{name}\" existiert schon auf der Waffe.",
+        "blockedApparelSlotIsOccupied": "Ein Platz, der von diesem Kleidungsstück blockiert wird, ist schon mit einem Anderen belegt.",
         "blockedByAnotherApparel": "Der Platz für dieses Kleidungsstück ist von einem Anderen blockiert.",
         "canNotDoInCombat": "Dies kann nicht im Kampf getan werden.",
         "couldNotCreateDocument": "Konnte kein Dokument mit den gegebenen Daten erstellen.",

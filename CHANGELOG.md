@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - character's race is no longer a predetermined list of names, but an actual
   item, this also allows homebrew races
   ([#384](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/384))
+- trying to equip an apparel with blocked slots will now fail if one of the
+  blocked slots is already occupied
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
 
 ### Fixed
 

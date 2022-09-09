@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
 - ability to unequip apparel from equipment slots
   ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- ability to unready weapons and items in and out of combat
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
 
 ### Changed
 

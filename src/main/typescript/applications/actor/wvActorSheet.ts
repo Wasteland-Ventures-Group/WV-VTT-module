@@ -661,10 +661,12 @@ export default class WvActorSheet extends ActorSheet {
       throw new Error("The item element parent is not an HTMLElement.");
 
     const slotName = itemElement.dataset.equipmentSlot;
-    if (typeof slotName !== "string") return;
+    if (typeof slotName !== "string" || !isEquipmentSlot(slotName)) return;
 
     try {
-      if (isApparelSlot(slotName)) {
+      if (slotName === "readiedItem") {
+        await this.actor.unreadyItem();
+      } else if (isApparelSlot(slotName)) {
         await this.actor.unequipApparel(slotName);
       }
     } catch (e) {

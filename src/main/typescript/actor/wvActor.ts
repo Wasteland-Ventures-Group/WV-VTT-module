@@ -243,7 +243,8 @@ export default class WvActor extends Actor {
    * @param id - the ID of the actor owned item to ready
    * @param useQuickSlot - whether to use a quick slot charge when in combat and
    *   it applies to the item
-   * @returns a promise that resolves once the update is done
+   * @returns a promise that resolves once the update is done, and rejects if
+   *   the actor is in combat without sufficient AP
    */
   async readyItem(
     id: string | null,
@@ -270,16 +271,46 @@ export default class WvActor extends Actor {
       apCost = CONSTANTS.rules.equipment.readyItemCost.fromSlot;
     }
 
-    if (this.actionPoints.value < apCost) {
+    if (this.actionPoints.value < apCost)
       throw new SystemRulesError(
         "Not enough action points.",
         "wv.system.messages.notEnoughAp"
       );
-    }
 
     await this.update({
       data: {
         equipment: { readiedItemId: id },
+        vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
+      }
+    });
+  }
+
+  /**
+   * Unready the readied item or weapon. No update is made in the following
+   * cases:
+   * - the readied slot is already empty
+   *
+   * @returns a promise that resolves once the update is done, and rejects if
+   *   the actor is in combat without sufficient AP
+   */
+  async unreadyItem() {
+    if (!this.data.data.equipment.readiedItemId === null) return;
+
+    if (!this.inCombat) {
+      await this.update({ data: { equipment: { readiedItemId: null } } });
+      return;
+    }
+
+    const apCost = this.data.data.equipment.equipActionCosts.unready.total;
+    if (this.actionPoints.value < apCost)
+      throw new SystemRulesError(
+        "Not enough action points.",
+        "wv.system.messages.notEnoughAp"
+      );
+
+    await this.update({
+      data: {
+        equipment: { readiedItemId: null },
         vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
       }
     });

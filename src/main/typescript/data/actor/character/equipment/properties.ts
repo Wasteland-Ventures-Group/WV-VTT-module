@@ -14,6 +14,9 @@ export default class EquipmentProperties extends EquipmentSource {
   /** The damage threshold of the character */
   damageThreshold = new CompositeNumber();
 
+  /** AP costs for various equip actions */
+  equipActionCosts = new EquipActionCosts();
+
   /**
    * Modify the damage threshold and max quick slots by the equipped apparel's
    * values.
@@ -33,4 +36,9 @@ export default class EquipmentProperties extends EquipmentSource {
         });
     });
   }
+}
+
+export class EquipActionCosts {
+  /** The cost for unreadying an item or weapon */
+  unready = new CompositeNumber(0);
 }

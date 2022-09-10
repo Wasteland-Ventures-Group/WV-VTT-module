@@ -24,8 +24,12 @@ export default abstract class PhysicalItemProperties
     owningItem: WvItem
   ) {
     BaseItemProperties.transform(target, source, owningItem);
+
     target.value = CompositeNumber.from(source.value);
+    target.value.bounds.min = 0;
+
     target.weight = CompositeNumber.from(source.weight);
+    target.weight.bounds.min = 0;
   }
 
   override rules = new RulesProperties();

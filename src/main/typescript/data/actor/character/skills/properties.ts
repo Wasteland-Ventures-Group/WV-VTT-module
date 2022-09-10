@@ -93,7 +93,7 @@ export default class SkillsProperties
       ].permTotal *
         2 +
       Math.floor(specials.luck.permTotal / 2);
-    const composite = new CompositeNumber(baseSkill);
+    const composite = new CompositeNumber(baseSkill, { min: 0, max: 85 });
     composite.add({
       value: leveling.skillRanks[skill],
       labelComponents: [{ key: "wv.rules.skills.points.short" }]

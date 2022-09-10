@@ -23,7 +23,10 @@ export class MagicDataPropertiesData
     BaseItemProperties.transform(this, source, owningItem);
 
     this.apCost = CompositeNumber.from(source.apCost);
+    this.apCost.bounds.min = 0;
+
     this.strainCost = CompositeNumber.from(source.strainCost);
+    this.strainCost.bounds.min = 0;
 
     this.range = new RangeProperties(source.range);
     this.target = new TargetProperties(source.target);

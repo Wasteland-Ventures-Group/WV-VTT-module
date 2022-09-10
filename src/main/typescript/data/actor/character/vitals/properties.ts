@@ -12,11 +12,20 @@ export default class VitalsProperties extends VitalsSource {
   constructor(source: VitalsSource) {
     super();
     foundry.utils.mergeObject(this, source);
+
     this.hitPoints = CompositeResource.from(source.hitPoints);
+    this.hitPoints.bounds.min = 0;
+
     this.painThreshold = getPainThreshold(this.hitPoints.value);
+
     this.actionPoints = CompositeResource.from(source.actionPoints);
+    this.actionPoints.bounds.min = 0;
+
     this.insanity = CompositeResource.from(source.insanity);
+    this.insanity.bounds.min = 0;
+
     this.strain = CompositeResource.from(source.strain);
+    this.strain.bounds.min = 0;
   }
 
   painThreshold: PainThreshold;
@@ -30,7 +39,7 @@ export default class VitalsProperties extends VitalsSource {
   override strain: CompositeResource;
 
   /** The healing rate of the character per 8 hours of rest */
-  healingRate = new CompositeNumber();
+  healingRate = new CompositeNumber(0, { min: 0 });
 
   /** Get the amount of crippled legs. */
   get crippledLegs(): number {

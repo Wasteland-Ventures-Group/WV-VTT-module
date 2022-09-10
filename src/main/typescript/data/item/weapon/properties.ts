@@ -22,7 +22,9 @@ export class WeaponDataPropertiesData
     this.attacks = new AttacksProperties(source.attacks, owningWeapon);
     this.ranges = new RangesProperties(source.ranges);
     this.reload = new ReloadProperties(source.reload);
+
     this.strengthRequirement = CompositeNumber.from(source.strengthRequirement);
+    this.strengthRequirement.bounds = { min: 0, max: 15 };
   }
 
   override rules = new RulesProperties();

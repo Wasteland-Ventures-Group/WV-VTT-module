@@ -323,9 +323,11 @@
           "criticalMiss": "Voll daneben",
           "criticalSuccess": "Kritischer Erfolg",
           "failure": "Fehlschlag",
+          "failureDegrees": "Fehlschlagsgrad",
           "hit": "Treffer",
           "miss": "Daneben",
-          "success": "Erfolg"
+          "success": "Erfolg",
+          "successDegrees": "Erfolgsgrad"
         },
         "targets": {
           "hitChance": "Trefferchance"

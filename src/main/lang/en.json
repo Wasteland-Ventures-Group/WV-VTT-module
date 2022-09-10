@@ -323,9 +323,11 @@
           "criticalMiss": "Critical Miss",
           "criticalSuccess": "Critical Success",
           "failure": "Failure",
+          "failureDegrees": "Degree(s) of Failure",
           "hit": "Hit",
           "miss": "Miss",
-          "success": "Success"
+          "success": "Success",
+          "successDegrees": "Degree(s) of Success"
         },
         "targets": {
           "hitChance": "Hit chance"

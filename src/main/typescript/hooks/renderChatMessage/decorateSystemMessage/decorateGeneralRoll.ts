@@ -9,13 +9,12 @@ export default async function decoratePTMessage(
   flags: GeneralRollFlags,
   html: HookParams[1]
 ) {
+  html.addClass("general-roll");
   const content = getContentElement(html);
-  const data = {
+  const data: GeneralRollTemplateData = {
     ...flags,
     template: {
-      keys: {
-        success: getCheckResultKey(flags)
-      }
+      keys: getCheckResultKey(flags)
     }
   };
   content.append(await renderTemplate(TEMPLATE, data));
@@ -29,16 +28,35 @@ export interface GeneralRollFlags {
     formula: string;
     critical?: Critical | undefined;
     result: number;
+    degree: number;
     total: number;
   };
 }
 
-function getCheckResultKey(flags: GeneralRollFlags): string {
-  let key = "wv.rules.rolls.results.";
+function getCheckResultKey(flags: GeneralRollFlags): {
+  success: string;
+  degrees: string;
+} {
+  let success = "wv.rules.rolls.results.";
+  let degrees = "wv.rules.rolls.results.";
   const roll = flags.roll;
-  if (roll.critical === "success") key += "criticalSuccess";
-  else if (roll.critical === "failure") key += "criticalFailure";
-  else if (roll.total === 1) key += "success";
-  else key += "failure";
-  return key;
+  if (roll.critical === "success") success += "criticalSuccess";
+  else if (roll.critical === "failure") success += "criticalFailure";
+  else if (roll.total === 1) success += "success";
+  else success += "failure";
+  if (success.includes("uccess")) degrees += "successDegrees";
+  else degrees += "failureDegrees";
+
+  return { success, degrees };
 }
+
+type GeneralRollTemplateDataKeys = { success: string; degrees: string };
+
+type GeneralRollTemplateData = GeneralRollFlags & {
+  template: {
+    keys: {
+      success: string;
+      degrees: string;
+    };
+  };
+};

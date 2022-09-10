@@ -424,14 +424,17 @@ export default class WvActor extends Actor {
 
   async createCheckMessage(
     commonData: ChatMessageDataConstructorData,
-    checkRoll: Roll
+    checkRoll: Roll,
+    target: number
   ): Promise<void> {
+    const result = checkRoll.dice[0]?.results[0]?.result ?? 0;
     const flags: GeneralRollFlags = {
       type: "roll",
       roll: {
         formula: checkRoll.formula,
         critical: checkRoll.dice[0]?.results[0]?.critical,
-        result: checkRoll.dice[0]?.results[0]?.result ?? 0,
+        result,
+        degree: target - result,
         total: checkRoll.total ?? 0
       }
     };
@@ -451,8 +454,9 @@ export default class WvActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
 
+    const target = this.data.data.specials[name].tempTotal;
     const roll = new Roll(
-      Formulator.special(this.data.data.specials[name].tempTotal)
+      Formulator.special(target)
         .modify(options?.modifier)
         .criticals({
           success: this.data.data.secondary.criticals.success.total,
@@ -465,7 +469,7 @@ export default class WvActor extends Actor {
     //    rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
     //  })
     //);
-    this.createCheckMessage(msgOptions, roll);
+    this.createCheckMessage(msgOptions, roll, target * 10);
   }
 
   /**

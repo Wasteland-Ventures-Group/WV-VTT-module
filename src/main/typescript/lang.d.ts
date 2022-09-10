@@ -314,12 +314,16 @@ export interface LangSchema {
           criticalSuccess: string;
           /** The label for a failure */
           failure: string;
+          /** The label for degrees of failure */
+          failureDegrees: string;
           /** The label for a hit */
           hit: string;
           /** The label for a miss */
           miss: string;
           /** The label for a success */
           success: string;
+          /** The label for degrees of success */
+          successDegrees: string;
         };
         /** Labels for various targets to roll for */
         targets: {

@@ -1,5 +1,12 @@
 import type WvActor from "../../../actor/wvActor.js";
-import { CONSTANTS, SpecialName, SpecialNames } from "../../../constants.js";
+import {
+  CONSTANTS,
+  isSpecialName,
+  SpecialName,
+  SpecialNames,
+  ThaumaturgySpecial,
+  ThaumaturgySpecials
+} from "../../../constants.js";
 import type CharacterDataProperties from "../../../data/actor/character/properties.js";
 import { getGame } from "../../../foundryHelpers.js";
 import type Race from "../../../item/race.js";
@@ -55,7 +62,15 @@ export default class BaseSetup extends FormApplication<
             short: i18nSpecials[specialName].short
           };
           return specials;
-        }, {} as Record<SpecialName, TemplateSpecial>)
+        }, {} as Record<SpecialName, TemplateSpecial>),
+        thaumSpecials: ThaumaturgySpecials.reduce(
+          (thaumSpecials, thaumSpecialName) => {
+            thaumSpecials[thaumSpecialName] =
+              i18nSpecials[thaumSpecialName].long;
+            return thaumSpecials;
+          },
+          {} as Record<ThaumaturgySpecial, string>
+        )
       }
     };
   }
@@ -90,7 +105,14 @@ export default class BaseSetup extends FormApplication<
       specialPoints[specialName] = points;
     }
 
-    this.character.update({ data: { leveling: { specialPoints } } });
+    const updateData: Record<string, unknown> = {
+      data: { leveling: { specialPoints } }
+    };
+    const thaumSpecial = formData?.["thaumSpecial"] ?? "";
+    if (isSpecialName(thaumSpecial))
+      updateData["data.magic.thaumSpecial"] = thaumSpecial;
+
+    await this.character.update(updateData);
   }
 
   private getHtmlElements(innerHtml: HTMLElement) {
@@ -150,7 +172,7 @@ export default class BaseSetup extends FormApplication<
 
 type SpecialPointsFormData = Partial<Record<`special.${SpecialName}`, string>>;
 
-type AppFormData = SpecialPointsFormData;
+type AppFormData = SpecialPointsFormData & { thaumSpecial?: string };
 
 interface TemplateData {
   data: CharacterDataProperties;
@@ -158,6 +180,7 @@ interface TemplateData {
     bounds: typeof CONSTANTS["bounds"];
     race: Race;
     specials: Record<SpecialName, TemplateSpecial>;
+    thaumSpecials: Record<ThaumaturgySpecial, string>;
   };
 }
 

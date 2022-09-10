@@ -2,7 +2,12 @@ import type {
   RadiationSicknessLevel,
   SpecialName
 } from "../../../../constants.js";
-import { ComponentSource, Component, LabelComponent } from "../../../common.js";
+import {
+  ComponentSource,
+  Component,
+  LabelComponent,
+  CompositeNumberBounds
+} from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
 export default class SpecialsProperties
@@ -61,6 +66,8 @@ export default class SpecialsProperties
 
 /** The layout for a serialized Special. */
 export interface SerializedSpecial {
+  permBounds?: CompositeNumberBounds;
+  tempBounds?: CompositeNumberBounds;
   points: number;
   permComponents: ComponentSource[];
   tempComponents: ComponentSource[];
@@ -103,7 +110,11 @@ export class Special implements FoundrySerializable {
     if (source instanceof Special) return source;
 
     if (this.isSerialized(source)) {
-      const special = new Special(source.points);
+      const special = new Special(
+        source.points,
+        source.permBounds,
+        source.tempBounds
+      );
       source.permComponents.forEach((component) => special.addPerm(component));
       source.tempComponents.forEach((component) => special.addTemp(component));
       return special;
@@ -112,18 +123,15 @@ export class Special implements FoundrySerializable {
     throw new Error(`The source was not valid: ${source}`);
   }
 
-  /**
-   * Create a new SPECIAL.
-   * @param points - the invested points of the SPECIAL
-   */
-  constructor(points = 0) {
-    this.points = points;
+  /** Create a new SPECIAL. */
+  constructor(
+    public points = 0,
+    public permBounds: CompositeNumberBounds = {},
+    public tempBounds: CompositeNumberBounds = {}
+  ) {
     this.#permComponents = [];
     this.#tempComponents = [];
   }
-
-  /** The invested points of the SPECIAL */
-  points: number;
 
   /** The internal permanent components of the SPECIAL */
   #permComponents: Component[];
@@ -157,12 +165,28 @@ export class Special implements FoundrySerializable {
 
   /** Get the permanent total. */
   get permTotal(): number {
-    return this.points + this.permModifier;
+    let sum = this.points + this.permModifier;
+
+    if (typeof this.permBounds.min === "number" && sum < this.permBounds.min)
+      sum = this.permBounds.min;
+
+    if (typeof this.permBounds.max === "number" && sum > this.permBounds.max)
+      sum = this.permBounds.max;
+
+    return sum;
   }
 
   /** Get the temporary total. */
   get tempTotal(): number {
-    return this.permTotal + this.tempModifier;
+    let sum = this.points + this.permModifier + this.tempModifier;
+
+    if (typeof this.tempBounds.min === "number" && sum < this.tempBounds.min)
+      sum = this.tempBounds.min;
+
+    if (typeof this.tempBounds.max === "number" && sum > this.tempBounds.max)
+      sum = this.tempBounds.max;
+
+    return sum;
   }
 
   /**
@@ -197,9 +221,11 @@ export class Special implements FoundrySerializable {
     } else {
       return {
         points: this.points,
+        permBounds: this.permBounds,
         permComponents: this.#permComponents.map((component) =>
           component.toObject(source)
         ),
+        tempBounds: this.tempBounds,
         tempComponents: this.#tempComponents.map((component) =>
           component.toObject(source)
         )

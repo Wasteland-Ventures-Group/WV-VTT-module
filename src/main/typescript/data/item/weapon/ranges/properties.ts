@@ -125,8 +125,12 @@ export class DistanceProperties extends DistanceSource {
   constructor(source: DistanceSource) {
     super();
     foundry.utils.mergeObject(this, source);
+
     this.base = CompositeNumber.from(source.base);
+    this.base.bounds.min = 0;
+
     this.multiplier = CompositeNumber.from(source.multiplier);
+    this.multiplier.bounds.min = 0;
   }
 
   override base: CompositeNumber;

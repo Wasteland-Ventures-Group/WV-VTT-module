@@ -8,8 +8,15 @@ export interface CompositeNumberSource {
   source: number;
 }
 
+/** The bounds of a composite number */
+export interface CompositeNumberBounds {
+  min?: number | undefined;
+  max?: number | undefined;
+}
+
 /** The data layout for a serialized composite number. */
 export interface SerializedCompositeNumber extends CompositeNumberSource {
+  bounds?: CompositeNumberBounds;
   components: ComponentSource[];
 }
 
@@ -58,6 +65,7 @@ export class CompositeNumber
       const compNumber = new CompositeNumber(source.source);
 
       if (this.isSerialized(source)) {
+        compNumber.bounds = source.bounds ?? {};
         source.components.forEach((component) => compNumber.add(component));
       }
 
@@ -70,7 +78,8 @@ export class CompositeNumber
   /** Create a new CompositeNumber with the given source value. */
   constructor(
     /** The source value of the CompositeNumber */
-    public source = 0
+    public source = 0,
+    public bounds: CompositeNumberBounds = {}
   ) {
     this.#components = [];
   }
@@ -85,9 +94,17 @@ export class CompositeNumber
 
   /** The total value of the CompositeNumber */
   get total() {
-    return this.#components.reduce((total, component) => {
+    let sum = this.#components.reduce((total, component) => {
       return total + component.value;
     }, this.source);
+
+    if (typeof this.bounds.min === "number" && sum < this.bounds.min)
+      sum = this.bounds.min;
+
+    if (typeof this.bounds.max === "number" && sum > this.bounds.max)
+      sum = this.bounds.max;
+
+    return sum;
   }
 
   /**
@@ -112,17 +129,18 @@ export class CompositeNumber
       return { source: this.source };
     } else {
       return {
-        source: this.source,
+        bounds: this.bounds,
         components: this.#components.map((component) =>
           component.toObject(source)
-        )
+        ),
+        source: this.source
       };
     }
   }
 
   /** Clone this CompositeNumber. */
   clone(): CompositeNumber {
-    const clone = new CompositeNumber(this.source);
+    const clone = new CompositeNumber(this.source, this.bounds);
 
     for (const component of this.#components) {
       clone.add(component);
@@ -252,7 +270,14 @@ export class CompositeResource extends CompositeNumber implements Resource {
     if (source instanceof CompositeResource) return source;
 
     if (Resource.isSource(source)) {
-      return new CompositeResource(source.value, source.value);
+      const compResource = new CompositeResource(source.value, source.value);
+
+      if (CompositeNumber.isSerialized(source)) {
+        compResource.bounds = source.bounds ?? {};
+        source.components.forEach((component) => compResource.add(component));
+      }
+
+      return compResource;
     }
 
     throw new Error(`The source was not valid: ${source}`);
@@ -262,8 +287,12 @@ export class CompositeResource extends CompositeNumber implements Resource {
    * Create a new CompositeResource with the given value and and source for the
    * maximum.
    */
-  constructor(public value: number, public source: number) {
-    super(source);
+  constructor(
+    public value: number,
+    public source: number,
+    public bounds: CompositeNumberBounds = {}
+  ) {
+    super(source, bounds);
   }
 
   /** Get the max value of the resource. This is an alias for total. */
@@ -273,7 +302,7 @@ export class CompositeResource extends CompositeNumber implements Resource {
 
   /** Clone this CompositeResource. */
   override clone(): CompositeResource {
-    const clone = new CompositeResource(this.value, this.source);
+    const clone = new CompositeResource(this.value, this.source, this.bounds);
 
     for (const component of this.components) {
       clone.add(component);

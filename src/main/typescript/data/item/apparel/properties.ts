@@ -18,6 +18,7 @@ export class ApparelDataPropertiesData
     super();
     foundry.utils.mergeObject(this, source);
     PhysicalItemProperties.transform(this, source, owningItem);
+
     this.blockedSlots = source.blockedSlots ?? {
       armor: false,
       belt: false,
@@ -25,15 +26,17 @@ export class ApparelDataPropertiesData
       eyes: false,
       mouth: false
     };
-    this.damageThreshold = source.damageThreshold
-      ? CompositeNumber.from(source.damageThreshold)
-      : new CompositeNumber();
-    this.quickSlots = source.quickSlots
-      ? CompositeNumber.from(source.quickSlots)
-      : new CompositeNumber();
-    this.modSlots = source.modSlots
-      ? CompositeNumber.from(source.modSlots)
-      : new CompositeNumber();
+
+    this.damageThreshold = CompositeNumber.from(
+      source.damageThreshold ?? { source: 0 }
+    );
+    this.damageThreshold.bounds.min = 0;
+
+    this.quickSlots = CompositeNumber.from(source.quickSlots ?? { source: 0 });
+    this.quickSlots.bounds.min = 0;
+
+    this.modSlots = CompositeNumber.from(source.modSlots ?? { source: 0 });
+    this.modSlots.bounds.min = 0;
   }
 
   override rules = new RulesProperties();

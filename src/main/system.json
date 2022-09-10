@@ -29,9 +29,44 @@
       "system": "wasteland-ventures"
     },
     {
-      "name": "apparel",
-      "label": "Wasteland Ventures Apparel",
-      "path": "compendiums/item/apparel.db",
+      "name": "apparel_accessories",
+      "label": "Wasteland Ventures Accessories",
+      "path": "compendiums/item/apparel/accessories.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_clothing",
+      "label": "Wasteland Ventures Clothing",
+      "path": "compendiums/item/apparel/clothing.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_heavy_armor",
+      "label": "Wasteland Ventures Heavy Armor",
+      "path": "compendiums/item/apparel/heavy_armor.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_light_armor",
+      "label": "Wasteland Ventures Light Armor",
+      "path": "compendiums/item/apparel/light_armor.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_power_armor",
+      "label": "Wasteland Ventures Power Armor",
+      "path": "compendiums/item/apparel/power_armor.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_premium_armor",
+      "label": "Wasteland Ventures Premium Armor",
+      "path": "compendiums/item/apparel/premium_armor.db",
       "type": "Item",
       "system": "wasteland-ventures"
     },

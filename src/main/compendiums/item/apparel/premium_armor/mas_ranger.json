@@ -1,0 +1,70 @@
+{
+  "_id": "WvPremiumArmor03",
+  "name": "MAS Ranger",
+  "type": "apparel",
+  "data": {
+    "name": "MAS Ranger",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Sneak Bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.sneak",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Sleight Bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.sleight",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Radiation Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Poison Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.poison",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "damageThreshold": { "source": 3 },
+    "weight": { "source": 10 },
+    "rarity": "rare",
+    "value": { "source": 8000 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 3 },
+    "slot": "armor",
+    "type": "premiumArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-gold.webp",
+  "effects": [],
+  "flags": {}
+}

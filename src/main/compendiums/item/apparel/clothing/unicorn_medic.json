@@ -1,0 +1,36 @@
+{
+  "_id": "WvApparelCloth32",
+  "name": "Unicorn Medic",
+  "type": "apparel",
+  "data": {
+    "name": "Unicorn Medic",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Medicine bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.medicine",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 1 },
+    "rarity": "uncommon",
+    "value": { "source": 400 },
+    "quickSlots": { "source": 4 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/robe-layered-white.webp",
+  "effects": [],
+  "flags": {}
+}

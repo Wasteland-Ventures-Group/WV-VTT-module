@@ -1,0 +1,58 @@
+{
+  "_id": "WvApparelCloth46",
+  "name": "MAS Magician Robes",
+  "type": "apparel",
+  "data": {
+    "name": "MAS Magician Robes",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Intelligence bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "intelligence",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Thaumaturgy bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.thaumaturgy",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "MEWs bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.magicalEnergyWeapons",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "rare",
+    "value": { "source": 1000 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/robe-layered-purple.webp",
+  "effects": [],
+  "flags": {}
+}

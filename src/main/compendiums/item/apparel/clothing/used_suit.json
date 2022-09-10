@@ -1,0 +1,36 @@
+{
+  "_id": "WvApparelCloth02",
+  "name": "Used Suit",
+  "type": "apparel",
+  "data": {
+    "name": "Used Suit",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Diplomacy bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.diplomacy",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "common",
+    "value": { "source": 40 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/shirt-collared-grey.webp",
+  "effects": [],
+  "flags": {}
+}

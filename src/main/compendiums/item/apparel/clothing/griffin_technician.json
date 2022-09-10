@@ -1,0 +1,36 @@
+{
+  "_id": "WvApparelCloth33",
+  "name": "Griffin Technician",
+  "type": "apparel",
+  "data": {
+    "name": "Griffin Technician",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Mechanics bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.mechanics",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 1 },
+    "rarity": "uncommon",
+    "value": { "source": 400 },
+    "quickSlots": { "source": 4 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-leather-studded-brown.webp",
+  "effects": [],
+  "flags": {}
+}

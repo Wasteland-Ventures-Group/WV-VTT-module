@@ -1,0 +1,58 @@
+{
+  "_id": "WvApparelCloth58",
+  "name": "Zebra Royal Seer uniform",
+  "type": "apparel",
+  "data": {
+    "name": "Zebra Royal Seer uniform",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Charisma bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "charisma",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Barter bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.barter",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Melee bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.melee",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 1 },
+    "rarity": "rare",
+    "value": { "source": 2000 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-steel-blue-gold.webp",
+  "effects": [],
+  "flags": {}
+}

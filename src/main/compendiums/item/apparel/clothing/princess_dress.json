@@ -1,0 +1,58 @@
+{
+  "_id": "WvApparelCloth54",
+  "name": "Princess dress",
+  "type": "apparel",
+  "data": {
+    "name": "Princess dress",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Charisma bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "charisma",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Diplomacy bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.diplomacy",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Intimidation bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.intimidation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "exotic",
+    "value": { "source": 2000 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/collar-steel.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,36 @@
+{
+  "_id": "WvApparelCloth09",
+  "name": "Fresh Pre-War clothing",
+  "type": "apparel",
+  "data": {
+    "name": "Fresh Pre-War clothing",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Agility bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "agility",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "common",
+    "value": { "source": 80 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/shirt-collared-brown.webp",
+  "effects": [],
+  "flags": {}
+}

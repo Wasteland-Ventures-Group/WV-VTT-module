@@ -1,0 +1,58 @@
+{
+  "_id": "WvApparelCloth48",
+  "name": "MWT Jumpsuit",
+  "type": "apparel",
+  "data": {
+    "name": "MWT Jumpsuit",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Strength bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "strength",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Mechanics bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.mechanics",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Firearms bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.firearms",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "rare",
+    "value": { "source": 1000 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/vest-leather-brown.webp",
+  "effects": [],
+  "flags": {}
+}

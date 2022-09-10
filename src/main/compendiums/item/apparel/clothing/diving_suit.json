@@ -1,11 +1,11 @@
 {
-  "_id": "WvApparel0000009",
-  "name": "Fresh Pre-War clothing",
+  "_id": "WvApparelCloth55",
+  "name": "Diving Suit",
   "type": "apparel",
   "data": {
-    "name": "Fresh Pre-War clothing",
+    "name": "Diving Suit",
     "description": "",
-    "notes": "",
+    "notes": "+20 Sneak when Swimming / Underwater | Can breathe underwater",
     "rules": {
       "sources": [
         {
@@ -22,23 +22,22 @@
       ]
     },
     "tags": [],
-    "rarity": "common",
-    "value": {
-      "source": 80
-    },
-    "weight": {
-      "source": 0.5
-    },
-    "quickSlots": {
-      "source": 2
-    },
-    "modSlots": {
-      "source": 2
-    },
+    "weight": { "source": 1 },
+    "rarity": "rare",
+    "value": { "source": 1000 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
     "slot": "clothing",
+    "blockedSlots": {
+      "armor": true,
+      "belt": false,
+      "clothing": false,
+      "eyes": false,
+      "mouth": false
+    },
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/breastplate-layered-leather-blue-gold.webp",
   "effects": [],
   "flags": {}
 }

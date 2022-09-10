@@ -1,0 +1,46 @@
+{
+  "_id": "WvApparelCloth44",
+  "name": "Sexy Sleepwear",
+  "type": "apparel",
+  "data": {
+    "name": "Sexy Sleepwear",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Luck bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "luck",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Diplomacy bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.diplomacy",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.25 },
+    "rarity": "rare",
+    "value": { "source": 800 },
+    "modSlots": { "source": 1 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/commodities/cloth/cloth-bolt-gold-red.webp",
+  "effects": [],
+  "flags": {}
+}

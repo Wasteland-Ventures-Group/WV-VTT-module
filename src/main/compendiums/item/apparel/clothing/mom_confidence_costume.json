@@ -1,0 +1,58 @@
+{
+  "_id": "WvApparelCloth47",
+  "name": "MoM Confidence Costume",
+  "type": "apparel",
+  "data": {
+    "name": "MoM Confidence Costume",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Perception bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "perception",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Diplomacy bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.thaumaturgy",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Lockpick bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.lockpick",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "rare",
+    "value": { "source": 1000 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/shirt-collared-pink.webp",
+  "effects": [],
+  "flags": {}
+}

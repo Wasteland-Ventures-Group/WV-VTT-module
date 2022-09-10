@@ -1,0 +1,47 @@
+{
+  "_id": "WvApparelCloth25",
+  "name": "Explosive Ensemble",
+  "type": "apparel",
+  "data": {
+    "name": "Explosive Ensemble",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Explosives bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.explosives",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Lockpick bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.lockpick",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 2 },
+    "rarity": "uncommon",
+    "value": { "source": 200 },
+    "quickSlots": { "source": 4 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+  "effects": [],
+  "flags": {}
+}

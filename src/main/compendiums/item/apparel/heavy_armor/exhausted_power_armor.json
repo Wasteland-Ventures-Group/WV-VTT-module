@@ -1,0 +1,47 @@
+{
+  "_id": "WvHeavyArmor0006",
+  "name": "Exhausted Power Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Exhausted Power Armor",
+    "description": "",
+    "notes": "User is Encumbered",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Poison Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.poison",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        },
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Radiation Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 20
+        }
+      ]
+    },
+    "tags": [],
+    "damageThreshold": { "source": 4 },
+    "weight": { "source": 25 },
+    "rarity": "rare",
+    "value": { "source": 4000 },
+    "modSlots": { "source": 3 },
+    "slot": "armor",
+    "type": "heavyArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-leather-green.webp",
+  "effects": [],
+  "flags": {}
+}

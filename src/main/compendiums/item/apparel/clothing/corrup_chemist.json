@@ -1,0 +1,58 @@
+{
+  "_id": "WvApparelCloth35",
+  "name": "Corrupt Chemist",
+  "type": "apparel",
+  "data": {
+    "name": "Corrupt Chemist",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Diplomacy bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.diplomacy",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Medicine bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.medicine",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Science bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.science",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 1.5 },
+    "rarity": "uncommon",
+    "value": { "source": 500 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/shirt-simple-tattered-grey.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,25 @@
+{
+  "_id": "WvLightArmor0002",
+  "name": "Armored Duster",
+  "type": "apparel",
+  "data": {
+    "name": "Armored Duster",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "damageThreshold": { "source": 1 },
+    "weight": { "source": 3 },
+    "rarity": "common",
+    "value": { "source": 100 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 4 },
+    "slot": "armor",
+    "type": "lightArmor"
+  },
+  "img": "icons/equipment/back/cloak-brown-collared-padded.webp",
+  "effects": [],
+  "flags": {}
+}

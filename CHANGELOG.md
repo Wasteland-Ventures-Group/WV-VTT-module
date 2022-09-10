@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- all system apparel items in separate compendiums
+  ([#329](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/329))
 - an explanation to game master movement settings, that they only affect the
   current user and only if they are a game master
   ([#452](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/452))

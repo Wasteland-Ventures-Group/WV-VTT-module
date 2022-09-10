@@ -1,0 +1,45 @@
+{
+  "_id": "WvAccessories006",
+  "name": "Breather",
+  "type": "apparel",
+  "data": {
+    "name": "Breather",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Poison Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.poison",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Radiation Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "rare",
+    "value": { "source": 250 },
+    "slot": "mouth",
+    "type": "accessory"
+  },
+  "img": "icons/equipment/head/mask-plague-leather-brown.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -1,0 +1,24 @@
+{
+  "_id": "WvHeavyArmor0002",
+  "name": "Hide Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Hide Armor",
+    "description": "",
+    "notes": "User is Encumbered",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "damageThreshold": { "source": 2 },
+    "weight": { "source": 12 },
+    "rarity": "common",
+    "value": { "source": 150 },
+    "modSlots": { "source": 2 },
+    "slot": "armor",
+    "type": "heavyArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-leather-brown-silver.webp",
+  "effects": [],
+  "flags": {}
+}

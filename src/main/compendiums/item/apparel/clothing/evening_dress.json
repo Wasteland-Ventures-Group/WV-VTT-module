@@ -1,0 +1,58 @@
+{
+  "_id": "WvApparelCloth42",
+  "name": "Evening Dress",
+  "type": "apparel",
+  "data": {
+    "name": "Evening Dress",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Charisma bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "charisma",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Diplomacy bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.diplomacy",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Barter bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.barter",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "rare",
+    "value": { "source": 800 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/commodities/cloth/cloth-bolt-gold-pink.webp",
+  "effects": [],
+  "flags": {}
+}

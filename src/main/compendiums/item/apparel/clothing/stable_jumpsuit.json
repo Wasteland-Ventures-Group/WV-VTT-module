@@ -1,0 +1,47 @@
+{
+  "_id": "WvApparelCloth15",
+  "name": "Stable Jumpsuit",
+  "type": "apparel",
+  "data": {
+    "name": "Stable Jumpsuit",
+    "description": "Blue with golden trims, with a large golden number stitched to the side",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Luck bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "luck",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 2
+        },
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Endurance malus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "endurance",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": -1
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "uncommon",
+    "value": { "source": 100 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-leather-blue.webp",
+  "effects": [],
+  "flags": {}
+}

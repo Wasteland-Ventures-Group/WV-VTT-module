@@ -1,0 +1,47 @@
+{
+  "_id": "WvApparelCloth24",
+  "name": "Arcane Attire",
+  "type": "apparel",
+  "data": {
+    "name": "Arcane Attire",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "MEW bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "target": "skills.magicalEnergyWeapons",
+          "conditions": ["whenEquipped"],
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Thaumaturgy bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.thaumaturgy",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 1.5 },
+    "rarity": "uncommon",
+    "value": { "source": 200 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/robe-layered-teal.webp",
+  "effects": [],
+  "flags": {}
+}

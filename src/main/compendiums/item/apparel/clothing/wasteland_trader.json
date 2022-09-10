@@ -1,0 +1,36 @@
+{
+  "_id": "WvApparelCloth04",
+  "name": "Wasteland Trader",
+  "type": "apparel",
+  "data": {
+    "name": "Wasteland Trader",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Barter bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.barter",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "common",
+    "value": { "source": 25 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/vest-leather-brown-gold.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -360,6 +360,7 @@ export interface LangSchema {
         edit: string;
         execute: string;
         submit: string;
+        unequip: string;
         update: string;
       };
       /** Labels relating to different dialogs */
@@ -419,6 +420,11 @@ export interface LangSchema {
          * @pattern (?=.*\{name\})
          */
         attackAlreadyExists: string;
+        /**
+         * A general message that a slot a newly equipped apparel would block,
+         * is already occupied by another apparel.
+         */
+        blockedApparelSlotIsOccupied: string;
         /**
          * A general message that an apparel slot is already blocked by another
          * apparel item.
@@ -493,6 +499,11 @@ export interface LangSchema {
          * @pattern (?=.*\{needed\})(?=.*\{actual\})(?=.*\{name\})
          */
         notEnoughApToMove: string;
+        /**
+         * The message when an actor does not have enough quick slots to ready
+         * something.
+         */
+        notEnoughQuickSlots: string;
         /** The message when a target is out of range */
         targetOutOfRange: string;
       };

@@ -73,6 +73,7 @@ export function preloadTemplates(): void {
     HANDLEBARS.partPaths.actor.equipment,
     HANDLEBARS.partPaths.actor.header,
     HANDLEBARS.partPaths.actor.inventory,
+    HANDLEBARS.partPaths.actor.inventoryEquipmentSlot,
     HANDLEBARS.partPaths.actor.magic,
     HANDLEBARS.partPaths.actor.stats,
     HANDLEBARS.partPaths.actor.weaponSlot,

@@ -460,17 +460,6 @@ export const CONSTANTS = {
       dieTarget: 5
     },
 
-    /** Rule constants relating to equipment */
-    equipment: {
-      /** Costs to ready an item */
-      readyItemCost: {
-        /** The ready item cost for readying directly from the inventory. */
-        direct: 8 as number,
-        /** The ready item cost for readying from a weapon or quick slot. */
-        fromSlot: 3 as number
-      }
-    },
-
     /** Rule constants related to movement */
     movement: {
       /** The amount of AP needed to walk one meter. */
@@ -540,6 +529,7 @@ export const HANDLEBARS = {
       equipment: `${CONSTANTS.systemPath}/handlebars/actors/parts/equipment.hbs`,
       header: `${CONSTANTS.systemPath}/handlebars/actors/parts/header.hbs`,
       inventory: `${CONSTANTS.systemPath}/handlebars/actors/parts/inventory.hbs`,
+      inventoryEquipmentSlot: `${CONSTANTS.systemPath}/handlebars/actors/parts/inventoryEquipmentSlot.hbs`,
       magic: `${CONSTANTS.systemPath}/handlebars/actors/parts/magic.hbs`,
       stats: `${CONSTANTS.systemPath}/handlebars/actors/parts/stats.hbs`,
       weaponSlot: `${CONSTANTS.systemPath}/handlebars/actors/parts/weaponSlot.hbs`

@@ -408,6 +408,7 @@
         "edit": "Bearbeiten",
         "execute": "Ausführen",
         "submit": "Abschicken",
+        "unequip": "Ablegen",
         "update": "Aktualisieren"
       },
       "dialogs": {
@@ -435,6 +436,7 @@
       "messages": {
         "attackNotFound": "Die Attacke mit Namen \"{name}\" konnte auf der Waffe nicht gefunden werden.",
         "attackAlreadyExists": "Eine Attacke mit Namen \"{name}\" existiert schon auf der Waffe.",
+        "blockedApparelSlotIsOccupied": "Ein Platz, der von diesem Kleidungsstück blockiert wird, ist schon mit einem Anderen belegt.",
         "blockedByAnotherApparel": "Der Platz für dieses Kleidungsstück ist von einem Anderen blockiert.",
         "canNotDoInCombat": "Dies kann nicht im Kampf getan werden.",
         "couldNotCreateDocument": "Konnte kein Dokument mit den gegebenen Daten erstellen.",
@@ -446,6 +448,7 @@
         "noActor": "{name} hat keinen Aktor.",
         "notEnoughAp": "Nicht genug Aktionspunkte um das zu tun!",
         "notEnoughApToMove": "Nicht genug Aktionspunkte zum Bewegen. {needed} waren nötig, {actual} hatte {name} zur Verfügung.",
+        "notEnoughQuickSlots": "Nicht genut Schnellplätze um das bereit zu machen.",
         "targetOutOfRange": "Das Ziel ist außer Reichweite!"
       },
       "misc": {

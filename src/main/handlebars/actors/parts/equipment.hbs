@@ -1,7 +1,17 @@
 <section class="flex-fixed">
-  <h3>{{localize "wv.rules.equipment.slots.names.readiedItem"}}</h3>
+  <div class="flexrow flex-j-spaced align-baseline">
+    <h3 class="flex-fixed no-wrap">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</h3>
+    <label class="flex-fixed contained-target-inline">
+      {{~localize "wv.rules.equipment.slots.quickSlot.plural"~}}
+      <div class="resource-display">
+        <input class="size-2" type="number" name="data.equipment.quickSlots.value" value="{{data.data.equipment.quickSlots.value}}" min="0" max="{{data.data.equipment.quickSlots.max}}" />
+        <span>&nbsp;/&nbsp;</span>
+        <span>{{data.data.equipment.quickSlots.max}}</span>
+      </div>
+    </label>
+  </div>
   <div class="lighter-block equipment-slot" data-equipment-slot="readiedItem">
-    <div class="equipment-slot-status">
+    <div>
       {{~#if sheet.equipment.readiedItem~}}
         {{~#if (eq sheet.equipment.readiedItem.type "weapon")~}}
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.readiedItem readied=true}}

@@ -12,7 +12,6 @@ import {
   TYPES
 } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
-import type CharacterDataSource from "../data/actor/character/source.js";
 import type { CompositeResource } from "../data/common.js";
 import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";

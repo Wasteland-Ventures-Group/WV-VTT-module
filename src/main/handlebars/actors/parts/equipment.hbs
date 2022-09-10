@@ -15,6 +15,8 @@
       {{~#if sheet.equipment.readiedItem~}}
         {{~#if (eq sheet.equipment.readiedItem.type "weapon")~}}
 {{>(get . "sheet.parts.weaponSlot") weapon=sheet.equipment.readiedItem readied=true}}
+        {{~else~}}
+{{>(get . "sheet.parts.itemSlot") item=sheet.equipment.readiedItem readied=true}}
         {{~/if~}}
       {{~else~}}
         <div class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</div>

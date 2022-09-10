@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - automated quick slots restore when actor leaves last combat they were in
   ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
 - automated action points restore when actor leaves last combat they were in
+- a display for readied non-weapons on the equipment tab
+- images for all equipment slots
 
 ### Changed
 

@@ -22,6 +22,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
 - ability to unslot weapons from weapon slots out of combat
   ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- ability edit current quick slot charges on equipment tab
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- quick slot display in the inventory
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- automated subtraction of quick slot charges when readying with quick slot
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- automated quick slots restore when actor leaves last combat they were in
+  ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- automated action points restore when actor leaves last combat they were in
 
 ### Changed
 
@@ -119,7 +128,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - show size category on the statistics tab on the character sheet
 - make tags editable on attacks and ranges
 - show tags on equipment tab
-- equipped items can now be edited directly from the equipment page
+- equipped items can now be edited directly from the equipment tab
 - modifiable initiative
   ([#383](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/383))
 - make SPECIAL and skill rolls always ask for a modifier and add a checkbox to
@@ -203,8 +212,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   modifiers
 - item sheets now show their final stats on the stats tab and allow editing on
   the source values tab
-- moved damage threshold and quick slots max to statistics page
-- expanded the criticals block on statistics page to hold other statistics
+- moved damage threshold and quick slots max to statistics tab
+- expanded the criticals block on statistics tab to hold other statistics
 
 ### Fixed
 
@@ -224,7 +233,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- grid units to the range display on the equipment page
+- grid units to the range display on the equipment tab
 
 ### Changed
 
@@ -298,7 +307,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - actors are now only considered in combat, if they are part of a started combat
   in the active scene or part of an unlinked, started combat
   ([#210](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/210))
-- the way the ready item cost is displayed on the equipment and inventory pages
+- the way the ready item cost is displayed on the equipment and inventory tabs
   ([#216](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/216))
 - the system now tracks per item, whether their data should stay linked to their
   compendium entry
@@ -324,7 +333,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#193](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/193))
 - basic support for apparel items
   ([#140](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/140))
-- rework equpment page to show weapon slots and readied item
+- rework equpment tab to show weapon slots and readied item
   ([#192](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/192))
 
 ### Changed

@@ -499,6 +499,11 @@ export interface LangSchema {
          * @pattern (?=.*\{needed\})(?=.*\{actual\})(?=.*\{name\})
          */
         notEnoughApToMove: string;
+        /**
+         * The message when an actor does not have enough quick slots to ready
+         * something.
+         */
+        notEnoughQuickSlots: string;
         /** The message when a target is out of range */
         targetOutOfRange: string;
       };

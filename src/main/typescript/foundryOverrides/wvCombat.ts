@@ -15,31 +15,62 @@ export default class WvCombat extends Combat {
   }
 
   override async nextRound(): Promise<this | undefined> {
-    this.resetActionPoints();
+    this.restoreCombatantsActionPoints(true);
     return super.nextRound();
   }
 
   override async startCombat(): Promise<this | undefined> {
-    this.resetActionPoints();
+    this.restoreCombatantsActionPoints(true);
     return super.startCombat();
   }
 
-  /** Reset the action points of all combatants to their max value. */
-  private resetActionPoints() {
+  override async endCombat(): Promise<WvCombat | undefined> {
+    const result = await super.endCombat();
+    if (!result) return;
+
+    this.restoreCombatantsActionPoints();
+    this.restoreCombatantsQuickSlots();
+
+    return result;
+  }
+
+  /**
+   * Reset the action points of all combatants to their max value.
+   *
+   * @param inCombat - whether to also restore action points of actors in combat
+   */
+  private restoreCombatantsActionPoints(inCombat = false) {
     this.combatants.forEach((combatant) => {
+      if (combatant.data.defeated) return;
+
       if (!combatant.actor) {
         LOG.debug(`The combatant has no actor. id=${combatant.id}`);
         return;
       }
-      if (typeof combatant.actor.actionPoints.max !== "number") {
-        LOG.debug(
-          `The combatant actor's max action points is undefined. id=${combatant.id}`
-        );
-        return;
-      }
+
+      if (!inCombat && combatant.actor.inCombat) return;
+
+      combatant.actor.restoreActionPoints();
+    });
+  }
+
+  /**
+   * Restore the quick slots of all combatants to their max value.
+   *
+   * @param inCombat - whether to also restore quick slots of actors in combat
+   */
+  private restoreCombatantsQuickSlots(inCombat = false) {
+    this.combatants.forEach((combatant) => {
       if (combatant.data.defeated) return;
 
-      combatant.actor.updateActionPoints(combatant.actor.actionPoints.max);
+      if (!combatant.actor) {
+        LOG.debug(`The combatant has no actor. id=${combatant.id}`);
+        return;
+      }
+
+      if (!inCombat && combatant.actor.inCombat) return;
+
+      combatant.actor.restoreQuickSlots();
     });
   }
 }

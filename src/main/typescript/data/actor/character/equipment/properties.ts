@@ -7,6 +7,7 @@ export default class EquipmentProperties extends EquipmentSource {
     super();
     foundry.utils.mergeObject(this, source);
     this.quickSlots = CompositeResource.from(source.quickSlots);
+    this.quickSlots.source = 0;
   }
 
   override quickSlots: CompositeResource;
@@ -29,7 +30,7 @@ export default class EquipmentProperties extends EquipmentSource {
           labelComponents: [{ text: apparel.name ?? "" }]
         });
 
-      if (apparel.data.data.quickSlots)
+      if (apparel.data.data.quickSlots.total)
         this.quickSlots.add({
           value: apparel.data.data.quickSlots.total,
           labelComponents: [{ text: apparel.name ?? "" }]

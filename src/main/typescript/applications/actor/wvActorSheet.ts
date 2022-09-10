@@ -874,7 +874,10 @@ export default class WvActorSheet extends ActorSheet {
       if (dragData.data._id !== this.actor.readiedItem?.id) {
         slotsToAllow.push("readiedItem");
 
-        if (this.actor.inCombat) {
+        if (
+          this.actor.inCombat &&
+          this.actor.data.data.equipment.quickSlots.value > 0
+        ) {
           this.markReadySlot("quick-slotable");
         }
       }

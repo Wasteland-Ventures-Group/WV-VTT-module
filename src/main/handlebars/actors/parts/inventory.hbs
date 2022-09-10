@@ -1,6 +1,10 @@
 <div class="flexrow">
   <section class="flex-fixed equipment-slots flexcol flex-gapped">
     <h4 class="flex-fixed no-margin">{{localize "wv.rules.equipment.slots.plural"}}</h4>
+    <div class="flex-fixed flexrow flex-j-spaced">
+      <span class="flex-fixed no-wrap">{{localize "wv.rules.equipment.slots.quickSlot.plural"}}:</span>
+      <span class="flex-fixed no-wrap">{{data.data.equipment.quickSlots.value}} / {{data.data.equipment.quickSlots.max}}</span>
+    </div>
     <div class="flex-fixed lighter-block equipment-slot" data-equipment-slot="readiedItem" data-item-id="{{sheet.equipment.readiedItem._id}}">
       <div class="flexrow flex-j-spaced">
         <span class="equipment-slot-placeholder">{{localize "wv.rules.equipment.slots.names.readiedItem"}}</span>

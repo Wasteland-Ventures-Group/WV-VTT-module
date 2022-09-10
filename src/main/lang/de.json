@@ -448,6 +448,7 @@
         "noActor": "{name} hat keinen Aktor.",
         "notEnoughAp": "Nicht genug Aktionspunkte um das zu tun!",
         "notEnoughApToMove": "Nicht genug Aktionspunkte zum Bewegen. {needed} waren nötig, {actual} hatte {name} zur Verfügung.",
+        "notEnoughQuickSlots": "Nicht genut Schnellplätze um das bereit zu machen.",
         "targetOutOfRange": "Das Ziel ist außer Reichweite!"
       },
       "misc": {

@@ -448,6 +448,7 @@
         "noActor": "{name} does not have an Actor.",
         "notEnoughAp": "Not enough Action Points to do that!",
         "notEnoughApToMove": "Not enough Action Points to move. {needed} were needed, {actual} were available to {name}.",
+        "notEnoughQuickSlots": "Not enough Quick Slots to ready that!",
         "targetOutOfRange": "The target is out of range!"
       },
       "misc": {

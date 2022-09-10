@@ -50,19 +50,24 @@ export default class WvActor extends Actor {
     return `[${this.id}] "${this.name}"`;
   }
 
-  /** A convenience getter for the Actor's hit points. */
+  /** Get the Actor's hit points. */
   get hitPoints(): CompositeResource {
     return this.data.data.vitals.hitPoints;
   }
 
-  /** A convenience getter for the Actor's action points. */
+  /** Get the Actor's action points. */
   get actionPoints(): CompositeResource {
     return this.data.data.vitals.actionPoints;
   }
 
-  /** A convenience getter for the Actor's strain. */
+  /** Get the Actor's strain. */
   get strain(): CompositeResource {
     return this.data.data.vitals.strain;
+  }
+
+  /** Get the Actor's quick slots. */
+  get quickSlots(): CompositeResource {
+    return this.data.data.equipment.quickSlots;
   }
 
   /** Get the race of the Actor. */
@@ -263,13 +268,21 @@ export default class WvActor extends Actor {
     }
 
     let apCostComposite = this.data.data.equipment.equipActionCosts.readyDirect;
+    let quickSlots = this.quickSlots.value;
     if (item.type === "weapon") {
       if (this.data.data.equipment.weaponSlotIds.includes(id)) {
         apCostComposite =
           this.data.data.equipment.equipActionCosts.readyFromSlot;
       }
     } else if (useQuickSlot) {
+      if (quickSlots < 1)
+        throw new SystemRulesError(
+          "Not enough quick slots.",
+          "wv.system.messages.notQuickSlots"
+        );
+
       apCostComposite = this.data.data.equipment.equipActionCosts.readyFromSlot;
+      quickSlots -= 1;
     }
     const apCost = apCostComposite.total;
 
@@ -281,7 +294,7 @@ export default class WvActor extends Actor {
 
     await this.update({
       data: {
-        equipment: { readiedItemId: id },
+        equipment: { readiedItemId: id, quickSlots: { value: quickSlots } },
         vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
       }
     });
@@ -437,51 +450,31 @@ export default class WvActor extends Actor {
     await this.update({ data: { equipment: { [`${slot}SlotId`]: null } } });
   }
 
-  /**
-   * Create update data for updating the hit points and optionally update the
-   * Actor.
-   * @param hitPoints - the new hit points value
-   * @param update - whether to directly update or only return the update data
-   * @returns the update data
-   */
-  updateHitPoints(hitPoints: number, update = true): UpdateData {
-    const updateData: UpdateData = {
-      _id: this.id,
-      data: { vitals: { hitPoints: { value: hitPoints } } }
-    };
-    if (update) this.update(updateData);
-    return updateData;
+  /** Update the hit points of the Actor. */
+  async updateHitPoints(value: number) {
+    await this.update({ data: { vitals: { hitPoints: { value } } } });
   }
 
-  /**
-   * Create update data for updating the action points and optionally update the
-   * Actor.
-   * @param actionPoints - the new action points value
-   * @param update - whether to directly update or only return the update data
-   * @returns the update data
-   */
-  updateActionPoints(actionPoints: number, update = true): UpdateData {
-    const updateData: UpdateData = {
-      _id: this.id,
-      data: { vitals: { actionPoints: { value: actionPoints } } }
-    };
-    if (update) this.update(updateData);
-    return updateData;
+  /** Update the action points of the Actor. */
+  async updateActionPoints(value: number) {
+    await this.update({ data: { vitals: { actionPoints: { value } } } });
   }
 
-  /**
-   * Create update data for updating the strain and optionally update the Actor.
-   * @param strain - the new strain value
-   * @param update - whether to directly update or only return the update data
-   * @returns the update data
-   */
-  updateStrain(strain: number, update = true): UpdateData {
-    const updateData: UpdateData = {
-      _id: this.id,
-      data: { vitals: { strain: { value: strain } } }
-    };
-    if (update) this.update(updateData);
-    return updateData;
+  /** Update the strain of the Actor. */
+  async updateStrain(value: number) {
+    await this.update({ data: { vitals: { strain: { value } } } });
+  }
+
+  /** Restore the action points of the actor to the maximum. */
+  async restoreActionPoints() {
+    await this.updateActionPoints(this.actionPoints.max);
+  }
+
+  /** Restore the quick slots of the actor to the maximum. */
+  async restoreQuickSlots() {
+    await this.update({
+      data: { equipment: { quickSlots: { value: this.quickSlots.max } } }
+    });
   }
 
   /**
@@ -691,8 +684,3 @@ export default class WvActor extends Actor {
     }
   }
 }
-
-/** The type of the update data for WvActors. */
-export type UpdateData = DeepPartial<CharacterDataSource> & {
-  _id: string | null;
-};

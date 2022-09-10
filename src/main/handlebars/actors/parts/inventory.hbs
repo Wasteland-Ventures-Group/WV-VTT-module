@@ -15,7 +15,12 @@
           {{~/if~}}
         </nav>
       </div>
-      <div>{{sheet.equipment.readiedItem.name}}</div>
+      <div class="flexrow flex-center">
+        {{~#if sheet.equipment.readiedItem.img~}}
+          <img class="flex-fixed double-size-inline" src="{{sheet.equipment.readiedItem.img}}" />
+        {{~/if~}}
+        <span>{{sheet.equipment.readiedItem.name}}</span>
+      </div>
       <div class="equipment-slot-target lighter-block parchment-bg">
         <div class="ready-item-cost direct">{{sheet.equipment.readyItemCost.direct}} {{localize "wv.rules.actionPoints.short"}}</div>
         <div class="lighter-block ready-item-cost from-quick-slot" data-equipment-slot-extra="quickSlot">

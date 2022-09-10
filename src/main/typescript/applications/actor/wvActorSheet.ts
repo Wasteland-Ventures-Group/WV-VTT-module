@@ -283,6 +283,7 @@ export default class WvActorSheet extends ActorSheet {
           inventory: HANDLEBARS.partPaths.actor.inventory,
           inventoryEquipmentSlot:
             HANDLEBARS.partPaths.actor.inventoryEquipmentSlot,
+          itemSlot: HANDLEBARS.partPaths.actor.itemSlot,
           magic: HANDLEBARS.partPaths.actor.magic,
           stats: HANDLEBARS.partPaths.actor.stats,
           weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
@@ -1063,6 +1064,7 @@ interface SheetData extends ActorSheet.Data {
       header: string;
       inventory: string;
       inventoryEquipmentSlot: string;
+      itemSlot: string;
       magic: string;
       stats: string;
       weaponSlot: string;

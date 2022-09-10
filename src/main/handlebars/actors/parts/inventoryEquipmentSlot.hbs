@@ -8,5 +8,10 @@
       {{~/if~}}
     </nav>
   </div>
-  <div>{{item.name}}</div>
+  <div class="flexrow flex-center">
+    {{~#if item.img~}}
+      <img class="flex-fixed double-size-inline" src="{{item.img}}" />
+    {{~/if~}}
+    <span>{{item.name}}</span>
+  </div>
 </div>

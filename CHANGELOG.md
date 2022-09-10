@@ -52,6 +52,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ready item costs to properties tracked on characters, instead of hard-coded
   values
   ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
+- moved the Thaumaturgy SPECIA select from the magic tab to the character setup
+  application
+  ([#485](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/485))
 
 ### Fixed
 

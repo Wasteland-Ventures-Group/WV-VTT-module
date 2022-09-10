@@ -12,8 +12,6 @@ import {
   SkillNames,
   SpecialName,
   SpecialNames,
-  ThaumaturgySpecial,
-  ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
 import type DragData from "../../dragData.js";
@@ -314,17 +312,7 @@ export default class WvActorSheet extends ActorSheet {
           return skills;
         }, {} as Record<SkillName, SheetSkill>),
         systemGridUnit: getGame().system.data.gridUnits,
-        magic: {
-          thaumSpecials: ThaumaturgySpecials.reduce(
-            (thaumSpecials, thaumSpecialName) => {
-              thaumSpecials[thaumSpecialName] =
-                i18nSpecials[thaumSpecialName].long;
-              return thaumSpecials;
-            },
-            {} as Record<ThaumaturgySpecial, string>
-          ),
-          spells
-        },
+        magic: { spells },
         effects: this.actor.items
           .filter(
             (item): item is StoredDocument<WvItem> =>
@@ -1021,7 +1009,6 @@ interface SheetLeveling {
 }
 
 interface SheetMagic {
-  thaumSpecials: Record<ThaumaturgySpecial, string>;
   spells: SheetSpell[];
 }
 

@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - character's race is no longer a predetermined list of names, but an actual
   item, this also allows homebrew races
   ([#384](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/384))
+- hard-coded pain threshold table to dynamic display of current pain threshold
+  ([#455](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/455))
 
 ### Fixed
 

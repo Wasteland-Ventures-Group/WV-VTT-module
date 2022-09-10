@@ -31,6 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - automated quick slots restore when actor leaves last combat they were in
   ([#483](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/483))
 - automated action points restore when actor leaves last combat they were in
+- bounds for all modifiable CompositeNumbers
+  ([#487](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/487))
 
 ### Changed
 

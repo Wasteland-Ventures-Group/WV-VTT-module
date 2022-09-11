@@ -1,8 +1,6 @@
 import { CONSTANTS } from "../../../constants.js";
 import type { HookParams } from "../index.js";
-import decorateGeneralRoll, {
-  GeneralRollFlags
-} from "./decorateGeneralRoll.js";
+import decorateCheck, { CheckFlags } from "./decorateCheck.js";
 import decoratePTMessage, { PainThresholdFlags } from "./decoratePTMessage.js";
 import decorateWeaponAttack, {
   WeaponAttackFlags
@@ -27,7 +25,7 @@ export default function decorateSystemMessage(
       decoratePTMessage(systemFlags as PainThresholdFlags, html);
       break;
     case "roll":
-      decorateGeneralRoll(systemFlags as GeneralRollFlags, html);
+      decorateCheck(systemFlags as CheckFlags, html);
   }
 }
 
@@ -40,4 +38,4 @@ export function getContentElement(html: HookParams[1]): JQuery<HTMLElement> {
 export type SystemChatMessageFlags =
   | WeaponAttackFlags
   | PainThresholdFlags
-  | GeneralRollFlags;
+  | CheckFlags;

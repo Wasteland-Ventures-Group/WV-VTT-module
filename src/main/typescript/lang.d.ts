@@ -329,6 +329,8 @@ export interface LangSchema {
         targets: {
           /** Label for a hit chance reason */
           hitChance: string;
+          /** Label for a success chance reason */
+          successChance: string;
         };
       };
       /** Labels related to skills */

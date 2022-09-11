@@ -131,6 +131,17 @@ export default class Formulator {
     return formula;
   }
 
+  /**
+   * Get the target for a d100 roll for a check
+   */
+  get d100Target(): number {
+    if (this.special) {
+      return this.target * 10;
+    } else {
+      return this.target;
+    }
+  }
+
   /** Get the base dice formula for the roll. */
   protected get baseDieFormula(): string {
     return this.type === "check" ? "1d100" : `${this.base} + ${this.count}d6`;
@@ -144,7 +155,7 @@ export default class Formulator {
 
     if (this.modifier || this.special) targetFormula += "(";
 
-    targetFormula += this.target + (this.special ? " * 10" : "");
+    targetFormula += `${this.d100Target}`;
 
     if (this.modifier) {
       if (this.modifier < 0) {

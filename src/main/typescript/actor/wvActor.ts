@@ -14,12 +14,16 @@ import {
 } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type CharacterDataSource from "../data/actor/character/source.js";
-import type { CompositeResource } from "../data/common.js";
+import type {
+  CompositeResource,
+  SerializedCompositeNumber
+} from "../data/common.js";
 import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
-import type { GeneralRollFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateGeneralRoll.js";
+import type { CheckFlags as CheckFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateCheck.js";
 import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
+import diceSoNice from "../integrations/diceSoNice/diceSoNice.js";
 import Apparel from "../item/apparel.js";
 import Race from "../item/race.js";
 import Weapon from "../item/weapon.js";
@@ -422,19 +426,31 @@ export default class WvActor extends Actor {
     return updateData;
   }
 
-  async createCheckMessage(
+  async rollCreateCheckMessage(
     commonData: ChatMessageDataConstructorData,
-    checkRoll: Roll,
-    target: number
+    baseFormula: Formulator,
+    target: SerializedCompositeNumber,
+    options: RollOptions | undefined
   ): Promise<void> {
+    const criticals = this.data.data.secondary.criticals;
+    const fullFormula = baseFormula.modify(options?.modifier).criticals({
+      success: criticals.success.total,
+      failure: criticals.failure.total
+    });
+    const checkRoll = new Roll(fullFormula.toString()).roll({ async: false });
+    await diceSoNice(checkRoll, commonData.whisper ?? null, { actor: this.id });
     const result = checkRoll.dice[0]?.results[0]?.result ?? 0;
-    const flags: GeneralRollFlags = {
+    const flags: CheckFlags = {
       type: "roll",
+      details: {
+        criticals, // Is this an automatic type cast? Or is it a result of structural typing?
+        success: target
+      },
       roll: {
         formula: checkRoll.formula,
         critical: checkRoll.dice[0]?.results[0]?.critical,
         result,
-        degree: target - result,
+        degree: fullFormula.d100Target - result,
         total: checkRoll.total ?? 0
       }
     };
@@ -454,22 +470,17 @@ export default class WvActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
 
-    const target = this.data.data.specials[name].tempTotal;
-    const roll = new Roll(
-      Formulator.special(target)
-        .modify(options?.modifier)
-        .criticals({
-          success: this.data.data.secondary.criticals.success.total,
-          failure: this.data.data.secondary.criticals.failure.total
-        })
-        .toString()
-    ).roll({ async: false });
-    //.then((r) =>
-    //  r.toMessage(msgOptions, {
-    //    rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
-    //  })
-    //);
-    this.createCheckMessage(msgOptions, roll, target * 10);
+    const targetRaw = this.data.data.specials[name];
+    const targetCompNum: SerializedCompositeNumber = {
+      source: targetRaw.permTotal,
+      components: targetRaw.tempComponents
+    };
+    this.rollCreateCheckMessage(
+      msgOptions,
+      Formulator.special(targetRaw.tempTotal),
+      targetCompNum,
+      options
+    );
   }
 
   /**

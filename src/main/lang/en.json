@@ -330,7 +330,8 @@
           "successDegrees": "Degree(s) of Success"
         },
         "targets": {
-          "hitChance": "Hit chance"
+          "hitChance": "Hit chance",
+          "successChance": "Chance of success"
         }
       },
       "skills": {

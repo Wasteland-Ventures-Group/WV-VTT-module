@@ -330,7 +330,8 @@
           "successDegrees": "Erfolgsgrad"
         },
         "targets": {
-          "hitChance": "Trefferchance"
+          "hitChance": "Trefferchance",
+          "successChance": "Erfolgschance"
         }
       },
       "skills": {

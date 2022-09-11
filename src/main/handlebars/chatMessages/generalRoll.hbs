@@ -1,4 +1,41 @@
 <div class="lighter-block detail-section">
+  <span>{{localize "wv.system.misc.details"}}</span>
+  <div class="detail-content hide">
+    <div class="spacing-bottom">
+      <span>{{localize "wv.rules.criticals.title"}}</span>
+      <ul class="no-margin">
+        <li>{{localize "wv.rules.criticals.success"}}: &lt;={{details.criticals.success.total}}</li>
+        <li>{{localize "wv.rules.criticals.failure"}}: &gt;={{details.criticals.failure.total}}</li>
+      </ul>
+    </div>
+    <table class="modifier-listing">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2">{{localize "wv.rules.rolls.targets.successChance"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.base"}}</th>
+          <td class="align-right zero-width no-wrap">{{details.success.source}}</td>
+        </tr>
+        {{#each details.success.components as |component|~}}
+          <tr>
+            <th scope="row">{{component.label}}</th>
+            <td class="align-right zero-width no-wrap">{{component.value}}</td>
+          </tr>
+        {{~/each}}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.total"}}</th>
+          <td class="align-right zero-width no-wrap">{{details.success.total}}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<div class="lighter-block detail-section">
   <div>
     <div class="roll-summary">
       <label class="roll-summary-label">{{localize template.keys.success}}</label>

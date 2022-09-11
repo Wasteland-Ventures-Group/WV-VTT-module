@@ -3,16 +3,28 @@ import { CONSTANTS } from "../../../constants";
 import type { HookParams } from "..";
 import { scrollChatToBottom } from "../../../foundryHelpers";
 import type { Critical } from "../../../rolls/criticalsModifiers";
+import {
+  Component,
+  CompositeNumber,
+  SerializedCompositeNumber
+} from "../../../data/common";
 
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/generalRoll.hbs`;
-export default async function decoratePTMessage(
-  flags: GeneralRollFlags,
+export default async function decorateCheck(
+  flags: CheckFlags,
   html: HookParams[1]
 ) {
   html.addClass("general-roll");
   const content = getContentElement(html);
-  const data: GeneralRollTemplateData = {
+  const data: CheckTemplateData = {
     ...flags,
+    details: {
+      criticals: {
+        failure: CompositeNumber.from(flags.details.criticals.failure),
+        success: CompositeNumber.from(flags.details.criticals.success)
+      },
+      success: CompositeNumber.from(flags.details.success)
+    },
     template: {
       keys: getCheckResultKey(flags)
     }
@@ -22,8 +34,15 @@ export default async function decoratePTMessage(
   return;
 }
 
-export interface GeneralRollFlags {
+export interface CheckFlags {
   type: "roll";
+  details: {
+    criticals: {
+      success: SerializedCompositeNumber;
+      failure: SerializedCompositeNumber;
+    };
+    success: SerializedCompositeNumber;
+  };
   roll: {
     formula: string;
     critical?: Critical | undefined;
@@ -33,10 +52,7 @@ export interface GeneralRollFlags {
   };
 }
 
-function getCheckResultKey(flags: GeneralRollFlags): {
-  success: string;
-  degrees: string;
-} {
+function getCheckResultKey(flags: CheckFlags): CheckTemplateDataKeys {
   let success = "wv.rules.rolls.results.";
   let degrees = "wv.rules.rolls.results.";
   const roll = flags.roll;
@@ -50,9 +66,19 @@ function getCheckResultKey(flags: GeneralRollFlags): {
   return { success, degrees };
 }
 
-type GeneralRollTemplateDataKeys = { success: string; degrees: string };
+type CheckTemplateDataKeys = { success: string; degrees: string };
 
-type GeneralRollTemplateData = GeneralRollFlags & {
+type CheckTemplateData = CheckFlags & {
+  details: {
+    criticals: {
+      failure: CompositeNumber;
+      success: CompositeNumber;
+    };
+    success: {
+      components: Component[];
+      total: number;
+    };
+  };
   template: {
     keys: {
       success: string;

@@ -9,7 +9,7 @@ import {
   SerializedCompositeNumber
 } from "../../../data/common";
 
-const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/generalRoll.hbs`;
+const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/check.hbs`;
 export default async function decorateCheck(
   flags: CheckFlags,
   html: HookParams[1]

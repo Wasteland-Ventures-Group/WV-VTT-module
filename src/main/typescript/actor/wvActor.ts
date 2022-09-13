@@ -443,7 +443,10 @@ export default class WvActor extends Actor {
     const flags: CheckFlags = {
       type: "roll",
       details: {
-        criticals, // Is this an automatic type cast? Or is it a result of structural typing?
+        criticals: {
+          success: criticals.success.toObject(false),
+          failure: criticals.failure.toObject(false)
+        },
         success: target
       },
       roll: {

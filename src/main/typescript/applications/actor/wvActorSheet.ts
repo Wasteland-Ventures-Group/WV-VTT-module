@@ -15,7 +15,6 @@ import {
   ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
-import { promptRoll } from "../../data/common.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
@@ -37,6 +36,7 @@ import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
+import { promptRoll } from "../prompt.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {

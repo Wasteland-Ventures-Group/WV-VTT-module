@@ -1,9 +1,4 @@
 import type { JSONSchemaType } from "ajv";
-import Prompt, {
-  CheckboxInputSpec,
-  NumberInputSpec,
-  TextInputSpec
-} from "../applications/prompt.js";
 import { getGame } from "../foundryHelpers.js";
 import type { WvI18nKey } from "../lang.js";
 import { FoundrySerializable, Resource } from "./foundryCommon.js";
@@ -151,100 +146,6 @@ export function isLabelComponent(object: unknown): object is LabelComponent {
 
   return "text" in comp && typeof comp.text === "string";
 }
-
-// Unsure if there should be an explicit boolean here to switch between Checks and Attacks
-export function promptRoll(
-  title: string,
-  actorName: string | null,
-  modifierLabel: string | null
-): Promise<ExternalCheckData>;
-export function promptRoll(
-  title: string,
-  actorName: string | null,
-  modifierLabel: string | null,
-  defaultRange: number
-): Promise<ExternalAttackData>;
-/**
- * Creates the Prompt for the external data for a roll
- * @param title - The title of the roll
- * @param actorName - The name of the actor
- * @param defaultRange - The default range to put in the roll (only for attack rolls)
- * @returns A Prompt object
- */
-export function promptRoll(
-  title: string,
-  actorName: string | null,
-  modifierLabel: string | null,
-  defaultRange?: number
-): Promise<ExternalRollData> {
-  const i18n = getGame().i18n;
-  const commonData: PromptSpecCommon = {
-    alias: {
-      type: "text",
-      label: i18n.localize("wv.system.misc.speakerAlias"),
-      value: actorName
-    },
-    modifier: {
-      type: "number",
-      label: modifierLabel ?? i18n.localize("wv.system.misc.modifier"),
-      value: 0,
-      min: -100,
-      max: 100
-    },
-    whisperToGms: {
-      type: "checkbox",
-      label: i18n.localize("wv.system.rolls.whisperToGms"),
-      value: getGame().user?.isGM
-    }
-  };
-  if (defaultRange !== undefined) {
-    const data: PromptSpecAttack = {
-      ...commonData,
-      range: {
-        type: "number",
-        label: i18n.localize("wv.rules.range.distance.name"),
-        value: defaultRange,
-        min: 0,
-        max: 99999
-      }
-    };
-    return Prompt.get<PromptSpecAttack>(data, { title });
-  } else {
-    const data: PromptSpecCheck = {
-      ...commonData
-    };
-    return Prompt.get<PromptSpecCheck>(data, { title });
-  }
-}
-
-export type ExternalRollData = ExternalAttackData | ExternalCheckData;
-/** User-provided data for rolls */
-export interface ExternalRollDataCommon {
-  /** An alias for the rolling actor */
-  alias: string;
-  /** An optional modifier for the roll */
-  modifier: number;
-  /** Whether or not to whisper to GMs */
-  whisperToGms: boolean;
-}
-
-export type ExternalAttackData = ExternalRollDataCommon & {
-  /** The range to the target in metres */
-  range: number;
-};
-export type ExternalCheckData = ExternalRollDataCommon;
-
-/** The Prompt input spec for a general roll */
-export type PromptSpecCommon = {
-  alias: TextInputSpec;
-  modifier: NumberInputSpec;
-  whisperToGms: CheckboxInputSpec;
-};
-
-export type PromptSpecCheck = PromptSpecCommon;
-export type PromptSpecAttack = PromptSpecCommon & {
-  range: NumberInputSpec;
-};
 
 /** A CompositeNumber Component source */
 export interface ComponentSource {

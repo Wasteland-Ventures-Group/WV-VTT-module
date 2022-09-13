@@ -1,11 +1,8 @@
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
+import { ExternalAttackData, promptRoll } from "../../applications/prompt.js";
 import { CONSTANTS, RangeBracket } from "../../constants.js";
-import {
-  CompositeNumber,
-  ExternalAttackData,
-  promptRoll
-} from "../../data/common.js";
+import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import Formulator from "../../formulator.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";

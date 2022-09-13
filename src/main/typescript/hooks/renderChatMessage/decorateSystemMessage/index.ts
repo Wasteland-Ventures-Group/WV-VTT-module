@@ -19,13 +19,13 @@ export default function decorateSystemMessage(
   html.addClass([CONSTANTS.systemId, "system-message"]);
   switch (systemFlags?.type) {
     case "weaponAttack":
-      decorateWeaponAttack(systemFlags as WeaponAttackFlags, html);
+      decorateWeaponAttack(systemFlags, html);
       break;
     case "painThreshold":
-      decoratePTMessage(systemFlags as PainThresholdFlags, html);
+      decoratePTMessage(systemFlags, html);
       break;
     case "roll":
-      decorateCheck(systemFlags as CheckFlags, html);
+      decorateCheck(systemFlags, html);
   }
 }
 

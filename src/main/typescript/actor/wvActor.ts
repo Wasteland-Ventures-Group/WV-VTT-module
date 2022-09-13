@@ -496,21 +496,13 @@ export default class WvActor extends Actor {
       speaker: ChatMessage.getSpeaker({ actor: this })
     };
 
-    new Roll(
-      Formulator.skill(this.data.data.skills[name].total)
-        .modify(options?.modifier)
-        .criticals({
-          success: this.data.data.secondary.criticals.success.total,
-          failure: this.data.data.secondary.criticals.failure.total
-        })
-        .toString()
-    )
-      .roll({ async: true })
-      .then((r) =>
-        r.toMessage(msgOptions, {
-          rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
-        })
-      );
+    const targetRaw = this.data.data.skills[name];
+    this.rollCreateCheckMessage(
+      msgOptions,
+      Formulator.skill(targetRaw.total),
+      targetRaw.toObject(false),
+      options
+    );
   }
 
   /** Remove all race items from this actor. */

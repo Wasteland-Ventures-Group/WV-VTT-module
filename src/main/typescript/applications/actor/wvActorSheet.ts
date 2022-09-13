@@ -15,6 +15,7 @@ import {
   ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
+import { promptRoll } from "../../data/common.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
@@ -36,7 +37,6 @@ import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
-import Prompt from "../prompt.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
@@ -534,20 +534,11 @@ export default class WvActorSheet extends ActorSheet {
     try {
       this.actor.rollSpecial(
         special,
-        await Prompt.get({
-          modifier: {
-            type: "number",
-            label: WvI18n.getSpecialModifierDescription(special),
-            value: 0,
-            min: -100,
-            max: 100
-          },
-          whisperToGms: {
-            type: "checkbox",
-            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
-            value: getGame().user?.isGM
-          }
-        })
+        await promptRoll(
+          getGame().i18n.localize(WvI18n.specials[special].long),
+          this.actor.name,
+          WvI18n.getSpecialModifierDescription(special)
+        )
       );
     } catch (e) {
       if (e !== "closed") throw e;
@@ -570,20 +561,11 @@ export default class WvActorSheet extends ActorSheet {
     try {
       this.actor.rollSkill(
         skill,
-        await Prompt.get({
-          modifier: {
-            type: "number",
-            label: WvI18n.getSkillModifierDescription(skill),
-            value: 0,
-            min: -100,
-            max: 100
-          },
-          whisperToGms: {
-            type: "checkbox",
-            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
-            value: getGame().user?.isGM
-          }
-        })
+        await promptRoll(
+          getGame().i18n.localize(WvI18n.skills[skill]),
+          this.actor.name,
+          WvI18n.getSkillModifierDescription(skill)
+        )
       );
     } catch (e) {
       if (e !== "closed") throw e;

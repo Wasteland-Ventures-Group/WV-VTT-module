@@ -1,15 +1,13 @@
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
-import Prompt, {
-  CheckboxInputSpec,
-  NumberInputSpec,
-  TextInputSpec
-} from "../../applications/prompt.js";
 import { CONSTANTS, RangeBracket } from "../../constants.js";
-import type { CompositeNumber } from "../../data/common.js";
+import {
+  CompositeNumber,
+  ExternalAttackData,
+  promptRoll
+} from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import Formulator from "../../formulator.js";
-import { getGame } from "../../foundryHelpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 import * as interact from "../../interaction.js";
@@ -119,7 +117,7 @@ export default class AttackExecution {
   /** Execute the attack */
   async execute(): Promise<void> {
     // Get needed external data ------------------------------------------------
-    let externalData: ExternalData;
+    let externalData: ExternalAttackData;
     try {
       externalData = await this.getExternalData(
         this.actor,
@@ -261,37 +259,12 @@ export default class AttackExecution {
     actor: WvActor,
     token: Token | undefined,
     target: Token | undefined
-  ): Promise<ExternalData> {
-    const i18n = getGame().i18n;
-
-    return Prompt.get<PromptSpec>(
-      {
-        alias: {
-          type: "text",
-          label: i18n.localize("wv.system.misc.speakerAlias"),
-          value: actor.name
-        },
-        modifier: {
-          type: "number",
-          label: i18n.localize("wv.system.misc.modifier"),
-          value: 0,
-          min: -100,
-          max: 100
-        },
-        range: {
-          type: "number",
-          label: i18n.localize("wv.rules.range.distance.name"),
-          value: interact.getDistance(token, target) ?? 0,
-          min: 0,
-          max: 99999
-        },
-        whisperToGms: {
-          type: "checkbox",
-          label: i18n.localize("wv.system.rolls.whisperToGms"),
-          value: getGame().user?.isGM
-        }
-      },
-      { title: `${this.weapon.data.name} - ${this.name}` }
+  ): Promise<ExternalAttackData> {
+    return promptRoll(
+      `${this.weapon.data.name} - ${this.name}`,
+      actor.name,
+      null,
+      interact.getDistance(token, target) ?? 0
     );
   }
 
@@ -420,27 +393,4 @@ export default class AttackExecution {
       flags: { [CONSTANTS.systemId]: flags }
     });
   }
-}
-
-/** The Prompt input spec for an attack prompt */
-type PromptSpec = {
-  alias: TextInputSpec;
-  modifier: NumberInputSpec;
-  range: NumberInputSpec;
-  whisperToGms: CheckboxInputSpec;
-};
-
-/** Data external to the attack */
-interface ExternalData {
-  /** The chat message alias of the executing actor */
-  alias: string;
-
-  /** A possible modifier for the attack */
-  modifier: number;
-
-  /** The range to the target in meters */
-  range: number;
-
-  /** Whether to whisper to GMs */
-  whisperToGms: boolean;
 }

@@ -459,6 +459,10 @@
         "name": "Name",
         "newName": "{what} (Neu)",
         "notes": "Notizen",
+        "rollMode": {
+          "plural": "Rollmoden",
+          "singular": "Rollmodus"
+        },
         "sourceValues": "Grundwerte",
         "speakerAlias": "Sprecheralias",
         "statistics": "Statistiken",

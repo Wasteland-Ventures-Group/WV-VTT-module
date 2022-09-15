@@ -36,7 +36,7 @@ import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
-import { promptRoll } from "../prompt.js";
+import { RollPrompt } from "../prompt.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
@@ -534,11 +534,23 @@ export default class WvActorSheet extends ActorSheet {
     try {
       this.actor.rollSpecial(
         special,
+        await RollPrompt.get(
+          {
+            defaults: {
+              alias: this.actor.name
+            }
+          },
+          {
+            title: getGame().i18n.localize(WvI18n.specials[special].long)
+          }
+        )
+        /*
         await promptRoll(
           getGame().i18n.localize(WvI18n.specials[special].long),
           this.actor.name,
           WvI18n.getSpecialModifierDescription(special)
         )
+        */
       );
     } catch (e) {
       if (e !== "closed") throw e;
@@ -561,11 +573,23 @@ export default class WvActorSheet extends ActorSheet {
     try {
       this.actor.rollSkill(
         skill,
+        await RollPrompt.get(
+          {
+            defaults: {
+              alias: this.actor.name
+            }
+          },
+          {
+            title: getGame().i18n.localize(WvI18n.skills[skill])
+          }
+        )
+        /*
         await promptRoll(
           getGame().i18n.localize(WvI18n.skills[skill]),
           this.actor.name,
           WvI18n.getSkillModifierDescription(skill)
         )
+        */
       );
     } catch (e) {
       if (e !== "closed") throw e;

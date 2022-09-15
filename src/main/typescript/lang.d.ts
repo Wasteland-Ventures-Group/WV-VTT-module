@@ -530,6 +530,8 @@ export interface LangSchema {
         newName: string;
         /** The label for user provided notes */
         notes: string;
+        /** The label for roll modes */
+        rollMode: QuantityNames;
         /** The label for source values */
         sourceValues: string;
         /** The label for a speaker alias */

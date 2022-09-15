@@ -24,5 +24,23 @@
       </label>
     {{~/if~}}
   {{~/each~}}
+  <label class="contained-target-inline">
+    {{localize "wv.system.misc.speakerAlias"}}
+    <input required name="alias" type="text" value="{{defaults.alias}}"/>
+  </label>
+  <label class="contained-target-inline">
+    {{localize "wv.system.misc.modifier"}}
+    <input required name="modifier" type="number" value="{{defaults.modifier}}" class="size-3"/>
+  </label>
+  <label class="contained-target-inline">
+    {{localize "wv.system.rolls.whisperToGms"}}
+    <input name="whisperToGms" type="checkbox" {{checked whisperToGms}}>
+  </label>
+  <label class="contained-target-inline">
+    {{localize "wv.system.misc.rollMode.singular"}}
+    <select name="rollMode">
+      {{selectOptions rollModes selected=defaults.rollMode}}
+    </select>
+  </label>
   <button>{{localize "wv.system.actions.submit"}}</button>
 </form>

@@ -42,7 +42,7 @@
     "eslint": "^8.23.1",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-tsdoc": "^0.2.16",
+    "eslint-plugin-tsdoc": "^0.2.17",
     "fancy-log": "^2.0.0",
     "glob": "^8.0.3",
     "glob-promise": "^5.0.0",

@@ -1,5 +1,6 @@
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
-import { RollMode, whisperTargets } from "./constants";
+import type { RollMode } from "./constants";
+import { getGame } from "./foundryHelpers.js";
 
 /**
  * Run `toFixed(fractionDigits)` on the number and remove trailing zeros and
@@ -27,4 +28,19 @@ export function createDefaultMessageData(
     speaker,
     whisper: whisperTargets(rollMode)
   };
+}
+
+export function whisperTargets(
+  rollMode: RollMode
+): StoredDocument<User>[] | null {
+  const self = getGame().user;
+  switch (rollMode) {
+    case "publicroll":
+      return null;
+    case "blindroll":
+    case "gmroll":
+      return ChatMessage.getWhisperRecipients("gm");
+    case "selfroll":
+      return self ? [self] : [];
+  }
 }

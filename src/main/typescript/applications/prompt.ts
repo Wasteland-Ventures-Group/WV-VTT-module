@@ -1,5 +1,6 @@
-import { CONSTANTS } from "../constants.js";
+import { CONSTANTS, isRollMode, RollMode } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
+import WvI18n, { I18nRollModes } from "../wvI18n.js";
 
 type DICE_ROLL_MODES = ValueOf<typeof CONST.DICE_ROLL_MODES>;
 /**
@@ -42,7 +43,8 @@ export abstract class RollPrompt extends Application {
         whisperToGms: data.whisperToGms ?? false
       },
       isAttack: false,
-      rollModes: CONST.DICE_ROLL_MODES //TODO: figure out where foundry stores its own localisation strings...
+      rollModes: WvI18n.rollModes //TODO: figure out where foundry stores its own localisation strings...
+      // note: CHAT.RollX
     };
   }
 
@@ -115,18 +117,15 @@ export abstract class RollPrompt extends Application {
     return inputValue;
   }
 
-  protected extractRollModeValue(
-    key: string,
-    formData: FormData
-  ): ValueOf<typeof CONST.DICE_ROLL_MODES> {
+  protected extractRollModeValue(key: string, formData: FormData): RollMode {
     const inputValue = formData.get(key);
     if (typeof inputValue !== "string")
       throw Error(`The value of input ${key} is missing.`);
 
-    if (!(inputValue in CONST.DICE_ROLL_MODES))
+    if (!isRollMode(inputValue))
       throw Error(`Invalid value for roll mode: ${inputValue}`);
 
-    return inputValue as DICE_ROLL_MODES;
+    return inputValue;
   }
 
   protected transformFormData(formData: FormData): PromptDataCommon {
@@ -149,7 +148,7 @@ export class CheckPrompt extends RollPrompt {
     options?: Partial<ApplicationOptions>
   ): Promise<ExternalCheckData> {
     return new Promise((resolve, reject) => {
-      new this((data) => resolve(data), reject, data, options);
+      new this((data) => resolve(data), reject, data, options).render(true);
     });
   }
 
@@ -288,7 +287,7 @@ export type RollPromptTemplateData = {
     whisperToGms: boolean;
   };
   isAttack: boolean;
-  rollModes: typeof CONST.DICE_ROLL_MODES;
+  rollModes: I18nRollModes;
 };
 
 export type AttackPromptTemplateData = RollPromptTemplateData & {

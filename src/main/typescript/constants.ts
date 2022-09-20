@@ -99,6 +99,12 @@ export function getMagicType(school: GeneralMagicSchool): MagicType {
   throw new Error("Unreachable Code");
 }
 
+export type RollMode = ValueOf<typeof CONST.DICE_ROLL_MODES>;
+
+export function isRollMode(arg: string): arg is RollMode {
+  return Object.values(CONST.DICE_ROLL_MODES).includes(arg as any);
+}
+
 export type GeneralMagicSchool = typeof GeneralMagicSchools[number];
 export const MagicSpecials: Record<GeneralMagicSchool, SpecialName[]> = {
   agility: ["agility"],

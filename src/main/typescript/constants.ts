@@ -102,7 +102,7 @@ export function getMagicType(school: GeneralMagicSchool): MagicType {
 export type RollMode = ValueOf<typeof CONST.DICE_ROLL_MODES>;
 
 export function isRollMode(arg: string): arg is RollMode {
-  return Object.values(CONST.DICE_ROLL_MODES).includes(arg as any);
+  return Object.values<string>(CONST.DICE_ROLL_MODES).includes(arg);
 }
 
 export type GeneralMagicSchool = typeof GeneralMagicSchools[number];

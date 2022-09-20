@@ -1,6 +1,5 @@
 import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs";
 import type { ActorDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/actorData";
-import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData.js";
 import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs";
 import type { ConstructorDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/types/helperTypes";
 import BaseSetup from "../applications/actor/character/baseSetup.js";
@@ -21,6 +20,7 @@ import type {
 import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
+import { createDefaultMessageData } from "../helpers.js";
 import type { CheckFlags as CheckFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateCheck.js";
 import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import diceSoNice from "../integrations/diceSoNice/diceSoNice.js";
@@ -427,7 +427,7 @@ export default class WvActor extends Actor {
   }
 
   async rollCreateCheckMessage(
-    commonData: ChatMessageDataConstructorData,
+    flavor: string,
     baseFormula: Formulator,
     target: SerializedCompositeNumber,
     options: RollOptions | undefined
@@ -438,7 +438,15 @@ export default class WvActor extends Actor {
       failure: criticals.failure.total
     });
     const checkRoll = new Roll(fullFormula.toString()).roll({ async: false });
-    await diceSoNice(checkRoll, commonData.whisper ?? null, { actor: this.id });
+
+    const msgOptions = createDefaultMessageData(
+      ChatMessage.getSpeaker({ actor: this }),
+      options?.rollMode ?? getGame().settings.get("core", "rollMode")
+    );
+
+    msgOptions.flavor = flavor;
+
+    await diceSoNice(checkRoll, msgOptions.whisper, { actor: this.id });
     const result = checkRoll.dice[0]?.results[0]?.result ?? 0;
     const flags: CheckFlags = {
       type: "roll",
@@ -458,7 +466,7 @@ export default class WvActor extends Actor {
       }
     };
     ChatMessage.create({
-      ...commonData,
+      ...msgOptions,
       flags: { [CONSTANTS.systemId]: flags }
     });
   }
@@ -469,18 +477,13 @@ export default class WvActor extends Actor {
    * @param name - the name of the SPECIAL to roll
    */
   rollSpecial(name: SpecialName, options?: RollOptions): void {
-    const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
-      flavor: WvI18n.getSpecialRollFlavor(name),
-      speaker: ChatMessage.getSpeaker({ actor: this })
-    };
-
     const targetRaw = this.data.data.specials[name];
     const targetCompNum: SerializedCompositeNumber = {
       source: targetRaw.permTotal,
       components: targetRaw.tempComponents
     };
     this.rollCreateCheckMessage(
-      msgOptions,
+      WvI18n.getSpecialRollFlavor(name),
       Formulator.special(targetRaw.tempTotal),
       targetCompNum,
       options
@@ -492,15 +495,10 @@ export default class WvActor extends Actor {
    * @param name - the name of the Skill to roll
    */
   rollSkill(name: SkillName, options?: RollOptions): void {
-    const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
-      flavor: WvI18n.getSkillRollFlavor(name),
-      speaker: ChatMessage.getSpeaker({ actor: this })
-    };
-
     const targetRaw = this.data.data.skills[name];
     // TODO: default roll mode
     this.rollCreateCheckMessage(
-      msgOptions,
+      WvI18n.getSkillRollFlavor(name),
       Formulator.skill(targetRaw.total),
       targetRaw.toObject(false),
       options

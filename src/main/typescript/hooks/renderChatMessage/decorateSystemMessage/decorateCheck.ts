@@ -9,6 +9,7 @@ import {
   SerializedCompositeNumber
 } from "../../../data/common";
 
+// TODO: add blind roll support
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/check.hbs`;
 export default async function decorateCheck(
   flags: CheckFlags,

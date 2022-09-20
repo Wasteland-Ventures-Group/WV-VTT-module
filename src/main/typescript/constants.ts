@@ -1,3 +1,5 @@
+import { getGame } from "./foundryHelpers";
+
 export type RadiationSicknessLevel = typeof RadiationSicknessLevels[number];
 export const RadiationSicknessLevels = [
   "none",
@@ -103,6 +105,21 @@ export type RollMode = ValueOf<typeof CONST.DICE_ROLL_MODES>;
 
 export function isRollMode(arg: string): arg is RollMode {
   return Object.values<string>(CONST.DICE_ROLL_MODES).includes(arg);
+}
+
+export function whisperTargets(
+  rollMode: RollMode
+): StoredDocument<User>[] | null {
+  const self = getGame().user;
+  switch (rollMode) {
+    case "publicroll":
+      return null;
+    case "blindroll":
+    case "gmroll":
+      return ChatMessage.getWhisperRecipients("gm");
+    case "selfroll":
+      return self ? [self] : [];
+  }
 }
 
 export type GeneralMagicSchool = typeof GeneralMagicSchools[number];

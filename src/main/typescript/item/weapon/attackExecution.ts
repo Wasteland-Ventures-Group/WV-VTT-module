@@ -5,6 +5,7 @@ import { CONSTANTS, RangeBracket } from "../../constants.js";
 import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import Formulator from "../../formulator.js";
+import { createDefaultMessageData } from "../../helpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 import * as interact from "../../interaction.js";
@@ -125,19 +126,18 @@ export default class AttackExecution {
       if (e === "closed") return;
       else throw e;
     }
-    const { alias, modifier, range, whisperToGms } = externalData;
+    const { alias, modifier, range, rollMode } = externalData;
 
     // Create common chat message data -----------------------------------------
-    const commonData: ChatMessageDataConstructorData =
-      this.createDefaultMessageData(
-        {
-          scene: null,
-          actor: this.actor.id,
-          token: this.token?.id ?? null,
-          alias
-        },
-        whisperToGms
-      );
+    const commonData: ChatMessageDataConstructorData = createDefaultMessageData(
+      {
+        scene: null,
+        actor: this.actor.id,
+        token: this.token?.id ?? null,
+        alias
+      },
+      rollMode
+    );
 
     // Get range bracket -------------------------------------------------------
     const rangeBracket = this.weapon.data.data.ranges.getRangeBracket(
@@ -305,17 +305,6 @@ export default class AttackExecution {
     }
 
     return hitChance;
-  }
-
-  /** Create the default message data for weapon attack messages. */
-  private createDefaultMessageData(
-    speaker: foundry.data.ChatMessageData["speaker"]["_source"],
-    whisperToGms: boolean
-  ): ChatMessageDataConstructorData {
-    return {
-      speaker,
-      whisper: whisperToGms ? ChatMessage.getWhisperRecipients("gm") : null
-    };
   }
 
   /** Create a weapon attack message, signaling out of range. */

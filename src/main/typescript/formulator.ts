@@ -1,4 +1,4 @@
-import { CONSTANTS } from "./constants.js";
+import { CONSTANTS, RollMode } from "./constants.js";
 import { LOG } from "./systemLogger.js";
 
 /** A factory class to create string formulas for Rolls. */
@@ -201,9 +201,5 @@ export interface RollOptions {
    */
   modifier?: number;
 
-  /**
-   * Whether to whisper the roll to GMs.
-   * @defaultValue `false`
-   */
-  whisperToGms?: boolean;
+  rollMode?: RollMode;
 }

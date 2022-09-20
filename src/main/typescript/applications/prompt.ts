@@ -2,7 +2,6 @@ import { CONSTANTS, isRollMode, RollMode } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
 import WvI18n, { I18nRollModes } from "../wvI18n.js";
 
-type DICE_ROLL_MODES = ValueOf<typeof CONST.DICE_ROLL_MODES>;
 /**
  * An application to prompt the user for input.
  * @typeParam Specs - the type of the input specs
@@ -39,12 +38,10 @@ export abstract class RollPrompt extends Application {
     this.templateData = {
       defaults: {
         alias: data.alias ?? "",
-        modifier: data.modifier ?? 0,
-        whisperToGms: data.whisperToGms ?? false
+        modifier: data.modifier ?? 0
       },
       isAttack: false,
-      rollModes: WvI18n.rollModes //TODO: figure out where foundry stores its own localisation strings...
-      // note: CHAT.RollX
+      rollModes: WvI18n.rollModes
     };
   }
 
@@ -132,7 +129,6 @@ export abstract class RollPrompt extends Application {
     const common: PromptDataCommon = {
       alias: this.extractStringValue("alias", formData),
       modifier: this.extractNumberValue("modifier", formData),
-      whisperToGms: this.extractCheckboxValue("whisperToGms", formData),
       rollMode: this.extractRollModeValue("rollMode", formData)
     };
 
@@ -267,10 +263,8 @@ export interface PromptDataCommon {
   alias: string;
   /** An optional modifier for the roll */
   modifier: number;
-  /** Whether or not to whisper to GMs */
-  whisperToGms: boolean;
   /** The roll mode used */
-  rollMode: DICE_ROLL_MODES;
+  rollMode: RollMode;
 }
 
 export type AttackPromptData = PromptDataCommon & {
@@ -280,11 +274,11 @@ export type AttackPromptData = PromptDataCommon & {
 
 export type ExternalCheckData = PromptDataCommon;
 
+// TODO: default roll mode on sheet
 export type RollPromptTemplateData = {
   defaults: {
     alias: string;
     modifier: number;
-    whisperToGms: boolean;
   };
   isAttack: boolean;
   rollModes: I18nRollModes;
@@ -299,7 +293,6 @@ export type AttackPromptTemplateData = RollPromptTemplateData & {
 type RollPromptConstructorData = {
   alias?: string | null;
   modifier?: number;
-  whisperToGms?: boolean;
 };
 
 type CheckPromptConstructorData = RollPromptConstructorData;

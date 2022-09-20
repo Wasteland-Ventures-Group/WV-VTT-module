@@ -1,6 +1,6 @@
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
-import { ExternalAttackData, RollPrompt } from "../../applications/prompt.js";
+import { AttackPrompt, AttackPromptData } from "../../applications/prompt.js";
 import { CONSTANTS, RangeBracket } from "../../constants.js";
 import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
@@ -114,7 +114,7 @@ export default class AttackExecution {
   /** Execute the attack */
   async execute(): Promise<void> {
     // Get needed external data ------------------------------------------------
-    let externalData: ExternalAttackData;
+    let externalData: AttackPromptData;
     try {
       externalData = await this.getExternalData(
         this.actor,
@@ -256,13 +256,11 @@ export default class AttackExecution {
     actor: WvActor,
     token: Token | undefined,
     target: Token | undefined
-  ): Promise<ExternalAttackData> {
-    return RollPrompt.get(
+  ): Promise<AttackPromptData> {
+    return AttackPrompt.get(
       {
-        defaults: {
-          alias: actor.name,
-          range: interact.getDistance(token, target) ?? 0
-        }
+        alias: actor.name,
+        range: interact.getDistance(token, target) ?? 0
       },
       {
         title: `${actor.name} — ${this.name}`

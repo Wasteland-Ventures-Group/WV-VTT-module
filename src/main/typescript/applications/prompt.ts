@@ -6,7 +6,7 @@ type DICE_ROLL_MODES = ValueOf<typeof CONST.DICE_ROLL_MODES>;
  * An application to prompt the user for input.
  * @typeParam Specs - the type of the input specs
  */
-export class RollPrompt extends Application {
+export abstract class RollPrompt extends Application {
   static override get defaultOptions(): ApplicationOptions {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push(...[CONSTANTS.systemId, "prompt"]);
@@ -18,15 +18,6 @@ export class RollPrompt extends Application {
     return defaultOptions;
   }
 
-  static async get(
-    data: RollPromptConstructorData,
-    options?: Partial<ApplicationOptions>
-  ): Promise<ExternalAttackData> {
-    return new Promise((resolve, reject) => {
-      new this((data) => resolve(data), reject, data, options).render(true);
-    });
-  }
-
   /**
    * @param onSubmit - the callback to be executed once the user submits the
    *                   application's form
@@ -35,7 +26,7 @@ export class RollPrompt extends Application {
    * @param options - the options for the prompt
    */
   constructor(
-    onSubmit: (data: ExternalAttackData) => void,
+    onSubmit: (data: never) => void,
     onClose: () => void,
     data: RollPromptConstructorData,
     options?: Partial<ApplicationOptions>
@@ -46,21 +37,20 @@ export class RollPrompt extends Application {
     this.onCloseCallback = onClose;
     this.templateData = {
       defaults: {
-        alias: data.defaults.alias ?? "",
-        modifier: data.defaults.modifier ?? 0,
-        range: data.defaults.range ?? 0,
-        whisperToGms: data.defaults.whisperToGms ?? false
+        alias: data.alias ?? "",
+        modifier: data.modifier ?? 0,
+        whisperToGms: data.whisperToGms ?? false
       },
       isAttack: false,
       rollModes: CONST.DICE_ROLL_MODES //TODO: figure out where foundry stores its own localisation strings...
     };
   }
 
-  onSubmitCallback: (data: ExternalAttackData) => void;
+  onSubmitCallback: (data: never) => void;
 
   onCloseCallback: (reason: string) => void;
 
-  templateData: ExternalRollTemplateData;
+  templateData: RollPromptTemplateData;
 
   override async close(
     options: CloseOptions = { runCallback: true }
@@ -69,7 +59,7 @@ export class RollPrompt extends Application {
     await super.close();
   }
 
-  override getData(): ExternalRollTemplateData {
+  override getData(): RollPromptTemplateData {
     return this.templateData;
   }
 
@@ -90,7 +80,7 @@ export class RollPrompt extends Application {
     const data = new FormData(event.target);
 
     await this.close({ runCallback: false });
-    this.onSubmitCallback(this.transformFormData(data));
+    this._onSubmitCallback(this.transformFormData(data));
   }
 
   protected extractCheckboxValue(key: string, formData: FormData): boolean {
@@ -139,17 +129,108 @@ export class RollPrompt extends Application {
     return inputValue as DICE_ROLL_MODES;
   }
 
-  protected transformFormData(formData: FormData): ExternalAttackData {
-    return {
+  protected transformFormData(formData: FormData): PromptDataCommon {
+    const common: PromptDataCommon = {
       alias: this.extractStringValue("alias", formData),
       modifier: this.extractNumberValue("modifier", formData),
       whisperToGms: this.extractCheckboxValue("whisperToGms", formData),
-      range: this.extractNumberValue("range", formData, 0),
       rollMode: this.extractRollModeValue("rollMode", formData)
     };
+
+    return common;
+  }
+
+  protected abstract _onSubmitCallback(data: PromptDataCommon): void;
+}
+
+export class CheckPrompt extends RollPrompt {
+  static async get(
+    data: CheckPromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ): Promise<ExternalCheckData> {
+    return new Promise((resolve, reject) => {
+      new this((data) => resolve(data), reject, data, options);
+    });
+  }
+
+  /**
+   * @param onSubmit - the callback to be executed once the user submits the
+   *                   application's form
+   * @param onClose - the callback to be executed once the prompt is closed
+   *                  without being submitted
+   * @param options - the options for the prompt
+   */
+  constructor(
+    onSubmit: (data: ExternalCheckData) => void,
+    onClose: () => void,
+    data: CheckPromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ) {
+    super(onSubmit, onClose, data, options);
+
+    this.onSubmitCallback = onSubmit;
+  }
+
+  override onSubmitCallback: (data: ExternalCheckData) => void;
+
+  protected override _onSubmitCallback(data: ExternalCheckData): void {
+    this.onSubmitCallback(data);
   }
 }
 
+export class AttackPrompt extends RollPrompt {
+  static async get(
+    data: AttackPromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ): Promise<AttackPromptData> {
+    return new Promise((resolve, reject) => {
+      new this((data) => resolve(data), reject, data, options);
+    });
+  }
+
+  /**
+   * @param onSubmit - the callback to be executed once the user submits the
+   *                   application's form
+   * @param onClose - the callback to be executed once the prompt is closed
+   *                  without being submitted
+   * @param options - the options for the prompt
+   */
+  constructor(
+    onSubmit: (data: AttackPromptData) => void,
+    onClose: () => void,
+    data: AttackPromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ) {
+    super(onSubmit, onClose, data, options);
+
+    this.onSubmitCallback = onSubmit;
+    this.templateData = {
+      ...super.templateData,
+      defaults: {
+        ...super.templateData.defaults,
+        range: data.range
+      }
+    };
+  }
+
+  override onSubmitCallback: (data: AttackPromptData) => void;
+
+  override templateData: AttackPromptTemplateData;
+
+  protected override transformFormData(formData: FormData): AttackPromptData {
+    const common = super.transformFormData(formData);
+    return {
+      ...common,
+      range: this.extractNumberValue("range", formData)
+    };
+  }
+
+  protected override _onSubmitCallback(data: AttackPromptData): void {
+    this.onSubmitCallback(data);
+  }
+}
+
+// TODO: complete this
 export class StringPrompt extends Application {
   static async get(
     label: string,
@@ -181,9 +262,8 @@ interface CloseOptions extends Application.CloseOptions {
   runCallback?: boolean;
 }
 
-export type ExternalRollData = ExternalAttackData | ExternalCheckData;
 /** User-provided data for rolls */
-export interface ExternalRollDataCommon {
+export interface PromptDataCommon {
   /** An alias for the rolling actor */
   alias: string;
   /** An optional modifier for the roll */
@@ -194,28 +274,37 @@ export interface ExternalRollDataCommon {
   rollMode: DICE_ROLL_MODES;
 }
 
-export type ExternalAttackData = ExternalRollDataCommon & {
+export type AttackPromptData = PromptDataCommon & {
   /** The range to the target in metres */
   range: number;
 };
-export type ExternalCheckData = ExternalRollDataCommon;
 
-export type ExternalRollTemplateData = {
+export type ExternalCheckData = PromptDataCommon;
+
+export type RollPromptTemplateData = {
   defaults: {
     alias: string;
     modifier: number;
-    range: number;
     whisperToGms: boolean;
   };
   isAttack: boolean;
   rollModes: typeof CONST.DICE_ROLL_MODES;
 };
 
-type RollPromptConstructorData = {
+export type AttackPromptTemplateData = RollPromptTemplateData & {
   defaults: {
-    alias?: string | null;
-    modifier?: number;
-    range?: number;
-    whisperToGms?: boolean;
+    range: number;
   };
+};
+
+type RollPromptConstructorData = {
+  alias?: string | null;
+  modifier?: number;
+  whisperToGms?: boolean;
+};
+
+type CheckPromptConstructorData = RollPromptConstructorData;
+
+type AttackPromptConstructorData = RollPromptConstructorData & {
+  range: number;
 };

@@ -463,7 +463,8 @@ export default class WvActor extends Actor {
         result,
         degree: fullFormula.d100Target - result,
         total: checkRoll.total ?? 0
-      }
+      },
+      blind: msgOptions.blind ?? false
     };
     ChatMessage.create({
       ...msgOptions,

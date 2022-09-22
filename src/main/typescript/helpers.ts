@@ -19,15 +19,21 @@ export function toFixed(
   return number.toFixed(fractionDigits).replace(/[.,]?0+$/, "");
 }
 
-/** Create the default message data for weapon attack messages. */
+/** Create the default message data for roll messages. */
 export function createDefaultMessageData(
   speaker: foundry.data.ChatMessageData["speaker"]["_source"],
   rollMode: RollMode
 ): ChatMessageDataConstructorData {
   return {
     speaker,
-    whisper: whisperTargets(rollMode)
+    whisper: whisperTargets(rollMode),
+    blind: rollMode === "blindroll"
   };
+}
+
+export function isRollBlindedForCurrUser(blind: boolean): boolean {
+  if (blind) return !getGame().user?.isGM ?? true;
+  else return false;
 }
 
 export function whisperTargets(
@@ -36,8 +42,8 @@ export function whisperTargets(
   const self = getGame().user;
   switch (rollMode) {
     case "publicroll":
-      return null;
     case "blindroll":
+      return null;
     case "gmroll":
       return ChatMessage.getWhisperRecipients("gm");
     case "selfroll":

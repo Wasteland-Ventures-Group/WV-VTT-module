@@ -1,4 +1,5 @@
 import { CONSTANTS } from "../../../constants.js";
+import type { SerializedCompositeNumber } from "../../../data/common.js";
 import type { HookParams } from "../index.js";
 import decorateCheck, { CheckFlags } from "./decorateCheck.js";
 import decoratePTMessage, { PainThresholdFlags } from "./decoratePTMessage.js";
@@ -33,6 +34,17 @@ export default function decorateSystemMessage(
 export function getContentElement(html: HookParams[1]): JQuery<HTMLElement> {
   return html.find("div.message-content");
 }
+
+export type CommonRollFlags = {
+  details: {
+    criticals: {
+      success: SerializedCompositeNumber;
+      failure: SerializedCompositeNumber;
+    };
+    success: SerializedCompositeNumber;
+  };
+  blind: boolean;
+};
 
 /** A type for system chat message flags */
 export type SystemChatMessageFlags =

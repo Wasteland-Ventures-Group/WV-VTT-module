@@ -190,12 +190,13 @@ export default class AttackExecution {
           base: this.attackProperties.damage.base.toObject(false),
           dice: damageDice.toObject(false)
         },
-        hit: hitChance.toObject(false),
+        success: hitChance.toObject(false),
         range: {
           bracket: rangeBracket,
           distance: range
         }
       },
+      blind: commonData.blind ?? false,
       weapon: {
         display: {
           ranges: this.weapon.data.data.ranges.getDisplayRanges(

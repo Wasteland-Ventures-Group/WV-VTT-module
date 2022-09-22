@@ -38,19 +38,30 @@
 <div class="lighter-block detail-section">
   <div>
     <div class="roll-summary">
+      {{#if template.blinded}}
+      <label class="roll-summary-label">???</label>
+      <div class="roll-summary-result">???</div>
+      {{else}}
       <label class="roll-summary-label">{{localize template.keys.success}}</label>
       <div class="roll-summary-result">{{roll.result}}</div>
+      {{/if}}
     </div>
+    {{#unless template.blinded}}
     <div class="roll-summary">
       <label class="roll-summary-label">{{localize template.keys.degrees}}</label>
       <div class="roll-summary-result">{{roll.degree}}</div>
     </div>
+    {{/unless}}
   </div>
   <div class="detail-content hide">
     <div class="roll-details">
       <div class="dice-formula">{{roll.formula}}</div>
       <ul class="dice-rolls">
+        {{#if template.blinded}}
+        <li class="roll d100">???</li>
+        {{else}}
         <li class="roll d100">{{roll.result}}</li>
+        {{/if}}
       </ul>
     </div>
   </div>

@@ -1,13 +1,10 @@
-import { getContentElement } from ".";
+import { CommonRollFlags, getContentElement } from ".";
 import { CONSTANTS } from "../../../constants";
 import type { HookParams } from "..";
 import { scrollChatToBottom } from "../../../foundryHelpers";
 import type { Critical } from "../../../rolls/criticalsModifiers";
-import {
-  Component,
-  CompositeNumber,
-  SerializedCompositeNumber
-} from "../../../data/common";
+import { Component, CompositeNumber } from "../../../data/common";
+import { isRollBlindedForCurrUser } from "../../../helpers";
 
 // TODO: add blind roll support
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/check.hbs`;
@@ -27,7 +24,8 @@ export default async function decorateCheck(
       success: CompositeNumber.from(flags.details.success)
     },
     template: {
-      keys: getCheckResultKey(flags)
+      keys: getCheckResultKey(flags),
+      blinded: isRollBlindedForCurrUser(flags.blind)
     }
   };
   content.append(await renderTemplate(TEMPLATE, data));
@@ -35,15 +33,8 @@ export default async function decorateCheck(
   return;
 }
 
-export interface CheckFlags {
+export type CheckFlags = CommonRollFlags & {
   type: "roll";
-  details: {
-    criticals: {
-      success: SerializedCompositeNumber;
-      failure: SerializedCompositeNumber;
-    };
-    success: SerializedCompositeNumber;
-  };
   roll: {
     formula: string;
     critical?: Critical | undefined;
@@ -51,7 +42,7 @@ export interface CheckFlags {
     degree: number;
     total: number;
   };
-}
+};
 
 function getCheckResultKey(flags: CheckFlags): CheckTemplateDataKeys {
   let success = "wv.rules.rolls.results.";
@@ -85,5 +76,6 @@ type CheckTemplateData = CheckFlags & {
       success: string;
       degrees: string;
     };
+    blinded: boolean;
   };
 };

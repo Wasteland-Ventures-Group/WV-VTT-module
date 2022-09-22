@@ -202,6 +202,10 @@ export class AttackPrompt extends RollPrompt {
     this.data = data;
   }
 
+  override data: AttackPromptConstructorData;
+
+  override onSubmitCallback: (data: AttackPromptData) => void;
+
   override getData(): AttackPromptTemplateData {
     return {
       ...super.getData(),
@@ -212,10 +216,6 @@ export class AttackPrompt extends RollPrompt {
       showRange: true
     };
   }
-
-  override onSubmitCallback: (data: AttackPromptData) => void;
-
-  override data: AttackPromptConstructorData;
 
   protected override transformFormData(formData: FormData): AttackPromptData {
     const common = super.transformFormData(formData);

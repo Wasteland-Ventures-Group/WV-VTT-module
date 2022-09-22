@@ -118,8 +118,14 @@
   {{!hit roll}}
   <div class="lighter-block detail-section">
     <div class="roll-summary">
+      {{log template}}
+      {{#if template.blinded}}
+      <label class="roll-summary-label">???</label>
+      <div class="roll-summary-result">???</div>
+      {{else}}
       <label class="roll-summary-label">{{localize template.keys.hit}}</label>
       <div class="roll-summary-result">{{rolls.hit.result}}</div>
+      {{/if}}
     </div>
     <div class="detail-content hide">
       <div class="roll-details">
@@ -135,14 +141,22 @@
   <div class="lighter-block detail-section">
     <div class="roll-summary">
       <label class="roll-summary-label">{{localize "wv.rules.damage.long"}}</label>
+      {{#if template.blinded}}
+      <div class="roll-summary-result">???</div>
+      {{else}}
       <div class="roll-summary-result">{{rolls.damage.total}}</div>
+      {{/if}}
     </div>
     <div class="detail-content hide">
       <div class="roll-details">
         <div class="dice-formula">{{rolls.damage.formula}}</div>
         <ul class="dice-rolls">
           {{#each template.damage.results as |result|}}
+          {{#if ../template.blinded}}
+            <li class="roll d6">???</li>
+          {{else}}
             <li class="roll d6 {{result.class}}">{{result.value}}</li>
+          {{/if}}
           {{/each}}
         </ul>
       </div>

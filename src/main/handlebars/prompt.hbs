@@ -1,12 +1,18 @@
 <form>
   <label class="contained-target-inline">
     {{localize "wv.system.misc.speakerAlias"}}
-    <input required name="alias" type="text" value="{{defaults.alias}}"/>
+    <input required name="alias" type="text" value="{{defaults.alias}}" />
   </label>
   <label class="contained-target-inline">
     {{localize "wv.system.misc.modifier"}}
-    <input required name="modifier" type="number" value="{{defaults.modifier}}" class="size-3"/>
+    <input required name="modifier" type="number" value="{{defaults.modifier}}" class="size-3" />
   </label>
+  {{#if showRange}}
+  <label class="contained-target-inline">
+    {{localize "wv.rules.range.distance.name"}}
+    <input required name="range" type="number" value="{{defaults.range}}" class="size-3" />
+  </label>
+  {{/if}}
   <label class="contained-target-inline">
     {{localize "wv.system.rolls.whisperToGms"}}
     <input name="whisperToGms" type="checkbox" {{checked whisperToGms}}>

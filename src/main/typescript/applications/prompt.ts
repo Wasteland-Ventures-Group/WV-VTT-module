@@ -35,21 +35,14 @@ export abstract class RollPrompt extends Application {
 
     this.onSubmitCallback = onSubmit;
     this.onCloseCallback = onClose;
-    this.templateData = {
-      defaults: {
-        alias: data.alias ?? "",
-        modifier: data.modifier ?? 0
-      },
-      isAttack: false,
-      rollModes: WvI18n.rollModes
-    };
+    this.data = data;
   }
 
   onSubmitCallback: (data: never) => void;
 
   onCloseCallback: (reason: string) => void;
 
-  templateData: RollPromptTemplateData;
+  data: RollPromptConstructorData;
 
   override async close(
     options: CloseOptions = { runCallback: true }
@@ -59,7 +52,14 @@ export abstract class RollPrompt extends Application {
   }
 
   override getData(): RollPromptTemplateData {
-    return this.templateData;
+    return {
+      defaults: {
+        alias: this.data.alias ?? "",
+        modifier: this.data.modifier ?? 0
+      },
+      isAttack: false,
+      rollModes: WvI18n.rollModes
+    };
   }
 
   override activateListeners(html: JQuery<HTMLFormElement>): void {
@@ -179,7 +179,7 @@ export class AttackPrompt extends RollPrompt {
     options?: Partial<ApplicationOptions>
   ): Promise<AttackPromptData> {
     return new Promise((resolve, reject) => {
-      new this((data) => resolve(data), reject, data, options);
+      new this((data) => resolve(data), reject, data, options).render(true);
     });
   }
 
@@ -199,18 +199,23 @@ export class AttackPrompt extends RollPrompt {
     super(onSubmit, onClose, data, options);
 
     this.onSubmitCallback = onSubmit;
-    this.templateData = {
-      ...super.templateData,
+    this.data = data;
+  }
+
+  override getData(): AttackPromptTemplateData {
+    return {
+      ...super.getData(),
       defaults: {
-        ...super.templateData.defaults,
-        range: data.range
-      }
+        ...super.getData().defaults,
+        range: this.data.range
+      },
+      showRange: true
     };
   }
 
   override onSubmitCallback: (data: AttackPromptData) => void;
 
-  override templateData: AttackPromptTemplateData;
+  override data: AttackPromptConstructorData;
 
   protected override transformFormData(formData: FormData): AttackPromptData {
     const common = super.transformFormData(formData);
@@ -288,6 +293,7 @@ export type AttackPromptTemplateData = RollPromptTemplateData & {
   defaults: {
     range: number;
   };
+  showRange: true;
 };
 
 type RollPromptConstructorData = {

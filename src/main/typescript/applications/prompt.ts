@@ -89,18 +89,11 @@ export abstract class RollPrompt extends Application {
     return inputValue === "on";
   }
 
-  protected extractNumberValue(
-    key: string,
-    formData: FormData,
-    defaultVal?: number
-  ): number {
+  protected extractNumberValue(key: string, formData: FormData): number {
     const inputValue = formData.get(key);
 
-    if (typeof inputValue !== "string") {
-      if (defaultVal === undefined)
-        throw Error(`The value of input ${String(key)} is missing.`);
-      else return defaultVal;
-    }
+    if (typeof inputValue !== "string")
+      throw Error(`The value of input ${String(key)} is missing.`);
 
     const value = parseInt(inputValue);
     if (isNaN(value))
@@ -234,21 +227,84 @@ export class AttackPrompt extends RollPrompt {
 
 // TODO: complete this
 export class StringPrompt extends Application {
+  static override get defaultOptions(): ApplicationOptions {
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes.push(...[CONSTANTS.systemId, "stringPrompt"]);
+    defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/stringPrompt.hbs`;
+
+    defaultOptions.title = getGame().i18n.localize(
+      "wv.system.prompt.defaults.title"
+    );
+    return defaultOptions;
+  }
+
   static async get(
-    label: string,
+    {
+      label,
+      defaultValue
+    }: {
+      label: string;
+      defaultValue?: string;
+    },
     options?: Partial<ApplicationOptions>
   ): Promise<string> {
     return new Promise((resolve, reject) => {
-      new this((data: string) => resolve(data), reject, options).render(true);
+      new this(
+        (data: string) => resolve(data),
+        reject,
+        label,
+        defaultValue ?? "",
+        options
+      ).render(true);
     });
   }
 
   constructor(
     onSubmit: (data: string) => void,
     onClose: () => void,
+    label: string,
+    defaultValue: string,
     options?: Partial<ApplicationOptions>
   ) {
     super(options);
+
+    this.data = { label, defaultValue };
+    this.onSubmitCallback = onSubmit;
+    this.onCloseCallback = onClose;
+  }
+
+  onSubmitCallback: (data: string) => void;
+
+  onCloseCallback: (reason: string) => void;
+
+  data: {
+    label: string;
+    defaultValue: string;
+  };
+
+  override activateListeners(html: JQuery<HTMLFormElement>): void {
+    super.activateListeners(html);
+
+    html.on("submit", this.onSubmit.bind(this));
+    html.find("input")[0]?.select();
+  }
+
+  override async close(
+    options: CloseOptions = { runCallback: true }
+  ): Promise<void> {
+    if (options?.runCallback) this.onCloseCallback("closed");
+    await super.close();
+  }
+
+  protected async onSubmit(event: SubmitEvent): Promise<void> {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+
+    await this.close({ runCallback: false });
+    const result = data.get("value");
+    if (typeof result !== "string") throw Error("Value missing!");
+    this.onSubmitCallback(result);
   }
 }
 type SubmitEvent = JQuery.SubmitEvent<

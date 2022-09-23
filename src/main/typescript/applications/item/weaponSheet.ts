@@ -210,9 +210,9 @@ export default class WeaponSheet extends WvItemSheet {
   protected async onClickCreateWeaponAttack(): Promise<void> {
     let newName: string;
     try {
-      newName = await StringPrompt.get(
-        getGame().i18n.localize("wv.system.misc.name")
-      );
+      newName = await StringPrompt.get({
+        label: getGame().i18n.localize("wv.system.misc.name")
+      });
     } catch (e) {
       if (e === "closed") return;
       else throw e;

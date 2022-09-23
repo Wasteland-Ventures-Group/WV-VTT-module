@@ -55,7 +55,9 @@ export abstract class RollPrompt extends Application {
     return {
       defaults: {
         alias: this.data.alias ?? "",
-        modifier: this.data.modifier ?? 0
+        modifier: this.data.modifier ?? 0,
+        rollMode:
+          this.data.rollMode ?? getGame().settings.get("core", "rollMode")
       },
       isAttack: false,
       rollModes: WvI18n.rollModes
@@ -279,11 +281,11 @@ export type AttackPromptData = PromptDataCommon & {
 
 export type ExternalCheckData = PromptDataCommon;
 
-// TODO: default roll mode on sheet
 export type RollPromptTemplateData = {
   defaults: {
     alias: string;
     modifier: number;
+    rollMode: RollMode;
   };
   isAttack: boolean;
   rollModes: I18nRollModes;
@@ -299,6 +301,7 @@ export type AttackPromptTemplateData = RollPromptTemplateData & {
 type RollPromptConstructorData = {
   alias?: string | null;
   modifier?: number;
+  rollMode?: RollMode;
 };
 
 type CheckPromptConstructorData = RollPromptConstructorData;

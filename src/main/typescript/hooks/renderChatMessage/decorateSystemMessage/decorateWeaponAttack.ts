@@ -9,7 +9,6 @@ import { CommonRollFlags, getContentElement } from "./index.js";
 
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/weaponAttack.hbs`;
 
-// TODO: add blind roll support
 /** Decorate a weapon attack message. */
 export default async function decorateWeaponAttack(
   flags: WeaponAttackFlags,

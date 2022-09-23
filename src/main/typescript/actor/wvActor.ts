@@ -472,7 +472,6 @@ export default class WvActor extends Actor {
     });
   }
 
-  // TODO: ctrl sets the default to gmroll
   /**
    * Roll a SPECIAL for this Actor.
    * @param name - the name of the SPECIAL to roll
@@ -497,7 +496,6 @@ export default class WvActor extends Actor {
    */
   rollSkill(name: SkillName, options?: RollOptions): void {
     const targetRaw = this.data.data.skills[name];
-    // TODO: default roll mode
     this.rollCreateCheckMessage(
       WvI18n.getSkillRollFlavor(name),
       Formulator.skill(targetRaw.total),

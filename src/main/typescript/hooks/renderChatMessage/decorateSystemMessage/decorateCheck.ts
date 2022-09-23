@@ -6,7 +6,6 @@ import type { Critical } from "../../../rolls/criticalsModifiers";
 import { Component, CompositeNumber } from "../../../data/common";
 import { isRollBlindedForCurrUser } from "../../../helpers";
 
-// TODO: add blind roll support
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/check.hbs`;
 export default async function decorateCheck(
   flags: CheckFlags,

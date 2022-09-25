@@ -36,6 +36,20 @@ export class CriticalsProperties {
   }
 }
 
+export class AttackActionModifierProperties {
+  constructor(apCost: number, rollMod: number) {
+    this.apCost = new CompositeNumber(apCost);
+    this.rollMod = new CompositeNumber(rollMod);
+  }
+
+  /** How much this action modifies the attack's AP cost */
+  apCost: CompositeNumber;
+
+  /** How much this action modifies the attack's roll. This can either modify
+   * crit chance or hit chance.  */
+  rollMod: CompositeNumber;
+}
+
 export class SecondaryStatisticsProperties {
   /** The criticals of the character */
   criticals = new CriticalsProperties();
@@ -45,6 +59,16 @@ export class SecondaryStatisticsProperties {
 
   /** The maximum carry weight of the character in kg */
   maxCarryWeight = new CompositeNumber();
+
+  // TODO: move those default values to constants.ts
+  /** The modifier for sneak attacks */
+  sneakAttackMod = new AttackActionModifierProperties(2, 15);
+
+  /** The modifier for aimed shots */
+  aimMod = new AttackActionModifierProperties(2, 10);
+
+  /** The modifier for called shots */
+  calledShotMod = new CompositeNumber(2);
 
   /** Apply Strength and set the base value for carry weight. */
   applySpecials(specials: SpecialsProperties) {

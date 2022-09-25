@@ -114,6 +114,7 @@ export default class AttackExecution {
 
   /** Execute the attack */
   async execute(): Promise<void> {
+    const secondary = this.actor.data.data.secondary;
     // Get needed external data ------------------------------------------------
     let externalData: AttackPromptData;
     try {
@@ -154,29 +155,29 @@ export default class AttackExecution {
     const rangeModifier =
       this.weapon.data.data.ranges.getRangeModifier(rangeBracket);
 
-    const critSuccess =
-      this.actor.data.data.secondary.criticals.success.clone();
+    const critSuccess = secondary.criticals.success.clone();
     if (sneakAttack)
       critSuccess.add({
-        value: 15,
+        value: secondary.sneakAttackMod.rollMod.total,
         labelComponents: [{ key: "wv.rules.actions.attack.sneakAttack" }]
       });
-    const critFailure = this.actor.data.data.secondary.criticals.failure;
+    const critFailure = secondary.criticals.failure;
     const hitChance = this.getHitRollTarget(
       this.actor.data.data.skills[this.weapon.data.data.skill],
       rangeModifier,
       modifier,
       critSuccess.total,
       critFailure.total,
-      aim
+      aim,
+      secondary.aimMod.rollMod.total
     );
 
     // Calculate AP ------------------------------------------------------------
     const previousAp = this.actor.data.data.vitals.actionPoints.value;
     let apCost = this.attackProperties.ap.total;
-    if (aim) apCost += 2;
-    if (sneakAttack) apCost += 2;
-    if (calledShot) apCost += 2;
+    if (aim) apCost += secondary.aimMod.apCost.total;
+    if (sneakAttack) apCost += secondary.sneakAttackMod.apCost.total;
+    if (calledShot) apCost += secondary.calledShotMod.total;
 
     const remainingAp = isOutOfRange
       ? previousAp
@@ -288,14 +289,14 @@ export default class AttackExecution {
     promptHitModifier: number,
     criticalSuccess: number,
     criticalFailure: number,
-    aimed: boolean
+    aimed: boolean,
+    aimedMod: number
   ): CompositeNumber {
     const hitChance = skill.clone();
 
-    // TODO: add some data to character sheet relating to aim ap cost and roll bonus
     if (aimed)
       hitChance.add({
-        value: 10,
+        value: aimedMod,
         labelComponents: [{ key: "wv.rules.actions.attack.aim" }]
       });
 

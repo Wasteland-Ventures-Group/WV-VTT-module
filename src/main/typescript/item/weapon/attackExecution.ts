@@ -126,7 +126,8 @@ export default class AttackExecution {
       if (e === "closed") return;
       else throw e;
     }
-    const { alias, modifier, range, rollMode } = externalData;
+    const { alias, modifier, range, rollMode, aim, sneakAttack, calledShot } =
+      externalData;
 
     // Create common chat message data -----------------------------------------
     const commonData: ChatMessageDataConstructorData = createDefaultMessageData(
@@ -153,19 +154,30 @@ export default class AttackExecution {
     const rangeModifier =
       this.weapon.data.data.ranges.getRangeModifier(rangeBracket);
 
-    const critSuccess = this.actor.data.data.secondary.criticals.success;
+    const critSuccess =
+      this.actor.data.data.secondary.criticals.success.clone();
+    if (sneakAttack)
+      critSuccess.add({
+        value: 15,
+        labelComponents: [{ key: "wv.rules.actions.attack.sneakAttack" }]
+      });
     const critFailure = this.actor.data.data.secondary.criticals.failure;
     const hitChance = this.getHitRollTarget(
       this.actor.data.data.skills[this.weapon.data.data.skill],
       rangeModifier,
       modifier,
       critSuccess.total,
-      critFailure.total
+      critFailure.total,
+      aim
     );
 
     // Calculate AP ------------------------------------------------------------
     const previousAp = this.actor.data.data.vitals.actionPoints.value;
-    const apCost = this.attackProperties.ap.total;
+    let apCost = this.attackProperties.ap.total;
+    if (aim) apCost += 2;
+    if (sneakAttack) apCost += 2;
+    if (calledShot) apCost += 2;
+
     const remainingAp = isOutOfRange
       ? previousAp
       : this.token?.inCombat
@@ -275,9 +287,17 @@ export default class AttackExecution {
     rangeModifier: number,
     promptHitModifier: number,
     criticalSuccess: number,
-    criticalFailure: number
+    criticalFailure: number,
+    aimed: boolean
   ): CompositeNumber {
     const hitChance = skill.clone();
+
+    // TODO: add some data to character sheet relating to aim ap cost and roll bonus
+    if (aimed)
+      hitChance.add({
+        value: 10,
+        labelComponents: [{ key: "wv.rules.actions.attack.aim" }]
+      });
 
     if (rangeModifier)
       hitChance.add({

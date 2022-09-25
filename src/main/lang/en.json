@@ -6,6 +6,13 @@
         "short": "AP",
         "use": "AP use"
       },
+      "actions": {
+        "attack": {
+          "aim": "Aim",
+          "calledShot": "Called Shot",
+          "sneakAttack": "Sneak Attack"
+        }
+      },
       "background": {
         "age": "Age",
         "appearance": "Appearance",

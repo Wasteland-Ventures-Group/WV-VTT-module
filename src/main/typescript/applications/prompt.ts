@@ -208,7 +208,7 @@ export class AttackPrompt extends RollPrompt {
         ...super.getData().defaults,
         range: this.data.range
       },
-      showRange: true
+      isAttack: true
     };
   }
 
@@ -216,7 +216,10 @@ export class AttackPrompt extends RollPrompt {
     const common = super.transformFormData(formData);
     return {
       ...common,
-      range: this.extractNumberValue("range", formData)
+      range: this.extractNumberValue("range", formData),
+      aim: this.extractCheckboxValue("aim", formData),
+      calledShot: this.extractCheckboxValue("calledShot", formData),
+      sneakAttack: this.extractCheckboxValue("sneakAttack", formData)
     };
   }
 
@@ -333,6 +336,12 @@ export interface PromptDataCommon {
 export type AttackPromptData = PromptDataCommon & {
   /** The range to the target in metres */
   range: number;
+  /** Whether or not the attack is aimed */
+  aim: boolean;
+  /** Whether or not the attack targets a specific location */
+  calledShot: boolean;
+  /** Whether or not the attack is a sneak attack */
+  sneakAttack: boolean;
 };
 
 export type ExternalCheckData = PromptDataCommon;
@@ -351,7 +360,7 @@ export type AttackPromptTemplateData = RollPromptTemplateData & {
   defaults: {
     range: number;
   };
-  showRange: true;
+  isAttack: true;
 };
 
 type RollPromptConstructorData = {

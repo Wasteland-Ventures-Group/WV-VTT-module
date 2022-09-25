@@ -6,6 +6,13 @@
         "short": "AP",
         "use": "AP-Kosten"
       },
+      "actions": {
+        "attack": {
+          "aim": "Zielen",
+          "calledShot": "Angekündigter Schuss",
+          "sneakAttack": "Schleichattacke"
+        }
+      },
       "background": {
         "age": "Alter",
         "appearance": "Aussehen",

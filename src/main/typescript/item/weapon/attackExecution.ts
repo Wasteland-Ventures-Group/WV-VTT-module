@@ -271,13 +271,14 @@ export default class AttackExecution {
     token: Token | undefined,
     target: Token | undefined
   ): Promise<AttackPromptData> {
+    const ownerName = token?.name ?? actor.name;
     return AttackPrompt.get(
       {
-        alias: actor.name,
+        alias: ownerName,
         range: interact.getDistance(token, target) ?? 0
       },
       {
-        title: `${actor.name} — ${this.name}`
+        title: `${ownerName} — ${this.name}`
       }
     );
   }

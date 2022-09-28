@@ -1,4 +1,4 @@
-import { SpecialNames, TYPES } from "../../../constants.js";
+import { CONSTANTS, SpecialNames, TYPES } from "../../../constants.js";
 import { CompositeNumber } from "../../common.js";
 import BackgroundProperties from "./background/properties.js";
 import EquipmentProperties from "./equipment/properties.js";
@@ -50,6 +50,8 @@ export class AttackActionModifierProperties {
   rollMod: CompositeNumber;
 }
 
+const attackMods = CONSTANTS.rules.actions.attack;
+
 export class SecondaryStatisticsProperties {
   /** The criticals of the character */
   criticals = new CriticalsProperties();
@@ -60,15 +62,20 @@ export class SecondaryStatisticsProperties {
   /** The maximum carry weight of the character in kg */
   maxCarryWeight = new CompositeNumber();
 
-  // TODO: move those default values to constants.ts
   /** The modifier for sneak attacks */
-  sneakAttackMod = new AttackActionModifierProperties(2, 15);
+  sneakAttackMod = new AttackActionModifierProperties(
+    attackMods.sneak.apCost,
+    attackMods.sneak.criticalHitBonus
+  );
 
   /** The modifier for aimed shots */
-  aimMod = new AttackActionModifierProperties(2, 10);
+  aimMod = new AttackActionModifierProperties(
+    attackMods.aim.apCost,
+    attackMods.aim.rollBonus
+  );
 
   /** The modifier for called shots */
-  calledShotMod = new CompositeNumber(2);
+  calledShotMod = new CompositeNumber(attackMods.called.apCost);
 
   /** Apply Strength and set the base value for carry weight. */
   applySpecials(specials: SpecialsProperties) {

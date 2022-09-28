@@ -1,0 +1,47 @@
+{
+  "_id": "WvApparelCloth19",
+  "name": "Waitress Uniform",
+  "type": "apparel",
+  "data": {
+    "name": "Waitress Uniform",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Agility bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "agility",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Barter bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.barter",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "common",
+    "value": { "source": 100 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 1 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/shirt-simple-white.webp",
+  "effects": [],
+  "flags": {}
+}

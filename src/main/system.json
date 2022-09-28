@@ -14,7 +14,7 @@
       "twitter": "@kmoschcau"
     }
   ],
-  "version": "0.20.0",
+  "version": "0.21.0",
   "minimumCoreVersion": "9",
   "compatibleCoreVersion": "9",
   "scripts": [],
@@ -29,9 +29,44 @@
       "system": "wasteland-ventures"
     },
     {
-      "name": "apparel",
-      "label": "Wasteland Ventures Apparel",
-      "path": "compendiums/item/apparel.db",
+      "name": "apparel_accessories",
+      "label": "Wasteland Ventures Accessories",
+      "path": "compendiums/item/apparel/accessories.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_clothing",
+      "label": "Wasteland Ventures Clothing",
+      "path": "compendiums/item/apparel/clothing.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_heavy_armor",
+      "label": "Wasteland Ventures Heavy Armor",
+      "path": "compendiums/item/apparel/heavy_armor.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_light_armor",
+      "label": "Wasteland Ventures Light Armor",
+      "path": "compendiums/item/apparel/light_armor.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_power_armor",
+      "label": "Wasteland Ventures Power Armor",
+      "path": "compendiums/item/apparel/power_armor.db",
+      "type": "Item",
+      "system": "wasteland-ventures"
+    },
+    {
+      "name": "apparel_premium_armor",
+      "label": "Wasteland Ventures Premium Armor",
+      "path": "compendiums/item/apparel/premium_armor.db",
       "type": "Item",
       "system": "wasteland-ventures"
     },
@@ -84,7 +119,7 @@
   "gridUnits": "m",
   "url": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module",
   "manifest": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/src/main/system.json",
-  "download": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/download/v0.20.0/wasteland-ventures-0.20.0.zip",
+  "download": "https://github.com/Wasteland-Ventures-Group/WV-VTT-module/releases/download/v0.21.0/wasteland-ventures-0.21.0.zip",
   "readme": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/README.md",
   "changelog": "https://raw.githubusercontent.com/Wasteland-Ventures-Group/WV-VTT-module/main/CHANGELOG.md"
 }

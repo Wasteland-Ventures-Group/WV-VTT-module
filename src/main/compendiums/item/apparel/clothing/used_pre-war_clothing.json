@@ -1,5 +1,5 @@
 {
-  "_id": "WvApparel0000001",
+  "_id": "WvApparelCloth01",
   "name": "Used Pre-War clothing",
   "type": "apparel",
   "data": {
@@ -10,23 +10,15 @@
       "sources": []
     },
     "tags": [],
+    "weight": { "source": 0.5 },
     "rarity": "common",
-    "value": {
-      "source": 15
-    },
-    "weight": {
-      "source": 0.5
-    },
-    "quickSlots": {
-      "source": 2
-    },
-    "modSlots": {
-      "source": 2
-    },
+    "value": { "source": 15 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/shirt-simple-grey.webp",
   "effects": [],
   "flags": {}
 }

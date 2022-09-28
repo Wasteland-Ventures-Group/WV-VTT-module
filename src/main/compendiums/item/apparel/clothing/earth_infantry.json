@@ -1,9 +1,9 @@
 {
-  "_id": "WvApparel0000002",
-  "name": "Used Suit",
+  "_id": "WvApparelCloth26",
+  "name": "Earth Infantry",
   "type": "apparel",
   "data": {
-    "name": "Used Suit",
+    "name": "Earth Infantry",
     "description": "",
     "notes": "",
     "rules": {
@@ -11,34 +11,26 @@
         {
           "enabled": true,
           "hook": "afterSkills",
-          "label": "Diplomacy bonus",
+          "label": "Firearms bonus",
           "priority": 100,
           "selectors": ["actor", "parent"],
           "conditions": ["whenEquipped"],
-          "target": "skills.diplomacy",
+          "target": "skills.firearms",
           "type": "WV.RuleElement.NumberComponent",
-          "value": 5
+          "value": 10
         }
       ]
     },
     "tags": [],
-    "rarity": "common",
-    "value": {
-      "source": 40
-    },
-    "weight": {
-      "source": 0.5
-    },
-    "quickSlots": {
-      "source": 1
-    },
-    "modSlots": {
-      "source": 2
-    },
+    "weight": { "source": 1.5 },
+    "rarity": "uncommon",
+    "value": { "source": 400 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 2 },
     "slot": "clothing",
     "type": "clothing"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
   "effects": [],
   "flags": {}
 }

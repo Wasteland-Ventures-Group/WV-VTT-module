@@ -1,0 +1,36 @@
+{
+  "_id": "WvApparelCloth05",
+  "name": "Wasteland Healer",
+  "type": "apparel",
+  "data": {
+    "name": "Wasteland Healer",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Medicine bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.medicine",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "common",
+    "value": { "source": 25 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/shirt-simple-white.webp",
+  "effects": [],
+  "flags": {}
+}

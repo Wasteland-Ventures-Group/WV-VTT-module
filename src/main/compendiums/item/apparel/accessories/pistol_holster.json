@@ -1,0 +1,22 @@
+{
+  "_id": "WvAccessories004",
+  "name": "Pistol Holster",
+  "type": "apparel",
+  "data": {
+    "name": "Pistol Holster",
+    "description": "",
+    "notes": "Ready Weapon with Pistols and Revolvers costs 1 AP less",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "uncommon",
+    "value": { "source": 150 },
+    "slot": "belt",
+    "type": "accessory"
+  },
+  "img": "icons/equipment/waist/belt-buckle-arrow-brown.webp",
+  "effects": [],
+  "flags": {}
+}

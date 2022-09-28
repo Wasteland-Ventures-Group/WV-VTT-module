@@ -1,8 +1,10 @@
 {{~#if apparel~}}
   <div class="apparel-slot" data-item-id="{{apparel._id}}">
     <h3 class="flexrow flex-j-spaced">
+      <img class="flex-fixed double-size-inline" src="{{apparel.img}}" />
       <span>{{apparel.name}}</span>
       <button type="button" class="control small fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+      <button type="button" class="control small fas fa-minus" data-action="unequip" title="{{localize 'wv.system.actions.unequip'}}"></button>
     </h3>
     <div class="detail-groups">
       <div class="details">

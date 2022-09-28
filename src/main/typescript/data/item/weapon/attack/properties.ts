@@ -57,11 +57,16 @@ export class AttackProperties extends AttackSource {
     super();
     foundry.utils.mergeObject(this, source);
     this.damage = new DamageProperties(source.damage, owningWeapon);
+
     this.rounds = CompositeNumber.from(source.rounds ?? { source: 0 });
+    this.rounds.bounds.min = 0;
+
     this.dtReduction = CompositeNumber.from(
       source.dtReduction ?? { source: 0 }
     );
+
     this.ap = CompositeNumber.from(source.ap);
+    this.ap.bounds.min = 0;
 
     this.#weapon = owningWeapon;
     this.#name = name;
@@ -100,8 +105,12 @@ export class DamageProperties extends DamageSource {
   constructor(source: DamageSource, owningWeapon: Weapon) {
     super();
     foundry.utils.mergeObject(this, source);
+
     this.base = CompositeNumber.from(source.base);
+    this.base.bounds.min = 0;
+
     this.dice = CompositeNumber.from(source.dice);
+    this.dice.bounds.min = 0;
 
     this.#weapon = owningWeapon;
   }

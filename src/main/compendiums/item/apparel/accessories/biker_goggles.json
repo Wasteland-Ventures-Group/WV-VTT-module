@@ -1,0 +1,22 @@
+{
+  "_id": "WvAccessories009",
+  "name": "Flight/Biker Goggles",
+  "type": "apparel",
+  "data": {
+    "name": "Flight/Biker Goggles",
+    "description": "",
+    "notes": "Reduce PER Penalties of Weather Effects by 1",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "common",
+    "value": { "source": 50 },
+    "slot": "eyes",
+    "type": "accessory"
+  },
+  "img": "icons/equipment/head/goggles-leather-tan.webp",
+  "effects": [],
+  "flags": {}
+}

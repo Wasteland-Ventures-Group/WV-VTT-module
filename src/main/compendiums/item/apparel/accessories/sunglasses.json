@@ -1,0 +1,22 @@
+{
+  "_id": "WvAccessories008",
+  "name": "Sunglasses",
+  "type": "apparel",
+  "data": {
+    "name": "Sunglasses",
+    "description": "",
+    "notes": "Reduces effects of Blinding Light by 1, but increases penalties of Dim Light and Darkness by 1",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 0 },
+    "rarity": "uncommon",
+    "value": { "source": 20 },
+    "slot": "eyes",
+    "type": "accessory"
+  },
+  "img": "icons/equipment/head/goggles-leather-grey.webp",
+  "effects": [],
+  "flags": {}
+}

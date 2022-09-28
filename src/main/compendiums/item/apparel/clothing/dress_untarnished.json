@@ -1,0 +1,36 @@
+{
+  "_id": "WvApparelCloth12",
+  "name": "Dress (Untarnished)",
+  "type": "apparel",
+  "data": {
+    "name": "Dress (Untarnished)",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Charisma bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "charisma",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "common",
+    "value": { "source": 100 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 2 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/commodities/cloth/cloth-bolt-embroidered-pink.webp",
+  "effects": [],
+  "flags": {}
+}

@@ -28,5 +28,11 @@
       </tfoot>
     </table>
   </div>
+  <label class="contained-target-inline thaum-special">
+    {{~localize "wv.system.thaumSpecial"~}}
+    <select name="thaumSpecial">
+      {{selectOptions sheet.thaumSpecials selected=data.data.magic.thaumSpecial}}
+    </select>
+  </label>
   <button type="submit">{{localize "wv.system.actions.submit"}}</button>
 </form>

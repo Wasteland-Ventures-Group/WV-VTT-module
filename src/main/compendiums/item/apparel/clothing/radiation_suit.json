@@ -1,0 +1,35 @@
+{
+  "_id": "WvApparelCloth39",
+  "name": "Radiation Suit",
+  "type": "apparel",
+  "data": {
+    "name": "Radiation Suit",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Radiation Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 50
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 5 },
+    "rarity": "rare",
+    "value": { "source": 500 },
+    "modSlots": { "source": 1 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/head/mask-plague-grey.webp",
+  "effects": [],
+  "flags": {}
+}

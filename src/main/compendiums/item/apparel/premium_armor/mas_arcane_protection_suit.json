@@ -1,0 +1,37 @@
+{
+  "_id": "WvPremiumArmor02",
+  "name": "MAS Arcane Protection Suit",
+  "type": "apparel",
+  "data": {
+    "name": "MAS Arcane Protection Suit",
+    "description": "",
+    "notes": "+1 DT against MEWs",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Radiation Resistance",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "resistances.radiation",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 10
+        }
+      ]
+    },
+    "tags": [],
+    "damageThreshold": { "source": 2 },
+    "weight": { "source": 8 },
+    "rarity": "rare",
+    "value": { "source": 5000 },
+    "quickSlots": { "source": 3 },
+    "modSlots": { "source": 2 },
+    "slot": "armor",
+    "type": "premiumArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+  "effects": [],
+  "flags": {}
+}

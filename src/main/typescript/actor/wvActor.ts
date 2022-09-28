@@ -12,7 +12,6 @@ import {
   TYPES
 } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
-import type CharacterDataSource from "../data/actor/character/source.js";
 import type {
   CompositeResource,
   SerializedCompositeNumber
@@ -56,19 +55,24 @@ export default class WvActor extends Actor {
     return `[${this.id}] "${this.name}"`;
   }
 
-  /** A convenience getter for the Actor's hit points. */
+  /** Get the Actor's hit points. */
   get hitPoints(): CompositeResource {
     return this.data.data.vitals.hitPoints;
   }
 
-  /** A convenience getter for the Actor's action points. */
+  /** Get the Actor's action points. */
   get actionPoints(): CompositeResource {
     return this.data.data.vitals.actionPoints;
   }
 
-  /** A convenience getter for the Actor's strain. */
+  /** Get the Actor's strain. */
   get strain(): CompositeResource {
     return this.data.data.vitals.strain;
+  }
+
+  /** Get the Actor's quick slots. */
+  get quickSlots(): CompositeResource {
+    return this.data.data.equipment.quickSlots;
   }
 
   /** Get the race of the Actor. */
@@ -151,7 +155,7 @@ export default class WvActor extends Actor {
   }
 
   /** Get the equipped armor of the actor. */
-  get armor(): Apparel | null {
+  get armorApparel(): Apparel | null {
     const armorId = this.data.data.equipment.armorSlotId;
     if (armorId === null) return null;
 
@@ -162,7 +166,7 @@ export default class WvActor extends Actor {
   }
 
   /** Get the equipped clothing of the actor. */
-  get clothing(): Apparel | null {
+  get clothingApparel(): Apparel | null {
     const clothingId = this.data.data.equipment.clothingSlotId;
     if (clothingId === null) return null;
 
@@ -208,8 +212,8 @@ export default class WvActor extends Actor {
   /** Get all equipped apparel items of the actor.  */
   get equippedApparel(): Apparel[] {
     return [
-      this.armor,
-      this.clothing,
+      this.armorApparel,
+      this.clothingApparel,
       this.eyesApparel,
       this.mouthApparel,
       this.beltApparel
@@ -249,7 +253,8 @@ export default class WvActor extends Actor {
    * @param id - the ID of the actor owned item to ready
    * @param useQuickSlot - whether to use a quick slot charge when in combat and
    *   it applies to the item
-   * @returns a promise that resolves once the update is done
+   * @returns a promise that resolves once the update is done, and rejects if
+   *   the actor is in combat without sufficient AP
    */
   async readyItem(
     id: string | null,
@@ -267,25 +272,65 @@ export default class WvActor extends Actor {
       return;
     }
 
-    let apCost = CONSTANTS.rules.equipment.readyItemCost.direct;
+    let apCostComposite = this.data.data.equipment.equipActionCosts.readyDirect;
+    let quickSlots = this.quickSlots.value;
     if (item.type === "weapon") {
       if (this.data.data.equipment.weaponSlotIds.includes(id)) {
-        apCost = CONSTANTS.rules.equipment.readyItemCost.fromSlot;
+        apCostComposite =
+          this.data.data.equipment.equipActionCosts.readyFromSlot;
       }
     } else if (useQuickSlot) {
-      apCost = CONSTANTS.rules.equipment.readyItemCost.fromSlot;
-    }
+      if (quickSlots < 1)
+        throw new SystemRulesError(
+          "Not enough quick slots.",
+          "wv.system.messages.notQuickSlots"
+        );
 
-    if (this.actionPoints.value < apCost) {
+      apCostComposite = this.data.data.equipment.equipActionCosts.readyFromSlot;
+      quickSlots -= 1;
+    }
+    const apCost = apCostComposite.total;
+
+    if (this.actionPoints.value < apCost)
       throw new SystemRulesError(
         "Not enough action points.",
         "wv.system.messages.notEnoughAp"
       );
-    }
 
     await this.update({
       data: {
-        equipment: { readiedItemId: id },
+        equipment: { readiedItemId: id, quickSlots: { value: quickSlots } },
+        vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
+      }
+    });
+  }
+
+  /**
+   * Unready the readied item or weapon. No update is made in the following
+   * cases:
+   * - the readied slot is already empty
+   *
+   * @returns a promise that resolves once the update is done, and rejects if
+   *   the actor is in combat without sufficient AP
+   */
+  async unreadyItem() {
+    if (!this.data.data.equipment.readiedItemId === null) return;
+
+    if (!this.inCombat) {
+      await this.update({ data: { equipment: { readiedItemId: null } } });
+      return;
+    }
+
+    const apCost = this.data.data.equipment.equipActionCosts.unready.total;
+    if (this.actionPoints.value < apCost)
+      throw new SystemRulesError(
+        "Not enough action points.",
+        "wv.system.messages.notEnoughAp"
+      );
+
+    await this.update({
+      data: {
+        equipment: { readiedItemId: null },
         vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
       }
     });
@@ -324,6 +369,30 @@ export default class WvActor extends Actor {
   }
 
   /**
+   * Unslot a weapon from a weapon slot. No update is made in the following
+   * cases:
+   * - the given weapon slot is already empty
+   *
+   * @param slot - the number of the weapon slot
+   * @returns a promise that resolves once the update is done, rejects if this
+   *   is attempted in combat
+   */
+  async unslotWeapon(slot: 1 | 2): Promise<void> {
+    if (this.inCombat)
+      throw new SystemRulesError(
+        "Can not slot a weapon in combat.",
+        "wv.system.messages.canNotDoInCombat"
+      );
+
+    const index = slot - 1;
+    const slots = this.data.data.equipment.weaponSlotIds;
+    if (slots[index] === null) return;
+
+    slots[index] = null;
+    await this.update({ data: { equipment: { weaponSlotIds: slots } } });
+  }
+
+  /**
    * Equip an apparel into its slot. No update is made in the following cases:
    * - the given ID is null
    * - the actor has no item with the given ID
@@ -332,7 +401,7 @@ export default class WvActor extends Actor {
    *
    * @param id - the ID of the actor owned apparel to equip
    * @returns a promise that resolves once the update is done, rejects if this
-   *   is attempted in combat or the apparel slot is blocked
+   *   is attempted in combat or there is a blocked slot collission
    */
   async equipApparel(id: string | null): Promise<void> {
     if (this.inCombat)
@@ -353,77 +422,64 @@ export default class WvActor extends Actor {
         "wv.system.messages.blockedByAnotherApparel"
       );
 
-    let updateData: Partial<ActorDataConstructorData>;
-    switch (slot) {
-      case "armor":
-        if (this.data.data.equipment.armorSlotId === id) return;
-        updateData = { data: { equipment: { armorSlotId: id } } };
-        break;
-      case "clothing":
-        if (this.data.data.equipment.clothingSlotId === id) return;
-        updateData = { data: { equipment: { clothingSlotId: id } } };
-        break;
-      case "eyes":
-        if (this.data.data.equipment.eyesSlotId === id) return;
-        updateData = { data: { equipment: { eyesSlotId: id } } };
-        break;
-      case "mouth":
-        if (this.data.data.equipment.mouthSlotId === id) return;
-        updateData = { data: { equipment: { mouthSlotId: id } } };
-        break;
-      case "belt":
-        if (this.data.data.equipment.beltSlotId === id) return;
-        updateData = { data: { equipment: { beltSlotId: id } } };
-    }
+    let blockedSlotCollision = false;
+    item.blockedApparelSlots.forEach((slot) => {
+      if (blockedSlotCollision) return;
 
-    await this.update(updateData);
+      blockedSlotCollision ||= !!this[`${slot}Apparel`];
+    });
+    if (blockedSlotCollision)
+      throw new SystemRulesError(
+        "The apparel's blocked slots include an occupied slot.",
+        "wv.system.messages.blockedApparelSlotIsOccupied"
+      );
+
+    if (this.data.data.equipment[`${slot}SlotId`] === id) return;
+    await this.update({ data: { equipment: { [`${slot}SlotId`]: id } } });
   }
 
   /**
-   * Create update data for updating the hit points and optionally update the
-   * Actor.
-   * @param hitPoints - the new hit points value
-   * @param update - whether to directly update or only return the update data
-   * @returns the update data
+   * Unequip an apparel from the designated slot.
+   *
+   * @param slot - the slot to unequip from
+   * @returns a promise that resolves once the update is done, rejects if this
+   *   is attempted in combat
    */
-  updateHitPoints(hitPoints: number, update = true): UpdateData {
-    const updateData: UpdateData = {
-      _id: this.id,
-      data: { vitals: { hitPoints: { value: hitPoints } } }
-    };
-    if (update) this.update(updateData);
-    return updateData;
+  async unequipApparel(slot: ApparelSlot): Promise<void> {
+    if (this.inCombat)
+      throw new SystemRulesError(
+        "Can not equip an apparel in combat.",
+        "wv.system.messages.canNotDoInCombat"
+      );
+
+    await this.update({ data: { equipment: { [`${slot}SlotId`]: null } } });
   }
 
-  /**
-   * Create update data for updating the action points and optionally update the
-   * Actor.
-   * @param actionPoints - the new action points value
-   * @param update - whether to directly update or only return the update data
-   * @returns the update data
-   */
-  updateActionPoints(actionPoints: number, update = true): UpdateData {
-    const updateData: UpdateData = {
-      _id: this.id,
-      data: { vitals: { actionPoints: { value: actionPoints } } }
-    };
-    if (update) this.update(updateData);
-    return updateData;
+  /** Update the hit points of the Actor. */
+  async updateHitPoints(value: number) {
+    await this.update({ data: { vitals: { hitPoints: { value } } } });
   }
 
-  /**
-   * Create update data for updating the strain and optionally update the Actor.
-   * @param strain - the new strain value
-   * @param update - whether to directly update or only return the update data
-   * @returns the update data
-   */
-  updateStrain(strain: number, update = true): UpdateData {
-    const updateData: UpdateData = {
-      _id: this.id,
-      data: { vitals: { strain: { value: strain } } }
-    };
-    if (update) this.update(updateData);
-    return updateData;
+  /** Update the action points of the Actor. */
+  async updateActionPoints(value: number) {
+    await this.update({ data: { vitals: { actionPoints: { value } } } });
+  }
+
+  /** Update the strain of the Actor. */
+  async updateStrain(value: number) {
+    await this.update({ data: { vitals: { strain: { value } } } });
+  }
+
+  /** Restore the action points of the actor to the maximum. */
+  async restoreActionPoints() {
+    await this.updateActionPoints(this.actionPoints.max);
+  }
+
+  /** Restore the quick slots of the actor to the maximum. */
+  async restoreQuickSlots() {
+    await this.update({
+      data: { equipment: { quickSlots: { value: this.quickSlots.max } } }
+    });
   }
 
   async rollCreateCheckMessage(
@@ -657,8 +713,3 @@ export default class WvActor extends Actor {
     }
   }
 }
-
-/** The type of the update data for WvActors. */
-export type UpdateData = DeepPartial<CharacterDataSource> & {
-  _id: string | null;
-};

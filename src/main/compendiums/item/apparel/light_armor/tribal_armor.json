@@ -1,5 +1,5 @@
 {
-  "_id": "WvApparel0000058",
+  "_id": "WvLightArmor0001",
   "name": "Tribal Armor",
   "type": "apparel",
   "data": {
@@ -22,26 +22,16 @@
       ]
     },
     "tags": [],
+    "damageThreshold": { "source": 1 },
+    "weight": { "source": 4 },
     "rarity": "common",
-    "value": {
-      "source": 80
-    },
-    "weight": {
-      "source": 4
-    },
-    "damageThreshold": {
-      "source": 1
-    },
-    "quickSlots": {
-      "source": 1
-    },
-    "modSlots": {
-      "source": 2
-    },
+    "value": { "source": 80 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 2 },
     "slot": "armor",
     "type": "lightArmor"
   },
-  "img": "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "img": "icons/equipment/shoulder/shoulderguard-segmented-studded-leather-brown.webp",
   "effects": [],
   "flags": {}
 }

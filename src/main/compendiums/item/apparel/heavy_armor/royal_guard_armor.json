@@ -1,0 +1,36 @@
+{
+  "_id": "WvHeavyArmor0005",
+  "name": "Royal Guard Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Royal Guard Armor",
+    "description": "",
+    "notes": "User is Encumbered",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Charisma bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "specials.charisma.tempTotal",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "damageThreshold": { "source": 4 },
+    "weight": { "source": 15 },
+    "rarity": "rare",
+    "value": { "source": 1300 },
+    "modSlots": { "source": 2 },
+    "slot": "armor",
+    "type": "heavyArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-gilded-orange.webp",
+  "effects": [],
+  "flags": {}
+}

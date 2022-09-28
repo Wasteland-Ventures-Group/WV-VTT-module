@@ -1,0 +1,47 @@
+{
+  "_id": "WvApparelCloth23",
+  "name": "Puncher Pants",
+  "type": "apparel",
+  "data": {
+    "name": "Puncher Pants",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Strength bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "strength",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        },
+        {
+          "enabled": true,
+          "hook": "afterSkills",
+          "label": "Unarmed bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "skills.unarmed",
+          "type": "WV.RuleElement.NumberComponent",
+          "value": 5
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 1.5 },
+    "rarity": "uncommon",
+    "value": { "source": 200 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/leg/pants-bronze-metal-belt-purple-pants.webp",
+  "effects": [],
+  "flags": {}
+}

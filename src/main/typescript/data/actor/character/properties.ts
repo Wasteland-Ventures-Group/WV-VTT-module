@@ -111,8 +111,11 @@ export class CharacterDataPropertiesData extends CharacterDataSourceData {
     foundry.utils.mergeObject(this, source);
     this.leveling = new LevelingProperties(source.leveling);
 
-    for (const special of SpecialNames) {
-      this.specials[special].points = this.leveling.specialPoints[special];
+    for (const specialName of SpecialNames) {
+      const special = this.specials[specialName];
+      special.points = this.leveling.specialPoints[specialName];
+      special.permBounds = { min: 0, max: 15 };
+      special.tempBounds = { min: 0, max: 15 };
     }
 
     this.background = new BackgroundProperties(source.background);

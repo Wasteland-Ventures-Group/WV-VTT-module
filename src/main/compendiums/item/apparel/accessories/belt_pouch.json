@@ -1,0 +1,23 @@
+{
+  "_id": "WvAccessories003",
+  "name": "Belt Pouch",
+  "type": "apparel",
+  "data": {
+    "name": "Belt Pouch",
+    "description": "",
+    "notes": "Top layer",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 1 },
+    "rarity": "common",
+    "value": { "source": 20 },
+    "quickSlots": { "source": 1 },
+    "slot": "belt",
+    "type": "accessory"
+  },
+  "img": "icons/containers/bags/pouch-leather-simple-tan.webp",
+  "effects": [],
+  "flags": {}
+}

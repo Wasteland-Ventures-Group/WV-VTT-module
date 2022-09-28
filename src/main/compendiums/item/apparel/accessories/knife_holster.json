@@ -1,0 +1,22 @@
+{
+  "_id": "WvAccessories005",
+  "name": "Knife Holster",
+  "type": "apparel",
+  "data": {
+    "name": "Knife Holster",
+    "description": "",
+    "notes": "Ready Weapon with Knives costs 1 AP less",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "weight": { "source": 0.5 },
+    "rarity": "common",
+    "value": { "source": 150 },
+    "slot": "belt",
+    "type": "accessory"
+  },
+  "img": "icons/equipment/waist/belt-buckle-crescent.webp",
+  "effects": [],
+  "flags": {}
+}

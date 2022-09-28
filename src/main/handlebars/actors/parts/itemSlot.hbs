@@ -1,0 +1,25 @@
+{{~#if item~}}
+  <div class="item-slot" data-item-id="{{item._id}}">
+    <h3 class="flexrow flex-j-spaced">
+      <img class="flex-fixed double-size-inline" src="{{item.img}}" />
+      <span>{{item.name}}</span>
+      <button type="button" class="control small fas fa-pen" data-action="edit" title="{{localize 'wv.system.actions.edit'}}"></button>
+      <button type="button" class="control small fas fa-minus" data-action="unequip" title="{{localize 'wv.system.actions.unequip'}}"></button>
+    </h3>
+    <div class="detail-groups">
+      {{~#if item.data.description~}}
+        <div>{{item.data.description}}</div>
+      {{~/if~}}
+      {{~#if item.data.tags.length~}}
+        <section class="flexrow flex-gapped">
+          {{~#each item.data.tags as |tag|~}}
+            <span class="fas fa-tag tag flex-fixed">{{tag}}</span>
+          {{~/each~}}
+        </section>
+      {{~/if~}}
+      {{~#if item.data.notes~}}
+        <div>{{item.data.notes}}</div>
+      {{~/if~}}
+    </div>
+  </div>
+{{~/if~}}

@@ -1,0 +1,36 @@
+{
+  "_id": "WvApparelCloth20",
+  "name": "Firefighter Uniform",
+  "type": "apparel",
+  "data": {
+    "name": "Firefighter Uniform",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": [
+        {
+          "enabled": true,
+          "hook": "afterSpecial",
+          "label": "Endurance bonus",
+          "priority": 100,
+          "selectors": ["actor", "parent"],
+          "conditions": ["whenEquipped"],
+          "target": "endurance",
+          "type": "WV.RuleElement.TempSpecialComponent",
+          "value": 1
+        }
+      ]
+    },
+    "tags": [],
+    "weight": { "source": 3 },
+    "rarity": "common",
+    "value": { "source": 100 },
+    "quickSlots": { "source": 1 },
+    "modSlots": { "source": 3 },
+    "slot": "clothing",
+    "type": "clothing"
+  },
+  "img": "icons/equipment/chest/robe-layered-red.webp",
+  "effects": [],
+  "flags": {}
+}

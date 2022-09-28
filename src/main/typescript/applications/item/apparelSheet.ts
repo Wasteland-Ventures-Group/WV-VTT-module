@@ -1,9 +1,11 @@
-import { ApparelSlots, isApparelSlot, TYPES } from "../../constants.js";
+import { type ApparelSlot, isApparelSlot, TYPES } from "../../constants.js";
 import type Apparel from "../../item/apparel.js";
 import { isOfItemType } from "../../item/wvItem.js";
-import type { I18nApparelSlots, I18nApparelTypes } from "../../wvI18n.js";
-import WvI18n from "../../wvI18n.js";
-import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
+import WvI18n, {
+  type I18nApparelSlots,
+  type I18nApparelTypes
+} from "../../wvI18n.js";
+import WvItemSheet, { type SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 /** An Item sheet for Apparel items. */
 export default class ApparelSheet extends WvItemSheet {
@@ -56,15 +58,16 @@ export default class ApparelSheet extends WvItemSheet {
     return super._updateObject(event, formData);
   }
 
-  /** Patch the form data to set disabled blocked slots to false. */
+  /** Patch the form data to set the self-occupied slot to not blocked. */
   protected patchBlockedApparelSlots(formData: Record<string, unknown>) {
+    const ownSlot = this.getOwnSlot(formData);
+    formData[`data.blockedSlots.${ownSlot}`] = false;
+  }
+
+  protected getOwnSlot(formData: Record<string, unknown>): ApparelSlot {
     const slot = formData["data.slot"];
-    if (typeof slot === "string" && isApparelSlot(slot))
-      formData[`data.blockedSlots.${slot}`] = false;
-    else
-      for (const slotName of ApparelSlots)
-        if (!(typeof formData[`data.blockedSlots.${slotName}`] === "boolean"))
-          formData[`data.blockedSlots.${slotName}`] = false;
+    if (typeof slot === "string" && isApparelSlot(slot)) return slot;
+    return this.item.data.data.slot;
   }
 }
 

@@ -3,6 +3,7 @@ import {
   CONSTANTS,
   EquipmentSlot,
   HANDLEBARS,
+  isApparelSlot,
   isEquipmentSlot,
   isPhysicalItemType,
   isSkillName,
@@ -11,8 +12,6 @@ import {
   SkillNames,
   SpecialName,
   SpecialNames,
-  ThaumaturgySpecial,
-  ThaumaturgySpecials,
   TYPES
 } from "../../constants.js";
 import type DragData from "../../dragData.js";
@@ -140,6 +139,13 @@ export default class WvActorSheet extends ActorSheet {
         );
       });
     sheetForm
+      .querySelectorAll("button[data-action=unequip]")
+      .forEach((element) => {
+        element.addEventListener("click", (event) =>
+          this.onClickUnequipItem(event)
+        );
+      });
+    sheetForm
       .querySelectorAll("button[data-weapon-attack-name]")
       .forEach((element) => {
         element.addEventListener("click", (event) =>
@@ -165,12 +171,12 @@ export default class WvActorSheet extends ActorSheet {
         ? this.toSheetWeapon(actorReadiedItem)
         : actorReadiedItem?.toObject(false) ?? null;
     const armor =
-      this.actor.armor instanceof Apparel
-        ? this.toSheetApparel(this.actor.armor)
+      this.actor.armorApparel instanceof Apparel
+        ? this.toSheetApparel(this.actor.armorApparel)
         : null;
     const clothing =
-      this.actor.clothing instanceof Apparel
-        ? this.toSheetApparel(this.actor.clothing)
+      this.actor.clothingApparel instanceof Apparel
+        ? this.toSheetApparel(this.actor.clothingApparel)
         : null;
     const eyes =
       this.actor.eyesApparel instanceof Apparel
@@ -235,7 +241,13 @@ export default class WvActorSheet extends ActorSheet {
       sheet: {
         bounds: CONSTANTS.bounds,
         equipment: {
-          readyItemCost: CONSTANTS.rules.equipment.readyItemCost,
+          readyItemCost: {
+            direct:
+              this.actor.data.data.equipment.equipActionCosts.readyDirect.total,
+            fromSlot:
+              this.actor.data.data.equipment.equipActionCosts.readyFromSlot
+                .total
+          },
           readiedItem,
           weaponSlots: this.actor.weaponSlotWeapons.map((weapon) =>
             weapon ? this.toSheetWeapon(weapon) : null
@@ -267,6 +279,9 @@ export default class WvActorSheet extends ActorSheet {
           equipment: HANDLEBARS.partPaths.actor.equipment,
           header: HANDLEBARS.partPaths.actor.header,
           inventory: HANDLEBARS.partPaths.actor.inventory,
+          inventoryEquipmentSlot:
+            HANDLEBARS.partPaths.actor.inventoryEquipmentSlot,
+          itemSlot: HANDLEBARS.partPaths.actor.itemSlot,
           magic: HANDLEBARS.partPaths.actor.magic,
           stats: HANDLEBARS.partPaths.actor.stats,
           weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
@@ -297,17 +312,7 @@ export default class WvActorSheet extends ActorSheet {
           return skills;
         }, {} as Record<SkillName, SheetSkill>),
         systemGridUnit: getGame().system.data.gridUnits,
-        magic: {
-          thaumSpecials: ThaumaturgySpecials.reduce(
-            (thaumSpecials, thaumSpecialName) => {
-              thaumSpecials[thaumSpecialName] =
-                i18nSpecials[thaumSpecialName].long;
-              return thaumSpecials;
-            },
-            {} as Record<ThaumaturgySpecial, string>
-          ),
-          spells
-        },
+        magic: { spells },
         effects: this.actor.items
           .filter(
             (item): item is StoredDocument<WvItem> =>
@@ -629,6 +634,35 @@ export default class WvActorSheet extends ActorSheet {
     attack.execute();
   }
 
+  /** Handle a click event on an unequip item button. */
+  protected async onClickUnequipItem(event: Event): Promise<void> {
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const itemElement = event.target.closest("[data-equipment-slot]");
+    if (!(itemElement instanceof HTMLElement))
+      throw new Error("The item element parent is not an HTMLElement.");
+
+    const slotName = itemElement.dataset.equipmentSlot;
+    if (typeof slotName !== "string" || !isEquipmentSlot(slotName)) return;
+
+    try {
+      if (slotName === "readiedItem") {
+        await this.actor.unreadyItem();
+      } else if (slotName === "weaponSlot1") {
+        await this.actor.unslotWeapon(1);
+      } else if (slotName === "weaponSlot2") {
+        await this.actor.unslotWeapon(2);
+      } else if (isApparelSlot(slotName)) {
+        await this.actor.unequipApparel(slotName);
+      }
+    } catch (e) {
+      if (e instanceof SystemRulesError && e.key) {
+        ui.notifications?.error(e.key, { localize: true });
+      }
+    }
+  }
+
   /** Handle a click event on a create item button. */
   protected async onClickCreateItem(event: Event): Promise<void> {
     if (!(event.target instanceof HTMLElement))
@@ -817,7 +851,10 @@ export default class WvActorSheet extends ActorSheet {
       if (dragData.data._id !== this.actor.readiedItem?.id) {
         slotsToAllow.push("readiedItem");
 
-        if (this.actor.inCombat) {
+        if (
+          this.actor.inCombat &&
+          this.actor.data.data.equipment.quickSlots.value > 0
+        ) {
           this.markReadySlot("quick-slotable");
         }
       }
@@ -960,7 +997,6 @@ interface SheetLeveling {
 }
 
 interface SheetMagic {
-  thaumSpecials: Record<ThaumaturgySpecial, string>;
   spells: SheetSpell[];
 }
 
@@ -1002,6 +1038,8 @@ interface SheetData extends ActorSheet.Data {
       equipment: string;
       header: string;
       inventory: string;
+      inventoryEquipmentSlot: string;
+      itemSlot: string;
       magic: string;
       stats: string;
       weaponSlot: string;

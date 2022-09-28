@@ -1,0 +1,25 @@
+{
+  "_id": "WvLightArmor0005",
+  "name": "Starmetal Armor",
+  "type": "apparel",
+  "data": {
+    "name": "Starmetal Armor",
+    "description": "",
+    "notes": "",
+    "rules": {
+      "sources": []
+    },
+    "tags": [],
+    "damageThreshold": { "source": 3 },
+    "weight": { "source": 5 },
+    "rarity": "rare",
+    "value": { "source": 1000 },
+    "quickSlots": { "source": 2 },
+    "modSlots": { "source": 2 },
+    "slot": "armor",
+    "type": "lightArmor"
+  },
+  "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+  "effects": [],
+  "flags": {}
+}

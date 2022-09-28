@@ -228,7 +228,6 @@ export class AttackPrompt extends RollPrompt {
   }
 }
 
-// TODO: complete this
 export class StringPrompt extends Application {
   static override get defaultOptions(): ApplicationOptions {
     const defaultOptions = super.defaultOptions;

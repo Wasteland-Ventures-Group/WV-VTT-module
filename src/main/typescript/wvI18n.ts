@@ -57,7 +57,7 @@ export type I18nRadSicknessLevels = Record<RadiationSicknessLevel, string>;
 /** The internationalization structure for rarities */
 export type I18nRarities = Record<Rarity, string>;
 
-/** The internationalisation structure for rollmodes */
+/** The internationalization structure for roll modes */
 export type I18nRollModes = Record<RollMode, string>;
 
 /** The internationalization structure of the SPECIALs */

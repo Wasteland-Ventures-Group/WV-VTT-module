@@ -11,7 +11,7 @@ export default async function decorateCheck(
   flags: CheckFlags,
   html: HookParams[1]
 ) {
-  html.addClass("general-roll");
+  html.addClass("detailed-roll");
   const content = getContentElement(html);
   const data: CheckTemplateData = {
     ...flags,

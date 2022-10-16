@@ -14,7 +14,7 @@ export default async function decorateWeaponAttack(
   flags: WeaponAttackFlags,
   html: HookParams[1]
 ): Promise<void> {
-  html.addClass("weapon-attack");
+  html.addClass("detailed-roll");
 
   const content = getContentElement(html);
 

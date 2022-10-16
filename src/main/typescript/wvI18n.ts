@@ -171,10 +171,10 @@ export default class WvI18n {
   static get rollModes(): I18nRollModes {
     const base = "CHAT.Roll";
     return Object.entries(CONST.DICE_ROLL_MODES).reduce((acc, [key, value]) => {
-      const internalisationKey = base + key.toLowerCase().capitalize();
+      const internalizationKey = base + key.toLowerCase().capitalize();
       acc[value] = foundry.utils.getProperty(
         getGame().i18n.translations,
-        internalisationKey
+        internalizationKey
       );
       return acc;
     }, {} as I18nRollModes);

@@ -517,7 +517,7 @@ export default class WvActor extends Actor {
         formula: checkRoll.formula,
         critical: checkRoll.dice[0]?.results[0]?.critical,
         result,
-        degree: fullFormula.d100Target - result,
+        degreesOfSuccess: fullFormula.d100Target - result,
         total: checkRoll.total ?? 0
       },
       blind: msgOptions.blind ?? false

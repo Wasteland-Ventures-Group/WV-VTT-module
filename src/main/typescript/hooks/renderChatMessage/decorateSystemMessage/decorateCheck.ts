@@ -38,7 +38,7 @@ export type CheckFlags = CommonRollFlags & {
     formula: string;
     critical?: Critical | undefined;
     result: number;
-    degree: number;
+    degreesOfSuccess: number;
     total: number;
   };
 };

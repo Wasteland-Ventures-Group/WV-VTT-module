@@ -8,22 +8,22 @@
     <input required name="modifier" type="number" value="{{defaults.modifier}}" class="size-3" />
   </label>
   {{#if isAttack}}
-  <label class="contained-target-inline">
-    {{localize "wv.rules.range.distance.name"}}
-    <input required name="range" type="number" value="{{defaults.range}}" class="size-3" />
-  </label>
-  <label class="contained-target-inline">
-    {{localize "wv.rules.actions.attack.aim"}}
-    <input name="aim" type="checkbox" {{checked defaults.aim}}/>
-  </label>
-  <label class="contained-target-inline">
-    {{localize "wv.rules.actions.attack.calledShot"}}
-    <input name="calledShot" type="checkbox" {{checked defaults.calledShot}}/>
-  </label>
-  <label class="contained-target-inline">
-    {{localize "wv.rules.actions.attack.sneakAttack"}}
-    <input name="sneakAttack" type="checkbox" {{checked defaults.sneakAttack}}/>
-  </label>
+    <label class="contained-target-inline">
+      {{localize "wv.rules.range.distance.name"}}
+      <input required name="range" type="number" value="{{defaults.range}}" class="size-3" />
+    </label>
+    <label class="contained-target-inline">
+      {{localize "wv.rules.actions.attack.aim"}}
+      <input name="aim" type="checkbox" {{checked defaults.aim}}/>
+    </label>
+    <label class="contained-target-inline">
+      {{localize "wv.rules.actions.attack.calledShot"}}
+      <input name="calledShot" type="checkbox" {{checked defaults.calledShot}}/>
+    </label>
+    <label class="contained-target-inline">
+      {{localize "wv.rules.actions.attack.sneakAttack"}}
+      <input name="sneakAttack" type="checkbox" {{checked defaults.sneakAttack}}/>
+    </label>
   {{/if}}
   <label class="contained-target-inline">
     {{localize "wv.system.misc.rollMode.singular"}}

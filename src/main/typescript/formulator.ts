@@ -131,9 +131,7 @@ export default class Formulator {
     return formula;
   }
 
-  /**
-   * Get the target for a d100 roll for a check
-   */
+  /** Get the target for a d100 roll for a check. */
   get d100Target(): number {
     if (this.special) {
       return this.target * 10;

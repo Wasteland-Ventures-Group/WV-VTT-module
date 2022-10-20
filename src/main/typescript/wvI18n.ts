@@ -167,7 +167,7 @@ export default class WvI18n {
     ) as I18nSpecials;
   }
 
-  /** Get the internationalization of the Dice Roll Modes */
+  /** Get the internationalization of the Dice Roll Modes. */
   static get rollModes(): I18nRollModes {
     const base = "CHAT.Roll";
     return Object.entries(CONST.DICE_ROLL_MODES).reduce((acc, [key, value]) => {

@@ -42,10 +42,10 @@
       <div class="roll-summary-result">{{ternary template.blinded "???" roll.result}}</div>
     </div>
     {{#unless template.blinded}}
-    <div class="roll-summary">
-      <label class="roll-summary-label">{{localize template.keys.degrees}}</label>
-      <div class="roll-summary-result">{{roll.degree}}</div>
-    </div>
+      <div class="roll-summary">
+        <label class="roll-summary-label">{{localize template.keys.degrees}}</label>
+        <div class="roll-summary-result">{{roll.degree}}</div>
+      </div>
     {{/unless}}
   </div>
   <div class="detail-content hide">

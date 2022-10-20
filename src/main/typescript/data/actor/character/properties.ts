@@ -45,8 +45,10 @@ export class AttackActionModifierProperties {
   /** How much this action modifies the attack's AP cost */
   apCost: CompositeNumber;
 
-  /** How much this action modifies the attack's roll. This can either modify
-   * crit chance or hit chance.  */
+  /**
+   * How much this action modifies the attack's roll. This can either modify
+   * crit chance or hit chance.
+   */
   rollMod: CompositeNumber;
 }
 

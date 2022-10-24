@@ -5,7 +5,10 @@ import { CONSTANTS, RangeBracket } from "../../constants.js";
 import type { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import Formulator from "../../formulator.js";
-import { createDefaultMessageData } from "../../helpers.js";
+import {
+  createDefaultMessageData,
+  isRollBlindedForCurrUser
+} from "../../helpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 import * as interact from "../../interaction.js";
@@ -376,9 +379,14 @@ export default class AttackExecution {
         ? commonData.speaker.actor.id
         : commonData.speaker?.actor;
 
+    const blinded = isRollBlindedForCurrUser(commonFlags.blind);
     await Promise.all([
-      diceSoNice(hitRoll, commonData.whisper ?? null, { actor: actorId }),
-      diceSoNice(damageRoll, commonData.whisper ?? null, { actor: actorId })
+      diceSoNice(hitRoll, commonData.whisper ?? null, blinded, {
+        actor: actorId
+      }),
+      diceSoNice(damageRoll, commonData.whisper ?? null, blinded, {
+        actor: actorId
+      })
     ]);
 
     const flags: deco.ExecutedAttackFlags = {

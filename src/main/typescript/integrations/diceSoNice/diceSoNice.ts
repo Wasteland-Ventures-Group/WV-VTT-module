@@ -10,6 +10,7 @@ import { isDiceSoNiceActive } from "../index.js";
 export default async function diceSoNice(
   roll: Parameters<Dice3D["showForRoll"]>[0],
   whisper: Parameters<Dice3D["showForRoll"]>[3],
+  blind: Parameters<Dice3D["showForRoll"]>[4],
   speaker: Parameters<Dice3D["showForRoll"]>[6]
 ): Promise<boolean | undefined> {
   if (!isDiceSoNiceActive()) return;
@@ -19,10 +20,10 @@ export default async function diceSoNice(
     return dice3d.showForRoll(
       roll,
       getGame().user ?? undefined,
-      true,
+      true, // synchronize
       whisper,
-      false,
-      null,
+      blind,
+      null, // chatMessageId
       speaker
     );
   }

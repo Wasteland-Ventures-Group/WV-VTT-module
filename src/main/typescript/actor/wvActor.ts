@@ -19,7 +19,10 @@ import type {
 import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
-import { createDefaultMessageData } from "../helpers.js";
+import {
+  createDefaultMessageData,
+  isRollBlindedForCurrUser
+} from "../helpers.js";
 import type { CheckFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateCheck.js";
 import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import diceSoNice from "../integrations/diceSoNice/diceSoNice.js";
@@ -510,7 +513,6 @@ export default class WvActor extends Actor {
 
     msgOptions.flavor = flavor;
 
-    await diceSoNice(checkRoll, msgOptions.whisper, { actor: this.id });
     const result = checkRoll.dice[0]?.results[0]?.result ?? 0;
     const flags: CheckFlags = {
       type: "roll",
@@ -530,6 +532,14 @@ export default class WvActor extends Actor {
       },
       blind: msgOptions.blind ?? false
     };
+
+    await diceSoNice(
+      checkRoll,
+      msgOptions.whisper,
+      isRollBlindedForCurrUser(flags.blind),
+      { actor: this.id }
+    );
+
     ChatMessage.create({
       ...msgOptions,
       flags: { [CONSTANTS.systemId]: flags }

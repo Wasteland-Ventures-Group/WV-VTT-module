@@ -482,7 +482,15 @@ export default class WvActor extends Actor {
     });
   }
 
-  async rollCreateCheckMessage(
+  /** Roll a skill or SPECIAL check and post the result
+   * @param flavor - flavour text
+   * @param baseFormula - the base target formula. This is determined differently
+   *                      for skill and SPECIAL checks
+   * @param target - the target number. This is needed in order to display
+   *                 details for the roll.
+   * @param options - roll options
+   */
+  async rollAndCreateMessage(
     flavor: string,
     baseFormula: Formulator,
     target: SerializedCompositeNumber,
@@ -538,7 +546,7 @@ export default class WvActor extends Actor {
       source: targetRaw.permTotal,
       components: targetRaw.tempComponents
     };
-    this.rollCreateCheckMessage(
+    this.rollAndCreateMessage(
       WvI18n.getSpecialRollFlavor(name),
       Formulator.special(targetRaw.tempTotal),
       targetCompNum,
@@ -552,7 +560,7 @@ export default class WvActor extends Actor {
    */
   rollSkill(name: SkillName, options?: RollOptions): void {
     const targetRaw = this.data.data.skills[name];
-    this.rollCreateCheckMessage(
+    this.rollAndCreateMessage(
       WvI18n.getSkillRollFlavor(name),
       Formulator.skill(targetRaw.total),
       targetRaw.toObject(false),

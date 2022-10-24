@@ -20,7 +20,7 @@ import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import { createDefaultMessageData } from "../helpers.js";
-import type { CheckFlags as CheckFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateCheck.js";
+import type { CheckFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateCheck.js";
 import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import diceSoNice from "../integrations/diceSoNice/diceSoNice.js";
 import Apparel from "../item/apparel.js";

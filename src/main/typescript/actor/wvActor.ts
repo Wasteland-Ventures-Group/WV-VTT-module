@@ -554,7 +554,7 @@ export default class WvActor extends Actor {
     const targetRaw = this.data.data.specials[name];
     const targetCompNum: SerializedCompositeNumber = {
       source: targetRaw.permTotal,
-      components: targetRaw.tempComponents
+      components: [...targetRaw.tempComponents, ...targetRaw.permComponents]
     };
     this.rollAndCreateMessage(
       WvI18n.getSpecialRollFlavor(name),

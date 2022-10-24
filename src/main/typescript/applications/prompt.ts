@@ -3,8 +3,7 @@ import { getGame } from "../foundryHelpers.js";
 import WvI18n, { I18nRollModes } from "../wvI18n.js";
 
 /**
- * An application to prompt the user for input.
- * @typeParam Specs - the type of the input specs
+ * An application to prompt the user for input regarding a roll.
  */
 export abstract class RollPrompt extends Application {
   static override get defaultOptions(): ApplicationOptions {
@@ -23,6 +22,7 @@ export abstract class RollPrompt extends Application {
    *                   application's form
    * @param onClose - the callback to be executed once the prompt is closed
    *                  without being submitted
+   * @param data - additional data for prompt construction
    * @param options - the options for the prompt
    */
   constructor(
@@ -133,6 +133,10 @@ export abstract class RollPrompt extends Application {
   protected abstract _onSubmitCallback(data: PromptDataCommon): void;
 }
 
+/**
+ * An application to prompt the user for input regarding a skill or SPECIAL
+ * check.
+ */
 export class CheckPrompt extends RollPrompt {
   static async get(
     data: CheckPromptConstructorData,
@@ -168,6 +172,9 @@ export class CheckPrompt extends RollPrompt {
   }
 }
 
+/**
+ * An application to prompt the user for input regarding an attack roll
+ */
 export class AttackPrompt extends RollPrompt {
   static async get(
     data: AttackPromptConstructorData,
@@ -228,6 +235,9 @@ export class AttackPrompt extends RollPrompt {
   }
 }
 
+/**
+ * An application to prompt the user for a single string
+ */
 export class StringPrompt extends Application {
   static override get defaultOptions(): ApplicationOptions {
     const defaultOptions = super.defaultOptions;
@@ -261,6 +271,14 @@ export class StringPrompt extends Application {
     });
   }
 
+  /**
+   * @param onSubmit - submission callback
+   * @param onClose - callback for when the application is closed without
+   *                  being submitted
+   * @param label - the prompt's label
+   * @param defaultValue - the default value for the string field
+   * @param options - general application options
+   */
   constructor(
     onSubmit: (data: string) => void,
     onClose: () => void,

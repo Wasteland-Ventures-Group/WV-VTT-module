@@ -22,7 +22,7 @@
     "@pixi/graphics": "6.2.1",
     "@pixi/math": "6.2.1",
     "@pixi/runner": "6.2.1",
-    "@pixi/settings": "6.5.7",
+    "@pixi/settings": "6.2.1",
     "@pixi/utils": "6.2.1",
     "@types/chai": "^4.3.3",
     "@types/fancy-log": "^2.0.0",

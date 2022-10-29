@@ -19,7 +19,7 @@
     "@pixi/constants": "6.2.1",
     "@pixi/core": "6.2.1",
     "@pixi/display": "6.2.1",
-    "@pixi/graphics": "6.2.1",
+    "@pixi/graphics": "7.0.0",
     "@pixi/math": "6.2.1",
     "@pixi/runner": "6.2.1",
     "@pixi/settings": "6.2.1",

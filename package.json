@@ -55,6 +55,9 @@
     "mocha": "^10.1.0",
     "prettier": "^2.7.1",
     "sass": "^1.55.0",
+    "stylelint": "^14.14.0",
+    "stylelint-config-prettier-scss": "^0.0.1",
+    "stylelint-config-standard-scss": "^6.0.0",
     "ts-json-schema-generator": "^1.1.2",
     "ts-node": "^10.9.1",
     "tsd": "^0.20.0",
@@ -62,7 +65,7 @@
     "zod": "^3.19.1"
   },
   "scripts": {
-    "lint": "eslint --ext .d.ts,.ts,.test-d.ts,.cjs . && prettier --check ./src/main/compendiums/**/*.json ./src/main/lang/*.json",
+    "lint": "eslint --ext .d.ts,.ts,.test-d.ts,.cjs . && prettier --check ./src/main/compendiums/**/*.json ./src/main/lang/*.json && stylelint ./src/main/sass/**/*.sass",
     "lint-fix": "eslint --ext .d.ts,.ts,.test-d.ts,.cjs . --fix && prettier --check ./src/main/compendiums/**/*.json ./src/main/lang/*.json",
     "prepare": "husky install",
     "test": "mocha && cd ./src/main/typescript && tsd",

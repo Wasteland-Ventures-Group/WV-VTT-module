@@ -1,0 +1,59 @@
+<div class="lighter-block detail-section">
+  <span>{{localize "wv.system.misc.details"}}</span>
+  <div class="detail-content hide">
+    <div class="spacing-bottom">
+      <span>{{localize "wv.rules.criticals.title"}}</span>
+      <ul class="no-margin">
+        <li>{{localize "wv.rules.criticals.success"}}: &lt;={{details.criticals.success.total}}</li>
+        <li>{{localize "wv.rules.criticals.failure"}}: &gt;={{details.criticals.failure.total}}</li>
+      </ul>
+    </div>
+    <table class="modifier-listing">
+      <thead>
+        <tr>
+          <th scope="col" colspan="2">{{localize "wv.rules.rolls.targets.successChance"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.base"}}</th>
+          <td class="align-right zero-width no-wrap">{{details.successChance.source}}</td>
+        </tr>
+        {{#each details.successChance.components as |component|~}}
+          <tr>
+            <th scope="row">{{component.label}}</th>
+            <td class="align-right zero-width no-wrap">{{component.value}}</td>
+          </tr>
+        {{~/each}}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">{{localize "wv.system.values.total"}}</th>
+          <td class="align-right zero-width no-wrap">{{details.successChance.total}}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+<div class="lighter-block detail-section">
+  <div>
+    <div class="roll-summary">
+      <label class="roll-summary-label">{{ternary template.blinded "???" (localize template.keys.success)}}</label>
+      <div class="roll-summary-result">{{ternary template.blinded "???" roll.result}}</div>
+    </div>
+    {{#unless template.blinded}}
+      <div class="roll-summary">
+        <label class="roll-summary-label">{{localize template.keys.degrees}}</label>
+        <div class="roll-summary-result">{{roll.degreesOfSuccess}}</div>
+      </div>
+    {{/unless}}
+  </div>
+  <div class="detail-content hide">
+    <div class="roll-details">
+      <div class="dice-formula">{{roll.formula}}</div>
+      <ul class="dice-rolls">
+        <li class="roll d100">{{ternary template.blinded "???" roll.result}}</li>
+      </ul>
+    </div>
+  </div>
+</div>

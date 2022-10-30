@@ -35,7 +35,7 @@ import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
-import Prompt from "../prompt.js";
+import { CheckPrompt } from "../prompt.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
@@ -539,20 +539,14 @@ export default class WvActorSheet extends ActorSheet {
     try {
       this.actor.rollSpecial(
         special,
-        await Prompt.get({
-          modifier: {
-            type: "number",
-            label: WvI18n.getSpecialModifierDescription(special),
-            value: 0,
-            min: -100,
-            max: 100
+        await CheckPrompt.get(
+          {
+            alias: this.actor.name
           },
-          whisperToGms: {
-            type: "checkbox",
-            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
-            value: getGame().user?.isGM
+          {
+            title: getGame().i18n.localize(WvI18n.specials[special].long)
           }
-        })
+        )
       );
     } catch (e) {
       if (e !== "closed") throw e;
@@ -575,20 +569,14 @@ export default class WvActorSheet extends ActorSheet {
     try {
       this.actor.rollSkill(
         skill,
-        await Prompt.get({
-          modifier: {
-            type: "number",
-            label: WvI18n.getSkillModifierDescription(skill),
-            value: 0,
-            min: -100,
-            max: 100
+        await CheckPrompt.get(
+          {
+            alias: this.actor.name
           },
-          whisperToGms: {
-            type: "checkbox",
-            label: getGame().i18n.localize("wv.system.rolls.whisperToGms"),
-            value: getGame().user?.isGM
+          {
+            title: getGame().i18n.localize(WvI18n.skills[skill])
           }
-        })
+        )
       );
     } catch (e) {
       if (e !== "closed") throw e;

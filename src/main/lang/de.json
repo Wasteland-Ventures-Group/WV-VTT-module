@@ -6,6 +6,13 @@
         "short": "AP",
         "use": "AP-Kosten"
       },
+      "actions": {
+        "attack": {
+          "aim": "Zielen",
+          "calledShot": "Angekündigter Schuss",
+          "sneakAttack": "Schleichattacke"
+        }
+      },
       "background": {
         "age": "Alter",
         "appearance": "Aussehen",
@@ -323,12 +330,15 @@
           "criticalMiss": "Voll daneben",
           "criticalSuccess": "Kritischer Erfolg",
           "failure": "Fehlschlag",
+          "failureDegrees": "Fehlschlagsgrad",
           "hit": "Treffer",
           "miss": "Daneben",
-          "success": "Erfolg"
+          "success": "Erfolg",
+          "successDegrees": "Erfolgsgrad"
         },
         "targets": {
-          "hitChance": "Trefferchance"
+          "hitChance": "Trefferchance",
+          "successChance": "Erfolgschance"
         }
       },
       "skills": {
@@ -459,6 +469,10 @@
         "name": "Name",
         "newName": "{what} (Neu)",
         "notes": "Notizen",
+        "rollMode": {
+          "plural": "Rollmodi",
+          "singular": "Rollmodus"
+        },
         "sourceValues": "Grundwerte",
         "speakerAlias": "Sprecheralias",
         "statistics": "Statistiken",

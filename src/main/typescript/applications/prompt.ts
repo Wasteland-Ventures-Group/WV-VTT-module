@@ -1,87 +1,11 @@
-import { CONSTANTS } from "../constants.js";
+import { CONSTANTS, isRollMode, RollMode } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
+import WvI18n, { I18nRollModes } from "../wvI18n.js";
 
 /**
- * An application to prompt the user for input.
- * @typeParam Specs - the type of the input specs
+ * An application to prompt the user for input regarding a roll.
  */
-export default class Prompt<Specs extends InputSpecs> extends Application {
-  /**
-   * Get data by prompting the user.
-   * @param spec - the input specification for the Prompt
-   * @param options - additional options for the Prompt
-   * @returns the user input data
-   * @typeParam I - the type of the input specs, the return type is derived off
-   */
-  static async get<I extends InputSpecs>(
-    spec: I,
-    options?: Partial<ApplicationOptions>
-  ): Promise<InputSpecsReturnType<I>> {
-    return new Promise((resolve, reject) => {
-      new this(spec, (data) => resolve(data), reject, options).render(true);
-    });
-  }
-
-  /**
-   * Get a boolean by prompting the user.
-   * @param spec - the input specification for the Prompt
-   * @param options - additional options for the Prompt
-   * @returns the boolean if resolved or an error message if rejected
-   */
-  static async getBoolean(
-    spec: Omit<CheckboxInputSpec, "type">,
-    options?: Partial<ApplicationOptions>
-  ): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      new this(
-        { value: { type: "checkbox", ...spec } },
-        (data) => resolve(data["value"]),
-        reject,
-        options
-      ).render(true);
-    });
-  }
-
-  /**
-   * Get a number by prompting the user.
-   * @param spec - the input specification for the Prompt
-   * @param options - additional options for the Prompt
-   * @returns the number if resolved or an error message if rejected
-   */
-  static async getNumber(
-    spec: Omit<NumberInputSpec, "type">,
-    options?: Partial<ApplicationOptions>
-  ): Promise<number> {
-    return new Promise((resolve, reject) => {
-      new this(
-        { value: { type: "number", ...spec } },
-        (data) => resolve(data["value"]),
-        reject,
-        options
-      ).render(true);
-    });
-  }
-
-  /**
-   * Get a string by prompting the user.
-   * @param spec - the input specification for the Prompt
-   * @param options - additional options for the Prompt
-   * @returns the string when resolved
-   */
-  static async getString(
-    spec: Omit<TextInputSpec, "type">,
-    options?: Partial<ApplicationOptions>
-  ): Promise<string> {
-    return new Promise((resolve, reject) => {
-      new this(
-        { value: { type: "text", ...spec } },
-        (data) => resolve(data["value"]),
-        reject,
-        options
-      ).render(true);
-    });
-  }
-
+export abstract class RollPrompt extends Application {
   static override get defaultOptions(): ApplicationOptions {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push(...[CONSTANTS.systemId, "prompt"]);
@@ -93,51 +17,31 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
   }
 
   /**
-   * @param specs - the input specs for the Prompt
    * @param onSubmit - the callback to be executed once the user submits the
    *                   application's form
    * @param onClose - the callback to be executed once the prompt is closed
    *                  without being submitted
+   * @param data - additional data for prompt construction
    * @param options - the options for the prompt
    */
   constructor(
-    specs: Specs,
-    onSubmit: Callback<Specs>,
+    onSubmit: (data: never) => void,
     onClose: () => void,
+    data: RollPromptConstructorData,
     options?: Partial<ApplicationOptions>
   ) {
     super(options);
 
-    this.specs = foundry.utils.deepClone(specs);
-    Object.keys(this.specs).forEach((key) => {
-      const spec = this.specs[key];
-      if (!spec) return;
-      spec.class = this.getClass(spec);
-    });
-
     this.onSubmitCallback = onSubmit;
     this.onCloseCallback = onClose;
+    this.data = data;
   }
 
-  /** The input specifications of the Prompt */
-  protected specs: RenderSpecs<Specs>;
+  onSubmitCallback: (data: never) => void;
 
-  /** The callback to run on submit */
-  protected onSubmitCallback: Callback<Specs>;
+  onCloseCallback: (reason: string) => void;
 
-  /** The callback to run on close */
-  protected onCloseCallback: (reason: "closed") => void;
-
-  override activateListeners(html: JQuery<HTMLFormElement>): void {
-    super.activateListeners(html);
-
-    html.on("submit", this.onSubmit.bind(this));
-    html.find("input")[0]?.select();
-  }
-
-  override async getData(): Promise<RenderData<Specs>> {
-    return { inputs: this.specs };
-  }
+  data: RollPromptConstructorData;
 
   override async close(
     options: CloseOptions = { runCallback: true }
@@ -146,28 +50,24 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
     await super.close();
   }
 
-  /** Get the css classes for the input element. */
-  protected getClass(spec: InputSpec): string | undefined {
-    if (
-      spec.type === "number" &&
-      typeof spec.max === "number" &&
-      typeof spec.min === "number"
-    ) {
-      const maxPlaces = this.getCharWidth(spec.max);
-      const minPlaces = this.getCharWidth(spec.min);
-      const places = Math.max(maxPlaces, minPlaces);
-
-      if (places.between(0, 5)) return `size-${places}`;
-    }
-
-    return;
+  override getData(): RollPromptTemplateData {
+    return {
+      defaults: {
+        alias: this.data.alias ?? "",
+        modifier: this.data.modifier ?? 0,
+        rollMode:
+          this.data.rollMode ?? getGame().settings.get("core", "rollMode")
+      },
+      isAttack: false,
+      rollModes: WvI18n.rollModes
+    };
   }
 
-  /** Get the width in characters for a given number. */
-  protected getCharWidth(number: number): number {
-    return (
-      Math.floor(Math.abs(number)).toString().length + (number < 0 ? 1 : 0)
-    );
+  override activateListeners(html: JQuery<HTMLFormElement>): void {
+    super.activateListeners(html);
+
+    html.on("submit", this.onSubmit.bind(this));
+    html.find("input")[0]?.select();
   }
 
   /**
@@ -177,142 +77,266 @@ export default class Prompt<Specs extends InputSpecs> extends Application {
   protected async onSubmit(event: SubmitEvent): Promise<void> {
     event.preventDefault();
 
-    const values: Partial<InputSpecsReturnType<Specs>> = {};
     const data = new FormData(event.target);
 
-    Object.keys(this.specs).forEach((key: keyof Specs) => {
-      const inputValue = data.get(key as string);
-      if (this.specs[key].type !== "checkbox" && typeof inputValue !== "string")
-        throw Error(`The value of input ${String(key)} is missing.`);
-
-      switch (this.specs[key]["type"]) {
-        case "number": {
-          values[key] = this.convertNumberValue(key, inputValue);
-          break;
-        }
-        case "checkbox": {
-          values[key] = this.convertCheckboxValue(key, inputValue);
-          break;
-        }
-        default:
-          values[key] = this.convertStringValue(key, inputValue);
-      }
-    });
-
     await this.close({ runCallback: false });
-    this.onSubmitCallback(values as InputSpecsReturnType<Specs>);
+    this._onSubmitCallback(this.transformFormData(data));
   }
 
-  protected convertCheckboxValue(
-    key: keyof Specs,
-    inputValue: FormDataEntryValue | null
-  ): InputSpecReturnType<Specs[typeof key]> {
-    return (inputValue === "on") as InputSpecReturnType<Specs[typeof key]>;
+  protected extractCheckboxValue(key: string, formData: FormData): boolean {
+    const inputValue = formData.get(key);
+    return inputValue === "on";
   }
 
-  protected convertNumberValue(
-    key: keyof Specs,
-    inputValue: FormDataEntryValue | null
-  ): InputSpecReturnType<Specs[typeof key]> {
+  protected extractNumberValue(key: string, formData: FormData): number {
+    const inputValue = formData.get(key);
+
     if (typeof inputValue !== "string")
       throw Error(`The value of input ${String(key)} is missing.`);
 
     const value = parseInt(inputValue);
     if (isNaN(value))
       throw Error(`The input of ${String(key)} was not a number.`);
-    return value as InputSpecReturnType<Specs[typeof key]>;
+    return value;
   }
 
-  protected convertStringValue(
-    key: keyof Specs,
-    inputValue: FormDataEntryValue | null
-  ): InputSpecReturnType<Specs[typeof key]> {
+  protected extractStringValue(key: string, formData: FormData): string {
+    const inputValue = formData.get(key);
     if (typeof inputValue !== "string")
       throw Error(`The value of input ${String(key)} is missing.`);
 
-    return inputValue as InputSpecReturnType<Specs[typeof key]>;
+    return inputValue;
+  }
+
+  protected extractRollModeValue(key: string, formData: FormData): RollMode {
+    const inputValue = formData.get(key);
+    if (typeof inputValue !== "string")
+      throw Error(`The value of input ${key} is missing.`);
+
+    if (!isRollMode(inputValue))
+      throw Error(`Invalid value for roll mode: ${inputValue}`);
+
+    return inputValue;
+  }
+
+  protected transformFormData(formData: FormData): PromptDataCommon {
+    const common: PromptDataCommon = {
+      alias: this.extractStringValue("alias", formData),
+      modifier: this.extractNumberValue("modifier", formData),
+      rollMode: this.extractRollModeValue("rollMode", formData)
+    };
+
+    return common;
+  }
+
+  protected abstract _onSubmitCallback(data: PromptDataCommon): void;
+}
+
+/**
+ * An application to prompt the user for input regarding a skill or SPECIAL
+ * check.
+ */
+export class CheckPrompt extends RollPrompt {
+  /**
+   * Prompt the user for check input data. The promise resolves when the prompt
+   * was submitted and rejects when it was closed without submitting.
+   */
+  static async get(
+    data: CheckPromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ): Promise<ExternalCheckData> {
+    return new Promise((resolve, reject) => {
+      new this((data) => resolve(data), reject, data, options).render(true);
+    });
+  }
+
+  /**
+   * @param onSubmit - the callback to be executed once the user submits the
+   *                   application's form
+   * @param onClose - the callback to be executed once the prompt is closed
+   *                  without being submitted
+   * @param options - the options for the prompt
+   */
+  constructor(
+    onSubmit: (data: ExternalCheckData) => void,
+    onClose: () => void,
+    data: CheckPromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ) {
+    super(onSubmit, onClose, data, options);
+
+    this.onSubmitCallback = onSubmit;
+  }
+
+  override onSubmitCallback: (data: ExternalCheckData) => void;
+
+  protected override _onSubmitCallback(data: ExternalCheckData): void {
+    this.onSubmitCallback(data);
   }
 }
 
-/** The render data supplied to the Prompt's Handlebars template. */
-type RenderData<Specs extends InputSpecs> = {
-  /** The inputs of the Prompt */
-  inputs: RenderSpecs<Specs>;
-};
+/**
+ * An application to prompt the user for input regarding an attack roll
+ */
+export class AttackPrompt extends RollPrompt {
+  /**
+   * Prompt the user for attack input data. The promise resolves when the prompt
+   * was submitted and rejects when it was closed without submitting.
+   */
+  static async get(
+    data: AttackPromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ): Promise<AttackPromptData> {
+    return new Promise((resolve, reject) => {
+      new this((data) => resolve(data), reject, data, options).render(true);
+    });
+  }
 
-/** A type that maps input specifications to render input specifications */
-type RenderSpecs<Specs extends InputSpecs> = {
-  [Key in keyof Specs]: RenderSpec<Specs[Key]>;
-};
+  /**
+   * @param onSubmit - the callback to be executed once the user submits the
+   *                   application's form
+   * @param onClose - the callback to be executed once the prompt is closed
+   *                  without being submitted
+   * @param options - the options for the prompt
+   */
+  constructor(
+    onSubmit: (data: AttackPromptData) => void,
+    onClose: () => void,
+    data: AttackPromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ) {
+    super(onSubmit, onClose, data, options);
 
-/** A type that maps an input specification to a render input specification */
-type RenderSpec<Spec extends InputSpec> = Spec & {
-  class?: string | undefined;
-};
+    this.onSubmitCallback = onSubmit;
+    this.data = data;
+  }
 
-/** The input specifications for the Prompt */
-export type InputSpecs = Record<string, InputSpec>;
+  override data: AttackPromptConstructorData;
 
-/** A single input specification for a Prompt */
-export type InputSpec = CheckboxInputSpec | NumberInputSpec | TextInputSpec;
+  override onSubmitCallback: (data: AttackPromptData) => void;
 
-/** A common input specification for a Prompt */
-export interface CommonInputSpec {
-  /** The label for the input */
-  label: string;
+  override getData(): AttackPromptTemplateData {
+    return {
+      ...super.getData(),
+      defaults: {
+        ...super.getData().defaults,
+        range: this.data.range
+      },
+      isAttack: true
+    };
+  }
 
-  /** The HTML input type */
-  type: string;
+  protected override transformFormData(formData: FormData): AttackPromptData {
+    const common = super.transformFormData(formData);
+    return {
+      ...common,
+      range: this.extractNumberValue("range", formData),
+      aim: this.extractCheckboxValue("aim", formData),
+      calledShot: this.extractCheckboxValue("calledShot", formData),
+      sneakAttack: this.extractCheckboxValue("sneakAttack", formData)
+    };
+  }
 
-  /** The initial value of the input */
-  value?: string | number | boolean | null | undefined;
+  protected override _onSubmitCallback(data: AttackPromptData): void {
+    this.onSubmitCallback(data);
+  }
 }
-
-/** A number input specification for a Prompt  */
-export interface NumberInputSpec extends CommonInputSpec {
-  type: "number";
-
-  /** The maximum number */
-  max?: number | undefined;
-
-  /** The minimum number */
-  min?: number | undefined;
-
-  value?: number | null | undefined;
-}
-
-export interface CheckboxInputSpec extends CommonInputSpec {
-  type: "checkbox";
-
-  value?: boolean | null | undefined;
-}
-
-/** A text input specification for a Prompt  */
-export interface TextInputSpec extends CommonInputSpec {
-  type: "text";
-}
-
-/** A type that maps InputSpecs to their corresponding return types */
-export type InputSpecsReturnType<Specs extends InputSpecs> = {
-  [Key in keyof Specs]: InputSpecReturnType<Specs[Key]>;
-};
-
-/** A type that maps an InputSpec to its corresponding return type */
-export type InputSpecReturnType<Spec extends InputSpec> =
-  Spec["type"] extends "number"
-    ? number
-    : Spec["type"] extends "checkbox"
-    ? boolean
-    : string;
 
 /**
- * A type for the Callback of the Prompt Application.
- * @typeParam Specs - the specs of the Prompt
- * @param data - the data gathered from the input elements
+ * An application to prompt the user for a single string
  */
-export type Callback<Specs extends InputSpecs> = (
-  data: InputSpecsReturnType<Specs>
-) => void;
+export class StringPrompt extends Application {
+  static override get defaultOptions(): ApplicationOptions {
+    const defaultOptions = super.defaultOptions;
+    defaultOptions.classes.push(...[CONSTANTS.systemId, "stringPrompt"]);
+    defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/stringPrompt.hbs`;
+    defaultOptions.title = getGame().i18n.localize(
+      "wv.system.prompt.defaults.title"
+    );
+    return defaultOptions;
+  }
+
+  /**
+   * Prompt the user for a string. The promise resolves when the prompt was
+   * submitted and rejects when it was closed without submitting.
+   */
+  static async get(
+    {
+      label,
+      defaultValue
+    }: {
+      label: string;
+      defaultValue?: string;
+    },
+    options?: Partial<ApplicationOptions>
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      new this(
+        (data: string) => resolve(data),
+        reject,
+        label,
+        defaultValue ?? "",
+        options
+      ).render(true);
+    });
+  }
+
+  /**
+   * @param onSubmit - submission callback
+   * @param onClose - callback for when the application is closed without
+   *                  being submitted
+   * @param label - the prompt's label
+   * @param defaultValue - the default value for the string field
+   * @param options - general application options
+   */
+  constructor(
+    onSubmit: (data: string) => void,
+    onClose: () => void,
+    label: string,
+    defaultValue: string,
+    options?: Partial<ApplicationOptions>
+  ) {
+    super(options);
+
+    this.data = { label, defaultValue };
+    this.onSubmitCallback = onSubmit;
+    this.onCloseCallback = onClose;
+  }
+
+  onSubmitCallback: (data: string) => void;
+
+  onCloseCallback: (reason: string) => void;
+
+  data: {
+    label: string;
+    defaultValue: string;
+  };
+
+  override activateListeners(html: JQuery<HTMLFormElement>): void {
+    super.activateListeners(html);
+
+    html.on("submit", this.onSubmit.bind(this));
+    html.find("input")[0]?.select();
+  }
+
+  override async close(
+    options: CloseOptions = { runCallback: true }
+  ): Promise<void> {
+    if (options?.runCallback) this.onCloseCallback("closed");
+    await super.close();
+  }
+
+  protected async onSubmit(event: SubmitEvent): Promise<void> {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+
+    await this.close({ runCallback: false });
+    const result = data.get("value");
+    if (typeof result !== "string") throw Error("Value missing!");
+    this.onSubmitCallback(result);
+  }
+}
 
 type SubmitEvent = JQuery.SubmitEvent<
   HTMLFormElement,
@@ -326,3 +350,55 @@ interface CloseOptions extends Application.CloseOptions {
   /** Whether to run the close callback */
   runCallback?: boolean;
 }
+
+/** User-provided data for rolls */
+export interface PromptDataCommon {
+  /** An alias for the rolling actor */
+  alias: string;
+  /** An optional modifier for the roll */
+  modifier: number;
+  /** The roll mode used */
+  rollMode: RollMode;
+}
+
+export type AttackPromptData = PromptDataCommon & {
+  /** The range to the target in metres */
+  range: number;
+  /** Whether or not the attack is aimed */
+  aim: boolean;
+  /** Whether or not the attack targets a specific location */
+  calledShot: boolean;
+  /** Whether or not the attack is a sneak attack */
+  sneakAttack: boolean;
+};
+
+export type ExternalCheckData = PromptDataCommon;
+
+export type RollPromptTemplateData = {
+  defaults: {
+    alias: string;
+    modifier: number;
+    rollMode: RollMode;
+  };
+  isAttack: boolean;
+  rollModes: I18nRollModes;
+};
+
+export type AttackPromptTemplateData = RollPromptTemplateData & {
+  defaults: {
+    range: number;
+  };
+  isAttack: true;
+};
+
+type RollPromptConstructorData = {
+  alias?: string | null;
+  modifier?: number;
+  rollMode?: RollMode;
+};
+
+type CheckPromptConstructorData = RollPromptConstructorData;
+
+type AttackPromptConstructorData = RollPromptConstructorData & {
+  range: number;
+};

@@ -14,7 +14,7 @@ import WvI18n, {
   I18nDamageFallOffTypes,
   I18nSkills
 } from "../../wvI18n.js";
-import Prompt from "../prompt.js";
+import { StringPrompt } from "../prompt.js";
 import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 export default class WeaponSheet extends WvItemSheet {
@@ -23,9 +23,7 @@ export default class WeaponSheet extends WvItemSheet {
     defaultOptions.classes.push("weapon-sheet");
     defaultOptions.height = 500;
     defaultOptions.width = 800;
-    return foundry.utils.mergeObject(defaultOptions, {
-      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }]
-    } as typeof ItemSheet["defaultOptions"]);
+    return defaultOptions;
   }
 
   /** Get the weapon sheet data for a weapon. */
@@ -210,7 +208,7 @@ export default class WeaponSheet extends WvItemSheet {
   protected async onClickCreateWeaponAttack(): Promise<void> {
     let newName: string;
     try {
-      newName = await Prompt.getString({
+      newName = await StringPrompt.get({
         label: getGame().i18n.localize("wv.system.misc.name")
       });
     } catch (e) {

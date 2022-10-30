@@ -1,6 +1,6 @@
 @use "../../../constants.sass" as constants
 
-.wasteland-ventures.chat-message.system-message.weapon-attack
+.wasteland-ventures.chat-message.system-message.detailed-roll
 
   img
     float: right
@@ -75,6 +75,9 @@
 
   .modifier-listing
     margin-top: constants.$spacing-distance * 2
+
+    &.no-margin
+      margin: 0
 
     tfoot
       border:

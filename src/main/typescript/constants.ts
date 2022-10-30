@@ -99,6 +99,14 @@ export function getMagicType(school: GeneralMagicSchool): MagicType {
   throw new Error("Unreachable Code");
 }
 
+/** A union of supported dice roll modes */
+export type RollMode = ValueOf<typeof CONST.DICE_ROLL_MODES>;
+
+/** A custom typeguard to check whether a string is a valid roll mode */
+export function isRollMode(arg: string): arg is RollMode {
+  return Object.values<string>(CONST.DICE_ROLL_MODES).includes(arg);
+}
+
 export type GeneralMagicSchool = typeof GeneralMagicSchools[number];
 export const MagicSpecials: Record<GeneralMagicSchool, SpecialName[]> = {
   agility: ["agility"],
@@ -451,6 +459,26 @@ export const CONSTANTS = {
 
   /** Miscellaneous rules constants */
   rules: {
+    /** Rule constants related to combat actions */
+    actions: {
+      /** Rule constants related to attack actions */
+      attack: {
+        /** Constants related to sneak attacks */
+        sneak: {
+          apCost: 2,
+          criticalHitBonus: 15
+        },
+        /** Constants related to aimed attacks */
+        aim: {
+          apCost: 2,
+          rollBonus: 10
+        },
+        /** Constants related to called shots */
+        called: {
+          apCost: 2
+        }
+      }
+    },
     /** Rule constants related to damage */
     damage: {
       /**

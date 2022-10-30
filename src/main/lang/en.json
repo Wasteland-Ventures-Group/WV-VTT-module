@@ -6,6 +6,13 @@
         "short": "AP",
         "use": "AP use"
       },
+      "actions": {
+        "attack": {
+          "aim": "Aim",
+          "calledShot": "Called Shot",
+          "sneakAttack": "Sneak Attack"
+        }
+      },
       "background": {
         "age": "Age",
         "appearance": "Appearance",
@@ -323,12 +330,15 @@
           "criticalMiss": "Critical Miss",
           "criticalSuccess": "Critical Success",
           "failure": "Failure",
+          "failureDegrees": "Degree(s) of Failure",
           "hit": "Hit",
           "miss": "Miss",
-          "success": "Success"
+          "success": "Success",
+          "successDegrees": "Degree(s) of Success"
         },
         "targets": {
-          "hitChance": "Hit chance"
+          "hitChance": "Hit chance",
+          "successChance": "Chance of success"
         }
       },
       "skills": {
@@ -459,6 +469,10 @@
         "name": "Name",
         "newName": "New {what}",
         "notes": "Notes",
+        "rollMode": {
+          "plural": "Roll Modes",
+          "singular": "Roll Mode"
+        },
         "sourceValues": "Source Values",
         "speakerAlias": "Speaker alias",
         "statistics": "Statistics",

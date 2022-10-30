@@ -1,4 +1,4 @@
-import { CONSTANTS } from "./constants.js";
+import { CONSTANTS, RollMode } from "./constants.js";
 import { LOG } from "./systemLogger.js";
 
 /** A factory class to create string formulas for Rolls. */
@@ -34,11 +34,6 @@ export default class Formulator {
   /**
    * Construct a new Formulator.
    * @param type - the type of roll
-   * @param base - the base damage for a damage roll
-   * @param count - the amount of damage die for a damage roll
-   * @param target - the success target number (1 - 100), required for checks,
-   *   ignored for damage
-   * @param special - whether the roll is for a SPECIAL, ignored for damage
    */
   private constructor(
     type: RollType,
@@ -47,7 +42,22 @@ export default class Formulator {
       count,
       target,
       special
-    }: { base?: number; count?: number; target?: number; special?: boolean }
+    }: {
+      /** the base damage for a damage roll */
+      base?: number;
+
+      /** the amount of damage die for a damage roll */
+      count?: number;
+
+      /**
+       * the success target number (1 - 100), required for checks, ignored for
+       * damage
+       */
+      target?: number;
+
+      /** whether the roll is for a SPECIAL, ignored for damage */
+      special?: boolean;
+    }
   ) {
     this.type = type;
 
@@ -90,11 +100,18 @@ export default class Formulator {
 
   /**
    * Add critical flagging modifiers to the roll.
-   * @param success - the success chance (inclusive)
-   * @param failure - the failure chance (inclusive)
    * @returns the changed Formulator
    */
-  criticals({ success, failure }: { success: number; failure: number }): this {
+  criticals({
+    success,
+    failure
+  }: {
+    /** the success chance (inclusive) */
+    success: number;
+
+    /** the failure chance (inclusive) */
+    failure: number;
+  }): this {
     if (this.type !== "check")
       LOG.warn("Criticals only apply to checks! Ignoring this.");
     this.criticalFailure = failure;
@@ -131,6 +148,11 @@ export default class Formulator {
     return formula;
   }
 
+  /** Get the d100 target for a check roll. */
+  get d100Target(): number {
+    return this.special ? this.target * 10 : this.target;
+  }
+
   /** Get the base dice formula for the roll. */
   protected get baseDieFormula(): string {
     return this.type === "check" ? "1d100" : `${this.base} + ${this.count}d6`;
@@ -144,7 +166,7 @@ export default class Formulator {
 
     if (this.modifier || this.special) targetFormula += "(";
 
-    targetFormula += this.target + (this.special ? " * 10" : "");
+    targetFormula += `${this.d100Target}`;
 
     if (this.modifier) {
       if (this.modifier < 0) {
@@ -190,9 +212,5 @@ export interface RollOptions {
    */
   modifier?: number;
 
-  /**
-   * Whether to whisper the roll to GMs.
-   * @defaultValue `false`
-   */
-  whisperToGms?: boolean;
+  rollMode?: RollMode;
 }

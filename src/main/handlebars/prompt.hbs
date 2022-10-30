@@ -1,28 +1,35 @@
 <form>
-  {{~#each inputs as |input|~}}
-    {{~#if (eq input.type "checkbox")~}}
-      <label class="contained-target-inline flex-center">
-        {{input.label}}
-        <input name="{{@key}}" type="checkbox" {{checked input.value}}
-          {{~#if class}} class="{{class}}"{{/if}} />
-      </label>
-    {{~/if~}}
-    {{~#if (eq input.type "number")~}}
-      <label class="contained-target-inline">
-        {{input.label}}
-        <input required name="{{@key}}" type="number" value="{{input.value}}"
-          {{~#if class}} class="{{class}}"{{/if~}}
-          {{~#if input.max includeZero=true}} max="{{input.max}}"{{/if~}}
-          {{~#if input.min includeZero=true}} min="{{input.min}}"{{/if}} />
-      </label>
-    {{~/if~}}
-    {{~#if (eq input.type "text")~}}
-      <label class="contained-target-inline">
-        {{input.label}}
-        <input required name="{{@key}}" type="text" value="{{input.value}}"
-          {{~#if class}} class="{{class}}"{{/if}} />
-      </label>
-    {{~/if~}}
-  {{~/each~}}
+  <label class="contained-target-inline">
+    {{localize "wv.system.misc.speakerAlias"}}
+    <input required name="alias" type="text" value="{{defaults.alias}}" />
+  </label>
+  <label class="contained-target-inline">
+    {{localize "wv.system.misc.modifier"}}
+    <input required name="modifier" type="number" value="{{defaults.modifier}}" class="size-3" />
+  </label>
+  {{#if isAttack}}
+    <label class="contained-target-inline">
+      {{localize "wv.rules.range.distance.name"}}
+      <input required name="range" type="number" value="{{defaults.range}}" class="size-3" />
+    </label>
+    <label class="contained-target-inline">
+      {{localize "wv.rules.actions.attack.aim"}}
+      <input name="aim" type="checkbox" {{checked defaults.aim}}/>
+    </label>
+    <label class="contained-target-inline">
+      {{localize "wv.rules.actions.attack.calledShot"}}
+      <input name="calledShot" type="checkbox" {{checked defaults.calledShot}}/>
+    </label>
+    <label class="contained-target-inline">
+      {{localize "wv.rules.actions.attack.sneakAttack"}}
+      <input name="sneakAttack" type="checkbox" {{checked defaults.sneakAttack}}/>
+    </label>
+  {{/if}}
+  <label class="contained-target-inline">
+    {{localize "wv.system.misc.rollMode.singular"}}
+    <select name="rollMode">
+      {{selectOptions rollModes selected=defaults.rollMode}}
+    </select>
+  </label>
   <button>{{localize "wv.system.actions.submit"}}</button>
 </form>

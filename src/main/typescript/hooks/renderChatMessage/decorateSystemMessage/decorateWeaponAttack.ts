@@ -2,9 +2,10 @@ import { CONSTANTS, RangeBracket } from "../../../constants.js";
 import type { SerializedCompositeNumber } from "../../../data/common.js";
 import { CompositeNumber } from "../../../data/common.js";
 import { scrollChatToBottom } from "../../../foundryHelpers.js";
+import { isRollBlindedForCurrUser } from "../../../foundryHelpers.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
 import type { HookParams } from "../index.js";
-import { getContentElement } from "./index.js";
+import { CommonRollFlags, getContentElement } from "./index.js";
 
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/weaponAttack.hbs`;
 
@@ -13,7 +14,7 @@ export default async function decorateWeaponAttack(
   flags: WeaponAttackFlags,
   html: HookParams[1]
 ): Promise<void> {
-  html.addClass("weapon-attack");
+  html.addClass("detailed-roll");
 
   const content = getContentElement(html);
 
@@ -21,6 +22,10 @@ export default async function decorateWeaponAttack(
     ...flags,
     details: {
       ...flags.details,
+      ap: {
+        ...flags.details.ap,
+        cost: CompositeNumber.from(flags.details.ap.cost)
+      },
       criticals: {
         failure: CompositeNumber.from(flags.details.criticals.failure),
         success: CompositeNumber.from(flags.details.criticals.success)
@@ -29,12 +34,13 @@ export default async function decorateWeaponAttack(
         base: CompositeNumber.from(flags.details.damage.base),
         dice: CompositeNumber.from(flags.details.damage.dice)
       },
-      hit: CompositeNumber.from(flags.details.hit)
+      successChance: CompositeNumber.from(flags.details.successChance)
     },
     template: {
       keys: {
         rangeBracket: getRangeBracketKey(flags)
       },
+      blinded: isRollBlindedForCurrUser(flags.blind),
       raw: {
         mainHeading:
           flags.weapon.name !== flags.weapon.system.name
@@ -130,23 +136,18 @@ function getRangeBracketKey(
 export type WeaponAttackFlags = NotExecutedAttackFlags | ExecutedAttackFlags;
 
 /** The common weapon attack chat message flags */
-export interface CommonWeaponAttackFlags {
+export type CommonWeaponAttackFlags = CommonRollFlags & {
   type: "weaponAttack";
   details: {
     ap: {
       previous: number;
-      cost: number;
+      cost: SerializedCompositeNumber;
       remaining: number;
-    };
-    criticals: {
-      failure: SerializedCompositeNumber;
-      success: SerializedCompositeNumber;
     };
     damage: {
       base: SerializedCompositeNumber;
       dice: SerializedCompositeNumber;
     };
-    hit: SerializedCompositeNumber;
     range: {
       bracket: RangeBracket;
       distance: number;
@@ -165,7 +166,7 @@ export interface CommonWeaponAttackFlags {
       name: string;
     };
   };
-}
+};
 
 /** The attack chat message flags for a unexecuted attack */
 export type NotExecutedAttackFlags = CommonWeaponAttackFlags & {
@@ -194,6 +195,9 @@ export type ExecutedAttackFlags = CommonWeaponAttackFlags & {
 /** The template data common for both executed and not executed attacks. */
 type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
   details: CommonWeaponAttackFlags["details"] & {
+    ap: CommonWeaponAttackFlags["details"]["ap"] & {
+      cost: CompositeNumber;
+    };
     criticals: {
       failure: CompositeNumber;
       success: CompositeNumber;
@@ -202,12 +206,13 @@ type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
       base: CompositeNumber;
       dice: CompositeNumber;
     };
-    hit: CompositeNumber;
+    successChance: CompositeNumber;
   };
   template: {
     keys: {
       rangeBracket: string | undefined;
     };
+    blinded: boolean;
     raw: {
       mainHeading: string;
       subHeading: string;

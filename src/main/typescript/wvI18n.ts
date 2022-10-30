@@ -11,7 +11,8 @@ import {
   RadiationSicknessLevel,
   GeneralMagicSchool,
   MagicType,
-  SchoolByMagicType
+  SchoolByMagicType,
+  RollMode
 } from "./constants.js";
 import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
@@ -55,6 +56,9 @@ export type I18nRadSicknessLevels = Record<RadiationSicknessLevel, string>;
 
 /** The internationalization structure for rarities */
 export type I18nRarities = Record<Rarity, string>;
+
+/** The internationalization structure for roll modes */
+export type I18nRollModes = Record<RollMode, string>;
 
 /** The internationalization structure of the SPECIALs */
 export type I18nSpecials = Record<SpecialName, I18nSpecial>;
@@ -161,6 +165,19 @@ export default class WvI18n {
       getGame().i18n.translations,
       "wv.rules.special.names"
     ) as I18nSpecials;
+  }
+
+  /** Get the internationalization of the Dice Roll Modes. */
+  static get rollModes(): I18nRollModes {
+    const base = "CHAT.Roll";
+    return Object.entries(CONST.DICE_ROLL_MODES).reduce((acc, [key, value]) => {
+      const internalizationKey = base + key.toLowerCase().capitalize();
+      acc[value] = foundry.utils.getProperty(
+        getGame().i18n.translations,
+        internalizationKey
+      );
+      return acc;
+    }, {} as I18nRollModes);
   }
 
   /** Get the internationalization of the long names for SPECIALs. */

@@ -12,11 +12,20 @@ import {
   TYPES
 } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
-import type { CompositeResource } from "../data/common.js";
+import type {
+  CompositeResource,
+  SerializedCompositeNumber
+} from "../data/common.js";
 import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
+import {
+  createDefaultMessageData,
+  isRollBlindedForCurrUser
+} from "../foundryHelpers.js";
+import type { CheckFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateCheck.js";
 import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
+import diceSoNice from "../integrations/diceSoNice/diceSoNice.js";
 import Apparel from "../item/apparel.js";
 import Race from "../item/race.js";
 import Weapon from "../item/weapon.js";
@@ -477,30 +486,83 @@ export default class WvActor extends Actor {
   }
 
   /**
+   * Roll a skill or SPECIAL check and post the result
+   * @param flavor - flavour text
+   * @param baseFormula - the base target formula. This is determined differently
+   *                      for skill and SPECIAL checks
+   * @param target - the target number. This is needed in order to display
+   *                 details for the roll.
+   * @param options - roll options
+   */
+  async rollAndCreateMessage(
+    flavor: string,
+    baseFormula: Formulator,
+    target: SerializedCompositeNumber,
+    options: RollOptions | undefined
+  ): Promise<void> {
+    const criticals = this.data.data.secondary.criticals;
+    const fullFormula = baseFormula.modify(options?.modifier).criticals({
+      success: criticals.success.total,
+      failure: criticals.failure.total
+    });
+    const checkRoll = new Roll(fullFormula.toString()).roll({ async: false });
+
+    const msgOptions = createDefaultMessageData(
+      ChatMessage.getSpeaker({ actor: this }),
+      options?.rollMode ?? getGame().settings.get("core", "rollMode")
+    );
+
+    msgOptions.flavor = flavor;
+
+    const result = checkRoll.dice[0]?.results[0]?.result ?? 0;
+    const flags: CheckFlags = {
+      type: "roll",
+      details: {
+        criticals: {
+          success: criticals.success.toObject(false),
+          failure: criticals.failure.toObject(false)
+        },
+        successChance: target
+      },
+      roll: {
+        formula: checkRoll.formula,
+        critical: checkRoll.dice[0]?.results[0]?.critical,
+        result,
+        degreesOfSuccess: fullFormula.d100Target - result,
+        total: checkRoll.total ?? 0
+      },
+      blind: msgOptions.blind ?? false
+    };
+
+    await diceSoNice(
+      checkRoll,
+      msgOptions.whisper,
+      isRollBlindedForCurrUser(flags.blind),
+      { actor: this.id }
+    );
+
+    ChatMessage.create({
+      ...msgOptions,
+      flags: { [CONSTANTS.systemId]: flags }
+    });
+  }
+
+  /**
    * Roll a SPECIAL for this Actor.
    * @param name - the name of the SPECIAL to roll
    */
   rollSpecial(name: SpecialName, options?: RollOptions): void {
-    const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
-      flavor: WvI18n.getSpecialRollFlavor(name),
-      speaker: ChatMessage.getSpeaker({ actor: this })
+    const special = this.data.data.specials[name];
+    const specialCompNum: SerializedCompositeNumber = {
+      source: special.points,
+      components: [...special.tempComponents, ...special.permComponents]
     };
-
-    new Roll(
-      Formulator.special(this.data.data.specials[name].tempTotal)
-        .modify(options?.modifier)
-        .criticals({
-          success: this.data.data.secondary.criticals.success.total,
-          failure: this.data.data.secondary.criticals.failure.total
-        })
-        .toString()
-    )
-      .roll({ async: true })
-      .then((r) =>
-        r.toMessage(msgOptions, {
-          rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
-        })
-      );
+    this.rollAndCreateMessage(
+      WvI18n.getSpecialRollFlavor(name),
+      Formulator.special(special.tempTotal),
+      specialCompNum,
+      options
+    );
   }
 
   /**
@@ -508,26 +570,13 @@ export default class WvActor extends Actor {
    * @param name - the name of the Skill to roll
    */
   rollSkill(name: SkillName, options?: RollOptions): void {
-    const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
-      flavor: WvI18n.getSkillRollFlavor(name),
-      speaker: ChatMessage.getSpeaker({ actor: this })
-    };
-
-    new Roll(
-      Formulator.skill(this.data.data.skills[name].total)
-        .modify(options?.modifier)
-        .criticals({
-          success: this.data.data.secondary.criticals.success.total,
-          failure: this.data.data.secondary.criticals.failure.total
-        })
-        .toString()
-    )
-      .roll({ async: true })
-      .then((r) =>
-        r.toMessage(msgOptions, {
-          rollMode: options?.whisperToGms ? "gmroll" : "publicroll"
-        })
-      );
+    const skill = this.data.data.skills[name];
+    this.rollAndCreateMessage(
+      WvI18n.getSkillRollFlavor(name),
+      Formulator.skill(skill.total),
+      skill.toObject(false),
+      options
+    );
   }
 
   /** Remove all race items from this actor. */

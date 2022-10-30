@@ -24,6 +24,18 @@ export interface LangSchema {
         /** A label for action point use */
         use: string;
       };
+      /** Labels for different actions */
+      actions: {
+        /** Labels relating to attack actions */
+        attack: {
+          /** A label for the aimed attacks */
+          aim: string;
+          /** A label for called shots */
+          calledShot: string;
+          /** A label for sneak attacks */
+          sneakAttack: string;
+        };
+      };
       /** Labels for the background */
       background: {
         /** Label for the age */
@@ -314,17 +326,23 @@ export interface LangSchema {
           criticalSuccess: string;
           /** The label for a failure */
           failure: string;
+          /** The label for degrees of failure */
+          failureDegrees: string;
           /** The label for a hit */
           hit: string;
           /** The label for a miss */
           miss: string;
           /** The label for a success */
           success: string;
+          /** The label for degrees of success */
+          successDegrees: string;
         };
         /** Labels for various targets to roll for */
         targets: {
           /** Label for a hit chance reason */
           hitChance: string;
+          /** Label for a success chance reason */
+          successChance: string;
         };
       };
       /** Labels related to skills */
@@ -535,6 +553,8 @@ export interface LangSchema {
         newName: string;
         /** The label for user provided notes */
         notes: string;
+        /** The label for roll modes */
+        rollMode: QuantityNames;
         /** The label for source values */
         sourceValues: string;
         /** The label for a speaker alias */

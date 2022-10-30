@@ -1,15 +1,14 @@
 import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
-import Prompt, {
-  CheckboxInputSpec,
-  NumberInputSpec,
-  TextInputSpec
-} from "../../applications/prompt.js";
+import { AttackPrompt, AttackPromptData } from "../../applications/prompt.js";
 import { CONSTANTS, RangeBracket } from "../../constants.js";
-import type { CompositeNumber } from "../../data/common.js";
+import { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import Formulator from "../../formulator.js";
-import { getGame } from "../../foundryHelpers.js";
+import {
+  createDefaultMessageData,
+  isRollBlindedForCurrUser
+} from "../../foundryHelpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 import * as interact from "../../interaction.js";
@@ -118,8 +117,10 @@ export default class AttackExecution {
 
   /** Execute the attack */
   async execute(): Promise<void> {
+    const secondary = this.actor.data.data.secondary;
+
     // Get needed external data ------------------------------------------------
-    let externalData: ExternalData;
+    let externalData: AttackPromptData;
     try {
       externalData = await this.getExternalData(
         this.actor,
@@ -130,19 +131,19 @@ export default class AttackExecution {
       if (e === "closed") return;
       else throw e;
     }
-    const { alias, modifier, range, whisperToGms } = externalData;
+    const { alias, modifier, range, rollMode, aim, sneakAttack, calledShot } =
+      externalData;
 
     // Create common chat message data -----------------------------------------
-    const commonData: ChatMessageDataConstructorData =
-      this.createDefaultMessageData(
-        {
-          scene: null,
-          actor: this.actor.id,
-          token: this.token?.id ?? null,
-          alias
-        },
-        whisperToGms
-      );
+    const commonData: ChatMessageDataConstructorData = createDefaultMessageData(
+      {
+        scene: null,
+        actor: this.actor.id,
+        token: this.token?.id ?? null,
+        alias
+      },
+      rollMode
+    );
 
     // Get range bracket -------------------------------------------------------
     const rangeBracket = this.weapon.data.data.ranges.getRangeBracket(
@@ -158,23 +159,50 @@ export default class AttackExecution {
     const rangeModifier =
       this.weapon.data.data.ranges.getRangeModifier(rangeBracket);
 
-    const critSuccess = this.actor.data.data.secondary.criticals.success;
-    const critFailure = this.actor.data.data.secondary.criticals.failure;
+    const critSuccess = secondary.criticals.success.clone();
+    if (sneakAttack)
+      critSuccess.add({
+        value: secondary.sneakAttackMod.rollMod.total,
+        labelComponents: [{ key: "wv.rules.actions.attack.sneakAttack" }]
+      });
+
+    const critFailure = secondary.criticals.failure;
+
     const hitChance = this.getHitRollTarget(
       this.actor.data.data.skills[this.weapon.data.data.skill],
       rangeModifier,
       modifier,
       critSuccess.total,
-      critFailure.total
+      critFailure.total,
+      aim,
+      secondary.aimMod.rollMod.total
     );
 
     // Calculate AP ------------------------------------------------------------
     const previousAp = this.actor.data.data.vitals.actionPoints.value;
-    const apCost = this.attackProperties.ap.total;
+    const apCost = new CompositeNumber(this.attackProperties.ap.total, {
+      min: 0
+    });
+    if (aim)
+      apCost.add({
+        labelComponents: [{ key: "wv.rules.actions.attack.aim" }],
+        value: secondary.aimMod.apCost.total
+      });
+    if (sneakAttack)
+      apCost.add({
+        labelComponents: [{ key: "wv.rules.actions.attack.sneakAttack" }],
+        value: secondary.sneakAttackMod.apCost.total
+      });
+    if (calledShot)
+      apCost.add({
+        labelComponents: [{ key: "wv.rules.actions.attack.calledShot" }],
+        value: secondary.calledShotMod.total
+      });
+
     const remainingAp = isOutOfRange
       ? previousAp
       : this.token?.inCombat
-      ? previousAp - apCost
+      ? previousAp - apCost.total
       : previousAp;
     const notEnoughAp = remainingAp < 0;
 
@@ -183,7 +211,7 @@ export default class AttackExecution {
       type: "weaponAttack",
       details: {
         ap: {
-          cost: apCost,
+          cost: apCost.toObject(false),
           previous: previousAp,
           remaining: remainingAp
         },
@@ -195,12 +223,13 @@ export default class AttackExecution {
           base: this.attackProperties.damage.base.toObject(false),
           dice: damageDice.toObject(false)
         },
-        hit: hitChance.toObject(false),
+        successChance: hitChance.toObject(false),
         range: {
           bracket: rangeBracket,
           distance: range
         }
       },
+      blind: commonData.blind ?? false,
       weapon: {
         display: {
           ranges: this.weapon.data.data.ranges.getDisplayRanges(
@@ -261,37 +290,16 @@ export default class AttackExecution {
     actor: WvActor,
     token: Token | undefined,
     target: Token | undefined
-  ): Promise<ExternalData> {
-    const i18n = getGame().i18n;
-
-    return Prompt.get<PromptSpec>(
+  ): Promise<AttackPromptData> {
+    const ownerName = token?.name ?? actor.name;
+    return AttackPrompt.get(
       {
-        alias: {
-          type: "text",
-          label: i18n.localize("wv.system.misc.speakerAlias"),
-          value: actor.name
-        },
-        modifier: {
-          type: "number",
-          label: i18n.localize("wv.system.misc.modifier"),
-          value: 0,
-          min: -100,
-          max: 100
-        },
-        range: {
-          type: "number",
-          label: i18n.localize("wv.rules.range.distance.name"),
-          value: interact.getDistance(token, target) ?? 0,
-          min: 0,
-          max: 99999
-        },
-        whisperToGms: {
-          type: "checkbox",
-          label: i18n.localize("wv.system.rolls.whisperToGms"),
-          value: getGame().user?.isGM
-        }
+        alias: ownerName,
+        range: interact.getDistance(token, target) ?? 0
       },
-      { title: `${this.weapon.data.name} - ${this.name}` }
+      {
+        title: `${ownerName} — ${this.name}`
+      }
     );
   }
 
@@ -301,9 +309,17 @@ export default class AttackExecution {
     rangeModifier: number,
     promptHitModifier: number,
     criticalSuccess: number,
-    criticalFailure: number
+    criticalFailure: number,
+    aimed: boolean,
+    aimedMod: number
   ): CompositeNumber {
     const hitChance = skill.clone();
+
+    if (aimed)
+      hitChance.add({
+        value: aimedMod,
+        labelComponents: [{ key: "wv.rules.actions.attack.aim" }]
+      });
 
     if (rangeModifier)
       hitChance.add({
@@ -332,17 +348,6 @@ export default class AttackExecution {
     }
 
     return hitChance;
-  }
-
-  /** Create the default message data for weapon attack messages. */
-  private createDefaultMessageData(
-    speaker: foundry.data.ChatMessageData["speaker"]["_source"],
-    whisperToGms: boolean
-  ): ChatMessageDataConstructorData {
-    return {
-      speaker,
-      whisper: whisperToGms ? ChatMessage.getWhisperRecipients("gm") : null
-    };
   }
 
   /** Create a weapon attack message, signaling out of range. */
@@ -391,9 +396,14 @@ export default class AttackExecution {
         ? commonData.speaker.actor.id
         : commonData.speaker?.actor;
 
+    const blinded = isRollBlindedForCurrUser(commonFlags.blind);
     await Promise.all([
-      diceSoNice(hitRoll, commonData.whisper ?? null, { actor: actorId }),
-      diceSoNice(damageRoll, commonData.whisper ?? null, { actor: actorId })
+      diceSoNice(hitRoll, commonData.whisper ?? null, blinded, {
+        actor: actorId
+      }),
+      diceSoNice(damageRoll, commonData.whisper ?? null, blinded, {
+        actor: actorId
+      })
     ]);
 
     const flags: deco.ExecutedAttackFlags = {
@@ -420,27 +430,4 @@ export default class AttackExecution {
       flags: { [CONSTANTS.systemId]: flags }
     });
   }
-}
-
-/** The Prompt input spec for an attack prompt */
-type PromptSpec = {
-  alias: TextInputSpec;
-  modifier: NumberInputSpec;
-  range: NumberInputSpec;
-  whisperToGms: CheckboxInputSpec;
-};
-
-/** Data external to the attack */
-interface ExternalData {
-  /** The chat message alias of the executing actor */
-  alias: string;
-
-  /** A possible modifier for the attack */
-  modifier: number;
-
-  /** The range to the target in meters */
-  range: number;
-
-  /** Whether to whisper to GMs */
-  whisperToGms: boolean;
 }

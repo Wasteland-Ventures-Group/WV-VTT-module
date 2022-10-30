@@ -1,5 +1,7 @@
 import { CONSTANTS } from "../../../constants.js";
+import type { SerializedCompositeNumber } from "../../../data/common.js";
 import type { HookParams } from "../index.js";
+import decorateCheck, { CheckFlags } from "./decorateCheck.js";
 import decoratePTMessage, { PainThresholdFlags } from "./decoratePTMessage.js";
 import decorateWeaponAttack, {
   WeaponAttackFlags
@@ -18,11 +20,13 @@ export default function decorateSystemMessage(
   html.addClass([CONSTANTS.systemId, "system-message"]);
   switch (systemFlags?.type) {
     case "weaponAttack":
-      decorateWeaponAttack(systemFlags as WeaponAttackFlags, html);
+      decorateWeaponAttack(systemFlags, html);
       break;
     case "painThreshold":
-      decoratePTMessage(systemFlags as PainThresholdFlags, html);
+      decoratePTMessage(systemFlags, html);
       break;
+    case "roll":
+      decorateCheck(systemFlags, html);
   }
 }
 
@@ -31,5 +35,19 @@ export function getContentElement(html: HookParams[1]): JQuery<HTMLElement> {
   return html.find("div.message-content");
 }
 
+export type CommonRollFlags = {
+  details: {
+    criticals: {
+      success: SerializedCompositeNumber;
+      failure: SerializedCompositeNumber;
+    };
+    successChance: SerializedCompositeNumber;
+  };
+  blind: boolean;
+};
+
 /** A type for system chat message flags */
-export type SystemChatMessageFlags = WeaponAttackFlags | PainThresholdFlags;
+export type SystemChatMessageFlags =
+  | WeaponAttackFlags
+  | PainThresholdFlags
+  | CheckFlags;

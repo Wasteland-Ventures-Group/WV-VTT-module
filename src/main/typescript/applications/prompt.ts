@@ -59,6 +59,7 @@ export abstract class RollPrompt extends Application {
           this.data.rollMode ?? getGame().settings.get("core", "rollMode")
       },
       isAttack: false,
+      isResistanceCheck: false,
       rollModes: WvI18n.rollModes
     };
   }
@@ -171,6 +172,74 @@ export class CheckPrompt extends RollPrompt {
   override onSubmitCallback: (data: ExternalCheckData) => void;
 
   protected override _onSubmitCallback(data: ExternalCheckData): void {
+    this.onSubmitCallback(data);
+  }
+}
+/**
+ * An application to prompt the user for input regarding a roll towards
+ * resisting poison or radiation.
+ */
+export class ResistancePrompt extends RollPrompt {
+  /**
+   * Prompt the user for check input data. The promise resolves when the prompt
+   * was submitted and rejects when it was closed without submitting.
+   */
+  static async get(
+    data: ResistancePromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ): Promise<ResistancePromptData> {
+    return new Promise((resolve, reject) => {
+      new this((data) => resolve(data), reject, data, options).render(true);
+    });
+  }
+
+  /**
+   * @param onSubmit - the callback to be executed once the user submits the
+   *                   application's form
+   * @param onClose - the callback to be executed once the prompt is closed
+   *                  without being submitted
+   * @param options - the options for the prompt
+   */
+  constructor(
+    onSubmit: (data: ResistancePromptData) => void,
+    onClose: () => void,
+    data: ResistancePromptConstructorData,
+    options?: Partial<ApplicationOptions>
+  ) {
+    super(onSubmit, onClose, data, options);
+
+    this.onSubmitCallback = onSubmit;
+    this.data = data;
+  }
+
+  override onSubmitCallback: (data: ResistancePromptData) => void;
+
+  override data: ResistancePromptConstructorData;
+
+  override getData(): ResistancePromptTemplateData {
+    return {
+      ...super.getData(),
+      defaults: {
+        ...super.getData().defaults,
+        count: this.data.count ?? 1,
+        percentage: this.data.percentage
+      },
+      isResistanceCheck: true
+    };
+  }
+
+  protected override transformFormData(
+    formData: FormData
+  ): ResistancePromptData {
+    const common = super.transformFormData(formData);
+    return {
+      ...common,
+      count: this.extractNumberValue("count", formData),
+      percentile: this.extractNumberValue("percentile", formData)
+    };
+  }
+
+  protected override _onSubmitCallback(data: ResistancePromptData): void {
     this.onSubmitCallback(data);
   }
 }
@@ -373,6 +442,12 @@ export type AttackPromptData = PromptDataCommon & {
 };
 
 export type ExternalCheckData = PromptDataCommon;
+export type ResistancePromptData = PromptDataCommon & {
+  /** The amount of rolls to make */
+  count: number;
+  /** The percentile chance to miss the check*/
+  percentile: number;
+};
 
 export type RollPromptTemplateData = {
   defaults: {
@@ -381,6 +456,7 @@ export type RollPromptTemplateData = {
     rollMode: RollMode;
   };
   isAttack: boolean;
+  isResistanceCheck: boolean;
   rollModes: I18nRollModes;
 };
 
@@ -389,6 +465,14 @@ export type AttackPromptTemplateData = RollPromptTemplateData & {
     range: number;
   };
   isAttack: true;
+};
+
+type ResistancePromptTemplateData = RollPromptTemplateData & {
+  defaults: {
+    count: number;
+    percentage?: number | undefined;
+  };
+  isResistanceCheck: true;
 };
 
 type RollPromptConstructorData = {
@@ -401,4 +485,9 @@ type CheckPromptConstructorData = RollPromptConstructorData;
 
 type AttackPromptConstructorData = RollPromptConstructorData & {
   range: number;
+};
+
+type ResistancePromptConstructorData = RollPromptConstructorData & {
+  count?: number;
+  percentage?: number;
 };

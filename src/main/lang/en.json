@@ -316,11 +316,13 @@
       "resistances": {
         "poison": {
           "short": "Poi Res",
-          "long": "Poison Resistance"
+          "long": "Poison Resistance",
+          "roll": "Rolling Poison Resistance"
         },
         "radiation": {
           "short": "Rad Res",
-          "long": "Radiation Resistance"
+          "long": "Radiation Resistance",
+          "roll": "Rolling Radiation Resistance"
         }
       },
       "rolls": {
@@ -598,6 +600,7 @@
         "amount": "Amount",
         "base": "Base",
         "cost": "Cost",
+        "percentile": "Percentile",
         "previous": "Previous",
         "remaining": "Remaining",
         "total": "Total"

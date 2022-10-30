@@ -316,11 +316,13 @@
       "resistances": {
         "poison": {
           "short": "Gift-Res",
-          "long": "Gift-Resistenz"
+          "long": "Gift-Resistenz",
+          "roll": "Rolle Gift-Resistenz"
         },
         "radiation": {
           "short": "Strahl-Res",
-          "long": "Strahlungsresistenz"
+          "long": "Strahlungsresistenz",
+          "roll": "Rolle Strahlungsresistenz"
         }
       },
       "rolls": {
@@ -598,6 +600,7 @@
         "amount": "Menge",
         "base": "Basiswert",
         "cost": "Kosten",
+        "percentile": "Perzentil",
         "previous": "Vorher",
         "remaining": "Übrig",
         "total": "Summe"

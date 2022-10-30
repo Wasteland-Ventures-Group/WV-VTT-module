@@ -501,10 +501,13 @@ export default class WvActor extends Actor {
     options: RollOptions | undefined
   ): Promise<void> {
     const criticals = this.data.data.secondary.criticals;
-    const fullFormula = baseFormula.modify(options?.modifier).criticals({
-      success: criticals.success.total,
-      failure: criticals.failure.total
-    });
+    let fullFormula = baseFormula;
+    if (!baseFormula.resist) {
+      fullFormula = fullFormula.modify(options?.modifier).criticals({
+        success: criticals.success.total,
+        failure: criticals.failure.total
+      });
+    }
     const checkRoll = new Roll(fullFormula.toString()).roll({ async: false });
 
     const msgOptions = createDefaultMessageData(
@@ -545,6 +548,33 @@ export default class WvActor extends Actor {
       ...msgOptions,
       flags: { [CONSTANTS.systemId]: flags }
     });
+  }
+
+  /**
+   * @param name - The name of the resistance check
+   * @param count - The number of dice to roll
+   * @param percentile - The probability to fail the check (before bonuses)
+   * @param options -  roll options
+   */
+  rollResistance(
+    name: "poison" | "radiation",
+    count: number,
+    percentile: number,
+    options?: RollOptions
+  ): void {
+    const resistances = this.data.data.resistances;
+    const resistanceValue = resistances[name];
+    const total = resistanceValue.total + (options?.modifier ?? 0);
+    const target = Math.max(percentile - total, 0);
+    const i18n = getGame().i18n;
+    const baseFormula = Formulator.resistance(target, count);
+    console.log(baseFormula);
+    this.rollAndCreateMessage(
+      i18n.localize(`wv.rules.resistances.${name}.roll`),
+      baseFormula,
+      resistanceValue.toObject(false),
+      options
+    );
   }
 
   /**

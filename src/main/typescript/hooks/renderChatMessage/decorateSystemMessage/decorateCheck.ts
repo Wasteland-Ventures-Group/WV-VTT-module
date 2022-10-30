@@ -6,6 +6,7 @@ import type { Critical } from "../../../rolls/criticalsModifiers";
 import { Component, CompositeNumber } from "../../../data/common";
 import { isRollBlindedForCurrUser } from "../../../foundryHelpers";
 
+// TODO: add special case for resistance checks
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/check.hbs`;
 export default async function decorateCheck(
   flags: CheckFlags,

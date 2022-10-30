@@ -14,6 +14,8 @@ import {
   SpecialNames,
   TYPES
 } from "../../constants.js";
+import type { ResistancesProperties } from "../../data/actor/character/properties.js";
+import type { CompositeNumber } from "../../data/common.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
@@ -114,6 +116,10 @@ export default class WvActorSheet extends ActorSheet {
       element.addEventListener("click", (event) =>
         this.onClickRollSkill(event)
       );
+    });
+
+    sheetForm.querySelectorAll("button[data-resistance]").forEach((el) => {
+      el.addEventListener("click", (ev) => this.onClickRollResistance(ev));
     });
 
     // item handling
@@ -521,6 +527,27 @@ export default class WvActorSheet extends ActorSheet {
   /** Open the initial setup application. */
   protected onClickInitialSetup() {
     this.actor.baseSetup.render(true);
+  }
+
+  protected async onClickRollResistance(event: Event): Promise<void> {
+    event.preventDefault();
+
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const resistanceKey = event.target.dataset.resistance;
+    if (!resistanceKey) {
+      LOG.warn(`Could not get the resistance to roll`);
+      return;
+    }
+
+    const resistances = this.actor.data.data.resistances;
+    if (Object.keys(resistances).includes(resistanceKey)) {
+      const resistanceValue =
+        resistances[resistanceKey as keyof ResistancesProperties];
+    } else {
+      LOG.warn(`Invalid resistance type: ${resistanceKey}`);
+    }
   }
 
   /** Handle a click event on the SPECIAL roll buttons. */

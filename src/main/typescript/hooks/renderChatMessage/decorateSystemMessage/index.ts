@@ -41,7 +41,7 @@ export type CommonRollFlags = {
       success: SerializedCompositeNumber;
       failure: SerializedCompositeNumber;
     };
-    success: SerializedCompositeNumber;
+    successChance: SerializedCompositeNumber;
   };
   blind: boolean;
 };

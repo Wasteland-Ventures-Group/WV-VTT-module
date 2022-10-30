@@ -22,7 +22,7 @@ import { getGame } from "../foundryHelpers.js";
 import {
   createDefaultMessageData,
   isRollBlindedForCurrUser
-} from "../helpers.js";
+} from "../foundryHelpers.js";
 import type { CheckFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decorateCheck.js";
 import type { PainThresholdFlags } from "../hooks/renderChatMessage/decorateSystemMessage/decoratePTMessage.js";
 import diceSoNice from "../integrations/diceSoNice/diceSoNice.js";
@@ -485,7 +485,8 @@ export default class WvActor extends Actor {
     });
   }
 
-  /** Roll a skill or SPECIAL check and post the result
+  /**
+   * Roll a skill or SPECIAL check and post the result
    * @param flavor - flavour text
    * @param baseFormula - the base target formula. This is determined differently
    *                      for skill and SPECIAL checks
@@ -521,7 +522,7 @@ export default class WvActor extends Actor {
           success: criticals.success.toObject(false),
           failure: criticals.failure.toObject(false)
         },
-        success: target
+        successChance: target
       },
       roll: {
         formula: checkRoll.formula,
@@ -551,15 +552,15 @@ export default class WvActor extends Actor {
    * @param name - the name of the SPECIAL to roll
    */
   rollSpecial(name: SpecialName, options?: RollOptions): void {
-    const targetRaw = this.data.data.specials[name];
-    const targetCompNum: SerializedCompositeNumber = {
-      source: targetRaw.permTotal,
-      components: [...targetRaw.tempComponents, ...targetRaw.permComponents]
+    const special = this.data.data.specials[name];
+    const specialCompNum: SerializedCompositeNumber = {
+      source: special.points,
+      components: [...special.tempComponents, ...special.permComponents]
     };
     this.rollAndCreateMessage(
       WvI18n.getSpecialRollFlavor(name),
-      Formulator.special(targetRaw.tempTotal),
-      targetCompNum,
+      Formulator.special(special.tempTotal),
+      specialCompNum,
       options
     );
   }
@@ -569,11 +570,11 @@ export default class WvActor extends Actor {
    * @param name - the name of the Skill to roll
    */
   rollSkill(name: SkillName, options?: RollOptions): void {
-    const targetRaw = this.data.data.skills[name];
+    const skill = this.data.data.skills[name];
     this.rollAndCreateMessage(
       WvI18n.getSkillRollFlavor(name),
-      Formulator.skill(targetRaw.total),
-      targetRaw.toObject(false),
+      Formulator.skill(skill.total),
+      skill.toObject(false),
       options
     );
   }

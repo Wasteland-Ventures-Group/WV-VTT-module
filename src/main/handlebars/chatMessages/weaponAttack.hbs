@@ -24,9 +24,33 @@
       <span>{{localize "wv.rules.actionPoints.long"}}</span>
       <ul class="no-margin">
         <li>{{localize "wv.system.values.previous"}}: {{details.ap.previous}}</li>
-        <li>{{localize "wv.system.values.cost"}}: {{details.ap.cost}}</li>
         <li>{{localize "wv.system.values.remaining"}}: {{details.ap.remaining}}</li>
       </ul>
+      <table class="modifier-listing no-margin">
+        <thead>
+          <tr>
+            <th scope="col" colspan="2">{{localize "wv.system.values.cost"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">{{localize "wv.system.values.base"}}</th>
+            <td class="align-right zero-width no-wrap">{{details.ap.cost.source}}</td>
+          </tr>
+          {{#each details.ap.cost.components as |component|~}}
+            <tr>
+              <th scope="row">{{component.label}}</th>
+              <td class="align-right zero-width no-wrap">{{component.value}}</td>
+            </tr>
+          {{~/each}}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row">{{localize "wv.system.values.total"}}</th>
+            <td class="align-right zero-width no-wrap">{{details.ap.cost.total}}</td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
     <div class="spacing-bottom">
       <span>{{localize "wv.rules.criticals.title"}}</span>
@@ -44,9 +68,9 @@
       <tbody>
         <tr>
           <th scope="row">{{localize "wv.system.values.base"}}</th>
-          <td class="align-right zero-width no-wrap">{{details.hit.source}}</td>
+          <td class="align-right zero-width no-wrap">{{details.successChance.source}}</td>
         </tr>
-        {{#each details.hit.components as |component|~}}
+        {{#each details.successChance.components as |component|~}}
           <tr>
             <th scope="row">{{component.label}}</th>
             <td class="align-right zero-width no-wrap">{{component.value}}</td>
@@ -56,7 +80,7 @@
       <tfoot>
         <tr>
           <th scope="row">{{localize "wv.system.values.total"}}</th>
-          <td class="align-right zero-width no-wrap">{{details.hit.total}}</td>
+          <td class="align-right zero-width no-wrap">{{details.successChance.total}}</td>
         </tr>
       </tfoot>
     </table>

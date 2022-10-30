@@ -99,8 +99,10 @@ export function getMagicType(school: GeneralMagicSchool): MagicType {
   throw new Error("Unreachable Code");
 }
 
+/** A union of supported dice roll modes */
 export type RollMode = ValueOf<typeof CONST.DICE_ROLL_MODES>;
 
+/** A custom typeguard to check whether a string is a valid roll mode */
 export function isRollMode(arg: string): arg is RollMode {
   return Object.values<string>(CONST.DICE_ROLL_MODES).includes(arg);
 }

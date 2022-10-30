@@ -4,7 +4,7 @@ import type { HookParams } from "..";
 import { scrollChatToBottom } from "../../../foundryHelpers";
 import type { Critical } from "../../../rolls/criticalsModifiers";
 import { Component, CompositeNumber } from "../../../data/common";
-import { isRollBlindedForCurrUser } from "../../../helpers";
+import { isRollBlindedForCurrUser } from "../../../foundryHelpers";
 
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/check.hbs`;
 export default async function decorateCheck(
@@ -20,10 +20,10 @@ export default async function decorateCheck(
         failure: CompositeNumber.from(flags.details.criticals.failure),
         success: CompositeNumber.from(flags.details.criticals.success)
       },
-      success: CompositeNumber.from(flags.details.success)
+      successChance: CompositeNumber.from(flags.details.successChance)
     },
     template: {
-      keys: getCheckResultKey(flags),
+      keys: getCheckResultKeys(flags.roll),
       blinded: isRollBlindedForCurrUser(flags.blind)
     }
   };
@@ -43,15 +43,17 @@ export type CheckFlags = CommonRollFlags & {
   };
 };
 
-function getCheckResultKey(flags: CheckFlags): CheckTemplateDataKeys {
+function getCheckResultKeys(roll: CheckFlags["roll"]): CheckTemplateDataKeys {
   let success = "wv.rules.rolls.results.";
   let degrees = "wv.rules.rolls.results.";
-  const roll = flags.roll;
+
   if (roll.critical === "success") success += "criticalSuccess";
   else if (roll.critical === "failure") success += "criticalFailure";
   else if (roll.total === 1) success += "success";
   else success += "failure";
-  if (success.includes("uccess")) degrees += "successDegrees";
+
+  if (roll.critical === "success" || roll.total === 1)
+    degrees += "successDegrees";
   else degrees += "failureDegrees";
 
   return { success, degrees };
@@ -65,7 +67,7 @@ type CheckTemplateData = CheckFlags & {
       failure: CompositeNumber;
       success: CompositeNumber;
     };
-    success: {
+    successChance: {
       components: Component[];
       total: number;
     };

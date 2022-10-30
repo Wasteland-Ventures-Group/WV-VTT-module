@@ -2,7 +2,7 @@ import { CONSTANTS, RangeBracket } from "../../../constants.js";
 import type { SerializedCompositeNumber } from "../../../data/common.js";
 import { CompositeNumber } from "../../../data/common.js";
 import { scrollChatToBottom } from "../../../foundryHelpers.js";
-import { isRollBlindedForCurrUser } from "../../../helpers.js";
+import { isRollBlindedForCurrUser } from "../../../foundryHelpers.js";
 import type { Critical } from "../../../rolls/criticalsModifiers.js";
 import type { HookParams } from "../index.js";
 import { CommonRollFlags, getContentElement } from "./index.js";
@@ -22,6 +22,10 @@ export default async function decorateWeaponAttack(
     ...flags,
     details: {
       ...flags.details,
+      ap: {
+        ...flags.details.ap,
+        cost: CompositeNumber.from(flags.details.ap.cost)
+      },
       criticals: {
         failure: CompositeNumber.from(flags.details.criticals.failure),
         success: CompositeNumber.from(flags.details.criticals.success)
@@ -30,7 +34,7 @@ export default async function decorateWeaponAttack(
         base: CompositeNumber.from(flags.details.damage.base),
         dice: CompositeNumber.from(flags.details.damage.dice)
       },
-      hit: CompositeNumber.from(flags.details.success)
+      successChance: CompositeNumber.from(flags.details.successChance)
     },
     template: {
       keys: {
@@ -83,8 +87,7 @@ export default async function decorateWeaponAttack(
       keys: {
         ...commonData.template.keys,
         hit: getHitResultKey(flags)
-      },
-      blinded: isRollBlindedForCurrUser(flags.blind)
+      }
     }
   };
   content.append(await renderTemplate(TEMPLATE, data));
@@ -138,7 +141,7 @@ export type CommonWeaponAttackFlags = CommonRollFlags & {
   details: {
     ap: {
       previous: number;
-      cost: number;
+      cost: SerializedCompositeNumber;
       remaining: number;
     };
     damage: {
@@ -192,6 +195,9 @@ export type ExecutedAttackFlags = CommonWeaponAttackFlags & {
 /** The template data common for both executed and not executed attacks. */
 type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
   details: CommonWeaponAttackFlags["details"] & {
+    ap: CommonWeaponAttackFlags["details"]["ap"] & {
+      cost: CompositeNumber;
+    };
     criticals: {
       failure: CompositeNumber;
       success: CompositeNumber;
@@ -200,7 +206,7 @@ type CommonWeaponAttackTemplateData = CommonWeaponAttackFlags & {
       base: CompositeNumber;
       dice: CompositeNumber;
     };
-    hit: CompositeNumber;
+    successChance: CompositeNumber;
   };
   template: {
     keys: {
@@ -237,6 +243,5 @@ type ExecutedAttackTemplateData = CommonWeaponAttackTemplateData &
       keys: {
         hit: string;
       };
-      blinded: boolean;
     };
   };

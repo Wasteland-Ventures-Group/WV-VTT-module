@@ -24,10 +24,11 @@ export interface LangSchema {
         /** A label for action point use */
         use: string;
       };
-      /** Labels for different combat actions */
+      /** Labels for different actions */
       actions: {
+        /** Labels relating to attack actions */
         attack: {
-          /** A label for the Aim action */
+          /** A label for the aimed attacks */
           aim: string;
           /** A label for called shots */
           calledShot: string;

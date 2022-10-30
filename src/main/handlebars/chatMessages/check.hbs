@@ -17,9 +17,9 @@
       <tbody>
         <tr>
           <th scope="row">{{localize "wv.system.values.base"}}</th>
-          <td class="align-right zero-width no-wrap">{{details.success.source}}</td>
+          <td class="align-right zero-width no-wrap">{{details.successChance.source}}</td>
         </tr>
-        {{#each details.success.components as |component|~}}
+        {{#each details.successChance.components as |component|~}}
           <tr>
             <th scope="row">{{component.label}}</th>
             <td class="align-right zero-width no-wrap">{{component.value}}</td>
@@ -29,7 +29,7 @@
       <tfoot>
         <tr>
           <th scope="row">{{localize "wv.system.values.total"}}</th>
-          <td class="align-right zero-width no-wrap">{{details.success.total}}</td>
+          <td class="align-right zero-width no-wrap">{{details.successChance.total}}</td>
         </tr>
       </tfoot>
     </table>
@@ -44,7 +44,7 @@
     {{#unless template.blinded}}
       <div class="roll-summary">
         <label class="roll-summary-label">{{localize template.keys.degrees}}</label>
-        <div class="roll-summary-result">{{roll.degree}}</div>
+        <div class="roll-summary-result">{{roll.degreesOfSuccess}}</div>
       </div>
     {{/unless}}
   </div>

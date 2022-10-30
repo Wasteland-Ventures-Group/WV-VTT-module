@@ -2,13 +2,13 @@ import type { ChatMessageDataConstructorData } from "@league-of-foundry-develope
 import WvActor from "../../actor/wvActor.js";
 import { AttackPrompt, AttackPromptData } from "../../applications/prompt.js";
 import { CONSTANTS, RangeBracket } from "../../constants.js";
-import type { CompositeNumber } from "../../data/common.js";
+import { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import Formulator from "../../formulator.js";
 import {
   createDefaultMessageData,
   isRollBlindedForCurrUser
-} from "../../helpers.js";
+} from "../../foundryHelpers.js";
 import type * as deco from "../../hooks/renderChatMessage/decorateSystemMessage/decorateWeaponAttack.js";
 import diceSoNice from "../../integrations/diceSoNice/diceSoNice.js";
 import * as interact from "../../interaction.js";
@@ -118,6 +118,7 @@ export default class AttackExecution {
   /** Execute the attack */
   async execute(): Promise<void> {
     const secondary = this.actor.data.data.secondary;
+
     // Get needed external data ------------------------------------------------
     let externalData: AttackPromptData;
     try {
@@ -164,7 +165,9 @@ export default class AttackExecution {
         value: secondary.sneakAttackMod.rollMod.total,
         labelComponents: [{ key: "wv.rules.actions.attack.sneakAttack" }]
       });
+
     const critFailure = secondary.criticals.failure;
+
     const hitChance = this.getHitRollTarget(
       this.actor.data.data.skills[this.weapon.data.data.skill],
       rangeModifier,
@@ -177,15 +180,29 @@ export default class AttackExecution {
 
     // Calculate AP ------------------------------------------------------------
     const previousAp = this.actor.data.data.vitals.actionPoints.value;
-    let apCost = this.attackProperties.ap.total;
-    if (aim) apCost += secondary.aimMod.apCost.total;
-    if (sneakAttack) apCost += secondary.sneakAttackMod.apCost.total;
-    if (calledShot) apCost += secondary.calledShotMod.total;
+    const apCost = new CompositeNumber(this.attackProperties.ap.total, {
+      min: 0
+    });
+    if (aim)
+      apCost.add({
+        labelComponents: [{ key: "wv.rules.actions.attack.aim" }],
+        value: secondary.aimMod.apCost.total
+      });
+    if (sneakAttack)
+      apCost.add({
+        labelComponents: [{ key: "wv.rules.actions.attack.sneakAttack" }],
+        value: secondary.sneakAttackMod.apCost.total
+      });
+    if (calledShot)
+      apCost.add({
+        labelComponents: [{ key: "wv.rules.actions.attack.calledShot" }],
+        value: secondary.calledShotMod.total
+      });
 
     const remainingAp = isOutOfRange
       ? previousAp
       : this.token?.inCombat
-      ? previousAp - apCost
+      ? previousAp - apCost.total
       : previousAp;
     const notEnoughAp = remainingAp < 0;
 
@@ -194,7 +211,7 @@ export default class AttackExecution {
       type: "weaponAttack",
       details: {
         ap: {
-          cost: apCost,
+          cost: apCost.toObject(false),
           previous: previousAp,
           remaining: remainingAp
         },
@@ -206,7 +223,7 @@ export default class AttackExecution {
           base: this.attackProperties.damage.base.toObject(false),
           dice: damageDice.toObject(false)
         },
-        success: hitChance.toObject(false),
+        successChance: hitChance.toObject(false),
         range: {
           bracket: rangeBracket,
           distance: range

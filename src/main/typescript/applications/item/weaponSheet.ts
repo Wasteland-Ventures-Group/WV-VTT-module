@@ -23,10 +23,7 @@ export default class WeaponSheet extends WvItemSheet {
     defaultOptions.classes.push("weapon-sheet");
     defaultOptions.height = 500;
     defaultOptions.width = 800;
-    return foundry.utils.mergeObject(defaultOptions, {
-      // TODO? Should this be changed too? Having a tough time understanding what this code does
-      dragDrop: [{ dragSelector: ".weapon-attack > button[data-attack]" }]
-    } as typeof ItemSheet["defaultOptions"]);
+    return defaultOptions;
   }
 
   /** Get the weapon sheet data for a weapon. */

@@ -10,7 +10,6 @@ export abstract class RollPrompt extends Application {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push(...[CONSTANTS.systemId, "prompt"]);
     defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/prompt.hbs`;
-
     defaultOptions.title = getGame().i18n.localize(
       "wv.system.prompt.defaults.title"
     );
@@ -138,6 +137,10 @@ export abstract class RollPrompt extends Application {
  * check.
  */
 export class CheckPrompt extends RollPrompt {
+  /**
+   * Prompt the user for check input data. The promise resolves when the prompt
+   * was submitted and rejects when it was closed without submitting.
+   */
   static async get(
     data: CheckPromptConstructorData,
     options?: Partial<ApplicationOptions>
@@ -176,6 +179,10 @@ export class CheckPrompt extends RollPrompt {
  * An application to prompt the user for input regarding an attack roll
  */
 export class AttackPrompt extends RollPrompt {
+  /**
+   * Prompt the user for attack input data. The promise resolves when the prompt
+   * was submitted and rejects when it was closed without submitting.
+   */
   static async get(
     data: AttackPromptConstructorData,
     options?: Partial<ApplicationOptions>
@@ -243,13 +250,16 @@ export class StringPrompt extends Application {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push(...[CONSTANTS.systemId, "stringPrompt"]);
     defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/stringPrompt.hbs`;
-
     defaultOptions.title = getGame().i18n.localize(
       "wv.system.prompt.defaults.title"
     );
     return defaultOptions;
   }
 
+  /**
+   * Prompt the user for a string. The promise resolves when the prompt was
+   * submitted and rejects when it was closed without submitting.
+   */
   static async get(
     {
       label,
@@ -327,6 +337,7 @@ export class StringPrompt extends Application {
     this.onSubmitCallback(result);
   }
 }
+
 type SubmitEvent = JQuery.SubmitEvent<
   HTMLFormElement,
   unknown,

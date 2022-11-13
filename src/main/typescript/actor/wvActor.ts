@@ -13,6 +13,7 @@ import {
 } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import type {
+  ComponentSource,
   CompositeResource,
   SerializedCompositeNumber
 } from "../data/common.js";
@@ -514,6 +515,20 @@ export default class WvActor extends Actor {
 
     msgOptions.flavor = flavor;
 
+    let successChance: SerializedCompositeNumber;
+    if (options?.modifier) {
+      const modifierComponent: ComponentSource = {
+        value: options.modifier,
+        labelComponents: [{ key: "wv.system.misc.modifier" }]
+      };
+      successChance = {
+        ...target,
+        components: [...target.components, modifierComponent]
+      };
+    } else {
+      successChance = target;
+    }
+
     const result = checkRoll.dice[0]?.results[0]?.result ?? 0;
     const flags: CheckFlags = {
       type: "roll",
@@ -522,7 +537,7 @@ export default class WvActor extends Actor {
           success: criticals.success.toObject(false),
           failure: criticals.failure.toObject(false)
         },
-        successChance: target
+        successChance
       },
       roll: {
         formula: checkRoll.formula,
@@ -553,9 +568,17 @@ export default class WvActor extends Actor {
    */
   rollSpecial(name: SpecialName, options?: RollOptions): void {
     const special = this.data.data.specials[name];
+    const components = [
+      ...special.tempComponents,
+      ...special.permComponents
+    ].map((comp) => {
+      const result = comp.toObject(false);
+      result.value *= 10;
+      return result;
+    });
     const specialCompNum: SerializedCompositeNumber = {
-      source: special.points,
-      components: [...special.tempComponents, ...special.permComponents]
+      source: special.points * 10,
+      components
     };
     this.rollAndCreateMessage(
       WvI18n.getSpecialRollFlavor(name),

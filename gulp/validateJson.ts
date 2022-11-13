@@ -27,6 +27,10 @@ const validationConfigs: ValidationConfig[] = [
     schemaPath: `${baseItemSchemaPath}/magic.json`
   },
   {
+    dataGlob: "./src/main/compendiums/item/misc/**/*.json",
+    schemaPath: `${baseItemSchemaPath}/misc.json`
+  },
+  {
     dataGlob: "./src/main/compendiums/item/race/**/*.json",
     schemaPath: `${baseItemSchemaPath}/race.json`
   },

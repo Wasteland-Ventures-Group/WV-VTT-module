@@ -45,6 +45,10 @@ const compendiumConfigs: CompendiumConfig[] = [
     outputPath: `${itemOutputBasePath}/magic.db`
   },
   {
+    inputGlob: `${itemInputBasePath}/misc/*.json`,
+    outputPath: `${itemOutputBasePath}/misc.db`
+  },
+  {
     inputGlob: `${itemInputBasePath}/race/core/*.json`,
     outputPath: `${itemOutputBasePath}/race/core.db`
   },

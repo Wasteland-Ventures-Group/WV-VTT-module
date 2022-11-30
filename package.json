@@ -60,7 +60,7 @@
     "stylelint-config-standard-scss": "^6.0.0",
     "ts-json-schema-generator": "^1.1.2",
     "ts-node": "^10.9.1",
-    "tsd": "^0.20.0",
+    "tsd": "^0.25.0",
     "typescript": "~4.7",
     "zod": "^3.19.1"
   },

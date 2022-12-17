@@ -314,6 +314,7 @@
         "singular": "Reichweite"
       },
       "resistances": {
+        "base": "Basisresistenz",
         "poison": {
           "short": "Gift-Res",
           "long": "Gift-Resistenz",
@@ -340,7 +341,8 @@
         },
         "targets": {
           "hitChance": "Trefferchance",
-          "successChance": "Erfolgschance"
+          "successChance": "Erfolgschance",
+          "effectChance": "Befallschance"
         }
       },
       "skills": {

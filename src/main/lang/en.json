@@ -314,6 +314,7 @@
         "singular": "Range"
       },
       "resistances": {
+        "base": "Base Resistance",
         "poison": {
           "short": "Poi Res",
           "long": "Poison Resistance",
@@ -340,7 +341,8 @@
         },
         "targets": {
           "hitChance": "Hit chance",
-          "successChance": "Chance of success"
+          "successChance": "Chance of success",
+          "effectChance": "Chance to be affected"
         }
       },
       "skills": {

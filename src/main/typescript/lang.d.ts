@@ -307,6 +307,8 @@ export interface LangSchema {
         };
       };
       resistances: {
+        /** Label for any base resistance */
+        base: string;
         /** Labels for the poison resistance */
         poison: ShortLongNames & {
           roll: string;
@@ -347,6 +349,8 @@ export interface LangSchema {
           hitChance: string;
           /** Label for a success chance reason */
           successChance: string;
+          /** Label for the chance to be affected (i.e., fail to resist) by rads or poison */
+          effectChance: string;
         };
       };
       /** Labels related to skills */

@@ -2,17 +2,25 @@
   <span>{{localize "wv.system.misc.details"}}</span>
   <div class="detail-content hide">
     <div class="spacing-bottom">
+    {{#unless roll.isResist}}
       <span>{{localize "wv.rules.criticals.title"}}</span>
       <ul class="no-margin">
         <li>{{localize "wv.rules.criticals.success"}}: &lt;={{details.criticals.success.total}}</li>
         <li>{{localize "wv.rules.criticals.failure"}}: &gt;={{details.criticals.failure.total}}</li>
       </ul>
+    {{/unless}}
     </div>
     <table class="modifier-listing">
       <thead>
+      {{#if roll.isResist}}
+        <tr>
+          <th scope="col" colspan="2">{{localize "wv.rules.rolls.targets.effectChance"}}</th>
+        </tr>
+      {{~else~}}
         <tr>
           <th scope="col" colspan="2">{{localize "wv.rules.rolls.targets.successChance"}}</th>
         </tr>
+      {{/if}}
       </thead>
       <tbody>
         <tr>
@@ -41,12 +49,12 @@
       <label class="roll-summary-label">{{ternary template.blinded "???" (localize template.keys.success)}}</label>
       <div class="roll-summary-result">{{ternary template.blinded "???" roll.result}}</div>
     </div>
-    {{#unless template.blinded}}
+    {{#if template.showSuccessDegrees}}
       <div class="roll-summary">
         <label class="roll-summary-label">{{localize template.keys.degrees}}</label>
         <div class="roll-summary-result">{{roll.degreesOfSuccess}}</div>
       </div>
-    {{/unless}}
+    {{/if}}
   </div>
   <div class="detail-content hide">
     <div class="roll-details">

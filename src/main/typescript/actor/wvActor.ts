@@ -12,7 +12,9 @@ import {
   TYPES
 } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
-import type {
+import {
+  CompositeNumber,
+  ComponentSource,
   CompositeResource,
   SerializedCompositeNumber
 } from "../data/common.js";
@@ -532,7 +534,8 @@ export default class WvActor extends Actor {
         critical: checkRoll.dice[0]?.results[0]?.critical,
         result,
         degreesOfSuccess: fullFormula.d100Target - result,
-        total: checkRoll.total ?? 0
+        total: checkRoll.total ?? 0,
+        isResist: baseFormula.resist
       },
       blind: msgOptions.blind ?? false
     };
@@ -564,15 +567,46 @@ export default class WvActor extends Actor {
   ): void {
     const resistances = this.data.data.resistances;
     const resistanceValue = resistances[name];
-    const total = resistanceValue.total + (options?.modifier ?? 0);
-    const target = Math.max(percentile - total, 0);
+    const components: ComponentSource[] = [];
+    // Negate resistance and everything increasing it
+    resistanceValue.components.forEach((component) => {
+      const newComponent = {
+        value: -component.value,
+        labelComponents: component.labelComponents
+      };
+      components.push(newComponent);
+    });
+
+    components.push({
+      value: -resistanceValue.source,
+      labelComponents: [{ key: "wv.rules.resistances.base" }]
+    });
+
+    // Modifier also increases resisance => reduces target
+    if (options?.modifier) {
+      components.push({
+        value: -options.modifier,
+        labelComponents: [{ key: "wv.system.misc.modifier" }]
+      });
+    }
+
+    const minChance = CONSTANTS.bounds.effectMinChance[name];
+
+    const target: SerializedCompositeNumber = {
+      source: percentile,
+      bounds: { min: minChance, max: 100 },
+      components
+    };
+
     const i18n = getGame().i18n;
-    const baseFormula = Formulator.resistance(target, count);
-    console.log(baseFormula);
+    const baseFormula = Formulator.resistance(
+      CompositeNumber.from(target).total,
+      count
+    );
     this.rollAndCreateMessage(
       i18n.localize(`wv.rules.resistances.${name}.roll`),
       baseFormula,
-      resistanceValue.toObject(false),
+      target,
       options
     );
   }

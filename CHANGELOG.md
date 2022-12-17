@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.22.0] - 2022-11-12
+
+- improve chat cards and add additional attack options
+  ([##439](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/#439))
+
 ## [0.21.0] - 2022-09-10
 
 ### Added

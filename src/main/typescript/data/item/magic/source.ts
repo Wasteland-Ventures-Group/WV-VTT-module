@@ -8,6 +8,7 @@ import {
   FoundryCompendiumData
 } from "../../foundryCommon.js";
 import zodToJsonSchema from "zod-to-json-schema";
+import { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
 
 /** The Magic Item data-source */
 export default interface MagicDataSource {
@@ -15,15 +16,16 @@ export default interface MagicDataSource {
   data: MagicDataSourceData;
 }
 
-const MagicDataSchema = z
-  .object({
+export const MagicDataSchema = BASE_ITEM_SCHEMA.extend(
+
+  {
     school: z.enum(GeneralMagicSchools).default("general"),
     apCost: CompositeNumberSchema,
     strainCost: CompositeNumberSchema,
     range: RangeSchema,
     target: TargetSchema
-  })
-  .default({});
+  }
+).default({});
 
 export interface CompendiumMagic
   extends FoundryCompendiumData<MagicDataSourceData> {

@@ -1,9 +1,11 @@
 import type { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import {
   SkillName,
   SkillNames,
   SystemDocumentType,
-  SystemDocumentTypes
+  SystemDocumentTypes,
+  TYPES
 } from "../constants.js";
 
 export type KeywordSelectorWord = typeof KeywordSelectorsWords[number];
@@ -14,6 +16,8 @@ export const KeywordSelectorsWords = [
   "sibling",
   "this"
 ] as const;
+
+export const KEYWORD_SELECTOR_WORD_SCHEMA = z.enum(KeywordSelectorsWords);
 export const KEYWORD_SELECTOR_WORD_JSON_SCHEMA: JSONSchemaType<KeywordSelectorWord> =
   {
     description: "A schema for keyword selector words",
@@ -22,9 +26,8 @@ export const KEYWORD_SELECTOR_WORD_JSON_SCHEMA: JSONSchemaType<KeywordSelectorWo
     default: "this"
   };
 
-export interface TagSelectorSource {
-  tag: string;
-}
+export interface TagSelectorSource extends z.infer<typeof TAG_SELECTOR_SOURCE_SCHEMA> {}
+export const TAG_SELECTOR_SOURCE_SCHEMA = z.object({tag: z.string()});
 export const TAG_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TagSelectorSource> =
   {
     description: "A schema for a tag selector source",
@@ -37,6 +40,8 @@ export const TAG_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TagSelectorSource> 
 export interface TypeSelectorSource {
   type: SystemDocumentType;
 }
+
+export const TYPE_SELECTOR_SOURCE_SCHEMA = z.object({type: z.enum(SystemDocumentTypes as readonly [string, ...string[]])});
 export const TYPE_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TypeSelectorSource> =
   {
     description: "A schema for a type selector source",
@@ -49,6 +54,7 @@ export const TYPE_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TypeSelectorSource
 export interface UsesSkillSelectorSource {
   usesSkill: SkillName;
 }
+export const USES_SKILL_SELECTOR_SOURCE_SCHEMA = z.object({usesSkill: z.enum(SkillNames)});
 export const USES_SKILL_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<UsesSkillSelectorSource> =
   {
     description: "A schema for a uses skill selector source",
@@ -61,6 +67,7 @@ export const USES_SKILL_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<UsesSkillSel
 export interface OrSelectorSource {
   or: Exclude<DocumentSelectorSource, OrSelectorSource>[];
 }
+
 export const OR_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<OrSelectorSource> =
   {
     description: "A schema for an or selector source",
@@ -88,7 +95,24 @@ export type DocumentSelectorSource =
   | TagSelectorSource
   | TypeSelectorSource
   | UsesSkillSelectorSource;
-export const DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<DocumentSelectorSource> =
+
+const NON_REC_DOCSELECTS = [
+  KEYWORD_SELECTOR_WORD_SCHEMA,
+  TAG_SELECTOR_SOURCE_SCHEMA,
+  TYPE_SELECTOR_SOURCE_SCHEMA,
+  USES_SKILL_SELECTOR_SOURCE_SCHEMA
+] as const;
+
+export const OR_SELECTOR_SOURCE_SCHEMA = z.object({
+  or: z.union(NON_REC_DOCSELECTS)
+});
+
+export const DOCUMENTSELECTOR_SOURCE_SCHEMA = z.union([
+  OR_SELECTOR_SOURCE_SCHEMA,
+  ...NON_REC_DOCSELECTS
+]);
+
+export const DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA = 
   {
     description: "A schema for document selector sources",
     oneOf: [

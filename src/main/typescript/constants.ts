@@ -291,10 +291,10 @@ export const TYPES = {
 export type SystemDocumentType =
   | ValueOf<typeof TYPES.ACTOR>
   | ValueOf<typeof TYPES.ITEM>;
-export const SystemDocumentTypes: SystemDocumentType[] = [
+export const SystemDocumentTypes: readonly SystemDocumentType[] = [
   ...Object.values(TYPES.ACTOR),
   ...Object.values(TYPES.ITEM)
-];
+] as const;
 
 /** A type representing the different range brackets */
 export enum RangeBracket {

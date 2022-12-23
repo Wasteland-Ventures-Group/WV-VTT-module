@@ -34,7 +34,7 @@ export default async function templateTask(): Promise<void> {
     [TYPES.ITEM.AMMO, new ammoSource.AmmoDataSourceData()],
     [TYPES.ITEM.APPAREL, new apparelSource.ApparelDataSourceData()],
     [TYPES.ITEM.EFFECT, new effectSource.EffectDataSourceData()],
-    [TYPES.ITEM.MAGIC, new magicSource.MagicDataSourceData()],
+    [TYPES.ITEM.MAGIC, magicSource.MagicDataSchema.parse({})],
     [TYPES.ITEM.MISC, new miscSource.MiscDataSourceData()],
     [TYPES.ITEM.RACE, new raceSource.RaceDataSourceData()],
     [TYPES.ITEM.WEAPON, new weaponSource.WeaponDataSourceData()]

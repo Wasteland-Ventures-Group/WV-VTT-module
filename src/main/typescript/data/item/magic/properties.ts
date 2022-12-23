@@ -1,25 +1,25 @@
-import { MagicType, getMagicType } from "../../../constants.js";
+import { MagicType, getMagicType, GeneralMagicSchool } from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import { CompositeNumber } from "../../common.js";
 import BaseItemProperties from "../common/baseItem/properties.js";
 import RulesProperties from "../common/rules/properties.js";
 import RangeProperties from "./ranges/properties.js";
 import type MagicDataSource from "./source.js";
-import { MagicDataSourceData } from "./source.js";
+import type { MagicDataSourceData } from "./source.js";
 import TargetProperties from "./target/properties.js";
 
 export default interface MagicDataProperties extends MagicDataSource {
   data: MagicDataPropertiesData;
 }
 
-export class MagicDataPropertiesData
-  extends MagicDataSourceData
-  implements BaseItemProperties
+export class MagicDataPropertiesData extends BaseItemProperties
+  implements MagicDataSourceData
 {
   constructor(source: MagicDataSourceData, owningItem: WvItem) {
-    super();
+    super()
     foundry.utils.mergeObject(this, source);
-    this.type = getMagicType(this.school);
+    this.school = source.school;
+    this.type = getMagicType(source.school);
     BaseItemProperties.transform(this, source, owningItem);
 
     this.apCost = CompositeNumber.from(source.apCost);
@@ -31,16 +31,17 @@ export class MagicDataPropertiesData
     this.range = new RangeProperties(source.range);
     this.target = new TargetProperties(source.target);
   }
+  school: GeneralMagicSchool;
 
-  override rules = new RulesProperties();
+  rules = new RulesProperties();
 
-  override apCost: CompositeNumber;
+  apCost: CompositeNumber;
 
-  override strainCost: CompositeNumber;
+  strainCost: CompositeNumber;
 
-  override range: RangeProperties;
+  range: RangeProperties;
 
-  override target: TargetProperties;
+  target: TargetProperties;
 
   potency: CompositeNumber = new CompositeNumber();
 

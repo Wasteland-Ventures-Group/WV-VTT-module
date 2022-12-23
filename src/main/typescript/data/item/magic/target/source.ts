@@ -2,7 +2,7 @@ import { z } from "zod";
 import { SplashSizes, TargetTypes } from "../../../../constants.js";
 import { CompositeNumberSchema } from "../../../common.js";
 
-const AOETypes = ["none", "fixed", "varies"] as const;
+export const AOETypes = ["none", "fixed", "varies"] as const;
 
 export const TargetSchema = z
   .object({
@@ -13,4 +13,4 @@ export const TargetSchema = z
   })
   .default({});
 
-export type TargetSource = z.infer<typeof TargetSchema>;
+export interface TargetSource extends z.infer<typeof TargetSchema> {};

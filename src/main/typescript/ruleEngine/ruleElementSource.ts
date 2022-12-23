@@ -1,41 +1,8 @@
 import type { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import {
-  DocumentSelectorSource,
-  DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA
+  DOCUMENTSELECTOR_SOURCE_SCHEMA
 } from "./documentSelectorSource.js";
-
-/** The RuleElement raw data layout */
-export default interface RuleElementSource {
-  /** Whether this rule element is enabled */
-  enabled: boolean;
-
-  /** Where in the data preparation chain the rule element applies */
-  hook: RuleElementHook;
-
-  /** The label of the element */
-  label: string;
-
-  /** The place in the order of application, starting with lowest */
-  priority: number;
-
-  /** The filter to determine applicable documents with */
-  selectors: DocumentSelectorSource[];
-
-  /**
-   * Optional conditions when this RuleElement should apply. All of the
-   * conditions need to be met for the RuleElement to apply.
-   */
-  conditions: RuleElementCondition[];
-
-  /** The target property on the selected document */
-  target: string;
-
-  /** The type identifier of the element. */
-  type: RuleElementId;
-
-  /** The value of the element */
-  value: boolean | number | string;
-}
 
 export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
 export const RULE_ELEMENT_IDS = [
@@ -53,10 +20,37 @@ export const RULE_ELEMENT_HOOKS = [
   "afterComputation"
 ] as const;
 
-export type RuleElementCondition = typeof RULE_ELEMENT_CONDITIONS[number];
 export const RULE_ELEMENT_CONDITIONS = ["whenEquipped"] as const;
 
+/** The RuleElement raw data layout */
+export default interface RuleElementSource extends z.infer<typeof RULE_ELEMENT_SOURCE_SCHEMA> {};
+export const RULE_ELEMENT_SOURCE_SCHEMA = z.object({
+  /** Whether this rule element is enabled */
+  enabled: z.boolean(),
+  /** Where in the data preparation chain the rule element applies */
+  hook: z.enum(RULE_ELEMENT_HOOKS),
+  /**
+   * Optional conditions when this RuleElement should apply. All of the
+   * conditions need to be met for the RuleElement to apply.
+   */
+  conditions: z.array(z.enum(RULE_ELEMENT_CONDITIONS)),
+  /** The label of the element */
+  label: z.string(),
+  /** The place in the order of application, starting with lowest */
+  priority: z.number(),
+  selectors: z.array(DOCUMENTSELECTOR_SOURCE_SCHEMA),
+  /** The target property on the selected document */
+  target: z.string(),
+  /** The type identifier of the element. */
+  type: z.enum(RULE_ELEMENT_IDS),
+  /** The value of the element */
+  value: z.union([z.boolean(), z.number(), z.string()])
+});
+
+export type RuleElementCondition = typeof RULE_ELEMENT_CONDITIONS[number];
+
 /** A JSON schema for RuleElementSource objects */
+/*
 export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> =
   {
     description: "The RuleElement raw data layout",
@@ -143,3 +137,4 @@ export const RULE_ELEMENT_SOURCE_JSON_SCHEMA: JSONSchemaType<RuleElementSource> 
       value: 0
     }
   };
+  */

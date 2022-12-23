@@ -1,9 +1,10 @@
 import { getGame } from "../../../../foundryHelpers.js";
 import type WvItem from "../../../../item/wvItem.js";
 import type RuleElement from "../../../../ruleEngine/ruleElement.js";
-import RulesSource from "./source.js";
+import type RuleElementSource from "../../../../ruleEngine/ruleElementSource.js";
+import type RulesSource from "./source.js";
 
-export default class RulesProperties extends RulesSource {
+export default class RulesProperties implements RulesSource {
   /**
    * Transform a RulesSource and apply it onto a RulesProperties.
    * @param target - the target to transform onto
@@ -20,6 +21,8 @@ export default class RulesProperties extends RulesSource {
       (ruleSource) => new elements[ruleSource.type](ruleSource, owningItem)
     );
   }
+
+  sources: never[] = [];
 
   /** The RuleElements, created from the sources */
   elements: RuleElement[] = [];

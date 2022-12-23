@@ -285,6 +285,7 @@ export const TYPES = {
     EFFECT: "effect",
     MAGIC: "magic",
     MISC: "misc",
+    PERK: "perk",
     RACE: "race",
     WEAPON: "weapon"
   }

@@ -28,6 +28,12 @@ export default async function compendiumSchemasTask(): Promise<void[]> {
         .COMP_MAGIC_SCHEMA
     },
     {
+      fileName: "perk",
+      outputBasePath: itemOutputBasePath,
+      schema: (await import("../src/main/typescript/data/item/perk/source.js"))
+        .COMP_PERK_JSON_SCHEMA
+    },
+    {
       fileName: "race",
       outputBasePath: itemOutputBasePath,
       schema: (await import("../src/main/typescript/data/item/race/source.js"))

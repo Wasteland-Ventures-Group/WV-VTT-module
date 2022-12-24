@@ -16,7 +16,6 @@ export class ApparelDataPropertiesData
 {
   constructor(source: ApparelDataSourceData, owningItem: WvItem) {
     super();
-    foundry.utils.mergeObject(this, source);
     PhysicalItemProperties.transform(this, source, owningItem);
 
     this.blockedSlots = source.blockedSlots ?? {
@@ -38,8 +37,7 @@ export class ApparelDataPropertiesData
     this.modSlots = CompositeNumber.from(source.modSlots ?? { source: 0 });
     this.modSlots.bounds.min = 0;
 
-    this.slot = source.slot;
-    this.type = source.type;
+    foundry.utils.mergeObject(this, source);
   }
 
   override rules = new RulesProperties();

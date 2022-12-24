@@ -13,4 +13,4 @@ export const TargetSchema = z
   })
   .default({});
 
-export interface TargetSource extends z.infer<typeof TargetSchema> {};
+export type TargetSource = z.infer<typeof TargetSchema>;

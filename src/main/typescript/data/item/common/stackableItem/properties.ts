@@ -1,16 +1,14 @@
 import type WvItem from "../../../../item/wvItem.js";
-import { CompositeNumber } from "../../../common.js";
 import PhysicalItemProperties from "../physicalItem/properties.js";
-import RulesProperties from "../rules/properties.js";
-import StackableItemSource from "./source.js";
+import type StackableItemSource from "./source.js";
 
 /**
  * This holds the properties of the base values that all stackable physical
  * items have in common.
  */
 export default abstract class StackableItemProperties
-  extends StackableItemSource
-  implements PhysicalItemProperties
+  extends PhysicalItemProperties
+  implements StackableItemSource
 {
   /**
    * Transform a StackableItemSource and apply it onto a
@@ -24,12 +22,9 @@ export default abstract class StackableItemProperties
     source: StackableItemSource,
     owningItem: WvItem
   ) {
+    target.amount = source.amount;
     PhysicalItemProperties.transform(target, source, owningItem);
   }
 
-  override rules = new RulesProperties();
-
-  override value = new CompositeNumber();
-
-  override weight = new CompositeNumber();
+  amount: number = 0;
 }

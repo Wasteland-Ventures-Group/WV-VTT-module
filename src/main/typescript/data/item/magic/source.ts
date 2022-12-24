@@ -16,16 +16,13 @@ export default interface MagicDataSource {
   data: MagicDataSourceData;
 }
 
-export const MagicDataSchema = BASE_ITEM_SCHEMA.extend(
-
-  {
-    school: z.enum(GeneralMagicSchools).default("general"),
-    apCost: CompositeNumberSchema,
-    strainCost: CompositeNumberSchema,
-    range: RangeSchema,
-    target: TargetSchema
-  }
-).default({});
+export const MagicDataSchema = BASE_ITEM_SCHEMA.extend({
+  school: z.enum(GeneralMagicSchools).default("general"),
+  apCost: CompositeNumberSchema,
+  strainCost: CompositeNumberSchema,
+  range: RangeSchema,
+  target: TargetSchema
+}).default({});
 
 export interface CompendiumMagic
   extends FoundryCompendiumData<MagicDataSourceData> {

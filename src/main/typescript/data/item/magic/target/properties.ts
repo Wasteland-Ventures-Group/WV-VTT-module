@@ -12,7 +12,10 @@ export default class TargetProperties implements TargetSource {
   }
 
   count: CompositeNumber;
+
   type: TargetType;
+
   aoeType: typeof AOETypes[number];
+
   fixedAoE: SplashSize;
 }

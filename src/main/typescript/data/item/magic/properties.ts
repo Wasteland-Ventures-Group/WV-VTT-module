@@ -1,8 +1,11 @@
-import { MagicType, getMagicType, GeneralMagicSchool } from "../../../constants.js";
+import {
+  MagicType,
+  getMagicType,
+  GeneralMagicSchool
+} from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import { CompositeNumber } from "../../common.js";
 import BaseItemProperties from "../common/baseItem/properties.js";
-import RulesProperties from "../common/rules/properties.js";
 import RangeProperties from "./ranges/properties.js";
 import type MagicDataSource from "./source.js";
 import type { MagicDataSourceData } from "./source.js";
@@ -12,11 +15,12 @@ export default interface MagicDataProperties extends MagicDataSource {
   data: MagicDataPropertiesData;
 }
 
-export class MagicDataPropertiesData extends BaseItemProperties
+export class MagicDataPropertiesData
+  extends BaseItemProperties
   implements MagicDataSourceData
 {
   constructor(source: MagicDataSourceData, owningItem: WvItem) {
-    super()
+    super();
     foundry.utils.mergeObject(this, source);
     this.school = source.school;
     this.type = getMagicType(source.school);
@@ -31,9 +35,8 @@ export class MagicDataPropertiesData extends BaseItemProperties
     this.range = new RangeProperties(source.range);
     this.target = new TargetProperties(source.target);
   }
-  school: GeneralMagicSchool;
 
-  rules = new RulesProperties();
+  school: GeneralMagicSchool;
 
   apCost: CompositeNumber;
 

@@ -1,8 +1,6 @@
 import type { JSONSchemaType } from "ajv";
 import { z } from "zod";
-import {
-  DOCUMENTSELECTOR_SOURCE_SCHEMA
-} from "./documentSelectorSource.js";
+import { DOCUMENTSELECTOR_SOURCE_SCHEMA } from "./documentSelectorSource.js";
 
 export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
 export const RULE_ELEMENT_IDS = [
@@ -23,7 +21,7 @@ export const RULE_ELEMENT_HOOKS = [
 export const RULE_ELEMENT_CONDITIONS = ["whenEquipped"] as const;
 
 /** The RuleElement raw data layout */
-export default interface RuleElementSource extends z.infer<typeof RULE_ELEMENT_SOURCE_SCHEMA> {};
+export default interface RuleElementSource extends z.infer<typeof RULE_ELEMENT_SOURCE_SCHEMA> {}
 export const RULE_ELEMENT_SOURCE_SCHEMA = z.object({
   /** Whether this rule element is enabled */
   enabled: z.boolean(),

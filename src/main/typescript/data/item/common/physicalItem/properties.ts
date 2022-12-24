@@ -1,16 +1,16 @@
+import type { Rarity } from "../../../../constants.js";
 import type WvItem from "../../../../item/wvItem.js";
 import { CompositeNumber } from "../../../common.js";
 import BaseItemProperties from "../baseItem/properties.js";
-import RulesProperties from "../rules/properties.js";
-import PhysicalItemSource from "./source.js";
+import type PhysicalItemSource from "./source.js";
 
 /**
  * This holds the properties of the base values that all physical items have in
  * common.
  */
 export default abstract class PhysicalItemProperties
-  extends PhysicalItemSource
-  implements BaseItemProperties
+  extends BaseItemProperties
+  implements PhysicalItemSource
 {
   /**
    * Transform a PhysicalItemSource and apply it onto a PhysicalItemProperties.
@@ -32,9 +32,9 @@ export default abstract class PhysicalItemProperties
     target.weight.bounds.min = 0;
   }
 
-  override rules = new RulesProperties();
+  rarity: Rarity = "common";
 
-  override value = new CompositeNumber();
+  value = new CompositeNumber();
 
-  override weight = new CompositeNumber();
+  weight = new CompositeNumber();
 }

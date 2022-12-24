@@ -25,8 +25,12 @@ export default abstract class BaseItemProperties implements BaseItemSource {
   }
 
   name: string = "";
+
   description: string = "";
+
   notes: string = "";
+
   tags: string[] = [];
+
   rules = new RulesProperties();
 }

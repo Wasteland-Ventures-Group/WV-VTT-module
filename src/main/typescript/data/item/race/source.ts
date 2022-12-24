@@ -1,12 +1,8 @@
 import type { JSONSchemaType } from "ajv";
 import { MagicType, MagicTypes, TYPES } from "../../../constants.js";
-import BaseItemSource, {
-  BASE_ITEM_SOURCE_JSON_SCHEMA
-} from "../common/baseItem/source.js";
-import {
-  COMPENDIUM_JSON_SCHEMA,
-  FoundryCompendiumData
-} from "../../foundryCommon.js";
+import { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
+import type { FoundryCompendiumData } from "../../foundryCommon.js";
+import { z } from "zod";
 
 export default interface RaceDataSource {
   type: typeof TYPES.ITEM.RACE;
@@ -16,136 +12,58 @@ export default interface RaceDataSource {
 /**
  * A type that reflects free things that are given to a character on creation
  */
-export class FreeOnCreation {
+export type FreeOnCreation = z.infer<typeof FREE_ON_CREATION_SCHEMA>;
+
+export const FREE_ON_CREATION_SCHEMA = z.object({
   /** The character gets all of these on creation */
-  allOf: string[] = [];
-
+  allOf: z.array(z.string()).default([]),
   /** The character can pick n amount of these on creation */
-  anyOf: {
-    /** The choices to pick from */
-    choices: string[];
-
-    /** The amount of things to pick */
-    amount: number;
-  } = {
-    choices: [],
-    amount: 0
-  };
-
+  anyOf: z
+    .object({
+      /** The choices to pick from */
+      choices: z.array(z.string()).default([]),
+      /** The amount of things to pick */
+      amount: z.number().int().default(0)
+    })
+    .default({}),
   /** Amount of free things to get in addition to allOf and anyOf */
-  amount = 0;
-}
-
-export const FREE_ON_CREATION_SCHEMA: JSONSchemaType<FreeOnCreation> = {
-  description:
-    "A schema to reflect free things that are given to a character on creation",
-  type: "object",
-  properties: {
-    allOf: {
-      description: "The character gets all of these on creation",
-      type: "array",
-      items: { type: "string" },
-      default: []
-    },
-    anyOf: {
-      description: "The character can pick n amount of these on creation",
-      type: "object",
-      properties: {
-        choices: {
-          description: "The choices to pick from",
-          type: "array",
-          items: { type: "string" },
-          default: []
-        },
-        amount: {
-          description: "The amount of things to pick",
-          type: "number",
-          default: 0
-        }
-      },
-      required: ["amount", "choices"],
-      additionalProperties: false,
-      default: {
-        choices: [],
-        amount: 0
-      }
-    },
-    amount: {
-      description:
-        "Amount of free things to get in addition to allOf and anyOf",
-      type: "integer",
-      default: 0
-    }
-  },
-  required: ["anyOf", "allOf", "amount"],
-  additionalProperties: false,
-  default: {
-    allOf: [],
-    anyOf: {
-      choices: [],
-      amount: 0
-    },
-    amount: 0
-  }
-};
+  amount: z.number().int()
+});
 
 /**
  * A type that reflects free things that are given to a character on a period of
  * levels
  */
-export class FreePerLevelPeriod {
+export type FreePerLevelPeriod = z.infer<typeof FREE_PER_LEVEL_PERIOD_SCHEMA>;
+export const FREE_PER_LEVEL_PERIOD_SCHEMA = z.object({
   /**
    * The period of levels at which to gain new things.
    * @example A period of 5 would mean on 6th and 11th and so on…
    */
-  period = 0;
-
+  period: z.number().default(0),
   /** Gain amount free things */
-  amount = 0;
-}
-
-export const FREE_PER_LEVEL_PERIOD_SCHEMA: JSONSchemaType<FreePerLevelPeriod> =
-  {
-    description:
-      "A schema to reflect free things that are given to a character on a period of levels",
-    type: "object",
-    properties: {
-      period: {
-        description: "The period of levels at which to gain new things.",
-        type: "integer",
-        default: 0
-      },
-      amount: {
-        description: "Gain amount free things",
-        type: "integer",
-        default: 0
-      }
-    },
-    required: ["period", "amount"],
-    additionalProperties: false,
-    default: {
-      period: 0,
-      amount: 0
-    }
-  };
+  amount: z.number().default(0)
+});
 
 /** Physical characteristics of a race. */
-export class PhysicalSource {
+export type PhysicalSource = z.infer<typeof PHYSICAL_SOURCE_SCHEMA>;
+
+export const PHYSICAL_SOURCE_SCHEMA = z.object({
   /** Whether this race can fly */
-  canFly = false;
+  canFly: z.boolean().default(false),
 
   /** Whether this race can use some form of magic */
-  canUseMagic = false;
+  canUseMagic: z.boolean().default(false),
 
   /** Whether this race has a second head */
-  hasSecondHead = false;
+  hasSecondHead: z.boolean().default(false),
 
   /** Whether this race has a Special Talent */
-  hasSpecialTalent = false;
+  hasSpecialTalent: z.boolean().default(false),
 
   /** Whether this race has wings */
-  hasWings = false;
-}
+  hasWings: z.boolean().default(false)
+});
 
 export const PHYSICAL_SOURCE_JSON_SCHEMA: JSONSchemaType<PhysicalSource> = {
   description: "Phyiscal characteristics of a race",
@@ -190,139 +108,46 @@ export const PHYSICAL_SOURCE_JSON_SCHEMA: JSONSchemaType<PhysicalSource> = {
 };
 
 /** Attributes of a race on character creation */
-export class CreationAttributes {
+export type CreationAttributes = z.infer<typeof CREATION_ATTRIBUTES_SCHEMA>;
+export const CREATION_ATTRIBUTES_SCHEMA = z.object({
   /**
    * How many SPECIAL points can be spent with this race at character creation
    */
-  startingSpecialPoints = 40;
+  startingSpecialPoints: z.number().int().default(40),
 
   /** Magic types this race can choose from */
-  magicTypes: MagicType[] = [];
+  magicTypes: z.array(z.enum(MagicTypes)).default([]),
 
   /** Attributes for free spells on character creation */
-  freeSpells = new FreeOnCreation();
+  freeSpells: FREE_ON_CREATION_SCHEMA,
 
   /** Attributes for free alchemy recipes on character creation */
-  freeAlchemy = new FreeOnCreation();
-}
-
-export const CREATION_ATTRIBUTES_SCHEMA: JSONSchemaType<CreationAttributes> = {
-  description: "Attributes of a race on character creation",
-  type: "object",
-  properties: {
-    startingSpecialPoints: {
-      type: "integer",
-      default: 40
-    },
-    magicTypes: {
-      type: "array",
-      items: {
-        type: "string",
-        enum: MagicTypes
-      }
-    },
-    freeSpells: FREE_ON_CREATION_SCHEMA,
-    freeAlchemy: FREE_ON_CREATION_SCHEMA
-  },
-  required: [
-    "startingSpecialPoints",
-    "magicTypes",
-    "freeSpells",
-    "freeAlchemy"
-  ],
-  additionalProperties: false,
-  default: {
-    startingSpecialPoints: 40,
-    magicTypes: [],
-    freeSpells: FREE_ON_CREATION_SCHEMA.defaults,
-    freeAlchemy: FREE_ON_CREATION_SCHEMA.defaults
-  }
-};
+  freeAlchemy: FREE_ON_CREATION_SCHEMA
+});
 
 /** Attributes of a race for leveling */
-export class LevelingAttributes {
-  /** The leveling period for free spells of the race */
-  freeSpells = new FreePerLevelPeriod();
+export type LevelingAttributes = z.infer<typeof LEVELING_SCHEMA>;
 
-  /** The leveling period for free alchemy recipes of the race */
-  freeAlchemy = new FreePerLevelPeriod();
-}
+export const LEVELING_SCHEMA = z.object({
+  /** The interval for free spells for the race */
+  freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA,
+  /** The interval for free alchemy for the race */
+  freeAlchemy: FREE_PER_LEVEL_PERIOD_SCHEMA
+});
 
-export const LEVELING_ATTRIBUTES_JSON_SCHEMA: JSONSchemaType<LevelingAttributes> =
-  {
-    description: "A schema for attributes of a race for leveling",
-    type: "object",
-    properties: {
-      freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA,
-      freeAlchemy: FREE_PER_LEVEL_PERIOD_SCHEMA
-    },
-    required: ["freeSpells", "freeAlchemy"],
-    additionalProperties: false,
-    default: {
-      freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA.default,
-      freeAlchemy: FREE_PER_LEVEL_PERIOD_SCHEMA.default
-    }
-  };
-
-export class RaceDataSourceData extends BaseItemSource {
+export type RaceDataSourceData = z.infer<typeof RACE_DATA_SOURCE_SCHEME>;
+const RACE_DATA_SOURCE_SCHEME = BASE_ITEM_SCHEMA.extend({
   /** Physical characteristics of the race */
-  physical = new PhysicalSource();
+  physical: PHYSICAL_SOURCE_SCHEMA,
 
   /** Attributes of the race on character creation */
-  creation = new CreationAttributes();
+  creation: CREATION_ATTRIBUTES_SCHEMA,
 
   /** Attributes of the race for leveling */
-  leveling = new LevelingAttributes();
-}
-
-export const RACE_SOURCE_JSON_SCHEMA: JSONSchemaType<RaceDataSourceData> = {
-  description: "The system data for a race item",
-  type: "object",
-  properties: {
-    ...BASE_ITEM_SOURCE_JSON_SCHEMA.properties,
-    physical: PHYSICAL_SOURCE_JSON_SCHEMA,
-    creation: CREATION_ATTRIBUTES_SCHEMA,
-    leveling: LEVELING_ATTRIBUTES_JSON_SCHEMA
-  },
-  required: [
-    ...BASE_ITEM_SOURCE_JSON_SCHEMA.required,
-    "physical",
-    "creation",
-    "leveling"
-  ],
-  additionalProperties: false,
-  default: {
-    ...BASE_ITEM_SOURCE_JSON_SCHEMA.default,
-    physical: PHYSICAL_SOURCE_JSON_SCHEMA.default,
-    creation: CREATION_ATTRIBUTES_SCHEMA.default,
-    leveling: LEVELING_ATTRIBUTES_JSON_SCHEMA.default
-  }
-};
+  leveling: LEVELING_SCHEMA
+});
 
 export interface CompendiumRace
   extends FoundryCompendiumData<RaceDataSourceData> {
   type: typeof TYPES.ITEM.RACE;
 }
-
-export const COMP_RACE_JSON_SCHEMA: JSONSchemaType<CompendiumRace> = {
-  description: "The compendium data for a race Item",
-  type: "object",
-  properties: {
-    ...COMPENDIUM_JSON_SCHEMA.properties,
-    type: {
-      description: COMPENDIUM_JSON_SCHEMA.properties.type.description,
-      type: "string",
-      const: TYPES.ITEM.RACE,
-      default: TYPES.ITEM.RACE
-    },
-    data: RACE_SOURCE_JSON_SCHEMA
-  },
-  required: COMPENDIUM_JSON_SCHEMA.required,
-  additionalProperties: false,
-  default: {
-    ...COMPENDIUM_JSON_SCHEMA.default,
-    type: TYPES.ITEM.RACE,
-    data: RACE_SOURCE_JSON_SCHEMA.default,
-    img: "icons/svg/mystery-man.svg"
-  }
-};

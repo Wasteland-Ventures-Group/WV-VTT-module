@@ -1,22 +1,30 @@
 import type WvItem from "../../../item/wvItem.js";
 import BaseItemProperties from "../common/baseItem/properties.js";
-import RulesProperties from "../common/rules/properties.js";
 import type RaceDataSource from "./source.js";
-import { RaceDataSourceData } from "./source.js";
+import type {
+  CreationAttributes,
+  LevelingAttributes,
+  PhysicalSource,
+  RaceDataSourceData
+} from "./source.js";
 
 export default interface RaceDataProperties extends RaceDataSource {
   data: RaceDataPropertiesData;
 }
 
 export class RaceDataPropertiesData
-  extends RaceDataSourceData
-  implements BaseItemProperties
+  extends BaseItemProperties
+  implements RaceDataSourceData
 {
   constructor(source: RaceDataSourceData, owningItem: WvItem) {
     super();
-    foundry.utils.mergeObject(this, source);
     BaseItemProperties.transform(this, source, owningItem);
+    foundry.utils.mergeObject(this, source);
   }
 
-  override rules = new RulesProperties();
+  physical: PhysicalSource;
+
+  creation: CreationAttributes;
+
+  leveling: LevelingAttributes;
 }

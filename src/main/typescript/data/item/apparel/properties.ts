@@ -1,18 +1,18 @@
-import type { ApparelSlot } from "../../../constants.js";
+import type { ApparelSlot, ApparelType } from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import { CompositeNumber } from "../../common.js";
 import PhysicalItemProperties from "../common/physicalItem/properties.js";
 import RulesProperties from "../common/rules/properties.js";
 import type ApparelDataSource from "./source.js";
-import { ApparelDataSourceData } from "./source.js";
+import type { ApparelDataSourceData } from "./source.js";
 
 export default interface ApparelDataProperties extends ApparelDataSource {
   data: ApparelDataPropertiesData;
 }
 
 export class ApparelDataPropertiesData
-  extends ApparelDataSourceData
-  implements PhysicalItemProperties
+  extends PhysicalItemProperties
+  implements ApparelDataSourceData
 {
   constructor(source: ApparelDataSourceData, owningItem: WvItem) {
     super();
@@ -37,6 +37,9 @@ export class ApparelDataPropertiesData
 
     this.modSlots = CompositeNumber.from(source.modSlots ?? { source: 0 });
     this.modSlots.bounds.min = 0;
+
+    this.slot = source.slot;
+    this.type = source.type;
   }
 
   override rules = new RulesProperties();
@@ -45,11 +48,15 @@ export class ApparelDataPropertiesData
 
   override weight = new CompositeNumber();
 
-  override blockedSlots: Record<ApparelSlot, boolean>;
+  blockedSlots: Record<ApparelSlot, boolean>;
 
-  override damageThreshold: CompositeNumber;
+  damageThreshold: CompositeNumber;
 
-  override quickSlots: CompositeNumber;
+  quickSlots: CompositeNumber;
 
-  override modSlots: CompositeNumber;
+  modSlots: CompositeNumber;
+
+  type: ApparelType;
+
+  slot: ApparelSlot;
 }

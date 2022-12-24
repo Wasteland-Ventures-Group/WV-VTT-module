@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type RadiationSicknessLevel = typeof RadiationSicknessLevels[number];
 export const RadiationSicknessLevels = [
   "none",
@@ -295,6 +297,12 @@ export const SystemDocumentTypes: readonly SystemDocumentType[] = [
   ...Object.values(TYPES.ACTOR),
   ...Object.values(TYPES.ITEM)
 ] as const;
+
+export const SYSTEM_DOCUMENT_TYPE_SCHEMA = z.custom<SystemDocumentType>(
+  (arg) => {
+    typeof arg == "string" && arg in SystemDocumentTypes;
+  }
+);
 
 /** A type representing the different range brackets */
 export enum RangeBracket {

@@ -5,7 +5,7 @@ import {
   SkillNames,
   SystemDocumentType,
   SystemDocumentTypes,
-  TYPES
+  SYSTEM_DOCUMENT_TYPE_SCHEMA
 } from "../constants.js";
 
 export type KeywordSelectorWord = typeof KeywordSelectorsWords[number];
@@ -26,8 +26,8 @@ export const KEYWORD_SELECTOR_WORD_JSON_SCHEMA: JSONSchemaType<KeywordSelectorWo
     default: "this"
   };
 
-export interface TagSelectorSource extends z.infer<typeof TAG_SELECTOR_SOURCE_SCHEMA> {}
-export const TAG_SELECTOR_SOURCE_SCHEMA = z.object({tag: z.string()});
+export type TagSelectorSource = z.infer<typeof TAG_SELECTOR_SOURCE_SCHEMA>;
+export const TAG_SELECTOR_SOURCE_SCHEMA = z.object({ tag: z.string() });
 export const TAG_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TagSelectorSource> =
   {
     description: "A schema for a tag selector source",
@@ -41,7 +41,9 @@ export interface TypeSelectorSource {
   type: SystemDocumentType;
 }
 
-export const TYPE_SELECTOR_SOURCE_SCHEMA = z.object({type: z.enum(SystemDocumentTypes as readonly [string, ...string[]])});
+export const TYPE_SELECTOR_SOURCE_SCHEMA = z.object({
+  type: SYSTEM_DOCUMENT_TYPE_SCHEMA
+});
 export const TYPE_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TypeSelectorSource> =
   {
     description: "A schema for a type selector source",
@@ -54,7 +56,9 @@ export const TYPE_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<TypeSelectorSource
 export interface UsesSkillSelectorSource {
   usesSkill: SkillName;
 }
-export const USES_SKILL_SELECTOR_SOURCE_SCHEMA = z.object({usesSkill: z.enum(SkillNames)});
+export const USES_SKILL_SELECTOR_SOURCE_SCHEMA = z.object({
+  usesSkill: z.enum(SkillNames)
+});
 export const USES_SKILL_SELECTOR_SOURCE_JSON_SCHEMA: JSONSchemaType<UsesSkillSelectorSource> =
   {
     description: "A schema for a uses skill selector source",
@@ -104,7 +108,7 @@ const NON_REC_DOCSELECTS = [
 ] as const;
 
 export const OR_SELECTOR_SOURCE_SCHEMA = z.object({
-  or: z.union(NON_REC_DOCSELECTS)
+  or: z.array(z.union(NON_REC_DOCSELECTS))
 });
 
 export const DOCUMENTSELECTOR_SOURCE_SCHEMA = z.union([
@@ -112,14 +116,13 @@ export const DOCUMENTSELECTOR_SOURCE_SCHEMA = z.union([
   ...NON_REC_DOCSELECTS
 ]);
 
-export const DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA = 
-  {
-    description: "A schema for document selector sources",
-    oneOf: [
-      KEYWORD_SELECTOR_WORD_JSON_SCHEMA,
-      OR_SELECTOR_SOURCE_JSON_SCHEMA,
-      TAG_SELECTOR_SOURCE_JSON_SCHEMA,
-      TYPE_SELECTOR_SOURCE_JSON_SCHEMA,
-      USES_SKILL_SELECTOR_SOURCE_JSON_SCHEMA
-    ]
-  };
+export const DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA = {
+  description: "A schema for document selector sources",
+  oneOf: [
+    KEYWORD_SELECTOR_WORD_JSON_SCHEMA,
+    OR_SELECTOR_SOURCE_JSON_SCHEMA,
+    TAG_SELECTOR_SOURCE_JSON_SCHEMA,
+    TYPE_SELECTOR_SOURCE_JSON_SCHEMA,
+    USES_SKILL_SELECTOR_SOURCE_JSON_SCHEMA
+  ]
+};

@@ -1,5 +1,5 @@
 import type { JSONSchemaType } from "ajv";
-import { MagicType, MagicTypes, TYPES } from "../../../constants.js";
+import { MagicTypes, TYPES } from "../../../constants.js";
 import { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
 import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import { z } from "zod";
@@ -135,8 +135,8 @@ export const LEVELING_SCHEMA = z.object({
   freeAlchemy: FREE_PER_LEVEL_PERIOD_SCHEMA
 });
 
-export type RaceDataSourceData = z.infer<typeof RACE_DATA_SOURCE_SCHEME>;
-const RACE_DATA_SOURCE_SCHEME = BASE_ITEM_SCHEMA.extend({
+export type RaceDataSourceData = z.infer<typeof RACE_SCHEMA>;
+export const RACE_SCHEMA = BASE_ITEM_SCHEMA.extend({
   /** Physical characteristics of the race */
   physical: PHYSICAL_SOURCE_SCHEMA,
 

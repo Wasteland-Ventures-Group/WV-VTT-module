@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
 import {
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-  COMPOSITE_NUMBER_SOURCE_SCHEMA
+  COMP_NUM_SCHEMA
 } from "../../common.js";
 import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import { PHYS_ITEM_SOURCE_SCHEMA } from "../common/physicalItem/source.js";
@@ -18,10 +18,10 @@ export const APPAREL_SOURCE_SCHEMA = PHYS_ITEM_SOURCE_SCHEMA.extend({
   blockedSlots: z.record(z.string(), z.boolean()).optional(),
 
   /** The damage threshold of the apparel */
-  damageThreshold: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().default({}),
+  damageThreshold: COMP_NUM_SCHEMA.optional().default({}),
 
   /** The number of quick slots of the apparel */
-  quickSlots: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().default({}),
+  quickSlots: COMP_NUM_SCHEMA.optional().default({}),
 
   /** The number of mod slots of the apparel */
   modSlots: COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.optional().default({}),

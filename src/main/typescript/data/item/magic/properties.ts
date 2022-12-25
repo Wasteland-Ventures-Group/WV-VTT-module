@@ -1,11 +1,7 @@
-import {
-  MagicType,
-  getMagicType,
-  GeneralMagicSchool
-} from "../../../constants.js";
+import { MagicType, getMagicType } from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import { CompositeNumber } from "../../common.js";
-import BaseItemProperties from "../common/baseItem/properties.js";
+import { BaseItemProperties } from "../common/baseItem/properties.js";
 import RangeProperties from "./ranges/properties.js";
 import type MagicDataSource from "./source.js";
 import type { MagicDataSourceData } from "./source.js";
@@ -15,38 +11,38 @@ export default interface MagicDataProperties extends MagicDataSource {
   data: MagicDataPropertiesData;
 }
 
-export class MagicDataPropertiesData
-  extends BaseItemProperties
-  implements MagicDataSourceData
-{
-  constructor(source: MagicDataSourceData, owningItem: WvItem) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    this.school = source.school;
-    this.type = getMagicType(source.school);
-    BaseItemProperties.transform(this, source, owningItem);
+export type MagicDataPropertiesData = MagicDataSourceData &
+  BaseItemProperties & {
+    apCost: CompositeNumber;
+    potency: CompositeNumber;
+    range: RangeProperties;
+    strainCost: CompositeNumber;
+    target: TargetProperties;
+    type: MagicType;
+  };
 
-    this.apCost = CompositeNumber.from(source.apCost);
-    this.apCost.bounds.min = 0;
+export const MagicDataPropertiesData = {
+  transform(
+    source: MagicDataSourceData,
+    owningItem: WvItem
+  ): MagicDataPropertiesData {
+    const baseProperties = BaseItemProperties.transform(source, owningItem);
 
-    this.strainCost = CompositeNumber.from(source.strainCost);
-    this.strainCost.bounds.min = 0;
-
-    this.range = new RangeProperties(source.range);
-    this.target = new TargetProperties(source.target);
+    const range = new RangeProperties(source.range);
+    const target = new TargetProperties(source.target);
+    const potency = new CompositeNumber(0, { min: 0, max: 10 });
+    const apCost = CompositeNumber.from(source.apCost);
+    apCost.bounds.min = 0;
+    const strainCost = CompositeNumber.from(source.strainCost);
+    return {
+      ...source,
+      ...baseProperties,
+      potency,
+      apCost,
+      range,
+      target,
+      strainCost,
+      type: getMagicType(source.school)
+    };
   }
-
-  school: GeneralMagicSchool;
-
-  apCost: CompositeNumber;
-
-  strainCost: CompositeNumber;
-
-  range: RangeProperties;
-
-  target: TargetProperties;
-
-  potency: CompositeNumber = new CompositeNumber();
-
-  type: MagicType;
-}
+};

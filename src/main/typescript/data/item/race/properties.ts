@@ -1,5 +1,5 @@
 import type WvItem from "../../../item/wvItem.js";
-import BaseItemProperties from "../common/baseItem/properties.js";
+import { BaseItemProperties } from "../common/baseItem/properties.js";
 import type RaceDataSource from "./source.js";
 import type {
   CreationAttributes,
@@ -12,19 +12,21 @@ export default interface RaceDataProperties extends RaceDataSource {
   data: RaceDataPropertiesData;
 }
 
-export class RaceDataPropertiesData
-  extends BaseItemProperties
-  implements RaceDataSourceData
-{
-  constructor(source: RaceDataSourceData, owningItem: WvItem) {
-    super();
-    BaseItemProperties.transform(this, source, owningItem);
-    foundry.utils.mergeObject(this, source);
+export type RaceDataPropertiesData = RaceDataSourceData &
+  BaseItemProperties & {
+    physical: PhysicalSource;
+    creation: CreationAttributes;
+    leveling: LevelingAttributes;
+  };
+export const RaceDataPropertiesData = {
+  transform(
+    source: RaceDataSourceData,
+    owningItem: WvItem
+  ): RaceDataPropertiesData {
+    const base = BaseItemProperties.transform(source, owningItem);
+    return {
+      ...source,
+      ...base
+    };
   }
-
-  physical: PhysicalSource;
-
-  creation: CreationAttributes;
-
-  leveling: LevelingAttributes;
-}
+};

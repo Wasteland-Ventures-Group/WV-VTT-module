@@ -31,13 +31,13 @@ export default async function templateTask(): Promise<void> {
     [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()]
   ];
   const itemDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ITEM.AMMO, new ammoSource.AmmoDataSourceData()],
-    [TYPES.ITEM.APPAREL, new apparelSource.ApparelDataSourceData()],
-    [TYPES.ITEM.EFFECT, new effectSource.EffectDataSourceData()],
+    [TYPES.ITEM.AMMO, ammoSource.AMMO_SOURCE_SCHEMA.parse({})],
+    [TYPES.ITEM.APPAREL, apparelSource.APPAREL_SOURCE_SCHEMA.parse({})],
+    [TYPES.ITEM.EFFECT, effectSource.EFFECT_SCHEMA.parse({})],
     [TYPES.ITEM.MAGIC, magicSource.MagicDataSchema.parse({})],
-    [TYPES.ITEM.MISC, new miscSource.MiscDataSourceData()],
-    [TYPES.ITEM.RACE, new raceSource.RaceDataSourceData()],
-    [TYPES.ITEM.WEAPON, new weaponSource.WeaponDataSourceData()]
+    [TYPES.ITEM.MISC, miscSource.MISC_SCHEMA.parse({})],
+    [TYPES.ITEM.RACE, raceSource.RACE_SCHEMA.parse({})],
+    [TYPES.ITEM.WEAPON, weaponSource.WEAPON_SCHEMA.parse({})]
   ];
   return fs.writeFile(
     templateOutPath,

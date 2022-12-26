@@ -1,7 +1,11 @@
 import { z } from "zod";
+import zodToJsonSchema from "zod-to-json-schema";
 import { SkillNames, TYPES } from "../../../constants.js";
 import { COMP_NUM_SCHEMA } from "../../common.js";
-import type { FoundryCompendiumData } from "../../foundryCommon.js";
+import {
+  compDataZodSchema,
+  FoundryCompendiumData
+} from "../../foundryCommon.js";
 import { PHYSICAL_SOURCE_SCHEMA } from "../race/source.js";
 import { ATTACK_SCHEMA } from "./attack/source.js";
 import { RANGES_SCHEMA } from "./ranges/source.js";
@@ -37,3 +41,12 @@ export interface CompendiumWeapon
   extends FoundryCompendiumData<WeaponDataSourceData> {
   type: typeof TYPES.ITEM.WEAPON;
 }
+
+export const COMP_WEAPON_JSON_SCHEMA = zodToJsonSchema(
+  compDataZodSchema(
+    WEAPON_SCHEMA,
+    "weapon",
+    "icons/weapons/guns/gun-pistol-flintlock-white.webp",
+    "New Weapon"
+  )
+);

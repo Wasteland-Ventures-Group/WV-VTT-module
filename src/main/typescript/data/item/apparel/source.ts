@@ -1,10 +1,14 @@
 import { z } from "zod";
+import zodToJsonSchema from "zod-to-json-schema";
 import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
 import {
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
   COMP_NUM_SCHEMA
 } from "../../common.js";
-import type { FoundryCompendiumData } from "../../foundryCommon.js";
+import {
+  compDataZodSchema,
+  FoundryCompendiumData
+} from "../../foundryCommon.js";
 import { PHYS_ITEM_SOURCE_SCHEMA } from "../common/physicalItem/source.js";
 
 export default interface ApparelDataSource {
@@ -37,3 +41,12 @@ export interface CompendiumApparel
   extends FoundryCompendiumData<ApparelDataSourceData> {
   type: typeof TYPES.ITEM.APPAREL;
 }
+
+export const COMP_APPAREL_JSON_SCHEMA = zodToJsonSchema(
+  compDataZodSchema(
+    APPAREL_SOURCE_SCHEMA,
+    "apparel",
+    "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+    "New Apparel"
+  )
+);

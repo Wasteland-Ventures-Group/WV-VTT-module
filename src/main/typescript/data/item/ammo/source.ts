@@ -1,6 +1,10 @@
 import { z } from "zod";
+import zodToJsonSchema from "zod-to-json-schema";
 import { Calibers, TYPES } from "../../../constants.js";
-import type { FoundryCompendiumData } from "../../foundryCommon.js";
+import {
+  compDataZodSchema,
+  FoundryCompendiumData
+} from "../../foundryCommon.js";
 import { STACK_ITEM_SOURCE_SCHEMA } from "../common/stackableItem/source.js";
 
 export default interface AmmoDataSource {
@@ -15,6 +19,15 @@ export const AMMO_SOURCE_SCHEMA = STACK_ITEM_SOURCE_SCHEMA.extend({
   /** The sub type of the ammo */
   type: z.string().default("")
 });
+
+export const COMP_AMMO_JSON_SCHEMA = zodToJsonSchema(
+  compDataZodSchema(
+    AMMO_SOURCE_SCHEMA,
+    "ammo",
+    "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+    "New Ammo"
+  )
+);
 
 export interface CompendiumAmmo
   extends FoundryCompendiumData<AmmoDataSourceData> {

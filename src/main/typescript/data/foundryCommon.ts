@@ -1,6 +1,11 @@
+import type { DocumentDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs.js";
 import type { JSONSchemaType } from "ajv";
 import { z } from "zod";
-import { TYPES } from "../constants.js";
+import {
+  SystemDocumentType,
+  SYSTEM_DOCUMENT_TYPE_SCHEMA,
+  TYPES
+} from "../constants.js";
 
 /** The source data of a foundry resource. */
 export interface ResourceSource {
@@ -72,21 +77,25 @@ export interface FoundryCompendiumData<T> {
 
 export function compDataZodSchema(
   dataSchema: z.Schema,
+  type: SystemDocumentType,
   defaultImg: string,
   defaultName: string
 ): z.Schema {
   return z
     .object({
-      _id: z.string().default(""), // TODO: figure out how this should be handled
+      _id: z
+        .string()
+        .regex(/^[a-zA-Z0-9]{16}$/)
+        .default(""),
       name: z.string().default(defaultName),
-      type: z
-        .enum(["character", "ammo", "apparel", "misc", "weapon", "magic"])
-        .default("character"), // TODO: find a way to DRY this up
+      type: z.literal(type).default(type),
       data: dataSchema.default({}),
-      img: z.string().default(defaultImg),
-      effects: z.object({}).default([]), // TODO: figure out wtf to put in here
-      flags: z.array(z.object({})).default([]) // TODO: figure out wtf to put in here
+      img: z.string().min(1).default(defaultImg),
+      // TODO: figure out if there should be any extra restrictions on effects and flags
+      effects: z.array(z.object({}).passthrough()).default([]),
+      flags: z.array(z.object({}).passthrough()).default([])
     })
+    .strict()
     .default({});
 }
 

@@ -1,8 +1,11 @@
-import type { JSONSchemaType } from "ajv";
 import { MagicTypes, TYPES } from "../../../constants.js";
 import { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
-import type { FoundryCompendiumData } from "../../foundryCommon.js";
+import {
+  compDataZodSchema,
+  FoundryCompendiumData
+} from "../../foundryCommon.js";
 import { z } from "zod";
+import zodToJsonSchema from "zod-to-json-schema";
 
 export default interface RaceDataSource {
   type: typeof TYPES.ITEM.RACE;
@@ -65,48 +68,6 @@ export const PHYSICAL_SOURCE_SCHEMA = z.object({
   hasWings: z.boolean().default(false)
 });
 
-export const PHYSICAL_SOURCE_JSON_SCHEMA: JSONSchemaType<PhysicalSource> = {
-  description: "Phyiscal characteristics of a race",
-  type: "object",
-  properties: {
-    canFly: {
-      type: "boolean",
-      default: false
-    },
-    canUseMagic: {
-      type: "boolean",
-      default: false
-    },
-    hasSecondHead: {
-      type: "boolean",
-      default: false
-    },
-    hasSpecialTalent: {
-      type: "boolean",
-      default: false
-    },
-    hasWings: {
-      type: "boolean",
-      default: false
-    }
-  },
-  required: [
-    "canFly",
-    "canUseMagic",
-    "hasSecondHead",
-    "hasSpecialTalent",
-    "hasWings"
-  ],
-  additionalProperties: false,
-  default: {
-    canFly: false,
-    canUseMagic: false,
-    hasSecondHead: false,
-    hasSpecialTalent: false,
-    hasWings: false
-  }
-};
-
 /** Attributes of a race on character creation */
 export type CreationAttributes = z.infer<typeof CREATION_ATTRIBUTES_SCHEMA>;
 export const CREATION_ATTRIBUTES_SCHEMA = z.object({
@@ -151,3 +112,12 @@ export interface CompendiumRace
   extends FoundryCompendiumData<RaceDataSourceData> {
   type: typeof TYPES.ITEM.RACE;
 }
+
+export const COMP_RACE_JSON_SCHEMA = zodToJsonSchema(
+  compDataZodSchema(
+    RACE_SCHEMA,
+    "race",
+    "icons/svg/mystery-man.svg",
+    "New Race"
+  )
+);

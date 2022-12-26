@@ -1,8 +1,7 @@
-import type { ApparelSlot, ApparelType } from "../../../constants.js";
+import { ApparelSlot, ApparelSlots, ApparelType } from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import { CompositeNumber } from "../../common.js";
-import PhysicalItemProperties from "../common/physicalItem/properties.js";
-import RulesProperties from "../common/rules/properties.js";
+import { PhysicalItemProperties } from "../common/physicalItem/properties.js";
 import type ApparelDataSource from "./source.js";
 import type { ApparelDataSourceData } from "./source.js";
 
@@ -10,51 +9,50 @@ export default interface ApparelDataProperties extends ApparelDataSource {
   data: ApparelDataPropertiesData;
 }
 
-export class ApparelDataPropertiesData
-  extends PhysicalItemProperties
-  implements ApparelDataSourceData
-{
-  constructor(source: ApparelDataSourceData, owningItem: WvItem) {
-    super();
-    PhysicalItemProperties.transform(this, source, owningItem);
+export type ApparelDataPropertiesData = ApparelDataSourceData &
+  PhysicalItemProperties & {
+    blockedSlots: Record<ApparelSlot, boolean>;
 
-    this.blockedSlots = source.blockedSlots ?? {
-      armor: false,
-      belt: false,
-      clothing: false,
-      eyes: false,
-      mouth: false
-    };
+    damageThreshold: CompositeNumber;
 
-    this.damageThreshold = CompositeNumber.from(
+    quickSlots: CompositeNumber;
+
+    modSlots: CompositeNumber;
+
+    type: ApparelType;
+
+    slot: ApparelSlot;
+  };
+export const ApparelDataPropertiesData = {
+  from(
+    source: ApparelDataSourceData,
+    owningItem: WvItem
+  ): ApparelDataPropertiesData {
+    const baseProperties = PhysicalItemProperties.transform(source, owningItem);
+
+    const blockedSlots = ApparelSlots.reduce((acc, slot) => {
+      acc[slot] = source.blockedSlots?.[slot] ?? false;
+      return acc;
+    }, {} as Record<ApparelSlot, boolean>);
+
+    const damageThreshold = CompositeNumber.from(
       source.damageThreshold ?? { source: 0 }
     );
-    this.damageThreshold.bounds.min = 0;
 
-    this.quickSlots = CompositeNumber.from(source.quickSlots ?? { source: 0 });
-    this.quickSlots.bounds.min = 0;
+    damageThreshold.bounds.min = 0;
 
-    this.modSlots = CompositeNumber.from(source.modSlots ?? { source: 0 });
-    this.modSlots.bounds.min = 0;
+    const quickSlots = CompositeNumber.from(source.quickSlots ?? { source: 0 });
+    quickSlots.bounds.min = 0;
 
-    foundry.utils.mergeObject(this, source);
+    const modSlots = CompositeNumber.from(source.modSlots ?? { source: 0 });
+    modSlots.bounds.min = 0;
+    return {
+      ...source,
+      ...baseProperties,
+      blockedSlots,
+      quickSlots,
+      modSlots,
+      damageThreshold
+    };
   }
-
-  override rules = new RulesProperties();
-
-  override value = new CompositeNumber();
-
-  override weight = new CompositeNumber();
-
-  blockedSlots: Record<ApparelSlot, boolean>;
-
-  damageThreshold: CompositeNumber;
-
-  quickSlots: CompositeNumber;
-
-  modSlots: CompositeNumber;
-
-  type: ApparelType;
-
-  slot: ApparelSlot;
-}
+};

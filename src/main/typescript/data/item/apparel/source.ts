@@ -19,7 +19,7 @@ export default interface ApparelDataSource {
 export type ApparelDataSourceData = z.infer<typeof APPAREL_SOURCE_SCHEMA>;
 export const APPAREL_SOURCE_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   /** The other apparel slots this apparel blocks aside from its own */
-  blockedSlots: z.record(z.string(), z.boolean()).optional(),
+  blockedSlots: z.record(z.enum(ApparelSlots), z.boolean()).optional(),
 
   /** The damage threshold of the apparel */
   damageThreshold: COMP_NUM_SCHEMA.optional().default({}),

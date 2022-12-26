@@ -32,7 +32,7 @@ export default class Apparel extends WvItem {
   }
 
   override prepareBaseData(): void {
-    this.data.data = new ApparelDataPropertiesData(this.data.data, this);
+    this.data.data = ApparelDataPropertiesData.from(this.data.data, this);
   }
 }
 

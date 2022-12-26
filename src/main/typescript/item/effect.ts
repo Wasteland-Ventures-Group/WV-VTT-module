@@ -16,7 +16,7 @@ export default class Effect extends WvItem {
   }
 
   override prepareBaseData(): void {
-    this.data.data = new EffectDataPropertiesData(this.data.data, this);
+    this.data.data = EffectDataPropertiesData.from(this.data.data, this);
   }
 }
 

@@ -11,7 +11,7 @@ export type EffectDataPropertiesData = EffectDataSourceData &
   BaseItemProperties;
 
 export const EffectDataPropertiesData = {
-  transform(
+  from(
     source: EffectDataSourceData,
     owningItem: WvItem
   ): EffectDataPropertiesData {

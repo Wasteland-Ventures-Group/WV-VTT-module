@@ -1,6 +1,8 @@
 import WvActor from "../actor/wvActor.js";
 import { TYPES } from "../constants.js";
 import type { LabelComponent } from "../data/common.js";
+import { AttacksProperties } from "../data/item/weapon/attack/properties.js";
+import { RangesProperties } from "../data/item/weapon/ranges/properties.js";
 import {
   isOwningActor,
   isSameDocument,
@@ -14,7 +16,7 @@ import NotMatchingTargetMessage from "./messages/notMatchingTargetMessage.js";
 import WrongTargetTypeMessage from "./messages/wrongTargetTypeMessage.js";
 import WrongValueTypeMessage from "./messages/wrongValueTypeMessage.js";
 import type RuleElementMessage from "./ruleElementMessage.js";
-import type RuleElementSource from "./ruleElementSource.js";
+import type { RuleElementSource } from "./ruleElementSource.js";
 import type {
   RuleElementCondition,
   RuleElementHook
@@ -212,15 +214,17 @@ export default class RuleElement {
   /** Get the properties of the given Document, the RuleElement targets. */
   protected getProperties(document: WvActor | WvItem): unknown[] {
     if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      return document.data.data.attacks
-        .getMatching(this.attackRegexpMatch?.groups?.tags?.split(","))
-        .map((attack) => foundry.utils.getProperty(attack, this.target));
+      return AttacksProperties.getMatching(
+        document.data.data.attacks,
+        this.attackRegexpMatch?.groups?.tags?.split(",")
+      ).map((attack) => foundry.utils.getProperty(attack, this.target));
     }
 
     if (this.rangesRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      return document.data.data.ranges
-        .getMatching(this.rangesRegexpMatch?.groups?.tags?.split(","))
-        .map((range) => foundry.utils.getProperty(range, this.target));
+      return RangesProperties.getMatching(
+        document.data.data.ranges,
+        this.rangesRegexpMatch?.groups?.tags?.split(",")
+      ).map((range) => foundry.utils.getProperty(range, this.target));
     }
 
     return [foundry.utils.getProperty(document.data.data, this.target)];
@@ -236,21 +240,23 @@ export default class RuleElement {
     callback: (value: unknown) => unknown
   ) {
     if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      document.data.data.attacks
-        .getMatching(this.attackRegexpMatch.groups?.tags?.split(","))
-        .forEach((attack) =>
-          callback(foundry.utils.getProperty(attack, this.target))
-        );
+      AttacksProperties.getMatching(
+        document.data.data.attacks,
+        this.attackRegexpMatch.groups?.tags?.split(",")
+      ).forEach((attack) =>
+        callback(foundry.utils.getProperty(attack, this.target))
+      );
 
       return;
     }
 
     if (this.rangesRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      document.data.data.ranges
-        .getMatching(this.rangesRegexpMatch.groups?.tags?.split(","))
-        .forEach((range) =>
-          callback(foundry.utils.getProperty(range, this.target))
-        );
+      RangesProperties.getMatching(
+        document.data.data.ranges,
+        this.rangesRegexpMatch.groups?.tags?.split(",")
+      ).forEach((range) =>
+        callback(foundry.utils.getProperty(range, this.target))
+      );
 
       return;
     }

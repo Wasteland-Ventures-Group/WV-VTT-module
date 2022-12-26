@@ -84,6 +84,7 @@ export class AttackProperties implements AttackSource {
 
     this.ap = CompositeNumber.from(source.ap);
     this.ap.bounds.min = 0;
+    this.tags = source.tags;
 
     this.#weapon = owningWeapon;
     this.#name = name;

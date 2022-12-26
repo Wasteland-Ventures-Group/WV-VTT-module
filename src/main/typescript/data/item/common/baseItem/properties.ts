@@ -1,6 +1,6 @@
 import type WvItem from "../../../../item/wvItem.js";
 import { RulesProperties } from "../rules/properties.js";
-import type BaseItemSource from "./source.js";
+import type { BaseItemSource } from "./source.js";
 
 /**
  * This holds the properties of the base values that all items have in common.

@@ -42,6 +42,10 @@ export interface CompendiumApparel
   type: typeof TYPES.ITEM.APPAREL;
 }
 
+export const APPAREL_SOURCE_JSON_SCHEMA = zodToJsonSchema(
+  APPAREL_SOURCE_SCHEMA
+);
+
 export const COMP_APPAREL_JSON_SCHEMA = zodToJsonSchema(
   compDataZodSchema(
     APPAREL_SOURCE_SCHEMA,

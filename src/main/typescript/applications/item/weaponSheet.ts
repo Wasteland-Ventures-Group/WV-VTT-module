@@ -3,6 +3,7 @@ import {
   AttackSource,
   ATTACK_JSON_SCHEMA
 } from "../../data/item/weapon/attack/source.js";
+import { DistanceProperties } from "../../data/item/weapon/ranges/properties.js";
 import type { WeaponAttackDragData } from "../../dragData.js";
 import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../../item/weapon.js";
@@ -39,13 +40,16 @@ export default class WeaponSheet extends WvItemSheet {
         ...i18nDamageFallOffTypes
       },
       displayRanges: {
-        short: weapon.data.data.ranges.short.distance.getDisplayRangeDistance(
+        short: DistanceProperties.getDisplayRangeDistance(
+          weapon.data.data.ranges.short.distance,
           weapon.actor?.data.data.specials
         ),
-        medium: weapon.data.data.ranges.medium.distance.getDisplayRangeDistance(
+        medium: DistanceProperties.getDisplayRangeDistance(
+          weapon.data.data.ranges.medium.distance,
           weapon.actor?.data.data.specials
         ),
-        long: weapon.data.data.ranges.long.distance.getDisplayRangeDistance(
+        long: DistanceProperties.getDisplayRangeDistance(
+          weapon.data.data.ranges.long.distance,
           weapon.actor?.data.data.specials
         )
       },

@@ -14,7 +14,7 @@ import {
   withoutConditions
 } from "../ruleEngine/ruleElement.js";
 import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
-import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
+import type { RuleElementSource } from "../ruleEngine/ruleElementSource.js";
 import { LOG } from "../systemLogger.js";
 import validateSystemData from "../validation/validateSystemData.js";
 
@@ -86,7 +86,7 @@ export default class WvItem extends Item {
 
   override prepareBaseData(): void {
     if (this.data.type === "misc") {
-      this.data.data = new MiscDataPropertiesData(this.data.data, this);
+      this.data.data = MiscDataPropertiesData.transform(this.data.data, this);
     }
   }
 

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import zodToJsonSchema from "zod-to-json-schema";
 import { SplashSizes } from "../../../../constants.js";
 import { COMP_NUM_SCHEMA } from "../../../common.js";
 
@@ -45,3 +46,5 @@ export const ATTACK_SCHEMA = z.object({
 });
 
 export const ATTACKS_SCHEMA = z.object({ sources: z.record(ATTACK_SCHEMA) });
+
+export const ATTACK_JSON_SCHEMA = zodToJsonSchema(ATTACK_SCHEMA);

@@ -115,6 +115,7 @@ export interface CompendiumRace
   type: typeof TYPES.ITEM.RACE;
 }
 
+export const RACE_JSON_SCHEMA = zodToJsonSchema(RACE_SCHEMA);
 export const COMP_RACE_JSON_SCHEMA = zodToJsonSchema(
   compDataZodSchema(
     RACE_SCHEMA,

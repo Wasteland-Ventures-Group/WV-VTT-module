@@ -1,6 +1,6 @@
 import type WvItem from "../../../../item/wvItem.js";
 import { PhysicalItemProperties } from "../physicalItem/properties.js";
-import type StackableItemSource from "./source.js";
+import type { StackableItemSource } from "./source.js";
 
 /**
  * This holds the properties of the base values that all stackable physical
@@ -9,7 +9,7 @@ import type StackableItemSource from "./source.js";
 export type StackableItemProperties = StackableItemSource &
   PhysicalItemProperties;
 
-export const StackableItemSource = {
+export const StackableItemProperties = {
   /**
    * Transform a StackableItemSource and apply it onto a
    * StackableItemProperties.
@@ -17,7 +17,7 @@ export const StackableItemSource = {
    * @param source - the source to transform from
    * @param owningItem - the owning item
    */
-  transform(source: StackableItemSource, owningItem: WvItem) {
+  from(source: StackableItemSource, owningItem: WvItem) {
     const baseProperties = PhysicalItemProperties.transform(source, owningItem);
     return {
       ...baseProperties

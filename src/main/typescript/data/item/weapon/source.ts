@@ -42,6 +42,7 @@ export interface CompendiumWeapon
   type: typeof TYPES.ITEM.WEAPON;
 }
 
+export const WEAPON_JSON_SCHEMA = zodToJsonSchema(WEAPON_SCHEMA);
 export const COMP_WEAPON_JSON_SCHEMA = zodToJsonSchema(
   compDataZodSchema(
     WEAPON_SCHEMA,

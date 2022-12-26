@@ -11,8 +11,8 @@ import SyntaxErrorMessage from "../../ruleEngine/messages/syntaxErrorMessage.js"
 import WrongTypeMessage from "../../ruleEngine/messages/wrongTypeMessage.js";
 import RuleElement, * as re from "../../ruleEngine/ruleElement.js";
 import RuleElementMessage from "../../ruleEngine/ruleElementMessage.js";
-import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
-import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
+import type { RuleElementSource } from "../../ruleEngine/ruleElementSource.js";
+import { RULE_ELEMENT_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n from "../../wvI18n.js";
 
@@ -146,7 +146,7 @@ export default class WvItemSheet extends ItemSheet {
 
   /** Get the default rule element source for newly created rule elements. */
   protected getDefaultRuleElementSource(): RuleElementSource {
-    return { ...RULE_ELEMENT_SOURCE_JSON_SCHEMA.default };
+    return { ...RULE_ELEMENT_JSON_SCHEMA.default };
   }
 
   /** Handle a click event on a delete rule element button. */

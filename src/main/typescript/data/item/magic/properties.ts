@@ -22,7 +22,7 @@ export type MagicDataPropertiesData = MagicDataSourceData &
   };
 
 export const MagicDataPropertiesData = {
-  transform(
+  from(
     source: MagicDataSourceData,
     owningItem: WvItem
   ): MagicDataPropertiesData {

@@ -17,7 +17,7 @@ import type {
   CompositeResource,
   SerializedCompositeNumber
 } from "../data/common.js";
-import { RaceDataSourceData } from "../data/item/race/source.js";
+import { RACE_SCHEMA } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import {
@@ -90,7 +90,7 @@ export default class WvActor extends Actor {
           type: TYPES.ITEM.RACE,
           name: getGame().i18n.localize("wv.system.races.noRace"),
           img: "icons/svg/mystery-man.svg",
-          data: new RaceDataSourceData()
+          data: RACE_SCHEMA.parse({})
         },
         { parent: this }
       )

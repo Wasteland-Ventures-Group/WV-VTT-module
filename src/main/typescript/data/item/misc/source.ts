@@ -1,5 +1,5 @@
 import type { TYPES } from "../../../constants.js";
-import type StackableItem from "../common/stackableItem/source.js";
+import type { StackableItemSource } from "../common/stackableItem/source.js";
 import { STACK_ITEM_SOURCE_SCHEMA } from "../common/stackableItem/source.js";
 
 export default interface MiscDataSource {
@@ -7,5 +7,5 @@ export default interface MiscDataSource {
   data: MiscDataSourceData;
 }
 
-export type MiscDataSourceData = StackableItem;
+export type MiscDataSourceData = StackableItemSource;
 export const MISC_SCHEMA = STACK_ITEM_SOURCE_SCHEMA;

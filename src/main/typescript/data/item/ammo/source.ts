@@ -20,6 +20,8 @@ export const AMMO_SOURCE_SCHEMA = STACK_ITEM_SOURCE_SCHEMA.extend({
   type: z.string().default("")
 });
 
+export const AMMO_SOURCE_JSON_SCHEMA = zodToJsonSchema(AMMO_SOURCE_SCHEMA);
+
 export const COMP_AMMO_JSON_SCHEMA = zodToJsonSchema(
   compDataZodSchema(
     AMMO_SOURCE_SCHEMA,

@@ -15,9 +15,9 @@ export default interface RaceDataSource {
 /**
  * A type that reflects free things that are given to a character on creation
  */
-export type FreeOnCreation = z.infer<typeof FREE_ON_CREATION_SCHEMA>;
+export type FreeOnCreation = z.infer<typeof RACE_FREE_ON_CREATION_SCHEMA>;
 
-export const FREE_ON_CREATION_SCHEMA = z.object({
+export const RACE_FREE_ON_CREATION_SCHEMA = z.object({
   /** The character gets all of these on creation */
   allOf: z.array(z.string()).default([]),
   /** The character can pick n amount of these on creation */
@@ -49,9 +49,9 @@ export const FREE_PER_LEVEL_PERIOD_SCHEMA = z.object({
 });
 
 /** Physical characteristics of a race. */
-export type PhysicalSource = z.infer<typeof PHYSICAL_SOURCE_SCHEMA>;
+export type PhysicalSource = z.infer<typeof RACE_PHYSICAL_SOURCE_SCHEMA>;
 
-export const PHYSICAL_SOURCE_SCHEMA = z.object({
+export const RACE_PHYSICAL_SOURCE_SCHEMA = z.object({
   /** Whether this race can fly */
   canFly: z.boolean().default(false),
 
@@ -69,8 +69,10 @@ export const PHYSICAL_SOURCE_SCHEMA = z.object({
 });
 
 /** Attributes of a race on character creation */
-export type CreationAttributes = z.infer<typeof CREATION_ATTRIBUTES_SCHEMA>;
-export const CREATION_ATTRIBUTES_SCHEMA = z.object({
+export type CreationAttributes = z.infer<
+  typeof RACE_CREATION_ATTRIBUTES_SCHEMA
+>;
+export const RACE_CREATION_ATTRIBUTES_SCHEMA = z.object({
   /**
    * How many SPECIAL points can be spent with this race at character creation
    */
@@ -80,10 +82,10 @@ export const CREATION_ATTRIBUTES_SCHEMA = z.object({
   magicTypes: z.array(z.enum(MagicTypes)).default([]),
 
   /** Attributes for free spells on character creation */
-  freeSpells: FREE_ON_CREATION_SCHEMA,
+  freeSpells: RACE_FREE_ON_CREATION_SCHEMA,
 
   /** Attributes for free alchemy recipes on character creation */
-  freeAlchemy: FREE_ON_CREATION_SCHEMA
+  freeAlchemy: RACE_FREE_ON_CREATION_SCHEMA
 });
 
 /** Attributes of a race for leveling */
@@ -99,10 +101,10 @@ export const LEVELING_SCHEMA = z.object({
 export type RaceDataSourceData = z.infer<typeof RACE_SCHEMA>;
 export const RACE_SCHEMA = BASE_ITEM_SCHEMA.extend({
   /** Physical characteristics of the race */
-  physical: PHYSICAL_SOURCE_SCHEMA,
+  physical: RACE_PHYSICAL_SOURCE_SCHEMA,
 
   /** Attributes of the race on character creation */
-  creation: CREATION_ATTRIBUTES_SCHEMA,
+  creation: RACE_CREATION_ATTRIBUTES_SCHEMA,
 
   /** Attributes of the race for leveling */
   leveling: LEVELING_SCHEMA

@@ -2,12 +2,9 @@ import { z } from "zod";
 import { SplashSizes } from "../../../../constants.js";
 import { COMP_NUM_SCHEMA } from "../../../common.js";
 
-export default class AttacksSource {
-  /** The source objects for the Attacks */
-  sources: Record<string, AttackSource> = {};
-}
-
+export type AttacksSource = z.infer<typeof ATTACKS_SCHEMA>;
 export type AttackSource = z.infer<typeof ATTACK_SCHEMA>;
+export type DamageSource = z.infer<typeof DAMAGE_SCHEMA>;
 
 export type DamageFallOffType = typeof DamageFallOffTypes[number];
 const DamageFallOffTypes = ["shotgun"] as const;
@@ -46,3 +43,5 @@ export const ATTACK_SCHEMA = z.object({
   /** Tags of the attack */
   tags: z.array(z.string()).default([])
 });
+
+export const ATTACKS_SCHEMA = z.object({ sources: z.record(ATTACK_SCHEMA) });

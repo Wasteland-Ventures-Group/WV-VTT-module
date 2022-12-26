@@ -6,8 +6,8 @@ import {
   compDataZodSchema,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
-import { PHYSICAL_SOURCE_SCHEMA } from "../race/source.js";
-import { ATTACK_SCHEMA } from "./attack/source.js";
+import { PHYS_ITEM_SCHEMA } from "../common/physicalItem/source.js";
+import { ATTACKS_SCHEMA } from "./attack/source.js";
 import { RANGES_SCHEMA } from "./ranges/source.js";
 import { RELOAD_SCHEMA } from "./reload/source.js";
 
@@ -17,9 +17,9 @@ export default interface WeaponDataSource {
 }
 
 export type WeaponDataSourceData = z.infer<typeof WEAPON_SCHEMA>;
-export const WEAPON_SCHEMA = PHYSICAL_SOURCE_SCHEMA.extend({
+export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   /** The attacks of the weapon */
-  attacks: ATTACK_SCHEMA,
+  attacks: ATTACKS_SCHEMA,
 
   /** Whether the weapon is a holdout weapon */
   holdout: z.boolean().default(false),

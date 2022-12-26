@@ -1,5 +1,5 @@
 import type WvItem from "../../../../item/wvItem.js";
-import type { CompositeNumber } from "../../../common.js";
+import { CompositeNumber } from "../../../common.js";
 import { BaseItemProperties } from "../baseItem/properties.js";
 import type { PhysicalItemSource } from "./source.js";
 
@@ -18,11 +18,18 @@ export const PhysicalItemProperties = {
    * @param source - the source to transform from
    * @param owningItem - the owning item
    */
-  transform(source: PhysicalItemSource, owningItem: WvItem) {
+  transform(
+    source: PhysicalItemSource,
+    owningItem: WvItem
+  ): PhysicalItemProperties {
     const baseProperties = BaseItemProperties.transform(source, owningItem);
+    const value = CompositeNumber.from(source.value);
+    const weight = CompositeNumber.from(source.weight);
     return {
       ...source,
-      baseProperties
+      ...baseProperties,
+      value,
+      weight
     };
   }
 };

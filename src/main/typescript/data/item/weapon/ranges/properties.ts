@@ -2,28 +2,39 @@ import type WvActor from "../../../../actor/wvActor.js";
 import { CONSTANTS, RangeBracket, TAGS } from "../../../../constants.js";
 import type SpecialsProperties from "../../../actor/character/specials/properties.js";
 import { CompositeNumber } from "../../../common.js";
-import RangesSource, { DistanceSource, RangeSource } from "./source.js";
+import type { RangesSource, DistanceSource, RangeSource } from "./source.js";
 
-export default class RangesProperties extends RangesSource {
-  constructor(source: RangesSource) {
-    super();
-    this.short = new RangeProperties(source.short);
-    this.medium = new RangeProperties(source.medium);
-    this.long = new RangeProperties(source.long);
-  }
+export type RangesProperties = RangesSource & {
+  short: RangeProperties;
 
-  override short: RangeProperties;
+  medium: RangeProperties;
 
-  override medium: RangeProperties;
+  long: RangeProperties;
+};
 
-  override long: RangeProperties;
+export const RangesProperties = {
+  transform(source: RangesSource): RangesProperties {
+    const short = RangeProperties.transform(source.short);
+    const medium = RangeProperties.transform(source.medium);
+    const long = RangeProperties.transform(source.long);
+    return {
+      ...source,
+      short,
+      medium,
+      long
+    };
+  },
 
   /** Get all ranges matching the given tags. */
-  getMatching(tags: string[] | undefined): RangeProperties[] {
-    return [this.short, this.medium, this.long].filter((range) =>
-      range.matches(tags)
+  getMatching(
+    rangesProperties: RangesProperties,
+    tags: string[] | undefined
+  ): RangeProperties[] {
+    const rp = rangesProperties;
+    return [rp.short, rp.medium, rp.long].filter((range) =>
+      RangeProperties.matches(range, tags)
     );
-  }
+  },
 
   /**
    * Get the range bracket for the given distance in meters.
@@ -33,45 +44,60 @@ export default class RangesProperties extends RangesSource {
    * @returns the range bracket
    */
   getRangeBracket(
+    rangesProperties: RangesProperties,
     distance: number,
     tags: string[],
     specials?: Partial<SpecialsProperties>
   ): RangeBracket {
+    const rp = rangesProperties;
     if (
-      this.short.matches(tags) &&
-      distance <= this.short.distance.getEffectiveRangeDistance(specials)
+      RangeProperties.matches(rp.short, tags) &&
+      distance <=
+        DistanceProperties.getEffectiveRangeDistance(
+          rp.short.distance,
+          specials
+        )
     )
       return RangeBracket.SHORT;
 
     if (
-      this.medium.matches(tags) &&
-      distance <= this.medium.distance.getEffectiveRangeDistance(specials)
+      RangeProperties.matches(rp.medium, tags) &&
+      distance <=
+        DistanceProperties.getEffectiveRangeDistance(
+          rp.medium.distance,
+          specials
+        )
     )
       return RangeBracket.MEDIUM;
 
     if (
-      this.long.matches(tags) &&
-      distance <= this.long.distance.getEffectiveRangeDistance(specials)
+      RangeProperties.matches(rp.long, tags) &&
+      distance <=
+        DistanceProperties.getEffectiveRangeDistance(rp.long.distance, specials)
     )
       return RangeBracket.LONG;
 
     return RangeBracket.OUT_OF_RANGE;
-  }
+  },
 
   /**
    * Get the modifier for the given range bracket.
    * @param rangeBracket - the range bracket to get the modifier for
    * @returns the modifier for the range (0, if out of range)
    */
-  getRangeModifier(rangeBracket: RangeBracket): number {
-    if (rangeBracket <= RangeBracket.SHORT) return this.short.modifier.total;
+  getRangeModifier(
+    rangesProperties: RangesProperties,
+    rangeBracket: RangeBracket
+  ): number {
+    const rp = rangesProperties;
+    if (rangeBracket <= RangeBracket.SHORT) return rp.short.modifier.total;
 
-    if (rangeBracket <= RangeBracket.MEDIUM) return this.medium.modifier.total;
+    if (rangeBracket <= RangeBracket.MEDIUM) return rp.medium.modifier.total;
 
-    if (rangeBracket <= RangeBracket.LONG) return this.long.modifier.total;
+    if (rangeBracket <= RangeBracket.LONG) return rp.long.modifier.total;
 
     return 0;
-  }
+  },
 
   /**
    * Get the ranges of the weapon as a displayable string.
@@ -79,63 +105,82 @@ export default class RangesProperties extends RangesSource {
    * @param specials - the Specials of the actor, owning the weapon
    */
   getDisplayRanges(
+    rangesProperties: RangesProperties,
     tags: string[],
     specials?: Partial<SpecialsProperties>
   ): string {
-    return this.getMatching(tags)
-      .map((range) => range.distance.getDisplayRangeDistance(specials))
+    return RangesProperties.getMatching(rangesProperties, tags)
+      .map((range) =>
+        DistanceProperties.getDisplayRangeDistance(range.distance, specials)
+      )
       .join("/");
-  }
+  },
 
   /**
    * Apply a size category based reach bonus to the appropriate range distances.
    */
-  applySizeCategoryReachBonus(actor: WvActor | null): void {
+  applySizeCategoryReachBonus(
+    rangesProperties: RangesProperties,
+    actor: WvActor | null
+  ): void {
     if (!actor) return;
 
-    this.getMatching([TAGS.sizeCategoryReachBonus]).forEach((range) =>
-      range.distance.applySizeCategoryReachBonus(
-        actor.data.data.background.size.total
-      )
+    this.getMatching(rangesProperties, [TAGS.sizeCategoryReachBonus]).forEach(
+      (range) =>
+        DistanceProperties.applySizeCategoryReachBonus(
+          range.distance,
+          actor.data.data.background.size.total
+        )
     );
   }
-}
+};
 
-export class RangeProperties extends RangeSource {
-  constructor(source: RangeSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    this.distance = new DistanceProperties(source.distance);
-    this.modifier = CompositeNumber.from(source.modifier);
-  }
+export type RangeProperties = RangeSource & {
+  distance: DistanceProperties;
+  modifier: CompositeNumber;
+};
 
-  override distance: DistanceProperties;
-
-  override modifier: CompositeNumber;
+export const RangeProperties = {
+  transform(source: RangeSource): RangeProperties {
+    const distance = DistanceProperties.transform(source.distance);
+    const modifier = CompositeNumber.from(source.modifier);
+    return {
+      ...source,
+      distance,
+      modifier
+    };
+  },
 
   /** Check whether this range matches the given list of tags. */
-  matches(tags: string[] | undefined): boolean {
+  matches(
+    rangeProperties: RangeProperties,
+    tags: string[] | undefined
+  ): boolean {
     if (tags === undefined) return true;
 
-    return !tags.some((tag) => !this.tags.includes(tag));
+    return !tags.some((tag) => !rangeProperties.tags.includes(tag));
   }
-}
+};
 
-export class DistanceProperties extends DistanceSource {
-  constructor(source: DistanceSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
+export type DistanceProperties = DistanceSource & {
+  base: CompositeNumber;
 
-    this.base = CompositeNumber.from(source.base);
-    this.base.bounds.min = 0;
+  multiplier: CompositeNumber;
+};
 
-    this.multiplier = CompositeNumber.from(source.multiplier);
-    this.multiplier.bounds.min = 0;
-  }
+export const DistanceProperties = {
+  transform(source: DistanceSource): DistanceProperties {
+    const base = CompositeNumber.from(source.base);
+    base.bounds.min = 0;
 
-  override base: CompositeNumber;
-
-  override multiplier: CompositeNumber;
+    const multiplier = CompositeNumber.from(source.multiplier);
+    multiplier.bounds.min = 0;
+    return {
+      ...source,
+      base,
+      multiplier
+    };
+  },
 
   /**
    * Get the effective distance for a range distance. If the distance is Special
@@ -144,14 +189,24 @@ export class DistanceProperties extends DistanceSource {
    * @param specials - the Specials of the actor, owning the weapon
    * @returns the effective distance
    */
-  getEffectiveRangeDistance(specials?: Partial<SpecialsProperties>): number {
-    if (this.multiplier.total !== 0 && this.special !== "") {
-      const specialValue = (specials ?? {})[this.special]?.tempTotal ?? 0;
-      return this.getSpecialRangeDistance(specialValue);
+  getEffectiveRangeDistance(
+    distanceProperties: DistanceProperties,
+    specials?: Partial<SpecialsProperties>
+  ): number {
+    if (
+      distanceProperties.multiplier.total !== 0 &&
+      distanceProperties.special !== ""
+    ) {
+      const specialValue =
+        (specials ?? {})[distanceProperties.special]?.tempTotal ?? 0;
+      return DistanceProperties.getSpecialRangeDistance(
+        distanceProperties,
+        specialValue
+      );
     }
 
-    return this.base.total;
-  }
+    return distanceProperties.base.total;
+  },
 
   /**
    * Get the displayable distance for a range distance. If the distance is
@@ -163,40 +218,57 @@ export class DistanceProperties extends DistanceSource {
    * @returns the displayable distance
    */
   getDisplayRangeDistance(
+    distanceProperties: DistanceProperties,
     specials?: Partial<SpecialsProperties> | undefined
   ): string {
-    if (this.multiplier.total !== 0 && this.special !== "") {
-      const specialValue = (specials ?? {})[this.special]?.tempTotal;
+    if (
+      distanceProperties.multiplier.total !== 0 &&
+      distanceProperties.special !== ""
+    ) {
+      const specialValue = (specials ?? {})[distanceProperties.special]
+        ?.tempTotal;
       if (typeof specialValue === "number") {
-        return this.getSpecialRangeDistance(specialValue).toString();
+        return this.getSpecialRangeDistance(
+          distanceProperties,
+          specialValue
+        ).toString();
       } else {
         return [
-          this.getSpecialRangeDistance(CONSTANTS.bounds.special.value.min),
-          this.getSpecialRangeDistance(CONSTANTS.bounds.special.value.max)
+          this.getSpecialRangeDistance(
+            distanceProperties,
+            CONSTANTS.bounds.special.value.min
+          ),
+          this.getSpecialRangeDistance(
+            distanceProperties,
+            CONSTANTS.bounds.special.value.max
+          )
         ].join("-");
       }
     }
 
-    if (this.base.total === 0) return "-";
+    if (distanceProperties.base.total === 0) return "-";
 
-    return this.base.total.toString();
-  }
+    return distanceProperties.base.total.toString();
+  },
 
   /**
    * Apply a base distance bonus to the distance based on the given size
    * category.
    */
-  applySizeCategoryReachBonus(sizeCategory: number) {
-    const value = this.getSizeCategoryReachBonus(sizeCategory);
+  applySizeCategoryReachBonus(
+    distanceProperties: DistanceProperties,
+    sizeCategory: number
+  ) {
+    const value = DistanceProperties.getSizeCategoryReachBonus(sizeCategory);
     if (value)
-      this.base.add({
+      distanceProperties.base.add({
         value,
         labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
       });
-  }
+  },
 
   /** Get the size category based reach bonus for the given size category. */
-  private getSizeCategoryReachBonus(sizeCategory: number): number {
+  getSizeCategoryReachBonus(sizeCategory: number): number {
     switch (sizeCategory) {
       case 2:
         return 2;
@@ -207,14 +279,20 @@ export class DistanceProperties extends DistanceSource {
       default:
         return 0;
     }
-  }
+  },
 
   /**
    * Get the effective distance for a Special based range distance.
    * @param specialValue - the value of the Special to use
    * @returns the effective distance
    */
-  private getSpecialRangeDistance(specialValue: number): number {
-    return this.base.total + this.multiplier.total * specialValue;
+  getSpecialRangeDistance(
+    distanceProperties: DistanceProperties,
+    specialValue: number
+  ): number {
+    return (
+      distanceProperties.base.total +
+      distanceProperties.multiplier.total * specialValue
+    );
   }
-}
+};

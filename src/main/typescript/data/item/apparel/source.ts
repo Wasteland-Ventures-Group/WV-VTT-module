@@ -9,7 +9,7 @@ import {
   compDataZodSchema,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
-import { PHYS_ITEM_SOURCE_SCHEMA } from "../common/physicalItem/source.js";
+import { PHYS_ITEM_SCHEMA } from "../common/physicalItem/source.js";
 
 export default interface ApparelDataSource {
   type: typeof TYPES.ITEM.APPAREL;
@@ -17,7 +17,7 @@ export default interface ApparelDataSource {
 }
 
 export type ApparelDataSourceData = z.infer<typeof APPAREL_SOURCE_SCHEMA>;
-export const APPAREL_SOURCE_SCHEMA = PHYS_ITEM_SOURCE_SCHEMA.extend({
+export const APPAREL_SOURCE_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   /** The other apparel slots this apparel blocks aside from its own */
   blockedSlots: z.record(z.string(), z.boolean()).optional(),
 

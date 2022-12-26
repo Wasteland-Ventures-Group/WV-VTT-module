@@ -2,7 +2,9 @@ import { z } from "zod";
 import { SpecialNames } from "../../../../constants.js";
 import { COMP_NUM_SCHEMA } from "../../../common.js";
 
+export type RangeSource = z.infer<typeof RANGE_SCHEMA>;
 export type RangesSource = z.infer<typeof RANGES_SCHEMA>;
+export type DistanceSource = z.infer<typeof DISTANCE_SCHEMA>;
 
 export const DISTANCE_SCHEMA = z.object({
   /** The base distance of the range distance in meters */

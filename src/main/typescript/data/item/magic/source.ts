@@ -1,5 +1,5 @@
 import { TYPES, GeneralMagicSchools } from "../../../constants.js";
-import { RangeSchema } from "./ranges/source.js";
+import { RANGE_SCHEMA } from "./ranges/source.js";
 import { TargetSchema } from "./target/source.js";
 import { CompositeNumberSchema } from "../../common.js";
 import { z } from "zod";
@@ -20,7 +20,7 @@ export const MagicDataSchema = BASE_ITEM_SCHEMA.extend({
   school: z.enum(GeneralMagicSchools).default("general"),
   apCost: CompositeNumberSchema,
   strainCost: CompositeNumberSchema,
-  range: RangeSchema,
+  range: RANGE_SCHEMA,
   target: TargetSchema
 }).default({});
 

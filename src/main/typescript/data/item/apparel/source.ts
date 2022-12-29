@@ -43,11 +43,11 @@ export const APPAREL_SOURCE_JSON_SCHEMA = zodToJsonSchema(
   APPAREL_SOURCE_SCHEMA
 );
 
-export const COMP_APPAREL_JSON_SCHEMA = zodToJsonSchema(
-  compDataZodSchema(
-    APPAREL_SOURCE_SCHEMA,
-    "apparel",
-    "icons/equipment/chest/breastplate-leather-brown-belted.webp",
-    "New Apparel"
-  )
+export const COMP_APPAREL_SCHEMA = compDataZodSchema(
+  APPAREL_SOURCE_SCHEMA,
+  "apparel",
+  "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "New Apparel"
 );
+
+export const COMP_APPAREL_JSON_SCHEMA = zodToJsonSchema(COMP_APPAREL_SCHEMA);

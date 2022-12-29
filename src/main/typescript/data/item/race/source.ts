@@ -116,11 +116,10 @@ export interface CompendiumRace
 }
 
 export const RACE_JSON_SCHEMA = zodToJsonSchema(RACE_SCHEMA);
-export const COMP_RACE_JSON_SCHEMA = zodToJsonSchema(
-  compDataZodSchema(
-    RACE_SCHEMA,
-    "race",
-    "icons/svg/mystery-man.svg",
-    "New Race"
-  )
+export const COMP_RACE_SCHEMA = compDataZodSchema(
+  RACE_SCHEMA,
+  "race",
+  "icons/svg/mystery-man.svg",
+  "New Race"
 );
+export const COMP_RACE_JSON_SCHEMA = zodToJsonSchema(COMP_RACE_SCHEMA);

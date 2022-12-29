@@ -21,15 +21,13 @@ export const AMMO_SOURCE_SCHEMA = STACK_ITEM_SOURCE_SCHEMA.extend({
 });
 
 export const AMMO_SOURCE_JSON_SCHEMA = zodToJsonSchema(AMMO_SOURCE_SCHEMA);
-
-export const COMP_AMMO_JSON_SCHEMA = zodToJsonSchema(
-  compDataZodSchema(
-    AMMO_SOURCE_SCHEMA,
-    "ammo",
-    "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
-    "New Ammo"
-  )
+export const COMP_AMMO_SCHEMA = compDataZodSchema(
+  AMMO_SOURCE_SCHEMA,
+  "ammo",
+  "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "New Ammo"
 );
+export const COMP_AMMO_JSON_SCHEMA = zodToJsonSchema(COMP_AMMO_SCHEMA);
 
 export interface CompendiumAmmo
   extends FoundryCompendiumData<AmmoDataSourceData> {

@@ -29,9 +29,13 @@ export interface CompendiumMagic
   type: typeof TYPES.ITEM.MAGIC;
 }
 
-export const COMP_MAGIC_JSON_SCHEMA = zodToJsonSchema(
-  compDataZodSchema(MAGIC_SCHEMA, "magic", "icons/svg/daze.svg", "New Magic")
+export const COMP_MAGIC_SCHEMA = compDataZodSchema(
+  MAGIC_SCHEMA,
+  "magic",
+  "icons/svg/daze.svg",
+  "New Magic"
 );
+export const COMP_MAGIC_JSON_SCHEMA = zodToJsonSchema(COMP_MAGIC_SCHEMA);
 
 export type MagicDataSourceData = z.infer<typeof MAGIC_SCHEMA>;
 /** A JSON schema for magic source objects */

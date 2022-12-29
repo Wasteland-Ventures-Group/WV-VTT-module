@@ -1,5 +1,5 @@
 import { z } from "zod";
-import zodToJsonSchema from "zod-to-json-schema";
+import { zodToJsonSchema } from "zod-to-json-schema";
 import { SplashSizes } from "../../../../constants.js";
 import { COMP_NUM_SCHEMA } from "../../../common.js";
 

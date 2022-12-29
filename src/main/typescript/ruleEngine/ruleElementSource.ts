@@ -1,5 +1,5 @@
 import { z } from "zod";
-import zodToJsonSchema from "zod-to-json-schema";
+import { zodToJsonSchema } from "zod-to-json-schema";
 import { DOCUMENTSELECTOR_SOURCE_SCHEMA } from "./documentSelectorSource.js";
 
 export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
@@ -48,4 +48,7 @@ export const RULE_ELEMENT_SCHEMA = z.object({
 export type RuleElementCondition = typeof RULE_ELEMENT_CONDITIONS[number];
 
 /** A JSON schema for RuleElementSource objects */
-export const RULE_ELEMENT_JSON_SCHEMA = zodToJsonSchema(RULE_ELEMENT_SCHEMA);
+export const RULE_ELEMENT_JSON_SCHEMA = zodToJsonSchema(
+  RULE_ELEMENT_SCHEMA,
+  "Rule Element"
+);

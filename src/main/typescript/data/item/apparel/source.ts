@@ -1,10 +1,7 @@
 import { z } from "zod";
-import zodToJsonSchema from "zod-to-json-schema";
+import { zodToJsonSchema } from "zod-to-json-schema";
 import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
-import {
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-  COMP_NUM_SCHEMA
-} from "../../common.js";
+import { COMP_NUM_SCHEMA } from "../../common.js";
 import {
   compDataZodSchema,
   FoundryCompendiumData
@@ -28,7 +25,7 @@ export const APPAREL_SOURCE_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   quickSlots: COMP_NUM_SCHEMA.optional().default({}),
 
   /** The number of mod slots of the apparel */
-  modSlots: COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.optional().default({}),
+  modSlots: COMP_NUM_SCHEMA.optional().default({}),
 
   /** The apparel slot this apparel occupies when equipped */
   slot: z.enum(ApparelSlots).default("clothing"),

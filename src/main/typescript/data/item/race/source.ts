@@ -5,7 +5,7 @@ import {
   FoundryCompendiumData
 } from "../../foundryCommon.js";
 import { z } from "zod";
-import zodToJsonSchema from "zod-to-json-schema";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 export default interface RaceDataSource {
   type: typeof TYPES.ITEM.RACE;

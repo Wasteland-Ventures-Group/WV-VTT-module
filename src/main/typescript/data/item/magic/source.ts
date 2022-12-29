@@ -3,7 +3,7 @@ import { RANGE_SCHEMA } from "./ranges/source.js";
 import { TargetSchema } from "./target/source.js";
 import { CompositeNumberSchema } from "../../common.js";
 import { z } from "zod";
-import zodToJsonSchema from "zod-to-json-schema";
+import { zodToJsonSchema } from "zod-to-json-schema";
 import {
   compDataZodSchema,
   FoundryCompendiumData

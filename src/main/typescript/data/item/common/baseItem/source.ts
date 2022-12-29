@@ -1,5 +1,5 @@
 import { z } from "zod";
-import zodToJsonSchema from "zod-to-json-schema";
+import { zodToJsonSchema } from "zod-to-json-schema";
 import { RULES_SOURCE_SCHEMA } from "../rules/source.js";
 
 /** This holds the source of the base values that all items have in common. */
@@ -23,4 +23,7 @@ export const BASE_ITEM_SCHEMA = z.object({
 });
 
 /** A JSON schema for base item objects */
-export const BASE_ITEM_SOURCE_JSON_SCHEMA = zodToJsonSchema(BASE_ITEM_SCHEMA);
+export const BASE_ITEM_SOURCE_JSON_SCHEMA = zodToJsonSchema(
+  BASE_ITEM_SCHEMA,
+  "Base Item"
+);

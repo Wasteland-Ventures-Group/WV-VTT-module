@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { PHYS_ITEM_SCHEMA } from "../physicalItem/source.js";
-import zodToJsonSchema from "zod-to-json-schema";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 /**
  * This holds the sources of the base values that all stackable physical items

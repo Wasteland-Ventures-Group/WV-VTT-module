@@ -93,7 +93,7 @@ export function compDataZodSchema(
       img: z.string().min(1).default(defaultImg),
       // TODO: figure out if there should be any extra restrictions on effects and flags
       effects: z.array(z.object({}).passthrough()).default([]),
-      flags: z.array(z.object({}).passthrough()).default([])
+      flags: z.object({}).passthrough().default({})
     })
     .strict()
     .default({});

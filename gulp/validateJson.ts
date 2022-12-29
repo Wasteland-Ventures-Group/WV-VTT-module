@@ -5,11 +5,10 @@ import type { z, ZodError } from "zod";
 
 export default async function validateJsonTask(): Promise<void> {
   const validationConfigs: ValidationConfig[] = [
-    // TODO
-    // {
-    // dataGlob: "./src/main/lang/*.json",
-    // schemaPath: langSchemaPath
-    // },
+    {
+      dataGlob: "./src/main/lang/*.json",
+      schema: (await import("../src/main/typescript/lang.js")).LANG_SCHEMA
+    },
     {
       dataGlob: "./src/main/compendiums/item/ammo/**/*.json",
       schema: (await import("../src/main/typescript/data/item/ammo/source.js"))

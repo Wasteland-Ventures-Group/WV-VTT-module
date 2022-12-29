@@ -264,9 +264,4 @@ export function isOfItemType<
 }
 
 /** The relation of the owning item to the document that caused a message */
-export const DocumentRelations = [
-  "thisItem",
-  "parentActor",
-  "parentOwnedItem"
-] as const;
-export type DocumentRelation = typeof DocumentRelations[number];
+export type DocumentRelation = "thisItem" | "parentActor" | "parentOwnedItem";

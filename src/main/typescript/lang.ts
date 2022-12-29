@@ -10,7 +10,7 @@ import {
   SpecialNames
 } from "./constants.js";
 import type { Join, PathsToStringProps } from "./helperTypes.js";
-import { DocumentRelations } from "./item/wvItem.js";
+import type { DocumentRelation } from "./item/wvItem.js";
 
 function fullRecord<T extends string>(
   keys: readonly [T, ...T[]]
@@ -23,7 +23,7 @@ function fullRecordWithVal<T extends string, U = string>(
   value: z.ZodType<U>
 ): z.ZodType<Record<T, U>> {
   const schema = z.record(z.enum(keys), value).superRefine((val, ctx) => {
-    for (const key in keys) {
+    for (const key of keys) {
       if (!(key in val)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
@@ -77,7 +77,20 @@ const I18N_MAGIC_TYPES = fullRecord(MagicTypes);
 const I18N_MAGIC_SCHOOLS = fullRecord(GeneralMagicSchools);
 const I18N_SKILLS = fullRecord(SkillNames);
 const I18N_SPECIALS = fullRecordWithVal(SpecialNames, SPECIAL);
-const DOCUMENT_RELATIONS = fullRecord(DocumentRelations);
+/** The relation of the owning item to the document that caused a message */
+export const DocumentRelations = [
+  "thisItem",
+  "parentActor",
+  "parentOwnedItem"
+] as const;
+
+// Ensures that DocumentRelations doesn't get out of sync with its type
+// This is a bit ugly, but importing a non-type from WvItem breaks the build
+// tools.
+type _<T extends typeof DocumentRelations[number] = DocumentRelation> = never;
+
+// export type DocumentRelation = typeof DocumentRelations[number];
+const DOCUMENT_RELATIONS = fullRecord<DocumentRelation>(DocumentRelations);
 
 /** A union of possible i18n keys. */
 export type WvI18nKey = Join<PathsToStringProps<LangSchema>, ".">;

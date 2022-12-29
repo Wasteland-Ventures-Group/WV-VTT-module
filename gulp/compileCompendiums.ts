@@ -66,7 +66,7 @@ export default async function compileCompendiumsTask(): Promise<void[]> {
   );
 }
 compileCompendiumsTask.description =
-  "Compile all single entry files to compemdiums.";
+  "Compile all single entry files to compendiums.";
 
 export function compileCompendiumsWatchTask(): void {
   gulp.watch(watchPath, compileCompendiumsTask).on("change", logChange);

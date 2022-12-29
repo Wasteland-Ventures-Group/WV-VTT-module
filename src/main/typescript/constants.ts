@@ -299,9 +299,10 @@ export const SystemDocumentTypes: readonly SystemDocumentType[] = [
 ] as const;
 
 export const SYSTEM_DOCUMENT_TYPE_SCHEMA = z.custom<SystemDocumentType>(
-  (arg) => {
-    typeof arg == "string" && arg in SystemDocumentTypes;
-  }
+  (val) => SystemDocumentTypes.includes(val as SystemDocumentType),
+  (val) => ({
+    message: `Invalid Document Type: ${val} (${typeof val}). Expected one of ${SystemDocumentTypes}`
+  })
 );
 
 /** A type representing the different range brackets */

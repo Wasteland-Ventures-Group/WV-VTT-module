@@ -1,390 +1,459 @@
+import { z } from "zod";
+import {
+  ApparelTypes,
+  Calibers,
+  EquipmentSlots,
+  GeneralMagicSchools,
+  MagicTypes,
+  Rarities,
+  SkillNames,
+  SpecialNames
+} from "./constants.js";
 import type { Join, PathsToStringProps } from "./helperTypes.js";
-import type { DocumentRelation } from "./item/wvItem.js";
-import type {
-  I18nApparelTypes,
-  I18nCalibers,
-  I18nEquipmentSlots,
-  I18nMagicTypes,
-  I18nMagicSchools,
-  I18nRarities,
-  I18nSkills,
-  I18nSpecials
-} from "./wvI18n.js";
+import { DocumentRelations } from "./item/wvItem.js";
+
+function fullRecord<T extends string>(
+  keys: readonly [T, ...T[]]
+): z.ZodType<Record<T, string>> {
+  return fullRecordWithVal(keys, z.string());
+}
+
+function fullRecordWithVal<T extends string, U = string>(
+  keys: readonly [T, ...T[]],
+  value: z.ZodType<U>
+): z.ZodType<Record<T, U>> {
+  const schema = z.record(z.enum(keys), value).superRefine((val, ctx) => {
+    for (const key in keys) {
+      if (!(key in val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Missing key ${key}`
+        });
+      }
+    }
+  });
+
+  return schema as z.ZodType<Record<T, U>>;
+}
+
+/** Names in singular and plural */
+const QUANTITY_NAMES = z.object({
+  /** The singular name */
+  singular: z.string(),
+  /** The plural name */
+  plural: z.string()
+});
+
+/** A schema for system settings */
+const SETTING = z.object({
+  /** The name of the setting */
+  name: z.string(),
+  /** The hint for the setting */
+  hint: z.string()
+});
+
+/** Names in long and short form */
+const SHORT_LONG_NAMES = z.object({
+  /** The long name */
+  long: z.string(),
+  /** The short name */
+  short: z.string()
+});
+
+/** A schema for SPECIALs */
+// interface Special extends ShortLongNames
+const SPECIAL = SHORT_LONG_NAMES.extend({
+  /**
+   * @maxLength 3
+   * @minLength 3
+   */
+  short: z.string().min(3).max(3)
+});
+const I18N_RARITIES = fullRecord(Rarities);
+const I18N_CALIBERS = fullRecord(Calibers);
+const I18N_APPAREL_TYPES = fullRecord(ApparelTypes);
+const I18N_EQUIPMENT_SLOTS = fullRecord(EquipmentSlots);
+const I18N_MAGIC_TYPES = fullRecord(MagicTypes);
+const I18N_MAGIC_SCHOOLS = fullRecord(GeneralMagicSchools);
+const I18N_SKILLS = fullRecord(SkillNames);
+const I18N_SPECIALS = fullRecordWithVal(SpecialNames, SPECIAL);
+const DOCUMENT_RELATIONS = fullRecord(DocumentRelations);
 
 /** A union of possible i18n keys. */
 export type WvI18nKey = Join<PathsToStringProps<LangSchema>, ".">;
 
-export interface LangSchema {
+export type LangSchema = z.infer<typeof LANG_SCHEMA>;
+export const LANG_SCHEMA = z.object({
   /** The root element for the Wasteland Ventures system localization */
-  wv: {
+  wv: z.object({
     /** Labels coming straight out of the rule book */
-    rules: {
+    rules: z.object({
       /** Labels for Action Points */
-      actionPoints: ShortLongNames & {
+      actionPoints: SHORT_LONG_NAMES.extend({
         /** A label for action point use */
-        use: string;
-      };
+        use: z.string()
+      }),
       /** Labels for different actions */
-      actions: {
+      actions: z.object({
         /** Labels relating to attack actions */
-        attack: {
+        attack: z.object({
           /** A label for the aimed attacks */
-          aim: string;
+          aim: z.string(),
           /** A label for called shots */
-          calledShot: string;
+          calledShot: z.string(),
           /** A label for sneak attacks */
-          sneakAttack: string;
-        };
-      };
+          sneakAttack: z.string()
+        })
+      }),
       /** Labels for the background */
-      background: {
+      background: z.object({
         /** Label for the age */
-        age: string;
+        age: z.string(),
         /** Label for the appearance */
-        appearance: string;
+        appearance: z.string(),
         /** Label for the background */
-        background: string;
+        background: z.string(),
         /** Label for the cutie mark */
-        cutieMark: string;
+        cutieMark: z.string(),
         /** Label for the dreams */
-        dreams: string;
+        dreams: z.string(),
         /** Label for the fears */
-        fears: string;
+        fears: z.string(),
         /** Label for the gender */
-        gender: string;
+        gender: z.string(),
         /** Label for the personality */
-        personality: string;
+        personality: z.string(),
         /** Label for the size */
-        sizeCategory: string;
+        sizeCategory: z.string(),
         /** Label for the social contacts */
-        socialContacts: string;
+        socialContacts: z.string(),
         /** Label for the special talent */
-        specialTalent: string;
+        specialTalent: z.string(),
         /** Label for the virtue */
-        virtue: string;
-      };
+        virtue: z.string()
+      }),
       /** Labels relating to crippled limbs */
-      crippledLimbs: {
+      crippledLimbs: z.object({
         /** Status labels for different limbs */
-        status: {
-          torso: string;
-          head: string;
-          secondHead: string;
-          frontLeftLeg: string;
-          frontRightLeg: string;
-          rearLeftLeg: string;
-          rearRightLeg: string;
-          leftWing: string;
-          rightWing: string;
-        };
-      };
+        status: z.object({
+          torso: z.string(),
+          head: z.string(),
+          secondHead: z.string(),
+          frontLeftLeg: z.string(),
+          frontRightLeg: z.string(),
+          rearLeftLeg: z.string(),
+          rearRightLeg: z.string(),
+          leftWing: z.string(),
+          rightWing: z.string()
+        })
+      }),
       /** Labels relating to criticals */
-      criticals: {
+      criticals: z.object({
         /** The grouping title for criticals */
-        title: string;
+        title: z.string(),
         /** The label for the success */
-        failure: string;
+        failure: z.string(),
         /** The label for the failure */
-        success: string;
+        success: z.string(),
         /** The label for the critical failure chance */
-        failureChance: string;
+        failureChance: z.string(),
         /** The label for the critical success chance */
-        successChance: string;
-      };
+        successChance: z.string()
+      }),
       /** Labels related to damage */
-      damage: ShortLongNames & {
+      damage: SHORT_LONG_NAMES.extend({
         /** Label for the base damage without dice */
-        baseDamage: string;
+        baseDamage: z.string(),
         /** Label for the damage dice */
-        damageDice: string;
+        damageDice: z.string(),
         /** Label for the Strength based dice range */
-        diceRange: string;
+        diceRange: z.string(),
         /** Labels related to damage fall-off */
-        fallOff: {
+        fallOff: z.object({
           /** The name of the damage fall-off concept */
-          name: string;
+          name: z.string(),
           /** The names for the fall-off types */
-          types: {
-            shotgun: string;
-          };
-        };
+          types: z.object({
+            shotgun: z.string()
+          })
+        }),
         /** Labels related to damage threshold */
-        threshold: ShortLongNames & {
+        threshold: SHORT_LONG_NAMES.extend({
           /** Names for damage threshold reduction */
-          reduction: ShortLongNames;
-        };
-      };
+          reduction: SHORT_LONG_NAMES
+        })
+      }),
       /** Labels related to equipment */
-      equipment: {
-        ammo: {
+      equipment: z.object({
+        ammo: z.object({
           /** The label for the caliber */
-          caliber: string;
+          caliber: z.string(),
           /** Names for different calibers */
-          calibers: I18nCalibers;
+          calibers: I18N_CALIBERS,
           /** The name of ammunition */
-          name: string;
-          subTypes: {
-            standard: string;
-            armorPiercing: string;
-            hollowPoint: string;
-            incendiary: string;
-            explosive: string;
-            buckshot: string;
-            magnum: string;
-            slug: string;
-            pulseSlug: string;
-            flechette: string;
-            dragonsBreath: string;
-            overcharge: string;
-            maxCharge: string;
-            optimized: string;
-            drakeOil: string;
-            causticSludge: string;
-            cryoFluid: string;
-            arcane: string;
-            lightweight: string;
-            piercing: string;
-            broadhead: string;
-            highExplosive: string;
-            plasma: string;
-            pulse: string;
-            timed: string;
-            highVelocity: string;
-          };
+          name: z.string(),
+          subTypes: z.object({
+            standard: z.string(),
+            armorPiercing: z.string(),
+            hollowPoint: z.string(),
+            incendiary: z.string(),
+            explosive: z.string(),
+            buckshot: z.string(),
+            magnum: z.string(),
+            slug: z.string(),
+            pulseSlug: z.string(),
+            flechette: z.string(),
+            dragonsBreath: z.string(),
+            overcharge: z.string(),
+            maxCharge: z.string(),
+            optimized: z.string(),
+            drakeOil: z.string(),
+            causticSludge: z.string(),
+            cryoFluid: z.string(),
+            arcane: z.string(),
+            lightweight: z.string(),
+            piercing: z.string(),
+            broadhead: z.string(),
+            highExplosive: z.string(),
+            plasma: z.string(),
+            pulse: z.string(),
+            timed: z.string(),
+            highVelocity: z.string()
+          }),
           /** The label for the ammo type */
-          type: string;
-        };
+          type: z.string()
+        }),
         /** Labels relating to the concept of apparel. */
-        apparel: {
+        apparel: z.object({
           /** The name of apparel. */
-          name: string;
+          name: z.string(),
           /** The name for the concept of apparel type */
-          type: string;
+          type: z.string(),
           /** Names for the different apparel types */
-          types: I18nApparelTypes;
-        };
+          types: I18N_APPAREL_TYPES
+        }),
         /** Labels relating to the concept of bottle caps */
-        caps: QuantityNames;
+        caps: QUANTITY_NAMES,
         /** The name for the inventory */
-        inventory: string;
+        inventory: z.string(),
         /** The name for equipment */
-        name: string;
+        name: z.string(),
         /** Labels relating to rarity */
-        rarity: {
+        rarity: z.object({
           /** The name for the concept of rarity */
-          name: string;
+          name: z.string(),
           /** Names for the rarity levels */
-          names: I18nRarities;
-        };
+          names: I18N_RARITIES
+        }),
         /** Labels for different equipment slots */
-        slots: QuantityNames & {
+        slots: QUANTITY_NAMES.extend({
           /** The name for the apparel slot concept */
-          apparelSlot: string;
+          apparelSlot: z.string(),
           /** The names for blocked apparel slots */
-          blockedSlots: QuantityNames;
+          blockedSlots: QUANTITY_NAMES,
           /** The names for mod slots */
-          modSlot: QuantityNames;
+          modSlot: QUANTITY_NAMES,
           /** The names for quick slots */
-          quickSlot: QuantityNames;
+          quickSlot: QUANTITY_NAMES,
           /** The names for weapon slots */
-          weaponSlot: QuantityNames;
+          weaponSlot: QUANTITY_NAMES,
           /** Names for different equipment slots */
-          names: I18nEquipmentSlots;
-        };
+          names: I18N_EQUIPMENT_SLOTS
+        }),
         /** Labels for the concept of value */
-        value: {
+        value: z.object({
           /** The name of the value concept */
-          name: string;
-        };
+          name: z.string()
+        }),
         /** Labels related to weapons */
-        weapon: QuantityNames & {
+        weapon: QUANTITY_NAMES.extend({
           /** Names for attacks */
-          attack: QuantityNames;
+          attack: QUANTITY_NAMES,
           /** The label for the holdout property */
-          holdout: string;
+          holdout: z.string(),
           /** Labels related to reloading */
-          reload: {
+          reload: z.object({
             /** The label for the container size */
-            containerSize: string;
+            containerSize: z.string(),
             /** The label for the container type */
-            containerType: string;
+            containerType: z.string(),
             /** Labels for the different container types */
-            containerTypes: {
-              internal: string;
-              magazine: string;
-            };
+            containerTypes: z.object({
+              internal: z.string(),
+              magazine: z.string()
+            }),
             /** The noun for reload */
-            name: string;
-          };
+            name: z.string()
+          }),
           /** The name for the number of shots per attack */
-          shots: string;
+          shots: z.string(),
           /** The name for the strength requirement */
-          strengthRequirement: ShortLongNames;
-        };
+          strengthRequirement: SHORT_LONG_NAMES
+        }),
         /** Labels relating to the concept of weight */
-        weight: {
+        weight: z.object({
           /** The name of the concept of weight */
-          name: string;
-        };
-      };
+          name: z.string()
+        })
+      }),
       /** Labels relating to health */
-      health: {
+      health: z.object({
         /** The label for the health */
-        health: string;
+        health: z.string(),
         /** The label for the short version of "health points" */
-        hp: string;
+        hp: z.string(),
         /** The label for the healing rate */
-        healingRate: string;
-      };
+        healingRate: z.string()
+      }),
       /** Label for the initiative */
-      initiative: string;
+      initiative: z.string(),
       /** Label for the insanity field */
-      insanity: string;
+      insanity: z.string(),
       /** Label for the karma field */
-      karma: string;
+      karma: z.string(),
       /** Labels related to leveling */
-      leveling: {
+      leveling: z.object({
         /** The label for the level */
-        level: string;
+        level: z.string(),
         /** The label for the experience */
-        experience: string;
-      };
+        experience: z.string()
+      }),
       /** Labels related to magic */
-      magic: {
+      magic: z.object({
         /** The label for potency */
-        potency: string;
+        potency: z.string(),
         /** The name of "Magic" */
-        magic: string;
+        magic: z.string(),
         /** The label for the strain */
-        strain: string;
+        strain: z.string(),
         /** The label for the strain use */
-        strainUse: string;
+        strainUse: z.string(),
         /** The label of the types of magic */
-        type: QuantityNames & {
-          names: I18nMagicTypes;
-        };
-        school: QuantityNames & {
-          names: I18nMagicSchools;
-        };
-      };
-      painThreshold: QuantityNames & {
-        reached: string;
-      };
+        type: QUANTITY_NAMES.extend({
+          names: I18N_MAGIC_TYPES
+        }),
+        school: QUANTITY_NAMES.extend({
+          names: I18N_MAGIC_SCHOOLS
+        })
+      }),
+      painThreshold: QUANTITY_NAMES.extend({
+        reached: z.string()
+      }),
       /** Labels related to radiation */
-      radiation: {
+      radiation: z.object({
         /** The name of the radiation concept */
-        name: string;
+        name: z.string(),
         /** The label for the absorbed dose */
-        dose: string;
+        dose: z.string(),
         /** The label for the radiation sickness level */
-        sicknessLevel: string;
+        sicknessLevel: z.string(),
         /** Names for levels of radiation sickness */
-        sicknessLevels: {
-          none: string;
-          minor: string;
-          moderate: string;
-          major: string;
-          critical: string;
-        };
-      };
+        sicknessLevels: z.object({
+          none: z.string(),
+          minor: z.string(),
+          moderate: z.string(),
+          major: z.string(),
+          critical: z.string()
+        })
+      }),
       /** Labels related to range */
-      range: QuantityNames & {
+      range: QUANTITY_NAMES.extend({
         /** Labels relating to the distance */
-        distance: {
+        distance: z.object({
           /** The name for the concept of distance */
-          name: string;
-        };
+          name: z.string()
+        }),
         /** Names for different ranges */
-        ranges: {
+        ranges: z.object({
           /** The name for out of range */
-          outOfRange: ShortLongNames;
+          outOfRange: SHORT_LONG_NAMES,
           /** The name for long range */
-          long: ShortLongNames;
+          long: SHORT_LONG_NAMES,
           /** The name for medium range */
-          medium: ShortLongNames;
+          medium: SHORT_LONG_NAMES,
           /** The name for short range */
-          short: ShortLongNames;
-        };
-      };
-      resistances: {
+          short: SHORT_LONG_NAMES
+        })
+      }),
+      resistances: z.object({
         /** Labels for the poison resistance */
-        poison: ShortLongNames;
+        poison: SHORT_LONG_NAMES,
         /** Labels for the radiation resistance */
-        radiation: ShortLongNames;
-      };
+        radiation: SHORT_LONG_NAMES
+      }),
       /** Rules labels related to rolls */
-      rolls: {
+      rolls: z.object({
         /** Labels for roll results */
-        results: {
+        results: z.object({
           /** The label for a critical failure */
-          criticalFailure: string;
+          criticalFailure: z.string(),
           /** The label for a critical hit */
-          criticalHit: string;
+          criticalHit: z.string(),
           /** The label for a critical miss */
-          criticalMiss: string;
+          criticalMiss: z.string(),
           /** The label for a critical success */
-          criticalSuccess: string;
+          criticalSuccess: z.string(),
           /** The label for a failure */
-          failure: string;
+          failure: z.string(),
           /** The label for degrees of failure */
-          failureDegrees: string;
+          failureDegrees: z.string(),
           /** The label for a hit */
-          hit: string;
+          hit: z.string(),
           /** The label for a miss */
-          miss: string;
+          miss: z.string(),
           /** The label for a success */
-          success: string;
+          success: z.string(),
           /** The label for degrees of success */
-          successDegrees: string;
-        };
+          successDegrees: z.string()
+        }),
         /** Labels for various targets to roll for */
-        targets: {
+        targets: z.object({
           /** Label for a hit chance reason */
-          hitChance: string;
+          hitChance: z.string(),
           /** Label for a success chance reason */
-          successChance: string;
-        };
-      };
+          successChance: z.string()
+        })
+      }),
       /** Labels related to skills */
-      skills: QuantityNames & {
+      skills: QUANTITY_NAMES.extend({
         /** Labels for skill points */
-        points: ShortLongNames;
+        points: SHORT_LONG_NAMES,
         /** The names of the skills */
-        names: I18nSkills;
+        names: I18N_SKILLS,
         /** The label for an unknown Skill */
-        unknown: string;
-      };
+        unknown: z.string()
+      }),
       /** Labels related to SPECIAL */
-      special: QuantityNames & {
+      special: QUANTITY_NAMES.extend({
         /** The names of SPECIALs */
-        names: I18nSpecials;
+        names: I18N_SPECIALS,
         /** The label for the permanent total of a SPECIAL */
-        permTotal: string;
+        permTotal: z.string(),
         /** Labels for SPECIAL points */
-        points: ShortLongNames;
+        points: SHORT_LONG_NAMES,
         /** The label for the temporary total of a SPECIAL */
-        tempTotal: string;
+        tempTotal: z.string(),
         /** The label for an unknown SPECIAL */
-        unknown: string;
-      };
-    };
+        unknown: z.string()
+      })
+    }),
     /** Labels used by the system module itself */
-    system: {
+    system: z.object({
       /** Labels for actions */
-      actions: {
-        cancel: string;
-        create: string;
-        delete: string;
-        edit: string;
-        execute: string;
-        submit: string;
-        unequip: string;
-        update: string;
-      };
+      actions: z.object({
+        cancel: z.string(),
+        create: z.string(),
+        delete: z.string(),
+        edit: z.string(),
+        execute: z.string(),
+        submit: z.string(),
+        unequip: z.string(),
+        update: z.string()
+      }),
       /** Labels relating to different dialogs */
-      dialogs: {
+      dialogs: z.object({
         /** Labels for the compendium overwrite confirmation dialog */
-        compendiumOverwriteConfirm: {
+        compendiumOverwriteConfirm: z.object({
           /**
            * The title for the dialog
            *
@@ -392,19 +461,19 @@ export interface LangSchema {
            * - name: the name of the item
            * @pattern (?=.*\{name\})
            */
-          title: string;
+          title: z.string(),
           /** The content of the dialog */
-          content: string;
-        };
-      };
+          content: z.string()
+        })
+      }),
       /** Labels related to Effect Items */
-      effect: QuantityNames;
+      effect: QUANTITY_NAMES,
       /** Labels related to generic Misc Items */
-      item: QuantityNames;
+      item: QUANTITY_NAMES,
       /** Labels used in the initial character setup app */
-      initialCharacterSetup: {
+      initialCharacterSetup: z.object({
         /** The label for the open button on the character sheet */
-        openButton: string;
+        openButton: z.string(),
         /**
          * The title for the window
          *
@@ -412,17 +481,17 @@ export interface LangSchema {
          * - name: the name of the character
          * @pattern (?=.*\{name\})
          */
-        title: string;
+        title: z.string(),
         /** Labels relating to the initial character setup */
-        messages: {
+        messages: z.object({
           /** A message for when the user spent too few SPECIAL points */
-          tooFewSpecialPointsSpent: string;
+          tooFewSpecialPointsSpent: z.string(),
           /** A message for when the user spent too many SPECIAL points */
-          tooManySpecialPointsSpent: string;
-        };
-      };
+          tooManySpecialPointsSpent: z.string()
+        })
+      }),
       /** Different system messages. */
-      messages: {
+      messages: z.object({
         /**
          * The message when a specified attack could not be found on a weapon.
          *
@@ -430,36 +499,36 @@ export interface LangSchema {
          * - name: the name of the attack
          * @pattern (?=.*\{name\})
          */
-        attackNotFound: string;
+        attackNotFound: z.string(),
         /**
          * The message when a specified attack already exists on a weapon.
          * Parameters:
          * - name: the name of the attack
          * @pattern (?=.*\{name\})
          */
-        attackAlreadyExists: string;
+        attackAlreadyExists: z.string(),
         /**
          * A general message that a slot a newly equipped apparel would block,
          * is already occupied by another apparel.
          */
-        blockedApparelSlotIsOccupied: string;
+        blockedApparelSlotIsOccupied: z.string(),
         /**
          * A general message that an apparel slot is already blocked by another
          * apparel item.
          */
-        blockedByAnotherApparel: string;
+        blockedByAnotherApparel: z.string(),
         /** A general message that something can not be done in combat. */
-        canNotDoInCombat: string;
+        canNotDoInCombat: z.string(),
         /**
          * The message when an object attempted to be created could not be
          * created
          */
-        couldNotCreateDocument: string;
+        couldNotCreateDocument: z.string(),
         /**
          * The message when a macro tried to create an Actor or Item with
          * invalid system data
          */
-        invalidSystemDataInMacro: string;
+        invalidSystemDataInMacro: z.string(),
         /**
          * The message when an item just changed compendium link to linked.
          *
@@ -467,7 +536,7 @@ export interface LangSchema {
          * - name: the name of the item
          * @pattern (?=.*\{name\})
          */
-        itemIsNowLinked: string;
+        itemIsNowLinked: z.string(),
         /**
          * The message when an item just changed compendium link to unlinked.
          *
@@ -475,7 +544,7 @@ export interface LangSchema {
          * - name: the name of the item
          * @pattern (?=.*\{name\})
          */
-        itemIsNowUnlinked: string;
+        itemIsNowUnlinked: z.string(),
         /**
          * The notification text for completed migrations.
          *
@@ -484,7 +553,7 @@ export interface LangSchema {
          * - version: the system version that was migrated to
          * @pattern (?=.*\{systemName\})(?=.*\{version\})
          */
-        migrationCompleted: string;
+        migrationCompleted: z.string(),
         /**
          * The notification text for started migration.
          *
@@ -493,7 +562,7 @@ export interface LangSchema {
          * - version: the system version will be migrated to
          * @pattern (?=.*\{systemName\})(?=.*\{version\})
          */
-        migrationStarted: string;
+        migrationStarted: z.string(),
         /**
          * The message when a Document does not have an Actor.
          *
@@ -501,11 +570,11 @@ export interface LangSchema {
          * - name: the name of the document
          * @pattern (?=.*\{name\})
          */
-        noActor: string;
+        noActor: z.string(),
         /**
          * The message when an actor does not have enough AP to do something.
          */
-        notEnoughAp: string;
+        notEnoughAp: z.string(),
         /**
          * The message when an actor does not have enough AP to move a specific
          * distance.
@@ -516,23 +585,23 @@ export interface LangSchema {
          * - name: the name of the Actor trying to move
          * @pattern (?=.*\{needed\})(?=.*\{actual\})(?=.*\{name\})
          */
-        notEnoughApToMove: string;
+        notEnoughApToMove: z.string(),
         /**
          * The message when an actor does not have enough quick slots to ready
          * something.
          */
-        notEnoughQuickSlots: string;
+        notEnoughQuickSlots: z.string(),
         /** The message when a target is out of range */
-        targetOutOfRange: string;
-      };
+        targetOutOfRange: z.string()
+      }),
       /** Miscellaneous labels not fitting anywhere else */
-      misc: {
+      misc: z.object({
         /** Label for a description */
-        description: string;
+        description: z.string(),
         /** Label for details */
-        details: string;
+        details: z.string(),
         /** The label for a modifier, when the target is not known */
-        modifier: string;
+        modifier: z.string(),
         /**
          * The label for a modifier.
          *
@@ -540,9 +609,9 @@ export interface LangSchema {
          * - what: a reference to what the modifier is for
          * @pattern (?=.*\{what\})
          */
-        modifierFor: string;
+        modifierFor: z.string(),
         /** The name placeholder label for documents */
-        name: string;
+        name: z.string(),
         /**
          * The placeholder name for a new Document.
          *
@@ -550,57 +619,57 @@ export interface LangSchema {
          * - what: the document type name
          * @pattern (?=.*\{what\})
          */
-        newName: string;
+        newName: z.string(),
         /** The label for user provided notes */
-        notes: string;
+        notes: z.string(),
         /** The label for roll modes */
-        rollMode: QuantityNames;
+        rollMode: QUANTITY_NAMES,
         /** The label for source values */
-        sourceValues: string;
+        sourceValues: z.string(),
         /** The label for a speaker alias */
-        speakerAlias: string;
+        speakerAlias: z.string(),
         /** A collective name for miscellaneous statistics */
-        statistics: string;
+        statistics: z.string(),
         /** A collective name for tags */
-        tags: string;
+        tags: z.string(),
         /** A label for toggling a compendium link */
-        toggleCompendiumLink: string;
+        toggleCompendiumLink: z.string(),
         /** A label for updating an item from a compendium */
-        updateFromCompendium: string;
-      };
+        updateFromCompendium: z.string()
+      }),
       /** Labels related to the prompt dialog */
-      prompt: {
+      prompt: z.object({
         /** Default labels for the prompt */
-        defaults: {
+        defaults: z.object({
           /** The default window title */
-          title: string;
-        };
-      };
+          title: z.string()
+        })
+      }),
       /** Labels relating to race items */
-      races: QuantityNames & {
+      races: QUANTITY_NAMES.extend({
         /** Label for the fallback race */
-        noRace: string;
+        noRace: z.string(),
         /** Labels for physical attributes */
-        physical: {
+        physical: z.object({
           /** Label for the "canFly" attribute */
-          canFly: string;
+          canFly: z.string(),
           /** Label for the "canUseMagic" attribute */
-          canUseMagic: string;
+          canUseMagic: z.string(),
           /** Label for the "hasSecondHead" attribute */
-          hasSecondHead: string;
+          hasSecondHead: z.string(),
           /** Label for the "hasSpecialTalent" attribute */
-          hasSpecialTalent: string;
+          hasSpecialTalent: z.string(),
           /** Label for the "hasWings" attribute */
-          hasWings: string;
-        };
+          hasWings: z.string()
+        }),
         /** Labels for character creation attributes */
-        creation: {
+        creation: z.object({
           /** Label for the "startingSpecialPoints" attribute */
-          startingSpecialPoints: string;
-        };
-      };
+          startingSpecialPoints: z.string()
+        })
+      }),
       /** System labels related to rolls */
-      rolls: {
+      rolls: z.object({
         /**
          * A descriptive verb for what is being rolled
          *
@@ -608,25 +677,25 @@ export interface LangSchema {
          * - what: the label for what is being rolled
          * @pattern (?=.*\{what\})
          */
-        descriptive: string;
+        descriptive: z.string(),
         /** A capitalized, imperative verb for rolling dice */
-        imperative: string;
+        imperative: z.string(),
         /** A description for whispering to GMs */
-        whisperToGms: string;
-      };
+        whisperToGms: z.string()
+      }),
       /** Labels related to the Rule Engine */
-      ruleEngine: {
+      ruleEngine: z.object({
         /** Labels for document related rule element messages */
-        documentMessages: {
+        documentMessages: z.object({
           /** The descriptive name for document related rule element messages */
-          name: string;
+          name: z.string(),
           /** Labels for different document relations */
-          relations: Record<DocumentRelation, string>;
-        };
+          relations: DOCUMENT_RELATIONS
+        }),
         /** Labels for different errors */
-        errors: {
+        errors: z.object({
           /** Various logical errors */
-          logical: {
+          logical: z.object({
             /**
              * An error message when the selected property on the target is not
              * a CompositeNumber.
@@ -635,7 +704,7 @@ export interface LangSchema {
              * - path: the selector path
              * @pattern (?=.*\{path\})
              */
-            notCompositeNumber: string;
+            notCompositeNumber: z.string(),
             /**
              * An error message when the target does not match a property on a
              * selected Document.
@@ -644,7 +713,7 @@ export interface LangSchema {
              * - path: the target path
              * @pattern (?=.*\{path\})
              */
-            notMatchingTarget: string;
+            notMatchingTarget: z.string(),
             /**
              * An error message when a selected document is not of the expected
              * type.
@@ -653,7 +722,7 @@ export interface LangSchema {
              * - type: the expected type
              * @pattern (?=.*\{type\})
              */
-            wrongDocumentType: string;
+            wrongDocumentType: z.string(),
             /**
              * An error message when the target property on the selected
              * Document is of the wrong type.
@@ -663,7 +732,7 @@ export interface LangSchema {
              * - type: the expected type of the rule element type
              * @pattern (?=.*\{path\})(?=.*\{type\})
              */
-            wrongTargetType: string;
+            wrongTargetType: z.string(),
             /**
              * An error message when the value of a rule is of the wrong type.
              *
@@ -671,10 +740,10 @@ export interface LangSchema {
              * - type: the expected type for the rule element type
              * @pattern (?=.*\{type\})
              */
-            wrongValueType: string;
-          };
+            wrongValueType: z.string()
+          }),
           /** Various semantic errors */
-          semantic: {
+          semantic: z.object({
             /**
              * An error message for fields that are not allowed.
              *
@@ -683,7 +752,7 @@ export interface LangSchema {
              * - property: the name of the additional property
              * @pattern (?=.*\{path\})(?=.*\{property\})
              */
-            additional: string;
+            additional: z.string(),
             /**
              * An error message for fields that are missing.
              *
@@ -692,19 +761,19 @@ export interface LangSchema {
              * - property: the name of the missing property
              * @pattern (?=.*\{path\})(?=.*\{property\})
              */
-            missing: string;
+            missing: z.string(),
             /** An error message for an unknown error. */
-            unknown: string;
+            unknown: z.string(),
             /** An error message for an unknown RuleElement condition. */
-            unknownCondition: string;
+            unknownCondition: z.string(),
             /** An error message for an unknown RuleElement hook. */
-            unknownHook: string;
+            unknownHook: z.string(),
             /** An error message for an unknown RuleElement type. */
-            unknownRuleElement: string;
+            unknownRuleElement: z.string(),
             /** An error message for an unknown SPECIAL name. */
-            unknownSpecialName: string;
+            unknownSpecialName: z.string(),
             /** An error message for an unknown RuleElement selector. */
-            unknownSelector: string;
+            unknownSelector: z.string(),
             /**
              * An error message for fields that are of the wrong type.
              *
@@ -713,8 +782,8 @@ export interface LangSchema {
              * - type: the expected type of the field
              * @pattern (?=.*\{path\})(?=.*\{type\})
              */
-            wrongType: string;
-          };
+            wrongType: z.string()
+          }),
           /**
            * The description for the JSON syntax error.
            *
@@ -722,17 +791,17 @@ export interface LangSchema {
            * - message: the JSON parser error message
            * @pattern (?=.*\{message\})
            */
-          syntax: string;
-        };
+          syntax: z.string()
+        }),
         /** Labels for rule elements */
-        ruleElement: QuantityNames;
+        ruleElement: QUANTITY_NAMES,
         /** Labels related to selectors */
-        selectors: {
+        selectors: z.object({
           /** A summary label for selected documents */
-          selectedDocuments: string;
-        };
+          selectedDocuments: z.string()
+        }),
         /** Labels for different warnings */
-        warnings: {
+        warnings: z.object({
           /**
            * A warning, stating that the type of a property was changed.
            *
@@ -742,124 +811,91 @@ export interface LangSchema {
            * - new: the new type of the property
            * @pattern (?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
            */
-          changedType: string;
+          changedType: z.string(),
           /**
            * A warning for when a rule element was not saved because of errors,
            * explaining that changes will be lost if foundry is reloaded.
            */
-          notSaved: string;
-        };
-      };
+          notSaved: z.string()
+        })
+      }),
       /** Labels related to settings. */
-      settings: {
+      settings: z.object({
         /** Labels relating to an always/never setting */
-        alwaysNeverSetting: {
+        alwaysNeverSetting: z.object({
           /** The choices for the setting */
-          choices: {
-            always: string;
-            never: string;
-          };
-        };
+          choices: z.object({
+            always: z.string(),
+            never: z.string()
+          })
+        }),
         /** Movement related setting labels */
-        movement: {
+        movement: z.object({
           /** The enforcement and subtract setting for players */
-          enforceAndSubtractApForPlayers: Setting;
+          enforceAndSubtractApForPlayers: SETTING,
           /** The enforcement setting for game masters */
-          enforceApForGameMasters: Setting;
+          enforceApForGameMasters: SETTING,
           /** The subtract setting for game masters */
-          subtractApForGameMasters: Setting;
-        };
+          subtractApForGameMasters: SETTING
+        }),
         /** The Skill Points minimum bounds setting */
-        skillPointsMinBounds: Setting;
+        skillPointsMinBounds: SETTING,
         /** The SPECIAL Points minimum bounds setting */
-        specialPointsMinBounds: Setting;
-      };
+        specialPointsMinBounds: SETTING
+      }),
       /** Labels relating to sheets */
-      sheets: {
+      sheets: z.object({
         /** Names for different sheets */
-        names: {
+        names: z.object({
           /** The label for the Actor sheet */
-          actorSheet: string;
+          actorSheet: z.string(),
           /** The label for the Ammo sheet */
-          ammoSheet: string;
+          ammoSheet: z.string(),
           /** The label for the Apparel sheet */
-          apparelSheet: string;
+          apparelSheet: z.string(),
           /** The label for the Effect sheet */
-          effectSheet: string;
+          effectSheet: z.string(),
           /** The label for the generic Item Sheet */
-          itemSheet: string;
+          itemSheet: z.string(),
           /** The label for the Magic sheet */
-          magicSheet: string;
+          magicSheet: z.string(),
           /** The label for the Race sheet */
-          raceSheet: string;
+          raceSheet: z.string(),
           /** The label for the Weapon sheet */
-          weaponSheet: string;
-        };
-      };
-      spell: QuantityNames;
+          weaponSheet: z.string()
+        })
+      }),
+      spell: QUANTITY_NAMES,
       /** The label for the Thaumaturgy special select */
-      thaumSpecial: string;
+      thaumSpecial: z.string(),
       /** Labels for describing different values */
-      values: {
+      values: z.object({
         /** Label for an amount of something */
-        amount: string;
+        amount: z.string(),
         /** Label for a base value */
-        base: string;
+        base: z.string(),
         /** Label for a cost */
-        cost: string;
+        cost: z.string(),
         /** Label for a previous value */
-        previous: string;
+        previous: z.string(),
         /** Label for a remaining value */
-        remaining: string;
+        remaining: z.string(),
         /** Label for a total value */
-        total: string;
-      };
-    };
-  };
-}
-
-/** Names in long and short form */
-interface ShortLongNames {
-  /** The long name */
-  long: string;
-  /** The short name */
-  short: string;
-}
-
-/** Names in singular and plural */
-interface QuantityNames {
-  /** The singular name */
-  singular: string;
-  /** The plural name */
-  plural: string;
-}
-
-/** A schema for system settings */
-interface Setting {
-  /** The name of the setting */
-  name: string;
-  /** The hint for the setting */
-  hint: string;
-}
+        total: z.string()
+      })
+    })
+  })
+});
 
 /** A schema for enforce AP settings */
-interface EnforceApSetting extends Setting {
+const EXPORT_AP_SETTING = SETTING.extend({
   /** The setting choice labels */
-  choices: {
+  choices: z.object({
     /** The label for the disabled state */
-    disabled: string;
+    disabled: z.string(),
     /** The label for only enforcing on players state */
-    players: string;
+    players: z.string(),
     /** The label for enforcing on players and GM state */
-    playersAndGameMaster: string;
-  };
-}
-
-/** A schema for SPECIALs */
-interface Special extends ShortLongNames {
-  /**
-   * @maxLength 3
-   * @minLength 3
-   */
-  short: string;
-}
+    playersAndGameMaster: z.string()
+  })
+});

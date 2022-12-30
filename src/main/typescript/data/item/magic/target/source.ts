@@ -4,7 +4,7 @@ import { COMP_NUM_SCHEMA } from "../../../common.js";
 
 export const AOETypes = ["none", "fixed", "varies"] as const;
 
-export const TargetSchema = z
+export const TARGET_SCHEMA = z
   .object({
     type: z.enum(TargetTypes).default("none"),
     count: COMP_NUM_SCHEMA.default({}),
@@ -13,4 +13,4 @@ export const TargetSchema = z
   })
   .default({});
 
-export type TargetSource = z.infer<typeof TargetSchema>;
+export type TargetSource = z.infer<typeof TARGET_SCHEMA>;

@@ -1,4 +1,3 @@
-import type { JSONSchemaType } from "ajv";
 import { z } from "zod";
 import { SystemDocumentType, TYPES } from "../constants.js";
 
@@ -31,17 +30,6 @@ export class Resource {
     );
   }
 }
-
-export const RESOURCE_JSON_SCHEMA: JSONSchemaType<ResourceSource> = {
-  description: "A schema for a Foundry resource",
-  type: "object",
-  properties: {
-    value: { type: "number", minimum: 0 },
-    max: { type: "number", nullable: true }
-  },
-  required: ["value"],
-  additionalProperties: false
-};
 
 export interface FoundrySerializable {
   /**

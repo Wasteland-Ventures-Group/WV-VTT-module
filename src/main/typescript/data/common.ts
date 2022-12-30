@@ -1,4 +1,3 @@
-import type { JSONSchemaType } from "ajv";
 import { z } from "zod";
 import { getGame } from "../foundryHelpers.js";
 import type { WvI18nKey } from "../lang.js";
@@ -242,20 +241,6 @@ export class Component implements ComponentSource, FoundrySerializable {
     };
   }
 }
-
-export const COMP_NUM_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> = {
-  description: "A schema for modifiable number sources",
-  type: "object",
-  properties: {
-    source: {
-      description:
-        "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
-      type: "number"
-    }
-  },
-  required: ["source"],
-  additionalProperties: false
-};
 
 /**
  * A class for what Foundry VTT will automatically recognize as a "resource",

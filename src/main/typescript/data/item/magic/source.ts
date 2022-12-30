@@ -1,6 +1,6 @@
 import { TYPES, GeneralMagicSchools } from "../../../constants.js";
 import { RANGE_SCHEMA } from "./ranges/source.js";
-import { TargetSchema } from "./target/source.js";
+import { TARGET_SCHEMA } from "./target/source.js";
 import { COMP_NUM_SCHEMA } from "../../common.js";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
@@ -26,7 +26,7 @@ export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
   /** The spell's range information */
   range: RANGE_SCHEMA,
   /** The spell's target information */
-  target: TargetSchema
+  target: TARGET_SCHEMA
 }).default({});
 
 export interface CompendiumMagic

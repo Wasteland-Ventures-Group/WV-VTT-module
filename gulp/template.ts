@@ -28,7 +28,7 @@ export default async function templateTask(): Promise<void> {
   ] = await imports;
 
   const actorDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()]
+    [TYPES.ACTOR.CHARACTER, actorDbData.CHARACTER_SCHEMA.parse({})]
   ];
   const itemDocumentTypes: TemplateDocumentType[] = [
     [TYPES.ITEM.AMMO, ammoSource.AMMO_SCHEMA.parse({})],

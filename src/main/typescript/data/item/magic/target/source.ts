@@ -1,13 +1,13 @@
 import { z } from "zod";
 import { SplashSizes, TargetTypes } from "../../../../constants.js";
-import { CompositeNumberSchema } from "../../../common.js";
+import { COMP_NUM_SCHEMA } from "../../../common.js";
 
 export const AOETypes = ["none", "fixed", "varies"] as const;
 
 export const TargetSchema = z
   .object({
     type: z.enum(TargetTypes).default("none"),
-    count: CompositeNumberSchema,
+    count: COMP_NUM_SCHEMA.default({}),
     aoeType: z.enum(AOETypes).default("none"),
     fixedAoE: z.enum(SplashSizes).default("tiny")
   })

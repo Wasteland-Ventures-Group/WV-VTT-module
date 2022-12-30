@@ -1,39 +1,29 @@
-import type { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import {
-  SpecialName,
+  defaultMagicSpecial,
+  GeneralMagicSchools,
   SpecialNames,
   ThaumaturgySpecial,
   ThaumaturgySpecials
 } from "../../../../constants.js";
+import { fullRecordWithVal } from "../../../common.js";
 
-type CharacterMagicSpecials = Partial<Record<string, SpecialName>>;
-export default class MagicSource {
+const THAUM_SPECIAL = z.custom<ThaumaturgySpecial>((val) =>
+  ThaumaturgySpecials.includes(val as ThaumaturgySpecial)
+);
+
+export const MAGIC_SCHEMA = z.object({
   /** The SPECIAL of the character associated with the Thaumaturgy skill */
-  thaumSpecial: ThaumaturgySpecial = "intelligence";
+  thaumSpecial: THAUM_SPECIAL.default("intelligence"),
 
-  magicSpecials: CharacterMagicSpecials = {};
-}
+  /**
+   * Stores which SPECIAL is used to compute the potency of spells from each
+   * magic school.
+   */
+  magicSpecials: fullRecordWithVal(
+    GeneralMagicSchools,
+    z.enum(SpecialNames)
+  ).default(defaultMagicSpecial())
+});
 
-export const MAGIC_JSON_SCHEMA: JSONSchemaType<MagicSource> = {
-  description: "A magic specification",
-  type: "object",
-  properties: {
-    thaumSpecial: {
-      description: "The selected Thaumaturgy SPECIAL of the character",
-      type: "string",
-      enum: ThaumaturgySpecials
-    },
-    magicSpecials: {
-      type: "object",
-      additionalProperties: {
-        type: "string",
-        enum: SpecialNames
-      }
-    }
-  },
-  required: ["thaumSpecial", "magicSpecials"],
-  additionalProperties: false,
-  default: {
-    thaumSpecial: "intelligence"
-  }
-};
+export type MagicSource = z.infer<typeof MAGIC_SCHEMA>;

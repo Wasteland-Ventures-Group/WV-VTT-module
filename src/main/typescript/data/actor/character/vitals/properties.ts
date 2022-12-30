@@ -5,92 +5,106 @@ import {
 } from "../../../../constants.js";
 import WvI18n from "../../../../wvI18n.js";
 import { CompositeNumber, CompositeResource } from "../../../common.js";
-import type SpecialsProperties from "../specials/properties.js";
-import VitalsSource from "./source.js";
+import type { SpecialsProperties } from "../specials/properties.js";
+import type { VitalsSource } from "./source.js";
 
-export default class VitalsProperties extends VitalsSource {
-  constructor(source: VitalsSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
-
-    this.hitPoints = CompositeResource.from(source.hitPoints);
-    this.hitPoints.bounds.min = 0;
-
-    this.painThreshold = getPainThreshold(this.hitPoints.value);
-
-    this.actionPoints = CompositeResource.from(source.actionPoints);
-    this.actionPoints.bounds.min = 0;
-
-    this.insanity = CompositeResource.from(source.insanity);
-    this.insanity.bounds.min = 0;
-
-    this.strain = CompositeResource.from(source.strain);
-    this.strain.bounds.min = 0;
-  }
-
+export type VitalsProperties = VitalsSource & {
+  /** Indicates the character's pain threshold */
   painThreshold: PainThreshold;
 
-  override hitPoints: CompositeResource;
+  hitPoints: CompositeResource;
 
-  override actionPoints: CompositeResource;
+  actionPoints: CompositeResource;
 
-  override insanity: CompositeResource;
+  insanity: CompositeResource;
 
-  override strain: CompositeResource;
+  strain: CompositeResource;
 
   /** The healing rate of the character per 8 hours of rest */
-  healingRate = new CompositeNumber(0, { min: 0 });
+  healingRate: CompositeNumber;
+};
+
+export const VitalsProperties = {
+  from(source: VitalsSource): VitalsProperties {
+    const hitPoints = CompositeResource.from(source.hitPoints);
+    hitPoints.bounds.min = 0;
+
+    const painThreshold = getPainThreshold(hitPoints.value);
+
+    const actionPoints = CompositeResource.from(source.actionPoints);
+    actionPoints.bounds.min = 0;
+
+    const insanity = CompositeResource.from(source.insanity);
+    insanity.bounds.min = 0;
+
+    const strain = CompositeResource.from(source.strain);
+    strain.bounds.min = 0;
+
+    const healingRate = CompositeNumber.from({ source: 0, bounds: { min: 0 } });
+    return {
+      ...source,
+      hitPoints,
+      painThreshold,
+      actionPoints,
+      insanity,
+      strain,
+      healingRate
+    };
+  },
 
   /** Get the amount of crippled legs. */
-  get crippledLegs(): number {
+  crippledLegs(vitals: VitalsProperties): number {
     return [
-      this.crippledLimbs.legs.front.left,
-      this.crippledLimbs.legs.front.right,
-      this.crippledLimbs.legs.rear.left,
-      this.crippledLimbs.legs.rear.right
+      vitals.crippledLimbs.legs.front.left,
+      vitals.crippledLimbs.legs.front.right,
+      vitals.crippledLimbs.legs.rear.left,
+      vitals.crippledLimbs.legs.rear.right
     ].filter(Boolean).length;
-  }
+  },
 
   /**
    * Get the internationalized name for the radiation sickness level of a
    * character.
    */
-  get i18nRadiationSicknessLevel(): string {
-    return WvI18n.radiationSicknessLevels[this.radiationSicknessLevel];
-  }
+  i18nRadiationSicknessLevel(vitals: VitalsProperties): string {
+    const radSickLev = this.radiationSicknessLevel(vitals);
+    return WvI18n.radiationSicknessLevels[radSickLev];
+  },
 
   /** Get the level of radiation sickness. */
-  get radiationSicknessLevel(): RadiationSicknessLevel {
-    if (this.radiationDose >= 17) return "critical";
-    if (this.radiationDose >= 13) return "major";
-    if (this.radiationDose >= 9) return "moderate";
-    if (this.radiationDose >= 5) return "minor";
+  radiationSicknessLevel(vitals: VitalsProperties): RadiationSicknessLevel {
+    if (vitals.radiationDose >= 17) return "critical";
+    if (vitals.radiationDose >= 13) return "major";
+    if (vitals.radiationDose >= 9) return "moderate";
+    if (vitals.radiationDose >= 5) return "minor";
     return "none";
-  }
+  },
 
   /** Apply SPECIALs to the vitals and set the base values. */
-  applySpecials(specials: SpecialsProperties) {
-    this.hitPoints.source = specials.endurance.permTotal + 10;
+  applySpecials(vitals: VitalsProperties, specials: SpecialsProperties) {
+    vitals.hitPoints.source = specials.endurance.permTotal + 10;
 
     if (specials.endurance.tempTotal >= 8) {
-      this.healingRate.source = 3;
+      vitals.healingRate.source = 3;
     } else if (specials.endurance.tempTotal >= 4) {
-      this.healingRate.source = 2;
+      vitals.healingRate.source = 2;
     } else {
-      this.healingRate.source = 1;
+      vitals.healingRate.source = 1;
     }
 
-    this.actionPoints.source = Math.floor(specials.agility.tempTotal / 2) + 10;
-    this.insanity.source = Math.floor(specials.intelligence.tempTotal / 2) + 5;
-  }
+    vitals.actionPoints.source =
+      Math.floor(specials.agility.tempTotal / 2) + 10;
+    vitals.insanity.source =
+      Math.floor(specials.intelligence.tempTotal / 2) + 5;
+  },
 
   /** Apply the level to the vitals and set the base strain. */
-  applyLevel(level: number) {
-    this.strain.source = 20 + Math.floor(level / 5) * 5;
-  }
+  applyLevel(vitals: VitalsProperties, level: number) {
+    vitals.strain.source = 20 + Math.floor(level / 5) * 5;
+  },
 
   /** Apply the size category and set a hit points modifier. */
-  applySizeCategory(sizeCategory: number) {
+  applySizeCategory(vitals: VitalsProperties, sizeCategory: number) {
     const value = {
       4: 4,
       3: 2,
@@ -101,9 +115,9 @@ export default class VitalsProperties extends VitalsSource {
     }[sizeCategory];
 
     if (value)
-      this.hitPoints.add({
+      vitals.hitPoints.add({
         value,
         labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
       });
   }
-}
+};

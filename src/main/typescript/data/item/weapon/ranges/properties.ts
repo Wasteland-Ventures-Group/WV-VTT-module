@@ -1,6 +1,6 @@
 import type WvActor from "../../../../actor/wvActor.js";
 import { CONSTANTS, RangeBracket, TAGS } from "../../../../constants.js";
-import type SpecialsProperties from "../../../actor/character/specials/properties.js";
+import type { SpecialsProperties } from "../../../actor/character/specials/properties.js";
 import { CompositeNumber } from "../../../common.js";
 import type { RangesSource, DistanceSource, RangeSource } from "./source.js";
 

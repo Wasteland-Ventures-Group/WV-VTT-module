@@ -1,13 +1,13 @@
 import { CONSTANTS, SpecialNames, TYPES } from "../../../constants.js";
 import { CompositeNumber } from "../../common.js";
-import BackgroundProperties from "./background/properties.js";
-import EquipmentProperties from "./equipment/properties.js";
-import LevelingProperties from "./leveling/properties.js";
-import MagicProperties from "./magic/properties.js";
+import { BackgroundProperties } from "./background/properties.js";
+import { EquipmentProperties } from "./equipment/properties.js";
+import type { LevelingProperties } from "./leveling/properties.js";
+import { MagicProperties } from "./magic/properties.js";
 import SkillsProperties from "./skills/properties.js";
-import { CharacterDataSourceData } from "./source.js";
-import SpecialsProperties, { Special } from "./specials/properties.js";
-import VitalsProperties from "./vitals/properties.js";
+import type { CharacterDataSourceData } from "./source.js";
+import { SpecialsProperties, Special } from "./specials/properties.js";
+import { VitalsProperties } from "./vitals/properties.js";
 
 export default interface CharacterDataProperties {
   type: typeof TYPES.ACTOR.CHARACTER;
@@ -107,44 +107,59 @@ export class SecondaryStatisticsProperties {
   }
 }
 
-export class CharacterDataPropertiesData extends CharacterDataSourceData {
-  constructor(source: CharacterDataSourceData) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    this.leveling = new LevelingProperties(source.leveling);
+export type CharacterDataPropertiesData = CharacterDataSourceData & {
+  background: BackgroundProperties;
+
+  equipment: EquipmentProperties;
+
+  leveling: LevelingProperties;
+
+  vitals: VitalsProperties;
+
+  magic: MagicProperties;
+
+  /** The secondary statistics of the character */
+  secondary: SecondaryStatisticsProperties;
+
+  /** The resistances of the character */
+  resistances: ResistancesProperties;
+
+  /** The skills of the character */
+  skills: SkillsProperties;
+
+  /** The SPECIALs of the character */
+  specials: SpecialsProperties;
+};
+
+export const CharacterDataPropertiesData = {
+  from(source: CharacterDataSourceData): CharacterDataPropertiesData {
+    const leveling = deepClone(source.leveling);
+    const specials = SpecialsProperties.from();
 
     for (const specialName of SpecialNames) {
-      const special = this.specials[specialName];
-      special.points = this.leveling.specialPoints[specialName];
+      const special = specials[specialName];
+      special.points = leveling.specialPoints[specialName];
       special.permBounds = { min: 0, max: 15 };
       special.tempBounds = { min: 0, max: 15 };
     }
 
-    this.background = new BackgroundProperties(source.background);
-    this.equipment = new EquipmentProperties(source.equipment);
-    this.vitals = new VitalsProperties(source.vitals);
-    this.magic = new MagicProperties(source.magic);
+    const background = BackgroundProperties.from(source.background);
+    const equipment = EquipmentProperties.from(source.equipment);
+    const vitals = VitalsProperties.from(source.vitals);
+    const magic = MagicProperties.from(source.magic);
+    const secondary = new SecondaryStatisticsProperties();
+    const resistances = new ResistancesProperties();
+    const skills = new SkillsProperties();
+    return {
+      ...source,
+      background,
+      equipment,
+      vitals,
+      magic,
+      secondary,
+      skills,
+      specials,
+      resistances
+    };
   }
-
-  override background: BackgroundProperties;
-
-  override equipment: EquipmentProperties;
-
-  override leveling: LevelingProperties;
-
-  override vitals: VitalsProperties;
-
-  override magic: MagicProperties;
-
-  /** The secondary statistics of the character */
-  secondary = new SecondaryStatisticsProperties();
-
-  /** The resistances of the character */
-  resistances = new ResistancesProperties();
-
-  /** The skills of the character */
-  skills = new SkillsProperties();
-
-  /** The SPECIALs of the character */
-  specials = new SpecialsProperties();
-}
+};

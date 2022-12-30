@@ -1,4 +1,5 @@
 import { extraPotency, TYPES } from "../constants.js";
+import { LevelingProperties } from "../data/actor/character/leveling/properties.js";
 import { MagicDataPropertiesData } from "../data/item/magic/properties.js";
 import { LOG } from "../systemLogger.js";
 import WvItem from "./wvItem";
@@ -33,7 +34,8 @@ export default class Magic extends WvItem {
     const relevantSpecialValue =
       actorData.specials[relevantSpecialName].tempTotal;
     this.data.data.potency.source =
-      actorData.leveling.level + extraPotency(relevantSpecialValue);
+      LevelingProperties.level(actorData.leveling) +
+      extraPotency(relevantSpecialValue);
   }
 }
 

@@ -1,6 +1,7 @@
-import type {
+import {
   RadiationSicknessLevel,
-  SpecialName
+  SpecialName,
+  SpecialNames
 } from "../../../../constants.js";
 import {
   ComponentSource,
@@ -10,32 +11,21 @@ import {
 } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
-export default class SpecialsProperties
-  implements Record<SpecialName, Special>
-{
-  /** The Strength SPECIAL of the character */
-  strength = new Special();
+export type SpecialsProperties = Record<SpecialName, Special>;
 
-  /** The Perception SPECIAL of the character */
-  perception = new Special();
-
-  /** The Endurance SPECIAL of the character */
-  endurance = new Special();
-
-  /** The Charisma SPECIAL of the character */
-  charisma = new Special();
-
-  /** The Intelligence SPECIAL of the character */
-  intelligence = new Special();
-
-  /** The Agility SPECIAL of the character */
-  agility = new Special();
-
-  /** The Luck SPECIAL of the character */
-  luck = new Special();
-
+export const SpecialsProperties = {
+  /** Creates a new SpecialsProperties */
+  from(): SpecialsProperties {
+    return SpecialNames.reduce((acc, specialName) => {
+      acc[specialName] = new Special();
+      return acc;
+    }, {} as SpecialsProperties);
+  },
   /** Apply the given radiation sickness level and modify the temp SPECIALs. */
-  applyRadiationSickness(sicknessLevel: RadiationSicknessLevel) {
+  applyRadiationSickness(
+    spec: SpecialsProperties,
+    sicknessLevel: RadiationSicknessLevel
+  ) {
     const labelComponents: LabelComponent[] = [
       { key: "wv.rules.radiation.name" }
     ];
@@ -44,25 +34,25 @@ export default class SpecialsProperties
       case "none":
         return;
       case "minor":
-        this.endurance.addTemp({ value: -1, labelComponents });
+        spec.endurance.addTemp({ value: -1, labelComponents });
         return;
       case "moderate":
-        this.endurance.addTemp({ value: -2, labelComponents });
-        this.agility.addTemp({ value: -1, labelComponents });
+        spec.endurance.addTemp({ value: -2, labelComponents });
+        spec.agility.addTemp({ value: -1, labelComponents });
         return;
       case "major":
-        this.endurance.addTemp({ value: -3, labelComponents });
-        this.agility.addTemp({ value: -2, labelComponents });
-        this.strength.addTemp({ value: -1, labelComponents });
+        spec.endurance.addTemp({ value: -3, labelComponents });
+        spec.agility.addTemp({ value: -2, labelComponents });
+        spec.strength.addTemp({ value: -1, labelComponents });
         return;
       case "critical":
-        this.endurance.addTemp({ value: -3, labelComponents });
-        this.agility.addTemp({ value: -3, labelComponents });
-        this.strength.addTemp({ value: -2, labelComponents });
+        spec.endurance.addTemp({ value: -3, labelComponents });
+        spec.agility.addTemp({ value: -3, labelComponents });
+        spec.strength.addTemp({ value: -2, labelComponents });
         return;
     }
   }
-}
+};
 
 /** The layout for a serialized Special. */
 export interface SerializedSpecial {

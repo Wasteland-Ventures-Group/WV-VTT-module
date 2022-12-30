@@ -9,32 +9,9 @@ import {
   SkillNames,
   SpecialNames
 } from "./constants.js";
+import { fullRecord, fullRecordWithVal } from "./data/common.js";
 import type { Join, PathsToStringProps } from "./helperTypes.js";
 import type { DocumentRelation } from "./item/wvItem.js";
-
-function fullRecord<T extends string>(
-  keys: readonly [T, ...T[]]
-): z.ZodType<Record<T, string>> {
-  return fullRecordWithVal(keys, z.string());
-}
-
-function fullRecordWithVal<T extends string, U = string>(
-  keys: readonly [T, ...T[]],
-  value: z.ZodType<U>
-): z.ZodType<Record<T, U>> {
-  const schema = z.record(z.enum(keys), value).superRefine((val, ctx) => {
-    for (const key of keys) {
-      if (!(key in val)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: `Missing key ${key}`
-        });
-      }
-    }
-  });
-
-  return schema as z.ZodType<Record<T, U>>;
-}
 
 /** Names in singular and plural */
 const QUANTITY_NAMES = z.object({

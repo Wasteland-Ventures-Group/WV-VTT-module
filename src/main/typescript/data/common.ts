@@ -313,3 +313,42 @@ export class CompositeResource extends CompositeNumber implements Resource {
     return clone;
   }
 }
+
+export function fullRecord<T extends string>(
+  keys: readonly [T, ...T[]]
+): z.ZodType<Record<T, string>> {
+  return fullRecordWithVal(keys, z.string());
+}
+
+export function fullRecordWithVal<T extends string, U>(
+  keys: readonly [T, ...T[]],
+  value: z.ZodType<U>
+): z.ZodType<Record<T, U>> {
+  const schema = z.record(z.enum(keys), value).superRefine((val, ctx) => {
+    for (const key of keys) {
+      if (!(key in val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Missing key ${key}`
+        });
+      }
+    }
+  });
+
+  return schema as z.ZodType<Record<T, U>>;
+}
+
+export function fullRecordWithDefault<T extends string, U>(
+  keys: readonly [T, ...T[]],
+  value: z.ZodType<U>,
+  defaultValue: U
+): z.ZodDefault<z.ZodType<Record<T, U>>> {
+  const schema = fullRecordWithVal(keys, value);
+  const defaults = keys.reduce((acc, key) => {
+    acc[key] = defaultValue;
+    return acc;
+  }, {} as Record<T, U>);
+  const result = schema.default(defaults);
+
+  return result;
+}

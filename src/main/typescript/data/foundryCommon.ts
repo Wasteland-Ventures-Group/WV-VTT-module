@@ -1,17 +1,14 @@
-import type { DocumentDataType } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs.js";
 import type { JSONSchemaType } from "ajv";
 import { z } from "zod";
-import {
-  SystemDocumentType,
-  SYSTEM_DOCUMENT_TYPE_SCHEMA,
-  TYPES
-} from "../constants.js";
+import { SystemDocumentType, TYPES } from "../constants.js";
 
 /** The source data of a foundry resource. */
-export interface ResourceSource {
-  value: number;
-  max?: number;
-}
+export type ResourceSource = z.infer<typeof RESOURCE_SCHEMA>;
+
+export const RESOURCE_SCHEMA = z.object({
+  value: z.number(),
+  max: z.number().optional()
+});
 
 /** A full resource, including a defined max. */
 export interface Resource extends ResourceSource {

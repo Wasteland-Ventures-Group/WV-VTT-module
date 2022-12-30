@@ -55,8 +55,7 @@ async function validateFiles(config: ValidationConfig): Promise<void> {
         JSON.parse((await fs.readFile(fileName)).toString())
       );
       if (!object.success) {
-        console.log(object.error);
-        log.error(object.error.flatten());
+        // log.error(object.error.flatten());
         const issues = object.error.issues;
         issues.forEach((issue) => {
           const logMsg = `${fileName}: ${issue.path.join(".")} - ${

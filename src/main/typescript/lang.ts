@@ -13,7 +13,6 @@ import { fullRecord, fullRecordWithVal } from "./data/common.js";
 import type { Join, PathsToStringProps } from "./helperTypes.js";
 import type { DocumentRelation } from "./item/wvItem.js";
 
-// TODO: add all patterns into the actual zod schemas
 /** Names in singular and plural */
 const QUANTITY_NAMES = z.object({
   /** The singular name */
@@ -39,7 +38,6 @@ const SHORT_LONG_NAMES = z.object({
 });
 
 /** A schema for SPECIALs */
-// interface Special extends ShortLongNames
 const SPECIAL = SHORT_LONG_NAMES.extend({
   /**
    * @maxLength 3
@@ -72,6 +70,14 @@ const DOCUMENT_RELATIONS = fullRecord<DocumentRelation>(DocumentRelations);
 
 /** A union of possible i18n keys. */
 export type WvI18nKey = Join<PathsToStringProps<LangSchema>, ".">;
+
+const NAME_STRING = z.string().regex(/\{name\}/);
+const WHAT_STRING = z.string().regex(/\{what\}/);
+const PATH_STRING = z.string().regex(/\{path\}/);
+const TYPE_STRING = z.string().regex(/\{type\}/);
+const SYSNAME_VERSION_STRING = z
+  .string()
+  .regex(/(?=.*\{systemName\})(?=.*{version\})/);
 
 export type LangSchema = z.infer<typeof LANG_SCHEMA>;
 export const LANG_SCHEMA = z.object({
@@ -454,7 +460,7 @@ export const LANG_SCHEMA = z.object({
            * - name: the name of the item
            * @pattern (?=.*\{name\})
            */
-          title: z.string(),
+          title: NAME_STRING,
           /** The content of the dialog */
           content: z.string()
         })
@@ -474,7 +480,7 @@ export const LANG_SCHEMA = z.object({
          * - name: the name of the character
          * @pattern (?=.*\{name\})
          */
-        title: z.string(),
+        title: NAME_STRING,
         /** Labels relating to the initial character setup */
         messages: z.object({
           /** A message for when the user spent too few SPECIAL points */
@@ -492,14 +498,14 @@ export const LANG_SCHEMA = z.object({
          * - name: the name of the attack
          * @pattern (?=.*\{name\})
          */
-        attackNotFound: z.string(),
+        attackNotFound: NAME_STRING,
         /**
          * The message when a specified attack already exists on a weapon.
          * Parameters:
          * - name: the name of the attack
          * @pattern (?=.*\{name\})
          */
-        attackAlreadyExists: z.string(),
+        attackAlreadyExists: NAME_STRING,
         /**
          * A general message that a slot a newly equipped apparel would block,
          * is already occupied by another apparel.
@@ -529,7 +535,7 @@ export const LANG_SCHEMA = z.object({
          * - name: the name of the item
          * @pattern (?=.*\{name\})
          */
-        itemIsNowLinked: z.string(),
+        itemIsNowLinked: NAME_STRING,
         /**
          * The message when an item just changed compendium link to unlinked.
          *
@@ -537,7 +543,7 @@ export const LANG_SCHEMA = z.object({
          * - name: the name of the item
          * @pattern (?=.*\{name\})
          */
-        itemIsNowUnlinked: z.string(),
+        itemIsNowUnlinked: NAME_STRING,
         /**
          * The notification text for completed migrations.
          *
@@ -546,7 +552,7 @@ export const LANG_SCHEMA = z.object({
          * - version: the system version that was migrated to
          * @pattern (?=.*\{systemName\})(?=.*\{version\})
          */
-        migrationCompleted: z.string(),
+        migrationCompleted: SYSNAME_VERSION_STRING,
         /**
          * The notification text for started migration.
          *
@@ -555,7 +561,7 @@ export const LANG_SCHEMA = z.object({
          * - version: the system version will be migrated to
          * @pattern (?=.*\{systemName\})(?=.*\{version\})
          */
-        migrationStarted: z.string(),
+        migrationStarted: SYSNAME_VERSION_STRING,
         /**
          * The message when a Document does not have an Actor.
          *
@@ -563,7 +569,7 @@ export const LANG_SCHEMA = z.object({
          * - name: the name of the document
          * @pattern (?=.*\{name\})
          */
-        noActor: z.string(),
+        noActor: NAME_STRING,
         /**
          * The message when an actor does not have enough AP to do something.
          */
@@ -578,7 +584,9 @@ export const LANG_SCHEMA = z.object({
          * - name: the name of the Actor trying to move
          * @pattern (?=.*\{needed\})(?=.*\{actual\})(?=.*\{name\})
          */
-        notEnoughApToMove: z.string(),
+        notEnoughApToMove: z
+          .string()
+          .regex(/(?=.*\{needed\})(?=.*\{actual\})(?=.*\{name\})/),
         /**
          * The message when an actor does not have enough quick slots to ready
          * something.
@@ -602,7 +610,7 @@ export const LANG_SCHEMA = z.object({
          * - what: a reference to what the modifier is for
          * @pattern (?=.*\{what\})
          */
-        modifierFor: z.string(),
+        modifierFor: WHAT_STRING,
         /** The name placeholder label for documents */
         name: z.string(),
         /**
@@ -612,7 +620,7 @@ export const LANG_SCHEMA = z.object({
          * - what: the document type name
          * @pattern (?=.*\{what\})
          */
-        newName: z.string(),
+        newName: WHAT_STRING,
         /** The label for user provided notes */
         notes: z.string(),
         /** The label for roll modes */
@@ -670,7 +678,7 @@ export const LANG_SCHEMA = z.object({
          * - what: the label for what is being rolled
          * @pattern (?=.*\{what\})
          */
-        descriptive: z.string(),
+        descriptive: WHAT_STRING,
         /** A capitalized, imperative verb for rolling dice */
         imperative: z.string(),
         /** A description for whispering to GMs */
@@ -697,7 +705,7 @@ export const LANG_SCHEMA = z.object({
              * - path: the selector path
              * @pattern (?=.*\{path\})
              */
-            notCompositeNumber: z.string(),
+            notCompositeNumber: PATH_STRING,
             /**
              * An error message when the target does not match a property on a
              * selected Document.
@@ -706,7 +714,7 @@ export const LANG_SCHEMA = z.object({
              * - path: the target path
              * @pattern (?=.*\{path\})
              */
-            notMatchingTarget: z.string(),
+            notMatchingTarget: PATH_STRING,
             /**
              * An error message when a selected document is not of the expected
              * type.
@@ -715,7 +723,7 @@ export const LANG_SCHEMA = z.object({
              * - type: the expected type
              * @pattern (?=.*\{type\})
              */
-            wrongDocumentType: z.string(),
+            wrongDocumentType: TYPE_STRING,
             /**
              * An error message when the target property on the selected
              * Document is of the wrong type.
@@ -725,7 +733,7 @@ export const LANG_SCHEMA = z.object({
              * - type: the expected type of the rule element type
              * @pattern (?=.*\{path\})(?=.*\{type\})
              */
-            wrongTargetType: z.string(),
+            wrongTargetType: z.string().regex(/(?=.*\{path\})(?=.*\{type\})/),
             /**
              * An error message when the value of a rule is of the wrong type.
              *
@@ -733,7 +741,7 @@ export const LANG_SCHEMA = z.object({
              * - type: the expected type for the rule element type
              * @pattern (?=.*\{type\})
              */
-            wrongValueType: z.string()
+            wrongValueType: TYPE_STRING
           }),
           /** Various semantic errors */
           semantic: z.object({
@@ -745,7 +753,7 @@ export const LANG_SCHEMA = z.object({
              * - property: the name of the additional property
              * @pattern (?=.*\{path\})(?=.*\{property\})
              */
-            additional: z.string(),
+            additional: z.string().regex(/(?=.*\{path\})(?=.*\{property\})/),
             /**
              * An error message for fields that are missing.
              *
@@ -754,7 +762,7 @@ export const LANG_SCHEMA = z.object({
              * - property: the name of the missing property
              * @pattern (?=.*\{path\})(?=.*\{property\})
              */
-            missing: z.string(),
+            missing: z.string().regex(/(?=.*\{path\})(?=.*\{property\})/),
             /** An error message for an unknown error. */
             unknown: z.string(),
             /** An error message for an unknown RuleElement condition. */
@@ -775,7 +783,7 @@ export const LANG_SCHEMA = z.object({
              * - type: the expected type of the field
              * @pattern (?=.*\{path\})(?=.*\{type\})
              */
-            wrongType: z.string()
+            wrongType: z.string().regex(/(?=.*\{path\})(?=.*\{type\})/)
           }),
           /**
            * The description for the JSON syntax error.
@@ -784,7 +792,7 @@ export const LANG_SCHEMA = z.object({
            * - message: the JSON parser error message
            * @pattern (?=.*\{message\})
            */
-          syntax: z.string()
+          syntax: z.string().regex(/(?=.*\{message\})/)
         }),
         /** Labels for rule elements */
         ruleElement: QUANTITY_NAMES,
@@ -804,7 +812,9 @@ export const LANG_SCHEMA = z.object({
            * - new: the new type of the property
            * @pattern (?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
            */
-          changedType: z.string(),
+          changedType: z
+            .string()
+            .regex(/(?=.*\{path\})(?=.*\{original\})(?=.*\{new\})/),
           /**
            * A warning for when a rule element was not saved because of errors,
            * explaining that changes will be lost if foundry is reloaded.

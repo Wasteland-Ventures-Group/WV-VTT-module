@@ -1,4 +1,4 @@
-import type { DefinedError } from "ajv";
+import type { ZodIssue } from "zod";
 import type WvActor from "../../actor/wvActor.js";
 import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
 import { getGame } from "../../foundryHelpers.js";
@@ -413,10 +413,11 @@ export default class WvItemSheet extends ItemSheet {
 
       // Validate the source with the rule element schema
       const validator = getGame().wv.validators.ruleElement;
-      if (!validator(ruleSource)) {
+      const result = validator(ruleSource);
+      if (!result.success) {
         this.handleRuleElementSchemaErrors(
           index,
-          validator.errors as DefinedError[],
+          result.error.issues,
           ruleSource
         );
         delete formData[key];
@@ -424,7 +425,7 @@ export default class WvItemSheet extends ItemSheet {
       }
 
       // Assign the source to the corresponding index if successful
-      ruleSources[index] = ruleSource;
+      ruleSources[index] = result.data;
       delete formData[key];
     }
 
@@ -495,10 +496,10 @@ export default class WvItemSheet extends ItemSheet {
    */
   private handleRuleElementSchemaErrors(
     index: number,
-    errors: DefinedError[],
+    errors: ZodIssue[],
     ruleSource: object
   ): void {
-    const messages = errors.map(this.translateError);
+    const messages = errors.flatMap(this.translateError);
     this.ruleElementSchemaErrors[index] = [messages, ruleSource];
     LOG.warn(
       `There were schema errors in rule element definition ${index + 1}.`,
@@ -507,51 +508,62 @@ export default class WvItemSheet extends ItemSheet {
   }
 
   /** Translate an AJV DefinedError to a RuleElementMessage. */
-  private translateError(error: DefinedError): RuleElementMessage {
-    switch (error.keyword) {
-      case "additionalProperties":
-        return new AdditionalPropMessage(
-          error.instancePath,
-          error.params.additionalProperty
+  private translateError(issue: ZodIssue): RuleElementMessage[] {
+    switch (issue.code) {
+      case "unrecognized_keys":
+        return issue.keys.map(
+          (key) => new AdditionalPropMessage(issue.path.join("."), key)
         );
-      case "required":
-        return new MissingPropMessage(
-          error.instancePath,
-          error.params.missingProperty
+      case "invalid_union":
+        return issue.unionErrors.flatMap((err) =>
+          err.issues.flatMap(this.translateError)
         );
 
-      case "type":
-        return new WrongTypeMessage(error.instancePath, error.params.type);
+      case "invalid_type":
+        if (issue.received === "undefined")
+          return [new MissingPropMessage(issue.path)];
 
-      case "enum":
-        switch (error.schemaPath) {
-          case "#/properties/hook/enum":
-            return new RuleElementMessage(
+        return [new WrongTypeMessage(issue.path.join("."), issue.expected)];
+
+      case "invalid_string":
+        return [new WrongTypeMessage(issue.path.join("."), issue.message)];
+
+      case "invalid_enum_value":
+        if (issue.path.includes("hook"))
+          return [
+            new RuleElementMessage(
               "wv.system.ruleEngine.errors.semantic.unknownHook",
               "error"
-            );
-          case "#/properties/selector/enum":
-            return new RuleElementMessage(
+            )
+          ];
+        if (issue.path.includes("selector"))
+          return [
+            new RuleElementMessage(
               "wv.system.ruleEngine.errors.semantic.unknownSelector",
               "error"
-            );
-          case "#/properties/type/enum":
-            return new RuleElementMessage(
+            )
+          ];
+        if (issue.path.includes("type"))
+          return [
+            new RuleElementMessage(
               "wv.system.ruleEngine.errors.semantic.unknownRuleElement",
               "error"
-            );
-          case "#/properties/conditions/items/enum":
-            return new RuleElementMessage(
+            )
+          ];
+
+        if (issue.path.includes("items"))
+          return [
+            new RuleElementMessage(
               "wv.system.ruleEngine.errors.semantic.unknownCondition",
               "error"
-            );
-        }
+            )
+          ];
     }
 
-    console.dir(error);
-    return new RuleElementMessage(
-      "wv.system.ruleEngine.errors.semantic.unknown"
-    );
+    console.dir(issue);
+    return [
+      new RuleElementMessage("wv.system.ruleEngine.errors.semantic.unknown")
+    ];
   }
 }
 

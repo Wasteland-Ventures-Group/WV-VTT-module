@@ -13,6 +13,7 @@ import { fullRecord, fullRecordWithVal } from "./data/common.js";
 import type { Join, PathsToStringProps } from "./helperTypes.js";
 import type { DocumentRelation } from "./item/wvItem.js";
 
+// TODO: add all patterns into the actual zod schemas
 /** Names in singular and plural */
 const QUANTITY_NAMES = z.object({
   /** The singular name */

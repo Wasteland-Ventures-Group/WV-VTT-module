@@ -17,11 +17,6 @@ export interface CompositeNumberBounds {
   max?: number | undefined;
 }
 
-// TODO: remove me
-export const CompositeNumberSchema = z
-  .object({ source: z.number().default(0) })
-  .default({});
-
 /** The data layout for a serialized composite number. */
 export interface SerializedCompositeNumber extends CompositeNumberSource {
   bounds?: CompositeNumberBounds;
@@ -248,20 +243,19 @@ export class Component implements ComponentSource, FoundrySerializable {
   }
 }
 
-export const COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> =
-  {
-    description: "A schema for modifiable number sources",
-    type: "object",
-    properties: {
-      source: {
-        description:
-          "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
-        type: "number"
-      }
-    },
-    required: ["source"],
-    additionalProperties: false
-  };
+export const COMP_NUM_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> = {
+  description: "A schema for modifiable number sources",
+  type: "object",
+  properties: {
+    source: {
+      description:
+        "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
+      type: "number"
+    }
+  },
+  required: ["source"],
+  additionalProperties: false
+};
 
 /**
  * A class for what Foundry VTT will automatically recognize as a "resource",

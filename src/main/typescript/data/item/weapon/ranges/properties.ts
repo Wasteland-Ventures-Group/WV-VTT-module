@@ -13,10 +13,10 @@ export type RangesProperties = RangesSource & {
 };
 
 export const RangesProperties = {
-  transform(source: RangesSource): RangesProperties {
-    const short = RangeProperties.transform(source.short);
-    const medium = RangeProperties.transform(source.medium);
-    const long = RangeProperties.transform(source.long);
+  from(source: RangesSource): RangesProperties {
+    const short = RangeProperties.from(source.short);
+    const medium = RangeProperties.from(source.medium);
+    const long = RangeProperties.from(source.long);
     return {
       ...source,
       short,
@@ -141,8 +141,8 @@ export type RangeProperties = RangeSource & {
 };
 
 export const RangeProperties = {
-  transform(source: RangeSource): RangeProperties {
-    const distance = DistanceProperties.transform(source.distance);
+  from(source: RangeSource): RangeProperties {
+    const distance = DistanceProperties.from(source.distance);
     const modifier = CompositeNumber.from(source.modifier);
     return {
       ...source,
@@ -169,7 +169,7 @@ export type DistanceProperties = DistanceSource & {
 };
 
 export const DistanceProperties = {
-  transform(source: DistanceSource): DistanceProperties {
+  from(source: DistanceSource): DistanceProperties {
     const base = CompositeNumber.from(source.base);
     base.bounds.min = 0;
 

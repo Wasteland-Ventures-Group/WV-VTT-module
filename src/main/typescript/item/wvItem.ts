@@ -86,7 +86,7 @@ export default class WvItem extends Item {
 
   override prepareBaseData(): void {
     if (this.data.type === "misc") {
-      this.data.data = MiscDataPropertiesData.transform(this.data.data, this);
+      this.data.data = MiscDataPropertiesData.from(this.data.data, this);
     }
   }
 

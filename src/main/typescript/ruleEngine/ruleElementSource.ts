@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { DOCUMENTSELECTOR_SOURCE_SCHEMA } from "./documentSelectorSource.js";
+import { DOCUMENTSELECTOR_SCHEMA } from "./documentSelectorSource.js";
 
 export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
 export const RULE_ELEMENT_IDS = [
@@ -36,7 +36,7 @@ export const RULE_ELEMENT_SCHEMA = z.object({
   label: z.string(),
   /** The place in the order of application, starting with lowest */
   priority: z.number(),
-  selectors: z.array(DOCUMENTSELECTOR_SOURCE_SCHEMA),
+  selectors: z.array(DOCUMENTSELECTOR_SCHEMA),
   /** The target property on the selected document */
   target: z.string(),
   /** The type identifier of the element. */

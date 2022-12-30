@@ -10,11 +10,11 @@ import WeaponSheet from "./applications/item/weaponSheet.js";
 import WvItemSheet from "./applications/item/wvItemSheet.js";
 import { CONSTANTS, TYPES } from "./constants.js";
 import { CHARACTER_JSON_SCHEMA } from "./data/actor/character/source.js";
-import { AMMO_SOURCE_JSON_SCHEMA } from "./data/item/ammo/source.js";
-import { APPAREL_SOURCE_JSON_SCHEMA } from "./data/item/apparel/source.js";
-import { BASE_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/baseItem/source.js";
-import { STACK_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/stackableItem/source.js";
-import { MAGIC_SOURCE_JSON_SCHEMA } from "./data/item/magic/source.js";
+import { AMMO_JSON_SCHEMA } from "./data/item/ammo/source.js";
+import { APPAREL_JSON_SCHEMA } from "./data/item/apparel/source.js";
+import { BASE_ITEM_JSON_SCHEMA } from "./data/item/common/baseItem/source.js";
+import { STACK_ITEM_JSON_SCHEMA } from "./data/item/common/stackableItem/source.js";
+import { MAGIC_JSON_SCHEMA } from "./data/item/magic/source.js";
 import { RACE_JSON_SCHEMA } from "./data/item/race/source.js";
 import { WEAPON_JSON_SCHEMA } from "./data/item/weapon/source.js";
 import { getGame } from "./foundryHelpers.js";
@@ -95,11 +95,11 @@ export function configureFoundryOnInit(): void {
         character: ajv.compile(CHARACTER_JSON_SCHEMA)
       },
       item: {
-        ammo: ajv.compile(AMMO_SOURCE_JSON_SCHEMA),
-        apparel: ajv.compile(APPAREL_SOURCE_JSON_SCHEMA),
-        effect: ajv.compile(BASE_ITEM_SOURCE_JSON_SCHEMA),
-        magic: ajv.compile(MAGIC_SOURCE_JSON_SCHEMA),
-        misc: ajv.compile(STACK_ITEM_SOURCE_JSON_SCHEMA),
+        ammo: ajv.compile(AMMO_JSON_SCHEMA),
+        apparel: ajv.compile(APPAREL_JSON_SCHEMA),
+        effect: ajv.compile(BASE_ITEM_JSON_SCHEMA),
+        magic: ajv.compile(MAGIC_JSON_SCHEMA),
+        misc: ajv.compile(STACK_ITEM_JSON_SCHEMA),
         race: ajv.compile(RACE_JSON_SCHEMA),
         weapon: ajv.compile(WEAPON_JSON_SCHEMA)
       },

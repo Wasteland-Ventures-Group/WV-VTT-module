@@ -13,8 +13,8 @@ export default interface ApparelDataSource {
   data: ApparelDataSourceData;
 }
 
-export type ApparelDataSourceData = z.infer<typeof APPAREL_SOURCE_SCHEMA>;
-export const APPAREL_SOURCE_SCHEMA = PHYS_ITEM_SCHEMA.extend({
+export type ApparelDataSourceData = z.infer<typeof APPAREL_SCHEMA>;
+export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   /** The other apparel slots this apparel blocks aside from its own */
   blockedSlots: z.record(z.enum(ApparelSlots), z.boolean()).optional(),
 
@@ -39,12 +39,10 @@ export interface CompendiumApparel
   type: typeof TYPES.ITEM.APPAREL;
 }
 
-export const APPAREL_SOURCE_JSON_SCHEMA = zodToJsonSchema(
-  APPAREL_SOURCE_SCHEMA
-);
+export const APPAREL_JSON_SCHEMA = zodToJsonSchema(APPAREL_SCHEMA);
 
 export const COMP_APPAREL_SCHEMA = compDataZodSchema(
-  APPAREL_SOURCE_SCHEMA,
+  APPAREL_SCHEMA,
   "apparel",
   "icons/equipment/chest/breastplate-leather-brown-belted.webp",
   "New Apparel"

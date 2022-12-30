@@ -18,11 +18,8 @@ export const PhysicalItemProperties = {
    * @param source - the source to transform from
    * @param owningItem - the owning item
    */
-  transform(
-    source: PhysicalItemSource,
-    owningItem: WvItem
-  ): PhysicalItemProperties {
-    const baseProperties = BaseItemProperties.transform(source, owningItem);
+  from(source: PhysicalItemSource, owningItem: WvItem): PhysicalItemProperties {
+    const baseProperties = BaseItemProperties.from(source, owningItem);
     const value = CompositeNumber.from(source.value);
     const weight = CompositeNumber.from(source.weight);
     return {

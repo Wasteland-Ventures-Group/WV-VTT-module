@@ -35,7 +35,7 @@ export class Resource {
   }
 }
 
-export const RESOURCE_SOURCE_JSON_SCHEMA: JSONSchemaType<ResourceSource> = {
+export const RESOURCE_JSON_SCHEMA: JSONSchemaType<ResourceSource> = {
   description: "A schema for a Foundry resource",
   type: "object",
   properties: {

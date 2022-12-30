@@ -1,7 +1,7 @@
 import type { JSONSchemaType } from "ajv";
 import {
   ResourceSource,
-  RESOURCE_SOURCE_JSON_SCHEMA
+  RESOURCE_JSON_SCHEMA
 } from "../../../foundryCommon.js";
 
 export default class EquipmentSource {
@@ -50,7 +50,7 @@ export const EQUIPMENT_JSON_SCHEMA: JSONSchemaType<EquipmentSource> = {
       type: "integer",
       default: 0
     },
-    quickSlots: RESOURCE_SOURCE_JSON_SCHEMA,
+    quickSlots: RESOURCE_JSON_SCHEMA,
     readiedItemId: {
       ...ITEM_ID_SCHEMA,
       description:

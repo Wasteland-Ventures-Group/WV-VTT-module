@@ -5,24 +5,24 @@ import {
   compDataZodSchema,
   FoundryCompendiumData
 } from "../../foundryCommon.js";
-import { STACK_ITEM_SOURCE_SCHEMA } from "../common/stackableItem/source.js";
+import { STACK_ITEM_SCHEMA } from "../common/stackableItem/source.js";
 
 export default interface AmmoDataSource {
   type: typeof TYPES.ITEM.AMMO;
   data: AmmoDataSourceData;
 }
 
-export type AmmoDataSourceData = z.infer<typeof AMMO_SOURCE_SCHEMA>;
-export const AMMO_SOURCE_SCHEMA = STACK_ITEM_SOURCE_SCHEMA.extend({
+export type AmmoDataSourceData = z.infer<typeof AMMO_SCHEMA>;
+export const AMMO_SCHEMA = STACK_ITEM_SCHEMA.extend({
   /** The caliber of the ammo */
   caliber: z.enum(Calibers).default("308cal"),
   /** The sub type of the ammo */
   type: z.string().default("")
 });
 
-export const AMMO_SOURCE_JSON_SCHEMA = zodToJsonSchema(AMMO_SOURCE_SCHEMA);
+export const AMMO_JSON_SCHEMA = zodToJsonSchema(AMMO_SCHEMA);
 export const COMP_AMMO_SCHEMA = compDataZodSchema(
-  AMMO_SOURCE_SCHEMA,
+  AMMO_SCHEMA,
   "ammo",
   "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
   "New Ammo"

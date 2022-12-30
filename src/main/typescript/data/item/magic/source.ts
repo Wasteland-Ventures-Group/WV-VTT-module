@@ -1,7 +1,7 @@
 import { TYPES, GeneralMagicSchools } from "../../../constants.js";
 import { RANGE_SCHEMA } from "./ranges/source.js";
 import { TargetSchema } from "./target/source.js";
-import { CompositeNumberSchema } from "../../common.js";
+import { COMP_NUM_SCHEMA } from "../../common.js";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import {
@@ -20,9 +20,9 @@ export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
   /** The spell's magic school */
   school: z.enum(GeneralMagicSchools).default("general"),
   /** The spell's Action Point cost */
-  apCost: CompositeNumberSchema,
+  apCost: COMP_NUM_SCHEMA,
   /** The spell's strain consumption */
-  strainCost: CompositeNumberSchema,
+  strainCost: COMP_NUM_SCHEMA,
   /** The spell's range information */
   range: RANGE_SCHEMA,
   /** The spell's target information */
@@ -44,4 +44,4 @@ export const COMP_MAGIC_JSON_SCHEMA = zodToJsonSchema(COMP_MAGIC_SCHEMA);
 
 export type MagicDataSourceData = z.infer<typeof MAGIC_SCHEMA>;
 /** A JSON schema for magic source objects */
-export const MAGIC_SOURCE_JSON_SCHEMA = zodToJsonSchema(MAGIC_SCHEMA);
+export const MAGIC_JSON_SCHEMA = zodToJsonSchema(MAGIC_SCHEMA);

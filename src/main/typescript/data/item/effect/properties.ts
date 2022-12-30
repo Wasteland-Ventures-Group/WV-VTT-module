@@ -15,7 +15,7 @@ export const EffectDataPropertiesData = {
     source: EffectDataSourceData,
     owningItem: WvItem
   ): EffectDataPropertiesData {
-    const baseProperties = BaseItemProperties.transform(source, owningItem);
+    const baseProperties = BaseItemProperties.from(source, owningItem);
     return {
       ...baseProperties
     };

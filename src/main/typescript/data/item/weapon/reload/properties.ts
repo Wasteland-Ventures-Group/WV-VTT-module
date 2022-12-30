@@ -7,7 +7,7 @@ export type ReloadProperties = ReloadSource & {
 };
 
 export const ReloadProperties = {
-  transform(source: ReloadSource): ReloadProperties {
+  from(source: ReloadSource): ReloadProperties {
     const ap = CompositeNumber.from(source.ap);
     ap.bounds.min = 0;
 

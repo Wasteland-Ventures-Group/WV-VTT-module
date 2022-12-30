@@ -23,13 +23,10 @@ export const WeaponDataPropertiesData = {
     source: WeaponDataSourceData,
     owningWeapon: Weapon
   ): WeaponDataPropertiesData {
-    const baseProperties = PhysicalItemProperties.transform(
-      source,
-      owningWeapon
-    );
-    const attacks = AttacksProperties.transform(source.attacks, owningWeapon);
-    const ranges = RangesProperties.transform(source.ranges);
-    const reload = ReloadProperties.transform(source.reload);
+    const baseProperties = PhysicalItemProperties.from(source, owningWeapon);
+    const attacks = AttacksProperties.from(source.attacks, owningWeapon);
+    const ranges = RangesProperties.from(source.ranges);
+    const reload = ReloadProperties.from(source.reload);
 
     const strengthRequirement = CompositeNumber.from(
       source.strengthRequirement

@@ -1,7 +1,7 @@
 import type { JSONSchemaType } from "ajv";
 import {
   ResourceSource,
-  RESOURCE_SOURCE_JSON_SCHEMA
+  RESOURCE_JSON_SCHEMA
 } from "../../../foundryCommon.js";
 
 export class PairedLimbCrippledStatus {
@@ -85,10 +85,10 @@ export const VITALS_JSON_SCHEMA: JSONSchemaType<VitalsSource> = {
   description: "A vitals specification",
   type: "object",
   properties: {
-    hitPoints: RESOURCE_SOURCE_JSON_SCHEMA,
-    actionPoints: RESOURCE_SOURCE_JSON_SCHEMA,
-    insanity: RESOURCE_SOURCE_JSON_SCHEMA,
-    strain: RESOURCE_SOURCE_JSON_SCHEMA,
+    hitPoints: RESOURCE_JSON_SCHEMA,
+    actionPoints: RESOURCE_JSON_SCHEMA,
+    insanity: RESOURCE_JSON_SCHEMA,
+    strain: RESOURCE_JSON_SCHEMA,
     radiationDose: {
       description: "The absorbed dose of radition of the character",
       type: "integer",

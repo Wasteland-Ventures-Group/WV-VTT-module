@@ -26,7 +26,7 @@ export const MagicDataPropertiesData = {
     source: MagicDataSourceData,
     owningItem: WvItem
   ): MagicDataPropertiesData {
-    const baseProperties = BaseItemProperties.transform(source, owningItem);
+    const baseProperties = BaseItemProperties.from(source, owningItem);
 
     const range = new RangeProperties(source.range);
     const target = new TargetProperties(source.target);

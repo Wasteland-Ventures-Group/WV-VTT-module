@@ -19,11 +19,8 @@ export type RaceDataPropertiesData = RaceDataSourceData &
     leveling: LevelingAttributes;
   };
 export const RaceDataPropertiesData = {
-  transform(
-    source: RaceDataSourceData,
-    owningItem: WvItem
-  ): RaceDataPropertiesData {
-    const base = BaseItemProperties.transform(source, owningItem);
+  from(source: RaceDataSourceData, owningItem: WvItem): RaceDataPropertiesData {
+    const base = BaseItemProperties.from(source, owningItem);
     return {
       ...source,
       ...base

@@ -18,7 +18,7 @@ export const StackableItemProperties = {
    * @param owningItem - the owning item
    */
   from(source: StackableItemSource, owningItem: WvItem) {
-    const baseProperties = PhysicalItemProperties.transform(source, owningItem);
+    const baseProperties = PhysicalItemProperties.from(source, owningItem);
     return {
       ...baseProperties
     };

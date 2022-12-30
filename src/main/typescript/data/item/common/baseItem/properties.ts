@@ -15,8 +15,8 @@ export const BaseItemProperties = {
    * @param source - the source to transform from
    * @param owningItem - the owning item
    */
-  transform(source: BaseItemSource, owningItem: WvItem): BaseItemProperties {
-    const rules = RulesProperties.transform(source.rules, owningItem);
+  from(source: BaseItemSource, owningItem: WvItem): BaseItemProperties {
+    const rules = RulesProperties.from(source.rules, owningItem);
     return {
       ...source,
       rules

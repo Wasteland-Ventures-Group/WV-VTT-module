@@ -11,10 +11,7 @@ export type MiscDataPropertiesData = MiscDataSourceData &
   StackableItemProperties;
 
 export const MiscDataPropertiesData = {
-  transform(
-    source: MiscDataSourceData,
-    owningItem: WvItem
-  ): MiscDataPropertiesData {
+  from(source: MiscDataSourceData, owningItem: WvItem): MiscDataPropertiesData {
     return {
       ...source,
       ...StackableItemProperties.from(source, owningItem)

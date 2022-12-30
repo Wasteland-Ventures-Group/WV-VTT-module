@@ -48,9 +48,9 @@ export const FREE_PER_LEVEL_PERIOD_SCHEMA = z.object({
 });
 
 /** Physical characteristics of a race. */
-export type PhysicalSource = z.infer<typeof RACE_PHYSICAL_SOURCE_SCHEMA>;
+export type PhysicalSource = z.infer<typeof RACE_PHYSICAL_SCHEMA>;
 
-export const RACE_PHYSICAL_SOURCE_SCHEMA = z.object({
+export const RACE_PHYSICAL_SCHEMA = z.object({
   /** Whether this race can fly */
   canFly: z.boolean().default(false),
 
@@ -100,7 +100,7 @@ export const LEVELING_SCHEMA = z.object({
 export type RaceDataSourceData = z.infer<typeof RACE_SCHEMA>;
 export const RACE_SCHEMA = BASE_ITEM_SCHEMA.extend({
   /** Physical characteristics of the race */
-  physical: RACE_PHYSICAL_SOURCE_SCHEMA,
+  physical: RACE_PHYSICAL_SCHEMA,
 
   /** Attributes of the race on character creation */
   creation: RACE_CREATION_ATTRIBUTES_SCHEMA,

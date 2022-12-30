@@ -16,7 +16,7 @@ export type AttacksProperties = AttacksSource & {
 };
 
 export const AttacksProperties = {
-  transform(source: AttacksSource, owningWeapon: Weapon): AttacksProperties {
+  from(source: AttacksSource, owningWeapon: Weapon): AttacksProperties {
     const attacks: Record<string, AttackProperties> = {};
     Object.entries(source.sources).forEach(([name, source]) => {
       attacks[name] = new AttackProperties(name, source, owningWeapon);

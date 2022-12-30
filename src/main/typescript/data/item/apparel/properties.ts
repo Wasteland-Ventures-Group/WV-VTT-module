@@ -28,7 +28,7 @@ export const ApparelDataPropertiesData = {
     source: ApparelDataSourceData,
     owningItem: WvItem
   ): ApparelDataPropertiesData {
-    const baseProperties = PhysicalItemProperties.transform(source, owningItem);
+    const baseProperties = PhysicalItemProperties.from(source, owningItem);
 
     const blockedSlots = ApparelSlots.reduce((acc, slot) => {
       acc[slot] = source.blockedSlots?.[slot] ?? false;

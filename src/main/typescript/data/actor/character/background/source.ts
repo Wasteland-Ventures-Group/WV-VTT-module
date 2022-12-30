@@ -2,7 +2,7 @@ import type { JSONSchemaType } from "ajv";
 import { CONSTANTS } from "../../../../constants.js";
 import {
   CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
+  COMP_NUM_JSON_SCHEMA
 } from "../../../common.js";
 
 export default class BackgroundSource {
@@ -89,11 +89,11 @@ export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
       type: "string"
     },
     size: {
-      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
+      ...COMP_NUM_JSON_SCHEMA,
       description: "The size of the character",
       properties: {
         source: {
-          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          ...COMP_NUM_JSON_SCHEMA.properties.source,
           type: "integer",
           maximum: CONSTANTS.bounds.size.max,
           minimum: CONSTANTS.bounds.size.min,

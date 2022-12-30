@@ -16,7 +16,6 @@ export default interface RaceDataSource {
  * A type that reflects free things that are given to a character on creation
  */
 export type FreeOnCreation = z.infer<typeof RACE_FREE_ON_CREATION_SCHEMA>;
-
 export const RACE_FREE_ON_CREATION_SCHEMA = z.object({
   /** The character gets all of these on creation */
   allOf: z.array(z.string()).default([]),

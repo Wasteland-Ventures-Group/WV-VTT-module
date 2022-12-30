@@ -41,6 +41,7 @@ import type { RuleElementSource } from "./ruleEngine/ruleElementSource.js";
 import type { RuleElementId } from "./ruleEngine/ruleElementSource.js";
 import type * as settings from "./settings.js";
 
+// TODO: yeet ajv
 declare global {
   interface SourceConfig {
     Actor: WvActorDataSource;

@@ -17,10 +17,15 @@ export default interface MagicDataSource {
 }
 
 export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
+  /** The spell's magic school */
   school: z.enum(GeneralMagicSchools).default("general"),
+  /** The spell's Action Point cost */
   apCost: CompositeNumberSchema,
+  /** The spell's strain consumption */
   strainCost: CompositeNumberSchema,
+  /** The spell's range information */
   range: RANGE_SCHEMA,
+  /** The spell's target information */
   target: TargetSchema
 }).default({});
 

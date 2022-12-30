@@ -3,7 +3,6 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 import { RULES_SOURCE_SCHEMA } from "../rules/source.js";
 
 /** This holds the source of the base values that all items have in common. */
-
 export type BaseItemSource = z.infer<typeof BASE_ITEM_SCHEMA>;
 export const BASE_ITEM_SCHEMA = z.object({
   /**

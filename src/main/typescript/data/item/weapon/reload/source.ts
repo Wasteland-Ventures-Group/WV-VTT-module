@@ -6,6 +6,7 @@ export type ReloadSource = z.infer<typeof RELOAD_SCHEMA>;
 export type AmmoContainerType = typeof AmmoContainerTypes[number];
 const AmmoContainerTypes = ["internal", "magazine"] as const;
 
+/** The schema containing information about reload attributes */
 export const RELOAD_SCHEMA = z.object({
   /** The amount of action points needed to reload */
   ap: COMP_NUM_SCHEMA.default({}),

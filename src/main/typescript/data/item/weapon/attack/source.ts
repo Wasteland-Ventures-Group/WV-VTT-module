@@ -25,6 +25,7 @@ export const DAMAGE_SCHEMA = z.object({
   damageFallOff: z.union([z.enum(DamageFallOffTypes), z.literal("")]).optional()
 });
 
+/** The source scheme for a single attack */
 export const ATTACK_SCHEMA = z.object({
   /** The values related to the damage the weapon causes */
   damage: DAMAGE_SCHEMA,
@@ -45,6 +46,8 @@ export const ATTACK_SCHEMA = z.object({
   tags: z.array(z.string()).default([])
 });
 
+/** The source schema for multiple attacks */
 export const ATTACKS_SCHEMA = z.object({ sources: z.record(ATTACK_SCHEMA) });
 
+/** The json schema for a single attack */
 export const ATTACK_JSON_SCHEMA = zodToJsonSchema(ATTACK_SCHEMA);

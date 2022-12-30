@@ -6,6 +6,7 @@ export type RangeSource = z.infer<typeof RANGE_SCHEMA>;
 export type RangesSource = z.infer<typeof RANGES_SCHEMA>;
 export type DistanceSource = z.infer<typeof DISTANCE_SCHEMA>;
 
+/** The schema representing distance information */
 export const DISTANCE_SCHEMA = z.object({
   /** The base distance of the range distance in meters */
   base: COMP_NUM_SCHEMA.default({}),
@@ -17,6 +18,7 @@ export const DISTANCE_SCHEMA = z.object({
   special: z.union([z.enum(SpecialNames), z.literal("")]).default("")
 });
 
+/** The schema representing range information */
 export const RANGE_SCHEMA = z.object({
   /** The distance of the range */
   distance: DISTANCE_SCHEMA.default({}),
@@ -28,6 +30,7 @@ export const RANGE_SCHEMA = z.object({
   tags: z.array(z.string()).default([])
 });
 
+/** A schema representing the three WV range categories */
 export const RANGES_SCHEMA = z.object({
   /** The short range of the weapon */
   short: RANGE_SCHEMA.default({}),

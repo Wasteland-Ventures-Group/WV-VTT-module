@@ -7,6 +7,7 @@ import { FoundrySerializable, Resource } from "./foundryCommon.js";
 /** The data layout needed to create a CompositeNumber from raw data. */
 export type CompositeNumberSource = z.infer<typeof COMP_NUM_SCHEMA>;
 export const COMP_NUM_SCHEMA = z.object({
+  /** The source value for a composite number */
   source: z.number().default(0)
 });
 
@@ -16,6 +17,7 @@ export interface CompositeNumberBounds {
   max?: number | undefined;
 }
 
+// TODO: remove me
 export const CompositeNumberSchema = z
   .object({ source: z.number().default(0) })
   .default({});

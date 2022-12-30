@@ -346,10 +346,12 @@ export const LANG_SCHEMA = z.object({
           names: I18N_MAGIC_TYPES
         }),
         school: QUANTITY_NAMES.extend({
+          /** The label of the schools of magic */
           names: I18N_MAGIC_SCHOOLS
         })
       }),
       painThreshold: QUANTITY_NAMES.extend({
+        /** The label for when a pain threshold has been reached */
         reached: z.string()
       }),
       /** Labels related to radiation */
@@ -897,18 +899,5 @@ export const LANG_SCHEMA = z.object({
         total: z.string()
       })
     })
-  })
-});
-
-/** A schema for enforce AP settings */
-const EXPORT_AP_SETTING = SETTING.extend({
-  /** The setting choice labels */
-  choices: z.object({
-    /** The label for the disabled state */
-    disabled: z.string(),
-    /** The label for only enforcing on players state */
-    players: z.string(),
-    /** The label for enforcing on players and GM state */
-    playersAndGameMaster: z.string()
   })
 });

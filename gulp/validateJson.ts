@@ -50,27 +50,34 @@ async function validateFiles(config: ValidationConfig): Promise<void> {
   const fileNames = await glob(config.dataGlob);
 
   const results = await Promise.all(
-    fileNames.map(async (fileName) => {
-      const parseResult = config.schema.safeParse(
-        JSON.parse((await fs.readFile(fileName)).toString())
-      );
-      if (!parseResult.success) {
-        // log.error(object.error.flatten());
-        const issues = parseResult.error.issues;
-        issues.forEach((issue) => {
-          const logMsg = `${fileName}: ${issue.path.join(".")} - ${
-            issue.message
-          }`;
-          log(logMsg);
-          log.error(logMsg);
-        });
-      }
-      return parseResult.success;
-    })
+    fileNames.map(async (fileName) => validate(config.schema, fileName))
   );
-  if (results.some((result) => result === false)) {
+
+  if (!results.every(Boolean)) {
     return Promise.reject(new Error("One or more JSON files are invalid."));
   }
+}
+
+/**
+ * Validates a file's data against a schema
+ * @param schema - Schema to validate against
+ * @param fileName - File to validate
+ * @returns true if data is correct, false otherwise
+ */
+async function validate(schema: z.Schema, fileName: string): Promise<boolean> {
+  const parseResult = schema.safeParse(
+    JSON.parse((await fs.readFile(fileName)).toString())
+  );
+
+  if (parseResult.success) return true;
+
+  const issues = parseResult.error.issues;
+  issues.forEach((issue) => {
+    log(`${fileName}: ${issue.path.join(".")} - ${issue.message}`);
+  });
+  log.error(`${fileName}: ${parseResult.error.message}`);
+
+  return false;
 }
 
 interface ValidationConfig {

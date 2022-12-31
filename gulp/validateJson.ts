@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import glob from "glob-promise";
 import log from "fancy-log";
-import type { z, ZodError } from "zod";
+import type { z } from "zod";
 
 export default async function validateJsonTask(): Promise<void> {
   const validationConfigs: ValidationConfig[] = [

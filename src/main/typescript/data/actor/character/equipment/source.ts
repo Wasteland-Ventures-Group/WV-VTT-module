@@ -1,4 +1,4 @@
-import { TypeOf, z } from "zod";
+import { z } from "zod";
 import { RESOURCE_SCHEMA } from "../../../foundryCommon";
 
 export type EquipmentSource = z.infer<typeof EQUIPMENT_SCHEMA>;

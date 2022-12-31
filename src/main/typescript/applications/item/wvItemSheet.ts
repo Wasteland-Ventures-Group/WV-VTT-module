@@ -413,11 +413,11 @@ export default class WvItemSheet extends ItemSheet {
 
       // Validate the source with the rule element schema
       const validator = getGame().wv.validators.ruleElement;
-      const result = validator(ruleSource);
-      if (!result.success) {
+      const parseResult = validator(ruleSource);
+      if (!parseResult.success) {
         this.handleRuleElementSchemaErrors(
           index,
-          result.error.issues,
+          parseResult.error.issues,
           ruleSource
         );
         delete formData[key];
@@ -425,7 +425,7 @@ export default class WvItemSheet extends ItemSheet {
       }
 
       // Assign the source to the corresponding index if successful
-      ruleSources[index] = result.data;
+      ruleSources[index] = parseResult.data;
       delete formData[key];
     }
 

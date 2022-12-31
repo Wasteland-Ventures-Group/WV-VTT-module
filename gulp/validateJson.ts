@@ -51,12 +51,12 @@ async function validateFiles(config: ValidationConfig): Promise<void> {
 
   const results = await Promise.all(
     fileNames.map(async (fileName) => {
-      const object = config.schema.safeParse(
+      const parseResult = config.schema.safeParse(
         JSON.parse((await fs.readFile(fileName)).toString())
       );
-      if (!object.success) {
+      if (!parseResult.success) {
         // log.error(object.error.flatten());
-        const issues = object.error.issues;
+        const issues = parseResult.error.issues;
         issues.forEach((issue) => {
           const logMsg = `${fileName}: ${issue.path.join(".")} - ${
             issue.message
@@ -65,7 +65,7 @@ async function validateFiles(config: ValidationConfig): Promise<void> {
           log.error(logMsg);
         });
       }
-      return object.success;
+      return parseResult.success;
     })
   );
   if (results.some((result) => result === false)) {

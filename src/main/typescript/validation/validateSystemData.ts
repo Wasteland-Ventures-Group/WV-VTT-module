@@ -11,12 +11,12 @@ export default function validateSystemData<T>(
   data: T,
   validator: Validator<T>
 ): void {
-  const result = validator(data);
-  if (result.success) return;
+  const parseResult = validator(data);
+  if (parseResult.success) return;
 
-  for (const error of result.error.issues) {
+  for (const error of parseResult.error.issues) {
     LOG.error(error);
   }
 
-  throw new SystemDataSchemaError(result.error.issues);
+  throw new SystemDataSchemaError(parseResult.error.issues);
 }

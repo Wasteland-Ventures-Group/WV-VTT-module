@@ -10,7 +10,7 @@ export const BASE_ITEM_SCHEMA = z.object({
    * player can give their specific instance of an item, but rather the name of
    * the item "prototype".
    */
-  name: z.string().default(""),
+  name: z.string(),
   /** The description of the item in the Wasteland Wares list */
   description: z.string().default(""),
   /** User provided notes */

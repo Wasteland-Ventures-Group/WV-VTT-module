@@ -41,4 +41,3 @@ export const RANGES_SCHEMA = z.object({
   /** The long range of the weapon */
   long: RANGE_SCHEMA.default({})
 });
-/** A JSON schema for ranges objects */

@@ -42,7 +42,11 @@ export interface FoundrySerializable {
   toObject(source: boolean): unknown;
 }
 
+/** The schema for a string that expresses a NeDB database ID */
+export const ID_STRING = z.string().regex(/^[a-zA-Z0-9]{16}$/);
+
 /** An interface to model Foundry's compendium layout. */
+// TODO: remove this?
 export interface FoundryCompendiumData<T> {
   /** The NeDB database ID of the entry */
   _id: string;
@@ -68,7 +72,7 @@ export function compDataZodSchema(
 ): z.Schema {
   return z
     .object({
-      _id: z.string().regex(/^[a-zA-Z0-9]{16}$/),
+      _id: ID_STRING,
       name: z.string().default(defaultName),
       type: z.literal(type),
       data: dataSchema,

@@ -26,7 +26,13 @@ export const BACKGROUND_SCHEMA = z.object({
   dreams: z.string().default(""),
 
   /** The karma of the character */
-  karma: z.number().default(0),
+  karma: z
+    .number()
+    .default(0)
+    .refine(
+      (val) => val >= -100 && val <= 100,
+      "Karma can only range from -100 to 100"
+    ),
 
   /** The personality of the character */
   personality: z.string().default(""),

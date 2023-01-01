@@ -27,7 +27,7 @@ export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
   range: RANGE_SCHEMA,
   /** The spell's target information */
   target: TARGET_SCHEMA
-}).default({});
+});
 
 export interface CompendiumMagic
   extends FoundryCompendiumData<MagicDataSourceData> {

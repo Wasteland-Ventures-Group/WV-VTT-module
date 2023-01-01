@@ -299,12 +299,25 @@ export class CompositeResource extends CompositeNumber implements Resource {
   }
 }
 
+/**
+ * By default, zod's record parser is `Partial` when an enum is geven as a key
+ * This function returns a parser that ensures all of its keys are present.
+ * This is equivalent to a z.object({...}).strict() with all the keys present
+ * @param keys - The keys of the record type
+ * @returns A zod schema for the record type
+ */
 export function fullRecord<T extends string>(
   keys: readonly [T, ...T[]]
 ): z.ZodType<Record<T, string>> {
   return fullRecordWithVal(keys, z.string());
 }
 
+/**
+ * See `fullRecord`. Adds the option to use non-string values
+ * @param keys - The keys of the record type
+ * @param value - The zod schema for the record's values
+ * @returns A zod schema for the record type
+ */
 export function fullRecordWithVal<T extends string, U>(
   keys: readonly [T, ...T[]],
   value: z.ZodType<U>
@@ -323,6 +336,13 @@ export function fullRecordWithVal<T extends string, U>(
   return schema as z.ZodType<Record<T, U>>;
 }
 
+/**
+ * See `fullRecord`. Adds the ability to set a default for absent keys.
+ * @param keys - The keys of the record type
+ * @param value - The zod schema for the record's values
+ * @param defaultValue - The default value for absent keys
+ * @returns A zod schema for the record type
+ */
 export function fullRecordWithDefault<T extends string, U>(
   keys: readonly [T, ...T[]],
   value: z.ZodType<U>,

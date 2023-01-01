@@ -3,7 +3,7 @@ import { LOG } from "../systemLogger.js";
 import type { Validator } from "../typesConfig.js";
 
 /**
- * Validate the given system data against the given JSON schema of it.
+ * Validate the given system data using the provided validator
  * If there are errors, they are logged to the console with the system logger.
  * @throws SystemDataSchemaError - If the system data is not valid
  */

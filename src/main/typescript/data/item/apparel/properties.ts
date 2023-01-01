@@ -23,6 +23,7 @@ export type ApparelDataPropertiesData = ApparelDataSourceData &
 
     slot: ApparelSlot;
   };
+
 export const ApparelDataPropertiesData = {
   from(
     source: ApparelDataSourceData,

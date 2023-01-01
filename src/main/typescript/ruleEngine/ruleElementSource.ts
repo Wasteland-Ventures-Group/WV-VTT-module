@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { DOCUMENTSELECTOR_SCHEMA } from "./documentSelectorSource.js";
+import { DOCUMENT_SELECTOR_SCHEMA } from "./documentSelectorSource.js";
 
 export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
 export const RULE_ELEMENT_IDS = [
@@ -45,7 +45,7 @@ export const RULE_ELEMENT_SCHEMA = z.object({
    * Optional conditions when this RuleElement should apply. All of the
    * conditions need to be met for the RuleElement to apply.
    */
-  selectors: z.array(DOCUMENTSELECTOR_SCHEMA),
+  selectors: z.array(DOCUMENT_SELECTOR_SCHEMA),
 
   /** The target property on the selected document */
   target: z.string(),

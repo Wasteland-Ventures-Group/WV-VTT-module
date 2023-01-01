@@ -57,7 +57,7 @@ export const OR_SELECTOR_SCHEMA = z.object({
   or: z.array(z.union(NON_REC_DOCSELECTS))
 });
 
-export const DOCUMENTSELECTOR_SCHEMA = z.union([
+export const DOCUMENT_SELECTOR_SCHEMA = z.union([
   OR_SELECTOR_SCHEMA,
   ...NON_REC_DOCSELECTS
 ]);

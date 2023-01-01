@@ -28,8 +28,3 @@ export const COMP_AMMO_SCHEMA = compDataZodSchema(
   "New Ammo"
 );
 export const COMP_AMMO_JSON_SCHEMA = zodToJsonSchema(COMP_AMMO_SCHEMA);
-
-export interface CompendiumAmmo
-  extends FoundryCompendiumData<AmmoDataSourceData> {
-  type: typeof TYPES.ITEM.AMMO;
-}

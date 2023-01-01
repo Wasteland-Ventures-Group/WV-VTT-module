@@ -34,11 +34,6 @@ export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   type: z.enum(ApparelTypes)
 });
 
-export interface CompendiumApparel
-  extends FoundryCompendiumData<ApparelDataSourceData> {
-  type: typeof TYPES.ITEM.APPAREL;
-}
-
 export const APPAREL_JSON_SCHEMA = zodToJsonSchema(APPAREL_SCHEMA);
 
 export const COMP_APPAREL_SCHEMA = compDataZodSchema(

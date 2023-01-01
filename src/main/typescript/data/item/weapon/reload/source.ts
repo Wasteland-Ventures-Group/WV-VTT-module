@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { Calibers } from "../../../../constants.js";
-import { COMP_NUM_SCHEMA } from "../../../common.js";
+import { COMPOSITE_NUMBER_SCHEMA } from "../../../common.js";
 
 export type ReloadSource = z.infer<typeof RELOAD_SCHEMA>;
 export type AmmoContainerType = typeof AmmoContainerTypes[number];
@@ -9,7 +9,7 @@ const AmmoContainerTypes = ["internal", "magazine"] as const;
 /** The schema containing information about reload attributes */
 export const RELOAD_SCHEMA = z.object({
   /** The amount of action points needed to reload */
-  ap: COMP_NUM_SCHEMA.default({}),
+  ap: COMPOSITE_NUMBER_SCHEMA.default({}),
 
   /** The caliber, used by the weapon */
   caliber: z.enum(Calibers).default("308cal"),
@@ -18,5 +18,5 @@ export const RELOAD_SCHEMA = z.object({
   containerType: z.enum(AmmoContainerTypes).default("magazine"),
 
   /** The amount of ammo that fits into the weapon's ammo container */
-  size: COMP_NUM_SCHEMA.default({})
+  size: COMPOSITE_NUMBER_SCHEMA.default({})
 });

@@ -4,8 +4,8 @@ import type { WvI18nKey } from "../lang.js";
 import { FoundrySerializable, Resource } from "./foundryCommon.js";
 
 /** The data layout needed to create a CompositeNumber from raw data. */
-export type CompositeNumberSource = z.infer<typeof COMP_NUM_SCHEMA>;
-export const COMP_NUM_SCHEMA = z.object({
+export type CompositeNumberSource = z.infer<typeof COMPOSITE_NUMBER_SCHEMA>;
+export const COMPOSITE_NUMBER_SCHEMA = z.object({
   /** The source value for a composite number */
   source: z.number().default(0)
 });

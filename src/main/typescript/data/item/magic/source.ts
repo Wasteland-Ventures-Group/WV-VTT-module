@@ -1,7 +1,7 @@
 import { TYPES, GeneralMagicSchools } from "../../../constants.js";
 import { RANGE_SCHEMA } from "./ranges/source.js";
 import { TARGET_SCHEMA } from "./target/source.js";
-import { COMP_NUM_SCHEMA } from "../../common.js";
+import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import {
@@ -21,10 +21,10 @@ export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
   school: z.enum(GeneralMagicSchools).default("general"),
 
   /** The spell's Action Point cost */
-  apCost: COMP_NUM_SCHEMA.default({}),
+  apCost: COMPOSITE_NUMBER_SCHEMA.default({}),
 
   /** The spell's strain consumption */
-  strainCost: COMP_NUM_SCHEMA.default({}),
+  strainCost: COMPOSITE_NUMBER_SCHEMA.default({}),
 
   /** The spell's range information */
   range: RANGE_SCHEMA,

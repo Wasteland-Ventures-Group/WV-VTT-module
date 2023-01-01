@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
-import { COMP_NUM_SCHEMA } from "../../common.js";
+import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
 import {
   compDataZodSchema,
   FoundryCompendiumData
@@ -19,13 +19,13 @@ export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   blockedSlots: z.record(z.enum(ApparelSlots), z.boolean()).optional(),
 
   /** The damage threshold of the apparel */
-  damageThreshold: COMP_NUM_SCHEMA.optional(),
+  damageThreshold: COMPOSITE_NUMBER_SCHEMA.optional(),
 
   /** The number of quick slots of the apparel */
-  quickSlots: COMP_NUM_SCHEMA.optional(),
+  quickSlots: COMPOSITE_NUMBER_SCHEMA.optional(),
 
   /** The number of mod slots of the apparel */
-  modSlots: COMP_NUM_SCHEMA.optional(),
+  modSlots: COMPOSITE_NUMBER_SCHEMA.optional(),
 
   /** The apparel slot this apparel occupies when equipped */
   slot: z.enum(ApparelSlots).default("clothing"),

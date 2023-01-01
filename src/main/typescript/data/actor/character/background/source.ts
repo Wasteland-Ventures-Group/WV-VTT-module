@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { COMP_NUM_SCHEMA } from "../../../common.js";
+import { COMPOSITE_NUMBER_SCHEMA } from "../../../common.js";
 
 export type BackgroundSource = z.infer<typeof BACKGROUND_SCHEMA>;
 export const BACKGROUND_SCHEMA = z.object({
@@ -38,7 +38,7 @@ export const BACKGROUND_SCHEMA = z.object({
   personality: z.string().default(""),
 
   /** The size of the character */
-  size: COMP_NUM_SCHEMA.default({}),
+  size: COMPOSITE_NUMBER_SCHEMA.default({}),
 
   /** The social contacts of the character */
   socialContacts: z.string().default(""),

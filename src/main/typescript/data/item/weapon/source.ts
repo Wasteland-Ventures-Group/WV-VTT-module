@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { SkillNames, TYPES } from "../../../constants.js";
-import { COMP_NUM_SCHEMA } from "../../common.js";
+import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
 import {
   compDataZodSchema,
   FoundryCompendiumData
@@ -34,7 +34,7 @@ export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   skill: z.enum(SkillNames).default("firearms"),
 
   /** The strength requirement for this weapon to be equipped */
-  strengthRequirement: COMP_NUM_SCHEMA.default({})
+  strengthRequirement: COMPOSITE_NUMBER_SCHEMA.default({})
 });
 
 export interface CompendiumWeapon

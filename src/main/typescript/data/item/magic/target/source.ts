@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SplashSizes, TargetTypes } from "../../../../constants.js";
-import { COMP_NUM_SCHEMA } from "../../../common.js";
+import { COMPOSITE_NUMBER_SCHEMA } from "../../../common.js";
 
 export const AOETypes = ["none", "fixed", "varies"] as const;
 
@@ -12,7 +12,7 @@ export const TARGET_SCHEMA = z
      * Determines how many of `type` a spell can affect. Usually only applies
      * when `type` is `creature`
      */
-    count: COMP_NUM_SCHEMA.default({}),
+    count: COMPOSITE_NUMBER_SCHEMA.default({}),
     /** Determines if the area of effect can grow based on potency */
     aoeType: z.enum(AOETypes).default("none"),
     /** Determines the size of the area of effect if static */

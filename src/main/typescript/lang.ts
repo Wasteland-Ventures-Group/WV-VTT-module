@@ -39,10 +39,6 @@ const SHORT_LONG_NAMES = z.object({
 
 /** A schema for SPECIALs */
 const SPECIAL = SHORT_LONG_NAMES.extend({
-  /**
-   * @maxLength 3
-   * @minLength 3
-   */
   short: z.string().min(3).max(3)
 });
 const I18N_RARITIES = fullRecord(Rarities);
@@ -458,7 +454,6 @@ export const LANG_SCHEMA = z.object({
            *
            * Parameters:
            * - name: the name of the item
-           * @pattern (?=.*\{name\})
            */
           title: NAME_STRING,
           /** The content of the dialog */
@@ -478,7 +473,6 @@ export const LANG_SCHEMA = z.object({
          *
          * Parameters:
          * - name: the name of the character
-         * @pattern (?=.*\{name\})
          */
         title: NAME_STRING,
         /** Labels relating to the initial character setup */
@@ -496,14 +490,12 @@ export const LANG_SCHEMA = z.object({
          *
          * Parameters:
          * - name: the name of the attack
-         * @pattern (?=.*\{name\})
          */
         attackNotFound: NAME_STRING,
         /**
          * The message when a specified attack already exists on a weapon.
          * Parameters:
          * - name: the name of the attack
-         * @pattern (?=.*\{name\})
          */
         attackAlreadyExists: NAME_STRING,
         /**
@@ -533,7 +525,6 @@ export const LANG_SCHEMA = z.object({
          *
          * Parameters:
          * - name: the name of the item
-         * @pattern (?=.*\{name\})
          */
         itemIsNowLinked: NAME_STRING,
         /**
@@ -541,7 +532,6 @@ export const LANG_SCHEMA = z.object({
          *
          * Parameters:
          * - name: the name of the item
-         * @pattern (?=.*\{name\})
          */
         itemIsNowUnlinked: NAME_STRING,
         /**
@@ -550,7 +540,6 @@ export const LANG_SCHEMA = z.object({
          * Parameters:
          * - systemName: the name of the system
          * - version: the system version that was migrated to
-         * @pattern (?=.*\{systemName\})(?=.*\{version\})
          */
         migrationCompleted: SYSNAME_VERSION_STRING,
         /**
@@ -559,7 +548,6 @@ export const LANG_SCHEMA = z.object({
          * Parameters:
          * - systemName: the name of the system
          * - version: the system version will be migrated to
-         * @pattern (?=.*\{systemName\})(?=.*\{version\})
          */
         migrationStarted: SYSNAME_VERSION_STRING,
         /**
@@ -567,7 +555,6 @@ export const LANG_SCHEMA = z.object({
          *
          * Parameters:
          * - name: the name of the document
-         * @pattern (?=.*\{name\})
          */
         noActor: NAME_STRING,
         /**
@@ -582,7 +569,6 @@ export const LANG_SCHEMA = z.object({
          * - needed: the needed amount of AP
          * - actual: the actually available AP
          * - name: the name of the Actor trying to move
-         * @pattern (?=.*\{needed\})(?=.*\{actual\})(?=.*\{name\})
          */
         notEnoughApToMove: z
           .string()
@@ -608,7 +594,6 @@ export const LANG_SCHEMA = z.object({
          *
          * Parameters:
          * - what: a reference to what the modifier is for
-         * @pattern (?=.*\{what\})
          */
         modifierFor: WHAT_STRING,
         /** The name placeholder label for documents */
@@ -618,7 +603,6 @@ export const LANG_SCHEMA = z.object({
          *
          * Parameters:
          * - what: the document type name
-         * @pattern (?=.*\{what\})
          */
         newName: WHAT_STRING,
         /** The label for user provided notes */
@@ -676,7 +660,6 @@ export const LANG_SCHEMA = z.object({
          *
          * Parameters:
          * - what: the label for what is being rolled
-         * @pattern (?=.*\{what\})
          */
         descriptive: WHAT_STRING,
         /** A capitalized, imperative verb for rolling dice */
@@ -703,7 +686,6 @@ export const LANG_SCHEMA = z.object({
              *
              * Parameters:
              * - path: the selector path
-             * @pattern (?=.*\{path\})
              */
             notCompositeNumber: PATH_STRING,
             /**
@@ -712,7 +694,6 @@ export const LANG_SCHEMA = z.object({
              *
              * Parameters
              * - path: the target path
-             * @pattern (?=.*\{path\})
              */
             notMatchingTarget: PATH_STRING,
             /**
@@ -721,7 +702,6 @@ export const LANG_SCHEMA = z.object({
              *
              * Parameters
              * - type: the expected type
-             * @pattern (?=.*\{type\})
              */
             wrongDocumentType: TYPE_STRING,
             /**
@@ -731,7 +711,6 @@ export const LANG_SCHEMA = z.object({
              * Parameters:
              * - path: the target path
              * - type: the expected type of the rule element type
-             * @pattern (?=.*\{path\})(?=.*\{type\})
              */
             wrongTargetType: z.string().regex(/(?=.*\{path\})(?=.*\{type\})/),
             /**
@@ -739,7 +718,6 @@ export const LANG_SCHEMA = z.object({
              *
              * Parameters:
              * - type: the expected type for the rule element type
-             * @pattern (?=.*\{type\})
              */
             wrongValueType: TYPE_STRING
           }),
@@ -751,7 +729,6 @@ export const LANG_SCHEMA = z.object({
              * Parameters:
              * - path: the path of the additional property's parent
              * - property: the name of the additional property
-             * @pattern (?=.*\{path\})(?=.*\{property\})
              */
             additional: z.string().regex(/(?=.*\{path\})(?=.*\{property\})/),
             /**
@@ -760,7 +737,6 @@ export const LANG_SCHEMA = z.object({
              * Parameters:
              * - path: the path of the missing property's parent
              * - property: the name of the missing property
-             * @pattern (?=.*\{path\})(?=.*\{property\})
              */
             missing: z.string().regex(/(?=.*\{path\})(?=.*\{property\})/),
             /** An error message for an unknown error. */
@@ -781,7 +757,6 @@ export const LANG_SCHEMA = z.object({
              * Parameters:
              * - path: the path of the field with the wrong type
              * - type: the expected type of the field
-             * @pattern (?=.*\{path\})(?=.*\{type\})
              */
             wrongType: z.string().regex(/(?=.*\{path\})(?=.*\{type\})/)
           }),
@@ -790,7 +765,6 @@ export const LANG_SCHEMA = z.object({
            *
            * Parameters:
            * - message: the JSON parser error message
-           * @pattern (?=.*\{message\})
            */
           syntax: z.string().regex(/(?=.*\{message\})/)
         }),
@@ -810,7 +784,6 @@ export const LANG_SCHEMA = z.object({
            * - path: the path of the property on the target
            * - original: the original type of the property
            * - new: the new type of the property
-           * @pattern (?=.*\{path\})(?=.*\{original\})(?=.*\{new\})
            */
           changedType: z
             .string()

@@ -11,11 +11,7 @@ import {
   SpecialName,
   TYPES
 } from "../constants.js";
-import { EquipmentProperties } from "../data/actor/character/equipment/properties.js";
-import { LevelingProperties } from "../data/actor/character/leveling/properties.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
-import { SpecialsProperties } from "../data/actor/character/specials/properties.js";
-import { VitalsProperties } from "../data/actor/character/vitals/properties.js";
 import type {
   ComponentSource,
   CompositeResource,
@@ -103,7 +99,7 @@ export default class WvActor extends Actor {
 
   /** Get the amount of crippled legs of the character. */
   get crippledLegs(): number {
-    return VitalsProperties.crippledLegs(this.data.data.vitals);
+    return this.data.data.vitals.crippledLegs;
   }
 
   /** Get the ground movement range of the actor. */
@@ -625,9 +621,8 @@ export default class WvActor extends Actor {
   override prepareBaseData(): void {
     this.data.data = CharacterDataPropertiesData.from(this.data.data);
 
-    SpecialsProperties.applyRadiationSickness(
-      this.data.data.specials,
-      VitalsProperties.radiationSicknessLevel(this.data.data.vitals)
+    this.data.data.specials.applyRadiationSickness(
+      this.data.data.vitals.radiationSicknessLevel
     );
   }
 
@@ -637,14 +632,9 @@ export default class WvActor extends Actor {
   }
 
   override prepareDerivedData(): void {
-    VitalsProperties.applySpecials(
-      this.data.data.vitals,
-      this.data.data.specials
-    );
-    VitalsProperties.applyLevel(
-      this.data.data.vitals,
-      LevelingProperties.level(this.data.data.leveling)
-    );
+    this.data.data.vitals.applySpecials(this.data.data.specials);
+
+    this.data.data.vitals.applyLevel(this.data.data.leveling.level);
 
     this.data.data.secondary.applySpecials(this.data.data.specials);
 
@@ -656,17 +646,14 @@ export default class WvActor extends Actor {
 
     this.applyRuleElementsForHook("afterSkills");
 
-    EquipmentProperties.applyEquippedApparel(
-      this.data.data.equipment,
-      this.equippedApparel
-    );
+    this.data.data.equipment.applyEquippedApparel(this.equippedApparel);
 
     // TODO: hit chance, combat trick mods
     this.data.data.secondary.applySizeCategory(
       this.data.data.background.size.total
     );
-    VitalsProperties.applySizeCategory(
-      this.data.data.vitals,
+
+    this.data.data.vitals.applySizeCategory(
       this.data.data.background.size.total
     );
 

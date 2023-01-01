@@ -13,6 +13,22 @@ import AttackExecution from "../../../../item/weapon/attackExecution.js";
 export type AttacksProperties = AttacksSource & {
   /** The Weapon Attacks, created from the sources */
   attacks: Record<string, AttackProperties>;
+
+  /** Get all attacks matching the given tags. */
+  getMatching(tags: string[] | undefined): AttackProperties[];
+
+  /**
+   * Apply a skill damage dice modifier to all attacks, if the attack qualifies
+   * for it. This is based on the skill of the weapon and the skill value of the
+   * given Actor.
+   */
+  applySkillDamageDiceMod(actor: WvActor | null, weapon: Weapon): void;
+
+  /**
+   * Apply a Strength damage dice modifier to all attacks, based on the Strength
+   * of the given Actor.
+   */
+  applyStrengthDamageDiceMod(actor: WvActor | null): void;
 };
 
 export const AttacksProperties = {
@@ -23,50 +39,38 @@ export const AttacksProperties = {
     });
     return {
       ...source,
-      attacks
+      attacks,
+      getMatching(tags: string[] | undefined): AttackProperties[] {
+        return Object.values(this.attacks).filter((attack) =>
+          attack.matches(tags)
+        );
+      },
+
+      /**
+       * Apply a skill damage dice modifier to all attacks, if the attack qualifies
+       * for it. This is based on the skill of the weapon and the skill value of the
+       * given Actor.
+       */
+      applySkillDamageDiceMod(actor: WvActor | null, weapon: Weapon): void {
+        if (!actor) return;
+
+        Object.values(this.attacks).forEach((attack) =>
+          attack.damage.applySkillDamageDiceMod(actor, weapon)
+        );
+      },
+
+      /**
+       * Apply a Strength damage dice modifier to all attacks, based on the Strength
+       * of the given Actor.
+       */
+      applyStrengthDamageDiceMod(actor: WvActor | null): void {
+        if (!actor) return;
+
+        Object.values(this.attacks).forEach((attack) =>
+          attack.damage.applyStrengthDamageDiceMod(actor)
+        );
+      }
     };
-  },
-
-  /** Get all attacks matching the given tags. */
-  getMatching(
-    attackProperties: AttacksProperties,
-    tags: string[] | undefined
-  ): AttackProperties[] {
-    return Object.values(attackProperties.attacks).filter((attack) =>
-      attack.matches(tags)
-    );
-  },
-
-  /**
-   * Apply a skill damage dice modifier to all attacks, if the attack qualifies
-   * for it. This is based on the skill of the weapon and the skill value of the
-   * given Actor.
-   */
-  applySkillDamageDiceMod(
-    attackProperties: AttacksProperties,
-    actor: WvActor | null,
-    weapon: Weapon
-  ): void {
-    if (!actor) return;
-
-    Object.values(attackProperties.attacks).forEach((attack) =>
-      attack.damage.applySkillDamageDiceMod(actor, weapon)
-    );
-  },
-
-  /**
-   * Apply a Strength damage dice modifier to all attacks, based on the Strength
-   * of the given Actor.
-   */
-  applyStrengthDamageDiceMod(
-    attackProperties: AttacksProperties,
-    actor: WvActor | null
-  ): void {
-    if (!actor) return;
-
-    Object.values(attackProperties.attacks).forEach((attack) =>
-      attack.damage.applyStrengthDamageDiceMod(actor)
-    );
   }
 };
 

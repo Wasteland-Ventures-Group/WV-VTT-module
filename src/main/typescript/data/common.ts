@@ -302,7 +302,7 @@ export class CompositeResource extends CompositeNumber implements Resource {
 /**
  * By default, zod's record parser is `Partial` when an enum is geven as a key
  * This function returns a parser that ensures all of its keys are present.
- * This is equivalent to a z.object({...}).strict() with all the keys present
+ * This is equivalent to a z.object(...).strict() with all the keys present
  * @param keys - The keys of the record type
  * @returns A zod schema for the record type
  */

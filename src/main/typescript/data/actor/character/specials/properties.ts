@@ -11,46 +11,49 @@ import {
 } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
-export type SpecialsProperties = Record<SpecialName, Special>;
+export type SpecialsProperties = Record<SpecialName, Special> & {
+  /** Apply the given radiation sickness level and modify the temp SPECIALs. */
+  applyRadiationSickness(sicknessLevel: RadiationSicknessLevel): void;
+};
 
 export const SpecialsProperties = {
   /** Creates a new SpecialsProperties */
   from(): SpecialsProperties {
-    return SpecialNames.reduce((acc, specialName) => {
+    const specials = SpecialNames.reduce((acc, specialName) => {
       acc[specialName] = new Special();
       return acc;
-    }, {} as SpecialsProperties);
-  },
-  /** Apply the given radiation sickness level and modify the temp SPECIALs. */
-  applyRadiationSickness(
-    spec: SpecialsProperties,
-    sicknessLevel: RadiationSicknessLevel
-  ) {
-    const labelComponents: LabelComponent[] = [
-      { key: "wv.rules.radiation.name" }
-    ];
+    }, {} as Record<SpecialName, Special>);
+    return {
+      ...specials,
+      /** Apply the given radiation sickness level and modify the temp SPECIALs. */
+      applyRadiationSickness(sicknessLevel: RadiationSicknessLevel) {
+        const labelComponents: LabelComponent[] = [
+          { key: "wv.rules.radiation.name" }
+        ];
 
-    switch (sicknessLevel) {
-      case "none":
-        return;
-      case "minor":
-        spec.endurance.addTemp({ value: -1, labelComponents });
-        return;
-      case "moderate":
-        spec.endurance.addTemp({ value: -2, labelComponents });
-        spec.agility.addTemp({ value: -1, labelComponents });
-        return;
-      case "major":
-        spec.endurance.addTemp({ value: -3, labelComponents });
-        spec.agility.addTemp({ value: -2, labelComponents });
-        spec.strength.addTemp({ value: -1, labelComponents });
-        return;
-      case "critical":
-        spec.endurance.addTemp({ value: -3, labelComponents });
-        spec.agility.addTemp({ value: -3, labelComponents });
-        spec.strength.addTemp({ value: -2, labelComponents });
-        return;
-    }
+        switch (sicknessLevel) {
+          case "none":
+            return;
+          case "minor":
+            this.endurance.addTemp({ value: -1, labelComponents });
+            return;
+          case "moderate":
+            this.endurance.addTemp({ value: -2, labelComponents });
+            this.agility.addTemp({ value: -1, labelComponents });
+            return;
+          case "major":
+            this.endurance.addTemp({ value: -3, labelComponents });
+            this.agility.addTemp({ value: -2, labelComponents });
+            this.strength.addTemp({ value: -1, labelComponents });
+            return;
+          case "critical":
+            this.endurance.addTemp({ value: -3, labelComponents });
+            this.agility.addTemp({ value: -3, labelComponents });
+            this.strength.addTemp({ value: -2, labelComponents });
+            return;
+        }
+      }
+    };
   }
 };
 

@@ -4,7 +4,6 @@ import { AttackPrompt, AttackPromptData } from "../../applications/prompt.js";
 import { CONSTANTS, RangeBracket } from "../../constants.js";
 import { CompositeNumber } from "../../data/common.js";
 import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
-import { RangesProperties } from "../../data/item/weapon/ranges/properties.js";
 import Formulator from "../../formulator.js";
 import {
   createDefaultMessageData,
@@ -147,8 +146,7 @@ export default class AttackExecution {
     );
 
     // Get range bracket -------------------------------------------------------
-    const rangeBracket = RangesProperties.getRangeBracket(
-      this.weapon.data.data.ranges,
+    const rangeBracket = this.weapon.data.data.ranges.getRangeBracket(
       range,
       this.attackProperties.rangePickingTags,
       this.actor.data.data.specials
@@ -158,10 +156,8 @@ export default class AttackExecution {
       this.attackProperties.damage.getRangeModifiedDamageDice(range);
 
     // Calculate hit roll target -----------------------------------------------
-    const rangeModifier = RangesProperties.getRangeModifier(
-      this.weapon.data.data.ranges,
-      rangeBracket
-    );
+    const rangeModifier =
+      this.weapon.data.data.ranges.getRangeModifier(rangeBracket);
 
     const critSuccess = secondary.criticals.success.clone();
     if (sneakAttack)
@@ -236,8 +232,7 @@ export default class AttackExecution {
       blind: commonData.blind ?? false,
       weapon: {
         display: {
-          ranges: RangesProperties.getDisplayRanges(
-            this.weapon.data.data.ranges,
+          ranges: this.weapon.data.data.ranges.getDisplayRanges(
             this.attackProperties.rangePickingTags,
             this.actor.data.data.specials
           )

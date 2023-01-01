@@ -2,10 +2,7 @@ import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
 import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
-import {
-  compDataZodSchema,
-  FoundryCompendiumData
-} from "../../foundryCommon.js";
+import { compDataZodSchema } from "../../foundryCommon.js";
 import { PHYS_ITEM_SCHEMA } from "../common/physicalItem/source.js";
 
 export default interface ApparelDataSource {

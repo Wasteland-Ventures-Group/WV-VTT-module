@@ -1,10 +1,7 @@
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { Calibers, TYPES } from "../../../constants.js";
-import {
-  compDataZodSchema,
-  FoundryCompendiumData
-} from "../../foundryCommon.js";
+import { compDataZodSchema } from "../../foundryCommon.js";
 import { STACK_ITEM_SCHEMA } from "../common/stackableItem/source.js";
 
 export default interface AmmoDataSource {

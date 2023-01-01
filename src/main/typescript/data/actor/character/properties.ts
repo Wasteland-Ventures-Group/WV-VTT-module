@@ -2,7 +2,7 @@ import { CONSTANTS, SpecialNames, TYPES } from "../../../constants.js";
 import { CompositeNumber } from "../../common.js";
 import { BackgroundProperties } from "./background/properties.js";
 import { EquipmentProperties } from "./equipment/properties.js";
-import type { LevelingProperties } from "./leveling/properties.js";
+import { LevelingProperties } from "./leveling/properties.js";
 import { MagicProperties } from "./magic/properties.js";
 import SkillsProperties from "./skills/properties.js";
 import type { CharacterDataSourceData } from "./source.js";
@@ -133,7 +133,7 @@ export type CharacterDataPropertiesData = CharacterDataSourceData & {
 
 export const CharacterDataPropertiesData = {
   from(source: CharacterDataSourceData): CharacterDataPropertiesData {
-    const leveling = deepClone(source.leveling);
+    const leveling = LevelingProperties.from(source.leveling);
     const specials = SpecialsProperties.from();
 
     for (const specialName of SpecialNames) {
@@ -154,6 +154,7 @@ export const CharacterDataPropertiesData = {
       ...source,
       background,
       equipment,
+      leveling,
       vitals,
       magic,
       secondary,

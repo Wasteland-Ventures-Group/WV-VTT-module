@@ -1,7 +1,5 @@
 import { TAGS, TYPES } from "../constants.js";
-import { AttacksProperties } from "../data/item/weapon/attack/properties.js";
 import { WeaponDataPropertiesData } from "../data/item/weapon/properties.js";
-import { RangesProperties } from "../data/item/weapon/ranges/properties.js";
 import { LOG } from "../systemLogger.js";
 import WvItem from "./wvItem.js";
 
@@ -30,21 +28,11 @@ export default class Weapon extends WvItem {
     }
 
     if (this.data.data.tags.includes(TAGS.skillDamageBonus))
-      AttacksProperties.applySkillDamageDiceMod(
-        this.data.data.attacks,
-        this.actor,
-        this
-      );
+      this.data.data.attacks.applySkillDamageDiceMod(this.actor, this);
 
-    AttacksProperties.applyStrengthDamageDiceMod(
-      this.data.data.attacks,
-      this.actor
-    );
+    this.data.data.attacks.applyStrengthDamageDiceMod(this.actor);
 
-    RangesProperties.applySizeCategoryReachBonus(
-      this.data.data.ranges,
-      this.actor
-    );
+    this.data.data.ranges.applySizeCategoryReachBonus(this.actor);
   }
 }
 

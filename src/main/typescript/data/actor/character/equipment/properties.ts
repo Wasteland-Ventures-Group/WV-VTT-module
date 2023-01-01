@@ -10,6 +10,12 @@ export type EquipmentProperties = EquipmentSource & {
 
   /** AP costs for various equip actions */
   equipActionCosts: EquipActionCosts;
+
+  /**
+   * Modify the damage threshold and max quick slots by the equipped apparel's
+   * values.
+   */
+  applyEquippedApparel(equippedApparel: Apparel[]): void;
 };
 
 export const EquipmentProperties = {
@@ -24,28 +30,23 @@ export const EquipmentProperties = {
       ...source,
       quickSlots,
       equipActionCosts,
-      damageThreshold: new CompositeNumber()
+      damageThreshold: new CompositeNumber(),
+      applyEquippedApparel(equippedApparel: Apparel[]) {
+        equippedApparel.forEach((apparel) => {
+          if (apparel.data.data.damageThreshold)
+            this.damageThreshold.add({
+              value: apparel.data.data.damageThreshold.total,
+              labelComponents: [{ text: apparel.name ?? "" }]
+            });
+
+          if (apparel.data.data.quickSlots.total)
+            this.quickSlots.add({
+              value: apparel.data.data.quickSlots.total,
+              labelComponents: [{ text: apparel.name ?? "" }]
+            });
+        });
+      }
     };
-  },
-
-  /**
-   * Modify the damage threshold and max quick slots by the equipped apparel's
-   * values.
-   */
-  applyEquippedApparel(equip: EquipmentProperties, equippedApparel: Apparel[]) {
-    equippedApparel.forEach((apparel) => {
-      if (apparel.data.data.damageThreshold)
-        equip.damageThreshold.add({
-          value: apparel.data.data.damageThreshold.total,
-          labelComponents: [{ text: apparel.name ?? "" }]
-        });
-
-      if (apparel.data.data.quickSlots.total)
-        equip.quickSlots.add({
-          value: apparel.data.data.quickSlots.total,
-          labelComponents: [{ text: apparel.name ?? "" }]
-        });
-    });
   }
 };
 

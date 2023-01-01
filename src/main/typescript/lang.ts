@@ -56,12 +56,6 @@ export const DocumentRelations = [
   "parentOwnedItem"
 ] as const;
 
-// Ensures that DocumentRelations doesn't get out of sync with its type
-// This is a bit ugly, but importing a non-type from WvItem breaks the build
-// tools.
-type _<T extends typeof DocumentRelations[number] = DocumentRelation> = never;
-
-// export type DocumentRelation = typeof DocumentRelations[number];
 const DOCUMENT_RELATIONS = fullRecord<DocumentRelation>(DocumentRelations);
 
 /** A union of possible i18n keys. */

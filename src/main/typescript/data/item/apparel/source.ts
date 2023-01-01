@@ -19,19 +19,19 @@ export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   blockedSlots: z.record(z.enum(ApparelSlots), z.boolean()).optional(),
 
   /** The damage threshold of the apparel */
-  damageThreshold: COMP_NUM_SCHEMA.optional().default({}),
+  damageThreshold: COMP_NUM_SCHEMA.optional(),
 
   /** The number of quick slots of the apparel */
-  quickSlots: COMP_NUM_SCHEMA.optional().default({}),
+  quickSlots: COMP_NUM_SCHEMA.optional(),
 
   /** The number of mod slots of the apparel */
-  modSlots: COMP_NUM_SCHEMA.optional().default({}),
+  modSlots: COMP_NUM_SCHEMA.optional(),
 
   /** The apparel slot this apparel occupies when equipped */
   slot: z.enum(ApparelSlots).default("clothing"),
 
   /** The sub type of the apparel */
-  type: z.enum(ApparelTypes)
+  type: z.enum(ApparelTypes).default("clothing")
 });
 
 export const APPAREL_JSON_SCHEMA = zodToJsonSchema(APPAREL_SCHEMA);

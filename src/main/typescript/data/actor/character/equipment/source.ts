@@ -1,8 +1,9 @@
 import { z } from "zod";
+import { zObject } from "../../../common.js";
 import { ID_STRING, RESOURCE_SCHEMA } from "../../../foundryCommon.js";
 
 export type EquipmentSource = z.infer<typeof EQUIPMENT_SCHEMA>;
-export const EQUIPMENT_SCHEMA = z.object({
+export const EQUIPMENT_SCHEMA = zObject({
   /** The amount of caps the character owns */
   caps: z.number().default(0),
 

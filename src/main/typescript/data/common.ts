@@ -9,7 +9,7 @@ import {
 
 /** The data layout needed to create a CompositeNumber from raw data. */
 export type CompositeNumberSource = z.infer<typeof COMPOSITE_NUMBER_SCHEMA>;
-export const COMPOSITE_NUMBER_SCHEMA = z.object({
+export const COMPOSITE_NUMBER_SCHEMA = zObject({
   /** The source value for a composite number */
   source: z
     .number()
@@ -22,7 +22,7 @@ export type CompositeNumberBounds = z.infer<
   typeof COMPOSITE_NUMBER_BOUNDS_SCHEMA
 >;
 
-export const COMPOSITE_NUMBER_BOUNDS_SCHEMA = z.object({
+export const COMPOSITE_NUMBER_BOUNDS_SCHEMA = zObject({
   min: z.number().optional(),
   max: z.number().optional()
 });
@@ -44,22 +44,15 @@ export class CompositeNumber
    */
   static from(unknownSource: unknown): CompositeNumber {
     if (unknownSource instanceof CompositeNumber) return unknownSource;
-    const parsedAsSerialized =
-      SERIALIZED_COMPOSITE_NUMBER_SCHEMA.safeParse(unknownSource);
+    const source = SERIALIZED_COMPOSITE_NUMBER_SCHEMA.parse(unknownSource);
 
-    if (!parsedAsSerialized.success)
-      throw new Error(`The source was not valid: ${unknownSource}`);
-
-    const source = parsedAsSerialized.data;
     const compNumber = new CompositeNumber(source.source);
 
     // Since the serialized composite number schema's components are empty by
     // default, this means that a CompositeNumberSource simply produces
     // no-ops here.
-    compNumber.bounds = parsedAsSerialized.data.bounds ?? {};
-    parsedAsSerialized.data.components.forEach((component) =>
-      compNumber.add(component)
-    );
+    compNumber.bounds = source.bounds ?? {};
+    source.components.forEach((component) => compNumber.add(component));
 
     return compNumber;
   }
@@ -143,18 +136,32 @@ export class CompositeNumber
  * Parsing scheme for i18n translation keys. Cannot be declared in lang.ts, as
  * lang.ts is imported during gulp tasks
  */
-export const WVI18N_KEY_SCHEMA = z.custom<WvI18nKey>((val) => {
-  if (typeof val !== "string") return false;
-  return getGame().i18n.localize(val) !== val;
-});
+export const WVI18N_KEY_SCHEMA = z.custom<WvI18nKey>(
+  (val) => {
+    if (typeof val !== "string") return false;
+    const i18n = getGame().i18n;
+    return i18n.localize(val) !== val;
+  },
+  (val) => {
+    let message;
+    if (typeof val !== "string")
+      message = `Wrong type. Expected string, got ${typeof val}`;
+    else
+      message = `Invalid Key: ${val} (localization returned ${getGame().i18n.localize(
+        val
+      )})`;
+    return { message };
+  }
+);
 
 const LABEL_COMPONENT_SCHEMA = z.union([
-  z.object({ text: z.string() }),
-  z.object({ key: WVI18N_KEY_SCHEMA })
+  zObject({ text: z.string() }),
+  zObject({ key: WVI18N_KEY_SCHEMA })
 ]);
 /** A component of a label for a Component. */
 export type LabelComponent = z.infer<typeof LABEL_COMPONENT_SCHEMA>;
 
+// TODO: remove me
 /** Test whether the given object is a LabelComponent. */
 export function isLabelComponent(object: unknown): object is LabelComponent {
   if (typeof object !== "object" || null === object) return false;
@@ -169,7 +176,7 @@ export function isLabelComponent(object: unknown): object is LabelComponent {
 
 /** A CompositeNumber Component source */
 export type ComponentSource = z.infer<typeof COMPONENT_SOURCE_SCHEMA>;
-export const COMPONENT_SOURCE_SCHEMA = z.object({
+export const COMPONENT_SOURCE_SCHEMA = zObject({
   /** The value this component modifies the CompositeNumber's value by */
   value: z
     .number()
@@ -195,20 +202,16 @@ const SERIALIZED_COMPOSITE_NUMBER_SCHEMA = COMPOSITE_NUMBER_SCHEMA.extend({
 export class Component implements ComponentSource, FoundrySerializable {
   /**
    * Create a Component from the given source
-   * @param source - either a Component or ComponentSource
+   * @param sourceUnknown - either a Component or ComponentSource
    * @returns the created Component
    * @throws if the given source is neither a Component nor ComponentSource
    */
-  static from(source: unknown): Component {
-    if (source instanceof Component) return source;
+  static from(sourceUnknown: unknown): Component {
+    if (sourceUnknown instanceof Component) return sourceUnknown;
 
-    const parsedAsSource = COMPONENT_SOURCE_SCHEMA.safeParse(source);
+    const source = COMPONENT_SOURCE_SCHEMA.parse(sourceUnknown);
 
-    if (!parsedAsSource.success)
-      throw new Error(`The source was not valid: ${source}`);
-
-    const data = parsedAsSource.data;
-    return new Component(data.value, data.labelComponents);
+    return new Component(source.value, source.labelComponents);
   }
 
   /** Create a new Component with the given value and label components. */
@@ -299,9 +302,21 @@ export class CompositeResource extends CompositeNumber implements Resource {
 }
 
 /**
+ * By default, zod strips unknown keys. This is not the default desired
+ * behaviour here. This is a thin wrapper.
+ * @param shape - The desired object shape
+ * @returns The desired zod object
+ */
+export function zObject<T extends z.ZodRawShape>(
+  shape: T
+): z.ZodObject<T, "strict"> {
+  return z.object(shape).strict();
+}
+
+/**
  * By default, zod's record parser is `Partial` when an enum is geven as a key
  * This function returns a parser that ensures all of its keys are present.
- * This is equivalent to a z.object(...).strict() with all the keys present
+ * This is equivalent to a zObject(...).strict() with all the keys present
  * @param keys - The keys of the record type
  * @returns A zod schema for the record type
  */

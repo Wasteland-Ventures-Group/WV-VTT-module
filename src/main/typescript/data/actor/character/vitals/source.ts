@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { RESOURCE_SCHEMA } from "../../../foundryCommon.js";
+import { zObject } from "../../../common.js";
 
-const PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA = z.object({
+const PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA = zObject({
   /** The status of the left limb */
   left: z.boolean().default(false),
 
@@ -9,7 +10,7 @@ const PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA = z.object({
   right: z.boolean().default(false)
 });
 
-export const LEGS_CRIPPLED_STATUS = z.object({
+export const LEGS_CRIPPLED_STATUS = zObject({
   /** The status of the front legs */
   front: PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA.default({}),
 
@@ -17,7 +18,7 @@ export const LEGS_CRIPPLED_STATUS = z.object({
   rear: PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA.default({})
 });
 
-export const LIMBS_CRIPPLED_STATUS = z.object({
+export const LIMBS_CRIPPLED_STATUS = zObject({
   /** The crippled limb status of the torso */
   torso: z.boolean().default(false),
 
@@ -34,7 +35,7 @@ export const LIMBS_CRIPPLED_STATUS = z.object({
   wings: PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA.default({})
 });
 
-export const VITALS_SCHEMA = z.object({
+export const VITALS_SCHEMA = zObject({
   /** The hit points of the character */
   hitPoints: RESOURCE_SCHEMA.default({ value: 15 }),
 

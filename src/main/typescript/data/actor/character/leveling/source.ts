@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CONSTANTS, SkillNames, SpecialNames } from "../../../../constants.js";
-import { fullRecordWithDefault } from "../../../common.js";
+import { fullRecordWithDefault, zObject } from "../../../common.js";
 
 export const SKILL_RANKS_SCHEMA = fullRecordWithDefault(
   SkillNames,
@@ -14,7 +14,7 @@ export const SPECIAL_POINTS_SCHEMA = fullRecordWithDefault(
   5
 );
 
-export const LEVELING_SCHEMA = z.object({
+export const LEVELING_SCHEMA = zObject({
   /** The current experience of the character */
   experience: z.number().default(0),
 

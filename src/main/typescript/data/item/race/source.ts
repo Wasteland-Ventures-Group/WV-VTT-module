@@ -5,6 +5,7 @@ import {
   FoundryCompendiumData
 } from "../../foundryCommon.js";
 import { z } from "zod";
+import { zObject } from "../../common.js";
 
 export default interface RaceDataSource {
   type: typeof TYPES.ITEM.RACE;
@@ -52,7 +53,7 @@ export const RACE_FREE_ON_CREATION_SCHEMA = z
  * levels
  */
 export type FreePerLevelPeriod = z.infer<typeof FREE_PER_LEVEL_PERIOD_SCHEMA>;
-export const FREE_PER_LEVEL_PERIOD_SCHEMA = z.object({
+export const FREE_PER_LEVEL_PERIOD_SCHEMA = zObject({
   /**
    * The period of levels at which to gain new things.
    * @example A period of 5 would mean on 6th and 11th and so on…
@@ -71,7 +72,7 @@ export const FREE_PER_LEVEL_PERIOD_SCHEMA = z.object({
 /** Physical characteristics of a race. */
 export type PhysicalSource = z.infer<typeof RACE_PHYSICAL_SCHEMA>;
 
-export const RACE_PHYSICAL_SCHEMA = z.object({
+export const RACE_PHYSICAL_SCHEMA = zObject({
   /** Whether this race can fly */
   canFly: z.boolean().default(false).describe("Whether this race can fly"),
 
@@ -135,7 +136,7 @@ export const RACE_CREATION_ATTRIBUTES_SCHEMA = z
 /** Attributes of a race for leveling */
 export type LevelingAttributes = z.infer<typeof LEVELING_SCHEMA>;
 
-export const LEVELING_SCHEMA = z.object({
+export const LEVELING_SCHEMA = zObject({
   /** The interval for free spells for the race */
   freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA.default({}).describe(
     "The interval for free spells for the race"

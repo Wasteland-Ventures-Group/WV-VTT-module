@@ -10,7 +10,8 @@ import {
   LabelComponent,
   CompositeNumberBounds,
   COMPOSITE_NUMBER_BOUNDS_SCHEMA,
-  COMPONENT_SOURCE_SCHEMA
+  COMPONENT_SOURCE_SCHEMA,
+  zObject
 } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
@@ -63,7 +64,7 @@ export const SpecialsProperties = {
 /** The layout for a serialized Special. */
 export type SerializedSpecial = z.infer<typeof SERIALIZED_SPECIAL_SCHEMA>;
 
-const SERIALIZED_SPECIAL_SCHEMA = z.object({
+const SERIALIZED_SPECIAL_SCHEMA = zObject({
   permBounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
   tempBounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
   points: z.number().int(),
@@ -79,18 +80,17 @@ export class Special implements FoundrySerializable {
    * @returns the created Special
    * @throws if the given source is neither a Special or SerializedSpecial
    */
-  static from(source: unknown): Special {
-    if (source instanceof Special) return source;
+  static from(sourceUnknown: unknown): Special {
+    if (sourceUnknown instanceof Special) return sourceUnknown;
 
-    const parsedAsSerialized = SERIALIZED_SPECIAL_SCHEMA.safeParse(source);
-
-    if (!parsedAsSerialized.success)
-      throw new Error(`The source was not valid: ${source}`);
-
-    const data = parsedAsSerialized.data;
-    const special = new Special(data.points, data.permBounds, data.tempBounds);
-    data.permComponents.forEach((component) => special.addPerm(component));
-    data.tempComponents.forEach((component) => special.addTemp(component));
+    const source = SERIALIZED_SPECIAL_SCHEMA.parse(sourceUnknown);
+    const special = new Special(
+      source.points,
+      source.permBounds,
+      source.tempBounds
+    );
+    source.permComponents.forEach((component) => special.addPerm(component));
+    source.tempComponents.forEach((component) => special.addTemp(component));
     return special;
   }
 

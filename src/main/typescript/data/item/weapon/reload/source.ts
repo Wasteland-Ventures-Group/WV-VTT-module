@@ -1,13 +1,13 @@
 import { z } from "zod";
 import { Calibers } from "../../../../constants.js";
-import { COMPOSITE_NUMBER_SCHEMA } from "../../../common.js";
+import { COMPOSITE_NUMBER_SCHEMA, zObject } from "../../../common.js";
 
 export type ReloadSource = z.infer<typeof RELOAD_SCHEMA>;
 export type AmmoContainerType = typeof AmmoContainerTypes[number];
 const AmmoContainerTypes = ["internal", "magazine"] as const;
 
 /** The schema containing information about reload attributes */
-export const RELOAD_SCHEMA = z.object({
+export const RELOAD_SCHEMA = zObject({
   /** The amount of action points needed to reload */
   ap: COMPOSITE_NUMBER_SCHEMA.default({}),
 

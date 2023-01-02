@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { DOCUMENT_SELECTOR_SCHEMA } from "./documentSelectorSource.js";
+import { zObject } from "../data/common.js";
 
 export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
 export const RULE_ELEMENT_IDS = [
@@ -21,7 +22,7 @@ export const RULE_ELEMENT_CONDITIONS = ["whenEquipped"] as const;
 
 /** The RuleElement raw data layout */
 export type RuleElementSource = z.infer<typeof RULE_ELEMENT_SCHEMA>;
-export const RULE_ELEMENT_SCHEMA = z.object({
+export const RULE_ELEMENT_SCHEMA = zObject({
   /** Whether this rule element is enabled */
   enabled: z.boolean(),
 

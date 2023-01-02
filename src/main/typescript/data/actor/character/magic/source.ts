@@ -6,13 +6,13 @@ import {
   ThaumaturgySpecial,
   ThaumaturgySpecials
 } from "../../../../constants.js";
-import { fullRecordWithVal } from "../../../common.js";
+import { fullRecordWithVal, zObject } from "../../../common.js";
 
 const THAUM_SPECIAL = z.custom<ThaumaturgySpecial>((val) =>
   ThaumaturgySpecials.includes(val as ThaumaturgySpecial)
 );
 
-export const MAGIC_SCHEMA = z.object({
+export const MAGIC_SCHEMA = zObject({
   /** The SPECIAL of the character associated with the Thaumaturgy skill */
   thaumSpecial: THAUM_SPECIAL.default("intelligence"),
 

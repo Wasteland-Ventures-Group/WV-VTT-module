@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import type { ZodSchema } from "zod";
+import { z, ZodSchema } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 
 // The paths here are relative to the project root
@@ -48,12 +48,47 @@ compendiumSchemasTask.description =
 
 async function createSchema(config: SchemaConfig): Promise<void> {
   await fs.mkdir(config.outputBasePath, { recursive: true });
+  const schema = deepRemoveDefaults(config.schema);
   return fs.writeFile(
     `${config.outputBasePath}/${config.fileName}.json`,
     JSON.stringify({
-      ...zodToJsonSchema(config.schema, { target: "jsonSchema7" })
+      ...zodToJsonSchema(schema, { target: "jsonSchema7" })
     })
   );
+}
+
+function deepRemoveDefaults(schema: z.ZodTypeAny): z.ZodTypeAny {
+  if (schema instanceof z.ZodDefault)
+    return deepRemoveDefaults(schema.removeDefault());
+
+  if (schema instanceof z.ZodObject) {
+    const newShape: any = {};
+
+    for (const key in schema.shape) {
+      const fieldSchema = schema.shape[key];
+      newShape[key] = deepRemoveDefaults(fieldSchema);
+    }
+    return new z.ZodObject({
+      ...schema._def,
+      shape: () => newShape
+    }) as any;
+  }
+
+  if (schema instanceof z.ZodArray)
+    return z.ZodArray.create(deepRemoveDefaults(schema.element));
+
+  if (schema instanceof z.ZodOptional)
+    return z.ZodOptional.create(deepRemoveDefaults(schema.unwrap()));
+
+  if (schema instanceof z.ZodNullable)
+    return z.ZodNullable.create(deepRemoveDefaults(schema.unwrap()));
+
+  if (schema instanceof z.ZodTuple)
+    return z.ZodTuple.create(
+      schema.items.map((item: any) => deepRemoveDefaults(item))
+    );
+
+  return schema;
 }
 
 interface SchemaConfig {

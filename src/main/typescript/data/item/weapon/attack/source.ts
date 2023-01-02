@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import { SplashSizes } from "../../../../constants.js";
 import { COMPOSITE_NUMBER_SCHEMA } from "../../../common.js";
 
@@ -34,36 +33,35 @@ export const DAMAGE_SCHEMA = z.object({
 });
 
 /** The source scheme for a single attack */
-export const ATTACK_SCHEMA = z.object({
-  /** The values related to the damage the weapon causes */
-  damage: DAMAGE_SCHEMA.describe(
-    "The values related to the damage the weapon causes"
-  ),
+export const ATTACK_SCHEMA = z
+  .object({
+    /** The values related to the damage the weapon causes */
+    damage: DAMAGE_SCHEMA.default({}).describe(
+      "The values related to the damage the weapon causes"
+    ),
 
-  /** The amount of rounds used with the attack */
-  rounds: COMPOSITE_NUMBER_SCHEMA.default({})
-    .optional()
-    .describe("The amount of rounds used with the attack"),
+    /** The amount of rounds used with the attack */
+    rounds: COMPOSITE_NUMBER_SCHEMA.default({})
+      .optional()
+      .describe("The amount of rounds used with the attack"),
 
-  /** The damage threshold reduction of the attack */
-  dtReduction: COMPOSITE_NUMBER_SCHEMA.default({})
-    .optional()
-    .describe("The damage threshold reduction of the attack"),
+    /** The damage threshold reduction of the attack */
+    dtReduction: COMPOSITE_NUMBER_SCHEMA.default({})
+      .optional()
+      .describe("The damage threshold reduction of the attack"),
 
-  /** The splash radius */
-  splash: z.enum(SplashSizes).optional().describe("The splash radius"),
+    /** The splash radius */
+    splash: z.enum(SplashSizes).optional().describe("The splash radius"),
 
-  /** The amount of action points needed to attack */
-  ap: COMPOSITE_NUMBER_SCHEMA.optional().describe(
-    "The amount of action points needed to attack"
-  ),
+    /** The amount of action points needed to attack */
+    ap: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+      "The amount of action points needed to attack"
+    ),
 
-  /** Tags of the attack */
-  tags: z.array(z.string()).default([]).describe("Tags of the attack")
-});
+    /** Tags of the attack */
+    tags: z.array(z.string()).default([]).describe("Tags of the attack")
+  })
+  .default({});
 
 /** The source schema for multiple attacks */
 export const ATTACKS_SCHEMA = z.object({ sources: z.record(ATTACK_SCHEMA) });
-
-/** The json schema for a single attack */
-export const ATTACK_JSON_SCHEMA = zodToJsonSchema(ATTACK_SCHEMA);

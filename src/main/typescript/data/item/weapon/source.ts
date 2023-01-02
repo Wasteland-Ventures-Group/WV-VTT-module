@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import { SkillNames, TYPES } from "../../../constants.js";
 import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
 import {
@@ -50,11 +49,9 @@ export interface CompendiumWeapon
   type: typeof TYPES.ITEM.WEAPON;
 }
 
-export const WEAPON_JSON_SCHEMA = zodToJsonSchema(WEAPON_SCHEMA);
 export const COMP_WEAPON_SCHEMA = compDataZodSchema(
   WEAPON_SCHEMA,
   "weapon",
   "icons/weapons/guns/gun-pistol-flintlock-white.webp",
   "New Weapon"
 );
-export const COMP_WEAPON_JSON_SCHEMA = zodToJsonSchema(COMP_WEAPON_SCHEMA);

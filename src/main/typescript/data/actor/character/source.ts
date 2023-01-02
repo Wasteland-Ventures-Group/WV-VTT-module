@@ -1,5 +1,4 @@
 import { z } from "zod";
-import zodToJsonSchema from "zod-to-json-schema";
 import type { TYPES } from "../../../constants.js";
 import { BACKGROUND_SCHEMA } from "./background/source.js";
 import { EQUIPMENT_SCHEMA } from "./equipment/source.js";
@@ -29,5 +28,3 @@ export const CHARACTER_SCHEMA = z.object({
   /** The vitals of the character */
   vitals: VITALS_SCHEMA
 });
-
-export const CHARACTER_JSON_SCHEMA = zodToJsonSchema(CHARACTER_SCHEMA);

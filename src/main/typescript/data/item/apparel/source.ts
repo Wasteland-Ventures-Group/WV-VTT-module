@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
 import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
 import { compDataZodSchema } from "../../foundryCommon.js";
@@ -46,13 +45,9 @@ export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
     .describe("The sub type of the apparel")
 });
 
-export const APPAREL_JSON_SCHEMA = zodToJsonSchema(APPAREL_SCHEMA);
-
 export const COMP_APPAREL_SCHEMA = compDataZodSchema(
   APPAREL_SCHEMA,
   "apparel",
   "icons/equipment/chest/breastplate-leather-brown-belted.webp",
   "New Apparel"
 );
-
-export const COMP_APPAREL_JSON_SCHEMA = zodToJsonSchema(COMP_APPAREL_SCHEMA);

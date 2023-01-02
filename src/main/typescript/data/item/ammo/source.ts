@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import { Calibers, TYPES } from "../../../constants.js";
 import { compDataZodSchema } from "../../foundryCommon.js";
 import { STACK_ITEM_SCHEMA } from "../common/stackableItem/source.js";
@@ -20,11 +19,9 @@ export const AMMO_SCHEMA = STACK_ITEM_SCHEMA.extend({
   type: z.string().default("").describe("The sub type of the ammo")
 });
 
-export const AMMO_JSON_SCHEMA = zodToJsonSchema(AMMO_SCHEMA);
 export const COMP_AMMO_SCHEMA = compDataZodSchema(
   AMMO_SCHEMA,
   "ammo",
   "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
   "New Ammo"
 );
-export const COMP_AMMO_JSON_SCHEMA = zodToJsonSchema(COMP_AMMO_SCHEMA);

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import { COMPOSITE_NUMBER_SCHEMA } from "../../../common.js";
 
 export type BackgroundSource = z.infer<typeof BACKGROUND_SCHEMA>;
@@ -49,5 +48,3 @@ export const BACKGROUND_SCHEMA = z.object({
   /** The virtue of the character */
   virtue: z.string().default("")
 });
-
-export const BACKGROUND_JSON_SCHEMA = zodToJsonSchema(BACKGROUND_SCHEMA);

@@ -3,7 +3,6 @@ import { RANGE_SCHEMA } from "./ranges/source.js";
 import { TARGET_SCHEMA } from "./target/source.js";
 import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 import {
   compDataZodSchema,
   FoundryCompendiumData
@@ -51,8 +50,5 @@ export const COMP_MAGIC_SCHEMA = compDataZodSchema(
   "icons/svg/daze.svg",
   "New Magic"
 );
-export const COMP_MAGIC_JSON_SCHEMA = zodToJsonSchema(COMP_MAGIC_SCHEMA);
 
 export type MagicDataSourceData = z.infer<typeof MAGIC_SCHEMA>;
-/** A JSON schema for magic source objects */
-export const MAGIC_JSON_SCHEMA = zodToJsonSchema(MAGIC_SCHEMA);

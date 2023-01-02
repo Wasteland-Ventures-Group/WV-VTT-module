@@ -5,7 +5,6 @@ import {
   FoundryCompendiumData
 } from "../../foundryCommon.js";
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 
 export default interface RaceDataSource {
   type: typeof TYPES.ITEM.RACE;
@@ -163,11 +162,9 @@ export interface CompendiumRace
   type: typeof TYPES.ITEM.RACE;
 }
 
-export const RACE_JSON_SCHEMA = zodToJsonSchema(RACE_SCHEMA);
 export const COMP_RACE_SCHEMA = compDataZodSchema(
   RACE_SCHEMA,
   "race",
   "icons/svg/mystery-man.svg",
   "New Race"
 );
-export const COMP_RACE_JSON_SCHEMA = zodToJsonSchema(COMP_RACE_SCHEMA);

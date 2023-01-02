@@ -18,7 +18,9 @@ export default interface WeaponDataSource {
 export type WeaponDataSourceData = z.infer<typeof WEAPON_SCHEMA>;
 export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   /** The attacks of the weapon */
-  attacks: ATTACKS_SCHEMA.describe("The attacks of the weapon"),
+  attacks: ATTACKS_SCHEMA.default({ sources: {} }).describe(
+    "The attacks of the weapon"
+  ),
 
   /** Whether the weapon is a holdout weapon */
   holdout: z
@@ -42,7 +44,7 @@ export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   strengthRequirement: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
     "The strength requirement for this weapon to be equipped"
   )
-});
+}).default({});
 
 export interface CompendiumWeapon
   extends FoundryCompendiumData<WeaponDataSourceData> {

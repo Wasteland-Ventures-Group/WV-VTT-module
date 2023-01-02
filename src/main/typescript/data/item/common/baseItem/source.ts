@@ -11,6 +11,7 @@ export const BASE_ITEM_SCHEMA = z.object({
    */
   name: z
     .string()
+    .default("")
     .describe(
       "The name of the item in the Wasteland Wares list. This is not the name " +
         "a player can give their specific instance of an item, but rather the " +

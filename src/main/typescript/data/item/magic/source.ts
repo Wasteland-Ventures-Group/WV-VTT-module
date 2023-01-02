@@ -37,7 +37,7 @@ export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
 
   /** The spell's target information */
   target: TARGET_SCHEMA.describe("The spell's target information")
-});
+}).default({});
 
 export interface CompendiumMagic
   extends FoundryCompendiumData<MagicDataSourceData> {

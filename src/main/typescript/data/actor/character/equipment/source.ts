@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ID_STRING, RESOURCE_SCHEMA } from "../../../foundryCommon";
+import { ID_STRING, RESOURCE_SCHEMA } from "../../../foundryCommon.js";
 
 export type EquipmentSource = z.infer<typeof EQUIPMENT_SCHEMA>;
 export const EQUIPMENT_SCHEMA = z.object({

@@ -17,7 +17,7 @@ export const AMMO_SCHEMA = STACK_ITEM_SCHEMA.extend({
     .describe("The caliber of the ammo"),
   /** The sub type of the ammo */
   type: z.string().default("").describe("The sub type of the ammo")
-});
+}).default({});
 
 export const COMP_AMMO_SCHEMA = compDataZodSchema(
   AMMO_SCHEMA,

@@ -12,19 +12,21 @@ export default interface CharacterDataSource {
 }
 
 export type CharacterDataSourceData = z.infer<typeof CHARACTER_SCHEMA>;
-export const CHARACTER_SCHEMA = z.object({
-  /** The background of the character */
-  background: BACKGROUND_SCHEMA.default({}),
+export const CHARACTER_SCHEMA = z
+  .object({
+    /** The background of the character */
+    background: BACKGROUND_SCHEMA.default({}),
 
-  /** The equipment of the character */
-  equipment: EQUIPMENT_SCHEMA.default({}),
+    /** The equipment of the character */
+    equipment: EQUIPMENT_SCHEMA.default({}),
 
-  /** The leveling stats of the character */
-  leveling: LEVELING_SCHEMA,
+    /** The leveling stats of the character */
+    leveling: LEVELING_SCHEMA.default({}),
 
-  /** The magic stats of the character */
-  magic: MAGIC_SCHEMA,
+    /** The magic stats of the character */
+    magic: MAGIC_SCHEMA.default({}),
 
-  /** The vitals of the character */
-  vitals: VITALS_SCHEMA
-});
+    /** The vitals of the character */
+    vitals: VITALS_SCHEMA.default({})
+  })
+  .default({});

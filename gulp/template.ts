@@ -1,4 +1,5 @@
 import { promises as fs } from "fs";
+import type { z } from "zod";
 import { distWvPrefix, templateOutPath } from "../gulpfile.js";
 import { TYPES } from "../src/main/typescript/constants.js";
 
@@ -28,16 +29,16 @@ export default async function templateTask(): Promise<void> {
   ] = await imports;
 
   const actorDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ACTOR.CHARACTER, actorDbData.CHARACTER_SCHEMA.parse({})]
+    [TYPES.ACTOR.CHARACTER, actorDbData.CHARACTER_SCHEMA]
   ];
   const itemDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ITEM.AMMO, ammoSource.AMMO_SCHEMA.parse({})],
-    [TYPES.ITEM.APPAREL, apparelSource.APPAREL_SCHEMA.parse({})],
-    [TYPES.ITEM.EFFECT, effectSource.EFFECT_SCHEMA.parse({})],
-    [TYPES.ITEM.MAGIC, magicSource.MAGIC_SCHEMA.parse({})],
-    [TYPES.ITEM.MISC, miscSource.MISC_SCHEMA.parse({})],
-    [TYPES.ITEM.RACE, raceSource.RACE_SCHEMA.parse({})],
-    [TYPES.ITEM.WEAPON, weaponSource.WEAPON_SCHEMA.parse({})]
+    [TYPES.ITEM.AMMO, ammoSource.AMMO_SCHEMA],
+    [TYPES.ITEM.APPAREL, apparelSource.APPAREL_SCHEMA],
+    [TYPES.ITEM.EFFECT, effectSource.EFFECT_SCHEMA],
+    [TYPES.ITEM.MAGIC, magicSource.MAGIC_SCHEMA],
+    [TYPES.ITEM.MISC, miscSource.MISC_SCHEMA],
+    [TYPES.ITEM.RACE, raceSource.RACE_SCHEMA],
+    [TYPES.ITEM.WEAPON, weaponSource.WEAPON_SCHEMA]
   ];
   return fs.writeFile(
     templateOutPath,
@@ -59,17 +60,21 @@ function createTemplateObject(
     }
   };
   actorDocumentTypes.forEach((actorDocumentType) => {
-    template.Actor.types.push(actorDocumentType[0]);
-    template.Actor[actorDocumentType[0]] = actorDocumentType[1];
+    const typeName = actorDocumentType[0];
+    const defaultSchema = actorDocumentType[1];
+    template.Actor.types.push(typeName);
+    template.Actor[typeName] = defaultSchema.parse({});
   });
   itemDocumentTypes.forEach((itemDocumentType) => {
-    template.Item.types.push(itemDocumentType[0]);
-    template.Item[itemDocumentType[0]] = itemDocumentType[1];
+    const typeName = itemDocumentType[0];
+    const defaultSchema = itemDocumentType[1];
+    template.Item.types.push(typeName);
+    template.Item[typeName] = defaultSchema.parse({});
   });
   return template;
 }
 
-type TemplateDocumentType = [string, object];
+type TemplateDocumentType = [string, z.ZodDefault<z.ZodTypeAny>];
 
 interface Template {
   Actor: DocumentTemplates;

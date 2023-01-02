@@ -43,7 +43,7 @@ export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
     .enum(ApparelTypes)
     .default("clothing")
     .describe("The sub type of the apparel")
-});
+}).default({});
 
 export const COMP_APPAREL_SCHEMA = compDataZodSchema(
   APPAREL_SCHEMA,

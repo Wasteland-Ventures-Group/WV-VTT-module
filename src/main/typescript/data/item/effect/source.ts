@@ -8,4 +8,4 @@ export default interface EffectDataSource {
 }
 
 export type EffectDataSourceData = BaseItemSource;
-export const EFFECT_SCHEMA = BASE_ITEM_SCHEMA;
+export const EFFECT_SCHEMA = BASE_ITEM_SCHEMA.default({});

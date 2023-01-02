@@ -8,4 +8,4 @@ export default interface MiscDataSource {
 }
 
 export type MiscDataSourceData = StackableItemSource;
-export const MISC_SCHEMA = STACK_ITEM_SCHEMA;
+export const MISC_SCHEMA = STACK_ITEM_SCHEMA.default({});

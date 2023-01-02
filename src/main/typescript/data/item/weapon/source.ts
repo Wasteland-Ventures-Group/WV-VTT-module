@@ -19,22 +19,30 @@ export default interface WeaponDataSource {
 export type WeaponDataSourceData = z.infer<typeof WEAPON_SCHEMA>;
 export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   /** The attacks of the weapon */
-  attacks: ATTACKS_SCHEMA,
+  attacks: ATTACKS_SCHEMA.describe("The attacks of the weapon"),
 
   /** Whether the weapon is a holdout weapon */
-  holdout: z.boolean().default(false),
+  holdout: z
+    .boolean()
+    .default(false)
+    .describe("Whether the weapon is a holdout weapon"),
 
   /** The ranges of the weapon */
-  ranges: RANGES_SCHEMA.default({}),
+  ranges: RANGES_SCHEMA.default({}).describe("The ranges of the weapon"),
 
   /** The reload of the weapon */
-  reload: RELOAD_SCHEMA.default({}),
+  reload: RELOAD_SCHEMA.default({}).describe("The reload of the weapon"),
 
   /** The skill associated with the weapon attacks */
-  skill: z.enum(SkillNames).default("firearms"),
+  skill: z
+    .enum(SkillNames)
+    .default("firearms")
+    .describe("The skill associated with the weapon attacks"),
 
   /** The strength requirement for this weapon to be equipped */
-  strengthRequirement: COMPOSITE_NUMBER_SCHEMA.default({})
+  strengthRequirement: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+    "The strength requirement for this weapon to be equipped"
+  )
 });
 
 export interface CompendiumWeapon

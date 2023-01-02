@@ -18,19 +18,26 @@ export default interface MagicDataSource {
 
 export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
   /** The spell's magic school */
-  school: z.enum(GeneralMagicSchools).default("general"),
+  school: z
+    .enum(GeneralMagicSchools)
+    .default("general")
+    .describe("The spell's magic school"),
 
   /** The spell's Action Point cost */
-  apCost: COMPOSITE_NUMBER_SCHEMA.default({}),
+  apCost: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+    "The spell's Action Point cost"
+  ),
 
   /** The spell's strain consumption */
-  strainCost: COMPOSITE_NUMBER_SCHEMA.default({}),
+  strainCost: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+    "The spell's strain consumption"
+  ),
 
   /** The spell's range information */
-  range: RANGE_SCHEMA,
+  range: RANGE_SCHEMA.describe("The spell's range information"),
 
   /** The spell's target information */
-  target: TARGET_SCHEMA
+  target: TARGET_SCHEMA.describe("The spell's target information")
 });
 
 export interface CompendiumMagic

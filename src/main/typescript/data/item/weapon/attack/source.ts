@@ -13,37 +13,53 @@ const DamageFallOffTypes = ["shotgun"] as const;
 /** The source data for weapon damage */
 export const DAMAGE_SCHEMA = z.object({
   /** The base damage amount */
-  base: COMPOSITE_NUMBER_SCHEMA.default({}),
+  base: COMPOSITE_NUMBER_SCHEMA.default({}).describe("The base damage amount"),
 
   /** The number of d6 to throw for variable damage */
-  dice: COMPOSITE_NUMBER_SCHEMA.default({}),
+  dice: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+    "The number of d6 to throw for variable damage"
+  ),
 
   /** Whether the damage uses a dice range based on actor Strength */
-  diceRange: z.boolean().optional(),
+  diceRange: z
+    .boolean()
+    .optional()
+    .describe("Whether the damage uses a dice range based on actor Strength"),
 
   /** The optional damage fall-off type of the attack */
-  damageFallOff: z.union([z.enum(DamageFallOffTypes), z.literal("")]).optional()
+  damageFallOff: z
+    .union([z.enum(DamageFallOffTypes), z.literal("")])
+    .optional()
+    .describe("The optional damage fall-off type of the attack")
 });
 
 /** The source scheme for a single attack */
 export const ATTACK_SCHEMA = z.object({
   /** The values related to the damage the weapon causes */
-  damage: DAMAGE_SCHEMA,
+  damage: DAMAGE_SCHEMA.describe(
+    "The values related to the damage the weapon causes"
+  ),
 
   /** The amount of rounds used with the attack */
-  rounds: COMPOSITE_NUMBER_SCHEMA.default({}).optional(),
+  rounds: COMPOSITE_NUMBER_SCHEMA.default({})
+    .optional()
+    .describe("The amount of rounds used with the attack"),
 
   /** The damage threshold reduction of the attack */
-  dtReduction: COMPOSITE_NUMBER_SCHEMA.default({}).optional(),
+  dtReduction: COMPOSITE_NUMBER_SCHEMA.default({})
+    .optional()
+    .describe("The damage threshold reduction of the attack"),
 
   /** The splash radius */
-  splash: z.enum(SplashSizes).optional(),
+  splash: z.enum(SplashSizes).optional().describe("The splash radius"),
 
   /** The amount of action points needed to attack */
-  ap: COMPOSITE_NUMBER_SCHEMA.optional(),
+  ap: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+    "The amount of action points needed to attack"
+  ),
 
   /** Tags of the attack */
-  tags: z.array(z.string()).default([])
+  tags: z.array(z.string()).default([]).describe("Tags of the attack")
 });
 
 /** The source schema for multiple attacks */

@@ -55,14 +55,28 @@ export function compDataZodSchema(
 ): z.Schema {
   return z
     .object({
-      _id: ID_STRING,
-      name: z.string().default(defaultName),
-      type: z.literal(type),
-      data: dataSchema,
-      img: z.string().min(1).default(defaultImg),
+      _id: ID_STRING.describe("The NeDB database ID of the entry"),
+      name: z
+        .string()
+        .default(defaultName)
+        .describe("The name of the entry in the compendium"),
+      type: z.literal(type).describe("The Actor or Item type name"),
+      data: dataSchema.describe("The entry's system data"),
+      img: z
+        .string()
+        .min(1)
+        .default(defaultImg)
+        .describe("The image of the entry"),
       // TODO: figure out if there should be any extra restrictions on effects and flags
-      effects: z.array(z.object({}).passthrough()).default([]),
-      flags: z.object({}).passthrough().default({})
+      effects: z
+        .array(z.object({}).passthrough())
+        .default([])
+        .describe("Foundry Active Effects on the entry"),
+      flags: z
+        .object({})
+        .passthrough()
+        .default({})
+        .describe("Custom flags on the entry")
     })
     .strict();
 }

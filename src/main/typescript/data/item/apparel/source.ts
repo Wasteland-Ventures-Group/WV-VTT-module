@@ -13,22 +13,37 @@ export default interface ApparelDataSource {
 export type ApparelDataSourceData = z.infer<typeof APPAREL_SCHEMA>;
 export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   /** The other apparel slots this apparel blocks aside from its own */
-  blockedSlots: z.record(z.enum(ApparelSlots), z.boolean()).optional(),
+  blockedSlots: z
+    .record(z.enum(ApparelSlots), z.boolean())
+    .optional()
+    .describe("The other apparel slots this apparel blocks aside from its own"),
 
   /** The damage threshold of the apparel */
-  damageThreshold: COMPOSITE_NUMBER_SCHEMA.optional(),
+  damageThreshold: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+    "The damage threshold of the apparel"
+  ),
 
   /** The number of quick slots of the apparel */
-  quickSlots: COMPOSITE_NUMBER_SCHEMA.optional(),
+  quickSlots: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+    "The number of quick slots of the apparel"
+  ),
 
   /** The number of mod slots of the apparel */
-  modSlots: COMPOSITE_NUMBER_SCHEMA.optional(),
+  modSlots: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+    "The number of mod slots of the apparel"
+  ),
 
   /** The apparel slot this apparel occupies when equipped */
-  slot: z.enum(ApparelSlots).default("clothing"),
+  slot: z
+    .enum(ApparelSlots)
+    .default("clothing")
+    .describe("The apparel slot this apparel occupies when equipped"),
 
   /** The sub type of the apparel */
-  type: z.enum(ApparelTypes).default("clothing")
+  type: z
+    .enum(ApparelTypes)
+    .default("clothing")
+    .describe("The sub type of the apparel")
 });
 
 export const APPAREL_JSON_SCHEMA = zodToJsonSchema(APPAREL_SCHEMA);

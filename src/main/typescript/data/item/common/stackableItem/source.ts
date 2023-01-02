@@ -9,7 +9,7 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 export type StackableItemSource = z.infer<typeof STACK_ITEM_SCHEMA>;
 export const STACK_ITEM_SCHEMA = PHYS_ITEM_SCHEMA.extend({
   /** The amount of the item */
-  amount: z.number().default(1)
+  amount: z.number().default(1).describe("The amount of the item")
 });
 
 export const STACK_ITEM_JSON_SCHEMA = zodToJsonSchema(STACK_ITEM_SCHEMA);

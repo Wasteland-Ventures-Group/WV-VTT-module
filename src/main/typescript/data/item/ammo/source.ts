@@ -12,9 +12,12 @@ export default interface AmmoDataSource {
 export type AmmoDataSourceData = z.infer<typeof AMMO_SCHEMA>;
 export const AMMO_SCHEMA = STACK_ITEM_SCHEMA.extend({
   /** The caliber of the ammo */
-  caliber: z.enum(Calibers).default("308cal"),
+  caliber: z
+    .enum(Calibers)
+    .default("308cal")
+    .describe("The caliber of the ammo"),
   /** The sub type of the ammo */
-  type: z.string().default("")
+  type: z.string().default("").describe("The sub type of the ammo")
 });
 
 export const AMMO_JSON_SCHEMA = zodToJsonSchema(AMMO_SCHEMA);

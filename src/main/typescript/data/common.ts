@@ -11,7 +11,10 @@ import {
 export type CompositeNumberSource = z.infer<typeof COMPOSITE_NUMBER_SCHEMA>;
 export const COMPOSITE_NUMBER_SCHEMA = z.object({
   /** The source value for a composite number */
-  source: z.number().default(0)
+  source: z
+    .number()
+    .default(0)
+    .describe("The source value for a composite number")
 });
 
 /** The bounds of a composite number */
@@ -168,10 +171,16 @@ export function isLabelComponent(object: unknown): object is LabelComponent {
 export type ComponentSource = z.infer<typeof COMPONENT_SOURCE_SCHEMA>;
 export const COMPONENT_SOURCE_SCHEMA = z.object({
   /** The value this component modifies the CompositeNumber's value by */
-  value: z.number(),
+  value: z
+    .number()
+    .describe(
+      "The value this component modifies the CompositeNumber's value by"
+    ),
 
   /** An explanatory label for the Component */
-  labelComponents: LABEL_COMPONENT_SCHEMA.array()
+  labelComponents: LABEL_COMPONENT_SCHEMA.array().describe(
+    "An explanatory label for the Component"
+  )
 });
 
 /**

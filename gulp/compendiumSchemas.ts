@@ -62,7 +62,7 @@ function deepRemoveDefaults(schema: z.ZodTypeAny): z.ZodTypeAny {
     return deepRemoveDefaults(schema.removeDefault());
 
   if (schema instanceof z.ZodObject) {
-    const newShape: any = {};
+    const newShape = { ...schema.shape };
 
     for (const key in schema.shape) {
       const fieldSchema = schema.shape[key];
@@ -71,7 +71,7 @@ function deepRemoveDefaults(schema: z.ZodTypeAny): z.ZodTypeAny {
     return new z.ZodObject({
       ...schema._def,
       shape: () => newShape
-    }) as any;
+    });
   }
 
   if (schema instanceof z.ZodArray)
@@ -85,7 +85,7 @@ function deepRemoveDefaults(schema: z.ZodTypeAny): z.ZodTypeAny {
 
   if (schema instanceof z.ZodTuple)
     return z.ZodTuple.create(
-      schema.items.map((item: any) => deepRemoveDefaults(item))
+      schema.items.map((item: z.ZodTypeAny) => deepRemoveDefaults(item))
     );
 
   return schema;

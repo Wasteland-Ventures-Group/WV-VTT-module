@@ -1,3 +1,4 @@
+import { z } from "zod";
 import {
   RadiationSicknessLevel,
   SpecialName,
@@ -7,7 +8,9 @@ import {
   ComponentSource,
   Component,
   LabelComponent,
-  CompositeNumberBounds
+  CompositeNumberBounds,
+  COMPOSITE_NUMBER_BOUNDS_SCHEMA,
+  COMPONENT_SOURCE_SCHEMA
 } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
@@ -58,41 +61,18 @@ export const SpecialsProperties = {
 };
 
 /** The layout for a serialized Special. */
-export interface SerializedSpecial {
-  permBounds?: CompositeNumberBounds;
-  tempBounds?: CompositeNumberBounds;
-  points: number;
-  permComponents: ComponentSource[];
-  tempComponents: ComponentSource[];
-}
+export type SerializedSpecial = z.infer<typeof SERIALIZED_SPECIAL_SCHEMA>;
+
+const SERIALIZED_SPECIAL_SCHEMA = z.object({
+  permBounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
+  tempBounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
+  points: z.number().int(),
+  permComponents: COMPONENT_SOURCE_SCHEMA.array(),
+  tempComponents: COMPONENT_SOURCE_SCHEMA.array()
+});
 
 /** A SPECIAL, holding all intermediary steps for the final result */
 export class Special implements FoundrySerializable {
-  /**
-   * Test whether the given source is a SerializedSpecial.
-   * @param source - the source to test
-   * @returns whether the source is a SerializedSpecial
-   */
-  static isSerialized(source: unknown): source is SerializedSpecial {
-    if (
-      typeof source !== "object" ||
-      null === source ||
-      !("points" in source) ||
-      !("permComponents" in source) ||
-      !("tempComponents" in source)
-    )
-      return false;
-
-    const obj = source as SerializedSpecial;
-    return (
-      typeof obj.points === "number" &&
-      Array.isArray(obj.permComponents) &&
-      !obj.permComponents.some((component) => !Component.isSource(component)) &&
-      Array.isArray(obj.tempComponents) &&
-      !obj.tempComponents.some((component) => !Component.isSource(component))
-    );
-  }
-
   /**
    * Create a Special from the given source
    * @param source - either a Special or SerializedSpecial
@@ -102,18 +82,16 @@ export class Special implements FoundrySerializable {
   static from(source: unknown): Special {
     if (source instanceof Special) return source;
 
-    if (this.isSerialized(source)) {
-      const special = new Special(
-        source.points,
-        source.permBounds,
-        source.tempBounds
-      );
-      source.permComponents.forEach((component) => special.addPerm(component));
-      source.tempComponents.forEach((component) => special.addTemp(component));
-      return special;
-    }
+    const parsedAsSerialized = SERIALIZED_SPECIAL_SCHEMA.safeParse(source);
 
-    throw new Error(`The source was not valid: ${source}`);
+    if (!parsedAsSerialized.success)
+      throw new Error(`The source was not valid: ${source}`);
+
+    const data = parsedAsSerialized.data;
+    const special = new Special(data.points, data.permBounds, data.tempBounds);
+    data.permComponents.forEach((component) => special.addPerm(component));
+    data.tempComponents.forEach((component) => special.addTemp(component));
+    return special;
   }
 
   /** Create a new SPECIAL. */

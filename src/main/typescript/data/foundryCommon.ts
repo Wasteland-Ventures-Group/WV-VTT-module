@@ -14,23 +14,6 @@ export interface Resource extends ResourceSource {
   max: number;
 }
 
-/** A helper class for Resources. */
-export class Resource {
-  /**
-   * Test whether the given source is a ResourceSource.
-   * @param source - the source to test
-   * @returns whether the source is a ResourceSource
-   */
-  static isSource(source: unknown): source is ResourceSource {
-    return (
-      typeof source === "object" &&
-      null !== source &&
-      "value" in source &&
-      typeof (source as ResourceSource).value === "number"
-    );
-  }
-}
-
 export interface FoundrySerializable {
   /**
    * Copy and transform the DocumentData into a plain object. Draw the values of

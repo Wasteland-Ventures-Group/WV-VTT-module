@@ -2,11 +2,8 @@ import { z } from "zod";
 import { SpecialNames } from "../../../../constants.js";
 import { COMPOSITE_NUMBER_SOURCE_SCHEMA, zObject } from "../../../common.js";
 
-export type RangeSource = z.infer<typeof RANGE_SOURCE_SCHEMA>;
-export type RangesSource = z.infer<typeof RANGES_SOURCE_SCHEMA>;
+/** The type representing distance information */
 export type DistanceSource = z.infer<typeof DISTANCE_SOURCE_SCHEMA>;
-
-/** The schema representing distance information */
 export const DISTANCE_SOURCE_SCHEMA = zObject({
   /** The base distance of the range distance in meters */
   base: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
@@ -25,7 +22,8 @@ export const DISTANCE_SOURCE_SCHEMA = zObject({
     .describe("The name of the SPECIAL to use for the range distance")
 });
 
-/** The schema representing range information */
+/** The type representing range information */
+export type RangeSource = z.infer<typeof RANGE_SOURCE_SCHEMA>;
 export const RANGE_SOURCE_SCHEMA = zObject({
   /** The distance of the range */
   distance: DISTANCE_SOURCE_SCHEMA.default({}).describe(
@@ -41,7 +39,8 @@ export const RANGE_SOURCE_SCHEMA = zObject({
   tags: z.array(z.string()).default([]).describe("Tags of the range")
 });
 
-/** A schema representing the three WV range categories */
+/** The type representing the three WV range categories */
+export type RangesSource = z.infer<typeof RANGES_SOURCE_SCHEMA>;
 export const RANGES_SOURCE_SCHEMA = zObject({
   /** The short range of the weapon */
   short: RANGE_SOURCE_SCHEMA.default({}).describe(

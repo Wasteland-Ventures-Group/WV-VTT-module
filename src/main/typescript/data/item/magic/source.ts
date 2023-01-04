@@ -12,6 +12,8 @@ export default interface MagicDataSource {
   data: MagicDataSourceData;
 }
 
+/** The Magic Item data-source's data */
+export type MagicDataSourceData = z.infer<typeof MAGIC_SOURCE_SCHEMA>;
 export const MAGIC_SOURCE_SCHEMA = BASE_ITEM_SOURCE_SCHEMA.extend({
   /** The spell's magic school */
   school: z
@@ -42,5 +44,3 @@ export const COMP_MAGIC_SCHEMA = compDataZodSchema(
   "icons/svg/daze.svg",
   "New Magic"
 );
-
-export type MagicDataSourceData = z.infer<typeof MAGIC_SOURCE_SCHEMA>;

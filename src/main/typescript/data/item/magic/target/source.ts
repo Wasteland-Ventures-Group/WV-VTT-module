@@ -4,6 +4,8 @@ import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../../common.js";
 
 export const AOETypes = ["none", "fixed", "varies"] as const;
 
+/** The source type for a spell target */
+export type TargetSource = z.infer<typeof TARGET_SOURCE_SCHEMA>;
 export const TARGET_SOURCE_SCHEMA = z
   .object({
     /** Determines the type of target a spell can affect */
@@ -34,5 +36,3 @@ export const TARGET_SOURCE_SCHEMA = z
       .describe("Determines the size of the area of effect if static")
   })
   .default({});
-
-export type TargetSource = z.infer<typeof TARGET_SOURCE_SCHEMA>;

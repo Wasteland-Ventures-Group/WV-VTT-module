@@ -2,14 +2,11 @@ import { z } from "zod";
 import { SplashSizes } from "../../../../constants.js";
 import { COMPOSITE_NUMBER_SOURCE_SCHEMA, zObject } from "../../../common.js";
 
-export type AttacksSource = z.infer<typeof ATTACKS_SOURCE_SCHEMA>;
-export type AttackSource = z.infer<typeof ATTACK_SOURCE_SCHEMA>;
-export type DamageSource = z.infer<typeof DAMAGE_SOURCE_SCHEMA>;
-
 export type DamageFallOffType = typeof DamageFallOffTypes[number];
 const DamageFallOffTypes = ["shotgun"] as const;
 
 /** The source data for weapon damage */
+export type DamageSource = z.infer<typeof DAMAGE_SOURCE_SCHEMA>;
 export const DAMAGE_SOURCE_SCHEMA = zObject({
   /** The base damage amount */
   base: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
@@ -35,6 +32,7 @@ export const DAMAGE_SOURCE_SCHEMA = zObject({
 });
 
 /** The source scheme for a single attack */
+export type AttackSource = z.infer<typeof ATTACK_SOURCE_SCHEMA>;
 export const ATTACK_SOURCE_SCHEMA = z
   .object({
     /** The values related to the damage the weapon causes */
@@ -66,6 +64,7 @@ export const ATTACK_SOURCE_SCHEMA = z
   .default({});
 
 /** The source schema for multiple attacks */
+export type AttacksSource = z.infer<typeof ATTACKS_SOURCE_SCHEMA>;
 export const ATTACKS_SOURCE_SCHEMA = zObject({
   sources: z.record(ATTACK_SOURCE_SCHEMA)
 });

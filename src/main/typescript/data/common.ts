@@ -156,12 +156,12 @@ export const WVI18N_KEY_SCHEMA = z.custom<WvI18nKey>(
   }
 );
 
+/** A component of a label for a Component. */
+export type LabelComponent = z.infer<typeof LABEL_COMPONENT_SCHEMA>;
 const LABEL_COMPONENT_SCHEMA = z.union([
   zObject({ text: z.string() }),
   zObject({ key: WVI18N_KEY_SCHEMA })
 ]);
-/** A component of a label for a Component. */
-export type LabelComponent = z.infer<typeof LABEL_COMPONENT_SCHEMA>;
 
 // TODO: remove me
 /** Test whether the given object is a LabelComponent. */

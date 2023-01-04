@@ -48,6 +48,10 @@ compendiumSchemasTask.description =
 
 async function createSchema(config: SchemaConfig): Promise<void> {
   await fs.mkdir(config.outputBasePath, { recursive: true });
+  // By removing defaults, we ensure that the user-provided JSON schemas must
+  // have all attributes present. This helps write compendium entries as the
+  // user's text editor can inform them what properties would still be useful
+  // to add.
   const schema = deepRemoveDefaults(config.schema);
   return fs.writeFile(
     `${config.outputBasePath}/${config.fileName}.json`,

@@ -218,7 +218,7 @@ export default class RuleElement {
     }
 
     if (this.rangesRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      document.data.data.ranges
+      return document.data.data.ranges
         .getMatching(this.rangesRegexpMatch?.groups?.tags?.split(","))
         .map((range) => foundry.utils.getProperty(range, this.target));
     }

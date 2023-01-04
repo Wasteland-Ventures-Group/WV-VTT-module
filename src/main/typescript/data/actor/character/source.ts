@@ -1,32 +1,32 @@
 import { z } from "zod";
 import type { TYPES } from "../../../constants.js";
-import { BACKGROUND_SCHEMA } from "./background/source.js";
-import { EQUIPMENT_SCHEMA } from "./equipment/source.js";
-import { LEVELING_SCHEMA } from "./leveling/source.js";
-import { MAGIC_SCHEMA } from "./magic/source.js";
-import { VITALS_SCHEMA } from "./vitals/source.js";
+import { BACKGROUND_SOURCE_SCHEMA } from "./background/source.js";
+import { EQUIPMENT_SOURCE_SCHEMA } from "./equipment/source.js";
+import { LEVELING_SOURCE_SCHEMA } from "./leveling/source.js";
+import { MAGIC_SOURCE_SCHEMA } from "./magic/source.js";
+import { VITALS_SOURCE_SCHEMA } from "./vitals/source.js";
 
 export default interface CharacterDataSource {
   type: typeof TYPES.ACTOR.CHARACTER;
   data: CharacterDataSourceData;
 }
 
-export type CharacterDataSourceData = z.infer<typeof CHARACTER_SCHEMA>;
-export const CHARACTER_SCHEMA = z
+export type CharacterDataSourceData = z.infer<typeof CHARACTER_SOURCE_SCHEMA>;
+export const CHARACTER_SOURCE_SCHEMA = z
   .object({
     /** The background of the character */
-    background: BACKGROUND_SCHEMA.default({}),
+    background: BACKGROUND_SOURCE_SCHEMA.default({}),
 
     /** The equipment of the character */
-    equipment: EQUIPMENT_SCHEMA.default({}),
+    equipment: EQUIPMENT_SOURCE_SCHEMA.default({}),
 
     /** The leveling stats of the character */
-    leveling: LEVELING_SCHEMA.default({}),
+    leveling: LEVELING_SOURCE_SCHEMA.default({}),
 
     /** The magic stats of the character */
-    magic: MAGIC_SCHEMA.default({}),
+    magic: MAGIC_SOURCE_SCHEMA.default({}),
 
     /** The vitals of the character */
-    vitals: VITALS_SCHEMA.default({})
+    vitals: VITALS_SOURCE_SCHEMA.default({})
   })
   .default({});

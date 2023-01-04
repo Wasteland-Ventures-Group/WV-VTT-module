@@ -1,5 +1,5 @@
 import { MagicTypes, TYPES } from "../../../constants.js";
-import { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
+import { BASE_ITEM_SOURCE_SCHEMA } from "../common/baseItem/source.js";
 import { compDataZodSchema } from "../../foundryCommon.js";
 import { z } from "zod";
 import { zObject } from "../../common.js";
@@ -67,9 +67,9 @@ export const FREE_PER_LEVEL_PERIOD_SCHEMA = zObject({
 });
 
 /** Physical characteristics of a race. */
-export type PhysicalSource = z.infer<typeof RACE_PHYSICAL_SCHEMA>;
+export type PhysicalSource = z.infer<typeof RACE_PHYSICAL_SOURCE_SCHEMA>;
 
-export const RACE_PHYSICAL_SCHEMA = zObject({
+export const RACE_PHYSICAL_SOURCE_SCHEMA = zObject({
   /** Whether this race can fly */
   canFly: z.boolean().default(false).describe("Whether this race can fly"),
 
@@ -131,9 +131,9 @@ export const RACE_CREATION_ATTRIBUTES_SCHEMA = z
   .default({});
 
 /** Attributes of a race for leveling */
-export type LevelingAttributes = z.infer<typeof LEVELING_SCHEMA>;
+export type LevelingAttributes = z.infer<typeof LEVELING_ATTRIBUTES_SCHEMA>;
 
-export const LEVELING_SCHEMA = zObject({
+export const LEVELING_ATTRIBUTES_SCHEMA = zObject({
   /** The interval for free spells for the race */
   freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA.default({}).describe(
     "The interval for free spells for the race"
@@ -144,10 +144,10 @@ export const LEVELING_SCHEMA = zObject({
   )
 });
 
-export type RaceDataSourceData = z.infer<typeof RACE_SCHEMA>;
-export const RACE_SCHEMA = BASE_ITEM_SCHEMA.extend({
+export type RaceDataSourceData = z.infer<typeof RACE_SOURCE_SCHEMA>;
+export const RACE_SOURCE_SCHEMA = BASE_ITEM_SOURCE_SCHEMA.extend({
   /** Physical characteristics of the race */
-  physical: RACE_PHYSICAL_SCHEMA.default({}).describe(
+  physical: RACE_PHYSICAL_SOURCE_SCHEMA.default({}).describe(
     "Physical characteristics of the race"
   ),
 
@@ -157,13 +157,13 @@ export const RACE_SCHEMA = BASE_ITEM_SCHEMA.extend({
   ),
 
   /** Attributes of the race for leveling */
-  leveling: LEVELING_SCHEMA.default({}).describe(
+  leveling: LEVELING_ATTRIBUTES_SCHEMA.default({}).describe(
     "Attributes of the race for leveling"
   )
 }).default({});
 
 export const COMP_RACE_SCHEMA = compDataZodSchema(
-  RACE_SCHEMA,
+  RACE_SOURCE_SCHEMA,
   "race",
   "icons/svg/mystery-man.svg",
   "New Race"

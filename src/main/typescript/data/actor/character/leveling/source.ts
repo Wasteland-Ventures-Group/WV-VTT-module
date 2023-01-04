@@ -14,7 +14,7 @@ export const SPECIAL_POINTS_SCHEMA = fullRecordWithDefault(
   5
 );
 
-export const LEVELING_SCHEMA = zObject({
+export const LEVELING_SOURCE_SCHEMA = zObject({
   /** The current experience of the character */
   experience: z.number().default(0),
 
@@ -31,4 +31,4 @@ export const LEVELING_SCHEMA = zObject({
   specialPoints: SPECIAL_POINTS_SCHEMA
 });
 
-export type LevelingSource = z.infer<typeof LEVELING_SCHEMA>;
+export type LevelingSource = z.infer<typeof LEVELING_SOURCE_SCHEMA>;

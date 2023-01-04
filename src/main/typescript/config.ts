@@ -8,14 +8,14 @@ import RaceSheet from "./applications/item/raceSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
 import WvItemSheet from "./applications/item/wvItemSheet.js";
 import { CONSTANTS, TYPES } from "./constants.js";
-import { CHARACTER_SCHEMA } from "./data/actor/character/source.js";
-import { AMMO_SCHEMA } from "./data/item/ammo/source.js";
-import { APPAREL_SCHEMA } from "./data/item/apparel/source.js";
-import { BASE_ITEM_SCHEMA } from "./data/item/common/baseItem/source.js";
-import { STACK_ITEM_SCHEMA } from "./data/item/common/stackableItem/source.js";
-import { MAGIC_SCHEMA } from "./data/item/magic/source.js";
-import { RACE_SCHEMA } from "./data/item/race/source.js";
-import { WEAPON_SCHEMA } from "./data/item/weapon/source.js";
+import { CHARACTER_SOURCE_SCHEMA } from "./data/actor/character/source.js";
+import { AMMO_SOURCE_SCHEMA } from "./data/item/ammo/source.js";
+import { APPAREL_SOURCE_SCHEMA } from "./data/item/apparel/source.js";
+import { BASE_ITEM_SOURCE_SCHEMA } from "./data/item/common/baseItem/source.js";
+import { STACK_ITEM_SOURCE_SCHEMA } from "./data/item/common/stackableItem/source.js";
+import { MAGIC_SOURCE_SCHEMA } from "./data/item/magic/source.js";
+import { RACE_SOURCE_SCHEMA } from "./data/item/race/source.js";
+import { WEAPON_SOURCE_SCHEMA } from "./data/item/weapon/source.js";
 import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvRuler from "./foundryOverrides/wvRuler.js";
@@ -89,16 +89,16 @@ export function configureFoundryOnInit(): void {
     },
     validators: {
       actor: {
-        character: CHARACTER_SCHEMA.safeParse
+        character: CHARACTER_SOURCE_SCHEMA.safeParse
       },
       item: {
-        ammo: AMMO_SCHEMA.safeParse,
-        apparel: APPAREL_SCHEMA.safeParse,
-        effect: BASE_ITEM_SCHEMA.safeParse,
-        magic: MAGIC_SCHEMA.safeParse,
-        misc: STACK_ITEM_SCHEMA.safeParse,
-        race: RACE_SCHEMA.safeParse,
-        weapon: WEAPON_SCHEMA.safeParse
+        ammo: AMMO_SOURCE_SCHEMA.safeParse,
+        apparel: APPAREL_SOURCE_SCHEMA.safeParse,
+        effect: BASE_ITEM_SOURCE_SCHEMA.safeParse,
+        magic: MAGIC_SOURCE_SCHEMA.safeParse,
+        misc: STACK_ITEM_SOURCE_SCHEMA.safeParse,
+        race: RACE_SOURCE_SCHEMA.safeParse,
+        weapon: WEAPON_SOURCE_SCHEMA.safeParse
       },
       ruleElement: RULE_ELEMENT_SCHEMA.safeParse
     }

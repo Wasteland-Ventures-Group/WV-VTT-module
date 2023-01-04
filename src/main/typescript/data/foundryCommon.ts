@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { SystemDocumentType, TYPES } from "../constants.js";
+import type { SystemDocumentType } from "../constants.js";
 import { zObject } from "./common.js";
 
 /** The source data of a foundry resource. */

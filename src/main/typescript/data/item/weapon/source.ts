@@ -2,20 +2,20 @@ import { z } from "zod";
 import { SkillNames, TYPES } from "../../../constants.js";
 import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../common.js";
 import { compDataZodSchema } from "../../foundryCommon.js";
-import { PHYS_ITEM_SCHEMA } from "../common/physicalItem/source.js";
-import { ATTACKS_SCHEMA } from "./attack/source.js";
-import { RANGES_SCHEMA } from "./ranges/source.js";
-import { RELOAD_SCHEMA } from "./reload/source.js";
+import { PHYS_ITEM_SOURCE_SCHEMA } from "../common/physicalItem/source.js";
+import { ATTACKS_SOURCE_SCHEMA } from "./attack/source.js";
+import { RANGES_SOURCE_SCHEMA } from "./ranges/source.js";
+import { RELOAD_SOURCE_SCHEMA } from "./reload/source.js";
 
 export default interface WeaponDataSource {
   type: typeof TYPES.ITEM.WEAPON;
   data: WeaponDataSourceData;
 }
 
-export type WeaponDataSourceData = z.infer<typeof WEAPON_SCHEMA>;
-export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
+export type WeaponDataSourceData = z.infer<typeof WEAPON_SOURCE_SCHEMA>;
+export const WEAPON_SOURCE_SCHEMA = PHYS_ITEM_SOURCE_SCHEMA.extend({
   /** The attacks of the weapon */
-  attacks: ATTACKS_SCHEMA.default({ sources: {} }).describe(
+  attacks: ATTACKS_SOURCE_SCHEMA.default({ sources: {} }).describe(
     "The attacks of the weapon"
   ),
 
@@ -26,10 +26,10 @@ export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
     .describe("Whether the weapon is a holdout weapon"),
 
   /** The ranges of the weapon */
-  ranges: RANGES_SCHEMA.default({}).describe("The ranges of the weapon"),
+  ranges: RANGES_SOURCE_SCHEMA.default({}).describe("The ranges of the weapon"),
 
   /** The reload of the weapon */
-  reload: RELOAD_SCHEMA.default({}).describe("The reload of the weapon"),
+  reload: RELOAD_SOURCE_SCHEMA.default({}).describe("The reload of the weapon"),
 
   /** The skill associated with the weapon attacks */
   skill: z
@@ -44,7 +44,7 @@ export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
 }).default({});
 
 export const COMP_WEAPON_SCHEMA = compDataZodSchema(
-  WEAPON_SCHEMA,
+  WEAPON_SOURCE_SCHEMA,
   "weapon",
   "icons/weapons/guns/gun-pistol-flintlock-white.webp",
   "New Weapon"

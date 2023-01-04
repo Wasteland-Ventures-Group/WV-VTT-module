@@ -29,16 +29,16 @@ export default async function templateTask(): Promise<void> {
   ] = await imports;
 
   const actorDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ACTOR.CHARACTER, actorDbData.CHARACTER_SCHEMA]
+    [TYPES.ACTOR.CHARACTER, actorDbData.CHARACTER_SOURCE_SCHEMA]
   ];
   const itemDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ITEM.AMMO, ammoSource.AMMO_SCHEMA],
-    [TYPES.ITEM.APPAREL, apparelSource.APPAREL_SCHEMA],
-    [TYPES.ITEM.EFFECT, effectSource.EFFECT_SCHEMA],
-    [TYPES.ITEM.MAGIC, magicSource.MAGIC_SCHEMA],
-    [TYPES.ITEM.MISC, miscSource.MISC_SCHEMA],
-    [TYPES.ITEM.RACE, raceSource.RACE_SCHEMA],
-    [TYPES.ITEM.WEAPON, weaponSource.WEAPON_SCHEMA]
+    [TYPES.ITEM.AMMO, ammoSource.AMMO_SOURCE_SCHEMA],
+    [TYPES.ITEM.APPAREL, apparelSource.APPAREL_SOURCE_SCHEMA],
+    [TYPES.ITEM.EFFECT, effectSource.EFFECT_SOURCE_SCHEMA],
+    [TYPES.ITEM.MAGIC, magicSource.MAGIC_SOURCE_SCHEMA],
+    [TYPES.ITEM.MISC, miscSource.MISC_SOURCE_SCHEMA],
+    [TYPES.ITEM.RACE, raceSource.RACE_SOURCE_SCHEMA],
+    [TYPES.ITEM.WEAPON, weaponSource.WEAPON_SOURCE_SCHEMA]
   ];
   return fs.writeFile(
     templateOutPath,

@@ -16,23 +16,25 @@ export const KeywordSelectorsWords = [
   "this"
 ] as const;
 
-export const KEYWORD_SELECTOR_WORD_SCHEMA = z.enum(KeywordSelectorsWords);
+export const KEYWORD_SELECTOR_WORD_SOURCE_SCHEMA = z.enum(
+  KeywordSelectorsWords
+);
 
-export type TagSelectorSource = z.infer<typeof TAG_SELECTOR_SCHEMA>;
-export const TAG_SELECTOR_SCHEMA = zObject({ tag: z.string() });
+export type TagSelectorSource = z.infer<typeof TAG_SELECTOR_SOURCE_SCHEMA>;
+export const TAG_SELECTOR_SOURCE_SCHEMA = zObject({ tag: z.string() });
 
 export interface TypeSelectorSource {
   type: SystemDocumentType;
 }
 
-export const TYPE_SELECTOR_SCHEMA = zObject({
+export const TYPE_SELECTOR_SOURCE_SCHEMA = zObject({
   type: SYSTEM_DOCUMENT_TYPE_SCHEMA
 });
 
 export interface UsesSkillSelectorSource {
   usesSkill: SkillName;
 }
-export const USES_SKILL_SELECTOR_SCHEMA = zObject({
+export const USES_SKILL_SELECTOR_SOURCE_SCHEMA = zObject({
   usesSkill: z.enum(SkillNames)
 });
 
@@ -48,17 +50,17 @@ export type DocumentSelectorSource =
   | UsesSkillSelectorSource;
 
 const NON_REC_DOCSELECTS = [
-  KEYWORD_SELECTOR_WORD_SCHEMA,
-  TAG_SELECTOR_SCHEMA,
-  TYPE_SELECTOR_SCHEMA,
-  USES_SKILL_SELECTOR_SCHEMA
+  KEYWORD_SELECTOR_WORD_SOURCE_SCHEMA,
+  TAG_SELECTOR_SOURCE_SCHEMA,
+  TYPE_SELECTOR_SOURCE_SCHEMA,
+  USES_SKILL_SELECTOR_SOURCE_SCHEMA
 ] as const;
 
-export const OR_SELECTOR_SCHEMA = zObject({
+export const OR_SELECTOR_SOURCE_SCHEMA = zObject({
   or: z.array(z.union(NON_REC_DOCSELECTS))
 });
 
 export const DOCUMENT_SELECTOR_SCHEMA = z.union([
-  OR_SELECTOR_SCHEMA,
+  OR_SELECTOR_SOURCE_SCHEMA,
   ...NON_REC_DOCSELECTS
 ]);

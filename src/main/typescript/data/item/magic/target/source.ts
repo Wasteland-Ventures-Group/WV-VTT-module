@@ -4,7 +4,7 @@ import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../../common.js";
 
 export const AOETypes = ["none", "fixed", "varies"] as const;
 
-export const TARGET_SCHEMA = z
+export const TARGET_SOURCE_SCHEMA = z
   .object({
     /** Determines the type of target a spell can affect */
     type: z
@@ -32,4 +32,4 @@ export const TARGET_SCHEMA = z
   })
   .default({});
 
-export type TargetSource = z.infer<typeof TARGET_SCHEMA>;
+export type TargetSource = z.infer<typeof TARGET_SOURCE_SCHEMA>;

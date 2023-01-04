@@ -2,15 +2,15 @@ import { z } from "zod";
 import { SplashSizes } from "../../../../constants.js";
 import { COMPOSITE_NUMBER_SOURCE_SCHEMA, zObject } from "../../../common.js";
 
-export type AttacksSource = z.infer<typeof ATTACKS_SCHEMA>;
-export type AttackSource = z.infer<typeof ATTACK_SCHEMA>;
-export type DamageSource = z.infer<typeof DAMAGE_SCHEMA>;
+export type AttacksSource = z.infer<typeof ATTACKS_SOURCE_SCHEMA>;
+export type AttackSource = z.infer<typeof ATTACK_SOURCE_SCHEMA>;
+export type DamageSource = z.infer<typeof DAMAGE_SOURCE_SCHEMA>;
 
 export type DamageFallOffType = typeof DamageFallOffTypes[number];
 const DamageFallOffTypes = ["shotgun"] as const;
 
 /** The source data for weapon damage */
-export const DAMAGE_SCHEMA = zObject({
+export const DAMAGE_SOURCE_SCHEMA = zObject({
   /** The base damage amount */
   base: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
     "The base damage amount"
@@ -35,10 +35,10 @@ export const DAMAGE_SCHEMA = zObject({
 });
 
 /** The source scheme for a single attack */
-export const ATTACK_SCHEMA = z
+export const ATTACK_SOURCE_SCHEMA = z
   .object({
     /** The values related to the damage the weapon causes */
-    damage: DAMAGE_SCHEMA.default({}).describe(
+    damage: DAMAGE_SOURCE_SCHEMA.default({}).describe(
       "The values related to the damage the weapon causes"
     ),
 
@@ -66,4 +66,6 @@ export const ATTACK_SCHEMA = z
   .default({});
 
 /** The source schema for multiple attacks */
-export const ATTACKS_SCHEMA = zObject({ sources: z.record(ATTACK_SCHEMA) });
+export const ATTACKS_SOURCE_SCHEMA = zObject({
+  sources: z.record(ATTACK_SOURCE_SCHEMA)
+});

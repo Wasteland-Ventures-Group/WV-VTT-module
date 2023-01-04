@@ -1,7 +1,7 @@
 import { SpecialName, TYPES } from "../../constants.js";
 import {
   AttackSource,
-  ATTACK_SCHEMA
+  ATTACK_SOURCE_SCHEMA
 } from "../../data/item/weapon/attack/source.js";
 import type { WeaponAttackDragData } from "../../dragData.js";
 import { getGame } from "../../foundryHelpers.js";
@@ -234,7 +234,7 @@ export default class WeaponSheet extends WvItemSheet {
 
   /** Get the default attack source for newly created attacks. */
   protected getDefaultAttackSource(): AttackSource {
-    return ATTACK_SCHEMA.parse({});
+    return ATTACK_SOURCE_SCHEMA.parse({});
   }
 
   /** Handle a click click event on a delete weapon attack button. */

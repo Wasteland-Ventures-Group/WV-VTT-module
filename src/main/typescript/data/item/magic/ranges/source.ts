@@ -2,9 +2,9 @@ import { z } from "zod";
 import { SpellRanges, SplashSizes } from "../../../../constants.js";
 import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../../common.js";
 
-export type RangeSource = z.infer<typeof RANGE_SCHEMA>;
+export type RangeSource = z.infer<typeof RANGE_SOURCE_SCHEMA>;
 
-export const RANGE_SCHEMA = z
+export const RANGE_SOURCE_SCHEMA = z
   .object({
     /** The type of range */
     type: z.enum(SpellRanges).default("none").describe("The type of range"),

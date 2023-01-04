@@ -35,7 +35,7 @@ export const LIMBS_CRIPPLED_STATUS = zObject({
   wings: PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA.default({})
 });
 
-export const VITALS_SCHEMA = zObject({
+export const VITALS_SOURCE_SCHEMA = zObject({
   /** The hit points of the character */
   hitPoints: RESOURCE_SOURCE_SCHEMA.default({ value: 15 }),
 
@@ -55,4 +55,4 @@ export const VITALS_SCHEMA = zObject({
   crippledLimbs: LIMBS_CRIPPLED_STATUS.default({})
 });
 
-export type VitalsSource = z.infer<typeof VITALS_SCHEMA>;
+export type VitalsSource = z.infer<typeof VITALS_SOURCE_SCHEMA>;

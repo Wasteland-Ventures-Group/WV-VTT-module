@@ -12,7 +12,7 @@ const THAUM_SPECIAL = z.custom<ThaumaturgySpecial>((val) =>
   ThaumaturgySpecials.includes(val as ThaumaturgySpecial)
 );
 
-export const MAGIC_SCHEMA = zObject({
+export const MAGIC_SOURCE_SCHEMA = zObject({
   /** The SPECIAL of the character associated with the Thaumaturgy skill */
   thaumSpecial: THAUM_SPECIAL.default("intelligence"),
 
@@ -26,4 +26,4 @@ export const MAGIC_SCHEMA = zObject({
   ).default(defaultMagicSpecial())
 });
 
-export type MagicSource = z.infer<typeof MAGIC_SCHEMA>;
+export type MagicSource = z.infer<typeof MAGIC_SOURCE_SCHEMA>;

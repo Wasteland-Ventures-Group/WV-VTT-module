@@ -2,15 +2,15 @@ import { z } from "zod";
 import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
 import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../common.js";
 import { compDataZodSchema } from "../../foundryCommon.js";
-import { PHYS_ITEM_SCHEMA } from "../common/physicalItem/source.js";
+import { PHYS_ITEM_SOURCE_SCHEMA } from "../common/physicalItem/source.js";
 
 export default interface ApparelDataSource {
   type: typeof TYPES.ITEM.APPAREL;
   data: ApparelDataSourceData;
 }
 
-export type ApparelDataSourceData = z.infer<typeof APPAREL_SCHEMA>;
-export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
+export type ApparelDataSourceData = z.infer<typeof APPAREL_SOURCE_SCHEMA>;
+export const APPAREL_SOURCE_SCHEMA = PHYS_ITEM_SOURCE_SCHEMA.extend({
   /** The other apparel slots this apparel blocks aside from its own */
   blockedSlots: z
     .record(z.enum(ApparelSlots), z.boolean())
@@ -46,7 +46,7 @@ export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
 }).default({});
 
 export const COMP_APPAREL_SCHEMA = compDataZodSchema(
-  APPAREL_SCHEMA,
+  APPAREL_SOURCE_SCHEMA,
   "apparel",
   "icons/equipment/chest/breastplate-leather-brown-belted.webp",
   "New Apparel"

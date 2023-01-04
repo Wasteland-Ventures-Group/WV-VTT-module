@@ -163,19 +163,6 @@ const LABEL_COMPONENT_SCHEMA = z.union([
   zObject({ key: WVI18N_KEY_SCHEMA })
 ]);
 
-// TODO: remove me
-/** Test whether the given object is a LabelComponent. */
-export function isLabelComponent(object: unknown): object is LabelComponent {
-  if (typeof object !== "object" || null === object) return false;
-
-  const comp = object as LabelComponent;
-  if ("key" in comp && typeof comp.key === "string") {
-    return getGame().i18n.localize(comp.key) !== comp.key;
-  }
-
-  return "text" in comp && typeof comp.text === "string";
-}
-
 /** A CompositeNumber Component source */
 export type ComponentSource = z.infer<typeof COMPONENT_SOURCE_SCHEMA>;
 export const COMPONENT_SOURCE_SCHEMA = zObject({

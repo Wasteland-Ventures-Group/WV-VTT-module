@@ -33,8 +33,8 @@ export type VitalsProperties = VitalsSource & {
    * Get the internationalized name for the radiation sickness level of a
    * character.
    */
-
   readonly i18nRadiationSicknessLevel: string;
+
   /** Apply SPECIALs to the vitals and set the base values. */
   applySpecials(specials: SpecialsProperties): void;
 

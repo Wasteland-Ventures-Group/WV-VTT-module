@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SplashSizes } from "../../../../constants.js";
-import { COMPOSITE_NUMBER_SCHEMA, zObject } from "../../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA, zObject } from "../../../common.js";
 
 export type AttacksSource = z.infer<typeof ATTACKS_SCHEMA>;
 export type AttackSource = z.infer<typeof ATTACK_SCHEMA>;
@@ -12,10 +12,12 @@ const DamageFallOffTypes = ["shotgun"] as const;
 /** The source data for weapon damage */
 export const DAMAGE_SCHEMA = zObject({
   /** The base damage amount */
-  base: COMPOSITE_NUMBER_SCHEMA.default({}).describe("The base damage amount"),
+  base: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
+    "The base damage amount"
+  ),
 
   /** The number of d6 to throw for variable damage */
-  dice: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+  dice: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
     "The number of d6 to throw for variable damage"
   ),
 
@@ -41,12 +43,12 @@ export const ATTACK_SCHEMA = z
     ),
 
     /** The amount of rounds used with the attack */
-    rounds: COMPOSITE_NUMBER_SCHEMA.default({})
+    rounds: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({})
       .optional()
       .describe("The amount of rounds used with the attack"),
 
     /** The damage threshold reduction of the attack */
-    dtReduction: COMPOSITE_NUMBER_SCHEMA.default({})
+    dtReduction: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({})
       .optional()
       .describe("The damage threshold reduction of the attack"),
 
@@ -54,7 +56,7 @@ export const ATTACK_SCHEMA = z
     splash: z.enum(SplashSizes).optional().describe("The splash radius"),
 
     /** The amount of action points needed to attack */
-    ap: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+    ap: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().describe(
       "The amount of action points needed to attack"
     ),
 

@@ -1,7 +1,7 @@
 import { TYPES, GeneralMagicSchools } from "../../../constants.js";
 import { RANGE_SCHEMA } from "./ranges/source.js";
 import { TARGET_SCHEMA } from "./target/source.js";
-import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../common.js";
 import { z } from "zod";
 import { compDataZodSchema } from "../../foundryCommon.js";
 import { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
@@ -20,12 +20,12 @@ export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
     .describe("The spell's magic school"),
 
   /** The spell's Action Point cost */
-  apCost: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+  apCost: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
     "The spell's Action Point cost"
   ),
 
   /** The spell's strain consumption */
-  strainCost: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+  strainCost: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
     "The spell's strain consumption"
   ),
 

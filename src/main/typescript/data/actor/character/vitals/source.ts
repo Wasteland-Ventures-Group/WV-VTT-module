@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { RESOURCE_SCHEMA } from "../../../foundryCommon.js";
+import { RESOURCE_SOURCE_SCHEMA } from "../../../foundryCommon.js";
 import { zObject } from "../../../common.js";
 
 const PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA = zObject({
@@ -37,16 +37,16 @@ export const LIMBS_CRIPPLED_STATUS = zObject({
 
 export const VITALS_SCHEMA = zObject({
   /** The hit points of the character */
-  hitPoints: RESOURCE_SCHEMA.default({ value: 15 }),
+  hitPoints: RESOURCE_SOURCE_SCHEMA.default({ value: 15 }),
 
   /** The action points of the character */
-  actionPoints: RESOURCE_SCHEMA.default({ value: 12 }),
+  actionPoints: RESOURCE_SOURCE_SCHEMA.default({ value: 12 }),
 
   /** The insanity of the character */
-  insanity: RESOURCE_SCHEMA.default({ value: 0 }),
+  insanity: RESOURCE_SOURCE_SCHEMA.default({ value: 0 }),
 
   /** The strain of the character */
-  strain: RESOURCE_SCHEMA.default({ value: 20 }),
+  strain: RESOURCE_SOURCE_SCHEMA.default({ value: 20 }),
 
   /** The absorbed dose of radiation of the character */
   radiationDose: z.number().default(0),

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
-import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../common.js";
 import { compDataZodSchema } from "../../foundryCommon.js";
 import { PHYS_ITEM_SCHEMA } from "../common/physicalItem/source.js";
 
@@ -18,17 +18,17 @@ export const APPAREL_SCHEMA = PHYS_ITEM_SCHEMA.extend({
     .describe("The other apparel slots this apparel blocks aside from its own"),
 
   /** The damage threshold of the apparel */
-  damageThreshold: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+  damageThreshold: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().describe(
     "The damage threshold of the apparel"
   ),
 
   /** The number of quick slots of the apparel */
-  quickSlots: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+  quickSlots: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().describe(
     "The number of quick slots of the apparel"
   ),
 
   /** The number of mod slots of the apparel */
-  modSlots: COMPOSITE_NUMBER_SCHEMA.optional().describe(
+  modSlots: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().describe(
     "The number of mod slots of the apparel"
   ),
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SpecialNames } from "../../../../constants.js";
-import { COMPOSITE_NUMBER_SCHEMA, zObject } from "../../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA, zObject } from "../../../common.js";
 
 export type RangeSource = z.infer<typeof RANGE_SCHEMA>;
 export type RangesSource = z.infer<typeof RANGES_SCHEMA>;
@@ -9,12 +9,12 @@ export type DistanceSource = z.infer<typeof DISTANCE_SCHEMA>;
 /** The schema representing distance information */
 export const DISTANCE_SCHEMA = zObject({
   /** The base distance of the range distance in meters */
-  base: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+  base: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
     "The base distance of the range distance in meters"
   ),
 
   /** The SPECIAL multiplier of the range distance */
-  multiplier: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+  multiplier: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
     "The SPECIAL multiplier of the range distance"
   ),
 
@@ -31,7 +31,7 @@ export const RANGE_SCHEMA = zObject({
   distance: DISTANCE_SCHEMA.default({}).describe("The distance of the range"),
 
   /** The skill check modifier associated with this range */
-  modifier: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+  modifier: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
     "The skill check modifier associated with this range"
   ),
 

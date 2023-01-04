@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SpellRanges, SplashSizes } from "../../../../constants.js";
-import { COMPOSITE_NUMBER_SCHEMA } from "../../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../../common.js";
 
 export type RangeSource = z.infer<typeof RANGE_SCHEMA>;
 
@@ -10,12 +10,12 @@ export const RANGE_SCHEMA = z
     type: z.enum(SpellRanges).default("none").describe("The type of range"),
 
     /** How the distance scales with potency */
-    distanceScale: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+    distanceScale: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
       "How the distance scales with potency"
     ),
 
     /** The base value for the distance */
-    distanceBase: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+    distanceBase: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
       "The base value for the distance"
     ),
 

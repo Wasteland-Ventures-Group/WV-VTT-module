@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SkillNames, TYPES } from "../../../constants.js";
-import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../common.js";
 import { compDataZodSchema } from "../../foundryCommon.js";
 import { PHYS_ITEM_SCHEMA } from "../common/physicalItem/source.js";
 import { ATTACKS_SCHEMA } from "./attack/source.js";
@@ -38,7 +38,7 @@ export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
     .describe("The skill associated with the weapon attacks"),
 
   /** The strength requirement for this weapon to be equipped */
-  strengthRequirement: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+  strengthRequirement: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
     "The strength requirement for this weapon to be equipped"
   )
 }).default({});

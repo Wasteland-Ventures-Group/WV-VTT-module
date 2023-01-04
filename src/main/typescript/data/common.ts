@@ -4,12 +4,14 @@ import type { WvI18nKey } from "../lang.js";
 import {
   FoundrySerializable,
   Resource,
-  RESOURCE_SCHEMA
+  RESOURCE_SOURCE_SCHEMA
 } from "./foundryCommon.js";
 
 /** The data layout needed to create a CompositeNumber from raw data. */
-export type CompositeNumberSource = z.infer<typeof COMPOSITE_NUMBER_SCHEMA>;
-export const COMPOSITE_NUMBER_SCHEMA = zObject({
+export type CompositeNumberSource = z.infer<
+  typeof COMPOSITE_NUMBER_SOURCE_SCHEMA
+>;
+export const COMPOSITE_NUMBER_SOURCE_SCHEMA = zObject({
   /** The source value for a composite number */
   source: z
     .number()
@@ -193,10 +195,11 @@ export const COMPONENT_SOURCE_SCHEMA = zObject({
 /**
  * Parses a serialized composite number (or a regular composite number source)
  */
-const SERIALIZED_COMPOSITE_NUMBER_SCHEMA = COMPOSITE_NUMBER_SCHEMA.extend({
-  bounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
-  components: COMPONENT_SOURCE_SCHEMA.array().default([])
-});
+const SERIALIZED_COMPOSITE_NUMBER_SCHEMA =
+  COMPOSITE_NUMBER_SOURCE_SCHEMA.extend({
+    bounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
+    components: COMPONENT_SOURCE_SCHEMA.array().default([])
+  });
 
 /** A Component of a CompositeNumber */
 export class Component implements ComponentSource, FoundrySerializable {
@@ -253,7 +256,7 @@ export class CompositeResource extends CompositeNumber implements Resource {
   static override from(source: unknown): CompositeResource {
     if (source instanceof CompositeResource) return source;
 
-    const parsedAsSource = RESOURCE_SCHEMA.safeParse(source);
+    const parsedAsSource = RESOURCE_SOURCE_SCHEMA.safeParse(source);
 
     if (!parsedAsSource.success)
       throw new Error(`The source was not valid: ${source}`);

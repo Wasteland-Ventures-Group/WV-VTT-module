@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { zObject } from "../../../common.js";
-import { ID_STRING, RESOURCE_SCHEMA } from "../../../foundryCommon.js";
+import { ID_STRING, RESOURCE_SOURCE_SCHEMA } from "../../../foundryCommon.js";
 
 export type EquipmentSource = z.infer<typeof EQUIPMENT_SCHEMA>;
 export const EQUIPMENT_SCHEMA = zObject({
@@ -8,7 +8,7 @@ export const EQUIPMENT_SCHEMA = zObject({
   caps: z.number().default(0),
 
   /** The quick slot charges of the character */
-  quickSlots: RESOURCE_SCHEMA.default({ value: 0 }),
+  quickSlots: RESOURCE_SOURCE_SCHEMA.default({ value: 0 }),
 
   /** The ID of the readied item in the character's posession. */
   readiedItemId: ID_STRING.nullable().default(null),

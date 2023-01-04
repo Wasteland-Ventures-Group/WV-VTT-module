@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { COMPOSITE_NUMBER_SCHEMA, zObject } from "../../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA, zObject } from "../../../common.js";
 
 export type BackgroundSource = z.infer<typeof BACKGROUND_SCHEMA>;
 export const BACKGROUND_SCHEMA = zObject({
@@ -37,7 +37,7 @@ export const BACKGROUND_SCHEMA = zObject({
   personality: z.string().default(""),
 
   /** The size of the character */
-  size: COMPOSITE_NUMBER_SCHEMA.default({}),
+  size: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}),
 
   /** The social contacts of the character */
   socialContacts: z.string().default(""),

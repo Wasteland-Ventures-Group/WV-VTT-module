@@ -3,9 +3,9 @@ import type { SystemDocumentType, TYPES } from "../constants.js";
 import { zObject } from "./common.js";
 
 /** The source data of a foundry resource. */
-export type ResourceSource = z.infer<typeof RESOURCE_SCHEMA>;
+export type ResourceSource = z.infer<typeof RESOURCE_SOURCE_SCHEMA>;
 
-export const RESOURCE_SCHEMA = zObject({
+export const RESOURCE_SOURCE_SCHEMA = zObject({
   value: z.number(),
   max: z.number().optional()
 });

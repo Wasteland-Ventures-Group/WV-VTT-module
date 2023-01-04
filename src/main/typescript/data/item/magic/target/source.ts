@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SplashSizes, TargetTypes } from "../../../../constants.js";
-import { COMPOSITE_NUMBER_SCHEMA } from "../../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../../common.js";
 
 export const AOETypes = ["none", "fixed", "varies"] as const;
 
@@ -15,7 +15,7 @@ export const TARGET_SCHEMA = z
      * Determines how many of `type` a spell can affect. Usually only applies
      * when `type` is `creature`
      */
-    count: COMPOSITE_NUMBER_SCHEMA.default({}).describe(
+    count: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
       "Determines how many of `type` a spell can affect. Usually only applies " +
         "when `type` is `creature`"
     ),

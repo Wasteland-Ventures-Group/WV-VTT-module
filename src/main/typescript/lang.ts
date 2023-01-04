@@ -17,6 +17,7 @@ import type { DocumentRelation } from "./item/wvItem.js";
 const QUANTITY_NAMES = zObject({
   /** The singular name */
   singular: z.string(),
+
   /** The plural name */
   plural: z.string()
 });
@@ -25,6 +26,7 @@ const QUANTITY_NAMES = zObject({
 const SETTING = zObject({
   /** The name of the setting */
   name: z.string(),
+
   /** The hint for the setting */
   hint: z.string()
 });
@@ -33,6 +35,7 @@ const SETTING = zObject({
 const SHORT_LONG_NAMES = zObject({
   /** The long name */
   long: z.string(),
+
   /** The short name */
   short: z.string()
 });

@@ -18,17 +18,21 @@ export const BASE_ITEM_SOURCE_SCHEMA = zObject({
         "a player can give their specific instance of an item, but rather the " +
         'name of * the item "prototype".'
     ),
+
   /** The description of the item in the Wasteland Wares list */
   description: z
     .string()
     .default("")
     .describe("The description of the item in the Wasteland Wares list"),
+
   /** User provided notes */
   notes: z.string().default("").describe("User provided notes"),
+
   /** The RuleElement sources of the item */
   rules: RULES_SOURCE_SCHEMA.default({}).describe(
     "The RuleElement sources of the item"
   ),
+
   /** Tags of the item */
   tags: z.array(z.string()).default([]).describe("Tags of the item")
 });

@@ -20,6 +20,7 @@ export const RACE_FREE_ON_CREATION_SCHEMA = z
       .array(z.string())
       .default([])
       .describe("The character gets all of these on creation"),
+
     /** The character can pick n amount of these on creation */
     anyOf: z
       .object({
@@ -28,6 +29,7 @@ export const RACE_FREE_ON_CREATION_SCHEMA = z
           .array(z.string())
           .default([])
           .describe("The choices to pick from"),
+
         /** The amount of things to pick */
         amount: z
           .number()
@@ -36,6 +38,7 @@ export const RACE_FREE_ON_CREATION_SCHEMA = z
           .describe("The amount of things to pick")
       })
       .default({}),
+
     /** Amount of free things to get in addition to allOf and anyOf */
     amount: z
       .number()
@@ -53,7 +56,6 @@ export type FreePerLevelPeriod = z.infer<typeof FREE_PER_LEVEL_PERIOD_SCHEMA>;
 export const FREE_PER_LEVEL_PERIOD_SCHEMA = zObject({
   /**
    * The period of levels at which to gain new things.
-   * @example A period of 5 would mean on 6th and 11th and so on…
    */
   period: z
     .number()
@@ -62,6 +64,7 @@ export const FREE_PER_LEVEL_PERIOD_SCHEMA = zObject({
       "The period of levels at which to gain new things. Example: A period of " +
         "5 would mean on 6th and 11th and so on…"
     ),
+
   /** Gain amount free things */
   amount: z.number().default(0).describe("Gain amount free things")
 });
@@ -138,6 +141,7 @@ export const LEVELING_ATTRIBUTES_SCHEMA = zObject({
   freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA.default({}).describe(
     "The interval for free spells for the race"
   ),
+
   /** The interval for free alchemy for the race */
   freeAlchemy: FREE_PER_LEVEL_PERIOD_SCHEMA.default({}).describe(
     "The interval for free alchemy for the race"

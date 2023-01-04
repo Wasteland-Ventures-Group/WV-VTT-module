@@ -29,7 +29,7 @@ export const SpecialsProperties = {
     }, {} as Record<SpecialName, Special>);
     return {
       ...specials,
-      /** Apply the given radiation sickness level and modify the temp SPECIALs. */
+
       applyRadiationSickness(sicknessLevel: RadiationSicknessLevel) {
         const labelComponents: LabelComponent[] = [
           { key: "wv.rules.radiation.name" }

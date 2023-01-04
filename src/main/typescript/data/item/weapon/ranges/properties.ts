@@ -144,6 +144,7 @@ export const RangeProperties = {
       ...source,
       distance,
       modifier,
+
       matches(tags: string[] | undefined): boolean {
         if (tags === undefined) return true;
 
@@ -166,6 +167,7 @@ export type DistanceProperties = DistanceSource & {
    * @returns the effective distance
    */
   getEffectiveRangeDistance(specials?: Partial<SpecialsProperties>): number;
+
   /**
    * Get the displayable distance for a range distance. If the distance is
    * Special based and no Special was passed, the range will be returned as a
@@ -178,6 +180,7 @@ export type DistanceProperties = DistanceSource & {
   getDisplayRangeDistance(
     specials?: Partial<SpecialsProperties> | undefined
   ): string;
+
   /**
    * Apply a base distance bonus to the distance based on the given size
    * category.
@@ -206,6 +209,7 @@ export const DistanceProperties = {
       ...source,
       base,
       multiplier,
+
       getEffectiveRangeDistance(
         specials?: Partial<SpecialsProperties>
       ): number {
@@ -216,6 +220,7 @@ export const DistanceProperties = {
 
         return this.base.total;
       },
+
       getDisplayRangeDistance(
         specials?: Partial<SpecialsProperties> | undefined
       ): string {
@@ -235,6 +240,7 @@ export const DistanceProperties = {
 
         return this.base.total.toString();
       },
+
       applySizeCategoryReachBonus(sizeCategory: number) {
         const value = this.getSizeCategoryReachBonus(sizeCategory);
         if (value)
@@ -243,6 +249,7 @@ export const DistanceProperties = {
             labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
           });
       },
+
       getSizeCategoryReachBonus(sizeCategory: number): number {
         switch (sizeCategory) {
           case 2:
@@ -255,6 +262,7 @@ export const DistanceProperties = {
             return 0;
         }
       },
+
       getSpecialRangeDistance(specialValue: number): number {
         return this.base.total + this.multiplier.total * specialValue;
       }

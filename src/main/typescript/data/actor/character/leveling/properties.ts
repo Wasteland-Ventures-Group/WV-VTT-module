@@ -21,12 +21,15 @@ export const LevelingProperties = {
   from(source: LevelingSource): LevelingProperties {
     return {
       ...source,
+
       get level() {
         return Math.floor((1 + Math.sqrt(this.experience / 12.5 + 1)) / 2);
       },
+
       get xpForNextLevel() {
         return 50 * (this.level + 1) * this.level;
       },
+
       get maxSkillPoints() {
         return this.levelIntelligences.reduce(
           (skillPoints, intelligence) =>
@@ -34,6 +37,7 @@ export const LevelingProperties = {
           0
         );
       },
+
       get totalSpecialPoints(): number {
         return Object.values(this.specialPoints).reduce(
           (total, points) => total + points,

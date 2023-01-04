@@ -31,6 +31,7 @@ export const EquipmentProperties = {
       quickSlots,
       equipActionCosts,
       damageThreshold: new CompositeNumber(),
+
       applyEquippedApparel(equippedApparel: Apparel[]) {
         equippedApparel.forEach((apparel) => {
           if (apparel.data.data.damageThreshold)

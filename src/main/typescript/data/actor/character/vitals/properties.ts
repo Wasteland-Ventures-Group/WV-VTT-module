@@ -70,6 +70,7 @@ export const VitalsProperties = {
       insanity,
       strain,
       healingRate,
+
       get crippledLegs() {
         return [
           this.crippledLimbs.legs.front.left,
@@ -78,6 +79,7 @@ export const VitalsProperties = {
           this.crippledLimbs.legs.rear.right
         ].filter(Boolean).length;
       },
+
       get i18nRadiationSicknessLevel() {
         const radSickLev = this.radiationSicknessLevel;
         return WvI18n.radiationSicknessLevels[radSickLev];
@@ -107,9 +109,11 @@ export const VitalsProperties = {
         this.insanity.source =
           Math.floor(specials.intelligence.tempTotal / 2) + 5;
       },
+
       applyLevel(level: number) {
         this.strain.source = 20 + Math.floor(level / 5) * 5;
       },
+
       applySizeCategory(sizeCategory: number) {
         const value = {
           4: 4,

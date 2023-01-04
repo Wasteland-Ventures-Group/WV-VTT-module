@@ -40,17 +40,13 @@ export const AttacksProperties = {
     return {
       ...source,
       attacks,
+
       getMatching(tags: string[] | undefined): AttackProperties[] {
         return Object.values(this.attacks).filter((attack) =>
           attack.matches(tags)
         );
       },
 
-      /**
-       * Apply a skill damage dice modifier to all attacks, if the attack qualifies
-       * for it. This is based on the skill of the weapon and the skill value of the
-       * given Actor.
-       */
       applySkillDamageDiceMod(actor: WvActor | null, weapon: Weapon): void {
         if (!actor) return;
 
@@ -59,10 +55,6 @@ export const AttacksProperties = {
         );
       },
 
-      /**
-       * Apply a Strength damage dice modifier to all attacks, based on the Strength
-       * of the given Actor.
-       */
       applyStrengthDamageDiceMod(actor: WvActor | null): void {
         if (!actor) return;
 

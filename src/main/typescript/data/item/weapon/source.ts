@@ -1,10 +1,7 @@
 import { z } from "zod";
 import { SkillNames, TYPES } from "../../../constants.js";
 import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
-import {
-  compDataZodSchema,
-  FoundryCompendiumData
-} from "../../foundryCommon.js";
+import { compDataZodSchema } from "../../foundryCommon.js";
 import { PHYS_ITEM_SCHEMA } from "../common/physicalItem/source.js";
 import { ATTACKS_SCHEMA } from "./attack/source.js";
 import { RANGES_SCHEMA } from "./ranges/source.js";
@@ -45,11 +42,6 @@ export const WEAPON_SCHEMA = PHYS_ITEM_SCHEMA.extend({
     "The strength requirement for this weapon to be equipped"
   )
 }).default({});
-
-export interface CompendiumWeapon
-  extends FoundryCompendiumData<WeaponDataSourceData> {
-  type: typeof TYPES.ITEM.WEAPON;
-}
 
 export const COMP_WEAPON_SCHEMA = compDataZodSchema(
   WEAPON_SCHEMA,

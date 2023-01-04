@@ -1,9 +1,6 @@
 import { MagicTypes, TYPES } from "../../../constants.js";
 import { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
-import {
-  compDataZodSchema,
-  FoundryCompendiumData
-} from "../../foundryCommon.js";
+import { compDataZodSchema } from "../../foundryCommon.js";
 import { z } from "zod";
 import { zObject } from "../../common.js";
 
@@ -164,11 +161,6 @@ export const RACE_SCHEMA = BASE_ITEM_SCHEMA.extend({
     "Attributes of the race for leveling"
   )
 }).default({});
-
-export interface CompendiumRace
-  extends FoundryCompendiumData<RaceDataSourceData> {
-  type: typeof TYPES.ITEM.RACE;
-}
 
 export const COMP_RACE_SCHEMA = compDataZodSchema(
   RACE_SCHEMA,

@@ -29,25 +29,6 @@ export interface FoundrySerializable {
 /** The schema for a string that expresses a NeDB database ID */
 export const ID_STRING = z.string().regex(/^[a-zA-Z0-9]{16}$/);
 
-/** An interface to model Foundry's compendium layout. */
-// TODO: remove this?
-export interface FoundryCompendiumData<T> {
-  /** The NeDB database ID of the entry */
-  _id: string;
-  /** The name of the entry in the compendium */
-  name: string;
-  /** The Actor or Item type name */
-  type: ValueOf<typeof TYPES.ACTOR | typeof TYPES.ITEM>;
-  /** The entry's system data */
-  data: T;
-  /** The image of the entry */
-  img: string;
-  /** Foundry Active Effects on the entry */
-  effects: object[];
-  /** Custom flags on the entry */
-  flags: Record<string, unknown>;
-}
-
 export function compDataZodSchema(
   dataSchema: z.Schema,
   type: SystemDocumentType,
@@ -56,23 +37,30 @@ export function compDataZodSchema(
 ): z.Schema {
   return z
     .object({
+      /** The NeDB database ID of the entry */
       _id: ID_STRING.describe("The NeDB database ID of the entry"),
+      /** The name of the entry in the compendium */
       name: z
         .string()
         .default(defaultName)
         .describe("The name of the entry in the compendium"),
+      /** The Actor or Item type name */
       type: z.literal(type).describe("The Actor or Item type name"),
+      /** The entry's system data */
       data: dataSchema.describe("The entry's system data"),
+      /** The image of the entry */
       img: z
         .string()
         .min(1)
         .default(defaultImg)
         .describe("The image of the entry"),
       // TODO: figure out if there should be any extra restrictions on effects and flags
+      /** Foundry Active Effects on the entry */
       effects: z
         .array(z.object({}).passthrough())
         .default([])
         .describe("Foundry Active Effects on the entry"),
+      /** Custom flags on the entry */
       flags: z
         .object({})
         .passthrough()

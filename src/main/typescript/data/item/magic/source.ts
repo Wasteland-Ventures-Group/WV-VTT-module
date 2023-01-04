@@ -3,10 +3,7 @@ import { RANGE_SCHEMA } from "./ranges/source.js";
 import { TARGET_SCHEMA } from "./target/source.js";
 import { COMPOSITE_NUMBER_SCHEMA } from "../../common.js";
 import { z } from "zod";
-import {
-  compDataZodSchema,
-  FoundryCompendiumData
-} from "../../foundryCommon.js";
+import { compDataZodSchema } from "../../foundryCommon.js";
 import { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
 
 /** The Magic Item data-source */
@@ -38,11 +35,6 @@ export const MAGIC_SCHEMA = BASE_ITEM_SCHEMA.extend({
   /** The spell's target information */
   target: TARGET_SCHEMA.describe("The spell's target information")
 }).default({});
-
-export interface CompendiumMagic
-  extends FoundryCompendiumData<MagicDataSourceData> {
-  type: typeof TYPES.ITEM.MAGIC;
-}
 
 export const COMP_MAGIC_SCHEMA = compDataZodSchema(
   MAGIC_SCHEMA,

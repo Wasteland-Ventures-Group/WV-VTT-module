@@ -1,8 +1,7 @@
 import { z } from "zod";
 import { RESOURCE_SOURCE_SCHEMA } from "../../../foundryCommon.js";
-import { zObject } from "../../../common.js";
 
-const PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA = zObject({
+const PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA = z.object({
   /** The status of the left limb */
   left: z.boolean().default(false),
 
@@ -10,7 +9,7 @@ const PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA = zObject({
   right: z.boolean().default(false)
 });
 
-export const LEGS_CRIPPLED_STATUS = zObject({
+export const LEGS_CRIPPLED_STATUS = z.object({
   /** The status of the front legs */
   front: PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA.default({}),
 
@@ -18,7 +17,7 @@ export const LEGS_CRIPPLED_STATUS = zObject({
   rear: PAIRED_LIMB_CRIPPLED_STATUS_SCHEMA.default({})
 });
 
-export const LIMBS_CRIPPLED_STATUS = zObject({
+export const LIMBS_CRIPPLED_STATUS = z.object({
   /** The crippled limb status of the torso */
   torso: z.boolean().default(false),
 
@@ -37,7 +36,7 @@ export const LIMBS_CRIPPLED_STATUS = zObject({
 
 /** The source object for character vitals */
 export type VitalsSource = z.infer<typeof VITALS_SOURCE_SCHEMA>;
-export const VITALS_SOURCE_SCHEMA = zObject({
+export const VITALS_SOURCE_SCHEMA = z.object({
   /** The hit points of the character */
   hitPoints: RESOURCE_SOURCE_SCHEMA.default({ value: 15 }),
 

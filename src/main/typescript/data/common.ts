@@ -11,7 +11,7 @@ import {
 export type CompositeNumberSource = z.infer<
   typeof COMPOSITE_NUMBER_SOURCE_SCHEMA
 >;
-export const COMPOSITE_NUMBER_SOURCE_SCHEMA = zObject({
+export const COMPOSITE_NUMBER_SOURCE_SCHEMA = z.object({
   /** The source value for a composite number */
   source: z
     .number()
@@ -24,7 +24,7 @@ export type CompositeNumberBounds = z.infer<
   typeof COMPOSITE_NUMBER_BOUNDS_SCHEMA
 >;
 
-export const COMPOSITE_NUMBER_BOUNDS_SCHEMA = zObject({
+export const COMPOSITE_NUMBER_BOUNDS_SCHEMA = z.object({
   min: z.number().optional(),
   max: z.number().optional()
 });
@@ -159,13 +159,13 @@ export const WVI18N_KEY_SCHEMA = z.custom<WvI18nKey>(
 /** A component of a label for a Component. */
 export type LabelComponent = z.infer<typeof LABEL_COMPONENT_SCHEMA>;
 const LABEL_COMPONENT_SCHEMA = z.union([
-  zObject({ text: z.string() }),
-  zObject({ key: WVI18N_KEY_SCHEMA })
+  z.object({ text: z.string() }),
+  z.object({ key: WVI18N_KEY_SCHEMA })
 ]);
 
 /** A CompositeNumber Component source */
 export type ComponentSource = z.infer<typeof COMPONENT_SOURCE_SCHEMA>;
-export const COMPONENT_SOURCE_SCHEMA = zObject({
+export const COMPONENT_SOURCE_SCHEMA = z.object({
   /** The value this component modifies the CompositeNumber's value by */
   value: z
     .number()
@@ -292,21 +292,9 @@ export class CompositeResource extends CompositeNumber implements Resource {
 }
 
 /**
- * By default, zod strips unknown keys. This is not the default desired
- * behaviour here. This is a thin wrapper.
- * @param shape - The desired object shape
- * @returns The desired zod object
- */
-export function zObject<T extends z.ZodRawShape>(
-  shape: T
-): z.ZodObject<T, "strict"> {
-  return z.object(shape).strict();
-}
-
-/**
  * By default, zod's record parser is `Partial` when an enum is geven as a key
  * This function returns a parser that ensures all of its keys are present.
- * This is equivalent to a zObject(...).strict() with all the keys present
+ * This is equivalent to a z.object(...).strict() with all the keys present
  * @param keys - The keys of the record type
  * @returns A zod schema for the record type
  */

@@ -10,8 +10,7 @@ import {
   LabelComponent,
   CompositeNumberBounds,
   COMPOSITE_NUMBER_BOUNDS_SCHEMA,
-  COMPONENT_SOURCE_SCHEMA,
-  zObject
+  COMPONENT_SOURCE_SCHEMA
 } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
@@ -64,7 +63,7 @@ export const SpecialsProperties = {
 /** The layout for a serialized Special. */
 export type SerializedSpecial = z.infer<typeof SERIALIZED_SPECIAL_SCHEMA>;
 
-const SERIALIZED_SPECIAL_SCHEMA = zObject({
+const SERIALIZED_SPECIAL_SCHEMA = z.object({
   permBounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
   tempBounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
   points: z.number().int(),

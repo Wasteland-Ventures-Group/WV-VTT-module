@@ -9,12 +9,12 @@ import {
   SkillNames,
   SpecialNames
 } from "./constants.js";
-import { fullRecord, fullRecordWithVal, zObject } from "./data/common.js";
+import { fullRecord, fullRecordWithVal } from "./data/common.js";
 import type { Join, PathsToStringProps } from "./helperTypes.js";
 import type { DocumentRelation } from "./item/wvItem.js";
 
 /** Names in singular and plural */
-const QUANTITY_NAMES = zObject({
+const QUANTITY_NAMES = z.object({
   /** The singular name */
   singular: z.string(),
 
@@ -23,7 +23,7 @@ const QUANTITY_NAMES = zObject({
 });
 
 /** A schema for system settings */
-const SETTING = zObject({
+const SETTING = z.object({
   /** The name of the setting */
   name: z.string(),
 
@@ -32,7 +32,7 @@ const SETTING = zObject({
 });
 
 /** Names in long and short form */
-const SHORT_LONG_NAMES = zObject({
+const SHORT_LONG_NAMES = z.object({
   /** The long name */
   long: z.string(),
 
@@ -73,20 +73,20 @@ const SYSNAME_VERSION_STRING = z
   .regex(/(?=.*\{systemName\})(?=.*{version\})/);
 
 export type LangSchema = z.infer<typeof LANG_SCHEMA>;
-export const LANG_SCHEMA = zObject({
+export const LANG_SCHEMA = z.object({
   /** The root element for the Wasteland Ventures system localization */
-  wv: zObject({
+  wv: z.object({
     /** Labels coming straight out of the rule book */
-    rules: zObject({
+    rules: z.object({
       /** Labels for Action Points */
       actionPoints: SHORT_LONG_NAMES.extend({
         /** A label for action point use */
         use: z.string()
       }),
       /** Labels for different actions */
-      actions: zObject({
+      actions: z.object({
         /** Labels relating to attack actions */
-        attack: zObject({
+        attack: z.object({
           /** A label for the aimed attacks */
           aim: z.string(),
           /** A label for called shots */
@@ -96,7 +96,7 @@ export const LANG_SCHEMA = zObject({
         })
       }),
       /** Labels for the background */
-      background: zObject({
+      background: z.object({
         /** Label for the age */
         age: z.string(),
         /** Label for the appearance */
@@ -123,9 +123,9 @@ export const LANG_SCHEMA = zObject({
         virtue: z.string()
       }),
       /** Labels relating to crippled limbs */
-      crippledLimbs: zObject({
+      crippledLimbs: z.object({
         /** Status labels for different limbs */
-        status: zObject({
+        status: z.object({
           torso: z.string(),
           head: z.string(),
           secondHead: z.string(),
@@ -138,7 +138,7 @@ export const LANG_SCHEMA = zObject({
         })
       }),
       /** Labels relating to criticals */
-      criticals: zObject({
+      criticals: z.object({
         /** The grouping title for criticals */
         title: z.string(),
         /** The label for the success */
@@ -159,11 +159,11 @@ export const LANG_SCHEMA = zObject({
         /** Label for the Strength based dice range */
         diceRange: z.string(),
         /** Labels related to damage fall-off */
-        fallOff: zObject({
+        fallOff: z.object({
           /** The name of the damage fall-off concept */
           name: z.string(),
           /** The names for the fall-off types */
-          types: zObject({
+          types: z.object({
             shotgun: z.string()
           })
         }),
@@ -174,15 +174,15 @@ export const LANG_SCHEMA = zObject({
         })
       }),
       /** Labels related to equipment */
-      equipment: zObject({
-        ammo: zObject({
+      equipment: z.object({
+        ammo: z.object({
           /** The label for the caliber */
           caliber: z.string(),
           /** Names for different calibers */
           calibers: I18N_CALIBERS,
           /** The name of ammunition */
           name: z.string(),
-          subTypes: zObject({
+          subTypes: z.object({
             standard: z.string(),
             armorPiercing: z.string(),
             hollowPoint: z.string(),
@@ -214,7 +214,7 @@ export const LANG_SCHEMA = zObject({
           type: z.string()
         }),
         /** Labels relating to the concept of apparel. */
-        apparel: zObject({
+        apparel: z.object({
           /** The name of apparel. */
           name: z.string(),
           /** The name for the concept of apparel type */
@@ -229,7 +229,7 @@ export const LANG_SCHEMA = zObject({
         /** The name for equipment */
         name: z.string(),
         /** Labels relating to rarity */
-        rarity: zObject({
+        rarity: z.object({
           /** The name for the concept of rarity */
           name: z.string(),
           /** Names for the rarity levels */
@@ -251,7 +251,7 @@ export const LANG_SCHEMA = zObject({
           names: I18N_EQUIPMENT_SLOTS
         }),
         /** Labels for the concept of value */
-        value: zObject({
+        value: z.object({
           /** The name of the value concept */
           name: z.string()
         }),
@@ -262,13 +262,13 @@ export const LANG_SCHEMA = zObject({
           /** The label for the holdout property */
           holdout: z.string(),
           /** Labels related to reloading */
-          reload: zObject({
+          reload: z.object({
             /** The label for the container size */
             containerSize: z.string(),
             /** The label for the container type */
             containerType: z.string(),
             /** Labels for the different container types */
-            containerTypes: zObject({
+            containerTypes: z.object({
               internal: z.string(),
               magazine: z.string()
             }),
@@ -281,13 +281,13 @@ export const LANG_SCHEMA = zObject({
           strengthRequirement: SHORT_LONG_NAMES
         }),
         /** Labels relating to the concept of weight */
-        weight: zObject({
+        weight: z.object({
           /** The name of the concept of weight */
           name: z.string()
         })
       }),
       /** Labels relating to health */
-      health: zObject({
+      health: z.object({
         /** The label for the health */
         health: z.string(),
         /** The label for the short version of "health points" */
@@ -302,14 +302,14 @@ export const LANG_SCHEMA = zObject({
       /** Label for the karma field */
       karma: z.string(),
       /** Labels related to leveling */
-      leveling: zObject({
+      leveling: z.object({
         /** The label for the level */
         level: z.string(),
         /** The label for the experience */
         experience: z.string()
       }),
       /** Labels related to magic */
-      magic: zObject({
+      magic: z.object({
         /** The label for potency */
         potency: z.string(),
         /** The name of "Magic" */
@@ -332,7 +332,7 @@ export const LANG_SCHEMA = zObject({
         reached: z.string()
       }),
       /** Labels related to radiation */
-      radiation: zObject({
+      radiation: z.object({
         /** The name of the radiation concept */
         name: z.string(),
         /** The label for the absorbed dose */
@@ -340,7 +340,7 @@ export const LANG_SCHEMA = zObject({
         /** The label for the radiation sickness level */
         sicknessLevel: z.string(),
         /** Names for levels of radiation sickness */
-        sicknessLevels: zObject({
+        sicknessLevels: z.object({
           none: z.string(),
           minor: z.string(),
           moderate: z.string(),
@@ -351,12 +351,12 @@ export const LANG_SCHEMA = zObject({
       /** Labels related to range */
       range: QUANTITY_NAMES.extend({
         /** Labels relating to the distance */
-        distance: zObject({
+        distance: z.object({
           /** The name for the concept of distance */
           name: z.string()
         }),
         /** Names for different ranges */
-        ranges: zObject({
+        ranges: z.object({
           /** The name for out of range */
           outOfRange: SHORT_LONG_NAMES,
           /** The name for long range */
@@ -367,16 +367,16 @@ export const LANG_SCHEMA = zObject({
           short: SHORT_LONG_NAMES
         })
       }),
-      resistances: zObject({
+      resistances: z.object({
         /** Labels for the poison resistance */
         poison: SHORT_LONG_NAMES,
         /** Labels for the radiation resistance */
         radiation: SHORT_LONG_NAMES
       }),
       /** Rules labels related to rolls */
-      rolls: zObject({
+      rolls: z.object({
         /** Labels for roll results */
-        results: zObject({
+        results: z.object({
           /** The label for a critical failure */
           criticalFailure: z.string(),
           /** The label for a critical hit */
@@ -399,7 +399,7 @@ export const LANG_SCHEMA = zObject({
           successDegrees: z.string()
         }),
         /** Labels for various targets to roll for */
-        targets: zObject({
+        targets: z.object({
           /** Label for a hit chance reason */
           hitChance: z.string(),
           /** Label for a success chance reason */
@@ -430,9 +430,9 @@ export const LANG_SCHEMA = zObject({
       })
     }),
     /** Labels used by the system module itself */
-    system: zObject({
+    system: z.object({
       /** Labels for actions */
-      actions: zObject({
+      actions: z.object({
         cancel: z.string(),
         create: z.string(),
         delete: z.string(),
@@ -443,9 +443,9 @@ export const LANG_SCHEMA = zObject({
         update: z.string()
       }),
       /** Labels relating to different dialogs */
-      dialogs: zObject({
+      dialogs: z.object({
         /** Labels for the compendium overwrite confirmation dialog */
-        compendiumOverwriteConfirm: zObject({
+        compendiumOverwriteConfirm: z.object({
           /**
            * The title for the dialog
            *
@@ -462,7 +462,7 @@ export const LANG_SCHEMA = zObject({
       /** Labels related to generic Misc Items */
       item: QUANTITY_NAMES,
       /** Labels used in the initial character setup app */
-      initialCharacterSetup: zObject({
+      initialCharacterSetup: z.object({
         /** The label for the open button on the character sheet */
         openButton: z.string(),
         /**
@@ -473,7 +473,7 @@ export const LANG_SCHEMA = zObject({
          */
         title: NAME_STRING,
         /** Labels relating to the initial character setup */
-        messages: zObject({
+        messages: z.object({
           /** A message for when the user spent too few SPECIAL points */
           tooFewSpecialPointsSpent: z.string(),
           /** A message for when the user spent too many SPECIAL points */
@@ -481,7 +481,7 @@ export const LANG_SCHEMA = zObject({
         })
       }),
       /** Different system messages. */
-      messages: zObject({
+      messages: z.object({
         /**
          * The message when a specified attack could not be found on a weapon.
          *
@@ -579,7 +579,7 @@ export const LANG_SCHEMA = zObject({
         targetOutOfRange: z.string()
       }),
       /** Miscellaneous labels not fitting anywhere else */
-      misc: zObject({
+      misc: z.object({
         /** Label for a description */
         description: z.string(),
         /** Label for details */
@@ -620,9 +620,9 @@ export const LANG_SCHEMA = zObject({
         updateFromCompendium: z.string()
       }),
       /** Labels related to the prompt dialog */
-      prompt: zObject({
+      prompt: z.object({
         /** Default labels for the prompt */
-        defaults: zObject({
+        defaults: z.object({
           /** The default window title */
           title: z.string()
         })
@@ -632,7 +632,7 @@ export const LANG_SCHEMA = zObject({
         /** Label for the fallback race */
         noRace: z.string(),
         /** Labels for physical attributes */
-        physical: zObject({
+        physical: z.object({
           /** Label for the "canFly" attribute */
           canFly: z.string(),
           /** Label for the "canUseMagic" attribute */
@@ -645,13 +645,13 @@ export const LANG_SCHEMA = zObject({
           hasWings: z.string()
         }),
         /** Labels for character creation attributes */
-        creation: zObject({
+        creation: z.object({
           /** Label for the "startingSpecialPoints" attribute */
           startingSpecialPoints: z.string()
         })
       }),
       /** System labels related to rolls */
-      rolls: zObject({
+      rolls: z.object({
         /**
          * A descriptive verb for what is being rolled
          *
@@ -665,18 +665,18 @@ export const LANG_SCHEMA = zObject({
         whisperToGms: z.string()
       }),
       /** Labels related to the Rule Engine */
-      ruleEngine: zObject({
+      ruleEngine: z.object({
         /** Labels for document related rule element messages */
-        documentMessages: zObject({
+        documentMessages: z.object({
           /** The descriptive name for document related rule element messages */
           name: z.string(),
           /** Labels for different document relations */
           relations: DOCUMENT_RELATIONS
         }),
         /** Labels for different errors */
-        errors: zObject({
+        errors: z.object({
           /** Various logical errors */
-          logical: zObject({
+          logical: z.object({
             /**
              * An error message when the selected property on the target is not
              * a CompositeNumber.
@@ -719,7 +719,7 @@ export const LANG_SCHEMA = zObject({
             wrongValueType: TYPE_STRING
           }),
           /** Various semantic errors */
-          semantic: zObject({
+          semantic: z.object({
             /**
              * An error message for fields that are not allowed.
              *
@@ -768,12 +768,12 @@ export const LANG_SCHEMA = zObject({
         /** Labels for rule elements */
         ruleElement: QUANTITY_NAMES,
         /** Labels related to selectors */
-        selectors: zObject({
+        selectors: z.object({
           /** A summary label for selected documents */
           selectedDocuments: z.string()
         }),
         /** Labels for different warnings */
-        warnings: zObject({
+        warnings: z.object({
           /**
            * A warning, stating that the type of a property was changed.
            *
@@ -793,17 +793,17 @@ export const LANG_SCHEMA = zObject({
         })
       }),
       /** Labels related to settings. */
-      settings: zObject({
+      settings: z.object({
         /** Labels relating to an always/never setting */
-        alwaysNeverSetting: zObject({
+        alwaysNeverSetting: z.object({
           /** The choices for the setting */
-          choices: zObject({
+          choices: z.object({
             always: z.string(),
             never: z.string()
           })
         }),
         /** Movement related setting labels */
-        movement: zObject({
+        movement: z.object({
           /** The enforcement and subtract setting for players */
           enforceAndSubtractApForPlayers: SETTING,
           /** The enforcement setting for game masters */
@@ -817,9 +817,9 @@ export const LANG_SCHEMA = zObject({
         specialPointsMinBounds: SETTING
       }),
       /** Labels relating to sheets */
-      sheets: zObject({
+      sheets: z.object({
         /** Names for different sheets */
-        names: zObject({
+        names: z.object({
           /** The label for the Actor sheet */
           actorSheet: z.string(),
           /** The label for the Ammo sheet */
@@ -842,7 +842,7 @@ export const LANG_SCHEMA = zObject({
       /** The label for the Thaumaturgy special select */
       thaumSpecial: z.string(),
       /** Labels for describing different values */
-      values: zObject({
+      values: z.object({
         /** Label for an amount of something */
         amount: z.string(),
         /** Label for a base value */

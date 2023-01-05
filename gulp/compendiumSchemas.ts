@@ -52,7 +52,7 @@ async function createSchema(config: SchemaConfig): Promise<void> {
   // have all attributes present. This helps write compendium entries as the
   // user's text editor can inform them what properties would still be useful
   // to add.
-  const schema = deepRemoveDefaults(config.schema);
+  const schema = deepStrictRemoveDefaults(config.schema);
   return fs.writeFile(
     `${config.outputBasePath}/${config.fileName}.json`,
     JSON.stringify({
@@ -61,35 +61,41 @@ async function createSchema(config: SchemaConfig): Promise<void> {
   );
 }
 
-function deepRemoveDefaults(schema: z.ZodTypeAny): z.ZodTypeAny {
+/**
+ * Traverses the zod schema and removes all defaults, but also makes all
+ * objects strict.
+ * @param schema - The schema to make rebust
+ * @returns The robust schema
+ */
+function deepStrictRemoveDefaults(schema: z.ZodTypeAny): z.ZodTypeAny {
   if (schema instanceof z.ZodDefault)
-    return deepRemoveDefaults(schema.removeDefault());
+    return deepStrictRemoveDefaults(schema.removeDefault());
 
   if (schema instanceof z.ZodObject) {
     const newShape = { ...schema.shape };
 
     for (const key in schema.shape) {
       const fieldSchema = schema.shape[key];
-      newShape[key] = deepRemoveDefaults(fieldSchema);
+      newShape[key] = deepStrictRemoveDefaults(fieldSchema);
     }
     return new z.ZodObject({
       ...schema._def,
       shape: () => newShape
-    });
+    }).strict();
   }
 
   if (schema instanceof z.ZodArray)
-    return z.ZodArray.create(deepRemoveDefaults(schema.element));
+    return z.ZodArray.create(deepStrictRemoveDefaults(schema.element));
 
   if (schema instanceof z.ZodOptional)
-    return z.ZodOptional.create(deepRemoveDefaults(schema.unwrap()));
+    return z.ZodOptional.create(deepStrictRemoveDefaults(schema.unwrap()));
 
   if (schema instanceof z.ZodNullable)
-    return z.ZodNullable.create(deepRemoveDefaults(schema.unwrap()));
+    return z.ZodNullable.create(deepStrictRemoveDefaults(schema.unwrap()));
 
   if (schema instanceof z.ZodTuple)
     return z.ZodTuple.create(
-      schema.items.map((item: z.ZodTypeAny) => deepRemoveDefaults(item))
+      schema.items.map((item: z.ZodTypeAny) => deepStrictRemoveDefaults(item))
     );
 
   return schema;

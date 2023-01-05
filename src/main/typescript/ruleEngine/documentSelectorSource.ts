@@ -5,7 +5,6 @@ import {
   SystemDocumentType,
   SYSTEM_DOCUMENT_TYPE_SCHEMA
 } from "../constants.js";
-import { zObject } from "../data/common.js";
 
 export type KeywordSelectorWord = typeof KeywordSelectorsWords[number];
 export const KeywordSelectorsWords = [
@@ -21,20 +20,20 @@ export const KEYWORD_SELECTOR_WORD_SOURCE_SCHEMA = z.enum(
 );
 
 export type TagSelectorSource = z.infer<typeof TAG_SELECTOR_SOURCE_SCHEMA>;
-export const TAG_SELECTOR_SOURCE_SCHEMA = zObject({ tag: z.string() });
+export const TAG_SELECTOR_SOURCE_SCHEMA = z.object({ tag: z.string() });
 
 export interface TypeSelectorSource {
   type: SystemDocumentType;
 }
 
-export const TYPE_SELECTOR_SOURCE_SCHEMA = zObject({
+export const TYPE_SELECTOR_SOURCE_SCHEMA = z.object({
   type: SYSTEM_DOCUMENT_TYPE_SCHEMA
 });
 
 export interface UsesSkillSelectorSource {
   usesSkill: SkillName;
 }
-export const USES_SKILL_SELECTOR_SOURCE_SCHEMA = zObject({
+export const USES_SKILL_SELECTOR_SOURCE_SCHEMA = z.object({
   usesSkill: z.enum(SkillNames)
 });
 
@@ -56,7 +55,7 @@ const NON_REC_DOCSELECTS = [
   USES_SKILL_SELECTOR_SOURCE_SCHEMA
 ] as const;
 
-export const OR_SELECTOR_SOURCE_SCHEMA = zObject({
+export const OR_SELECTOR_SOURCE_SCHEMA = z.object({
   or: z.array(z.union(NON_REC_DOCSELECTS))
 });
 

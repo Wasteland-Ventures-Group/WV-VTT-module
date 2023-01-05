@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { COMPOSITE_NUMBER_SOURCE_SCHEMA, zObject } from "../../../common.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../../common.js";
 
 export type BackgroundSource = z.infer<typeof BACKGROUND_SOURCE_SCHEMA>;
-export const BACKGROUND_SOURCE_SCHEMA = zObject({
+export const BACKGROUND_SOURCE_SCHEMA = z.object({
   /** The age of the character */
   age: z.string().default(""),
 

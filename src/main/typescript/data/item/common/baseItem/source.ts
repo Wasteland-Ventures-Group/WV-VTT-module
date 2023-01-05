@@ -1,10 +1,9 @@
 import { z } from "zod";
-import { zObject } from "../../../common.js";
 import { RULES_SOURCE_SCHEMA } from "../rules/source.js";
 
 /** This holds the source of the base values that all items have in common. */
 export type BaseItemSource = z.infer<typeof BASE_ITEM_SOURCE_SCHEMA>;
-export const BASE_ITEM_SOURCE_SCHEMA = zObject({
+export const BASE_ITEM_SOURCE_SCHEMA = z.object({
   /**
    * The name of the item in the Wasteland Wares list. This is not the name a
    * player can give their specific instance of an item, but rather the name of

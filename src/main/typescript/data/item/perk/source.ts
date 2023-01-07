@@ -1,7 +1,7 @@
 import { z } from "zod";
-import { SkillNames, SpecialNames, TYPES } from "../../../constants";
-import { ID_STRING } from "../../foundryCommon";
-import { BASE_ITEM_SOURCE_SCHEMA } from "../common/baseItem/source";
+import { SkillNames, SpecialNames, TYPES } from "../../../constants.js";
+import { compDataZodSchema, ID_STRING } from "../../foundryCommon.js";
+import { BASE_ITEM_SOURCE_SCHEMA } from "../common/baseItem/source.js";
 
 export default interface PerkDataSource {
   type: typeof TYPES.ITEM.PERK;
@@ -95,3 +95,10 @@ export const PERK_SOURCE_SCHEMA = BASE_ITEM_SOURCE_SCHEMA.extend({
 });
 
 export type LogicLeafSource = z.infer<typeof LOGIC_LEAF_SOURCE_SCHEMA>;
+
+export const COMP_PERK_SCHEMA = compDataZodSchema(
+  PERK_SOURCE_SCHEMA,
+  TYPES.ITEM.PERK,
+  "icons/sundries/books/book-embossed-blue.webp",
+  "New Perk"
+);

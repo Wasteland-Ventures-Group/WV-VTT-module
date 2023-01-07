@@ -31,7 +31,7 @@ export default async function compendiumSchemasTask(): Promise<void[]> {
       fileName: "perk",
       outputBasePath: itemOutputBasePath,
       schema: (await import("../src/main/typescript/data/item/perk/source.js"))
-        .COMP_PERK_JSON_SCHEMA
+        .COMP_PERK_SCHEMA
     },
     {
       fileName: "race",

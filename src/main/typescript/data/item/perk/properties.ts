@@ -30,6 +30,9 @@ export const PerkDataPropertiesData = {
 type LogicNodeProperties = LogicBranchProperties | LogicLeafProperties;
 
 export class LogicBranchProperties {
+  /**
+   * @param source - The source data for the logic branch
+   */
   constructor(source: LogicBranchSource) {
     let sourceChildren;
     if ("any" in source) {
@@ -50,10 +53,17 @@ export class LogicBranchProperties {
     });
   }
 
+  /** This node's children */
   children: LogicNodeProperties[];
 
+  /** The kind of reduction this node performs on its children */
   kind: "and" | "or";
 
+  /**
+   * Checks if the actor meets the prerequisites for a perk
+   * @param actor The actor whose data to check
+   * @returns true iff the actor satisfies all requirements
+   */
   satisfies(actor: ActorDataProperties): boolean {
     const results = this.children.map((child) => child.satisfies(actor));
     if (this.kind == "and") {
@@ -65,6 +75,11 @@ export class LogicBranchProperties {
 }
 
 export const LogicLeafProperties = {
+  /**
+   * Creates a new logic (bottom-type requirement) leaf from source data
+   * @param source - the source leaf
+   * @returns the new leaf with properties
+   */
   from(source: LogicLeafSource): LogicLeafProperties {
     if ("special" in source) return new SpecialRequirement(source);
     else if ("skill" in source) return new SkillRequirement(source);
@@ -72,10 +87,21 @@ export const LogicLeafProperties = {
   }
 };
 
+/**
+ * Basic, non-compound requirement
+ */
 interface LogicLeafProperties {
+  /**
+   * Checks if the actor meets the prerequisites for a perk
+   * @param actor The actor whose data to check
+   * @returns true iff the actor satisfies all requirements
+   */
   satisfies(actor: ActorDataProperties): boolean;
 }
 
+/**
+ * Requirement for SPECIALs
+ */
 class SpecialRequirement implements LogicLeafProperties {
   constructor(public source: SpecialRequirementSource) {}
 
@@ -86,6 +112,9 @@ class SpecialRequirement implements LogicLeafProperties {
   }
 }
 
+/**
+ * Requirement for skills
+ */
 class SkillRequirement implements LogicLeafProperties {
   constructor(public source: SkillRequirementSource) {}
 
@@ -96,6 +125,9 @@ class SkillRequirement implements LogicLeafProperties {
   }
 }
 
+/**
+ * Requirement for other perks
+ */
 class PerkRequirement implements LogicLeafProperties {
   constructor(public source: PerkRequirementSource) {}
 

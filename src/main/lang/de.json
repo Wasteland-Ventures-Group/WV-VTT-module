@@ -163,6 +163,7 @@
             "singular": "Angriff",
             "plural": "Angriffe"
           },
+          "criticalDamageMultiplier": "Kritischer Schadenmultiplikator",
           "holdout": "Versteckbar",
           "plural": "Waffen",
           "reload": {

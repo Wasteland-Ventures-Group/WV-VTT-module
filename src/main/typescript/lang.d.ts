@@ -200,6 +200,8 @@ export interface LangSchema {
         weapon: QuantityNames & {
           /** Names for attacks */
           attack: QuantityNames;
+          /** Label for critical damage multiplier */
+          criticalDamageMultiplier: string;
           /** The label for the holdout property */
           holdout: string;
           /** Labels related to reloading */

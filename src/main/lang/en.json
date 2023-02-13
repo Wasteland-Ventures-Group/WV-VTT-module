@@ -191,6 +191,7 @@
             "singular": "Attack",
             "plural": "Attacks"
           },
+          "criticalDamageMultiplier": "Critical Damage Multiplier",
           "holdout": "Holdout",
           "plural": "Weapons",
           "reload": {

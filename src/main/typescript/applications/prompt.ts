@@ -143,10 +143,16 @@ export class CheckPrompt extends RollPrompt {
    */
   static async get(
     data: CheckPromptConstructorData,
+    doPrompt: boolean,
     options?: Partial<ApplicationOptions>
   ): Promise<ExternalCheckData> {
     return new Promise((resolve, reject) => {
-      new this((data) => resolve(data), reject, data, options).render(true);
+      const app = new this((data) => resolve(data), reject, data, options);
+      if (doPrompt) {
+        app.render(true);
+      } else {
+        resolve(app.getData().defaults);
+      }
     });
   }
 
@@ -185,10 +191,16 @@ export class AttackPrompt extends RollPrompt {
    */
   static async get(
     data: AttackPromptConstructorData,
+    doPrompt: boolean,
     options?: Partial<ApplicationOptions>
   ): Promise<AttackPromptData> {
     return new Promise((resolve, reject) => {
-      new this((data) => resolve(data), reject, data, options).render(true);
+      const app = new this((data) => resolve(data), reject, data, options);
+      if (doPrompt) {
+        app.render(true);
+      } else {
+        resolve(app.getData().defaults);
+      }
     });
   }
 
@@ -220,7 +232,10 @@ export class AttackPrompt extends RollPrompt {
       ...super.getData(),
       defaults: {
         ...super.getData().defaults,
-        range: this.data.range
+        range: this.data.range,
+        calledShot: false,
+        aim: false,
+        sneakAttack: false
       },
       isAttack: true
     };
@@ -375,19 +390,13 @@ export type AttackPromptData = PromptDataCommon & {
 export type ExternalCheckData = PromptDataCommon;
 
 export type RollPromptTemplateData = {
-  defaults: {
-    alias: string;
-    modifier: number;
-    rollMode: RollMode;
-  };
+  defaults: PromptDataCommon;
   isAttack: boolean;
   rollModes: I18nRollModes;
 };
 
 export type AttackPromptTemplateData = RollPromptTemplateData & {
-  defaults: {
-    range: number;
-  };
+  defaults: AttackPromptData;
   isAttack: true;
 };
 

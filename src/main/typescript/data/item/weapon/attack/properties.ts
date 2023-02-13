@@ -96,8 +96,8 @@ export class AttackProperties extends AttackSource {
     return !tags.some((tag) => !this.tags.includes(tag));
   }
 
-  async execute(): Promise<void> {
-    await AttackExecution.execute(this.#name, this, this.#weapon);
+  async execute(doPrompt: boolean): Promise<void> {
+    await AttackExecution.execute(this.#name, this, this.#weapon, doPrompt);
   }
 }
 

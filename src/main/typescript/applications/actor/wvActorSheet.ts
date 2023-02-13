@@ -530,6 +530,8 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
+    const doPrompt = !(event as MouseEvent).shiftKey;
+
     const special = event.target.dataset.special;
     if (!special || !isSpecialName(special)) {
       LOG.warn(`Could not get the SPECIAL name for a roll.`);
@@ -543,6 +545,7 @@ export default class WvActorSheet extends ActorSheet {
           {
             alias: this.actor.name
           },
+          doPrompt,
           {
             title: getGame().i18n.localize(WvI18n.specials[special].long)
           }
@@ -560,6 +563,8 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
+    const doPrompt = !(event as MouseEvent).shiftKey;
+
     const skill = event.target.dataset.skill;
     if (!skill || !isSkillName(skill)) {
       LOG.warn("Could not get the Skill name for a Skill roll.");
@@ -573,6 +578,7 @@ export default class WvActorSheet extends ActorSheet {
           {
             alias: this.actor.name
           },
+          doPrompt,
           {
             title: getGame().i18n.localize(WvI18n.skills[skill])
           }
@@ -630,8 +636,9 @@ export default class WvActorSheet extends ActorSheet {
       LOG.warn("Could not find the attack on the weapon.");
       return;
     }
+    const doPrompt = !(event as MouseEvent).shiftKey;
 
-    attack.execute();
+    attack.execute(doPrompt);
   }
 
   /** Handle a click event on an unequip item button. */

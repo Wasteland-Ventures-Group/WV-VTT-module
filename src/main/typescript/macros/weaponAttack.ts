@@ -93,6 +93,7 @@ function createMacroCommand(data: WeaponAttackDragData): string {
 export function executeWeaponAttack(
   weaponId: string,
   attackName: string,
+  doPrompt: boolean,
   actorId?: string | null | undefined
 ): void {
   let weapon;
@@ -110,7 +111,7 @@ export function executeWeaponAttack(
   const attack = weapon.data.data.attacks.attacks[attackName];
   if (!attack) return;
 
-  attack.execute();
+  attack.execute(doPrompt);
 }
 
 /**
@@ -120,7 +121,8 @@ export function executeWeaponAttack(
  */
 export async function executeWeaponAttackFromSource(
   data: ItemDataConstructorData,
-  attackName: string
+  attackName: string,
+  doPrompt: boolean
 ): Promise<void> {
   let weapon;
   try {
@@ -152,5 +154,5 @@ export async function executeWeaponAttackFromSource(
     return;
   }
 
-  attack.execute();
+  attack.execute(doPrompt);
 }

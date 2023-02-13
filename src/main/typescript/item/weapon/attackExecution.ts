@@ -27,15 +27,19 @@ export default class AttackExecution {
   static async execute(
     name: string,
     attackProperties: AttackProperties,
-    weapon: Weapon
+    weapon: Weapon,
+    doPrompt: boolean
   ): Promise<void> {
-    await (await AttackExecution.new(name, attackProperties, weapon)).execute();
+    await (
+      await AttackExecution.new(name, attackProperties, weapon, doPrompt)
+    ).execute();
   }
 
   static async new(
     name: string,
     attackProperties: AttackProperties,
-    weapon: Weapon
+    weapon: Weapon,
+    doPrompt: boolean
   ): Promise<AttackExecution> {
     let token = interact.getFirstControlledToken();
 
@@ -88,7 +92,8 @@ export default class AttackExecution {
       executionAttackProperties,
       executionWeapon,
       token,
-      interact.getFirstTarget()
+      interact.getFirstTarget(),
+      doPrompt
     );
   }
 
@@ -103,7 +108,8 @@ export default class AttackExecution {
     public attackProperties: AttackProperties,
     public weapon: Weapon,
     public token: Token | undefined,
-    public target: Token | undefined
+    public target: Token | undefined,
+    private doPrompt: boolean
   ) {
     const actor = this.weapon.actor;
     if (!actor)
@@ -125,7 +131,8 @@ export default class AttackExecution {
       externalData = await this.getExternalData(
         this.actor,
         this.token,
-        this.target
+        this.target,
+        this.doPrompt
       );
     } catch (e) {
       if (e === "closed") return;
@@ -294,7 +301,8 @@ export default class AttackExecution {
   private async getExternalData(
     actor: WvActor,
     token: Token | undefined,
-    target: Token | undefined
+    target: Token | undefined,
+    doPrompt: boolean
   ): Promise<AttackPromptData> {
     const ownerName = token?.name ?? actor.name;
     return AttackPrompt.get(
@@ -302,6 +310,7 @@ export default class AttackExecution {
         alias: ownerName,
         range: interact.getDistance(token, target) ?? 0
       },
+      doPrompt,
       {
         title: `${ownerName} — ${this.name}`
       }

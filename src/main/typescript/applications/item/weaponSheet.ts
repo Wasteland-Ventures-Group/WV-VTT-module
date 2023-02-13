@@ -201,7 +201,9 @@ export default class WeaponSheet extends WvItemSheet {
       return;
     }
 
-    attack.execute();
+    const doPrompt = !(event as MouseEvent).shiftKey;
+
+    attack.execute(doPrompt);
   }
 
   /** Handle a click click event on a create weapon attack button. */

@@ -24,6 +24,10 @@ export class WeaponDataPropertiesData
     this.reload = new ReloadProperties(source.reload);
 
     this.strengthRequirement = CompositeNumber.from(source.strengthRequirement);
+    this.criticalDamageMultiplier = CompositeNumber.from(
+      source.criticalDamageMultiplier
+    );
+    this.criticalDamageMultiplier.bounds = { min: 1 };
     this.strengthRequirement.bounds = { min: 0, max: 15 };
   }
 
@@ -40,4 +44,6 @@ export class WeaponDataPropertiesData
   override reload: ReloadProperties;
 
   override strengthRequirement: CompositeNumber;
+
+  override criticalDamageMultiplier: CompositeNumber;
 }

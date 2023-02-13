@@ -33,6 +33,9 @@ export class WeaponDataSourceData extends PhysicalItemSource {
   /** The reload of the weapon */
   reload: ReloadSource = RELOAD_JSON_SCHEMA.default;
 
+  /** Critical damage multiplier */
+  criticalDamageMultiplier: CompositeNumberSource = { source: 2 };
+
   /** The skill associated with the weapon attacks */
   skill: SkillName = "firearms";
 
@@ -78,6 +81,20 @@ export const WEAPON_SOURCE_JSON_SCHEMA: JSONSchemaType<WeaponDataSourceData> = {
     reload: {
       ...RELOAD_JSON_SCHEMA,
       description: "The reload behavior of the weapon."
+    },
+    criticalDamageMultiplier: {
+      description: "The weapon's damage multiplier for critical hits",
+      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
+      properties: {
+        source: {
+          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
+          type: "integer",
+          default: 0
+        }
+      },
+      default: {
+        source: 2
+      }
     },
     skill: {
       description: "The Skill used for all actions of the weapon",

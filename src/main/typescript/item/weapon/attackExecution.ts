@@ -271,10 +271,15 @@ export default class AttackExecution {
     ).evaluate({ async: false });
 
     // Damage roll -------------------------------------------------------------
+    let multiplier = null;
+    if (hitRoll.dice[0]?.results[0]?.critical === "success") {
+      multiplier = this.weapon.data.data.criticalDamageMultiplier.total;
+    }
     const damageRoll = new Roll(
       Formulator.damage(
         this.attackProperties.damage.base.total,
-        damageDice.total
+        damageDice.total,
+        multiplier
       ).toString()
     ).evaluate({ async: false });
 

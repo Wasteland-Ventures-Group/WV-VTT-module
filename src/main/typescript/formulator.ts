@@ -27,8 +27,12 @@ export default class Formulator {
    * @param count - the amout of damage die for the roll
    * @returns a new Formulator
    */
-  static damage(base: number, count: number): Formulator {
-    return new Formulator("damage", { base, count });
+  static damage(
+    base: number,
+    count: number,
+    damageMultiplier: number | null
+  ): Formulator {
+    return new Formulator("damage", { base, count, damageMultiplier });
   }
 
   /**
@@ -41,7 +45,8 @@ export default class Formulator {
       base,
       count,
       target,
-      special
+      special,
+      damageMultiplier
     }: {
       /** the base damage for a damage roll */
       base?: number;
@@ -57,6 +62,9 @@ export default class Formulator {
 
       /** whether the roll is for a SPECIAL, ignored for damage */
       special?: boolean;
+
+      /** Multiplier for damage. Mostly used for critical multipliers */
+      damageMultiplier?: number | undefined | null;
     }
   ) {
     this.type = type;
@@ -70,6 +78,7 @@ export default class Formulator {
     } else {
       this.base = base ?? 0;
       this.count = count ?? 1;
+      this.damageMultiplier = damageMultiplier;
       this.target = CONSTANTS.rules.damage.dieTarget;
     }
   }
@@ -85,6 +94,9 @@ export default class Formulator {
 
   /** The amount of damage die to roll. */
   private count?: number;
+
+  /** Multiplier to use for damage rolls. Mostly useful for criticals */
+  private damageMultiplier?: number | undefined | null;
 
   /** Whether the roll is for a SPECIAL */
   private special?: boolean | undefined;
@@ -140,6 +152,11 @@ export default class Formulator {
 
     if (this.type === "damage") {
       formula += this.damageTargetFormula;
+      if (this.damageMultiplier) {
+        // NB: foundry seems to simplify this when it's rolled like that. If
+        // that is undesirable, we can always manually multiply it in later
+        formula = `${this.damageMultiplier} * (${formula})`;
+      }
     } else if (this.type === "check") {
       formula +=
         this.checkSuccessTargetFormula + this.checkCriticalsTargetFormula;

@@ -199,11 +199,10 @@ export default class AttackExecution {
         value: secondary.calledShotMod.total
       });
 
-    const remainingAp = isOutOfRange
-      ? previousAp
-      : this.token?.inCombat
-      ? previousAp - apCost.total
-      : previousAp;
+    const remainingAp =
+      isOutOfRange || !this.token?.inCombat
+        ? previousAp
+        : previousAp - apCost.total;
     const notEnoughAp = remainingAp < 0;
 
     // Create common attack flags ----------------------------------------------

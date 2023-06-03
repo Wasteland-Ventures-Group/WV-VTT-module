@@ -287,7 +287,7 @@ export default class WvActor extends Actor {
       if (quickSlots < 1)
         throw new SystemRulesError(
           "Not enough quick slots.",
-          "wv.system.messages.notQuickSlots"
+          "wv.system.messages.notEnoughQuickSlots"
         );
 
       apCostComposite = this.data.data.equipment.equipActionCosts.readyFromSlot;

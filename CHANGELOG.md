@@ -80,9 +80,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     movement method
 - added magic data and its sheet, though character sheets still do not support
   a known spell list
-  ([#141])(https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/141)
+  ([#141](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/141))
 - added pain thresholds to character sheets, as well as automatic chat messages
-  when they are reached ([#417](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/417))
+  when they are reached
+  ([#417](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/417))
 
 ## [0.19.1] - 2022-07-16
 
@@ -433,7 +434,8 @@ version, then continue with upgrading to the next version.
   - race
   - gender
   - age
-  - virtue ([#128](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/128))
+  - virtue
+    ([#128](https://github.com/Wasteland-Ventures-Group/WV-VTT-module/issues/128))
   - special talent
   - appearance
   - cutie mark
@@ -880,13 +882,14 @@ version, then continue with upgrading to the next version.
 
 - editable skill ranks on the basic character Actor
 
-## [0.1.0] - 2021-05-08
+## [0.0.1] - 2021-05-08
 
 ### Added
 
 - basic character Actor implementation with editable SPECIALs
 
-[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.21.0...HEAD
+[unreleased]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.22.0...HEAD
+[0.22.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.21.0...v0.22.0
 [0.21.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.20.0...v0.21.0
 [0.20.0]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.1...v0.20.0
 [0.19.1]: https://github.com/Wasteland-Ventures-Group/WV-VTT-module/compare/v0.19.0...v0.19.1

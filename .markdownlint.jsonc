@@ -1,0 +1,10 @@
+{
+  // no-duplicate-headers
+  "MD024": {
+    "allow_different_nesting": true
+  },
+  // no-inline-html
+  "MD033": {
+    "allowed_elements": ["p"]
+  }
+}

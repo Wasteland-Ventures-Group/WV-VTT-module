@@ -1,11 +1,11 @@
 # Wasteland Ventures Foundry VTT System
 
-<div align="center">
+<p align="center">
 
 [![Supported Foundry
 Version](https://img.shields.io/endpoint?url=https://foundryshields.com/version?url=https%3A%2F%2Fraw.githubusercontent.com%2FWasteland-Ventures-Group%2FWV-VTT-module%2Fmain%2Fsrc%2Fmain%2Fsystem.json)](https://foundryvtt.com/packages/wasteland-ventures)
 
-</div>
+</p>
 
 This is an implementation of the Wasteland Ventures pen and paper RPG system for
 the Foundry Virtual Tabletop (Foundry VTT or FVTT) tool.
@@ -81,7 +81,7 @@ For an overview of the tasks, run:
 
 #### Background tasks
 
-Some tasks have a variant with the `Watch` suffix. Those tasks are meant to be
+Some tasks have a variant with the `watch` prefix. Those tasks are meant to be
 run as a background task and will look for changes in the corresponding input
 files to run on their own. For example, one can run the following on a terminal
 to have the files be recompiled when changes are made to the input files:

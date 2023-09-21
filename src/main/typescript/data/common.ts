@@ -1,78 +1,62 @@
-import type { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import { getGame } from "../foundryHelpers.js";
 import type { WvI18nKey } from "../lang.js";
-import { FoundrySerializable, Resource } from "./foundryCommon.js";
+import {
+  FoundrySerializable,
+  Resource,
+  RESOURCE_SOURCE_SCHEMA
+} from "./foundryCommon.js";
 
 /** The data layout needed to create a CompositeNumber from raw data. */
-export interface CompositeNumberSource {
-  source: number;
-}
+export type CompositeNumberSource = z.infer<
+  typeof COMPOSITE_NUMBER_SOURCE_SCHEMA
+>;
+export const COMPOSITE_NUMBER_SOURCE_SCHEMA = z.object({
+  /** The source value for a composite number */
+  source: z
+    .number()
+    .default(0)
+    .describe("The source value for a composite number")
+});
 
 /** The bounds of a composite number */
-export interface CompositeNumberBounds {
-  min?: number | undefined;
-  max?: number | undefined;
-}
+export type CompositeNumberBounds = z.infer<
+  typeof COMPOSITE_NUMBER_BOUNDS_SCHEMA
+>;
+
+export const COMPOSITE_NUMBER_BOUNDS_SCHEMA = z.object({
+  min: z.number().optional(),
+  max: z.number().optional()
+});
 
 /** The data layout for a serialized composite number. */
-export interface SerializedCompositeNumber extends CompositeNumberSource {
-  bounds?: CompositeNumberBounds;
-  components: ComponentSource[];
-}
+export type SerializedCompositeNumber = z.infer<
+  typeof SERIALIZED_COMPOSITE_NUMBER_SCHEMA
+>;
 
 /** A class to represent numbers composed of a base and modifying components. */
 export class CompositeNumber
   implements CompositeNumberSource, FoundrySerializable
 {
   /**
-   * Test whether the given source is a CompositeNumberSource.
-   * @param source - the source to test
-   * @returns whether the source is a CompositeNumberSource
-   */
-  static isSource(source: unknown): source is CompositeNumberSource {
-    if (typeof source !== "object" || null === source || !("source" in source))
-      return false;
-
-    const obj = source as CompositeNumberSource;
-    return typeof obj.source === "number";
-  }
-
-  /**
-   * Test whether the given source is a SerializedCompositeNumber.
-   * @param source - the source to test
-   * @returns whether the source is a SerializedCompositeNumber
-   */
-  static isSerialized(source: unknown): source is SerializedCompositeNumber {
-    if (!this.isSource(source) || !("components" in source)) return false;
-
-    const obj = source as SerializedCompositeNumber;
-    return (
-      Array.isArray(obj.components) &&
-      !obj.components.some((component) => !Component.isSource(component))
-    );
-  }
-
-  /**
    * Create a CompositeNumber from the given source
-   * @param source - either a CompositeNumber, CompositeNumberSource or SerializedCompositeNumber
+   * @param unknownSource - either a CompositeNumber, CompositeNumberSource or SerializedCompositeNumber
    * @returns the created CompositeNumber
    * @throws if the given source is neither a CompositeNumber, CompositeNumberSource nor SerializedCompositeNumber
    */
-  static from(source: unknown): CompositeNumber {
-    if (source instanceof CompositeNumber) return source;
+  static from(unknownSource: unknown): CompositeNumber {
+    if (unknownSource instanceof CompositeNumber) return unknownSource;
+    const source = SERIALIZED_COMPOSITE_NUMBER_SCHEMA.parse(unknownSource);
 
-    if (this.isSource(source)) {
-      const compNumber = new CompositeNumber(source.source);
+    const compNumber = new CompositeNumber(source.source);
 
-      if (this.isSerialized(source)) {
-        compNumber.bounds = source.bounds ?? {};
-        source.components.forEach((component) => compNumber.add(component));
-      }
+    // Since the serialized composite number schema's components are empty by
+    // default, this means that a CompositeNumberSource simply produces
+    // no-ops here.
+    compNumber.bounds = source.bounds ?? {};
+    source.components.forEach((component) => compNumber.add(component));
 
-      return compNumber;
-    }
-
-    throw new Error(`The source was not valid: ${source}`);
+    return compNumber;
   }
 
   /** Create a new CompositeNumber with the given source value. */
@@ -150,69 +134,74 @@ export class CompositeNumber
   }
 }
 
-/** A component of a label for a Component. */
-export type LabelComponent = { text: string } | { key: WvI18nKey };
-
-/** Test whether the given object is a LabelComponent. */
-export function isLabelComponent(object: unknown): object is LabelComponent {
-  if (typeof object !== "object" || null === object) return false;
-
-  const comp = object as LabelComponent;
-  if ("key" in comp && typeof comp.key === "string") {
-    return getGame().i18n.localize(comp.key) !== comp.key;
+/**
+ * Parsing scheme for i18n translation keys. Cannot be declared in lang.ts, as
+ * lang.ts is imported during gulp tasks
+ */
+export const WVI18N_KEY_SCHEMA = z.custom<WvI18nKey>(
+  (val) => {
+    if (typeof val !== "string") return false;
+    const i18n = getGame().i18n;
+    return i18n.localize(val) !== val;
+  },
+  (val) => {
+    let message;
+    if (typeof val !== "string")
+      message = `Wrong type. Expected string, got ${typeof val}`;
+    else
+      message = `Invalid Key: ${val} (localization returned ${getGame().i18n.localize(
+        val
+      )})`;
+    return { message };
   }
+);
 
-  return "text" in comp && typeof comp.text === "string";
-}
+/** A component of a label for a Component. */
+export type LabelComponent = z.infer<typeof LABEL_COMPONENT_SCHEMA>;
+const LABEL_COMPONENT_SCHEMA = z.union([
+  z.object({ text: z.string() }),
+  z.object({ key: WVI18N_KEY_SCHEMA })
+]);
 
 /** A CompositeNumber Component source */
-export interface ComponentSource {
+export type ComponentSource = z.infer<typeof COMPONENT_SOURCE_SCHEMA>;
+export const COMPONENT_SOURCE_SCHEMA = z.object({
   /** The value this component modifies the CompositeNumber's value by */
-  value: number;
+  value: z
+    .number()
+    .describe(
+      "The value this component modifies the CompositeNumber's value by"
+    ),
 
   /** An explanatory label for the Component */
-  labelComponents: LabelComponent[];
-}
+  labelComponents: LABEL_COMPONENT_SCHEMA.array().describe(
+    "An explanatory label for the Component"
+  )
+});
+
+/**
+ * Parses a serialized composite number (or a regular composite number source)
+ */
+const SERIALIZED_COMPOSITE_NUMBER_SCHEMA =
+  COMPOSITE_NUMBER_SOURCE_SCHEMA.extend({
+    bounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
+    components: COMPONENT_SOURCE_SCHEMA.array().default([])
+  });
 
 /** A Component of a CompositeNumber */
 export class Component implements ComponentSource, FoundrySerializable {
   /**
-   * Test whether the given source is a ComponentSource.
-   * @param source - the source to test
-   * @returns whether the source is a ComponentSource
-   */
-  static isSource(source: unknown): source is ComponentSource {
-    if (
-      typeof source !== "object" ||
-      null === source ||
-      !("value" in source) ||
-      !("labelComponents" in source)
-    )
-      return false;
-
-    const obj = source as ComponentSource;
-    return (
-      typeof obj.value === "number" &&
-      Array.isArray(obj.labelComponents) &&
-      !obj.labelComponents.some(
-        (labelComponent) => !isLabelComponent(labelComponent)
-      )
-    );
-  }
-
-  /**
    * Create a Component from the given source
-   * @param source - either a Component or ComponentSource
+   * @param sourceUnknown - either a Component or ComponentSource
    * @returns the created Component
    * @throws if the given source is neither a Component nor ComponentSource
    */
-  static from(source: unknown): Component {
-    if (source instanceof Component) return source;
+  static from(sourceUnknown: unknown): Component {
+    if (sourceUnknown instanceof Component) return sourceUnknown;
 
-    if (this.isSource(source))
-      return new Component(source.value, source.labelComponents);
+    const source = COMPONENT_SOURCE_SCHEMA.parse(sourceUnknown);
 
-    throw new Error(`The source was not valid: ${source}`);
+    return new Component(source.value, source.labelComponents);
   }
 
   /** Create a new Component with the given value and label components. */
@@ -240,21 +229,6 @@ export class Component implements ComponentSource, FoundrySerializable {
   }
 }
 
-export const COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> =
-  {
-    description: "A schema for modifiable number sources",
-    type: "object",
-    properties: {
-      source: {
-        description:
-          "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
-        type: "number"
-      }
-    },
-    required: ["source"],
-    additionalProperties: false
-  };
-
 /**
  * A class for what Foundry VTT will automatically recognize as a "resource",
  * where the maximum can be composed like a CompositeNumber.
@@ -269,18 +243,23 @@ export class CompositeResource extends CompositeNumber implements Resource {
   static override from(source: unknown): CompositeResource {
     if (source instanceof CompositeResource) return source;
 
-    if (Resource.isSource(source)) {
-      const compResource = new CompositeResource(source.value, source.value);
+    const parsedAsSource = RESOURCE_SOURCE_SCHEMA.safeParse(source);
 
-      if (CompositeNumber.isSerialized(source)) {
-        compResource.bounds = source.bounds ?? {};
-        source.components.forEach((component) => compResource.add(component));
-      }
+    if (!parsedAsSource.success)
+      throw new Error(`The source was not valid: ${source}`);
 
-      return compResource;
+    const data = parsedAsSource.data;
+    const compResource = new CompositeResource(data.value, data.value);
+
+    const parsedAsSerializedCompNum =
+      SERIALIZED_COMPOSITE_NUMBER_SCHEMA.strip().safeParse(source);
+    if (parsedAsSerializedCompNum.success) {
+      const compNum = parsedAsSerializedCompNum.data;
+      compResource.bounds = compNum.bounds ?? {};
+      compNum.components.forEach((component) => compResource.add(component));
     }
 
-    throw new Error(`The source was not valid: ${source}`);
+    return compResource;
   }
 
   /**
@@ -310,4 +289,63 @@ export class CompositeResource extends CompositeNumber implements Resource {
 
     return clone;
   }
+}
+
+/**
+ * By default, zod's record parser is `Partial` when an enum is geven as a key
+ * This function returns a parser that ensures all of its keys are present.
+ * This is equivalent to a z.object(...).strict() with all the keys present
+ * @param keys - The keys of the record type
+ * @returns A zod schema for the record type
+ */
+export function fullRecord<T extends string>(
+  keys: readonly [T, ...T[]]
+): z.ZodType<Record<T, string>> {
+  return fullRecordWithVal(keys, z.string());
+}
+
+/**
+ * See `fullRecord`. Adds the option to use non-string values
+ * @param keys - The keys of the record type
+ * @param value - The zod schema for the record's values
+ * @returns A zod schema for the record type
+ */
+export function fullRecordWithVal<T extends string, U>(
+  keys: readonly [T, ...T[]],
+  value: z.ZodType<U>
+): z.ZodType<Record<T, U>> {
+  const schema = z.record(z.enum(keys), value).superRefine((val, ctx) => {
+    for (const key of keys) {
+      if (!(key in val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Missing key ${key}`
+        });
+      }
+    }
+  });
+
+  return schema as z.ZodType<Record<T, U>>;
+}
+
+/**
+ * See `fullRecord`. Adds the ability to set a default for absent keys.
+ * @param keys - The keys of the record type
+ * @param value - The zod schema for the record's values
+ * @param defaultValue - The default value for absent keys
+ * @returns A zod schema for the record type
+ */
+export function fullRecordWithDefault<T extends string, U>(
+  keys: readonly [T, ...T[]],
+  value: z.ZodType<U>,
+  defaultValue: U
+): z.ZodDefault<z.ZodType<Record<T, U>>> {
+  const schema = fullRecordWithVal(keys, value);
+  const defaults = keys.reduce((acc, key) => {
+    acc[key] = defaultValue;
+    return acc;
+  }, {} as Record<T, U>);
+  const result = schema.default(defaults);
+
+  return result;
 }

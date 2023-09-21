@@ -1,26 +1,26 @@
 import { getGame } from "../../../../foundryHelpers.js";
 import type WvItem from "../../../../item/wvItem.js";
 import type RuleElement from "../../../../ruleEngine/ruleElement.js";
-import RulesSource from "./source.js";
+import type { RulesSource } from "./source.js";
 
-export default class RulesProperties extends RulesSource {
+export type RulesProperties = RulesSource & {
+  elements: RuleElement[];
+};
+
+export const RulesProperties = {
   /**
    * Transform a RulesSource and apply it onto a RulesProperties.
-   * @param target - the target to transform onto
    * @param source - the source to transform from
    * @param owningItem - the owning item
    */
-  static transform(
-    target: RulesProperties,
-    source: RulesSource,
-    owningItem: WvItem
-  ) {
-    const elements = getGame().wv.ruleEngine.elements;
-    target.elements = source.sources.map(
-      (ruleSource) => new elements[ruleSource.type](ruleSource, owningItem)
+  from(source: RulesSource, owningItem: WvItem): RulesProperties {
+    const gameElements = getGame().wv.ruleEngine.elements;
+    const elements = source.sources.map(
+      (ruleSource) => new gameElements[ruleSource.type](ruleSource, owningItem)
     );
+    return {
+      ...source,
+      elements
+    };
   }
-
-  /** The RuleElements, created from the sources */
-  elements: RuleElement[] = [];
-}
+};

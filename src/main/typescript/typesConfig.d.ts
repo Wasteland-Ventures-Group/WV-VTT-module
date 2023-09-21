@@ -1,5 +1,4 @@
-import type Ajv from "ajv";
-import type { ValidateFunction } from "ajv";
+import type { z } from "zod";
 import WvActor from "./actor/wvActor.js";
 import type { CONSTANTS, TYPES } from "./constants.js";
 import type { CharacterDataSourceData } from "./data/actor/character/source.js";
@@ -7,8 +6,8 @@ import { WvActorDataProperties } from "./data/actor/properties.js";
 import { WvActorDataSource } from "./data/actor/source.js";
 import type { AmmoDataSourceData } from "./data/item/ammo/source.js";
 import type { ApparelDataSourceData } from "./data/item/apparel/source.js";
-import type BaseItemSource from "./data/item/common/baseItem/source.js";
-import type StackableItemSource from "./data/item/common/stackableItem/source.js";
+import type { BaseItemSource } from "./data/item/common/baseItem/source.js";
+import type { StackableItemSource } from "./data/item/common/stackableItem/source.js";
 import type { MagicDataSourceData } from "./data/item/magic/source.js";
 import { WvItemDataProperties } from "./data/item/properties.js";
 import type { RaceDataSourceData } from "./data/item/race/source.js";
@@ -37,7 +36,7 @@ import type TypeSelector from "./ruleEngine/documentSelectors/typeSelector.js";
 import type UsesSkillSelector from "./ruleEngine/documentSelectors/usesSkillSelector.js";
 import type { KeywordSelectorWord } from "./ruleEngine/documentSelectorSource.js";
 import type RuleElement from "./ruleEngine/ruleElement.js";
-import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
+import type { RuleElementSource } from "./ruleEngine/ruleElementSource.js";
 import type { RuleElementId } from "./ruleEngine/ruleElementSource.js";
 import type * as settings from "./settings.js";
 
@@ -61,8 +60,6 @@ declare global {
   interface Game {
     /** The Wasteland Ventures property */
     wv: {
-      /** A global Ajv instance for the system */
-      ajv: Ajv;
       /** Wasteland Ventures macros */
       macros: typeof macros;
       ruleEngine: {
@@ -91,18 +88,18 @@ declare global {
       /** Wasteland Ventures system data JSON validators */
       validators: {
         actor: {
-          [TYPES.ACTOR.CHARACTER]: ValidateFunction<CharacterDataSourceData>;
+          [TYPES.ACTOR.CHARACTER]: Validator<CharacterDataSourceData>;
         };
         item: {
-          [TYPES.ITEM.AMMO]: ValidateFunction<AmmoDataSourceData>;
-          [TYPES.ITEM.APPAREL]: ValidateFunction<ApparelDataSourceData>;
-          [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItemSource>;
-          [TYPES.ITEM.MAGIC]: ValidateFunction<MagicDataSourceData>;
-          [TYPES.ITEM.MISC]: ValidateFunction<StackableItemSource>;
-          [TYPES.ITEM.RACE]: ValidateFunction<RaceDataSourceData>;
-          [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;
+          [TYPES.ITEM.AMMO]: Validator<AmmoDataSourceData>;
+          [TYPES.ITEM.APPAREL]: Validator<ApparelDataSourceData>;
+          [TYPES.ITEM.EFFECT]: Validator<BaseItemSource>;
+          [TYPES.ITEM.MAGIC]: Validator<MagicDataSourceData>;
+          [TYPES.ITEM.MISC]: Validator<StackableItemSource>;
+          [TYPES.ITEM.RACE]: Validator<RaceDataSourceData>;
+          [TYPES.ITEM.WEAPON]: Validator<WeaponDataSourceData>;
         };
-        ruleElement: ValidateFunction<RuleElementSource>;
+        ruleElement: Validator<RuleElementSource>;
       };
     };
   }
@@ -149,3 +146,7 @@ declare global {
 interface SystemFlags {
   lastMigrationVersion?: string;
 }
+
+type Validator<T> = (
+  _: unknown
+) => { success: true; data: T } | { success: false; error: z.ZodError };

@@ -17,7 +17,7 @@ import type {
   CompositeResource,
   SerializedCompositeNumber
 } from "../data/common.js";
-import { RaceDataSourceData } from "../data/item/race/source.js";
+import { RACE_SOURCE_SCHEMA } from "../data/item/race/source.js";
 import Formulator, { RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import {
@@ -90,7 +90,7 @@ export default class WvActor extends Actor {
           type: TYPES.ITEM.RACE,
           name: getGame().i18n.localize("wv.system.races.noRace"),
           img: "icons/svg/mystery-man.svg",
-          data: new RaceDataSourceData()
+          data: RACE_SOURCE_SCHEMA.parse({})
         },
         { parent: this }
       )
@@ -619,7 +619,7 @@ export default class WvActor extends Actor {
   }
 
   override prepareBaseData(): void {
-    this.data.data = new CharacterDataPropertiesData(this.data.data);
+    this.data.data = CharacterDataPropertiesData.from(this.data.data);
 
     this.data.data.specials.applyRadiationSickness(
       this.data.data.vitals.radiationSicknessLevel
@@ -633,6 +633,7 @@ export default class WvActor extends Actor {
 
   override prepareDerivedData(): void {
     this.data.data.vitals.applySpecials(this.data.data.specials);
+
     this.data.data.vitals.applyLevel(this.data.data.leveling.level);
 
     this.data.data.secondary.applySpecials(this.data.data.specials);
@@ -651,6 +652,7 @@ export default class WvActor extends Actor {
     this.data.data.secondary.applySizeCategory(
       this.data.data.background.size.total
     );
+
     this.data.data.vitals.applySizeCategory(
       this.data.data.background.size.total
     );

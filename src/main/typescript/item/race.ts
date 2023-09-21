@@ -52,7 +52,7 @@ export default class Race extends WvItem {
   }
 
   override prepareBaseData(): void {
-    this.data.data = new RaceDataPropertiesData(this.data.data, this);
+    this.data.data = RaceDataPropertiesData.from(this.data.data, this);
   }
 
   protected override async _preCreate(

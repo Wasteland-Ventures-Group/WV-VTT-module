@@ -1,56 +1,38 @@
-import type { JSONSchemaType } from "ajv";
-import {
-  SplashSize,
-  SplashSizes,
-  TargetType,
-  TargetTypes
-} from "../../../../constants.js";
-import {
-  CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-} from "../../../common.js";
+import { z } from "zod";
+import { SplashSizes, TargetTypes } from "../../../../constants.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../../common.js";
 
-const AOETypes = ["none", "fixed", "varies"] as const;
-type AOEType = typeof AOETypes[number];
-export class TargetSource {
-  type: TargetType = "none";
+export const AOETypes = ["none", "fixed", "varies"] as const;
 
-  count: CompositeNumberSource = { source: 0 };
+/** The source type for a spell target */
+export type TargetSource = z.infer<typeof TARGET_SOURCE_SCHEMA>;
+export const TARGET_SOURCE_SCHEMA = z
+  .object({
+    /** Determines the type of target a spell can affect */
+    type: z
+      .enum(TargetTypes)
+      .default("none")
+      .describe("Determines the type of target a spell can affect"),
 
-  aoeType: AOEType = "none";
+    /**
+     * Determines how many of `type` a spell can affect. Usually only applies
+     * when `type` is `creature`
+     */
+    count: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}).describe(
+      "Determines how many of `type` a spell can affect. Usually only applies " +
+        "when `type` is `creature`"
+    ),
 
-  fixedAoE: SplashSize = "tiny";
-}
+    /** Determines if the area of effect can grow based on potency */
+    aoeType: z
+      .enum(AOETypes)
+      .default("none")
+      .describe("Determines if the area of effect can grow based on potency"),
 
-export const TARGET_JSON_SCHEMA: JSONSchemaType<TargetSource> = {
-  type: "object",
-  properties: {
-    type: {
-      description: "How a spell determines its target",
-      type: "string",
-      enum: TargetTypes,
-      default: "none"
-    },
-    count: {
-      description:
-        "The number of creatures this spell can individually target. Only applies when `type` is `creature`",
-      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-    },
-    aoeType: {
-      description:
-        "Whether or not a spell has an area of effect, and if it is fixed or varies based on potency.",
-      type: "string",
-      enum: AOETypes,
-      default: "none"
-    },
-    fixedAoE: {
-      description:
-        "If a spell has a fixed area of effect, this determines its size",
-      type: "string",
-      enum: SplashSizes,
-      default: "tiny"
-    }
-  },
-  required: ["type", "aoeType", "fixedAoE"],
-  additionalProperties: false
-};
+    /** Determines the size of the area of effect if static */
+    fixedAoE: z
+      .enum(SplashSizes)
+      .default("tiny")
+      .describe("Determines the size of the area of effect if static")
+  })
+  .default({});

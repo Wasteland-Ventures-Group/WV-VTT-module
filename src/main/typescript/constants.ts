@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type RadiationSicknessLevel = typeof RadiationSicknessLevels[number];
 export const RadiationSicknessLevels = [
   "none",
@@ -291,10 +293,17 @@ export const TYPES = {
 export type SystemDocumentType =
   | ValueOf<typeof TYPES.ACTOR>
   | ValueOf<typeof TYPES.ITEM>;
-export const SystemDocumentTypes: SystemDocumentType[] = [
+export const SystemDocumentTypes: readonly SystemDocumentType[] = [
   ...Object.values(TYPES.ACTOR),
   ...Object.values(TYPES.ITEM)
-];
+] as const;
+
+export const SYSTEM_DOCUMENT_TYPE_SCHEMA = z.custom<SystemDocumentType>(
+  (val) => SystemDocumentTypes.includes(val as SystemDocumentType),
+  (val) => ({
+    message: `Invalid Document Type: ${val} (${typeof val}). Expected one of ${SystemDocumentTypes}`
+  })
+);
 
 /** A type representing the different range brackets */
 export enum RangeBracket {

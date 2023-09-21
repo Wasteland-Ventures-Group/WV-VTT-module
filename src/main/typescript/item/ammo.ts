@@ -15,7 +15,7 @@ export default class Ammo extends WvItem {
   }
 
   override prepareBaseData(): void {
-    this.data.data = new AmmoDataPropertiesData(this.data.data, this);
+    this.data.data = AmmoDataPropertiesData.from(this.data.data, this);
   }
 }
 

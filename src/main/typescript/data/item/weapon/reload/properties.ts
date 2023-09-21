@@ -1,19 +1,23 @@
 import { CompositeNumber } from "../../../common.js";
-import ReloadSource from "./source.js";
+import type { ReloadSource } from "./source.js";
 
-export default class ReloadProperties extends ReloadSource {
-  constructor(source: ReloadSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
+export type ReloadProperties = ReloadSource & {
+  ap: CompositeNumber;
+  size: CompositeNumber;
+};
 
-    this.ap = CompositeNumber.from(source.ap);
-    this.ap.bounds.min = 0;
+export const ReloadProperties = {
+  from(source: ReloadSource): ReloadProperties {
+    const ap = CompositeNumber.from(source.ap);
+    ap.bounds.min = 0;
 
-    this.size = CompositeNumber.from(source.size);
-    this.size.bounds.min = 0;
+    const size = CompositeNumber.from(source.size);
+    size.bounds.min = 0;
+
+    return {
+      ...source,
+      ap,
+      size
+    };
   }
-
-  override ap: CompositeNumber;
-
-  override size: CompositeNumber;
-}
+};

@@ -1,9 +1,11 @@
 import type { TYPES } from "../../../constants.js";
-import BaseItemSource from "../common/baseItem/source.js";
+import type { BaseItemSource } from "../common/baseItem/source.js";
+import { BASE_ITEM_SOURCE_SCHEMA } from "../common/baseItem/source.js";
 
 export default interface EffectDataSource {
   type: typeof TYPES.ITEM.EFFECT;
   data: EffectDataSourceData;
 }
 
-export class EffectDataSourceData extends BaseItemSource {}
+export type EffectDataSourceData = BaseItemSource;
+export const EFFECT_SOURCE_SCHEMA = BASE_ITEM_SOURCE_SCHEMA.default({});

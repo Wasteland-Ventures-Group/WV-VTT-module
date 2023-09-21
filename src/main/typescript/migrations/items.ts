@@ -10,7 +10,7 @@ import {
   getUpdateDataFromCompendium,
   hasEnabledCompendiumLink
 } from "../item/wvItem.js";
-import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
+import type { RuleElementSource } from "../ruleEngine/ruleElementSource.js";
 import SystemLogger, { LOG } from "../systemLogger.js";
 import { isLastMigrationOlderThan } from "./world.js";
 

@@ -1,21 +1,22 @@
-import type { ValidateFunction } from "ajv";
 import SystemDataSchemaError from "../systemDataSchemaError.js";
 import { LOG } from "../systemLogger.js";
+import type { Validator } from "../typesConfig.js";
 
 /**
- * Validate the given system data against the given JSON schema of it.
+ * Validate the given system data using the provided validator
  * If there are errors, they are logged to the console with the system logger.
  * @throws SystemDataSchemaError - If the system data is not valid
  */
 export default function validateSystemData<T>(
   data: T,
-  validator: ValidateFunction<T>
+  validator: Validator<T>
 ): void {
-  if (validator(data)) return;
+  const parseResult = validator(data);
+  if (parseResult.success) return;
 
-  for (const error of validator.errors ?? []) {
+  for (const error of parseResult.error.issues) {
     LOG.error(error);
   }
 
-  throw new SystemDataSchemaError(validator.errors ?? []);
+  throw new SystemDataSchemaError(parseResult.error.issues);
 }

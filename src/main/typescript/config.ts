@@ -1,4 +1,3 @@
-import Ajv from "ajv";
 import WvActor from "./actor/wvActor.js";
 import WvActorSheet from "./applications/actor/wvActorSheet.js";
 import AmmoSheet from "./applications/item/ammoSheet.js";
@@ -9,14 +8,14 @@ import RaceSheet from "./applications/item/raceSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
 import WvItemSheet from "./applications/item/wvItemSheet.js";
 import { CONSTANTS, TYPES } from "./constants.js";
-import { CHARACTER_JSON_SCHEMA } from "./data/actor/character/source.js";
-import { AMMO_SOURCE_JSON_SCHEMA } from "./data/item/ammo/source.js";
-import { APPAREL_SOURCE_JSON_SCHEMA } from "./data/item/apparel/source.js";
-import { BASE_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/baseItem/source.js";
-import { STACK_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/stackableItem/source.js";
-import { MAGIC_SOURCE_JSON_SCHEMA } from "./data/item/magic/source.js";
-import { RACE_SOURCE_JSON_SCHEMA } from "./data/item/race/source.js";
-import { WEAPON_SOURCE_JSON_SCHEMA } from "./data/item/weapon/source.js";
+import { CHARACTER_SOURCE_SCHEMA } from "./data/actor/character/source.js";
+import { AMMO_SOURCE_SCHEMA } from "./data/item/ammo/source.js";
+import { APPAREL_SOURCE_SCHEMA } from "./data/item/apparel/source.js";
+import { BASE_ITEM_SOURCE_SCHEMA } from "./data/item/common/baseItem/source.js";
+import { STACK_ITEM_SOURCE_SCHEMA } from "./data/item/common/stackableItem/source.js";
+import { MAGIC_SOURCE_SCHEMA } from "./data/item/magic/source.js";
+import { RACE_SOURCE_SCHEMA } from "./data/item/race/source.js";
+import { WEAPON_SOURCE_SCHEMA } from "./data/item/weapon/source.js";
 import { getGame } from "./foundryHelpers.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import WvRuler from "./foundryOverrides/wvRuler.js";
@@ -46,14 +45,12 @@ import NumberComponent from "./ruleEngine/ruleElements/numberComponent.js";
 import PermSpecialComponent from "./ruleEngine/ruleElements/permSpecialComponent.js";
 import ReplaceValue from "./ruleEngine/ruleElements/replaceValue.js";
 import TempSpecialComponent from "./ruleEngine/ruleElements/tempSpecialComponent.js";
-import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "./ruleEngine/ruleElementSource.js";
+import { RULE_ELEMENT_SCHEMA } from "./ruleEngine/ruleElementSource.js";
 import { initializedSettingName } from "./settings.js";
 
 /** The Foundry configuration function for the init hook */
 export function configureFoundryOnInit(): void {
-  const ajv = new Ajv({ allErrors: true });
   getGame().wv = {
-    ajv,
     macros,
     ruleEngine: {
       elements: {
@@ -92,18 +89,18 @@ export function configureFoundryOnInit(): void {
     },
     validators: {
       actor: {
-        character: ajv.compile(CHARACTER_JSON_SCHEMA)
+        character: CHARACTER_SOURCE_SCHEMA.safeParse
       },
       item: {
-        ammo: ajv.compile(AMMO_SOURCE_JSON_SCHEMA),
-        apparel: ajv.compile(APPAREL_SOURCE_JSON_SCHEMA),
-        effect: ajv.compile(BASE_ITEM_SOURCE_JSON_SCHEMA),
-        magic: ajv.compile(MAGIC_SOURCE_JSON_SCHEMA),
-        misc: ajv.compile(STACK_ITEM_SOURCE_JSON_SCHEMA),
-        race: ajv.compile(RACE_SOURCE_JSON_SCHEMA),
-        weapon: ajv.compile(WEAPON_SOURCE_JSON_SCHEMA)
+        ammo: AMMO_SOURCE_SCHEMA.safeParse,
+        apparel: APPAREL_SOURCE_SCHEMA.safeParse,
+        effect: BASE_ITEM_SOURCE_SCHEMA.safeParse,
+        magic: MAGIC_SOURCE_SCHEMA.safeParse,
+        misc: STACK_ITEM_SOURCE_SCHEMA.safeParse,
+        race: RACE_SOURCE_SCHEMA.safeParse,
+        weapon: WEAPON_SOURCE_SCHEMA.safeParse
       },
-      ruleElement: ajv.compile(RULE_ELEMENT_SOURCE_JSON_SCHEMA)
+      ruleElement: RULE_ELEMENT_SCHEMA.safeParse
     }
   };
 

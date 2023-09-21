@@ -1,126 +1,96 @@
-import type {
+import { z } from "zod";
+import {
   RadiationSicknessLevel,
-  SpecialName
+  SpecialName,
+  SpecialNames
 } from "../../../../constants.js";
 import {
   ComponentSource,
   Component,
   LabelComponent,
-  CompositeNumberBounds
+  CompositeNumberBounds,
+  COMPOSITE_NUMBER_BOUNDS_SCHEMA,
+  COMPONENT_SOURCE_SCHEMA
 } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
-export default class SpecialsProperties
-  implements Record<SpecialName, Special>
-{
-  /** The Strength SPECIAL of the character */
-  strength = new Special();
-
-  /** The Perception SPECIAL of the character */
-  perception = new Special();
-
-  /** The Endurance SPECIAL of the character */
-  endurance = new Special();
-
-  /** The Charisma SPECIAL of the character */
-  charisma = new Special();
-
-  /** The Intelligence SPECIAL of the character */
-  intelligence = new Special();
-
-  /** The Agility SPECIAL of the character */
-  agility = new Special();
-
-  /** The Luck SPECIAL of the character */
-  luck = new Special();
-
+export type SpecialsProperties = Record<SpecialName, Special> & {
   /** Apply the given radiation sickness level and modify the temp SPECIALs. */
-  applyRadiationSickness(sicknessLevel: RadiationSicknessLevel) {
-    const labelComponents: LabelComponent[] = [
-      { key: "wv.rules.radiation.name" }
-    ];
+  applyRadiationSickness(sicknessLevel: RadiationSicknessLevel): void;
+};
 
-    switch (sicknessLevel) {
-      case "none":
-        return;
-      case "minor":
-        this.endurance.addTemp({ value: -1, labelComponents });
-        return;
-      case "moderate":
-        this.endurance.addTemp({ value: -2, labelComponents });
-        this.agility.addTemp({ value: -1, labelComponents });
-        return;
-      case "major":
-        this.endurance.addTemp({ value: -3, labelComponents });
-        this.agility.addTemp({ value: -2, labelComponents });
-        this.strength.addTemp({ value: -1, labelComponents });
-        return;
-      case "critical":
-        this.endurance.addTemp({ value: -3, labelComponents });
-        this.agility.addTemp({ value: -3, labelComponents });
-        this.strength.addTemp({ value: -2, labelComponents });
-        return;
-    }
+export const SpecialsProperties = {
+  /** Creates a new SpecialsProperties */
+  from(): SpecialsProperties {
+    const specials = SpecialNames.reduce((acc, specialName) => {
+      acc[specialName] = new Special();
+      return acc;
+    }, {} as Record<SpecialName, Special>);
+    return {
+      ...specials,
+
+      applyRadiationSickness(sicknessLevel: RadiationSicknessLevel) {
+        const labelComponents: LabelComponent[] = [
+          { key: "wv.rules.radiation.name" }
+        ];
+
+        switch (sicknessLevel) {
+          case "none":
+            return;
+          case "minor":
+            this.endurance.addTemp({ value: -1, labelComponents });
+            return;
+          case "moderate":
+            this.endurance.addTemp({ value: -2, labelComponents });
+            this.agility.addTemp({ value: -1, labelComponents });
+            return;
+          case "major":
+            this.endurance.addTemp({ value: -3, labelComponents });
+            this.agility.addTemp({ value: -2, labelComponents });
+            this.strength.addTemp({ value: -1, labelComponents });
+            return;
+          case "critical":
+            this.endurance.addTemp({ value: -3, labelComponents });
+            this.agility.addTemp({ value: -3, labelComponents });
+            this.strength.addTemp({ value: -2, labelComponents });
+            return;
+        }
+      }
+    };
   }
-}
+};
 
 /** The layout for a serialized Special. */
-export interface SerializedSpecial {
-  permBounds?: CompositeNumberBounds;
-  tempBounds?: CompositeNumberBounds;
-  points: number;
-  permComponents: ComponentSource[];
-  tempComponents: ComponentSource[];
-}
+export type SerializedSpecial = z.infer<typeof SERIALIZED_SPECIAL_SCHEMA>;
+
+const SERIALIZED_SPECIAL_SCHEMA = z.object({
+  permBounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
+  tempBounds: COMPOSITE_NUMBER_BOUNDS_SCHEMA.optional(),
+  points: z.number().int(),
+  permComponents: COMPONENT_SOURCE_SCHEMA.array(),
+  tempComponents: COMPONENT_SOURCE_SCHEMA.array()
+});
 
 /** A SPECIAL, holding all intermediary steps for the final result */
 export class Special implements FoundrySerializable {
-  /**
-   * Test whether the given source is a SerializedSpecial.
-   * @param source - the source to test
-   * @returns whether the source is a SerializedSpecial
-   */
-  static isSerialized(source: unknown): source is SerializedSpecial {
-    if (
-      typeof source !== "object" ||
-      null === source ||
-      !("points" in source) ||
-      !("permComponents" in source) ||
-      !("tempComponents" in source)
-    )
-      return false;
-
-    const obj = source as SerializedSpecial;
-    return (
-      typeof obj.points === "number" &&
-      Array.isArray(obj.permComponents) &&
-      !obj.permComponents.some((component) => !Component.isSource(component)) &&
-      Array.isArray(obj.tempComponents) &&
-      !obj.tempComponents.some((component) => !Component.isSource(component))
-    );
-  }
-
   /**
    * Create a Special from the given source
    * @param source - either a Special or SerializedSpecial
    * @returns the created Special
    * @throws if the given source is neither a Special or SerializedSpecial
    */
-  static from(source: unknown): Special {
-    if (source instanceof Special) return source;
+  static from(sourceUnknown: unknown): Special {
+    if (sourceUnknown instanceof Special) return sourceUnknown;
 
-    if (this.isSerialized(source)) {
-      const special = new Special(
-        source.points,
-        source.permBounds,
-        source.tempBounds
-      );
-      source.permComponents.forEach((component) => special.addPerm(component));
-      source.tempComponents.forEach((component) => special.addTemp(component));
-      return special;
-    }
-
-    throw new Error(`The source was not valid: ${source}`);
+    const source = SERIALIZED_SPECIAL_SCHEMA.parse(sourceUnknown);
+    const special = new Special(
+      source.points,
+      source.permBounds,
+      source.tempBounds
+    );
+    source.permComponents.forEach((component) => special.addPerm(component));
+    source.tempComponents.forEach((component) => special.addTemp(component));
+    return special;
   }
 
   /** Create a new SPECIAL. */

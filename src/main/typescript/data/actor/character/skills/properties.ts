@@ -4,8 +4,8 @@ import {
   ThaumaturgySpecial
 } from "../../../../constants.js";
 import { CompositeNumber } from "../../../common.js";
-import type LevelingProperties from "../leveling/properties.js";
-import type SpecialsProperties from "../specials/properties.js";
+import type { LevelingProperties } from "../leveling/properties.js";
+import type { SpecialsProperties } from "../specials/properties.js";
 
 export default class SkillsProperties
   implements Record<SkillName, CompositeNumber>

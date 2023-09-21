@@ -1,108 +1,37 @@
-import type { JSONSchemaType } from "ajv";
-import {
-  ResourceSource,
-  RESOURCE_SOURCE_JSON_SCHEMA
-} from "../../../foundryCommon.js";
+import { z } from "zod";
+import {} from "../../../common.js";
+import { ID_STRING, RESOURCE_SOURCE_SCHEMA } from "../../../foundryCommon.js";
 
-export default class EquipmentSource {
+export type EquipmentSource = z.infer<typeof EQUIPMENT_SOURCE_SCHEMA>;
+export const EQUIPMENT_SOURCE_SCHEMA = z.object({
   /** The amount of caps the character owns */
-  caps: number = 0;
+  caps: z.number().default(0),
 
   /** The quick slot charges of the character */
-  quickSlots: ResourceSource = { value: 0 };
+  quickSlots: RESOURCE_SOURCE_SCHEMA.default({ value: 0 }),
 
   /** The ID of the readied item in the character's posession. */
-  readiedItemId: string | null = null;
+  readiedItemId: ID_STRING.nullable().default(null),
 
   /**
    * The IDs of the weapon items in the character's posession in weapon slots.
    */
-  weaponSlotIds: [string | null, string | null] = [null, null];
+  weaponSlotIds: z
+    .tuple([ID_STRING.nullable(), ID_STRING.nullable()])
+    .default([null, null]),
 
   /** The ID of the equipped armor apparel in the character's posession */
-  armorSlotId: string | null = null;
+  armorSlotId: ID_STRING.nullable().default(null),
 
   /** The ID of the equipped clothing apparel in the character's posession */
-  clothingSlotId: string | null = null;
+  clothingSlotId: ID_STRING.nullable().default(null),
 
   /** The ID of the equipped eyes apparel in the character's posession */
-  eyesSlotId: string | null = null;
+  eyesSlotId: ID_STRING.nullable().default(null),
 
   /** The ID of the equipped mouth apparel in the character's posession */
-  mouthSlotId: string | null = null;
+  mouthSlotId: ID_STRING.nullable().default(null),
 
   /** The ID of the equipped belt apparel in the character's posession */
-  beltSlotId: string | null = null;
-}
-
-const ITEM_ID_SCHEMA = {
-  type: "string",
-  nullable: true,
-  pattern: "^[a-zA-Z0-9]{16}$"
-} as const;
-
-export const EQUIPMENT_JSON_SCHEMA: JSONSchemaType<EquipmentSource> = {
-  description: "An equipment specification",
-  type: "object",
-  properties: {
-    caps: {
-      description: "The amount of caps the actor owns",
-      type: "integer",
-      default: 0
-    },
-    quickSlots: RESOURCE_SOURCE_JSON_SCHEMA,
-    readiedItemId: {
-      ...ITEM_ID_SCHEMA,
-      description:
-        "The ID of the readied item in the actor's posession. Can be null."
-    },
-    weaponSlotIds: {
-      description:
-        "The IDs of the weapons items in the actor's posession in weapon slots. They can be null.",
-      type: "array",
-      items: [ITEM_ID_SCHEMA, ITEM_ID_SCHEMA],
-      minItems: 2,
-      maxItems: 2
-    },
-    armorSlotId: {
-      ...ITEM_ID_SCHEMA,
-      description:
-        "The ID of the equipped armor apparel in the actor's posession. Can be null."
-    },
-    clothingSlotId: {
-      ...ITEM_ID_SCHEMA,
-      description:
-        "The ID of the equipped clothing apparel in the actor's posession. Can be null."
-    },
-    eyesSlotId: {
-      ...ITEM_ID_SCHEMA,
-      description:
-        "The ID of the equipped eyes apparel in the actor's posession. Can be null."
-    },
-    mouthSlotId: {
-      ...ITEM_ID_SCHEMA,
-      description:
-        "The ID of the equipped mouth apparel in the actor's posession. Can be null."
-    },
-    beltSlotId: {
-      ...ITEM_ID_SCHEMA,
-      description:
-        "The ID of the equipped belt apparel in the actor's posession. Can be null."
-    }
-  },
-  required: [
-    "caps",
-    "quickSlots",
-    "readiedItemId",
-    "weaponSlotIds",
-    "armorSlotId",
-    "clothingSlotId",
-    "eyesSlotId",
-    "mouthSlotId",
-    "beltSlotId"
-  ],
-  additionalProperties: false,
-  default: {
-    caps: 0
-  }
-};
+  beltSlotId: ID_STRING.nullable().default(null)
+});

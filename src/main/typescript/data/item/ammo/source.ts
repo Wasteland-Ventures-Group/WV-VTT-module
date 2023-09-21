@@ -1,75 +1,27 @@
-import type { JSONSchemaType } from "ajv";
-import { Caliber, Calibers, TYPES } from "../../../constants.js";
-import {
-  COMPENDIUM_JSON_SCHEMA,
-  FoundryCompendiumData
-} from "../../foundryCommon.js";
-import StackableItemSource, {
-  STACK_ITEM_SOURCE_JSON_SCHEMA
-} from "../common/stackableItem/source.js";
+import { z } from "zod";
+import { Calibers, TYPES } from "../../../constants.js";
+import { compDataZodSchema } from "../../foundryCommon.js";
+import { STACK_ITEM_SOURCE_SCHEMA } from "../common/stackableItem/source.js";
 
 export default interface AmmoDataSource {
   type: typeof TYPES.ITEM.AMMO;
   data: AmmoDataSourceData;
 }
 
-export class AmmoDataSourceData extends StackableItemSource {
+export type AmmoDataSourceData = z.infer<typeof AMMO_SOURCE_SCHEMA>;
+export const AMMO_SOURCE_SCHEMA = STACK_ITEM_SOURCE_SCHEMA.extend({
   /** The caliber of the ammo */
-  caliber: Caliber = "308cal";
-
+  caliber: z
+    .enum(Calibers)
+    .default("308cal")
+    .describe("The caliber of the ammo"),
   /** The sub type of the ammo */
-  type: string = "";
-}
+  type: z.string().default("").describe("The sub type of the ammo")
+}).default({});
 
-export const AMMO_SOURCE_JSON_SCHEMA: JSONSchemaType<AmmoDataSourceData> = {
-  description: "The system data for an ammo Item",
-  type: "object",
-  properties: {
-    ...STACK_ITEM_SOURCE_JSON_SCHEMA.properties,
-    caliber: {
-      description: "The caliber of the ammo",
-      type: "string",
-      enum: Calibers,
-      default: "308cal"
-    },
-    type: {
-      description: "The sub type of the ammo",
-      type: "string"
-    }
-  },
-  required: [...STACK_ITEM_SOURCE_JSON_SCHEMA.required, "caliber", "type"],
-  additionalProperties: false,
-  default: {
-    ...STACK_ITEM_SOURCE_JSON_SCHEMA.default,
-    caliber: "308cal",
-    type: ""
-  }
-};
-
-export interface CompendiumAmmo
-  extends FoundryCompendiumData<AmmoDataSourceData> {
-  type: typeof TYPES.ITEM.AMMO;
-}
-
-export const COMP_AMMO_JSON_SCHEMA: JSONSchemaType<CompendiumAmmo> = {
-  description: "The compendium data for an ammo Item",
-  type: "object",
-  properties: {
-    ...COMPENDIUM_JSON_SCHEMA.properties,
-    type: {
-      description: COMPENDIUM_JSON_SCHEMA.properties.type.description,
-      type: "string",
-      const: TYPES.ITEM.AMMO,
-      default: TYPES.ITEM.AMMO
-    },
-    data: AMMO_SOURCE_JSON_SCHEMA
-  },
-  required: COMPENDIUM_JSON_SCHEMA.required,
-  additionalProperties: false,
-  default: {
-    ...COMPENDIUM_JSON_SCHEMA.default,
-    type: TYPES.ITEM.AMMO,
-    data: AMMO_SOURCE_JSON_SCHEMA.default,
-    img: "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp"
-  }
-};
+export const COMP_AMMO_SCHEMA = compDataZodSchema(
+  AMMO_SOURCE_SCHEMA,
+  "ammo",
+  "icons/weapons/ammunition/bullets-cartridge-shell-gray.webp",
+  "New Ammo"
+);

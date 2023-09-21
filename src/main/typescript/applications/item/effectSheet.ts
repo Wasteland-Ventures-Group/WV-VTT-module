@@ -2,7 +2,7 @@ import type Effect from "../../item/effect.js";
 import { TYPES } from "../../constants.js";
 import { isOfItemType } from "../../item/wvItem.js";
 import WvItemSheet from "./wvItemSheet.js";
-import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
+import type { RuleElementSource } from "../../ruleEngine/ruleElementSource.js";
 
 /** An Item Sheet for Effect items. */
 export default class EffectSheet extends WvItemSheet {

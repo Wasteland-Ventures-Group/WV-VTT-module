@@ -1,60 +1,73 @@
-import AttacksSource, { AttackSource, DamageSource } from "./source.js";
+import type { AttacksSource, AttackSource, DamageSource } from "./source.js";
 import { CompositeNumber } from "../../../common.js";
 import type WvActor from "../../../../actor/wvActor.js";
 import type Weapon from "../../../../item/weapon.js";
 import {
   CONSTANTS,
   isRangePickingTag,
-  RangeBracket
+  RangeBracket,
+  SplashSize
 } from "../../../../constants.js";
 import AttackExecution from "../../../../item/weapon/attackExecution.js";
 
-export default class AttacksProperties extends AttacksSource {
-  constructor(source: AttacksSource, owningWeapon: Weapon) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    Object.entries(source.sources).forEach(([name, source]) => {
-      this.attacks[name] = new AttackProperties(name, source, owningWeapon);
-    });
-  }
-
+export type AttacksProperties = AttacksSource & {
   /** The Weapon Attacks, created from the sources */
-  attacks: Record<string, AttackProperties> = {};
+  attacks: Record<string, AttackProperties>;
 
   /** Get all attacks matching the given tags. */
-  getMatching(tags: string[] | undefined): AttackProperties[] {
-    return Object.values(this.attacks).filter((attack) => attack.matches(tags));
-  }
+  getMatching(tags: string[] | undefined): AttackProperties[];
 
   /**
    * Apply a skill damage dice modifier to all attacks, if the attack qualifies
    * for it. This is based on the skill of the weapon and the skill value of the
    * given Actor.
    */
-  applySkillDamageDiceMod(actor: WvActor | null, weapon: Weapon): void {
-    if (!actor) return;
-
-    Object.values(this.attacks).forEach((attack) =>
-      attack.damage.applySkillDamageDiceMod(actor, weapon)
-    );
-  }
+  applySkillDamageDiceMod(actor: WvActor | null, weapon: Weapon): void;
 
   /**
    * Apply a Strength damage dice modifier to all attacks, based on the Strength
    * of the given Actor.
    */
-  applyStrengthDamageDiceMod(actor: WvActor | null): void {
-    if (!actor) return;
+  applyStrengthDamageDiceMod(actor: WvActor | null): void;
+};
 
-    Object.values(this.attacks).forEach((attack) =>
-      attack.damage.applyStrengthDamageDiceMod(actor)
-    );
+export const AttacksProperties = {
+  from(source: AttacksSource, owningWeapon: Weapon): AttacksProperties {
+    const attacks: Record<string, AttackProperties> = {};
+    Object.entries(source.sources).forEach(([name, source]) => {
+      attacks[name] = new AttackProperties(name, source, owningWeapon);
+    });
+    return {
+      ...source,
+      attacks,
+
+      getMatching(tags: string[] | undefined): AttackProperties[] {
+        return Object.values(this.attacks).filter((attack) =>
+          attack.matches(tags)
+        );
+      },
+
+      applySkillDamageDiceMod(actor: WvActor | null, weapon: Weapon): void {
+        if (!actor) return;
+
+        Object.values(this.attacks).forEach((attack) =>
+          attack.damage.applySkillDamageDiceMod(actor, weapon)
+        );
+      },
+
+      applyStrengthDamageDiceMod(actor: WvActor | null): void {
+        if (!actor) return;
+
+        Object.values(this.attacks).forEach((attack) =>
+          attack.damage.applyStrengthDamageDiceMod(actor)
+        );
+      }
+    };
   }
-}
+};
 
-export class AttackProperties extends AttackSource {
+export class AttackProperties implements AttackSource {
   constructor(name: string, source: AttackSource, owningWeapon: Weapon) {
-    super();
     foundry.utils.mergeObject(this, source);
     this.damage = new DamageProperties(source.damage, owningWeapon);
 
@@ -67,22 +80,27 @@ export class AttackProperties extends AttackSource {
 
     this.ap = CompositeNumber.from(source.ap);
     this.ap.bounds.min = 0;
+    this.tags = source.tags;
 
     this.#weapon = owningWeapon;
     this.#name = name;
   }
 
-  override damage: DamageProperties;
+  splash?: SplashSize;
 
-  override rounds: CompositeNumber;
+  damage: DamageProperties;
 
-  override dtReduction: CompositeNumber;
+  rounds: CompositeNumber;
 
-  override ap: CompositeNumber;
+  dtReduction: CompositeNumber;
+
+  ap: CompositeNumber;
 
   #weapon: Weapon;
 
   #name: string;
+
+  tags: string[];
 
   /** Get the range picking relevant tags for this attack. */
   get rangePickingTags(): string[] {
@@ -101,9 +119,8 @@ export class AttackProperties extends AttackSource {
   }
 }
 
-export class DamageProperties extends DamageSource {
+export class DamageProperties implements DamageSource {
   constructor(source: DamageSource, owningWeapon: Weapon) {
-    super();
     foundry.utils.mergeObject(this, source);
 
     this.base = CompositeNumber.from(source.base);
@@ -115,9 +132,13 @@ export class DamageProperties extends DamageSource {
     this.#weapon = owningWeapon;
   }
 
-  override base: CompositeNumber;
+  damageFallOff?: "shotgun" | "" | undefined;
 
-  override dice: CompositeNumber;
+  diceRange?: boolean | undefined;
+
+  base: CompositeNumber;
+
+  dice: CompositeNumber;
 
   #weapon: Weapon;
 

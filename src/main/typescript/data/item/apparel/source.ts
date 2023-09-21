@@ -1,159 +1,53 @@
-import type { JSONSchemaType } from "ajv";
-import {
-  ApparelSlot,
-  ApparelSlots,
-  ApparelType,
-  ApparelTypes,
-  TYPES
-} from "../../../constants.js";
-import {
-  CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-} from "../../common.js";
-import {
-  COMPENDIUM_JSON_SCHEMA,
-  FoundryCompendiumData
-} from "../../foundryCommon.js";
-import PhysicalItemSource, {
-  PHYS_ITEM_SOURCE_JSON_SCHEMA
-} from "../common/physicalItem/source.js";
+import { z } from "zod";
+import { ApparelSlots, ApparelTypes, TYPES } from "../../../constants.js";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../common.js";
+import { compDataZodSchema } from "../../foundryCommon.js";
+import { PHYS_ITEM_SOURCE_SCHEMA } from "../common/physicalItem/source.js";
 
 export default interface ApparelDataSource {
   type: typeof TYPES.ITEM.APPAREL;
   data: ApparelDataSourceData;
 }
 
-export class ApparelDataSourceData extends PhysicalItemSource {
+export type ApparelDataSourceData = z.infer<typeof APPAREL_SOURCE_SCHEMA>;
+export const APPAREL_SOURCE_SCHEMA = PHYS_ITEM_SOURCE_SCHEMA.extend({
   /** The other apparel slots this apparel blocks aside from its own */
-  blockedSlots?: Record<ApparelSlot, boolean>;
+  blockedSlots: z
+    .record(z.enum(ApparelSlots), z.boolean())
+    .optional()
+    .describe("The other apparel slots this apparel blocks aside from its own"),
 
   /** The damage threshold of the apparel */
-  damageThreshold?: CompositeNumberSource = { source: 0 };
+  damageThreshold: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().describe(
+    "The damage threshold of the apparel"
+  ),
 
   /** The number of quick slots of the apparel */
-  quickSlots?: CompositeNumberSource = { source: 0 };
+  quickSlots: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().describe(
+    "The number of quick slots of the apparel"
+  ),
 
   /** The number of mod slots of the apparel */
-  modSlots?: CompositeNumberSource = { source: 0 };
+  modSlots: COMPOSITE_NUMBER_SOURCE_SCHEMA.optional().describe(
+    "The number of mod slots of the apparel"
+  ),
 
   /** The apparel slot this apparel occupies when equipped */
-  slot: ApparelSlot = "clothing";
+  slot: z
+    .enum(ApparelSlots)
+    .default("clothing")
+    .describe("The apparel slot this apparel occupies when equipped"),
 
   /** The sub type of the apparel */
-  type: ApparelType = "clothing";
-}
+  type: z
+    .enum(ApparelTypes)
+    .default("clothing")
+    .describe("The sub type of the apparel")
+}).default({});
 
-/** A JSON schema for apparel source objects */
-export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
-  {
-    description: "The system data for an apparel item",
-    type: "object",
-    properties: {
-      ...PHYS_ITEM_SOURCE_JSON_SCHEMA.properties,
-      blockedSlots: {
-        description:
-          "The other apparel slots this apparel blocks aside from its own",
-        type: "object",
-        properties: ApparelSlots.reduce((slots, apparelSlot) => {
-          slots[apparelSlot] = { type: "boolean" };
-          return slots;
-        }, {} as Record<ApparelSlot, { type: "boolean" }>),
-        nullable: true,
-        required: ApparelSlots,
-        additionalProperties: false,
-        default: ApparelSlots.reduce((slots, apparelSlot) => {
-          slots[apparelSlot] = false;
-          return slots;
-        }, {} as Record<ApparelSlot, boolean>)
-      },
-      damageThreshold: {
-        ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-        description: "The damage threshold of the apparel",
-        properties: {
-          source: {
-            ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
-            type: "integer",
-            default: 0
-          }
-        },
-        default: {
-          source: 0
-        }
-      },
-      quickSlots: {
-        ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-        description: "The number of quick slots of the apparel",
-        properties: {
-          source: {
-            ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
-            type: "integer",
-            default: 0,
-            minimum: 0
-          }
-        },
-        default: {
-          source: 0
-        }
-      },
-      modSlots: {
-        ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-        description: "The number of mod slots of the apparel",
-        properties: {
-          source: {
-            ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
-            type: "integer",
-            default: 0,
-            minimum: 0
-          }
-        },
-        default: {
-          source: 0
-        }
-      },
-      slot: {
-        description: "The apparel slot this apparel occupies when equipped",
-        type: "string",
-        enum: ApparelSlots
-      },
-      type: {
-        description: "The sub type of the apparel",
-        type: "string",
-        enum: ApparelTypes
-      }
-    },
-    required: [...PHYS_ITEM_SOURCE_JSON_SCHEMA.required, "slot", "type"],
-    additionalProperties: false,
-    default: {
-      ...PHYS_ITEM_SOURCE_JSON_SCHEMA.default,
-      slot: "clothing",
-      type: "clothing"
-    }
-  };
-
-export interface CompendiumApparel
-  extends FoundryCompendiumData<ApparelDataSourceData> {
-  type: typeof TYPES.ITEM.APPAREL;
-}
-
-export const COMP_APPAREL_JSON_SCHEMA: JSONSchemaType<CompendiumApparel> = {
-  description: "The compendium data for an apparel Item",
-  type: "object",
-  properties: {
-    ...COMPENDIUM_JSON_SCHEMA.properties,
-    type: {
-      description: COMPENDIUM_JSON_SCHEMA.properties.type.description,
-      type: "string",
-      const: TYPES.ITEM.APPAREL,
-      default: TYPES.ITEM.APPAREL
-    },
-    data: APPAREL_SOURCE_JSON_SCHEMA
-  },
-  required: COMPENDIUM_JSON_SCHEMA.required,
-  additionalProperties: false,
-  default: {
-    ...COMPENDIUM_JSON_SCHEMA.default,
-    type: TYPES.ITEM.APPAREL,
-    data: APPAREL_SOURCE_JSON_SCHEMA.default,
-    img: "icons/equipment/chest/breastplate-leather-brown-belted.webp"
-  }
-};
+export const COMP_APPAREL_SCHEMA = compDataZodSchema(
+  APPAREL_SOURCE_SCHEMA,
+  "apparel",
+  "icons/equipment/chest/breastplate-leather-brown-belted.webp",
+  "New Apparel"
+);

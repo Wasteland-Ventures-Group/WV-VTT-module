@@ -1,7 +1,7 @@
 import { TYPES } from "../../constants.js";
 import type Race from "../../item/race.js";
 import { isOfItemType } from "../../item/wvItem.js";
-import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
+import type { RuleElementSource } from "../../ruleEngine/ruleElementSource.js";
 import WvItemSheet from "./wvItemSheet.js";
 
 /** An Item Sheet for Race items. */

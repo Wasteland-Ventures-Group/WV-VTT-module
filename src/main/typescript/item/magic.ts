@@ -17,7 +17,7 @@ export default class Magic extends WvItem {
   }
 
   override prepareBaseData(): void {
-    this.data.data = new MagicDataPropertiesData(this.data.data, this);
+    this.data.data = MagicDataPropertiesData.from(this.data.data, this);
   }
 
   override finalizeData(): void {

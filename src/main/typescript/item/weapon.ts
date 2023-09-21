@@ -17,7 +17,7 @@ export default class Weapon extends WvItem {
   }
 
   override prepareBaseData(): void {
-    this.data.data = new WeaponDataPropertiesData(this.data.data, this);
+    this.data.data = WeaponDataPropertiesData.from(this.data.data, this);
   }
 
   override finalizeData(): void {

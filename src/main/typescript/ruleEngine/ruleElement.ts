@@ -14,7 +14,7 @@ import NotMatchingTargetMessage from "./messages/notMatchingTargetMessage.js";
 import WrongTargetTypeMessage from "./messages/wrongTargetTypeMessage.js";
 import WrongValueTypeMessage from "./messages/wrongValueTypeMessage.js";
 import type RuleElementMessage from "./ruleElementMessage.js";
-import type RuleElementSource from "./ruleElementSource.js";
+import type { RuleElementSource } from "./ruleElementSource.js";
 import type {
   RuleElementCondition,
   RuleElementHook

@@ -1,18 +1,26 @@
+import type { SpellRange, SplashSize } from "../../../../constants";
 import { CompositeNumber } from "../../../common";
-import { RangeSource } from "./source";
+import type { RangeSource } from "./source";
 
-export default class RangeProperties extends RangeSource {
+export default class RangeProperties implements RangeSource {
   constructor(source: RangeSource) {
-    super();
-
     this.distanceBase = CompositeNumber.from(source.distanceBase);
     this.distanceBase.bounds.min = 0;
 
     this.distanceScale = CompositeNumber.from(source.distanceScale);
     this.distanceScale.bounds.min = 0;
+    this.type = source.type;
+    this.splashSize = source.splashSize;
+    this.description = source.description;
   }
 
-  override distanceBase: CompositeNumber;
+  distanceBase: CompositeNumber;
 
-  override distanceScale: CompositeNumber;
+  distanceScale: CompositeNumber;
+
+  type: SpellRange;
+
+  splashSize: SplashSize;
+
+  description: string;
 }

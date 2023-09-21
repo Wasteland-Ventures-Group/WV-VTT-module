@@ -1,52 +1,32 @@
-import type { JSONSchemaType } from "ajv";
+import { z } from "zod";
 import type { TYPES } from "../../../constants.js";
-import BackgroundSource, {
-  BACKGROUND_JSON_SCHEMA
-} from "./background/source.js";
-import EquipmentSource, { EQUIPMENT_JSON_SCHEMA } from "./equipment/source.js";
-import LevelingSource, { LEVELING_JSON_SCHEMA } from "./leveling/source.js";
-import MagicSource, { MAGIC_JSON_SCHEMA } from "./magic/source.js";
-import VitalsSource, { VITALS_JSON_SCHEMA } from "./vitals/source.js";
+import { BACKGROUND_SOURCE_SCHEMA } from "./background/source.js";
+import { EQUIPMENT_SOURCE_SCHEMA } from "./equipment/source.js";
+import { LEVELING_SOURCE_SCHEMA } from "./leveling/source.js";
+import { MAGIC_SOURCE_SCHEMA } from "./magic/source.js";
+import { VITALS_SOURCE_SCHEMA } from "./vitals/source.js";
 
 export default interface CharacterDataSource {
   type: typeof TYPES.ACTOR.CHARACTER;
   data: CharacterDataSourceData;
 }
 
-export class CharacterDataSourceData {
-  /** The background of the character */
-  background = new BackgroundSource();
+export type CharacterDataSourceData = z.infer<typeof CHARACTER_SOURCE_SCHEMA>;
+export const CHARACTER_SOURCE_SCHEMA = z
+  .object({
+    /** The background of the character */
+    background: BACKGROUND_SOURCE_SCHEMA.default({}),
 
-  /** The equipment of the character */
-  equipment = new EquipmentSource();
+    /** The equipment of the character */
+    equipment: EQUIPMENT_SOURCE_SCHEMA.default({}),
 
-  /** The leveling stats of the character */
-  leveling = new LevelingSource();
+    /** The leveling stats of the character */
+    leveling: LEVELING_SOURCE_SCHEMA.default({}),
 
-  /** The magic stats of the character */
-  magic = new MagicSource();
+    /** The magic stats of the character */
+    magic: MAGIC_SOURCE_SCHEMA.default({}),
 
-  /** The vitals of the character */
-  vitals = new VitalsSource();
-}
-
-export const CHARACTER_JSON_SCHEMA: JSONSchemaType<CharacterDataSourceData> = {
-  description: "The system data for a character Actor",
-  type: "object",
-  properties: {
-    background: BACKGROUND_JSON_SCHEMA,
-    equipment: EQUIPMENT_JSON_SCHEMA,
-    leveling: LEVELING_JSON_SCHEMA,
-    magic: MAGIC_JSON_SCHEMA,
-    vitals: VITALS_JSON_SCHEMA
-  },
-  required: ["vitals", "leveling", "equipment", "magic", "background"],
-  additionalProperties: false,
-  default: {
-    background: BACKGROUND_JSON_SCHEMA.default,
-    equipment: EQUIPMENT_JSON_SCHEMA.default,
-    leveling: LEVELING_JSON_SCHEMA.default,
-    magic: MAGIC_JSON_SCHEMA.default,
-    vitals: VITALS_JSON_SCHEMA.default
-  }
-};
+    /** The vitals of the character */
+    vitals: VITALS_SOURCE_SCHEMA.default({})
+  })
+  .default({});

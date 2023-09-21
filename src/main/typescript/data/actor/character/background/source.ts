@@ -1,139 +1,50 @@
-import type { JSONSchemaType } from "ajv";
-import { CONSTANTS } from "../../../../constants.js";
-import {
-  CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-} from "../../../common.js";
+import { z } from "zod";
+import { COMPOSITE_NUMBER_SOURCE_SCHEMA } from "../../../common.js";
 
-export default class BackgroundSource {
+export type BackgroundSource = z.infer<typeof BACKGROUND_SOURCE_SCHEMA>;
+export const BACKGROUND_SOURCE_SCHEMA = z.object({
   /** The age of the character */
-  age = "";
+  age: z.string().default(""),
 
   /** The gender of the character */
-  gender = "";
+  gender: z.string().default(""),
 
   /** The cutie mark description of the character */
-  cutieMark = "";
+  cutieMark: z.string().default(""),
 
   /** The appearance of the character */
-  appearance = "";
+  appearance: z.string().default(""),
 
   /** The background of the character */
-  background = "";
+  background: z.string().default(""),
 
   /** The fears of the character */
-  fears = "";
+  fears: z.string().default(""),
 
   /** The dreams of the character */
-  dreams = "";
+  dreams: z.string().default(""),
 
   /** The karma of the character */
-  karma = 0;
+  karma: z
+    .number()
+    .default(0)
+    .refine(
+      (val) => val >= -100 && val <= 100,
+      "Karma can only range from -100 to 100"
+    ),
 
   /** The personality of the character */
-  personality = "";
+  personality: z.string().default(""),
 
   /** The size of the character */
-  size: CompositeNumberSource = { source: 0 };
+  size: COMPOSITE_NUMBER_SOURCE_SCHEMA.default({}),
 
   /** The social contacts of the character */
-  socialContacts = "";
+  socialContacts: z.string().default(""),
 
   /** The special talent description of the character */
-  specialTalent = "";
+  specialTalent: z.string().default(""),
 
   /** The virtue of the character */
-  virtue = "";
-}
-
-export const BACKGROUND_JSON_SCHEMA: JSONSchemaType<BackgroundSource> = {
-  description: "A background specification",
-  type: "object",
-  properties: {
-    age: {
-      description: "The age of the character",
-      type: "string"
-    },
-    gender: {
-      description: "The gender of the character",
-      type: "string"
-    },
-    cutieMark: {
-      description: "The cutie mark description of the character",
-      type: "string"
-    },
-    appearance: {
-      description: "The appearance of the character",
-      type: "string"
-    },
-    background: {
-      description: "The background of the character",
-      type: "string"
-    },
-    fears: {
-      description: "The fears of the character",
-      type: "string"
-    },
-    dreams: {
-      description: "The dreams of the character",
-      type: "string"
-    },
-    karma: {
-      description: "The karma of the character",
-      type: "integer",
-      maximum: CONSTANTS.bounds.karma.max,
-      minimum: CONSTANTS.bounds.karma.min
-    },
-    personality: {
-      description: "The personality of the character",
-      type: "string"
-    },
-    size: {
-      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-      description: "The size of the character",
-      properties: {
-        source: {
-          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
-          type: "integer",
-          maximum: CONSTANTS.bounds.size.max,
-          minimum: CONSTANTS.bounds.size.min,
-          default: 0
-        }
-      },
-      default: {
-        source: 0
-      }
-    },
-    socialContacts: {
-      description: "The social contacts of the character",
-      type: "string"
-    },
-    specialTalent: {
-      description: "The special talent description of the character",
-      type: "string"
-    },
-    virtue: {
-      description: "The virtue of the character",
-      type: "string"
-    }
-  },
-  required: ["karma", "size"],
-  additionalProperties: false,
-  default: {
-    age: "",
-    gender: "",
-    cutieMark: "",
-    appearance: "",
-    background: "",
-    fears: "",
-    dreams: "",
-    karma: 0,
-    personality: "",
-    size: {
-      source: 0
-    },
-    socialContacts: "",
-    specialTalent: "",
-    virtue: ""
-  }
-};
+  virtue: z.string().default("")
+});

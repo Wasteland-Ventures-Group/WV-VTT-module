@@ -1,4 +1,6 @@
 import { promises as fs } from "fs";
+import { z, ZodSchema } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 // The paths here are relative to the project root
 const outputBasePath = "./src/main/schemas";
@@ -10,33 +12,33 @@ export default async function compendiumSchemasTask(): Promise<void[]> {
       fileName: "ammo",
       outputBasePath: itemOutputBasePath,
       schema: (await import("../src/main/typescript/data/item/ammo/source.js"))
-        .COMP_AMMO_JSON_SCHEMA
+        .COMP_AMMO_SCHEMA
     },
     {
       fileName: "apparel",
       outputBasePath: itemOutputBasePath,
       schema: (
         await import("../src/main/typescript/data/item/apparel/source.js")
-      ).COMP_APPAREL_JSON_SCHEMA
+      ).COMP_APPAREL_SCHEMA
     },
     {
       fileName: "magic",
       outputBasePath: itemOutputBasePath,
       schema: (await import("../src/main/typescript/data/item/magic/source.js"))
-        .COMP_MAGIC_JSON_SCHEMA
+        .COMP_MAGIC_SCHEMA
     },
     {
       fileName: "race",
       outputBasePath: itemOutputBasePath,
       schema: (await import("../src/main/typescript/data/item/race/source.js"))
-        .COMP_RACE_JSON_SCHEMA
+        .COMP_RACE_SCHEMA
     },
     {
       fileName: "weapon",
       outputBasePath: itemOutputBasePath,
       schema: (
         await import("../src/main/typescript/data/item/weapon/source.js")
-      ).COMP_WEAPON_JSON_SCHEMA
+      ).COMP_WEAPON_SCHEMA
     }
   ];
   return Promise.all(schemaConfigs.map((config) => createSchema(config)));
@@ -46,17 +48,61 @@ compendiumSchemasTask.description =
 
 async function createSchema(config: SchemaConfig): Promise<void> {
   await fs.mkdir(config.outputBasePath, { recursive: true });
+  // By removing defaults, we ensure that the user-provided JSON schemas must
+  // have all attributes present. This helps write compendium entries as the
+  // user's text editor can inform them what properties would still be useful
+  // to add.
+  const schema = deepStrictRemoveDefaults(config.schema);
   return fs.writeFile(
     `${config.outputBasePath}/${config.fileName}.json`,
     JSON.stringify({
-      $schema: "http://json-schema.org/draft-07/schema#",
-      ...config.schema
+      ...zodToJsonSchema(schema, { target: "jsonSchema7" })
     })
   );
+}
+
+/**
+ * Traverses the zod schema and removes all defaults, but also makes all
+ * objects strict.
+ * @param schema - The schema to make rebust
+ * @returns The robust schema
+ */
+function deepStrictRemoveDefaults(schema: z.ZodTypeAny): z.ZodTypeAny {
+  if (schema instanceof z.ZodDefault)
+    return deepStrictRemoveDefaults(schema.removeDefault());
+
+  if (schema instanceof z.ZodObject) {
+    const newShape = { ...schema.shape };
+
+    for (const key in schema.shape) {
+      const fieldSchema = schema.shape[key];
+      newShape[key] = deepStrictRemoveDefaults(fieldSchema);
+    }
+    return new z.ZodObject({
+      ...schema._def,
+      shape: () => newShape
+    }).strict();
+  }
+
+  if (schema instanceof z.ZodArray)
+    return z.ZodArray.create(deepStrictRemoveDefaults(schema.element));
+
+  if (schema instanceof z.ZodOptional)
+    return z.ZodOptional.create(deepStrictRemoveDefaults(schema.unwrap()));
+
+  if (schema instanceof z.ZodNullable)
+    return z.ZodNullable.create(deepStrictRemoveDefaults(schema.unwrap()));
+
+  if (schema instanceof z.ZodTuple)
+    return z.ZodTuple.create(
+      schema.items.map((item: z.ZodTypeAny) => deepStrictRemoveDefaults(item))
+    );
+
+  return schema;
 }
 
 interface SchemaConfig {
   fileName: string;
   outputBasePath: string;
-  schema: Record<string, unknown>;
+  schema: ZodSchema;
 }

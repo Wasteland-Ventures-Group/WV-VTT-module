@@ -12,7 +12,8 @@ import {
   TYPES
 } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
-import type {
+import {
+  CompositeNumber,
   ComponentSource,
   CompositeResource,
   SerializedCompositeNumber
@@ -502,10 +503,13 @@ export default class WvActor extends Actor {
     options: RollOptions | undefined
   ): Promise<void> {
     const criticals = this.data.data.secondary.criticals;
-    const fullFormula = baseFormula.modify(options?.modifier).criticals({
-      success: criticals.success.total,
-      failure: criticals.failure.total
-    });
+    let fullFormula = baseFormula;
+    if (!baseFormula.resist) {
+      fullFormula = fullFormula.modify(options?.modifier).criticals({
+        success: criticals.success.total,
+        failure: criticals.failure.total
+      });
+    }
     const checkRoll = new Roll(fullFormula.toString()).roll({ async: false });
 
     const msgOptions = createDefaultMessageData(
@@ -544,7 +548,8 @@ export default class WvActor extends Actor {
         critical: checkRoll.dice[0]?.results[0]?.critical,
         result,
         degreesOfSuccess: fullFormula.d100Target - result,
-        total: checkRoll.total ?? 0
+        total: checkRoll.total ?? 0,
+        isResist: baseFormula.resist
       },
       blind: msgOptions.blind ?? false
     };
@@ -560,6 +565,64 @@ export default class WvActor extends Actor {
       ...msgOptions,
       flags: { [CONSTANTS.systemId]: flags }
     });
+  }
+
+  /**
+   * @param name - The name of the resistance check
+   * @param count - The number of dice to roll
+   * @param percentile - The probability to fail the check (before bonuses)
+   * @param options -  roll options
+   */
+  rollResistance(
+    name: "poison" | "radiation",
+    count: number,
+    percentile: number,
+    options?: RollOptions
+  ): void {
+    const resistances = this.data.data.resistances;
+    const resistanceValue = resistances[name];
+    const components: ComponentSource[] = [];
+    // Negate resistance and everything increasing it
+    resistanceValue.components.forEach((component) => {
+      const newComponent = {
+        value: -component.value,
+        labelComponents: component.labelComponents
+      };
+      components.push(newComponent);
+    });
+
+    components.push({
+      value: -resistanceValue.source,
+      labelComponents: [{ key: "wv.rules.resistances.base" }]
+    });
+
+    // Modifier also increases resisance => reduces target
+    if (options?.modifier) {
+      components.push({
+        value: -options.modifier,
+        labelComponents: [{ key: "wv.system.misc.modifier" }]
+      });
+    }
+
+    const minChance = CONSTANTS.bounds.effectMinChance[name];
+
+    const target: SerializedCompositeNumber = {
+      source: percentile,
+      bounds: { min: minChance, max: 100 },
+      components
+    };
+
+    const i18n = getGame().i18n;
+    const baseFormula = Formulator.resistance(
+      CompositeNumber.from(target).total,
+      count
+    );
+    this.rollAndCreateMessage(
+      i18n.localize(`wv.rules.resistances.${name}.roll`),
+      baseFormula,
+      target,
+      options
+    );
   }
 
   /**

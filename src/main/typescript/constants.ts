@@ -441,6 +441,11 @@ export const CONSTANTS = {
         min: 0
       }
     },
+    /** The minimum chance to fail a radiation or poison resistance check */
+    effectMinChance: {
+      poison: 0,
+      radiation: 5
+    },
     /** Bounds related to Skill values. */
     skills: {
       /** The bounds for points invested in a Skill. */

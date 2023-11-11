@@ -314,13 +314,16 @@
         "singular": "Reichweite"
       },
       "resistances": {
+        "base": "Basisresistenz",
         "poison": {
           "short": "Gift-Res",
-          "long": "Gift-Resistenz"
+          "long": "Gift-Resistenz",
+          "roll": "Rolle Gift-Resistenz"
         },
         "radiation": {
           "short": "Strahl-Res",
-          "long": "Strahlungsresistenz"
+          "long": "Strahlungsresistenz",
+          "roll": "Rolle Strahlungsresistenz"
         }
       },
       "rolls": {
@@ -338,7 +341,8 @@
         },
         "targets": {
           "hitChance": "Trefferchance",
-          "successChance": "Erfolgschance"
+          "successChance": "Erfolgschance",
+          "effectChance": "Befallschance"
         }
       },
       "skills": {
@@ -598,6 +602,7 @@
         "amount": "Menge",
         "base": "Basiswert",
         "cost": "Kosten",
+        "percentile": "Perzentil",
         "previous": "Vorher",
         "remaining": "Übrig",
         "total": "Summe"

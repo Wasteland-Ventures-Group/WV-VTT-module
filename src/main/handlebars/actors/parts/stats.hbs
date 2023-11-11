@@ -121,11 +121,13 @@
           </tr>
           <tr>
             <th scope="row" class="align-left">{{localize "wv.rules.resistances.poison.long"}}</th>
-            <td class="align-right">{{data.data.resistances.poison.total}}%</td>
+            <td class="align-right"><button class="min-width no-wrap" type="button" data-resistance="poison">
+              {{~data.data.resistances.poison.total}}%</button></td>
           </tr>
           <tr>
             <th scope="row" class="align-left">{{localize "wv.rules.resistances.radiation.long"}}</th>
-            <td class="align-right">{{data.data.resistances.radiation.total}}%</td>
+            <td class="align-right"><button class="min-width no-wrap" type="button" data-resistance="radiation">
+              {{~data.data.resistances.radiation.total}}%</button></td>
           </tr>
           <tr>
             <th scope="row" class="align-left">{{localize "wv.rules.initiative"}}</th>

@@ -307,10 +307,16 @@ export interface LangSchema {
         };
       };
       resistances: {
+        /** Label for any base resistance */
+        base: string;
         /** Labels for the poison resistance */
-        poison: ShortLongNames;
+        poison: ShortLongNames & {
+          roll: string;
+        };
         /** Labels for the radiation resistance */
-        radiation: ShortLongNames;
+        radiation: ShortLongNames & {
+          roll: string;
+        };
       };
       /** Rules labels related to rolls */
       rolls: {
@@ -343,6 +349,8 @@ export interface LangSchema {
           hitChance: string;
           /** Label for a success chance reason */
           successChance: string;
+          /** Label for the chance to be affected (i.e., fail to resist) by rads or poison */
+          effectChance: string;
         };
       };
       /** Labels related to skills */
@@ -807,6 +815,8 @@ export interface LangSchema {
         base: string;
         /** Label for a cost */
         cost: string;
+        /** Label for a percentile */
+        percentile: string;
         /** Label for a previous value */
         previous: string;
         /** Label for a remaining value */

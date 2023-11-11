@@ -9,7 +9,7 @@ export default class Formulator {
    * @returns a new Formulator
    */
   static special(target: number): Formulator {
-    return new Formulator("check", { target, special: true });
+    return new Formulator("check", { target, subType: "special" });
   }
 
   /**
@@ -18,7 +18,17 @@ export default class Formulator {
    * @returns a new Formulator
    */
   static skill(target: number): Formulator {
-    return new Formulator("check", { target });
+    return new Formulator("check", { target, subType: "skill" });
+  }
+
+  /**
+   * Create a Formulator for a resistance roll
+   * @param target the target percentile for the resistance check
+   * @param count the number of dice to roll for the check
+   * @returns a new Formulator
+   */
+  static resistance(target: number, count: number): Formulator {
+    return new Formulator("check", { target, subType: "resistance", count });
   }
 
   /**
@@ -41,7 +51,7 @@ export default class Formulator {
       base,
       count,
       target,
-      special
+      subType
     }: {
       /** the base damage for a damage roll */
       base?: number;
@@ -56,7 +66,7 @@ export default class Formulator {
       target?: number;
 
       /** whether the roll is for a SPECIAL, ignored for damage */
-      special?: boolean;
+      subType?: "special" | "skill" | "resistance";
     }
   ) {
     this.type = type;
@@ -66,11 +76,13 @@ export default class Formulator {
         throw new Error("A target is required for checks.");
 
       this.target = target;
-      this.special = special;
+      this.subType = subType ?? "skill";
+      this.count = count ?? 1;
     } else {
       this.base = base ?? 0;
       this.count = count ?? 1;
       this.target = CONSTANTS.rules.damage.dieTarget;
+      this.subType = "skill";
     }
   }
 
@@ -83,11 +95,11 @@ export default class Formulator {
   /** The base damage for damage roll */
   private base?: number;
 
-  /** The amount of damage die to roll. */
-  private count?: number;
+  /** The amount of die to roll. (1 for skill and SPECIAL checks) */
+  private count: number;
 
-  /** Whether the roll is for a SPECIAL */
-  private special?: boolean | undefined;
+  /** Whether the roll is for a SPECIAL, skill, or a resistance */
+  private subType: "skill" | "special" | "resistance";
 
   /** An optional modifier to the roll */
   private modifier?: number | undefined;
@@ -144,6 +156,7 @@ export default class Formulator {
       formula +=
         this.checkSuccessTargetFormula + this.checkCriticalsTargetFormula;
     }
+    console.log(formula);
 
     return formula;
   }
@@ -153,16 +166,30 @@ export default class Formulator {
     return this.special ? this.target * 10 : this.target;
   }
 
+  /** Get whether or not this roll is a SPECIAL roll */
+  get special(): boolean {
+    return this.subType === "special";
+  }
+
+  /** Get whether or not this roll is a resistance check */
+  get resist(): boolean {
+    return this.subType === "resistance";
+  }
+
   /** Get the base dice formula for the roll. */
   protected get baseDieFormula(): string {
-    return this.type === "check" ? "1d100" : `${this.base} + ${this.count}d6`;
+    if (this.type === "check") return `${this.count}d100`;
+    else return `${this.base} + ${this.count}d6`;
   }
 
   /** Get the success target formula a check roll. */
   protected get checkSuccessTargetFormula(): string {
     const baseTarget = this.target * (this.special ? 10 : 1);
 
-    let targetFormula = "cs<=";
+    let targetFormula = "cs";
+
+    if (this.resist) targetFormula += ">";
+    else targetFormula += "<=";
 
     if (this.modifier || this.special) targetFormula += "(";
 

@@ -314,13 +314,16 @@
         "singular": "Range"
       },
       "resistances": {
+        "base": "Base Resistance",
         "poison": {
           "short": "Poi Res",
-          "long": "Poison Resistance"
+          "long": "Poison Resistance",
+          "roll": "Rolling Poison Resistance"
         },
         "radiation": {
           "short": "Rad Res",
-          "long": "Radiation Resistance"
+          "long": "Radiation Resistance",
+          "roll": "Rolling Radiation Resistance"
         }
       },
       "rolls": {
@@ -338,7 +341,8 @@
         },
         "targets": {
           "hitChance": "Hit chance",
-          "successChance": "Chance of success"
+          "successChance": "Chance of success",
+          "effectChance": "Chance to be affected"
         }
       },
       "skills": {
@@ -598,6 +602,7 @@
         "amount": "Amount",
         "base": "Base",
         "cost": "Cost",
+        "percentile": "Percentile",
         "previous": "Previous",
         "remaining": "Remaining",
         "total": "Total"

@@ -7,6 +7,16 @@
     {{localize "wv.system.misc.modifier"}}
     <input required name="modifier" type="number" value="{{defaults.modifier}}" class="size-3" />
   </label>
+  {{#if isResistanceCheck}}
+    <label class="contained-target-inline">
+      {{localize "wv.system.values.amount"}}
+      <input required name="count" type="number" value="{{defaults.count}}" class="size-3" />
+    </label>
+    <label class="contained-target-inline">
+      {{localize "wv.system.values.percentile"}}
+      <input required name="percentile" type="number" value="{{defaults.percentile}}" class="size-3" />
+    </label>
+  {{/if}}
   {{#if isAttack}}
     <label class="contained-target-inline">
       {{localize "wv.rules.range.distance.name"}}

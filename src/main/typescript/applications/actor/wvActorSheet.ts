@@ -14,6 +14,8 @@ import {
   SpecialNames,
   TYPES
 } from "../../constants.js";
+import type { ResistancesProperties } from "../../data/actor/character/properties.js";
+import type { CompositeNumber } from "../../data/common.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
@@ -35,7 +37,7 @@ import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
 import WeaponSheet from "../item/weaponSheet.js";
-import { CheckPrompt } from "../prompt.js";
+import { CheckPrompt, ResistancePrompt, RollPrompt } from "../prompt.js";
 
 /** The basic Wasteland Ventures Actor Sheet. */
 export default class WvActorSheet extends ActorSheet {
@@ -114,6 +116,10 @@ export default class WvActorSheet extends ActorSheet {
       element.addEventListener("click", (event) =>
         this.onClickRollSkill(event)
       );
+    });
+
+    sheetForm.querySelectorAll("button[data-resistance]").forEach((el) => {
+      el.addEventListener("click", (ev) => this.onClickRollResistance(ev));
     });
 
     // item handling
@@ -521,6 +527,47 @@ export default class WvActorSheet extends ActorSheet {
   /** Open the initial setup application. */
   protected onClickInitialSetup() {
     this.actor.baseSetup.render(true);
+  }
+
+  protected async onClickRollResistance(event: Event): Promise<void> {
+    event.preventDefault();
+
+    if (!(event.target instanceof HTMLElement))
+      throw new Error("The target was not an HTMLElement.");
+
+    const resistanceKeyStr = event.target.dataset.resistance;
+    if (!resistanceKeyStr) {
+      LOG.warn(`Could not get the resistance to roll`);
+      return;
+    }
+
+    const resistances = this.actor.data.data.resistances;
+    if (Object.keys(resistances).includes(resistanceKeyStr)) {
+      const resistanceKey = resistanceKeyStr as keyof ResistancesProperties;
+      try {
+        const rollData = await ResistancePrompt.get(
+          {
+            alias: this.actor.name
+          },
+          {
+            title: getGame().i18n.localize(
+              `wv.rules.resistances.${resistanceKey}.long`
+            )
+          }
+        );
+
+        this.actor.rollResistance(
+          resistanceKey,
+          rollData.count,
+          rollData.percentile,
+          rollData
+        );
+      } catch (e) {
+        if (e !== "closed") throw event;
+      }
+    } else {
+      LOG.warn(`Invalid resistance type: ${resistanceKeyStr}`);
+    }
   }
 
   /** Handle a click event on the SPECIAL roll buttons. */

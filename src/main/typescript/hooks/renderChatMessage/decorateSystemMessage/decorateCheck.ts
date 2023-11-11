@@ -6,6 +6,7 @@ import type { Critical } from "../../../rolls/criticalsModifiers";
 import { Component, CompositeNumber } from "../../../data/common";
 import { isRollBlindedForCurrUser } from "../../../foundryHelpers";
 
+// TODO: add special case for resistance checks
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/check.hbs`;
 export default async function decorateCheck(
   flags: CheckFlags,
@@ -13,6 +14,7 @@ export default async function decorateCheck(
 ) {
   html.addClass("detailed-roll");
   const content = getContentElement(html);
+  const isBlinded = isRollBlindedForCurrUser(flags.blind);
   const data: CheckTemplateData = {
     ...flags,
     details: {
@@ -24,7 +26,8 @@ export default async function decorateCheck(
     },
     template: {
       keys: getCheckResultKeys(flags.roll),
-      blinded: isRollBlindedForCurrUser(flags.blind)
+      blinded: isBlinded,
+      showSuccessDegrees: !(flags.roll.isResist || !isBlinded)
     }
   };
   content.append(await renderTemplate(TEMPLATE, data));
@@ -40,6 +43,7 @@ export type CheckFlags = CommonRollFlags & {
     result: number;
     degreesOfSuccess: number;
     total: number;
+    isResist: boolean;
   };
 };
 
@@ -78,5 +82,6 @@ type CheckTemplateData = CheckFlags & {
       degrees: string;
     };
     blinded: boolean;
+    showSuccessDegrees: boolean;
   };
 };

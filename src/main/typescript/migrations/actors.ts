@@ -104,6 +104,9 @@ function removeHistory(
   actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ): void {
+  if (actor.data._source.type !== "character") {
+    return;
+  }
   if ("history" in actor.data._source.data.background)
     updateData["data.background.-=history"] = null;
 }
@@ -131,6 +134,9 @@ function migrateToCompositeNumbers(
   actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ) {
+  if (actor.data._source.type !== "character") {
+    return;
+  }
   const background = actor.data._source.data.background;
   if (typeof background.size === "number")
     updateData["data.background.size.source"] = background.size;
@@ -140,6 +146,9 @@ function migrateRace(
   actor: foundry.documents.BaseActor,
   updateData: Record<string, unknown>
 ) {
+  if (actor.data._source.type !== "character") {
+    return;
+  }
   const background = actor.data._source.data.background as unknown as {
     raceName: string;
   };

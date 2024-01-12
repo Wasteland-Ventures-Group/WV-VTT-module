@@ -1,9 +1,18 @@
+import type { SkillName } from "../../../../constants.js";
+import type { SkillInfo } from "../../common/skills/properties.js";
 import LevelingSource from "./source.js";
 
-export default class LevelingProperties extends LevelingSource {
+export default class LevelingProperties
+  extends LevelingSource
+  implements SkillInfo
+{
   constructor(source: LevelingSource) {
     super();
     foundry.utils.mergeObject(this, source);
+  }
+
+  getValue(skill: SkillName): number {
+    return this.skillRanks[skill];
   }
 
   /** The current level of the character */

@@ -6,8 +6,8 @@ import LevelingProperties from "./leveling/properties.js";
 import MagicProperties from "./magic/properties.js";
 import SkillsProperties from "./skills/properties.js";
 import { CharacterDataSourceData } from "./source.js";
-import SpecialsProperties, { Special } from "./specials/properties.js";
-import VitalsProperties from "./vitals/properties.js";
+import SpecialsProperties, { Special } from "../common/specials/properties.js";
+import VitalsProperties from "../common/vitals/properties.js";
 
 export default interface CharacterDataProperties {
   type: typeof TYPES.ACTOR.CHARACTER;

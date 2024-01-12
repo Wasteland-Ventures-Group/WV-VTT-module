@@ -1,6 +1,6 @@
 import type WvActor from "../../actor/wvActor.js";
 import { isSpecialName } from "../../constants.js";
-import { Special } from "../../data/actor/character/specials/properties.js";
+import { Special } from "../../data/actor/common/specials/properties.js";
 import type WvItem from "../../item/wvItem.js";
 import NotActorMessage from "../messages/notActorMessage.js";
 import WrongSpecialNameMessage from "../messages/wrongSpecialNameMessage.js";

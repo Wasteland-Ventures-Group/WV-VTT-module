@@ -6,7 +6,7 @@ import BackgroundSource, {
 import EquipmentSource, { EQUIPMENT_JSON_SCHEMA } from "./equipment/source.js";
 import LevelingSource, { LEVELING_JSON_SCHEMA } from "./leveling/source.js";
 import MagicSource, { MAGIC_JSON_SCHEMA } from "./magic/source.js";
-import VitalsSource, { VITALS_JSON_SCHEMA } from "./vitals/source.js";
+import VitalsSource, { VITALS_JSON_SCHEMA } from "../common/vitals/source.js";
 
 export default interface CharacterDataSource {
   type: typeof TYPES.ACTOR.CHARACTER;

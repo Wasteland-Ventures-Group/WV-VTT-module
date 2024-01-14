@@ -1,7 +1,4 @@
-import type {
-  RadiationSicknessLevel,
-  SpecialName
-} from "../../../../constants.js";
+import type { RadiationSicknessLevel } from "../../../../constants.js";
 import {
   ComponentSource,
   Component,
@@ -9,31 +6,9 @@ import {
   CompositeNumberBounds
 } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
+import SpecialsSource from "./source.js";
 
-export default class SpecialsProperties
-  implements Record<SpecialName, Special>
-{
-  /** The Strength SPECIAL of the character */
-  strength = new Special();
-
-  /** The Perception SPECIAL of the character */
-  perception = new Special();
-
-  /** The Endurance SPECIAL of the character */
-  endurance = new Special();
-
-  /** The Charisma SPECIAL of the character */
-  charisma = new Special();
-
-  /** The Intelligence SPECIAL of the character */
-  intelligence = new Special();
-
-  /** The Agility SPECIAL of the character */
-  agility = new Special();
-
-  /** The Luck SPECIAL of the character */
-  luck = new Special();
-
+export default class SpecialsProperties extends SpecialsSource {
   /** Apply the given radiation sickness level and modify the temp SPECIALs. */
   applyRadiationSickness(sicknessLevel: RadiationSicknessLevel) {
     const labelComponents: LabelComponent[] = [
@@ -61,6 +36,12 @@ export default class SpecialsProperties
         this.strength.addTemp({ value: -2, labelComponents });
         return;
     }
+  }
+
+  static from(source: SpecialsSource): SpecialsProperties {
+    const self = new SpecialsProperties();
+    foundry.utils.mergeObject(this, source);
+    return self;
   }
 }
 

@@ -1,5 +1,6 @@
 import type { TYPES } from "../../../constants.js";
 import MagicSource from "../common/magic/source.js";
+import SpecialsSource from "../common/specials/source.js";
 import VitalsSource from "../common/vitals/source.js";
 
 export default interface NpcDataSource {
@@ -13,4 +14,7 @@ export class NpcDataSourceData {
 
   /** The magic of the NPC */
   magic = new MagicSource();
+
+  /** The SPECIALs of the NPC */
+  specials = new SpecialsSource();
 }

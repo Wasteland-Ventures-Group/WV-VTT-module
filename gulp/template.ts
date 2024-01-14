@@ -7,6 +7,7 @@ export default async function templateTask(): Promise<void> {
   // are only loaded the first time and then cached.
   const imports = Promise.all([
     import("../src/main/typescript/data/actor/character/source.js"),
+    import("../src/main/typescript/data/actor/npc/source.js"),
     import("../src/main/typescript/data/item/ammo/source.js"),
     import("../src/main/typescript/data/item/apparel/source.js"),
     import("../src/main/typescript/data/item/effect/source.js"),
@@ -18,6 +19,7 @@ export default async function templateTask(): Promise<void> {
   await fs.mkdir(distWvPrefix, { recursive: true });
   const [
     actorDbData,
+    npcDbData,
     ammoSource,
     apparelSource,
     effectSource,
@@ -28,7 +30,8 @@ export default async function templateTask(): Promise<void> {
   ] = await imports;
 
   const actorDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()]
+    [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()],
+    [TYPES.ACTOR.NPC, new npcDbData.NpcDataSourceData()]
   ];
   const itemDocumentTypes: TemplateDocumentType[] = [
     [TYPES.ITEM.AMMO, new ammoSource.AmmoDataSourceData()],

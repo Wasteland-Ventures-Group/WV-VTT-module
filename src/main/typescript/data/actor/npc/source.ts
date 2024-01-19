@@ -3,6 +3,7 @@ import EquipmentSource from "../common/equipment/source.js";
 import MagicSource from "../common/magic/source.js";
 import SpecialsSource from "../common/specials/source.js";
 import VitalsSource from "../common/vitals/source.js";
+import SkillsSource from "./skills/source.js";
 
 export default interface NpcDataSource {
   type: typeof TYPES.ACTOR.NPC;
@@ -21,4 +22,7 @@ export class NpcDataSourceData {
 
   /** The SPECIALs of the NPC */
   specials = new SpecialsSource();
+
+  /** The skills of the NPC */
+  skills = new SkillsSource();
 }

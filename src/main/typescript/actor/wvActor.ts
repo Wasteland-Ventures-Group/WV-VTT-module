@@ -41,6 +41,7 @@ import type {
 import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n from "../wvI18n.js";
+import { CharacterDataSourceData } from "../data/actor/character/source.js";
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor {
@@ -619,7 +620,9 @@ export default class WvActor extends Actor {
   }
 
   override prepareBaseData(): void {
-    this.data.data = new CharacterDataPropertiesData(this.data.data);
+    if (this.data.data instanceof CharacterDataSourceData) {
+      this.data.data = new CharacterDataPropertiesData(this.data.data);
+    }
 
     this.data.data.specials.applyRadiationSickness(
       this.data.data.vitals.radiationSicknessLevel
@@ -633,15 +636,17 @@ export default class WvActor extends Actor {
 
   override prepareDerivedData(): void {
     this.data.data.vitals.applySpecials(this.data.data.specials);
-    this.data.data.vitals.applyLevel(this.data.data.leveling.level);
 
     this.data.data.secondary.applySpecials(this.data.data.specials);
 
-    this.data.data.skills.setBaseValues(
-      this.data.data.specials,
-      this.data.data.magic.thaumSpecial,
-      this.data.data.leveling
-    );
+    if (this.data.data instanceof CharacterDataSourceData) {
+      this.data.data.vitals.applyLevel(this.data.data.leveling.level);
+      this.data.data.skills.setBaseValues(
+        this.data.data.specials,
+        this.data.data.magic.thaumSpecial,
+        this.data.data.leveling
+      );
+    }
 
     this.applyRuleElementsForHook("afterSkills");
 

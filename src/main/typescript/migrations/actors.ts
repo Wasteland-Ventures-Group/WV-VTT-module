@@ -1,4 +1,5 @@
 import { CONSTANTS, SpecialName, SpecialNames } from "../constants.js";
+import SpecialsSource from "../data/actor/common/specials/source.js";
 import SystemLogger, { LOG } from "../systemLogger.js";
 
 export default function migrateActors(currentVersion: string): void {
@@ -117,9 +118,14 @@ function migrateSpecials(
 ): void {
   const sourceData = actor.data._source.data;
   if (!("specials" in sourceData)) return;
+  if (sourceData.specials instanceof SpecialsSource) {
+    return;
+  }
 
-  const specials = (sourceData as { specials: Record<SpecialName, number> })
-    .specials;
+  // for some reason, the typechecker won't accept the cast otherwise
+  const specials = (
+    sourceData as unknown as { specials: Record<SpecialName, number> }
+  ).specials;
 
   for (const special of SpecialNames) {
     if (typeof specials?.[special] === "number") {

@@ -2,7 +2,7 @@ import type { JSONSchemaType } from "ajv";
 import type { TYPES } from "../../../constants.js";
 import BackgroundSource, {
   BACKGROUND_JSON_SCHEMA
-} from "./background/source.js";
+} from "../common/background/source.js";
 import EquipmentSource, {
   EQUIPMENT_JSON_SCHEMA
 } from "../common/equipment/source.js";

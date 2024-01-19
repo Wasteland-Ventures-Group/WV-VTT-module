@@ -1,6 +1,6 @@
 import { CONSTANTS, SpecialNames, TYPES } from "../../../constants.js";
 import { CompositeNumber } from "../../common.js";
-import BackgroundProperties from "./background/properties.js";
+import BackgroundProperties from "../common/background/properties.js";
 import EquipmentProperties from "../common/equipment/properties.js";
 import LevelingProperties from "./leveling/properties.js";
 import MagicProperties from "../common/magic/properties.js";

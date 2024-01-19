@@ -1,4 +1,5 @@
 import type { TYPES } from "../../../constants.js";
+import BackgroundSource from "../common/background/source.js";
 import EquipmentSource from "../common/equipment/source.js";
 import MagicSource from "../common/magic/source.js";
 import SpecialsSource from "../common/specials/source.js";
@@ -25,4 +26,7 @@ export class NpcDataSourceData {
 
   /** The skills of the NPC */
   skills = new SkillsSource();
+
+  /** The background of the NPC */
+  background = new BackgroundSource();
 }

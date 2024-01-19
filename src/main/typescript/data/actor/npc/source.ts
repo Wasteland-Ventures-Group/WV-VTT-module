@@ -1,4 +1,5 @@
 import type { TYPES } from "../../../constants.js";
+import EquipmentSource from "../common/equipment/source.js";
 import MagicSource from "../common/magic/source.js";
 import SpecialsSource from "../common/specials/source.js";
 import VitalsSource from "../common/vitals/source.js";
@@ -9,6 +10,9 @@ export default interface NpcDataSource {
 }
 
 export class NpcDataSourceData {
+  /** The equipment of the character */
+  equipment = new EquipmentSource();
+
   /** The vitals of the NPC */
   vitals = new VitalsSource();
 

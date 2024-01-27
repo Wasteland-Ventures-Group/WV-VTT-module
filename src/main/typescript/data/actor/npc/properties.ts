@@ -1,7 +1,7 @@
 import type { TYPES } from "../../../constants";
 import BackgroundProperties from "../common/background/properties";
-import type BackgroundSource from "../common/background/source";
 import EquipmentProperties from "../common/equipment/properties";
+import SecondaryStatisticsProperties from "../common/secondary/properties";
 import SpecialsProperties from "../common/specials/properties";
 import VitalsProperties from "../common/vitals/properties";
 import SkillsProperties from "./skills/properties";
@@ -23,6 +23,8 @@ export class NpcDataPropertiesData extends NpcDataSourceData {
     this.equipment = new EquipmentProperties(source.equipment);
     this.background = new BackgroundProperties(source.background);
   }
+
+  secondary = new SecondaryStatisticsProperties();
 
   specials = new SpecialsProperties();
 

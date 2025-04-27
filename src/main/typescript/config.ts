@@ -1,5 +1,5 @@
 import Ajv from "ajv";
-import WvActor from "./actor/wvActor.js";
+import WvActor, { CharacterSystem } from "./actor/wvActor.js";
 import WvActorSheet from "./applications/actor/wvActorSheet.js";
 import AmmoSheet from "./applications/item/ammoSheet.js";
 import ApparelSheet from "./applications/item/apparelSheet.js";
@@ -8,7 +8,7 @@ import MagicSheet from "./applications/item/magicSheet.js";
 import RaceSheet from "./applications/item/raceSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
 import WvItemSheet from "./applications/item/wvItemSheet.js";
-import { CONSTANTS, TYPES } from "./constants.js";
+import { CONSTANTS, TYPES, type ProtoItemType } from "./constants.js";
 import { CHARACTER_JSON_SCHEMA } from "./data/actor/character/source.js";
 import { AMMO_SOURCE_JSON_SCHEMA } from "./data/item/ammo/source.js";
 import { APPAREL_SOURCE_JSON_SCHEMA } from "./data/item/apparel/source.js";
@@ -48,6 +48,9 @@ import ReplaceValue from "./ruleEngine/ruleElements/replaceValue.js";
 import TempSpecialComponent from "./ruleEngine/ruleElements/tempSpecialComponent.js";
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "./ruleEngine/ruleElementSource.js";
 import { initializedSettingName } from "./settings.js";
+import WvItem from "./item/wvItem.js";
+import type { AmmoSystem, ApparelSystem, EffectSystem, MagicSystem, MiscSystem, RaceSystem, WeaponSystem } from "./item/wvItem.js";
+import Die = foundry.dice.terms.Die;
 
 /** The Foundry configuration function for the init hook */
 export function configureFoundryOnInit(): void {
@@ -109,7 +112,7 @@ export function configureFoundryOnInit(): void {
 
   // Register our own Document classes.
   CONFIG.Actor.documentClass = WvActor;
-  CONFIG.Item.documentClass = WvItemProxy;
+  CONFIG.Item.documentClass = WvItem;
 
   // Register our override classes.
   CONFIG.Combat.documentClass = WvCombat;
@@ -181,4 +184,25 @@ function configureCombatResource(): void {
     resource: "vitals.actionPoints.value",
     skipDefeated: true
   });
+}
+
+declare module "fvtt-types/configuration" {
+    interface DocumentClassConfig {
+        Actor: typeof WvActor;
+        Item: typeof WvItem<ProtoItemType>;
+    }
+    interface DataModelConfig {
+        Actor: {
+            character: typeof CharacterSystem;
+        }
+        Item: {
+            ammo: typeof AmmoSystem;
+            apparel: typeof ApparelSystem;
+            effect: typeof EffectSystem;
+            weapon: typeof WeaponSystem;
+            race: typeof RaceSystem;
+            magic: typeof MagicSystem;
+            misc: typeof MiscSystem;
+        }
+    }
 }

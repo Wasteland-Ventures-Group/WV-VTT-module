@@ -211,19 +211,19 @@ export default class RuleElement {
 
   /** Get the properties of the given Document, the RuleElement targets. */
   protected getProperties(document: WvActor | WvItem): unknown[] {
-    if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      return document.data.data.attacks
+    if (this.attackRegexpMatch && document.type === TYPES.ITEM.WEAPON) {
+      return document.system.attacks
         .getMatching(this.attackRegexpMatch?.groups?.tags?.split(","))
         .map((attack) => foundry.utils.getProperty(attack, this.target));
     }
 
-    if (this.rangesRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      return document.data.data.ranges
+    if (this.rangesRegexpMatch && document.type === TYPES.ITEM.WEAPON) {
+      return document.system.ranges
         .getMatching(this.rangesRegexpMatch?.groups?.tags?.split(","))
         .map((range) => foundry.utils.getProperty(range, this.target));
     }
 
-    return [foundry.utils.getProperty(document.data.data, this.target)];
+    return [foundry.utils.getProperty(document.system, this.target)];
   }
 
   /**

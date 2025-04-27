@@ -1,6 +1,6 @@
 import type { JSONSchemaType } from "ajv";
 import {
-  DocumentSelectorSource,
+  type DocumentSelectorSource,
   DOCUMENT_SELECTOR_SOURCE_JSON_SCHEMA
 } from "./documentSelectorSource.js";
 

@@ -1,5 +1,5 @@
-import { getGame } from "../foundryHelpers.js";
 import type { WvI18nKey } from "../lang.js";
+import { getI18n } from "../wvI18n.js";
 
 /** A message in a RuleElement */
 export default class RuleElementMessage {
@@ -27,7 +27,7 @@ export default class RuleElementMessage {
 
   /** Get the message of this warning. */
   get message(): string {
-    return getGame().i18n.localize(this.messageKey);
+    return getI18n().localize(this.messageKey);
   }
 
   /** Return whether this message is an error */

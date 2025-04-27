@@ -14,8 +14,12 @@ export default function registerForPreUpdateToken(): void {
 }
 
 type HookParams = Parameters<Hooks.PreUpdateDocument<typeof TokenDocument>>;
-type ChangeData = HookParams[1] & Partial<Position>;
+type ChangeData = HookParams[1];
 type Position = { x: number; y: number };
+
+function position(token: TokenDocument): Position {
+    return { x: token.x, y: token.y }
+}
 
 /**
  * Check the AP cost of a potential movement and prevent updating the token if
@@ -23,16 +27,19 @@ type Position = { x: number; y: number };
  */
 function checkApCostForMovement(
   document: HookParams[0],
-  change: ChangeData,
+  changed: ChangeData,
   options: HookParams[2],
   userId: HookParams[3]
 ): false | void {
+  if (!(document instanceof TokenDocument)) return;
   if (!document.inCombat) return;
 
-  const target = getTargetPosition(document.data, change);
-  if (!isPositionUpdate(document.data, target)) return;
+  const target = getTargetPosition(position(document), changed);
+  if (!isPositionUpdate(position(document), target)) return;
 
   const game = getGame();
+  // Would imply the game is uninitialised
+  if (game.i18n === undefined) return;
   const grid = getCanvas().grid;
   if (!(grid instanceof GridLayer)) throw new Error("The canvas has no grid.");
 
@@ -48,7 +55,7 @@ function checkApCostForMovement(
     return false;
   }
 
-  const apUse = getWalkApCost(document.actor, document.data, target);
+  const apUse = getWalkApCost(document.actor, position(document), target);
   const currAp = document.actor.actionPoints.value;
 
   if (shouldEnforceAp(game, user) && currAp < apUse) {
@@ -68,7 +75,7 @@ function checkApCostForMovement(
 }
 
 function getTargetPosition(origin: Position, change: ChangeData): Position {
-  return { x: change.x ?? origin.x, y: change.y ?? origin.y };
+  return { x: change?.x ?? origin.x, y: change?.y ?? origin.y };
 }
 
 function isPositionUpdate(origin: Position, target: Position): boolean {

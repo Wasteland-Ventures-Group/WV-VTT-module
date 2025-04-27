@@ -14,8 +14,6 @@
   "private": true,
   "type": "module",
   "devDependencies": {
-    "@ethaks/fvtt-quench": "^0.8.1",
-    "@league-of-foundry-developers/foundry-vtt-types": "^12.331.3-beta",
     "@pixi/constants": "6.2.1",
     "@pixi/core": "6.2.1",
     "@pixi/display": "6.2.1",
@@ -44,6 +42,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-tsdoc": "^0.2.17",
     "fancy-log": "^2.0.0",
+    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#documents-v2",
     "glob": "^8.0.3",
     "glob-promise": "^5.0.0",
     "gulp": "^4.0.2",
@@ -59,7 +58,7 @@
     "stylelint-config-prettier-scss": "^0.0.1",
     "stylelint-config-standard-scss": "^6.0.0",
     "ts-json-schema-generator": "^1.1.2",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "tsd": "^0.20.0",
     "typescript": "~5.4",
     "zod": "^3.19.1"

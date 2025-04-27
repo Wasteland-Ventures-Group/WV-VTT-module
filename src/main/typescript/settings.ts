@@ -1,5 +1,6 @@
 import { CONSTANTS } from "./constants.js";
 import { getGame } from "./foundryHelpers.js";
+import { getI18n } from "./wvI18n.js";
 
 export const Movement = {
   enforceAndSubtractApForPlayers: "movement.enforceAndSubtractApForPlayers",
@@ -12,8 +13,7 @@ export const migrVerSettingName = "systemMigrationVersion" as const;
 
 export function registerSystemSettings(): void {
   const game = getGame();
-  const settings = game.settings;
-  const i18n = game.i18n;
+  const settings: ClientSettings = game.settings;
 
   /** Track whether the world has been initialized with some system settings. */
   settings.register(CONSTANTS.systemId, initializedSettingName, {
@@ -34,10 +34,10 @@ export function registerSystemSettings(): void {
   });
 
   const alwaysNeverSettingChoices = {
-    [AlwaysNeverSetting.ALWAYS]: i18n.localize(
+    [AlwaysNeverSetting.ALWAYS]: getI18n().localize(
       "wv.system.settings.alwaysNeverSetting.choices.always"
     ),
-    [AlwaysNeverSetting.NEVER]: i18n.localize(
+    [AlwaysNeverSetting.NEVER]: getI18n().localize(
       "wv.system.settings.alwaysNeverSetting.choices.never"
     )
   };
@@ -47,11 +47,11 @@ export function registerSystemSettings(): void {
     CONSTANTS.systemId,
     Movement.enforceAndSubtractApForPlayers,
     {
-      choices: alwaysNeverSettingChoices,
+      choices: alwaysNeverSettingChoices as unknown as undefined, // currently borked
       config: true,
       default: AlwaysNeverSetting.ALWAYS,
-      hint: i18n.localize(`${i18nPrefix}.hint`),
-      name: i18n.localize(`${i18nPrefix}.name`),
+      hint: getI18n().localize(`${i18nPrefix}.hint`),
+      name: getI18n().localize(`${i18nPrefix}.name`),
       scope: "world",
       type: Number
     }
@@ -59,22 +59,22 @@ export function registerSystemSettings(): void {
 
   i18nPrefix = "wv.system.settings.movement.enforceApForGameMasters";
   settings.register(CONSTANTS.systemId, Movement.enforceApForGameMasters, {
-    choices: alwaysNeverSettingChoices,
+    choices: alwaysNeverSettingChoices as unknown as undefined, // currently borked
     config: true,
     default: AlwaysNeverSetting.ALWAYS,
-    hint: i18n.localize(`${i18nPrefix}.hint`),
-    name: i18n.localize(`${i18nPrefix}.name`),
+    hint: getI18n().localize(`${i18nPrefix}.hint`),
+    name: getI18n().localize(`${i18nPrefix}.name`),
     scope: "client",
     type: Number
   });
 
   i18nPrefix = "wv.system.settings.movement.subtractApForGameMasters";
   settings.register(CONSTANTS.systemId, Movement.subtractApForGameMasters, {
-    choices: alwaysNeverSettingChoices,
+    choices: alwaysNeverSettingChoices as unknown as undefined, // currently borked
     config: true,
     default: AlwaysNeverSetting.ALWAYS,
-    hint: i18n.localize(`${i18nPrefix}.hint`),
-    name: i18n.localize(`${i18nPrefix}.name`),
+    hint: getI18n().localize(`${i18nPrefix}.hint`),
+    name: getI18n().localize(`${i18nPrefix}.name`),
     scope: "client",
     type: Number
   });

@@ -1,8 +1,6 @@
-import {
+import type {
   SkillName,
   SpecialName,
-  isSpecialName,
-  isSkillName,
   Caliber,
   Rarity,
   ApparelSlot,
@@ -11,9 +9,9 @@ import {
   RadiationSicknessLevel,
   GeneralMagicSchool,
   MagicType,
-  SchoolByMagicType,
   RollMode
 } from "./constants.js";
+import { isSpecialName, isSkillName, SchoolByMagicType } from "./constants.js";
 import type { DamageFallOffType } from "./data/item/weapon/attack/source.js";
 import type { AmmoContainerType } from "./data/item/weapon/reload/source.js";
 import { getGame } from "./foundryHelpers.js";
@@ -67,13 +65,22 @@ export type I18nSpecials = Record<SpecialName, I18nSpecial>;
 export type I18nSkills = Record<SkillName, string>;
 
 /**
+ * A helper function that returns the localisation object if the game is
+ * initialised, else throws an exception
+ * */
+export function getI18n(): Localization {
+    const i18n = getGame()?.i18n;
+    if (i18n === undefined) throw "Game not initialised";
+    return i18n
+}
+/**
  * A helper class to serve Wasteland Ventures internationalization structures.
  */
 export default class WvI18n {
   /** Get the internationalization of the apparel slots. */
   static get apparelSlots(): I18nApparelSlots {
     const slotNames = foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.equipment.slots.names"
     ) as I18nEquipmentSlots;
     return {
@@ -88,7 +95,7 @@ export default class WvI18n {
   /** Get the internationalization of apparel types. */
   static get apparelTypes(): I18nApparelTypes {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.equipment.apparel.types"
     ) as I18nApparelTypes;
   }
@@ -96,7 +103,7 @@ export default class WvI18n {
   /** Get the internationalization of the calibers. */
   static get calibers(): I18nCalibers {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.equipment.ammo.calibers"
     ) as I18nCalibers;
   }
@@ -114,7 +121,7 @@ export default class WvI18n {
   /** Get the internationalisation of all the magic schools */
   static get magicSchools(): I18nMagicSchools {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.magic.school.names"
     ) as I18nMagicSchools;
   }
@@ -122,7 +129,7 @@ export default class WvI18n {
   /** Get the internationalisation of the magic types */
   static get magicTypes(): I18nMagicTypes {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.magic.type.names"
     ) as I18nMagicTypes;
   }
@@ -130,7 +137,7 @@ export default class WvI18n {
   /** Get the internationalization of the ammo container types. */
   static get ammoContainerTypes(): I18nAmmoContainerTypes {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.equipment.weapon.reload.containerTypes"
     ) as I18nAmmoContainerTypes;
   }
@@ -138,7 +145,7 @@ export default class WvI18n {
   /** Get the internationalization of the damage fall-off types. */
   static get damageFallOffTypes(): I18nDamageFallOffTypes {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.damage.fallOff.types"
     ) as I18nDamageFallOffTypes;
   }
@@ -146,7 +153,7 @@ export default class WvI18n {
   /** Get the internationalization of radiation sickness levels. */
   static get radiationSicknessLevels(): I18nRadSicknessLevels {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.radiation.sicknessLevels"
     ) as I18nRadSicknessLevels;
   }
@@ -154,7 +161,7 @@ export default class WvI18n {
   /** Get the internationalization of the rarities. */
   static get rarities(): I18nRarities {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.equipment.rarity.names"
     ) as I18nRarities;
   }
@@ -162,7 +169,7 @@ export default class WvI18n {
   /** Get the internationalization of the SPECIALs. */
   static get specials(): I18nSpecials {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.special.names"
     ) as I18nSpecials;
   }
@@ -173,7 +180,7 @@ export default class WvI18n {
     return Object.entries(CONST.DICE_ROLL_MODES).reduce((acc, [key, value]) => {
       const internalizationKey = base + key.toLowerCase().capitalize();
       acc[value] = foundry.utils.getProperty(
-        getGame().i18n.translations,
+        getI18n().translations,
         internalizationKey
       );
       return acc;
@@ -197,7 +204,7 @@ export default class WvI18n {
   /** Get the internationalization of the Skills. */
   static get skills(): I18nSkills {
     return foundry.utils.getProperty(
-      getGame().i18n.translations,
+      getI18n().translations,
       "wv.rules.skills.names"
     ) as I18nSkills;
   }
@@ -208,7 +215,7 @@ export default class WvI18n {
    * @returns the internationalized flavor text
    */
   static getSpecialRollFlavor(name: string): string {
-    return getGame().i18n.format("wv.system.rolls.descriptive", {
+    return getI18n().format("wv.system.rolls.descriptive", {
       what: this.getSpecialLongName(name)
     });
   }
@@ -219,7 +226,7 @@ export default class WvI18n {
    * @returns the internationalized description
    */
   static getSpecialModifierDescription(name: string): string {
-    return getGame().i18n.format("wv.system.misc.modifierFor", {
+    return getI18n().format("wv.system.misc.modifierFor", {
       what: this.getSpecialLongName(name)
     });
   }
@@ -230,7 +237,7 @@ export default class WvI18n {
    * @returns the internationalized flavor text
    */
   static getSkillRollFlavor(name: string): string {
-    return getGame().i18n.format("wv.system.rolls.descriptive", {
+    return getI18n().format("wv.system.rolls.descriptive", {
       what: this.getSkillName(name)
     });
   }
@@ -241,7 +248,7 @@ export default class WvI18n {
    * @returns the internationalized description
    */
   static getSkillModifierDescription(name: string): string {
-    return getGame().i18n.format("wv.system.misc.modifierFor", {
+    return getI18n().format("wv.system.misc.modifierFor", {
       what: this.getSkillName(name)
     });
   }
@@ -254,7 +261,7 @@ export default class WvI18n {
   private static getSpecialLongName(name: string): string {
     return isSpecialName(name)
       ? this.specials[name].long
-      : getGame().i18n.localize("wv.rules.special.unknown");
+      : getI18n().localize("wv.rules.special.unknown");
   }
 
   /**
@@ -265,6 +272,6 @@ export default class WvI18n {
   private static getSkillName(name: string): string {
     return isSkillName(name)
       ? this.skills[name]
-      : getGame().i18n.localize("wv.rules.skills.unknown");
+      : getI18n().localize("wv.rules.skills.unknown");
   }
 }

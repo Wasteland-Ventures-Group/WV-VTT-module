@@ -79,10 +79,13 @@ export default class WvItemSheet extends ItemSheet {
       const i18nRarities = WvI18n.rarities;
       rarity = {
         selectedName: i18nRarities[data.data.data.rarity],
-        rarities: Rarities.reduce((rarities, rarityName) => {
-          rarities[rarityName] = i18nRarities[rarityName];
-          return rarities;
-        }, {} as Record<Rarity, string>)
+        rarities: Rarities.reduce(
+          (rarities, rarityName) => {
+            rarities[rarityName] = i18nRarities[rarityName];
+            return rarities;
+          },
+          {} as Record<Rarity, string>
+        )
       };
     }
 

@@ -69,9 +69,9 @@ export type I18nSkills = Record<SkillName, string>;
  * initialised, else throws an exception
  * */
 export function getI18n(): Localization {
-    const i18n = getGame()?.i18n;
-    if (i18n === undefined) throw "Game not initialised";
-    return i18n
+  const i18n = getGame()?.i18n;
+  if (i18n === undefined) throw "Game not initialised";
+  return i18n;
 }
 /**
  * A helper class to serve Wasteland Ventures internationalization structures.

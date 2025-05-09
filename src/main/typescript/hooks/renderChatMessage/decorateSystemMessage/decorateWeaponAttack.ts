@@ -44,7 +44,7 @@ export default async function decorateWeaponAttack(
       raw: {
         mainHeading:
           flags.weapon.name !== flags.weapon.system.name
-            ? flags.weapon.name ?? ""
+            ? (flags.weapon.name ?? "")
             : flags.weapon.system.name,
         subHeading:
           flags.weapon.name !== flags.weapon.system.name

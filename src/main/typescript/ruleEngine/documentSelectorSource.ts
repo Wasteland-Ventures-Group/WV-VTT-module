@@ -6,7 +6,7 @@ import {
   SystemDocumentTypes
 } from "../constants.js";
 
-export type KeywordSelectorWord = typeof KeywordSelectorsWords[number];
+export type KeywordSelectorWord = (typeof KeywordSelectorsWords)[number];
 export const KeywordSelectorsWords = [
   "actor",
   "item",

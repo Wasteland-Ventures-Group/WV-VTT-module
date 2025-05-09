@@ -19,7 +19,7 @@ export default class ReloadSource {
   size: CompositeNumberSource = { source: 0 };
 }
 
-export type AmmoContainerType = typeof AmmoContainerTypes[number];
+export type AmmoContainerType = (typeof AmmoContainerTypes)[number];
 const AmmoContainerTypes = ["internal", "magazine"] as const;
 
 export const RELOAD_JSON_SCHEMA: JSONSchemaType<ReloadSource> = {

@@ -54,17 +54,23 @@ export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
         description:
           "The other apparel slots this apparel blocks aside from its own",
         type: "object",
-        properties: ApparelSlots.reduce((slots, apparelSlot) => {
-          slots[apparelSlot] = { type: "boolean" };
-          return slots;
-        }, {} as Record<ApparelSlot, { type: "boolean" }>),
+        properties: ApparelSlots.reduce(
+          (slots, apparelSlot) => {
+            slots[apparelSlot] = { type: "boolean" };
+            return slots;
+          },
+          {} as Record<ApparelSlot, { type: "boolean" }>
+        ),
         nullable: true,
         required: ApparelSlots,
         additionalProperties: false,
-        default: ApparelSlots.reduce((slots, apparelSlot) => {
-          slots[apparelSlot] = false;
-          return slots;
-        }, {} as Record<ApparelSlot, boolean>)
+        default: ApparelSlots.reduce(
+          (slots, apparelSlot) => {
+            slots[apparelSlot] = false;
+            return slots;
+          },
+          {} as Record<ApparelSlot, boolean>
+        )
       },
       damageThreshold: {
         ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,

@@ -16,7 +16,9 @@ export default class WvRuler extends Ruler {
    * Replace the labels and texts of the given Ruler segments with added
    * movement information.
    */
-  replaceLabels(segments: Ruler.MeasurementSegment[]): Ruler.MeasurementSegment[] {
+  replaceLabels(
+    segments: Ruler.MeasurementSegment[]
+  ): Ruler.MeasurementSegment[] {
     let totalDistance = 0;
     for (const segment of segments) {
       const distance = segment.distance;

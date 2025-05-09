@@ -214,7 +214,9 @@ export class Special implements FoundrySerializable {
   }
 
   toObject(source?: true): Record<string, never>;
+
   toObject(source: false): SerializedSpecial;
+
   toObject(source?: boolean): Record<string, never> | SerializedSpecial {
     if (source) {
       return {};

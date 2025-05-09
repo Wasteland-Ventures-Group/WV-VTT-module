@@ -60,20 +60,26 @@ export class SkillRanks implements Record<SkillName, number> {
 export const SKILL_RANKS_JSON_SCHEMA: JSONSchemaType<SkillRanks> = {
   description: "A Skill points specification",
   type: "object",
-  properties: SkillNames.reduce((skills, skillName) => {
-    skills[skillName] = {
-      type: "integer",
-      maximum: CONSTANTS.bounds.skills.points.max,
-      minimum: CONSTANTS.bounds.skills.points.min
-    };
-    return skills;
-  }, {} as Record<SkillName, NumberProperty>),
+  properties: SkillNames.reduce(
+    (skills, skillName) => {
+      skills[skillName] = {
+        type: "integer",
+        maximum: CONSTANTS.bounds.skills.points.max,
+        minimum: CONSTANTS.bounds.skills.points.min
+      };
+      return skills;
+    },
+    {} as Record<SkillName, NumberProperty>
+  ),
   required: SkillNames,
   additionalProperties: false,
-  default: SkillNames.reduce((skills, skillName) => {
-    skills[skillName] = 0;
-    return skills;
-  }, {} as Record<SkillName, number>)
+  default: SkillNames.reduce(
+    (skills, skillName) => {
+      skills[skillName] = 0;
+      return skills;
+    },
+    {} as Record<SkillName, number>
+  )
 };
 
 export class SpecialsPoints implements Record<SpecialName, number> {
@@ -102,20 +108,26 @@ export class SpecialsPoints implements Record<SpecialName, number> {
 export const SPECIALS_POINTS_JSON_SCHEMA: JSONSchemaType<SpecialsPoints> = {
   description: "A SPECIALs points specification",
   type: "object",
-  properties: SpecialNames.reduce((specials, specialName) => {
-    specials[specialName] = {
-      type: "integer",
-      maximum: CONSTANTS.bounds.special.points.max,
-      minimum: CONSTANTS.bounds.special.points.min
-    };
-    return specials;
-  }, {} as Record<SpecialName, NumberProperty>),
+  properties: SpecialNames.reduce(
+    (specials, specialName) => {
+      specials[specialName] = {
+        type: "integer",
+        maximum: CONSTANTS.bounds.special.points.max,
+        minimum: CONSTANTS.bounds.special.points.min
+      };
+      return specials;
+    },
+    {} as Record<SpecialName, NumberProperty>
+  ),
   required: SpecialNames,
   additionalProperties: false,
-  default: SpecialNames.reduce((specials, specialName) => {
-    specials[specialName] = 5;
-    return specials;
-  }, {} as Record<SpecialName, number>)
+  default: SpecialNames.reduce(
+    (specials, specialName) => {
+      specials[specialName] = 5;
+      return specials;
+    },
+    {} as Record<SpecialName, number>
+  )
 };
 
 type NumberProperty = { type: "integer"; maximum: number; minimum: number };

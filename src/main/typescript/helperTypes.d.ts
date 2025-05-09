@@ -15,9 +15,9 @@ export type Join<
 > = Array extends []
   ? never
   : Array extends [infer First]
-  ? First
-  : Array extends [infer First, ...infer Rest]
-  ? First extends string
-    ? `${First}${Delimiter}${Join<Extract<Rest, string[]>, Delimiter>}`
-    : never
-  : string;
+    ? First
+    : Array extends [infer First, ...infer Rest]
+      ? First extends string
+        ? `${First}${Delimiter}${Join<Extract<Rest, string[]>, Delimiter>}`
+        : never
+      : string;

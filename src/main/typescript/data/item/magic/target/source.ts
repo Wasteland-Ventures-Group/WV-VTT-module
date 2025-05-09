@@ -11,7 +11,7 @@ import {
 } from "../../../common.js";
 
 const AOETypes = ["none", "fixed", "varies"] as const;
-type AOEType = typeof AOETypes[number];
+type AOEType = (typeof AOETypes)[number];
 export class TargetSource {
   type: TargetType = "none";
 

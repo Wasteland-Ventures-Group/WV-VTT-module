@@ -270,7 +270,7 @@ export default class RuleElement {
    * Validate the RuleElement itself and add messages to it. This should be
    * overriden by subclasses if needed.
    */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+
   protected validate(): void {}
 
   /**
@@ -419,7 +419,7 @@ export default class RuleElement {
    * have already been performed at this point. This should be overriden by
    * subclesses.
    */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+
   protected innerApply(_document: WvActor | WvItem): void {}
 
   /**

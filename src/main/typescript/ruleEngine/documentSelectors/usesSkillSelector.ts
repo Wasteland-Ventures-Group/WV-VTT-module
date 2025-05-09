@@ -6,7 +6,10 @@ import DocumentSelector from "../documentSelector.js";
 
 /** A DocumentSelector that selects documents based on their used skill. */
 export default class UsesSkillSelector extends DocumentSelector {
-  constructor(public root: WvActor | WvItem, public skill: SkillName) {
+  constructor(
+    public root: WvActor | WvItem,
+    public skill: SkillName
+  ) {
     super(root);
   }
 

@@ -37,7 +37,7 @@ export default interface RuleElementSource {
   value: boolean | number | string;
 }
 
-export type RuleElementId = typeof RULE_ELEMENT_IDS[number];
+export type RuleElementId = (typeof RULE_ELEMENT_IDS)[number];
 export const RULE_ELEMENT_IDS = [
   "WV.RuleElement.FlatModifier",
   "WV.RuleElement.NumberComponent",
@@ -46,14 +46,14 @@ export const RULE_ELEMENT_IDS = [
   "WV.RuleElement.TempSpecialComponent"
 ] as const;
 
-export type RuleElementHook = typeof RULE_ELEMENT_HOOKS[number];
+export type RuleElementHook = (typeof RULE_ELEMENT_HOOKS)[number];
 export const RULE_ELEMENT_HOOKS = [
   "afterSpecial",
   "afterSkills",
   "afterComputation"
 ] as const;
 
-export type RuleElementCondition = typeof RULE_ELEMENT_CONDITIONS[number];
+export type RuleElementCondition = (typeof RULE_ELEMENT_CONDITIONS)[number];
 export const RULE_ELEMENT_CONDITIONS = ["whenEquipped"] as const;
 
 /** A JSON schema for RuleElementSource objects */

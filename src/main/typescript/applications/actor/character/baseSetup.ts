@@ -54,15 +54,19 @@ export default class BaseSetup extends FormApplication<
       sheet: {
         bounds: CONSTANTS.bounds,
         race: this.character.race,
-        specials: SpecialNames.reduce((specials, specialName) => {
-          const points = this.character.data.data.specials[specialName].points;
-          specials[specialName] = {
-            points,
-            long: i18nSpecials[specialName].long,
-            short: i18nSpecials[specialName].short
-          };
-          return specials;
-        }, {} as Record<SpecialName, TemplateSpecial>),
+        specials: SpecialNames.reduce(
+          (specials, specialName) => {
+            const points =
+              this.character.data.data.specials[specialName].points;
+            specials[specialName] = {
+              points,
+              long: i18nSpecials[specialName].long,
+              short: i18nSpecials[specialName].short
+            };
+            return specials;
+          },
+          {} as Record<SpecialName, TemplateSpecial>
+        ),
         thaumSpecials: ThaumaturgySpecials.reduce(
           (thaumSpecials, thaumSpecialName) => {
             thaumSpecials[thaumSpecialName] =
@@ -177,7 +181,7 @@ type AppFormData = SpecialPointsFormData & { thaumSpecial?: string };
 interface TemplateData {
   data: CharacterDataProperties;
   sheet: {
-    bounds: typeof CONSTANTS["bounds"];
+    bounds: (typeof CONSTANTS)["bounds"];
     race: Race;
     specials: Record<SpecialName, TemplateSpecial>;
     thaumSpecials: Record<ThaumaturgySpecial, string>;

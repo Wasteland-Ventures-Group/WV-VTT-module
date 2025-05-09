@@ -169,7 +169,7 @@ export default class WvActorSheet extends ActorSheet {
     const readiedItem =
       actorReadiedItem instanceof Weapon
         ? this.toSheetWeapon(actorReadiedItem)
-        : actorReadiedItem?.toObject(false) ?? null;
+        : (actorReadiedItem?.toObject(false) ?? null);
     const armor =
       this.actor.armorApparel instanceof Apparel
         ? this.toSheetApparel(this.actor.armorApparel)
@@ -287,30 +287,36 @@ export default class WvActorSheet extends ActorSheet {
           weaponSlot: HANDLEBARS.partPaths.actor.weaponSlot
         },
         race: this.actor.race,
-        specials: SpecialNames.reduce((specials, specialName) => {
-          const special = this.actor.data.data.specials[specialName];
-          specials[specialName] = {
-            ...special,
-            permTotal: special.permTotal,
-            tempTotal: special.tempTotal,
-            long: i18nSpecials[specialName].long,
-            short: i18nSpecials[specialName].short
-          };
-          return specials;
-        }, {} as Record<SpecialName, SheetSpecial>),
-        skills: SkillNames.reduce((skills, skillName) => {
-          const specialName =
-            skillName === "thaumaturgy"
-              ? this.actor.data.data.magic.thaumSpecial
-              : CONSTANTS.skillSpecials[skillName];
-          skills[skillName] = {
-            name: i18nSkills[skillName],
-            ranks: this.actor.data.data.leveling.skillRanks[skillName],
-            special: i18nSpecials[specialName].short,
-            total: this.actor.data.data.skills[skillName]?.total
-          };
-          return skills;
-        }, {} as Record<SkillName, SheetSkill>),
+        specials: SpecialNames.reduce(
+          (specials, specialName) => {
+            const special = this.actor.data.data.specials[specialName];
+            specials[specialName] = {
+              ...special,
+              permTotal: special.permTotal,
+              tempTotal: special.tempTotal,
+              long: i18nSpecials[specialName].long,
+              short: i18nSpecials[specialName].short
+            };
+            return specials;
+          },
+          {} as Record<SpecialName, SheetSpecial>
+        ),
+        skills: SkillNames.reduce(
+          (skills, skillName) => {
+            const specialName =
+              skillName === "thaumaturgy"
+                ? this.actor.data.data.magic.thaumSpecial
+                : CONSTANTS.skillSpecials[skillName];
+            skills[skillName] = {
+              name: i18nSkills[skillName],
+              ranks: this.actor.data.data.leveling.skillRanks[skillName],
+              special: i18nSpecials[specialName].short,
+              total: this.actor.data.data.skills[skillName]?.total
+            };
+            return skills;
+          },
+          {} as Record<SkillName, SheetSkill>
+        ),
         systemGridUnit: getGame().system.data.gridUnits,
         magic: { spells },
         effects: this.actor.items

@@ -46,7 +46,7 @@ export class DamageSource {
   damageFallOff?: DamageFallOffType | "";
 }
 
-export type DamageFallOffType = typeof DamageFallOffTypes[number];
+export type DamageFallOffType = (typeof DamageFallOffTypes)[number];
 const DamageFallOffTypes = ["shotgun"] as const;
 
 const DAMAGE_DEFAULT = { base: { source: 0 }, dice: { source: 0 } };

@@ -18,7 +18,7 @@ type ChangeData = HookParams[1];
 type Position = { x: number; y: number };
 
 function position(token: TokenDocument): Position {
-    return { x: token.x, y: token.y }
+  return { x: token.x, y: token.y };
 }
 
 /**

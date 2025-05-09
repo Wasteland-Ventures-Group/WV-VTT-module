@@ -120,8 +120,11 @@ export class CompositeNumber
   }
 
   toObject(source?: true): CompositeNumberSource;
+
   toObject(source: false): SerializedCompositeNumber;
+
   toObject(source?: boolean): CompositeNumberSource | SerializedCompositeNumber;
+
   toObject(
     source?: boolean
   ): CompositeNumberSource | SerializedCompositeNumber {
@@ -216,7 +219,10 @@ export class Component implements ComponentSource, FoundrySerializable {
   }
 
   /** Create a new Component with the given value and label components. */
-  constructor(public value: number, public labelComponents: LabelComponent[]) {}
+  constructor(
+    public value: number,
+    public labelComponents: LabelComponent[]
+  ) {}
 
   /**
    * Construct a label out of the label components of this Component. This

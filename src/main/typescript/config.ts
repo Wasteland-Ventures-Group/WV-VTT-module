@@ -49,7 +49,15 @@ import TempSpecialComponent from "./ruleEngine/ruleElements/tempSpecialComponent
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "./ruleEngine/ruleElementSource.js";
 import { initializedSettingName } from "./settings.js";
 import WvItem from "./item/wvItem.js";
-import type { AmmoSystem, ApparelSystem, EffectSystem, MagicSystem, MiscSystem, RaceSystem, WeaponSystem } from "./item/wvItem.js";
+import type {
+  AmmoSystem,
+  ApparelSystem,
+  EffectSystem,
+  MagicSystem,
+  MiscSystem,
+  RaceSystem,
+  WeaponSystem
+} from "./item/wvItem.js";
 import Die = foundry.dice.terms.Die;
 
 /** The Foundry configuration function for the init hook */
@@ -187,22 +195,22 @@ function configureCombatResource(): void {
 }
 
 declare module "fvtt-types/configuration" {
-    interface DocumentClassConfig {
-        Actor: typeof WvActor;
-        Item: typeof WvItem<ProtoItemType>;
-    }
-    interface DataModelConfig {
-        Actor: {
-            character: typeof CharacterSystem;
-        }
-        Item: {
-            ammo: typeof AmmoSystem;
-            apparel: typeof ApparelSystem;
-            effect: typeof EffectSystem;
-            weapon: typeof WeaponSystem;
-            race: typeof RaceSystem;
-            magic: typeof MagicSystem;
-            misc: typeof MiscSystem;
-        }
-    }
+  interface DocumentClassConfig {
+    Actor: typeof WvActor;
+    Item: typeof WvItem<ProtoItemType>;
+  }
+  interface DataModelConfig {
+    Actor: {
+      character: typeof CharacterSystem;
+    };
+    Item: {
+      ammo: typeof AmmoSystem;
+      apparel: typeof ApparelSystem;
+      effect: typeof EffectSystem;
+      weapon: typeof WeaponSystem;
+      race: typeof RaceSystem;
+      magic: typeof MagicSystem;
+      misc: typeof MiscSystem;
+    };
+  }
 }

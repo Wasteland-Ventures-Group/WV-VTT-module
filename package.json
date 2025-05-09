@@ -52,8 +52,8 @@
     "gulp-dart-sass": "^1.0.2",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-zip": "^5.1.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "mocha": "^10.1.0",
     "prettier": "^3.5.3",
     "sass": "^1.55.0",
@@ -69,7 +69,7 @@
   "scripts": {
     "lint": "eslint --ext .d.ts,.ts,.test-d.ts,.cjs . && prettier --check ./src/main/compendiums/**/*.json ./src/main/lang/*.json && stylelint ./src/main/sass/**/*.sass",
     "lint-fix": "eslint --ext .d.ts,.ts,.test-d.ts,.cjs . --fix && prettier --check ./src/main/compendiums/**/*.json ./src/main/lang/*.json",
-    "prepare": "husky install",
+    "prepare": "husky",
     "test": "mocha && cd ./src/main/typescript && tsd",
     "typecheck": "tsc --project ./src/main/typescript/tsconfig.json --noEmit"
   },

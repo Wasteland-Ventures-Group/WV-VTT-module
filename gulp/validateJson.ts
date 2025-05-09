@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import Ajv, { ValidateFunction } from "ajv";
-import glob from "glob-promise";
+import { glob } from "glob";
 import log from "fancy-log";
 
 const ajv = new Ajv({ allErrors: true, strict: true });

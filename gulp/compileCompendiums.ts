@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import glob from "glob-promise";
+import { glob } from "glob";
 import gulp from "gulp";
 import path from "path";
 import { logChange } from "../gulpfile.js";

@@ -44,7 +44,7 @@
     "eslint-plugin-prettier": "^5.4.0",
     "eslint-plugin-tsdoc": "^0.4.0",
     "fancy-log": "^2.0.0",
-    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#documents-v2",
+    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "glob": "^11.0.2",
     "globals": "^16.1.0",
     "gulp": "^5.0.0",

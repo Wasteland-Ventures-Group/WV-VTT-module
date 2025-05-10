@@ -1,8 +1,10 @@
 import { promises as fs } from "fs";
 import { distWvPrefix, templateOutPath } from "../gulpfile.js";
-import { TYPES } from "../src/main/typescript/constants.js";
 
-export default async function templateTask(): Promise<void> {
+/**
+ * @returns {Promise<void>}
+ */
+export default async function templateTask() {
   // We somehow have to get TS to reimport the files each time. Currently they
   // are only loaded the first time and then cached.
   const imports = Promise.all([
@@ -27,18 +29,26 @@ export default async function templateTask(): Promise<void> {
     weaponSource
   ] = await imports;
 
-  const actorDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ACTOR.CHARACTER, new actorDbData.CharacterDataSourceData()]
+  /**
+   * @type {TemplateDocumentType[]}
+   */
+  const actorDocumentTypes = [
+    ["character", new actorDbData.CharacterDataSourceData()]
   ];
-  const itemDocumentTypes: TemplateDocumentType[] = [
-    [TYPES.ITEM.AMMO, new ammoSource.AmmoDataSourceData()],
-    [TYPES.ITEM.APPAREL, new apparelSource.ApparelDataSourceData()],
-    [TYPES.ITEM.EFFECT, new effectSource.EffectDataSourceData()],
-    [TYPES.ITEM.MAGIC, new magicSource.MagicDataSourceData()],
-    [TYPES.ITEM.MISC, new miscSource.MiscDataSourceData()],
-    [TYPES.ITEM.RACE, new raceSource.RaceDataSourceData()],
-    [TYPES.ITEM.WEAPON, new weaponSource.WeaponDataSourceData()]
+
+  /**
+   * @type {TemplateDocumentType[]}
+   */
+  const itemDocumentTypes = [
+    ["ammo", new ammoSource.AmmoDataSourceData()],
+    ["apparel", new apparelSource.ApparelDataSourceData()],
+    ["effect", new effectSource.EffectDataSourceData()],
+    ["magic", new magicSource.MagicDataSourceData()],
+    ["misc", new miscSource.MiscDataSourceData()],
+    ["race", new raceSource.RaceDataSourceData()],
+    ["weapon", new weaponSource.WeaponDataSourceData()]
   ];
+
   return fs.writeFile(
     templateOutPath,
     JSON.stringify(createTemplateObject(actorDocumentTypes, itemDocumentTypes))
@@ -46,11 +56,16 @@ export default async function templateTask(): Promise<void> {
 }
 templateTask.description = "Generate the template.json file";
 
-function createTemplateObject(
-  actorDocumentTypes: TemplateDocumentType[],
-  itemDocumentTypes: TemplateDocumentType[]
-): Template {
-  const template: Template = {
+/**
+ * @param {TemplateDocumentType[]} actorDocumentTypes
+ * @param {TemplateDocumentType[]} itemDocumentTypes
+ * @returns {Template}
+ */
+function createTemplateObject(actorDocumentTypes, itemDocumentTypes) {
+  /**
+   * @type {Template}
+   */
+  const template = {
     Actor: {
       types: []
     },
@@ -69,13 +84,21 @@ function createTemplateObject(
   return template;
 }
 
-type TemplateDocumentType = [string, object];
+/**
+ * @typedef {[string, unknown]} TemplateDocumentType
+ */
 
-interface Template {
-  Actor: DocumentTemplates;
-  Item: DocumentTemplates;
-}
+/**
+ * @typedef {Object} Template
+ * @property {DocumentTemplates} Actor
+ * @property {DocumentTemplates} Item
+ */
 
-interface DocumentTemplates extends Record<string, unknown> {
-  types: string[];
-}
+/**
+ * @typedef {Object} ObjectWithTypes
+ * @property {string[]} types
+ */
+
+/**
+ * @typedef {Record<string, unknown> & ObjectWithTypes} DocumentTemplates
+ */

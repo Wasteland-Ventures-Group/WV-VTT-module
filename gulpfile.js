@@ -4,7 +4,6 @@ import * as esbuild from "esbuild";
 import gulp from "gulp";
 import log from "fancy-log";
 import typescript from "gulp-typescript";
-import { CONSTANTS } from "./src/main/typescript/constants.js";
 import distZipTask from "./gulp/distZip.js";
 import templateTask from "./gulp/template.js";
 import compendiumSchemasTask from "./gulp/compendiumSchemas.js";
@@ -13,6 +12,10 @@ import compileCompendiumsTask, {
 } from "./gulp/compileCompendiums.js";
 import validateJsonTask from "./gulp/validateJson.js";
 import langSchemaTask from "./gulp/langSchema.js";
+
+// = Common constants ==========================================================
+
+export const systemId = "wasteland-ventures";
 
 // = Path constants ============================================================
 
@@ -23,7 +26,7 @@ import langSchemaTask from "./gulp/langSchema.js";
 // See: https://github.com/gulpjs/gulp/issues/1322
 
 export const distPrefix = "./dist";
-export const distWvPrefix = `${distPrefix}/${CONSTANTS.systemId}`;
+export const distWvPrefix = `${distPrefix}/${systemId}`;
 
 const handlebarsPath = "./src/main/handlebars/**/*.hbs";
 const handlebarsOutPath = `${distWvPrefix}/handlebars`;
@@ -31,7 +34,7 @@ const handlebarsOutPath = `${distWvPrefix}/handlebars`;
 const langPath = "./src/main/lang/*.json";
 const langOutPath = `${distWvPrefix}/lang`;
 
-const sassRoot = `./src/main/sass/${CONSTANTS.systemId}.sass`;
+const sassRoot = `./src/main/sass/${systemId}.sass`;
 const sassPath = "./src/main/sass/**/*.s{a,c}ss";
 const cssOutPath = `${distWvPrefix}/css`;
 
@@ -50,12 +53,18 @@ export const templateOutPath = `${distWvPrefix}/template.json`;
 
 // = Handlebars copy ===========================================================
 
-export function hbs(): NodeJS.ReadWriteStream {
+/**
+ * @return {NodeJS.ReadWriteStream}
+ */
+export function hbs() {
   return gulp.src(handlebarsPath).pipe(gulp.dest(handlebarsOutPath));
 }
 hbs.description = "Copy all handlebars files.";
 
-export function hbsWatch(): void {
+/**
+ * @return {void}
+ */
+export function hbsWatch() {
   gulp
     .watch(handlebarsPath, { ignoreInitial: false }, hbs)
     .on("change", logChange);
@@ -65,19 +74,28 @@ hbsWatch.description =
 
 // = Lang tasks ================================================================
 
-export function lang(): NodeJS.ReadWriteStream {
+/**
+ * @return {NodeJS.ReadWriteStream}
+ */
+export function lang() {
   return gulp.src(langPath).pipe(gulp.dest(langOutPath));
 }
 lang.description = "Copy all language files.";
 
-export function langWatch(): void {
+/**
+ * @return {void}
+ */
+export function langWatch() {
   gulp.watch(langPath, { ignoreInitial: false }, lang).on("change", logChange);
 }
 langWatch.description = "Watch the language files for changes and copy them.";
 
 // = Sass tasks ================================================================
 
-export function sass(): NodeJS.ReadWriteStream {
+/**
+ * @return {NodeJS.ReadWriteStream}
+ */
+export function sass() {
   return gulp
     .src(sassRoot)
     .pipe(dartSass().on("error", dartSass.logError))
@@ -85,7 +103,10 @@ export function sass(): NodeJS.ReadWriteStream {
 }
 sass.description = "Compile all Sass files into CSS.";
 
-export function sassWatch(): void {
+/**
+ * @return {void}
+ */
+export function sassWatch() {
   gulp.watch(sassPath, { ignoreInitial: false }, sass).on("change", logChange);
 }
 sassWatch.description =
@@ -98,29 +119,32 @@ export function typecheck() {
 }
 typecheck.description = "Typecheck the typescript sources.";
 
-let tsBuildResult: esbuild.BuildResult | null = null;
-async function esBuild({
-  incremental = false,
-  prod = false
-} = {}): Promise<esbuild.BuildResult> {
-  if (incremental && tsBuildResult?.rebuild) {
-    tsBuildResult = await tsBuildResult.rebuild();
+/**
+ * @type {esbuild.BuildContext | null}
+ */
+let esBuildContext = null;
+/**
+ * @return {Promise<void>}
+ */
+async function esBuild({ incremental = false, prod = false } = {}) {
+  if (incremental && esBuildContext) {
+    await esBuildContext.rebuild();
   } else {
-    tsBuildResult = await esbuild.build({
+    esBuildContext = await esbuild.context({
       bundle: true,
       entryPoints: [tsEntryPoint],
       format: "esm",
-      incremental: incremental,
       keepNames: true,
       legalComments: "none",
       minify: false,
       outfile: jsOutFile,
       sourcemap: true,
-      sourceRoot: `systems/${CONSTANTS.systemId}`,
+      sourceRoot: `systems/${systemId}`,
       treeShaking: prod
     });
+
+    await esBuildContext.rebuild();
   }
-  return tsBuildResult;
 }
 
 export function bundleTs() {
@@ -141,7 +165,10 @@ export const tsProd = gulp.series(typecheck, bundleTsProd);
 tsProd.description =
   "Type check and bundle the typescript sources for production.";
 
-export function tsWatch(): void {
+/**
+ * @returns {void}
+ */
+export function tsWatch() {
   const bundleTs = () => esBuild({ incremental: true });
   gulp
     .watch(tsPath, { ignoreInitial: false }, bundleTs)
@@ -152,12 +179,18 @@ tsWatch.description =
 
 // = system.json tasks =========================================================
 
-export function system(): NodeJS.ReadWriteStream {
+/**
+ * @returns {NodeJS.ReadWriteStream}
+ */
+export function system() {
   return gulp.src(systemPath).pipe(gulp.dest(systemOutPath));
 }
 system.description = "Copy the system.json file.";
 
-export function systemWatch(): void {
+/**
+ * @returns {void}
+ */
+export function systemWatch() {
   gulp
     .watch(systemWatchPath, { ignoreInitial: false }, system)
     .on("change", logChange);
@@ -206,7 +239,10 @@ export const watchAll = gulp.parallel(
 );
 watchAll.description = "Run all watch tasks.";
 
-export function clean(): Promise<string[]> {
+/**
+ * @returns {Promise<string[]>}
+ */
+export function clean() {
   return deleteAsync(`${distPrefix}/**`);
 }
 clean.description = "Clean the dist dir.";
@@ -224,7 +260,11 @@ buildZip.description = "Clean, Pack and zip the distribution files.";
 
 // = Common functions ==========================================================
 
-export function logChange(path: string): void {
+/**
+ * @param {string} path
+ * @returns {void}
+ */
+export function logChange(path) {
   log(`${path} changed`);
 }
 logChange.description = "This is just a utility function and not a task.";

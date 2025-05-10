@@ -8,7 +8,10 @@ const outputBasePath = "./src/main/schemas";
 const outputPath = `${outputBasePath}/lang.json`;
 const rootType = "LangSchema";
 
-export default async function langSchemaTask(): Promise<void> {
+/**
+ * @returns {Promise<void>}
+ */
+export default async function langSchemaTask() {
   const schema = createGenerator({
     path: sourcePath,
     skipTypeCheck: true,

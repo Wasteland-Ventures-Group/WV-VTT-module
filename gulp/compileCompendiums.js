@@ -11,7 +11,10 @@ const itemOutputBasePath = `${outputBasePath}/item`;
 
 const watchPath = `${inputBasePath}/**/*.json`;
 
-const compendiumConfigs: CompendiumConfig[] = [
+/**
+ * @type {CompendiumConfig[]}
+ */
+const compendiumConfigs = [
   {
     inputGlob: `${itemInputBasePath}/ammo/*.json`,
     outputPath: `${itemOutputBasePath}/ammo.db`
@@ -58,7 +61,10 @@ const compendiumConfigs: CompendiumConfig[] = [
   }
 ];
 
-export default async function compileCompendiumsTask(): Promise<void[]> {
+/**
+ * @returns {Promise<void[]>}
+ */
+export default async function compileCompendiumsTask() {
   return Promise.all(
     compendiumConfigs.map((config) => {
       return compileCompendium(config);
@@ -68,22 +74,32 @@ export default async function compileCompendiumsTask(): Promise<void[]> {
 compileCompendiumsTask.description =
   "Compile all single entry files to compemdiums.";
 
-export function compileCompendiumsWatchTask(): void {
+/**
+ * @returns {void}
+ */
+export function compileCompendiumsWatchTask() {
   gulp.watch(watchPath, compileCompendiumsTask).on("change", logChange);
 }
 compileCompendiumsWatchTask.description =
   "Watch the compendium input files for changes and trigger the compile task.";
 
-async function compileCompendium(config: CompendiumConfig): Promise<void> {
+/**
+ * @param {CompendiumConfig} config
+ * @returns {Promise<void>}
+ */
+async function compileCompendium(config) {
   const fileNames = await glob(config.inputGlob, { dot: true });
-  const ids: IdTracker = {};
+  /**
+   * @type {IdTracker}
+   */
+  const ids = {};
 
   const contents = await Promise.all(
     fileNames.map(async (fileName) => {
       const entry = JSON.parse((await fs.readFile(fileName)).toString());
 
       if (ids[entry["_id"]]) {
-        ids[entry["_id"]].push(fileName);
+        ids[entry["_id"]]?.push(fileName);
       } else {
         ids[entry["_id"]] = [fileName];
       }
@@ -108,9 +124,12 @@ async function compileCompendium(config: CompendiumConfig): Promise<void> {
   return fs.writeFile(config.outputPath, contents.join("\n"));
 }
 
-type IdTracker = Record<string, string[]>;
+/**
+ * @typedef {Record<string, string[]>} IdTracker
+ */
 
-interface CompendiumConfig {
-  inputGlob: string;
-  outputPath: string;
-}
+/**
+ * @typedef {Object} CompendiumConfig
+ * @property {string} inputGlob
+ * @property {string} outputPath
+ */

@@ -1,21 +1,21 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig.json",
   "compilerOptions": {
-    "esModuleInterop": true,
-    "verbatimModuleSyntax": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
+    "exactOptionalPropertyTypes": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "strict": true,
-    "target": "ESNext",
-    "types": ["fvtt-types"]
+    "verbatimModuleSyntax": true,
+
+    "checkJs": true,
+    "module": "NodeNext",
+    "noEmit": true
   },
-  "files": [
-    "./gulpfile.ts",
-    "./src/main/typescript/constants.ts",
-    "./src/main/typescript/data/foundryCommon.ts",
-    "./src/main/typescript/data/common.ts",
-    "./src/main/typescript/data/actor/source.ts",
-    "./src/main/typescript/data/item/source.ts"
-  ],
-  "include": ["./gulp/**/*.ts"]
+  "exclude": ["./node_modules", "./src/main/typescript"],
+  "include": ["./gulpfile.js", "./gulp/**/*.js"]
 }

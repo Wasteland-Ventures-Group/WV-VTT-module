@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- updated dependencies
+- refactored build scripts from ts-node to plain JS
+
 ## [0.22.0] - 2022-11-12
 
 - improve chat cards and add additional attack options

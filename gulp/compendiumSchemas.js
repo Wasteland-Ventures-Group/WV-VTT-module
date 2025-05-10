@@ -4,8 +4,14 @@ import { promises as fs } from "fs";
 const outputBasePath = "./src/main/schemas";
 const itemOutputBasePath = `${outputBasePath}/item`;
 
-export default async function compendiumSchemasTask(): Promise<void[]> {
-  const schemaConfigs: SchemaConfig[] = [
+/**
+ * @returns {Promise<void[]>}
+ */
+export default async function compendiumSchemasTask() {
+  /**
+   * @type {SchemaConfig[]}
+   */
+  const schemaConfigs = [
     {
       fileName: "ammo",
       outputBasePath: itemOutputBasePath,
@@ -44,7 +50,11 @@ export default async function compendiumSchemasTask(): Promise<void[]> {
 compendiumSchemasTask.description =
   "Generate the JSON schemas for the compendiums.";
 
-async function createSchema(config: SchemaConfig): Promise<void> {
+/**
+ * @param {SchemaConfig} config
+ * @returns {Promise<void>}
+ */
+async function createSchema(config) {
   await fs.mkdir(config.outputBasePath, { recursive: true });
   return fs.writeFile(
     `${config.outputBasePath}/${config.fileName}.json`,
@@ -55,8 +65,9 @@ async function createSchema(config: SchemaConfig): Promise<void> {
   );
 }
 
-interface SchemaConfig {
-  fileName: string;
-  outputBasePath: string;
-  schema: Record<string, unknown>;
-}
+/**
+ * @typedef {Object} SchemaConfig
+ * @property {string} fileName
+ * @property {string} outputBasePath
+ * @property {Record<string, unknown>} schema
+ */

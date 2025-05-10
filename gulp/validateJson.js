@@ -1,5 +1,5 @@
 import { promises as fs } from "fs";
-import Ajv, { ValidateFunction } from "ajv";
+import { Ajv } from "ajv";
 import { glob } from "glob";
 import log from "fancy-log";
 
@@ -9,7 +9,10 @@ const baseSchemaPath = "./src/main/schemas";
 const langSchemaPath = `${baseSchemaPath}/lang.json`;
 const baseItemSchemaPath = `${baseSchemaPath}/item`;
 
-const validationConfigs: ValidationConfig[] = [
+/**
+ * @type {ValidationConfig[]}
+ */
+const validationConfigs = [
   {
     dataGlob: "./src/main/lang/*.json",
     schemaPath: langSchemaPath
@@ -36,7 +39,10 @@ const validationConfigs: ValidationConfig[] = [
   }
 ];
 
-export default async function validateJsonTask(): Promise<void> {
+/**
+ * @returns {Promise<void>}
+ */
+export default async function validateJsonTask() {
   await Promise.all(
     validationConfigs.map((config) => {
       return validateFiles(config);
@@ -46,7 +52,11 @@ export default async function validateJsonTask(): Promise<void> {
 validateJsonTask.description =
   "Validate all JSON files with already existing schemas.";
 
-async function validateFiles(config: ValidationConfig): Promise<void> {
+/**
+ * @param {ValidationConfig} config
+ * @returns {Promise<void>}
+ */
+async function validateFiles(config) {
   const fileNames = await glob(config.dataGlob);
   const validate = ajv.compile(
     JSON.parse((await fs.readFile(config.schemaPath)).toString())
@@ -65,14 +75,19 @@ async function validateFiles(config: ValidationConfig): Promise<void> {
   }
 }
 
-function logErrors(fileName: string, validate: ValidateFunction<unknown>) {
+/**
+ * @param {string} fileName
+ * @param {import("ajv").ValidateFunction<unknown>} validate
+ */
+function logErrors(fileName, validate) {
   validate.errors?.forEach((error) => {
     log(`${fileName}: ${JSON.stringify(error)}`);
     log.error(`${fileName}: ${error?.message}`);
   });
 }
 
-interface ValidationConfig {
-  dataGlob: string;
-  schemaPath: string;
-}
+/**
+ * @typedef {Object} ValidationConfig
+ * @property {string} dataGlob
+ * @property {string} schemaPath
+ */

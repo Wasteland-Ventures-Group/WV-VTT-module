@@ -3,13 +3,16 @@
   <h1>{{actor.name}}</h1>
   <section class="flexrow flex-center flex-gapped">
     <p class="flexrow flex-gapped flex-center">
-      <span class="flex-fixed no-wrap">{{localize "wv.system.races.singular"}}:</span>
+      <span class="flex-fixed no-wrap">{{localize
+          "wv.system.races.singular"
+        }}:</span>
       {{~#if sheet.race.id~}}
         <img class="flex-fixed double-size-inline" src="{{sheet.race.img}}" />
       {{~/if~}}
       <span class="flex-fixed no-wrap">{{sheet.race.name}}</span>
     </p>
-    <p>{{localize "wv.rules.background.gender"}}: {{data.data.background.gender}}</p>
+    <p>{{localize "wv.rules.background.gender"}}:
+      {{data.data.background.gender}}</p>
     <p>{{localize "wv.rules.background.age"}}: {{data.data.background.age}}</p>
   </section>
   <section>

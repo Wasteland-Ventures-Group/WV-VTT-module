@@ -1,22 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
+  "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "exactOptionalPropertyTypes": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true,
-    "verbatimModuleSyntax": true,
-
-    "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "noEmit": true,
-    "target": "ESNext",
-    "types": ["fvtt-types"]
-  }
+    "composite": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "types": ["fvtt-types"],
+    "outDir": ".typescript-build"
+  },
+  "exclude": []
 }

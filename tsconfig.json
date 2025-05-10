@@ -1,21 +1,33 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "compilerOptions": {
+    "allowJs": true,
+    "allowImportingTsExtensions": true,
+    "allowSyntheticDefaultImports": true,
+    "checkJs": true,
+    "esModuleInterop": true,
     "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
+    "noUncheckedSideEffectImports": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "outDir": ".typescript-build",
+    "resolveJsonModule": true,
     "strict": true,
-    "verbatimModuleSyntax": true,
-
-    "checkJs": true,
-    "module": "NodeNext",
-    "noEmit": true
+    "target": "ESNext",
+    "types": [],
+    "useUnknownInCatchVariables": true,
+    "verbatimModuleSyntax": true
   },
-  "exclude": ["./node_modules", "./src/main/typescript"],
-  "include": ["./gulpfile.js", "./gulp/**/*.js"]
+  "exclude": ["src/**"],
+  "references": [{ "path": "./src/main/typescript" }]
 }

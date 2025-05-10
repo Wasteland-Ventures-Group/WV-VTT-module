@@ -40,6 +40,13 @@ export default ts.config(
           ignoreRestSiblings: true
         }
       ],
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        {
+          allowBoolean: true,
+          allowNumber: true
+        }
+      ],
       "@typescript-eslint/no-namespace": [
         "error",
         {

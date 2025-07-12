@@ -24,23 +24,23 @@ const weapon_data_model = {
 export class WeaponSystem extends TypeDataModel<
   typeof weapon_data_model,
   WvItem
-> {}
+> { }
 const race_data_model = {};
-export class RaceSystem extends TypeDataModel<typeof race_data_model, WvItem> {}
-export class MiscSystem extends TypeDataModel<typeof race_data_model, WvItem> {}
-export class AmmoSystem extends TypeDataModel<typeof race_data_model, WvItem> {}
+export class RaceSystem extends TypeDataModel<typeof race_data_model, WvItem> { }
+export class MiscSystem extends TypeDataModel<typeof race_data_model, WvItem> { }
+export class AmmoSystem extends TypeDataModel<typeof race_data_model, WvItem> { }
 export class MagicSystem extends TypeDataModel<
   typeof race_data_model,
   WvItem
-> {}
+> { }
 export class ApparelSystem extends TypeDataModel<
   typeof race_data_model,
   WvItem
-> {}
+> { }
 export class EffectSystem extends TypeDataModel<
   typeof race_data_model,
   WvItem
-> {}
+> { }
 
 /** The basic Wasteland Ventures Item. */
 export default class WvItem extends Item<ProtoItemType> {
@@ -136,7 +136,7 @@ export default class WvItem extends Item<ProtoItemType> {
    * and when all computations for the owner are complete.
    */
 
-  finalizeData(): void {}
+  finalizeData(): void { }
 
   /** Toggle the compendium link for this item. */
   async toggleCompendiumLink(): Promise<void> {
@@ -247,10 +247,10 @@ export async function getUpdateDataFromCompendium(
 
   const updateData = { data: document.toObject().data };
   if (!item.getFlag(CONSTANTS.systemId, "overwriteNotesWithCompendium")) {
-    updateData.data.notes = item.data._source.data.notes;
+    updateData.data.notes = item._source.notes;
   }
   if (!item.getFlag(CONSTANTS.systemId, "overwriteRulesWithCompendium")) {
-    updateData.data.rules.sources = item.data._source.data.rules.sources;
+    updateData.data.rules.sources = item._source.rules.sources;
   }
   if ("amount" in updateData.data && "amount" in item._source) {
     if (!item.getFlag(CONSTANTS.systemId, "overwriteAmountWithCompendium")) {

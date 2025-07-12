@@ -2,12 +2,12 @@ import BaseSetup from "../applications/actor/character/baseSetup.js";
 import type { ApparelSlot, SkillName, SpecialName } from "../constants.js";
 import { CONSTANTS, getPainThreshold, TYPES } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
-import type {
-  ComponentSource,
-  CompositeResource,
-  SerializedCompositeNumber
+import {
+  CompositeNumber,
+  type ComponentSource,
+  type CompositeNumberSource,
+  type SerializedCompositeNumber
 } from "../data/common.js";
-import { RaceDataSourceData } from "../data/item/race/source.js";
 import Formulator, { type RollOptions } from "../formulator.js";
 import { getGame } from "../foundryHelpers.js";
 import {
@@ -34,39 +34,92 @@ import WvI18n, { getI18n } from "../wvI18n.js";
 import TypeDataModel = foundry.abstract.TypeDataModel;
 import fields = foundry.data.fields;
 
-type VitalsBase = {};
-type CharacterDataBase = {
-  vitals: VitalsBase;
+type EquipmentBase = {
+  readiedItemId: string | null;
 };
 
-type VitalsPrepared = {};
-type CharacterDataDerived = {
-  vitals: VitalsPrepared;
+type Equipment = {
+  quickSlots: CompositeNumber;
+  damageThreshold: CompositeNumber;
+  readiedItemId: string | null;
 };
 
-function derive_vitals(v: VitalsBase): VitalsPrepared {
-  return {};
+type VitalsBase = {
+  hitPoints: CompositeNumberSource;
+  actionPoints: CompositeNumberSource;
+  strain: CompositeNumberSource;
+  crippledLegs: number;
+};
+
+type Vitals = {
+  hitPoints: CompositeNumber;
+  actionPoints: CompositeNumber;
+  strain: CompositeNumber;
+  crippledLegs: number;
+};
+
+type CharacterDerived = {
+  vitals: Vitals;
+  equipment: Equipment;
+};
+
+function derive_vitals(v: VitalsBase): Vitals {
+  return;
 }
 
+function derive_equipment(e: EquipmentBase): Equipment {
+  return {
+    quickSlots: e.quickSlots,
+  }
+}
+
+const composite_number_schema = {
+  source: new fields.NumberField({ required: true, nullable: false }),
+}
+
+const composite_number_field = new fields.SchemaField(composite_number_schema);
+
 const character_data_schema = {
-  vitals: new fields.ObjectField()
+  vitals: new fields.SchemaField({
+    hitPoints: composite_number_field,
+    actionPoints: composite_number_field,
+    strain: composite_number_field,
+    crippledLegs: new fields.NumberField({ min: 0, required: true, nullable: false, initial: 0 })
+  }, {
+    required: true,
+    nullable: false,
+  }),
+  equipment: new fields.SchemaField({
+    quickSlots: composite_number_field,
+    readiedItemId: new fields.DocumentIdField(),
+  })
 };
 
 type CharacterDataSchema = typeof character_data_schema;
-export class CharacterSystem extends TypeDataModel<
-  CharacterDataSchema,
-  WvActor
-> {
-  override prepareDerivedData(
-    this: TypeDataModel.PrepareDerivedDataThis<this>
-  ): void {
+export class CharacterSystem extends TypeDataModel<CharacterDataSchema, WvActor, CharacterDerived> {
+  override prepareDerivedData(this: TypeDataModel.PrepareDerivedDataThis<this>): void {
     // todo!
+    const v = this._source.vitals;
+    this.vitals = {
+      hitPoints: CompositeNumber.from(v.hitPoints),
+      actionPoints: CompositeNumber.from(v.actionPoints),
+      strain: CompositeNumber.from(v.strain),
+      crippledLegs: v.crippledLegs,
+    }
+    const e = this._source.equipment;
+    this.equipment = {
+      quickSlots: CompositeNumber.from(e.quickSlots),
+      damageThreshold: new CompositeNumber(0), // TODO: calculate this
+      readiedItemId: e.readiedItemId,
+    }
   }
 
   static override defineSchema() {
     return character_data_schema;
   }
 }
+
+type CompositeResource = CompositeNumber;
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor<"character"> {
@@ -78,11 +131,6 @@ export default class WvActor extends Actor<"character"> {
     if (this.baseSetupApp) return this.baseSetupApp;
 
     return (this.baseSetupApp = new BaseSetup(this));
-  }
-
-  get name(): string {
-    // probably not what I'm supposed to do here, thus FIXME
-    return this.documentName;
   }
 
   /** Get an identifying string for this Actor. */
@@ -119,7 +167,6 @@ export default class WvActor extends Actor<"character"> {
           type: TYPES.ITEM.RACE,
           name: getI18n().localize("wv.system.races.noRace"),
           img: "icons/svg/mystery-man.svg",
-          data: new RaceDataSourceData()
         },
         { parent: this }
       )
@@ -139,23 +186,6 @@ export default class WvActor extends Actor<"character"> {
   /** Get the ground sprint movement range of the actor. */
   get groundSprintMoveRange(): number {
     return getGroundSprintMoveRange(this);
-  }
-
-  /**
-   * Check whether the actor is in combat in the active scene or in any
-   * unlinked combat.
-   */
-  get inCombat(): boolean {
-    const combats = getGame().combats;
-    if (!combats) return false;
-
-    return combats.some(
-      (combat) =>
-        combat.isGloballyActive &&
-        combat.combatants.some((combatant) =>
-          combatant.actor ? combatant.actor.id === this.id : false
-        )
-    );
   }
 
   /** Get the damage threshold of the actor. */
@@ -301,7 +331,7 @@ export default class WvActor extends Actor<"character"> {
     if (this.system.equipment.readiedItemId === id) return;
 
     if (!this.inCombat) {
-      await this.update({ data: { equipment: { readiedItemId: id } } });
+      await this.update({ equipment: { readiedItemId: id } });
       return;
     }
 
@@ -330,10 +360,8 @@ export default class WvActor extends Actor<"character"> {
       );
 
     await this.update({
-      data: {
-        equipment: { readiedItemId: id, quickSlots: { value: quickSlots } },
-        vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
-      }
+      equipment: { readiedItemId: id, quickSlots: { value: quickSlots } },
+      vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
     });
   }
 
@@ -349,7 +377,7 @@ export default class WvActor extends Actor<"character"> {
     if (!this.system.equipment.readiedItemId === null) return;
 
     if (!this.inCombat) {
-      await this.update({ data: { equipment: { readiedItemId: null } } });
+      await this.update({ equipment: { readiedItemId: null } });
       return;
     }
 

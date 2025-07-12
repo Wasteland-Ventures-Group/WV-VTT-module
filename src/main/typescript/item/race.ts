@@ -7,7 +7,7 @@ import { RaceDataPropertiesData } from "../data/item/race/properties.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent a race in the system. */
-export default class Race extends WvItem<"race"> {
+export default class Race extends WvItem {
   /** This constructor enforces that instances have the correct data type. */
   constructor(
     data: ConstructorParameters<typeof Item>[0],

@@ -4,8 +4,8 @@ import { CONSTANTS, getPainThreshold, TYPES } from "../constants.js";
 import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
 import {
   CompositeNumber,
+  CompositeResource,
   type ComponentSource,
-  type CompositeNumberSource,
   type SerializedCompositeNumber
 } from "../data/common.js";
 import Formulator, { type RollOptions } from "../formulator.js";
@@ -33,93 +33,36 @@ import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n, { getI18n } from "../wvI18n.js";
 import TypeDataModel = foundry.abstract.TypeDataModel;
 import fields = foundry.data.fields;
-
-type EquipmentBase = {
-  readiedItemId: string | null;
-};
-
-type Equipment = {
-  quickSlots: CompositeNumber;
-  damageThreshold: CompositeNumber;
-  readiedItemId: string | null;
-};
-
-type VitalsBase = {
-  hitPoints: CompositeNumberSource;
-  actionPoints: CompositeNumberSource;
-  strain: CompositeNumberSource;
-  crippledLegs: number;
-};
-
-type Vitals = {
-  hitPoints: CompositeNumber;
-  actionPoints: CompositeNumber;
-  strain: CompositeNumber;
-  crippledLegs: number;
-};
+import { EQUIPMENT_SCHEMA } from "../data/actor/character/equipment/source.js";
+import { EquipmentProperties } from "../data/actor/character/equipment/properties.js";
+import { VitalsProperties } from "../data/actor/character/vitals/properties.js";
+import { VITALS_SCHEME } from "../data/actor/character/vitals/source.js";
 
 type CharacterDerived = {
-  vitals: Vitals;
-  equipment: Equipment;
+  vitals: VitalsProperties;
+  equipment: EquipmentProperties;
 };
-
-function derive_vitals(v: VitalsBase): Vitals {
-  return;
-}
-
-function derive_equipment(e: EquipmentBase): Equipment {
-  return {
-    quickSlots: e.quickSlots,
-  }
-}
-
-const composite_number_schema = {
-  source: new fields.NumberField({ required: true, nullable: false }),
-}
-
-const composite_number_field = new fields.SchemaField(composite_number_schema);
 
 const character_data_schema = {
-  vitals: new fields.SchemaField({
-    hitPoints: composite_number_field,
-    actionPoints: composite_number_field,
-    strain: composite_number_field,
-    crippledLegs: new fields.NumberField({ min: 0, required: true, nullable: false, initial: 0 })
-  }, {
-    required: true,
-    nullable: false,
-  }),
-  equipment: new fields.SchemaField({
-    quickSlots: composite_number_field,
-    readiedItemId: new fields.DocumentIdField(),
-  })
+  vitals: new fields.SchemaField(VITALS_SCHEME),
+  equipment: new fields.SchemaField(EQUIPMENT_SCHEMA),
 };
+
 
 type CharacterDataSchema = typeof character_data_schema;
 export class CharacterSystem extends TypeDataModel<CharacterDataSchema, WvActor, CharacterDerived> {
   override prepareDerivedData(this: TypeDataModel.PrepareDerivedDataThis<this>): void {
     // todo!
     const v = this._source.vitals;
-    this.vitals = {
-      hitPoints: CompositeNumber.from(v.hitPoints),
-      actionPoints: CompositeNumber.from(v.actionPoints),
-      strain: CompositeNumber.from(v.strain),
-      crippledLegs: v.crippledLegs,
-    }
+    this.vitals = VitalsProperties.from(v);
     const e = this._source.equipment;
-    this.equipment = {
-      quickSlots: CompositeNumber.from(e.quickSlots),
-      damageThreshold: new CompositeNumber(0), // TODO: calculate this
-      readiedItemId: e.readiedItemId,
-    }
+    this.equipment = EquipmentProperties.from(e)
   }
 
   static override defineSchema() {
     return character_data_schema;
   }
 }
-
-type CompositeResource = CompositeNumber;
 
 /** The basic Wasteland Ventures Actor. */
 export default class WvActor extends Actor<"character"> {
@@ -331,7 +274,7 @@ export default class WvActor extends Actor<"character"> {
     if (this.system.equipment.readiedItemId === id) return;
 
     if (!this.inCombat) {
-      await this.update({ equipment: { readiedItemId: id } });
+      await this.update({ system: { equipment: { readiedItemId: id } } });
       return;
     }
 
@@ -360,8 +303,10 @@ export default class WvActor extends Actor<"character"> {
       );
 
     await this.update({
-      equipment: { readiedItemId: id, quickSlots: { value: quickSlots } },
-      vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
+      system: {
+        equipment: { readiedItemId: id, quickSlots: { value: quickSlots } },
+        vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
+      }
     });
   }
 
@@ -377,7 +322,7 @@ export default class WvActor extends Actor<"character"> {
     if (!this.system.equipment.readiedItemId === null) return;
 
     if (!this.inCombat) {
-      await this.update({ equipment: { readiedItemId: null } });
+      await this.update({ system: { equipment: { readiedItemId: null } } });
       return;
     }
 
@@ -389,7 +334,7 @@ export default class WvActor extends Actor<"character"> {
       );
 
     await this.update({
-      data: {
+      system: {
         equipment: { readiedItemId: null },
         vitals: { actionPoints: { value: this.actionPoints.value - apCost } }
       }
@@ -425,7 +370,7 @@ export default class WvActor extends Actor<"character"> {
     if (slots[index] === id) return;
 
     slots[index] = id;
-    await this.update({ data: { equipment: { weaponSlotIds: slots } } });
+    await this.update({ system: { equipment: { weaponSlotIds: slots } } });
   }
 
   /**

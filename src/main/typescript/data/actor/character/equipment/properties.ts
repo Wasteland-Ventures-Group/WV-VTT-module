@@ -1,30 +1,36 @@
 import type Apparel from "../../../../item/apparel.js";
 import { CompositeNumber, CompositeResource } from "../../../common.js";
-import EquipmentSource from "./source.js";
+import type { EquipmentSource } from "./source.js";
 
-export default class EquipmentProperties extends EquipmentSource {
-  constructor(source: EquipmentSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
-
-    this.quickSlots = CompositeResource.from(source.quickSlots);
-    this.quickSlots.source = 0;
-    this.quickSlots.bounds.min = 0;
-  }
-
-  override quickSlots: CompositeResource;
-
+export type EquipmentProperties = EquipmentSource & {
+  quickSlots: CompositeResource,
   /** The damage threshold of the character */
-  damageThreshold = new CompositeNumber();
-
+  damageThreshold: CompositeNumber,
   /** AP costs for various equip actions */
-  equipActionCosts = new EquipActionCosts();
+  equipActionCosts: EquipActionCosts,
+  /** Equipped weapons. */
+  weaponSlotIds: [string | null, string | null],
+};
+
+export namespace EquipmentProperties {
+  export function from(source: EquipmentSource): EquipmentProperties {
+    const result = {
+      ...source,
+      quickSlots: CompositeResource.from(source.quickSlots),
+      damageThreshold: new CompositeNumber(),
+      equipActionCosts: new EquipActionCosts(),
+      weaponSlotIds: [source.weaponSlotIds[0] ?? null, source.weaponSlotIds[0] ?? null]
+    };
+    result.quickSlots.source = 0;
+    result.quickSlots.bounds.min = 0;
+    return result;
+  }
 
   /**
    * Modify the damage threshold and max quick slots by the equipped apparel's
    * values.
    */
-  applyEquippedApparel(equippedApparel: Apparel[]) {
+  export function applyEquippedApparel(this: EquipmentProperties, equippedApparel: Apparel[]) {
     equippedApparel.forEach((apparel) => {
       if (apparel.data.data.damageThreshold)
         this.damageThreshold.add({

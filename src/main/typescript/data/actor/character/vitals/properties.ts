@@ -1,14 +1,21 @@
 import {
   getPainThreshold,
-  PainThreshold,
-  RadiationSicknessLevel
+  type PainThreshold,
+  type RadiationSicknessLevel
 } from "../../../../constants.js";
 import WvI18n from "../../../../wvI18n.js";
 import { CompositeNumber, CompositeResource } from "../../../common.js";
 import type SpecialsProperties from "../specials/properties.js";
 import VitalsSource from "./source.js";
 
-export default class VitalsProperties extends VitalsSource {
+export type VitalsProperties = VitalsSource & {};
+export namespace VitalsProperties {
+  export function from(v: VitalsSource): VitalsProperties {
+    return { ...v }
+  }
+}
+
+export default class VitalsPropertiesOld extends VitalsSource {
   constructor(source: VitalsSource) {
     super();
     foundry.utils.mergeObject(this, source);

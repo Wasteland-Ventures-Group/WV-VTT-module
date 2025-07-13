@@ -1,11 +1,21 @@
-import type { JSONSchemaType } from "ajv";
 import { TYPES } from "../constants.js";
+import fields = foundry.data.fields;
+import type { ValueOf } from "fvtt-types/utils";
 
 /** The source data of a foundry resource. */
-export interface ResourceSource {
-  value: number;
-  max?: number;
+export const RESOURCE_SCHEMA = {
+  value: new fields.NumberField({ required: true, nullable: false }),
+  max: new fields.NumberField({ required: false, nullable: false })
 }
+
+export const RESOURCE_FIELD = new fields.SchemaField(RESOURCE_SCHEMA);
+
+interface ResourceFieldOptions {
+  value: number
+}
+
+/** Foundry Resource. */
+export interface ResourceSource extends fields.SchemaField.InitializedData<typeof RESOURCE_SCHEMA> { }
 
 /** A full resource, including a defined max. */
 export interface Resource extends ResourceSource {
@@ -28,17 +38,6 @@ export class Resource {
     );
   }
 }
-
-export const RESOURCE_SOURCE_JSON_SCHEMA: JSONSchemaType<ResourceSource> = {
-  description: "A schema for a Foundry resource",
-  type: "object",
-  properties: {
-    value: { type: "number", minimum: 0 },
-    max: { type: "number", nullable: true }
-  },
-  required: ["value"],
-  additionalProperties: false
-};
 
 export interface FoundrySerializable {
   /**

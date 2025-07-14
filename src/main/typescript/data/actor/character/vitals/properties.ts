@@ -15,7 +15,7 @@ export namespace VitalsProperties {
   }
 }
 
-export default class VitalsPropertiesOld extends VitalsSource {
+class VitalsPropertiesOld extends VitalsSource {
   constructor(source: VitalsSource) {
     super();
     foundry.utils.mergeObject(this, source);

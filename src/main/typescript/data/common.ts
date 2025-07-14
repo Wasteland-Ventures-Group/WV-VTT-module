@@ -1,12 +1,18 @@
 import type { JSONSchemaType } from "ajv";
 import { getGame } from "../foundryHelpers.js";
 import type { WvI18nKey } from "../lang.js";
-import { FoundrySerializable, Resource } from "./foundryCommon.js";
+import { type FoundrySerializable, Resource } from "./foundryCommon.js";
+import fields = foundry.data.fields;
+
+
+export const COMPOSITE_NUMBER_SCHEMA = {
+  source: new fields.NumberField({ required: true, nullable: false }),
+}
+
+export const COMPOSITE_NUMBER_FIELD = new fields.SchemaField(COMPOSITE_NUMBER_SCHEMA);
 
 /** The data layout needed to create a CompositeNumber from raw data. */
-export interface CompositeNumberSource {
-  source: number;
-}
+export interface CompositeNumberSource extends fields.SchemaField.InitializedData<typeof COMPOSITE_NUMBER_SCHEMA> {}
 
 /** The bounds of a composite number */
 export interface CompositeNumberBounds {
@@ -22,8 +28,7 @@ export interface SerializedCompositeNumber extends CompositeNumberSource {
 
 /** A class to represent numbers composed of a base and modifying components. */
 export class CompositeNumber
-  implements CompositeNumberSource, FoundrySerializable
-{
+  implements CompositeNumberSource, FoundrySerializable {
   /**
    * Test whether the given source is a CompositeNumberSource.
    * @param source - the source to test
@@ -222,7 +227,7 @@ export class Component implements ComponentSource, FoundrySerializable {
   constructor(
     public value: number,
     public labelComponents: LabelComponent[]
-  ) {}
+  ) { }
 
   /**
    * Construct a label out of the label components of this Component. This
@@ -247,19 +252,19 @@ export class Component implements ComponentSource, FoundrySerializable {
 }
 
 export const COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> =
-  {
-    description: "A schema for modifiable number sources",
-    type: "object",
-    properties: {
-      source: {
-        description:
-          "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
-        type: "number"
-      }
-    },
-    required: ["source"],
-    additionalProperties: false
-  };
+{
+  description: "A schema for modifiable number sources",
+  type: "object",
+  properties: {
+    source: {
+      description:
+        "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
+      type: "number"
+    }
+  },
+  required: ["source"],
+  additionalProperties: false
+};
 
 /**
  * A class for what Foundry VTT will automatically recognize as a "resource",

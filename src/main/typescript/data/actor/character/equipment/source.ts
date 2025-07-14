@@ -22,7 +22,7 @@ export const EQUIPMENT_SCHEMA = {
    * The IDs of the weapon items in the character's posession in weapon slots.
    */
   weaponSlotIds: new fields.ArrayField(
-    new fields.DocumentIdField({ required: true, nullable: false }),
+    new fields.DocumentIdField({ required: true, nullable: true }),
     { min: 2, max: 2, required: true, nullable: false }
   ),
   /** The amount of caps the character owns */

@@ -1,9 +1,8 @@
 import BaseSetup from "../applications/actor/character/baseSetup.js";
 import type { ApparelSlot, SkillName, SpecialName } from "../constants.js";
 import { CONSTANTS, getPainThreshold, TYPES } from "../constants.js";
-import { CharacterDataPropertiesData } from "../data/actor/character/properties.js";
+import { CharacterProperties } from "../data/actor/character/properties.js";
 import {
-  CompositeNumber,
   CompositeResource,
   type ComponentSource,
   type SerializedCompositeNumber
@@ -32,35 +31,49 @@ import SystemRulesError from "../systemRulesError.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n, { getI18n } from "../wvI18n.js";
 import TypeDataModel = foundry.abstract.TypeDataModel;
-import fields = foundry.data.fields;
-import { EQUIPMENT_SCHEMA } from "../data/actor/character/equipment/source.js";
 import { EquipmentProperties } from "../data/actor/character/equipment/properties.js";
 import { VitalsProperties } from "../data/actor/character/vitals/properties.js";
-import { VITALS_SCHEME } from "../data/actor/character/vitals/source.js";
+import { CHARACTER_SCHEMA } from "../data/actor/character/source.js";
+import type { DeepPartial } from "fvtt-types/utils";
 
-type CharacterDerived = {
-  vitals: VitalsProperties;
-  equipment: EquipmentProperties;
-};
-
-const character_data_schema = {
-  vitals: new fields.SchemaField(VITALS_SCHEME),
-  equipment: new fields.SchemaField(EQUIPMENT_SCHEMA),
-};
-
-
-type CharacterDataSchema = typeof character_data_schema;
-export class CharacterSystem extends TypeDataModel<CharacterDataSchema, WvActor, CharacterDerived> {
+// This must go here to avoid circular dependencies with WvActor
+export class CharacterSystem extends TypeDataModel<typeof CHARACTER_SCHEMA, WvActor, CharacterProperties> {
   override prepareDerivedData(this: TypeDataModel.PrepareDerivedDataThis<this>): void {
     // todo!
     const v = this._source.vitals;
     this.vitals = VitalsProperties.from(v);
     const e = this._source.equipment;
     this.equipment = EquipmentProperties.from(e)
+    this = CharacterProperties.from(this);
+
+    this.vitals.applySpecials(this.specials);
+    this.vitals.applyLevel(this.leveling.level);
+
+    this.system.secondary.applySpecials(this.data.data.specials);
+
+    this.system.skills.setBaseValues(
+      this.system.specials,
+      this.system.magic.thaumSpecial,
+      this.system.leveling
+    );
+
+    this.applyRuleElementsForHook("afterSkills");
+
+    this.system.equipment.applyEquippedApparel(this.equippedApparel);
+
+    // TODO: hit chance, combat trick mods
+    this.system.secondary.applySizeCategory(this.system.background.size.total);
+    this.system.vitals.applySizeCategory(this.system.background.size.total);
+
+    this.applyRuleElementsForHook("afterComputation");
+    this.items.forEach((item) => {
+      item.finalizeData();
+      item.apps && item.render();
+    });
   }
 
-  static override defineSchema() {
-    return character_data_schema;
+  static override defineSchema(): typeof CHARACTER_SCHEMA {
+    return CHARACTER_SCHEMA;
   }
 }
 
@@ -390,11 +403,11 @@ export default class WvActor extends Actor<"character"> {
       );
 
     const index = slot - 1;
-    const slots = this.system.equipment.weaponSlotIds;
+    const slots: [string | null, string | null] = this.system.equipment.weaponSlotIds;
     if (slots[index] === null) return;
 
     slots[index] = null;
-    await this.update({ data: { equipment: { weaponSlotIds: slots } } });
+    await this.update({ system: { equipment: { weaponSlotIds: slots } } });
   }
 
   /**
@@ -440,7 +453,7 @@ export default class WvActor extends Actor<"character"> {
       );
 
     if (this.system.equipment[`${slot}SlotId`] === id) return;
-    await this.update({ data: { equipment: { [`${slot}SlotId`]: id } } });
+    await this.update({ system: { equipment: { [`${slot}SlotId`]: id } } });
   }
 
   /**
@@ -457,22 +470,22 @@ export default class WvActor extends Actor<"character"> {
         "wv.system.messages.canNotDoInCombat"
       );
 
-    await this.update({ data: { equipment: { [`${slot}SlotId`]: null } } });
+    await this.update({ system: { equipment: { [`${slot}SlotId`]: null } } });
   }
 
   /** Update the hit points of the Actor. */
   async updateHitPoints(value: number) {
-    await this.update({ data: { vitals: { hitPoints: { value } } } });
+    await this.update({ system: { vitals: { hitPoints: { value } } } });
   }
 
   /** Update the action points of the Actor. */
   async updateActionPoints(value: number) {
-    await this.update({ data: { vitals: { actionPoints: { value } } } });
+    await this.update({ system: { vitals: { actionPoints: { value } } } });
   }
 
   /** Update the strain of the Actor. */
   async updateStrain(value: number) {
-    await this.update({ data: { vitals: { strain: { value } } } });
+    await this.update({ system: { vitals: { strain: { value } } } });
   }
 
   /** Restore the action points of the actor to the maximum. */
@@ -483,7 +496,7 @@ export default class WvActor extends Actor<"character"> {
   /** Restore the quick slots of the actor to the maximum. */
   async restoreQuickSlots() {
     await this.update({
-      data: { equipment: { quickSlots: { value: this.quickSlots.max } } }
+      system: { equipment: { quickSlots: { value: this.quickSlots.max } } }
     });
   }
 
@@ -620,8 +633,6 @@ export default class WvActor extends Actor<"character"> {
   }
 
   override prepareBaseData(): void {
-    this.system = new CharacterDataPropertiesData(this.data.data);
-
     this.system.specials.applyRadiationSickness(
       this.system.vitals.radiationSicknessLevel
     );
@@ -646,7 +657,7 @@ export default class WvActor extends Actor<"character"> {
 
     this.applyRuleElementsForHook("afterSkills");
 
-    this.system.equipment.applyEquippedApparel(this.equippedApparel);
+    EquipmentProperties.applyEquippedApparel(this.system.equipment, this.equippedApparel)
 
     // TODO: hit chance, combat trick mods
     this.system.secondary.applySizeCategory(this.system.background.size.total);
@@ -665,7 +676,7 @@ export default class WvActor extends Actor<"character"> {
     user: BaseUser
   ): Promise<void> {
     super._preCreate(data, options, user);
-    this.validateSystemData(this._source.data);
+    this.validateSystemData(this._source);
   }
 
   protected override async _preUpdate(
@@ -676,7 +687,7 @@ export default class WvActor extends Actor<"character"> {
     super._preUpdate(changed, options, user);
     await this.checkPT(changed);
     this.validateSystemData(
-      foundry.utils.mergeObject(this.data._source.data, changed.data ?? {}, {
+      foundry.utils.mergeObject(this._source, changed.data ?? {}, {
         recursive: options.recursive,
         inplace: false
       })
@@ -685,7 +696,7 @@ export default class WvActor extends Actor<"character"> {
 
   /** Validate passed source system data. */
   protected validateSystemData(data: unknown): void {
-    validateSystemData(data, getGame().wv.validators.actor[this.data.type]);
+    validateSystemData(data, getGame().wv.validators.actor[this.type]);
   }
 
   /** Apply the RuleElements of this Actor's Items to itself and its Items. */

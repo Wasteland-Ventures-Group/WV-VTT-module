@@ -1,14 +1,14 @@
 import { CompositeNumber } from "../../../common.js";
-import BackgroundSource from "./source.js";
+import { type BackgroundSource } from "./source.js";
 
-export default class BackgroundProperties extends BackgroundSource {
-  constructor(source: BackgroundSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
+export type BackgroundProperties = BackgroundSource & {
+  size: CompositeNumber;
+}
 
-    this.size = CompositeNumber.from(source.size);
-    this.size.bounds = { min: -4, max: 4 };
+export namespace BackgroundProperties {
+  export function from(source: BackgroundSource): BackgroundProperties {
+    const result = { ...source, size: CompositeNumber.from(source.size) }
+    result.size.bounds = { min: -4, max: 4 }
+    return result
   }
-
-  override size: CompositeNumber;
 }

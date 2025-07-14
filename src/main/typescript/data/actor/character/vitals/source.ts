@@ -56,3 +56,4 @@ export const VITALS_SCHEME = {
   crippledLimbs: new fields.SchemaField(LIMBS_CRIPPLED_STATUS_SCHEME),
 };
 
+export type VitalsSource = fields.SchemaField.InitializedData<typeof VITALS_SCHEME>;

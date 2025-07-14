@@ -1,13 +1,33 @@
 import { CONSTANTS, SpecialNames, TYPES } from "../../../constants.js";
 import { CompositeNumber } from "../../common.js";
-import BackgroundProperties from "./background/properties.js";
-import EquipmentProperties from "./equipment/properties.js";
-import LevelingProperties from "./leveling/properties.js";
+import { BackgroundProperties } from "./background/properties.js";
+import { EquipmentProperties } from "./equipment/properties.js";
+import { LevelingProperties } from "./leveling/properties.js";
 import MagicProperties from "./magic/properties.js";
 import SkillsProperties from "./skills/properties.js";
-import { CharacterDataSourceData } from "./source.js";
+import { type CharacterDataSourceData, type CharacterSource } from "./source.js";
 import SpecialsProperties, { Special } from "./specials/properties.js";
-import VitalsProperties from "./vitals/properties.js";
+import { VitalsProperties } from "./vitals/properties.js";
+
+export type CharacterProperties = CharacterSource & {
+  vitals: VitalsProperties;
+  /** The secondary statistics of the character */
+  secondary: SecondaryStatisticsProperties;
+  equipment: EquipmentProperties;
+
+  /** The SPECIALs of the character */
+  specials: SpecialsProperties;
+
+  /** The skills of the character */
+  skills: SkillsProperties;
+  /** The background of the character */
+  background: BackgroundProperties;
+
+  magic: MagicProperties;
+
+  /** The resistances of the character */
+  resistances: ResistancesProperties;
+};
 
 export default interface CharacterDataProperties {
   type: typeof TYPES.ACTOR.CHARACTER;
@@ -54,7 +74,7 @@ export class AttackActionModifierProperties {
 
 const attackMods = CONSTANTS.rules.actions.attack;
 
-export class SecondaryStatisticsProperties {
+class SecondaryStatisticsProperties {
   /** The criticals of the character */
   criticals = new CriticalsProperties();
 
@@ -107,44 +127,36 @@ export class SecondaryStatisticsProperties {
   }
 }
 
-export class CharacterDataPropertiesData extends CharacterDataSourceData {
-  constructor(source: CharacterDataSourceData) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    this.leveling = new LevelingProperties(source.leveling);
+export namespace CharacterProperties {
+  export function from(source: CharacterSource): CharacterProperties {
+    // TODO: move this to wvActor
+    const result = {
+      ...source,
+      secondary: new SecondaryStatisticsProperties(),
+      leveling: LevelingProperties.from(source.leveling),
+      specials: new SpecialsProperties(),
+      skills: new SkillsProperties(),
+      vitals: VitalsProperties.from(source.vitals),
+      equipment: EquipmentProperties.from(source.equipment),
+      background: BackgroundProperties.from(source.background),
+      magic: new MagicProperties(source.magic),
+      resistances: new ResistancesProperties(),
+    };
 
     for (const specialName of SpecialNames) {
-      const special = this.specials[specialName];
-      special.points = this.leveling.specialPoints[specialName];
+      const special = result.specials[specialName];
+      special.points = source.leveling.specialPoints[specialName];
       special.permBounds = { min: 0, max: 15 };
       special.tempBounds = { min: 0, max: 15 };
     }
 
-    this.background = new BackgroundProperties(source.background);
-    this.equipment = new EquipmentProperties(source.equipment);
-    this.vitals = new VitalsProperties(source.vitals);
+    return result;
+  }
+}
+
+export class CharacterDataPropertiesData {
+  constructor(source: CharacterDataSourceData) {
+    foundry.utils.mergeObject(this, source);
     this.magic = new MagicProperties(source.magic);
   }
-
-  override background: BackgroundProperties;
-
-  override equipment: EquipmentProperties;
-
-  override leveling: LevelingProperties;
-
-  override vitals: VitalsProperties;
-
-  override magic: MagicProperties;
-
-  /** The secondary statistics of the character */
-  secondary = new SecondaryStatisticsProperties();
-
-  /** The resistances of the character */
-  resistances = new ResistancesProperties();
-
-  /** The skills of the character */
-  skills = new SkillsProperties();
-
-  /** The SPECIALs of the character */
-  specials = new SpecialsProperties();
 }

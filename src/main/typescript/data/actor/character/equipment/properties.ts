@@ -14,12 +14,13 @@ export type EquipmentProperties = EquipmentSource & {
 
 export namespace EquipmentProperties {
   export function from(source: EquipmentSource): EquipmentProperties {
+    const slots: [string | null, string | null] = [source.weaponSlotIds[0] ?? null, source.weaponSlotIds[0] ?? null]
     const result = {
       ...source,
       quickSlots: CompositeResource.from(source.quickSlots),
       damageThreshold: new CompositeNumber(),
       equipActionCosts: new EquipActionCosts(),
-      weaponSlotIds: [source.weaponSlotIds[0] ?? null, source.weaponSlotIds[0] ?? null]
+      weaponSlotIds: slots
     };
     result.quickSlots.source = 0;
     result.quickSlots.bounds.min = 0;
@@ -30,16 +31,16 @@ export namespace EquipmentProperties {
    * Modify the damage threshold and max quick slots by the equipped apparel's
    * values.
    */
-  export function applyEquippedApparel(this: EquipmentProperties, equippedApparel: Apparel[]) {
+  export function applyEquippedApparel(self: EquipmentProperties, equippedApparel: Apparel[]) {
     equippedApparel.forEach((apparel) => {
       if (apparel.data.data.damageThreshold)
-        this.damageThreshold.add({
+        self.damageThreshold.add({
           value: apparel.data.data.damageThreshold.total,
           labelComponents: [{ text: apparel.name ?? "" }]
         });
 
       if (apparel.data.data.quickSlots.total)
-        this.quickSlots.add({
+        self.quickSlots.add({
           value: apparel.data.data.quickSlots.total,
           labelComponents: [{ text: apparel.name ?? "" }]
         });

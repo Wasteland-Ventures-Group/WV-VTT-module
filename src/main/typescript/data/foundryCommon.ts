@@ -10,10 +10,6 @@ export const RESOURCE_SCHEMA = {
 
 export const RESOURCE_FIELD = new fields.SchemaField(RESOURCE_SCHEMA);
 
-interface ResourceFieldOptions {
-  value: number
-}
-
 /** Foundry Resource. */
 export interface ResourceSource extends fields.SchemaField.InitializedData<typeof RESOURCE_SCHEMA> { }
 

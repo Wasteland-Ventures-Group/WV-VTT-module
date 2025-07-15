@@ -8,8 +8,7 @@ import MagicSheet from "./applications/item/magicSheet.js";
 import RaceSheet from "./applications/item/raceSheet.js";
 import WeaponSheet from "./applications/item/weaponSheet.js";
 import WvItemSheet from "./applications/item/wvItemSheet.js";
-import { CONSTANTS, TYPES, type ProtoItemType } from "./constants.js";
-import { CHARACTER_JSON_SCHEMA } from "./data/actor/character/source.js";
+import { CONSTANTS, TYPES } from "./constants.js";
 import { AMMO_SOURCE_JSON_SCHEMA } from "./data/item/ammo/source.js";
 import { APPAREL_SOURCE_JSON_SCHEMA } from "./data/item/apparel/source.js";
 import { BASE_ITEM_SOURCE_JSON_SCHEMA } from "./data/item/common/baseItem/source.js";
@@ -26,7 +25,6 @@ import Effect from "./item/effect.js";
 import Magic from "./item/magic.js";
 import Race from "./item/race.js";
 import Weapon from "./item/weapon.js";
-import { WvItemProxy } from "./item/wvItemProxy.js";
 import { macros } from "./macros/index.js";
 import {
   flagCriticalFailure,
@@ -59,6 +57,27 @@ import type {
   WeaponSystem
 } from "./item/wvItem.js";
 import Die = foundry.dice.terms.Die;
+
+declare module "fvtt-types/configuration" {
+  interface DocumentClassConfig {
+    Actor: typeof WvActor;
+    Item: typeof WvItem;
+  }
+  interface DataModelConfig {
+    Actor: {
+      character: typeof CharacterSystem;
+    };
+    Item: {
+      ammo: typeof AmmoSystem;
+      apparel: typeof ApparelSystem;
+      effect: typeof EffectSystem;
+      weapon: typeof WeaponSystem;
+      race: typeof RaceSystem;
+      magic: typeof MagicSystem;
+      misc: typeof MiscSystem;
+    };
+  }
+}
 
 /** The Foundry configuration function for the init hook */
 export function configureFoundryOnInit(): void {
@@ -192,25 +211,4 @@ function configureCombatResource(): void {
     resource: "vitals.actionPoints.value",
     skipDefeated: true
   });
-}
-
-declare module "fvtt-types/configuration" {
-  interface DocumentClassConfig {
-    Actor: typeof WvActor;
-    Item: typeof WvItem<ProtoItemType>;
-  }
-  interface DataModelConfig {
-    Actor: {
-      character: typeof CharacterSystem;
-    };
-    Item: {
-      ammo: typeof AmmoSystem;
-      apparel: typeof ApparelSystem;
-      effect: typeof EffectSystem;
-      weapon: typeof WeaponSystem;
-      race: typeof RaceSystem;
-      magic: typeof MagicSystem;
-      misc: typeof MiscSystem;
-    };
-  }
 }

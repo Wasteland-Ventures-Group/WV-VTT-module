@@ -27,7 +27,6 @@ const LIMBS_CRIPPLED_STATUS_SCHEME = {
   wings: new fields.SchemaField(PAIRED_CRIPPLED_LIMB_STATUS_SCHEME, { required: true, nullable: false })
 }
 
-// TODO? add defaults.
 export const VITALS_SCHEME = {
   /** The hit points of the character */
   hitPoints: new fields.SchemaField(RESOURCE_SCHEMA, {

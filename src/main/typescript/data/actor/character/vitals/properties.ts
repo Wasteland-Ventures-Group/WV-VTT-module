@@ -6,18 +6,69 @@ import {
 import WvI18n from "../../../../wvI18n.js";
 import { CompositeNumber, CompositeResource } from "../../../common.js";
 import type SpecialsProperties from "../specials/properties.js";
-import VitalsSource from "./source.js";
+import { type VitalsSource } from "./source.js";
 
-export type VitalsProperties = VitalsSource & {};
+export type VitalsProperties = VitalsSource & {
+  hitPoints: CompositeResource;
+  healingRate: CompositeNumber;
+  actionPoints: CompositeResource;
+  insanity: CompositeResource;
+  strain: CompositeResource;
+};
 export namespace VitalsProperties {
   export function from(v: VitalsSource): VitalsProperties {
-    return { ...v }
+    return {
+      ...v,
+      hitPoints: CompositeResource.from(v.hitPoints),
+      actionPoints: CompositeResource.from(v.actionPoints),
+      healingRate: new CompositeNumber(0, { min: 0 }),
+      strain: CompositeResource.from(v.strain),
+      insanity: CompositeResource.from(v.insanity),
+    }
+  }
+
+  /** Apply SPECIALs to the vitals and set the base values. */
+  export function applySpecials(self: VitalsProperties, specials: SpecialsProperties) {
+    self.hitPoints.source = specials.endurance.permTotal + 10;
+
+    if (specials.endurance.tempTotal >= 8) {
+      self.healingRate.source = 3;
+    } else if (specials.endurance.tempTotal >= 4) {
+      self.healingRate.source = 2;
+    } else {
+      self.healingRate.source = 1;
+    }
+
+    self.actionPoints.source = Math.floor(specials.agility.tempTotal / 2) + 10;
+    self.insanity.source = Math.floor(specials.intelligence.tempTotal / 2) + 5;
+  }
+
+  /** Apply the level to the vitals and set the base strain. */
+  export function applyLevel(self: VitalsProperties, level: number) {
+    self.strain.source = 20 + Math.floor(level / 5) * 5;
+  }
+
+  /** Apply the size category and set a hit points modifier. */
+  export function applySizeCategory(self: VitalsProperties, sizeCategory: number) {
+    const value = {
+      4: 4,
+      3: 2,
+      2: 1,
+      [-2]: -1,
+      [-3]: -2,
+      [-4]: -4
+    }[sizeCategory];
+
+    if (value)
+      self.hitPoints.add({
+        value,
+        labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
+      });
   }
 }
 
-class VitalsPropertiesOld extends VitalsSource {
+class VitalsPropertiesOld {
   constructor(source: VitalsSource) {
-    super();
     foundry.utils.mergeObject(this, source);
 
     this.hitPoints = CompositeResource.from(source.hitPoints);
@@ -37,13 +88,13 @@ class VitalsPropertiesOld extends VitalsSource {
 
   painThreshold: PainThreshold;
 
-  override hitPoints: CompositeResource;
+  hitPoints: CompositeResource;
 
-  override actionPoints: CompositeResource;
+  actionPoints: CompositeResource;
 
-  override insanity: CompositeResource;
+  insanity: CompositeResource;
 
-  override strain: CompositeResource;
+  strain: CompositeResource;
 
   /** The healing rate of the character per 8 hours of rest */
   healingRate = new CompositeNumber(0, { min: 0 });
@@ -75,42 +126,5 @@ class VitalsPropertiesOld extends VitalsSource {
     return "none";
   }
 
-  /** Apply SPECIALs to the vitals and set the base values. */
-  applySpecials(specials: SpecialsProperties) {
-    this.hitPoints.source = specials.endurance.permTotal + 10;
 
-    if (specials.endurance.tempTotal >= 8) {
-      this.healingRate.source = 3;
-    } else if (specials.endurance.tempTotal >= 4) {
-      this.healingRate.source = 2;
-    } else {
-      this.healingRate.source = 1;
-    }
-
-    this.actionPoints.source = Math.floor(specials.agility.tempTotal / 2) + 10;
-    this.insanity.source = Math.floor(specials.intelligence.tempTotal / 2) + 5;
-  }
-
-  /** Apply the level to the vitals and set the base strain. */
-  applyLevel(level: number) {
-    this.strain.source = 20 + Math.floor(level / 5) * 5;
-  }
-
-  /** Apply the size category and set a hit points modifier. */
-  applySizeCategory(sizeCategory: number) {
-    const value = {
-      4: 4,
-      3: 2,
-      2: 1,
-      [-2]: -1,
-      [-3]: -2,
-      [-4]: -4
-    }[sizeCategory];
-
-    if (value)
-      this.hitPoints.add({
-        value,
-        labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
-      });
-  }
 }

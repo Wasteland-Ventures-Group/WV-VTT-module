@@ -1,11 +1,11 @@
-import { CONSTANTS, SpecialNames, TYPES } from "../../../constants.js";
+import { CONSTANTS, SpecialNames, } from "../../../constants.js";
 import { CompositeNumber } from "../../common.js";
 import { BackgroundProperties } from "./background/properties.js";
 import { EquipmentProperties } from "./equipment/properties.js";
 import { LevelingProperties } from "./leveling/properties.js";
-import MagicProperties from "./magic/properties.js";
+import { MagicProperties } from "./magic/properties.js";
 import SkillsProperties from "./skills/properties.js";
-import { type CharacterDataSourceData, type CharacterSource } from "./source.js";
+import { type CharacterSource } from "./source.js";
 import SpecialsProperties, { Special } from "./specials/properties.js";
 import { VitalsProperties } from "./vitals/properties.js";
 
@@ -13,6 +13,8 @@ export type CharacterProperties = CharacterSource & {
   vitals: VitalsProperties;
   /** The secondary statistics of the character */
   secondary: SecondaryStatisticsProperties;
+
+  /** The equipment of the character. */
   equipment: EquipmentProperties;
 
   /** The SPECIALs of the character */
@@ -23,16 +25,15 @@ export type CharacterProperties = CharacterSource & {
   /** The background of the character */
   background: BackgroundProperties;
 
+  /** The magic statistics of the character. */
   magic: MagicProperties;
 
   /** The resistances of the character */
   resistances: ResistancesProperties;
-};
 
-export default interface CharacterDataProperties {
-  type: typeof TYPES.ACTOR.CHARACTER;
-  data: CharacterDataPropertiesData;
-}
+  /** The levelling properties of the character. */
+  leveling: LevelingProperties;
+};
 
 export class ResistancesProperties {
   /** The poison resistance of the character */
@@ -129,7 +130,6 @@ class SecondaryStatisticsProperties {
 
 export namespace CharacterProperties {
   export function from(source: CharacterSource): CharacterProperties {
-    // TODO: move this to wvActor
     const result = {
       ...source,
       secondary: new SecondaryStatisticsProperties(),
@@ -139,7 +139,7 @@ export namespace CharacterProperties {
       vitals: VitalsProperties.from(source.vitals),
       equipment: EquipmentProperties.from(source.equipment),
       background: BackgroundProperties.from(source.background),
-      magic: new MagicProperties(source.magic),
+      magic: MagicProperties.from(source.magic),
       resistances: new ResistancesProperties(),
     };
 
@@ -151,12 +151,5 @@ export namespace CharacterProperties {
     }
 
     return result;
-  }
-}
-
-export class CharacterDataPropertiesData {
-  constructor(source: CharacterDataSourceData) {
-    foundry.utils.mergeObject(this, source);
-    this.magic = new MagicProperties(source.magic);
   }
 }

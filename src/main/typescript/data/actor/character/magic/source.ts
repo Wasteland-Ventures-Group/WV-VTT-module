@@ -1,39 +1,26 @@
-import type { JSONSchemaType } from "ajv";
 import {
-  SpecialName,
-  SpecialNames,
-  ThaumaturgySpecial,
-  ThaumaturgySpecials
+  SpecialNames, MagicSpecials,
 } from "../../../../constants.js";
 
-type CharacterMagicSpecials = Partial<Record<string, SpecialName>>;
-export default class MagicSource {
-  /** The SPECIAL of the character associated with the Thaumaturgy skill */
-  thaumSpecial: ThaumaturgySpecial = "intelligence";
+import fields = foundry.data.fields;
 
-  magicSpecials: CharacterMagicSpecials = {};
+const SPECIAL_FIELD = new fields.StringField({ choices: SpecialNames });
+const MAGIC_SPECIALS_SCHEMA =
+  Object.entries(MagicSpecials).reduce((acc, [school, _]) => {
+    acc[school] = SPECIAL_FIELD;
+    return acc;
+  }, {} as Record<string, typeof SPECIAL_FIELD>)
+
+const THAUMATURGY_SPECIAL_FIELD = new fields.StringField({ required: true, choices: SpecialNames.filter((name) => name != "luck") });
+
+export const MAGIC_SCHEMA = {
+  /** The SPECIAL of the character associated with the Thaumaturgy skill */
+  thaumSpecial: THAUMATURGY_SPECIAL_FIELD,
+  /**
+   * A mapping of school to the attribute that determines its potency, but only
+   * for schools that may have multiple choices in the matter.
+   */
+  magicSpecials: new fields.SchemaField(MAGIC_SPECIALS_SCHEMA),
 }
 
-export const MAGIC_JSON_SCHEMA: JSONSchemaType<MagicSource> = {
-  description: "A magic specification",
-  type: "object",
-  properties: {
-    thaumSpecial: {
-      description: "The selected Thaumaturgy SPECIAL of the character",
-      type: "string",
-      enum: ThaumaturgySpecials
-    },
-    magicSpecials: {
-      type: "object",
-      additionalProperties: {
-        type: "string",
-        enum: SpecialNames
-      }
-    }
-  },
-  required: ["thaumSpecial", "magicSpecials"],
-  additionalProperties: false,
-  default: {
-    thaumSpecial: "intelligence"
-  }
-};
+export type MagicSource = fields.SchemaField.InitializedData<typeof MAGIC_SCHEMA>;

@@ -32,44 +32,32 @@ import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n, { getI18n } from "../wvI18n.js";
 import TypeDataModel = foundry.abstract.TypeDataModel;
 import { EquipmentProperties } from "../data/actor/character/equipment/properties.js";
-import { VitalsProperties } from "../data/actor/character/vitals/properties.js";
 import { CHARACTER_SCHEMA } from "../data/actor/character/source.js";
 import type { DeepPartial } from "fvtt-types/utils";
+import { VitalsProperties } from "../data/actor/character/vitals/properties.js";
+import { LevelingProperties } from "../data/actor/character/leveling/properties.js";
 
 // This must go here to avoid circular dependencies with WvActor
 export class CharacterSystem extends TypeDataModel<typeof CHARACTER_SCHEMA, WvActor, CharacterProperties> {
   override prepareDerivedData(this: TypeDataModel.PrepareDerivedDataThis<this>): void {
-    // todo!
-    const v = this._source.vitals;
-    this.vitals = VitalsProperties.from(v);
-    const e = this._source.equipment;
-    this.equipment = EquipmentProperties.from(e)
-    this = CharacterProperties.from(this);
+    const derived = CharacterProperties.from(this);
+    foundry.utils.mergeObject(this, derived);
 
-    this.vitals.applySpecials(this.specials);
-    this.vitals.applyLevel(this.leveling.level);
+    VitalsProperties.applySpecials(this.vitals, this.specials);
+    VitalsProperties.applyLevel(this.vitals, LevelingProperties.level(this.leveling));
 
-    this.system.secondary.applySpecials(this.data.data.specials);
+    this.secondary.applySpecials(this.specials);
 
-    this.system.skills.setBaseValues(
-      this.system.specials,
-      this.system.magic.thaumSpecial,
-      this.system.leveling
+    this.magic.thaumSpecial
+    this.skills.setBaseValues(
+      this.specials,
+      this.magic.thaumSpecial,
+      this.leveling
     );
 
-    this.applyRuleElementsForHook("afterSkills");
-
-    this.system.equipment.applyEquippedApparel(this.equippedApparel);
-
     // TODO: hit chance, combat trick mods
-    this.system.secondary.applySizeCategory(this.system.background.size.total);
-    this.system.vitals.applySizeCategory(this.system.background.size.total);
-
-    this.applyRuleElementsForHook("afterComputation");
-    this.items.forEach((item) => {
-      item.finalizeData();
-      item.apps && item.render();
-    });
+    this.secondary.applySizeCategory(this.background.size.total);
+    VitalsProperties.applySizeCategory(this.vitals, this.background.size.total);
   }
 
   static override defineSchema(): typeof CHARACTER_SCHEMA {
@@ -644,6 +632,7 @@ export default class WvActor extends Actor<"character"> {
   }
 
   override prepareDerivedData(): void {
+    // super.prepareDerivedData();
     this.system.vitals.applySpecials(this.data.data.specials);
     this.system.vitals.applyLevel(this.data.data.leveling.level);
 

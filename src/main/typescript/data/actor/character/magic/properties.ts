@@ -1,28 +1,25 @@
 import {
   defaultMagicSpecial,
-  GeneralMagicSchool,
+  type GeneralMagicSchool,
   GeneralMagicSchools,
-  SpecialName
+  type SpecialName
 } from "../../../../constants";
-import MagicSource from "./source";
+import { type MagicSource } from "./source";
 
-export default class MagicProperties extends MagicSource {
-  constructor(source: MagicSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
+export interface MagicProperties extends MagicSource {
+  magicSpecials: Record<GeneralMagicSchool, SpecialName>,
+}
 
-    this.magicSpecials = defaultMagicSpecial();
+export namespace MagicProperties {
+  export function from(source: MagicSource): MagicProperties {
+    const magicSpecials = defaultMagicSpecial();
     GeneralMagicSchools.forEach((school) => {
-      const specialOverride = source.magicSpecials[school];
+      const sourceMagicSpecials = source.magicSpecials as Record<GeneralMagicSchool, SpecialName>;
+      const specialOverride = sourceMagicSpecials[school];
       if (specialOverride !== undefined) {
-        this.magicSpecials[school] = specialOverride;
+        magicSpecials[school] = specialOverride;
       }
     });
+    return { ...source, magicSpecials: magicSpecials }
   }
-
-  /**
-   * The record of which special a character uses to compute
-   * potency for a given school of magic
-   */
-  magicSpecials: Record<GeneralMagicSchool, SpecialName>;
 }

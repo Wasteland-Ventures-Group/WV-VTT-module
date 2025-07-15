@@ -47,37 +47,7 @@ import TempSpecialComponent from "./ruleEngine/ruleElements/tempSpecialComponent
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "./ruleEngine/ruleElementSource.js";
 import { initializedSettingName } from "./settings.js";
 import WvItem from "./item/wvItem.js";
-import type {
-  AmmoSystem,
-  ApparelSystem,
-  EffectSystem,
-  MagicSystem,
-  MiscSystem,
-  RaceSystem,
-  WeaponSystem
-} from "./item/wvItem.js";
 import Die = foundry.dice.terms.Die;
-
-declare module "fvtt-types/configuration" {
-  interface DocumentClassConfig {
-    Actor: typeof WvActor;
-    Item: typeof WvItem;
-  }
-  interface DataModelConfig {
-    Actor: {
-      character: typeof CharacterSystem;
-    };
-    Item: {
-      ammo: typeof AmmoSystem;
-      apparel: typeof ApparelSystem;
-      effect: typeof EffectSystem;
-      weapon: typeof WeaponSystem;
-      race: typeof RaceSystem;
-      magic: typeof MagicSystem;
-      misc: typeof MiscSystem;
-    };
-  }
-}
 
 /** The Foundry configuration function for the init hook */
 export function configureFoundryOnInit(): void {
@@ -121,9 +91,6 @@ export function configureFoundryOnInit(): void {
       }
     },
     validators: {
-      actor: {
-        character: ajv.compile(CHARACTER_JSON_SCHEMA)
-      },
       item: {
         ammo: ajv.compile(AMMO_SOURCE_JSON_SCHEMA),
         apparel: ajv.compile(APPAREL_SOURCE_JSON_SCHEMA),

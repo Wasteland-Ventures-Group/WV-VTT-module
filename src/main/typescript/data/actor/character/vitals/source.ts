@@ -1,6 +1,7 @@
 import { RESOURCE_SCHEMA } from "../../../foundryCommon.js";
 
 import fields = foundry.data.fields;
+import { nullable } from "zod";
 
 const PAIRED_CRIPPLED_LIMB_STATUS_SCHEME = {
   /** The status of the front legs */
@@ -11,7 +12,7 @@ const PAIRED_CRIPPLED_LIMB_STATUS_SCHEME = {
 
 const LEGS_CRIPPLED_STATUS_SCHEME = {
   front: new fields.SchemaField(PAIRED_CRIPPLED_LIMB_STATUS_SCHEME, { initial: {}, nullable: false, required: true }),
-  back: new fields.SchemaField(PAIRED_CRIPPLED_LIMB_STATUS_SCHEME, { initial: {}, nullable: false, required: true }),
+  rear: new fields.SchemaField(PAIRED_CRIPPLED_LIMB_STATUS_SCHEME, { initial: {}, nullable: false, required: true }),
 }
 
 const LIMBS_CRIPPLED_STATUS_SCHEME = {
@@ -49,7 +50,7 @@ export const VITALS_SCHEME = {
   }),
 
   /** The absorbed dose of radiation of the character */
-  radiationDose: new fields.NumberField({ min: 0, initial: 0, integer: true }),
+  radiationDose: new fields.NumberField({ min: 0, initial: 0, integer: true, nullable: false }),
 
   /** The crippled status of the character's limbs */
   crippledLimbs: new fields.SchemaField(LIMBS_CRIPPLED_STATUS_SCHEME),

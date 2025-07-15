@@ -28,7 +28,6 @@ import type {
   RuleElementHook
 } from "../ruleEngine/ruleElementSource.js";
 import SystemRulesError from "../systemRulesError.js";
-import validateSystemData from "../validation/validateSystemData.js";
 import WvI18n, { getI18n } from "../wvI18n.js";
 import TypeDataModel = foundry.abstract.TypeDataModel;
 import { EquipmentProperties } from "../data/actor/character/equipment/properties.js";
@@ -119,7 +118,7 @@ export default class WvActor extends Actor<"character"> {
 
   /** Get the amount of crippled legs of the character. */
   get crippledLegs(): number {
-    return this.system.vitals.crippledLegs;
+    return VitalsProperties.crippledLegs(this.system.vitals);
   }
 
   /** Get the ground movement range of the actor. */
@@ -632,12 +631,7 @@ export default class WvActor extends Actor<"character"> {
   }
 
   override prepareDerivedData(): void {
-    // super.prepareDerivedData();
-    this.system.vitals.applySpecials(this.data.data.specials);
-    this.system.vitals.applyLevel(this.data.data.leveling.level);
-
-    this.system.secondary.applySpecials(this.data.data.specials);
-
+    super.prepareDerivedData();
     this.system.skills.setBaseValues(
       this.system.specials,
       this.system.magic.thaumSpecial,
@@ -647,10 +641,6 @@ export default class WvActor extends Actor<"character"> {
     this.applyRuleElementsForHook("afterSkills");
 
     EquipmentProperties.applyEquippedApparel(this.system.equipment, this.equippedApparel)
-
-    // TODO: hit chance, combat trick mods
-    this.system.secondary.applySizeCategory(this.system.background.size.total);
-    this.system.vitals.applySizeCategory(this.system.background.size.total);
 
     this.applyRuleElementsForHook("afterComputation");
     this.items.forEach((item) => {
@@ -681,11 +671,6 @@ export default class WvActor extends Actor<"character"> {
         inplace: false
       })
     );
-  }
-
-  /** Validate passed source system data. */
-  protected validateSystemData(data: unknown): void {
-    validateSystemData(data, getGame().wv.validators.actor[this.type]);
   }
 
   /** Apply the RuleElements of this Actor's Items to itself and its Items. */
@@ -729,7 +714,7 @@ export default class WvActor extends Actor<"character"> {
         };
         const allUsers: User[] = getGame().users?.contents ?? [];
         const authorisedUsers: string[] = allUsers.flatMap((user) => {
-          const id = user.data._id;
+          const id = user.id;
           if (id !== null) {
             const userLevel = this.getUserLevel(user);
             if (

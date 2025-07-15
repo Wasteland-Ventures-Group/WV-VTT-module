@@ -1,6 +1,6 @@
 import type Ajv from "ajv";
 import type { ValidateFunction } from "ajv";
-import WvActor from "./actor/wvActor.js";
+import WvActor, { CharacterSystem } from "./actor/wvActor.js";
 import type { CONSTANTS, TYPES } from "./constants.js";
 import type { CharacterDataSourceData } from "./data/actor/character/source.js";
 import { WvActorDataProperties } from "./data/actor/properties.js";
@@ -22,7 +22,7 @@ import type Effect from "./item/effect.js";
 import type Magic from "./item/magic.js";
 import type Race from "./item/race.js";
 import type Weapon from "./item/weapon.js";
-import WvItem, { ItemFlags } from "./item/wvItem.js";
+import WvItem, { AmmoSystem, ApparelSystem, EffectSystem, ItemFlags, MagicSystem, MiscSystem, RaceSystem, WeaponSystem } from "./item/wvItem.js";
 import type { WvI18nKey } from "./lang.js";
 import { macros } from "./macros/index.js";
 import type {
@@ -41,19 +41,30 @@ import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
 import type { RuleElementId } from "./ruleEngine/ruleElementSource.js";
 import type * as settings from "./settings.js";
 
-declare global {
-  interface SourceConfig {
-    Actor: WvActorDataSource;
-    Item: WvItemDataSource;
-  }
-
-  interface DataConfig {
-    Actor: WvActorDataProperties;
-    Item: WvItemDataProperties;
-  }
-
+declare module "fvtt-types/configuration" {
   interface DocumentClassConfig {
     Actor: typeof WvActor;
+    Item: typeof WvItem;
+  }
+  interface DataModelConfig {
+    Actor: {
+      character: typeof CharacterSystem;
+    };
+    Item: {
+      ammo: typeof AmmoSystem;
+      apparel: typeof ApparelSystem;
+      effect: typeof EffectSystem;
+      weapon: typeof WeaponSystem;
+      race: typeof RaceSystem;
+      magic: typeof MagicSystem;
+      misc: typeof MiscSystem;
+    };
+  }
+}
+
+
+declare global {
+  interface DocumentClassConfig {
     Combat: typeof WvCombat;
     Item: typeof WvItem;
   }
@@ -90,9 +101,6 @@ declare global {
       };
       /** Wasteland Ventures system data JSON validators */
       validators: {
-        actor: {
-          [TYPES.ACTOR.CHARACTER]: ValidateFunction<CharacterDataSourceData>;
-        };
         item: {
           [TYPES.ITEM.AMMO]: ValidateFunction<AmmoDataSourceData>;
           [TYPES.ITEM.APPAREL]: ValidateFunction<ApparelDataSourceData>;

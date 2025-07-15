@@ -10,10 +10,12 @@ import { type VitalsSource } from "./source.js";
 
 export type VitalsProperties = VitalsSource & {
   hitPoints: CompositeResource;
+  /** The healing rate of the character per 8 hours of rest */
   healingRate: CompositeNumber;
   actionPoints: CompositeResource;
   insanity: CompositeResource;
   strain: CompositeResource;
+  painThreshold: PainThreshold;
 };
 export namespace VitalsProperties {
   export function from(v: VitalsSource): VitalsProperties {
@@ -24,6 +26,7 @@ export namespace VitalsProperties {
       healingRate: new CompositeNumber(0, { min: 0 }),
       strain: CompositeResource.from(v.strain),
       insanity: CompositeResource.from(v.insanity),
+      painThreshold: getPainThreshold(v.hitPoints.value),
     }
   }
 
@@ -65,66 +68,31 @@ export namespace VitalsProperties {
         labelComponents: [{ key: "wv.rules.background.sizeCategory" }]
       });
   }
-}
-
-class VitalsPropertiesOld {
-  constructor(source: VitalsSource) {
-    foundry.utils.mergeObject(this, source);
-
-    this.hitPoints = CompositeResource.from(source.hitPoints);
-    this.hitPoints.bounds.min = 0;
-
-    this.painThreshold = getPainThreshold(this.hitPoints.value);
-
-    this.actionPoints = CompositeResource.from(source.actionPoints);
-    this.actionPoints.bounds.min = 0;
-
-    this.insanity = CompositeResource.from(source.insanity);
-    this.insanity.bounds.min = 0;
-
-    this.strain = CompositeResource.from(source.strain);
-    this.strain.bounds.min = 0;
-  }
-
-  painThreshold: PainThreshold;
-
-  hitPoints: CompositeResource;
-
-  actionPoints: CompositeResource;
-
-  insanity: CompositeResource;
-
-  strain: CompositeResource;
-
-  /** The healing rate of the character per 8 hours of rest */
-  healingRate = new CompositeNumber(0, { min: 0 });
 
   /** Get the amount of crippled legs. */
-  get crippledLegs(): number {
+  export function crippledLegs(self: VitalsProperties): number {
     return [
-      this.crippledLimbs.legs.front.left,
-      this.crippledLimbs.legs.front.right,
-      this.crippledLimbs.legs.rear.left,
-      this.crippledLimbs.legs.rear.right
+      self.crippledLimbs.legs.front.left,
+      self.crippledLimbs.legs.front.right,
+      self.crippledLimbs.legs.rear.left,
+      self.crippledLimbs.legs.rear.right
     ].filter(Boolean).length;
+  }
+
+  /** Get the level of radiation sickness. */
+  export function radiationSicknessLevel(self: VitalsProperties): RadiationSicknessLevel {
+    if (self.radiationDose >= 17) return "critical";
+    if (self.radiationDose >= 13) return "major";
+    if (self.radiationDose >= 9) return "moderate";
+    if (self.radiationDose >= 5) return "minor";
+    return "none";
   }
 
   /**
    * Get the internationalized name for the radiation sickness level of a
    * character.
    */
-  get i18nRadiationSicknessLevel(): string {
-    return WvI18n.radiationSicknessLevels[this.radiationSicknessLevel];
+  export function i18nRadiationSicknessLevel(self: VitalsProperties): string {
+    return WvI18n.radiationSicknessLevels[radiationSicknessLevel(self)];
   }
-
-  /** Get the level of radiation sickness. */
-  get radiationSicknessLevel(): RadiationSicknessLevel {
-    if (this.radiationDose >= 17) return "critical";
-    if (this.radiationDose >= 13) return "major";
-    if (this.radiationDose >= 9) return "moderate";
-    if (this.radiationDose >= 5) return "minor";
-    return "none";
-  }
-
-
 }

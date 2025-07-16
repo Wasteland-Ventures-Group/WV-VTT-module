@@ -2,17 +2,12 @@ import type Ajv from "ajv";
 import type { ValidateFunction } from "ajv";
 import WvActor, { CharacterSystem } from "./actor/wvActor.js";
 import type { CONSTANTS, TYPES } from "./constants.js";
-import type { CharacterDataSourceData } from "./data/actor/character/source.js";
-import { WvActorDataProperties } from "./data/actor/properties.js";
-import { WvActorDataSource } from "./data/actor/source.js";
 import type { AmmoDataSourceData } from "./data/item/ammo/source.js";
 import type { ApparelDataSourceData } from "./data/item/apparel/source.js";
 import type BaseItemSource from "./data/item/common/baseItem/source.js";
 import type StackableItemSource from "./data/item/common/stackableItem/source.js";
 import type { MagicDataSourceData } from "./data/item/magic/source.js";
-import { WvItemDataProperties } from "./data/item/properties.js";
 import type { RaceDataSourceData } from "./data/item/race/source.js";
-import { WvItemDataSource } from "./data/item/source.js";
 import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage/index.js";
@@ -66,7 +61,6 @@ declare module "fvtt-types/configuration" {
 declare global {
   interface DocumentClassConfig {
     Combat: typeof WvCombat;
-    Item: typeof WvItem;
   }
 
   interface Game {

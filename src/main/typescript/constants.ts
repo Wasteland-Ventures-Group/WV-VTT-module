@@ -1,5 +1,4 @@
 import { DICE_ROLL_MODES } from "fvtt-types/src/foundry/common/constants.mjs";
-import fields = foundry.data.fields;
 type ValueOf<T> = T[keyof T];
 export type RadiationSicknessLevel = (typeof RadiationSicknessLevels)[number];
 export const RadiationSicknessLevels = [

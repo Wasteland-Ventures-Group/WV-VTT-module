@@ -59,6 +59,10 @@ export class CharacterSystem extends TypeDataModel<typeof CHARACTER_SCHEMA, WvAc
     VitalsProperties.applySizeCategory(this.vitals, this.background.size.total);
   }
 
+  override prepareBaseData(): void {
+    this.specials.applyRadiationSickness(VitalsProperties.radiationSicknessLevel(this.vitals));
+  }
+
   static override defineSchema(): typeof CHARACTER_SCHEMA {
     return CHARACTER_SCHEMA;
   }
@@ -617,12 +621,6 @@ export default class WvActor extends Actor<"character"> {
     for (const race of this.itemTypes.race) {
       await race.delete();
     }
-  }
-
-  override prepareBaseData(): void {
-    this.system.specials.applyRadiationSickness(
-      this.system.vitals.radiationSicknessLevel
-    );
   }
 
   override prepareEmbeddedDocuments(): void {

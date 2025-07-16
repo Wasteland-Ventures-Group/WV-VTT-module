@@ -511,7 +511,7 @@ export default class WvActor extends Actor<"character"> {
       success: criticals.success.total,
       failure: criticals.failure.total
     });
-    const checkRoll = new Roll(fullFormula.toString()).roll({ async: false });
+    const checkRoll = new Roll(fullFormula.toString()).evaluateSync();
 
     const msgOptions = createDefaultMessageData(
       ChatMessage.getSpeaker({ actor: this }),
@@ -535,6 +535,8 @@ export default class WvActor extends Actor<"character"> {
     }
 
     const result = checkRoll.dice[0]?.results[0]?.result ?? 0;
+    const critical = result <= criticals.success.total ? "success" : result >= criticals.failure.total ? "failure" : "none";
+
     const flags: CheckFlags = {
       type: "roll",
       details: {
@@ -546,7 +548,7 @@ export default class WvActor extends Actor<"character"> {
       },
       roll: {
         formula: checkRoll.formula,
-        critical: checkRoll.dice[0]?.results[0]?.critical,
+        critical: critical,
         result,
         degreesOfSuccess: fullFormula.d100Target - result,
         total: checkRoll.total ?? 0

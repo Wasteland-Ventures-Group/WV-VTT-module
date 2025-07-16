@@ -1,4 +1,4 @@
-import { CommonRollFlags, getContentElement } from ".";
+import { type CommonRollFlags, getContentElement } from ".";
 import { CONSTANTS } from "../../../constants";
 import type { HookParams } from "..";
 import { scrollChatToBottom } from "../../../foundryHelpers";

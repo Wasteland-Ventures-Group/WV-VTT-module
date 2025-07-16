@@ -1,4 +1,4 @@
-import { CONSTANTS, RollMode } from "./constants.js";
+import { CONSTANTS, type RollMode } from "./constants.js";
 import { LOG } from "./systemLogger.js";
 
 /** A factory class to create string formulas for Rolls. */
@@ -92,33 +92,6 @@ export default class Formulator {
   /** An optional modifier to the roll */
   private modifier?: number | undefined;
 
-  /** The critical success chance of the roll. */
-  private criticalSuccess?: number | undefined;
-
-  /** The critical failure chance of the roll. */
-  private criticalFailure?: number | undefined;
-
-  /**
-   * Add critical flagging modifiers to the roll.
-   * @returns the changed Formulator
-   */
-  criticals({
-    success,
-    failure
-  }: {
-    /** the success chance (inclusive) */
-    success: number;
-
-    /** the failure chance (inclusive) */
-    failure: number;
-  }): this {
-    if (this.type !== "check")
-      LOG.warn("Criticals only apply to checks! Ignoring this.");
-    this.criticalFailure = failure;
-    this.criticalSuccess = success;
-    return this;
-  }
-
   /**
    * Modify the target number of the roll.
    * @param modifier - the modifier to modify by
@@ -141,8 +114,7 @@ export default class Formulator {
     if (this.type === "damage") {
       formula += this.damageTargetFormula;
     } else if (this.type === "check") {
-      formula +=
-        this.checkSuccessTargetFormula + this.checkCriticalsTargetFormula;
+      formula += this.checkSuccessTargetFormula;
     }
 
     return formula;
@@ -179,21 +151,6 @@ export default class Formulator {
     if (this.modifier || this.special) targetFormula += ")";
 
     return targetFormula;
-  }
-
-  /** Get the critical modifiers for a check roll. */
-  protected get checkCriticalsTargetFormula(): string {
-    let formula = "";
-
-    if (typeof this.criticalSuccess === "number") {
-      formula += `fcs${this.criticalSuccess}`;
-    }
-
-    if (typeof this.criticalFailure === "number") {
-      formula += `fcf${this.criticalFailure}`;
-    }
-
-    return formula;
   }
 
   /** Get the target formula for a damage roll. */

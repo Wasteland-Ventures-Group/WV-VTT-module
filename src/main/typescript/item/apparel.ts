@@ -1,11 +1,11 @@
-import { ApparelSlot, ApparelSlots, TYPES } from "../constants.js";
+import { type ApparelSlot, ApparelSlots, TYPES } from "../constants.js";
 import { ApparelDataPropertiesData } from "../data/item/apparel/properties.js";
 import WvItem from "./wvItem.js";
 
 /**
  * An Item that can represent an apparel item in the Wasteland Ventures system.
  */
-export default class Apparel extends WvItem {
+export default class Apparel extends WvItem<"apparel"> {
   constructor(
     data: ConstructorParameters<typeof Item>[0],
     context: ConstructorParameters<typeof Item>[1]

@@ -17,33 +17,36 @@ import { LOG } from "../systemLogger.js";
 import validateSystemData from "../validation/validateSystemData.js";
 import TypeDataModel = foundry.abstract.TypeDataModel;
 import fields = foundry.data.fields;
+import type { APPAREL_SCHEMA } from "../data/item/apparel/source.js";
+import type { ApparelProperties } from "../data/item/apparel/properties.js";
 
 const weapon_data_model = {
   attacks: new fields.ObjectField()
 };
 export class WeaponSystem extends TypeDataModel<
   typeof weapon_data_model,
-  WvItem
+  WvItem<"weapon">
 > { }
 const race_data_model = {};
-export class RaceSystem extends TypeDataModel<typeof race_data_model, WvItem> { }
-export class MiscSystem extends TypeDataModel<typeof race_data_model, WvItem> { }
-export class AmmoSystem extends TypeDataModel<typeof race_data_model, WvItem> { }
+export class RaceSystem extends TypeDataModel<typeof race_data_model, WvItem<"race">> { }
+export class MiscSystem extends TypeDataModel<typeof race_data_model, WvItem<"misc">> { }
+export class AmmoSystem extends TypeDataModel<typeof race_data_model, WvItem<"ammo">> { }
 export class MagicSystem extends TypeDataModel<
   typeof race_data_model,
-  WvItem
+  WvItem<"magic">
 > { }
 export class ApparelSystem extends TypeDataModel<
-  typeof race_data_model,
-  WvItem
+  typeof APPAREL_SCHEMA,
+  WvItem<"apparel">,
+  ApparelProperties
 > { }
 export class EffectSystem extends TypeDataModel<
   typeof race_data_model,
-  WvItem
+  WvItem<"effect">
 > { }
 
 /** The basic Wasteland Ventures Item. */
-export default class WvItem extends Item<ProtoItemType> {
+export default class WvItem<ItemType extends ProtoItemType = ProtoItemType> extends Item<ItemType> {
   /** Get an identifying string for this Item. */
   get ident(): string {
     const thisIdent = `[${this.id}] "${this.name}"`;

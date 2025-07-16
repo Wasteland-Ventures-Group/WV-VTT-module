@@ -4,7 +4,9 @@ import { CompositeNumber } from "../../common.js";
 import PhysicalItemProperties from "../common/physicalItem/properties.js";
 import RulesProperties from "../common/rules/properties.js";
 import type ApparelDataSource from "./source.js";
-import { ApparelDataSourceData } from "./source.js";
+import { ApparelDataSourceData, type ApparelSource } from "./source.js";
+
+export type ApparelProperties = ApparelSource & {};
 
 export default interface ApparelDataProperties extends ApparelDataSource {
   data: ApparelDataPropertiesData;

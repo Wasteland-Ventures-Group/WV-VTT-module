@@ -32,7 +32,6 @@ import WvI18n, { getI18n } from "../wvI18n.js";
 import TypeDataModel = foundry.abstract.TypeDataModel;
 import { EquipmentProperties } from "../data/actor/character/equipment/properties.js";
 import { CHARACTER_SCHEMA } from "../data/actor/character/source.js";
-import type { DeepPartial } from "fvtt-types/utils";
 import { VitalsProperties } from "../data/actor/character/vitals/properties.js";
 import { LevelingProperties } from "../data/actor/character/leveling/properties.js";
 
@@ -507,10 +506,7 @@ export default class WvActor extends Actor<"character"> {
     options: RollOptions | undefined
   ): Promise<void> {
     const criticals = this.system.secondary.criticals;
-    const fullFormula = baseFormula.modify(options?.modifier).criticals({
-      success: criticals.success.total,
-      failure: criticals.failure.total
-    });
+    const fullFormula = baseFormula.modify(options?.modifier);
     const checkRoll = new Roll(fullFormula.toString()).evaluateSync();
 
     const msgOptions = createDefaultMessageData(
@@ -615,8 +611,9 @@ export default class WvActor extends Actor<"character"> {
     await this.deleteEmbeddedDocuments(
       "Item",
       this.itemTypes.race
-        .filter((item): item is StoredDocument<WvItem> => item.id !== null)
+        .filter((item) => item instanceof WvItem)
         .map((item) => item.id)
+        .filter((id) => id !== null)
     );
 
     // This deletes all stragglers that might still be there in memory
@@ -649,28 +646,9 @@ export default class WvActor extends Actor<"character"> {
     });
   }
 
-  protected override async _preCreate(
-    data: ActorDataConstructorData,
-    options: DocumentModificationOptions,
-    user: BaseUser
-  ): Promise<void> {
-    super._preCreate(data, options, user);
-    this.validateSystemData(this._source);
-  }
-
-  protected override async _preUpdate(
-    changed: DeepPartial<ActorDataConstructorData>,
-    options: DocumentModificationOptions,
-    user: BaseUser
-  ): Promise<void> {
+  protected override async _preUpdate(changed: Actor.UpdateData, options: Actor.Database.PreUpdateOptions, user: User): Promise<void> {
     super._preUpdate(changed, options, user);
     await this.checkPT(changed);
-    this.validateSystemData(
-      foundry.utils.mergeObject(this._source, changed.data ?? {}, {
-        recursive: options.recursive,
-        inplace: false
-      })
-    );
   }
 
   /** Apply the RuleElements of this Actor's Items to itself and its Items. */
@@ -698,8 +676,8 @@ export default class WvActor extends Actor<"character"> {
     rule.apply([this, ...this.items], options);
   }
 
-  private async checkPT(changed: DeepPartial<ActorDataConstructorData>) {
-    const hitPoints = changed.data?.vitals?.hitPoints?.value;
+  private async checkPT(changed: Actor.UpdateData) {
+    const hitPoints = changed.system?.vitals?.hitPoints?.value;
     if (hitPoints) {
       const newPT = getPainThreshold(hitPoints);
       const oldPT = this.system.vitals.painThreshold;
@@ -719,7 +697,7 @@ export default class WvActor extends Actor<"character"> {
             const userLevel = this.getUserLevel(user);
             if (
               (userLevel !== null &&
-                userLevel >= CONST.DOCUMENT_PERMISSION_LEVELS.OBSERVER) ||
+                userLevel >= CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER) ||
               user.isGM
             ) {
               return [id];
@@ -727,7 +705,7 @@ export default class WvActor extends Actor<"character"> {
           }
           return [];
         });
-        const msgOptions: ConstructorDataType<foundry.data.ChatMessageData> = {
+        const msgOptions  = {
           speaker: ChatMessage.getSpeaker({ actor: this }),
           flags: { [CONSTANTS.systemId]: flags },
           whisper: authorisedUsers

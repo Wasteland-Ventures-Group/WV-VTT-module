@@ -13,7 +13,7 @@ const MAGIC_SPECIALS_SCHEMA =
 
 const THAUMATURGY_SPECIAL_FIELD = new fields.StringField({ required: true, choices: SpecialNames.filter((name) => name != "luck") });
 
-export const MAGIC_SCHEMA = {
+export const CHARACTER_MAGIC_SCHEMA = {
   /** The SPECIAL of the character associated with the Thaumaturgy skill */
   thaumSpecial: THAUMATURGY_SPECIAL_FIELD,
   /**
@@ -23,4 +23,4 @@ export const MAGIC_SCHEMA = {
   magicSpecials: new fields.SchemaField(MAGIC_SPECIALS_SCHEMA),
 }
 
-export type MagicSource = fields.SchemaField.InitializedData<typeof MAGIC_SCHEMA>;
+export type MagicSource = fields.SchemaField.InitializedData<typeof CHARACTER_MAGIC_SCHEMA>;

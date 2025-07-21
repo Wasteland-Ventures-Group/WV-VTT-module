@@ -1,20 +1,22 @@
 import type { JSONSchemaType } from "ajv";
 import {
-  ApparelSlot,
+  type ApparelSlot,
   ApparelSlots,
-  ApparelType,
+  type ApparelType,
   ApparelTypes,
   TYPES
 } from "../../../constants.js";
 import {
-  CompositeNumberSource,
+  type CompositeNumberSource,
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
 } from "../../common.js";
 import {
   COMPENDIUM_JSON_SCHEMA,
-  FoundryCompendiumData
+  type FoundryCompendiumData
 } from "../../foundryCommon.js";
-import PhysicalItemSource, {
+import {
+  PhysicalItemSource,
+  PHYS_ITEM_SCHEMA,
   PHYS_ITEM_SOURCE_JSON_SCHEMA
 } from "../common/physicalItem/source.js";
 
@@ -27,6 +29,7 @@ export default interface ApparelDataSource {
 
 export const APPAREL_SCHEMA = {
   slot: new fields.StringField({ nullable: false, required: true, choices: ApparelSlots, initial: "clothing" }),
+  ...PHYS_ITEM_SCHEMA
 }
 
 export type ApparelSource = fields.SchemaField.InitializedData<typeof APPAREL_SCHEMA>;
@@ -138,7 +141,6 @@ export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
   required: [...PHYS_ITEM_SOURCE_JSON_SCHEMA.required, "slot", "type"],
   additionalProperties: false,
   default: {
-    ...PHYS_ITEM_SOURCE_JSON_SCHEMA.default,
     slot: "clothing",
     type: "clothing"
   }
@@ -167,7 +169,6 @@ export const COMP_APPAREL_JSON_SCHEMA: JSONSchemaType<CompendiumApparel> = {
   default: {
     ...COMPENDIUM_JSON_SCHEMA.default,
     type: TYPES.ITEM.APPAREL,
-    data: APPAREL_SOURCE_JSON_SCHEMA.default,
     img: "icons/equipment/chest/breastplate-leather-brown-belted.webp"
   }
 };

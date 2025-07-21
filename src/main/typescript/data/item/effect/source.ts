@@ -1,5 +1,6 @@
 import type { TYPES } from "../../../constants.js";
-import BaseItemSource from "../common/baseItem/source.js";
+import BaseItemSource, { BASE_ITEM_SCHEMA } from "../common/baseItem/source.js";
+import _ = foundry.data.fields;
 
 export default interface EffectDataSource {
   type: typeof TYPES.ITEM.EFFECT;
@@ -7,3 +8,5 @@ export default interface EffectDataSource {
 }
 
 export class EffectDataSourceData extends BaseItemSource {}
+
+export const EFFECT_SCHEMA = BASE_ITEM_SCHEMA;

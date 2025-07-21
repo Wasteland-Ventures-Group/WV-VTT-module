@@ -2,27 +2,31 @@ import type { JSONSchemaType } from "ajv";
 import {
   GeneralMagicSchools,
   TYPES,
-  GeneralMagicSchool
+  type GeneralMagicSchool
 } from "../../../constants.js";
 import BaseItemSource, {
+  BASE_ITEM_SCHEMA,
   BASE_ITEM_SOURCE_JSON_SCHEMA
 } from "../common/baseItem/source.js";
 import {
   COMPENDIUM_JSON_SCHEMA,
-  FoundryCompendiumData
+  type FoundryCompendiumData
 } from "../../foundryCommon.js";
 import { RangeSource, RANGES_JSON_SCHEMA } from "./ranges/source.js";
 import { TargetSource, TARGET_JSON_SCHEMA } from "./target/source.js";
 import {
-  CompositeNumberSource,
+  type CompositeNumberSource,
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
 } from "../../common.js";
+import _ = foundry.data.fields;
 
 /** The Magic Item data-source */
 export default interface MagicDataSource {
   type: typeof TYPES.ITEM.MAGIC;
   data: MagicDataSourceData;
 }
+
+export const MAGIC_SCHEMA = { ...BASE_ITEM_SCHEMA }
 
 export class MagicDataSourceData extends BaseItemSource {
   school: GeneralMagicSchool = "general";
@@ -66,7 +70,6 @@ export const MAGIC_SOURCE_JSON_SCHEMA: JSONSchemaType<MagicDataSourceData> = {
   required: [...BASE_ITEM_SOURCE_JSON_SCHEMA.required, "school"],
   additionalProperties: false,
   default: {
-    ...BASE_ITEM_SOURCE_JSON_SCHEMA.default,
     school: "general"
   }
 };
@@ -95,7 +98,6 @@ export const COMP_MAGIC_JSON_SCHEMA: JSONSchemaType<CompendiumMagic> = {
   default: {
     ...COMPENDIUM_JSON_SCHEMA.default,
     type: TYPES.ITEM.MAGIC,
-    data: MAGIC_SOURCE_JSON_SCHEMA.default,
     img: "icons/svg/daze.svg"
   }
 };

@@ -1,6 +1,7 @@
 import type { JSONSchemaType } from "ajv";
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../../../ruleEngine/ruleElementSource.js";
 import RulesSource from "../rules/source.js";
+import fields = foundry.data.fields;
 
 /** This holds the source of the base values that all items have in common. */
 export default abstract class BaseItemSource {
@@ -22,6 +23,10 @@ export default abstract class BaseItemSource {
 
   /** Tags of the item */
   tags: string[] = [];
+}
+
+export const BASE_ITEM_SCHEMA = {
+  name: new fields.StringField(),
 }
 
 export const TAGS_SOURCE_JSON_SCHEMA: JSONSchemaType<string[]> = {

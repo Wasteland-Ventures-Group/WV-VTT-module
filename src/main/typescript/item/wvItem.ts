@@ -14,11 +14,16 @@ import {
 import type { RuleElementHook } from "../ruleEngine/ruleElementSource.js";
 import type RuleElementSource from "../ruleEngine/ruleElementSource.js";
 import { LOG } from "../systemLogger.js";
-import validateSystemData from "../validation/validateSystemData.js";
 import TypeDataModel = foundry.abstract.TypeDataModel;
 import fields = foundry.data.fields;
 import type { APPAREL_SCHEMA } from "../data/item/apparel/source.js";
 import type { ApparelProperties } from "../data/item/apparel/properties.js";
+import { AmmoProperties } from "../data/item/ammo/properties.js";
+import type { AMMO_SCHEMA, } from "../data/item/ammo/source.js";
+import type { RACE_SCHEMA } from "../data/item/race/source.js";
+import type { MISC_SCHEMA } from "../data/item/misc/source.js";
+import type { CHARACTER_MAGIC_SCHEMA } from "../data/actor/character/magic/source.js";
+import type { EFFECT_SCHEMA } from "../data/item/effect/source.js";
 
 const weapon_data_model = {
   attacks: new fields.ObjectField()
@@ -27,12 +32,17 @@ export class WeaponSystem extends TypeDataModel<
   typeof weapon_data_model,
   WvItem<"weapon">
 > { }
-const race_data_model = {};
-export class RaceSystem extends TypeDataModel<typeof race_data_model, WvItem<"race">> { }
-export class MiscSystem extends TypeDataModel<typeof race_data_model, WvItem<"misc">> { }
-export class AmmoSystem extends TypeDataModel<typeof race_data_model, WvItem<"ammo">> { }
+export class RaceSystem extends TypeDataModel<typeof RACE_SCHEMA, WvItem<"race">> { }
+export class MiscSystem extends TypeDataModel<typeof MISC_SCHEMA, WvItem<"misc">> { }
+export class AmmoSystem extends TypeDataModel<typeof AMMO_SCHEMA, WvItem<"ammo">, AmmoProperties> {
+  override prepareBaseData() {
+    super.prepareBaseData();
+    const prop = AmmoProperties.from(this._source)
+    foundry.utils.mergeObject(this, prop)
+  }
+}
 export class MagicSystem extends TypeDataModel<
-  typeof race_data_model,
+  typeof CHARACTER_MAGIC_SCHEMA,
   WvItem<"magic">
 > { }
 export class ApparelSystem extends TypeDataModel<
@@ -41,7 +51,7 @@ export class ApparelSystem extends TypeDataModel<
   ApparelProperties
 > { }
 export class EffectSystem extends TypeDataModel<
-  typeof race_data_model,
+  typeof EFFECT_SCHEMA,
   WvItem<"effect">
 > { }
 
@@ -173,34 +183,6 @@ export default class WvItem<ItemType extends ProtoItemType = ProtoItemType> exte
       { recursive: false, diff: false }
     );
   }
-
-  protected override async _preCreate(
-    data: ItemDataConstructorData,
-    options: DocumentModificationOptions,
-    user: BaseUser
-  ): Promise<void> {
-    super._preCreate(data, options, user);
-    this.validateSystemData(this.data._source.data);
-  }
-
-  protected override async _preUpdate(
-    changed: DeepPartial<ItemDataConstructorData>,
-    options: DocumentModificationOptions,
-    user: BaseUser
-  ): Promise<void> {
-    super._preUpdate(changed, options, user);
-    this.validateSystemData(
-      foundry.utils.mergeObject(this.data._source.data, changed.data ?? {}, {
-        recursive: options.recursive,
-        inplace: false
-      })
-    );
-  }
-
-  /** Validate passed source system data. */
-  protected validateSystemData(data: unknown): void {
-    validateSystemData(data, getGame().wv.validators.item[this.data.type]);
-  }
 }
 
 /** Flags for items. */
@@ -234,7 +216,7 @@ export function hasEnabledCompendiumLink(item: foundry.documents.BaseItem) {
 export async function getUpdateDataFromCompendium(
   item: foundry.documents.BaseItem
 ): Promise<{
-  data: foundry.documents.BaseItem["data"]["_source"]["data"];
+  data: foundry.documents.BaseItem["system"]["_source"];
 } | null> {
   const sourceId = item.getFlag("core", "sourceId");
   if (typeof sourceId !== "string") return null;
@@ -242,22 +224,22 @@ export async function getUpdateDataFromCompendium(
   const match = SYSTEM_COMPENDIUM_SOURCE_ID_REGEX.exec(sourceId);
   if (!match || !match[1] || !match[2]) return null;
 
-  const compendium = getGame().packs.get(match[1]);
+  const compendium = getGame().packs?.get(match[1]);
   if (!compendium) return null;
 
   const document = await compendium.getDocument(match[2]);
   if (!(document instanceof WvItem)) return null;
 
-  const updateData = { data: document.toObject().data };
+  const updateData = { system: document.toObject().system };
   if (!item.getFlag(CONSTANTS.systemId, "overwriteNotesWithCompendium")) {
-    updateData.data.notes = item._source.notes;
+    updateData.system.notes = item._source.notes;
   }
   if (!item.getFlag(CONSTANTS.systemId, "overwriteRulesWithCompendium")) {
-    updateData.data.rules.sources = item._source.rules.sources;
+    updateData.system.rules.sources = item._source.rules.sources;
   }
-  if ("amount" in updateData.data && "amount" in item._source) {
+  if ("amount" in updateData.system && "amount" in item._source) {
     if (!item.getFlag(CONSTANTS.systemId, "overwriteAmountWithCompendium")) {
-      updateData.data.amount = item._source.amount;
+      updateData.system.amount = item._source.amount;
     }
   }
   return updateData;

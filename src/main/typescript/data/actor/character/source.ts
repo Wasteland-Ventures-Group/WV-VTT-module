@@ -1,7 +1,7 @@
 import type { TYPES } from "../../../constants.js";
 import { EQUIPMENT_SCHEMA } from "./equipment/source.js";
 import { LEVELING_SCHEMA } from "./leveling/source.js";
-import { MAGIC_SCHEMA } from "./magic/source.js";
+import { CHARACTER_MAGIC_SCHEMA } from "./magic/source.js";
 import { VITALS_SCHEME, } from "./vitals/source.js";
 import fields = foundry.data.fields;
 import { BACKGROUND_SCHEMA } from "./background/source.js";
@@ -21,7 +21,7 @@ export const CHARACTER_SCHEMA = {
   /** The background of the character */
   background: new fields.SchemaField(BACKGROUND_SCHEMA),
   /** The magic stats of the character */
-  magic: new fields.SchemaField(MAGIC_SCHEMA),
+  magic: new fields.SchemaField(CHARACTER_MAGIC_SCHEMA),
 };
 
 export type CharacterSource = fields.SchemaField.InitializedData<typeof CHARACTER_SCHEMA>;

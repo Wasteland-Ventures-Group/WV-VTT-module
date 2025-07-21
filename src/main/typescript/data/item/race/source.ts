@@ -1,14 +1,23 @@
 import type { JSONSchemaType } from "ajv";
-import { MagicType, MagicTypes, TYPES } from "../../../constants.js";
+import { type MagicType, MagicTypes, TYPES } from "../../../constants.js";
 import BaseItemSource, {
+  BASE_ITEM_SCHEMA,
   BASE_ITEM_SOURCE_JSON_SCHEMA
 } from "../common/baseItem/source.js";
 import {
   COMPENDIUM_JSON_SCHEMA,
-  FoundryCompendiumData
+  type FoundryCompendiumData
 } from "../../foundryCommon.js";
+import fields = foundry.data.fields;
 
-export default interface RaceDataSource {
+const PHYSICAL_SCHEMA = {}
+
+export const RACE_SCHEMA = {
+  physical: new fields.SchemaField(PHYSICAL_SCHEMA),
+  ...BASE_ITEM_SCHEMA,
+}
+
+export interface RaceDataSource {
   type: typeof TYPES.ITEM.RACE;
   data: RaceDataSourceData;
 }
@@ -28,9 +37,9 @@ export class FreeOnCreation {
     /** The amount of things to pick */
     amount: number;
   } = {
-    choices: [],
-    amount: 0
-  };
+      choices: [],
+      amount: 0
+    };
 
   /** Amount of free things to get in addition to allOf and anyOf */
   amount = 0;
@@ -105,29 +114,29 @@ export class FreePerLevelPeriod {
 }
 
 export const FREE_PER_LEVEL_PERIOD_SCHEMA: JSONSchemaType<FreePerLevelPeriod> =
-  {
-    description:
-      "A schema to reflect free things that are given to a character on a period of levels",
-    type: "object",
-    properties: {
-      period: {
-        description: "The period of levels at which to gain new things.",
-        type: "integer",
-        default: 0
-      },
-      amount: {
-        description: "Gain amount free things",
-        type: "integer",
-        default: 0
-      }
+{
+  description:
+    "A schema to reflect free things that are given to a character on a period of levels",
+  type: "object",
+  properties: {
+    period: {
+      description: "The period of levels at which to gain new things.",
+      type: "integer",
+      default: 0
     },
-    required: ["period", "amount"],
-    additionalProperties: false,
-    default: {
-      period: 0,
-      amount: 0
+    amount: {
+      description: "Gain amount free things",
+      type: "integer",
+      default: 0
     }
-  };
+  },
+  required: ["period", "amount"],
+  additionalProperties: false,
+  default: {
+    period: 0,
+    amount: 0
+  }
+};
 
 /** Physical characteristics of a race. */
 export class PhysicalSource {
@@ -234,8 +243,6 @@ export const CREATION_ATTRIBUTES_SCHEMA: JSONSchemaType<CreationAttributes> = {
   default: {
     startingSpecialPoints: 40,
     magicTypes: [],
-    freeSpells: FREE_ON_CREATION_SCHEMA.defaults,
-    freeAlchemy: FREE_ON_CREATION_SCHEMA.defaults
   }
 };
 
@@ -249,20 +256,18 @@ export class LevelingAttributes {
 }
 
 export const LEVELING_ATTRIBUTES_JSON_SCHEMA: JSONSchemaType<LevelingAttributes> =
-  {
-    description: "A schema for attributes of a race for leveling",
-    type: "object",
-    properties: {
-      freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA,
-      freeAlchemy: FREE_PER_LEVEL_PERIOD_SCHEMA
-    },
-    required: ["freeSpells", "freeAlchemy"],
-    additionalProperties: false,
-    default: {
-      freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA.default,
-      freeAlchemy: FREE_PER_LEVEL_PERIOD_SCHEMA.default
-    }
-  };
+{
+  description: "A schema for attributes of a race for leveling",
+  type: "object",
+  properties: {
+    freeSpells: FREE_PER_LEVEL_PERIOD_SCHEMA,
+    freeAlchemy: FREE_PER_LEVEL_PERIOD_SCHEMA
+  },
+  required: ["freeSpells", "freeAlchemy"],
+  additionalProperties: false,
+  default: {
+  }
+};
 
 export class RaceDataSourceData extends BaseItemSource {
   /** Physical characteristics of the race */
@@ -292,10 +297,6 @@ export const RACE_SOURCE_JSON_SCHEMA: JSONSchemaType<RaceDataSourceData> = {
   ],
   additionalProperties: false,
   default: {
-    ...BASE_ITEM_SOURCE_JSON_SCHEMA.default,
-    physical: PHYSICAL_SOURCE_JSON_SCHEMA.default,
-    creation: CREATION_ATTRIBUTES_SCHEMA.default,
-    leveling: LEVELING_ATTRIBUTES_JSON_SCHEMA.default
   }
 };
 
@@ -322,7 +323,6 @@ export const COMP_RACE_JSON_SCHEMA: JSONSchemaType<CompendiumRace> = {
   default: {
     ...COMPENDIUM_JSON_SCHEMA.default,
     type: TYPES.ITEM.RACE,
-    data: RACE_SOURCE_JSON_SCHEMA.default,
     img: "icons/svg/mystery-man.svg"
   }
 };

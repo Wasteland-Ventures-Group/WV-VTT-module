@@ -1,4 +1,3 @@
-import { DICE_ROLL_MODES } from "fvtt-types/src/foundry/common/constants.mjs";
 type ValueOf<T> = T[keyof T];
 export type RadiationSicknessLevel = (typeof RadiationSicknessLevels)[number];
 export const RadiationSicknessLevels = [
@@ -19,6 +18,8 @@ export const SpecialNames = [
   "agility",
   "luck"
 ] as const;
+
+import CONST = foundry.CONST;
 
 /**
  * A custom typeguard to check whether a string is a valid SPECIAL name
@@ -102,11 +103,11 @@ export function getMagicType(school: GeneralMagicSchool): MagicType {
 }
 
 /** A union of supported dice roll modes */
-export type RollMode = ValueOf<typeof DICE_ROLL_MODES>;
+export type RollMode = ValueOf<typeof CONST.DICE_ROLL_MODES>;
 
 /** A custom typeguard to check whether a string is a valid roll mode */
 export function isRollMode(arg: string): arg is RollMode {
-  return Object.values<string>(DICE_ROLL_MODES).includes(arg);
+  return Object.values<string>(CONST.DICE_ROLL_MODES).includes(arg);
 }
 
 export type GeneralMagicSchool = (typeof GeneralMagicSchools)[number];

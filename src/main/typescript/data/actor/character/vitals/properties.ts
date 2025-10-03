@@ -17,6 +17,7 @@ export type VitalsProperties = VitalsSource & {
   strain: CompositeResource;
   painThreshold: PainThreshold;
 };
+
 export namespace VitalsProperties {
   export function from(v: VitalsSource): VitalsProperties {
     return {

@@ -1,24 +1,24 @@
 import type WvItem from "../../../../item/wvItem.js";
-import RulesProperties from "../rules/properties.js";
-import BaseItemSource from "./source.js";
+import { RulesProperties } from "../rules/properties.js";
+import { type BaseItemSource } from "./source.js";
 
 /**
  * This holds the properties of the base values that all items have in common.
  */
-export default abstract class BaseItemProperties extends BaseItemSource {
+export type BaseItemProperties = BaseItemSource & {
+  rules: RulesProperties
+};
+export namespace BaseItemProperties {
   /**
    * Transform a BaseItemSource and apply it onto a BaseItemProperties.
-   * @param target - the target to transform onto
    * @param source - the source to transform from
    * @param owningItem - the owning item
    */
-  static transform(
-    target: BaseItemProperties,
-    source: BaseItemSource,
+  export function from(
+    s: BaseItemSource,
     owningItem: WvItem
-  ) {
-    RulesProperties.transform(target.rules, source.rules, owningItem);
+  ): BaseItemProperties {
+    const rules = RulesProperties.from(s.rules, owningItem);
+    return { ...s, rules }
   }
-
-  override rules = new RulesProperties();
 }

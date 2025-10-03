@@ -1,6 +1,6 @@
-import { CONSTANTS, isRollMode, RollMode } from "../constants.js";
+import { CONSTANTS, isRollMode, type RollMode } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
-import WvI18n, { I18nRollModes } from "../wvI18n.js";
+import WvI18n, { type I18nRollModes } from "../wvI18n.js";
 
 /**
  * An application to prompt the user for input regarding a roll.

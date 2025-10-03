@@ -1,7 +1,5 @@
 import { RESOURCE_SCHEMA } from "../../../foundryCommon.js";
-
 import fields = foundry.data.fields;
-import { nullable } from "zod";
 
 const PAIRED_CRIPPLED_LIMB_STATUS_SCHEME = {
   /** The status of the front legs */

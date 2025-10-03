@@ -1,5 +1,5 @@
 import BaseSetup from "../applications/actor/character/baseSetup.js";
-import type { ApparelSlot, SkillName, SpecialName } from "../constants.js";
+import type { ApparelSlot, RollMode, SkillName, SpecialName } from "../constants.js";
 import { CONSTANTS, getPainThreshold, TYPES } from "../constants.js";
 import { CharacterProperties } from "../data/actor/character/properties.js";
 import {
@@ -508,11 +508,12 @@ export default class WvActor extends Actor<"character"> {
     const criticals = this.system.secondary.criticals;
     const fullFormula = baseFormula.modify(options?.modifier);
     const checkRoll = new Roll(fullFormula.toString()).evaluateSync();
+    const defaultRollMode = getGame().settings.get("core", "rollMode") ?? "publicroll";
+
 
     const msgOptions = createDefaultMessageData(
       ChatMessage.getSpeaker({ actor: this }),
-      options?.rollMode ?? getGame().settings.get("core", "rollMode")
-    );
+      options?.rollMode ?? defaultRollMode as RollMode);
 
     msgOptions.flavor = flavor;
 
@@ -705,7 +706,7 @@ export default class WvActor extends Actor<"character"> {
           }
           return [];
         });
-        const msgOptions  = {
+        const msgOptions = {
           speaker: ChatMessage.getSpeaker({ actor: this }),
           flags: { [CONSTANTS.systemId]: flags },
           whisper: authorisedUsers

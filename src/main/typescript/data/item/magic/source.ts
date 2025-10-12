@@ -4,9 +4,8 @@ import {
   TYPES,
   type GeneralMagicSchool
 } from "../../../constants.js";
-import BaseItemSource, {
+import {
   BASE_ITEM_SCHEMA,
-  BASE_ITEM_SOURCE_JSON_SCHEMA
 } from "../common/baseItem/source.js";
 import {
   COMPENDIUM_JSON_SCHEMA,
@@ -18,7 +17,7 @@ import {
   type CompositeNumberSource,
   COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
 } from "../../common.js";
-import _ = foundry.data.fields;
+import fields = foundry.data.fields;
 
 /** The Magic Item data-source */
 export default interface MagicDataSource {
@@ -26,7 +25,11 @@ export default interface MagicDataSource {
   data: MagicDataSourceData;
 }
 
-export const MAGIC_SCHEMA = { ...BASE_ITEM_SCHEMA }
+export const MAGIC_SCHEMA = {
+  /** Which school does this spell belong to? */
+  school: new fields.StringField({ choices: GeneralMagicSchools }),
+  ...BASE_ITEM_SCHEMA
+}
 
 export class MagicDataSourceData extends BaseItemSource {
   school: GeneralMagicSchool = "general";

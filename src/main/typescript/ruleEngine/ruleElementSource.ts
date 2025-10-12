@@ -46,16 +46,6 @@ export const RULE_ELEMENT_HOOKS = [
 ] as const;
 
 
-export const RULE_ELEMENT_SCHEMA = {
-  /** Whether this rule element is enabled */
-  enabled: new fields.BooleanField(),
-  /** Where in the data preparation chain the rule element applies */
-  hook: new fields.StringField({ choices: RULE_ELEMENT_HOOKS, initial: "afterSpecial" }),
-  /** The label of the element */
-  label: new fields.StringField({ required: true }),
-  /** The place in the order of application, starting with lowest */
-  priority: new fields.NumberField(),
-}
 
 export type RuleElementId = (typeof RULE_ELEMENT_IDS)[number];
 export const RULE_ELEMENT_IDS = [
@@ -65,6 +55,19 @@ export const RULE_ELEMENT_IDS = [
   "WV.RuleElement.ReplaceValue",
   "WV.RuleElement.TempSpecialComponent"
 ] as const;
+
+export const RULE_ELEMENT_SCHEMA = {
+  /** Whether this rule element is enabled */
+  enabled: new fields.BooleanField(),
+  /** Where in the data preparation chain the rule element applies */
+  hook: new fields.StringField({ choices: RULE_ELEMENT_HOOKS, initial: "afterSpecial" }),
+  /** The label of the element */
+  label: new fields.StringField({ required: true }),
+  /** The place in the order of application, starting with lowest */
+  priority: new fields.NumberField(),
+  /** The type identifier of the element. */
+  type: new fields.StringField({ choices: RULE_ELEMENT_IDS, required: true }),
+}
 
 export type RuleElementCondition = (typeof RULE_ELEMENT_CONDITIONS)[number];
 export const RULE_ELEMENT_CONDITIONS = ["whenEquipped"] as const;

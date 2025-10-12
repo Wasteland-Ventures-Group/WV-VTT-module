@@ -1,174 +1,41 @@
-import type { JSONSchemaType } from "ajv";
 import {
   type ApparelSlot,
   ApparelSlots,
-  type ApparelType,
   ApparelTypes,
   TYPES
 } from "../../../constants.js";
 import {
   type CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
+  COMPOSITE_NUMBER_FIELD,
 } from "../../common.js";
-import {
-  COMPENDIUM_JSON_SCHEMA,
-  type FoundryCompendiumData
-} from "../../foundryCommon.js";
-import {
-  PhysicalItemSource,
-  PHYS_ITEM_SCHEMA,
-  PHYS_ITEM_SOURCE_JSON_SCHEMA
-} from "../common/physicalItem/source.js";
+import { type FoundryCompendiumData } from "../../foundryCommon.js";
+import { PHYS_ITEM_SCHEMA, } from "../common/physicalItem/source.js";
 
 import fields = foundry.data.fields;
 
-export default interface ApparelDataSource {
-  type: typeof TYPES.ITEM.APPAREL;
-  data: ApparelDataSourceData;
-}
-
 export const APPAREL_SCHEMA = {
+  /** The apparel slot this apparel occupies when equipped */
   slot: new fields.StringField({ nullable: false, required: true, choices: ApparelSlots, initial: "clothing" }),
+  /** The sub type of the apparel */
+  type: new fields.StringField({ nullable: false, required: true, choices: ApparelTypes, initial: "clothing" }),
+  /** The number of quick slots of the apparel */
+  quickSlots: COMPOSITE_NUMBER_FIELD,
   ...PHYS_ITEM_SCHEMA
 }
 
-export type ApparelSource = fields.SchemaField.InitializedData<typeof APPAREL_SCHEMA>;
 
-export class ApparelDataSourceData extends PhysicalItemSource {
+export class ApparelDataSourceData {
   /** The other apparel slots this apparel blocks aside from its own */
   blockedSlots?: Record<ApparelSlot, boolean>;
 
   /** The damage threshold of the apparel */
   damageThreshold?: CompositeNumberSource = { source: 0 };
 
-  /** The number of quick slots of the apparel */
-  quickSlots?: CompositeNumberSource = { source: 0 };
-
   /** The number of mod slots of the apparel */
   modSlots?: CompositeNumberSource = { source: 0 };
-
-  /** The apparel slot this apparel occupies when equipped */
-  slot: ApparelSlot = "clothing";
-
-  /** The sub type of the apparel */
-  type: ApparelType = "clothing";
 }
-
-/** A JSON schema for apparel source objects */
-export const APPAREL_SOURCE_JSON_SCHEMA: JSONSchemaType<ApparelDataSourceData> =
-{
-  description: "The system data for an apparel item",
-  type: "object",
-  properties: {
-    ...PHYS_ITEM_SOURCE_JSON_SCHEMA.properties,
-    blockedSlots: {
-      description:
-        "The other apparel slots this apparel blocks aside from its own",
-      type: "object",
-      properties: ApparelSlots.reduce(
-        (slots, apparelSlot) => {
-          slots[apparelSlot] = { type: "boolean" };
-          return slots;
-        },
-        {} as Record<ApparelSlot, { type: "boolean" }>
-      ),
-      nullable: true,
-      required: ApparelSlots,
-      additionalProperties: false,
-      default: ApparelSlots.reduce(
-        (slots, apparelSlot) => {
-          slots[apparelSlot] = false;
-          return slots;
-        },
-        {} as Record<ApparelSlot, boolean>
-      )
-    },
-    damageThreshold: {
-      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-      description: "The damage threshold of the apparel",
-      properties: {
-        source: {
-          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
-          type: "integer",
-          default: 0
-        }
-      },
-      default: {
-        source: 0
-      }
-    },
-    quickSlots: {
-      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-      description: "The number of quick slots of the apparel",
-      properties: {
-        source: {
-          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
-          type: "integer",
-          default: 0,
-          minimum: 0
-        }
-      },
-      default: {
-        source: 0
-      }
-    },
-    modSlots: {
-      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA,
-      description: "The number of mod slots of the apparel",
-      properties: {
-        source: {
-          ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA.properties.source,
-          type: "integer",
-          default: 0,
-          minimum: 0
-        }
-      },
-      default: {
-        source: 0
-      }
-    },
-    slot: {
-      description: "The apparel slot this apparel occupies when equipped",
-      type: "string",
-      enum: ApparelSlots
-    },
-    type: {
-      description: "The sub type of the apparel",
-      type: "string",
-      enum: ApparelTypes
-    }
-  },
-  required: [...PHYS_ITEM_SOURCE_JSON_SCHEMA.required, "slot", "type"],
-  additionalProperties: false,
-  default: {
-    slot: "clothing",
-    type: "clothing"
-  }
-};
 
 export interface CompendiumApparel
   extends FoundryCompendiumData<ApparelDataSourceData> {
   type: typeof TYPES.ITEM.APPAREL;
 }
-
-export const COMP_APPAREL_JSON_SCHEMA: JSONSchemaType<CompendiumApparel> = {
-  description: "The compendium data for an apparel Item",
-  type: "object",
-  properties: {
-    ...COMPENDIUM_JSON_SCHEMA.properties,
-    type: {
-      description: COMPENDIUM_JSON_SCHEMA.properties.type.description,
-      type: "string",
-      const: TYPES.ITEM.APPAREL,
-      default: TYPES.ITEM.APPAREL
-    },
-    data: APPAREL_SOURCE_JSON_SCHEMA
-  },
-  required: COMPENDIUM_JSON_SCHEMA.required,
-  additionalProperties: false,
-  default: {
-    ...COMPENDIUM_JSON_SCHEMA.default,
-    type: TYPES.ITEM.APPAREL,
-    img: "icons/equipment/chest/breastplate-leather-brown-belted.webp"
-  }
-};

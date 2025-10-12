@@ -1,8 +1,7 @@
 import type { JSONSchemaType } from "ajv";
 import { type MagicType, MagicTypes, TYPES } from "../../../constants.js";
-import BaseItemSource, {
+import {
   BASE_ITEM_SCHEMA,
-  BASE_ITEM_SOURCE_JSON_SCHEMA
 } from "../common/baseItem/source.js";
 import {
   COMPENDIUM_JSON_SCHEMA,
@@ -13,9 +12,12 @@ import fields = foundry.data.fields;
 const PHYSICAL_SCHEMA = {}
 
 export const RACE_SCHEMA = {
+  /** Physical characteristics of the race */
   physical: new fields.SchemaField(PHYSICAL_SCHEMA),
   ...BASE_ITEM_SCHEMA,
 }
+
+export type RaceSource = fields.SchemaField.InitializedData<typeof RACE_SCHEMA>;
 
 export interface RaceDataSource {
   type: typeof TYPES.ITEM.RACE;
@@ -270,7 +272,6 @@ export const LEVELING_ATTRIBUTES_JSON_SCHEMA: JSONSchemaType<LevelingAttributes>
 };
 
 export class RaceDataSourceData extends BaseItemSource {
-  /** Physical characteristics of the race */
   physical = new PhysicalSource();
 
   /** Attributes of the race on character creation */
@@ -290,7 +291,6 @@ export const RACE_SOURCE_JSON_SCHEMA: JSONSchemaType<RaceDataSourceData> = {
     leveling: LEVELING_ATTRIBUTES_JSON_SCHEMA
   },
   required: [
-    ...BASE_ITEM_SOURCE_JSON_SCHEMA.required,
     "physical",
     "creation",
     "leveling"

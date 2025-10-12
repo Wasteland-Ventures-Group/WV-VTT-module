@@ -1,14 +1,6 @@
 import type Ajv from "ajv";
-import type { ValidateFunction } from "ajv";
 import WvActor, { CharacterSystem } from "./actor/wvActor.js";
 import type { CONSTANTS, TYPES } from "./constants.js";
-import type { AmmoDataSourceData } from "./data/item/ammo/source.js";
-import type { ApparelDataSourceData } from "./data/item/apparel/source.js";
-import type BaseItemSource from "./data/item/common/baseItem/source.js";
-import type StackableItemSource from "./data/item/common/stackableItem/source.js";
-import type { MagicDataSourceData } from "./data/item/magic/source.js";
-import type { RaceDataSourceData } from "./data/item/race/source.js";
-import type { WeaponDataSourceData } from "./data/item/weapon/source.js";
 import WvCombat from "./foundryOverrides/wvCombat.js";
 import type { SystemChatMessageFlags } from "./hooks/renderChatMessage/decorateSystemMessage/index.js";
 import type Ammo from "./item/ammo.js";
@@ -17,7 +9,7 @@ import type Effect from "./item/effect.js";
 import type Magic from "./item/magic.js";
 import type Race from "./item/race.js";
 import type Weapon from "./item/weapon.js";
-import WvItem, { AmmoSystem, ApparelSystem, EffectSystem, ItemFlags, MagicSystem, MiscSystem, RaceSystem, WeaponSystem } from "./item/wvItem.js";
+import WvItem, { AmmoSystem, ApparelSystem, EffectSystem, ItemFlags, MagicSystem, MiscSystem, RaceSystem, WeaponSystem, } from "./item/wvItem.js";
 import type { WvI18nKey } from "./lang.js";
 import { macros } from "./macros/index.js";
 import type {
@@ -32,7 +24,6 @@ import type TypeSelector from "./ruleEngine/documentSelectors/typeSelector.js";
 import type UsesSkillSelector from "./ruleEngine/documentSelectors/usesSkillSelector.js";
 import type { KeywordSelectorWord } from "./ruleEngine/documentSelectorSource.js";
 import type RuleElement from "./ruleEngine/ruleElement.js";
-import type RuleElementSource from "./ruleEngine/ruleElementSource.js";
 import type { RuleElementId } from "./ruleEngine/ruleElementSource.js";
 import type * as settings from "./settings.js";
 
@@ -92,19 +83,6 @@ declare global {
           [TYPES.ITEM.RACE]: typeof Race;
           [TYPES.ITEM.WEAPON]: typeof Weapon;
         };
-      };
-      /** Wasteland Ventures system data JSON validators */
-      validators: {
-        item: {
-          [TYPES.ITEM.AMMO]: ValidateFunction<AmmoDataSourceData>;
-          [TYPES.ITEM.APPAREL]: ValidateFunction<ApparelDataSourceData>;
-          [TYPES.ITEM.EFFECT]: ValidateFunction<BaseItemSource>;
-          [TYPES.ITEM.MAGIC]: ValidateFunction<MagicDataSourceData>;
-          [TYPES.ITEM.MISC]: ValidateFunction<StackableItemSource>;
-          [TYPES.ITEM.RACE]: ValidateFunction<RaceDataSourceData>;
-          [TYPES.ITEM.WEAPON]: ValidateFunction<WeaponDataSourceData>;
-        };
-        ruleElement: ValidateFunction<RuleElementSource>;
       };
     };
   }

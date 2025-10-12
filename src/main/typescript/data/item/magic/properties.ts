@@ -1,12 +1,23 @@
-import { MagicType, getMagicType } from "../../../constants.js";
+import { type MagicType, getMagicType } from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import { CompositeNumber } from "../../common.js";
-import BaseItemProperties from "../common/baseItem/properties.js";
-import RulesProperties from "../common/rules/properties.js";
+import { BaseItemProperties } from "../common/baseItem/properties.js";
 import RangeProperties from "./ranges/properties.js";
 import type MagicDataSource from "./source.js";
-import { MagicDataSourceData } from "./source.js";
+import { MAGIC_SCHEMA, MagicDataSourceData } from "./source.js";
 import TargetProperties from "./target/properties.js";
+import fields = foundry.data.fields
+
+export type MagicSource = fields.SchemaField.InitializedData<typeof MAGIC_SCHEMA>;
+export type MagicProperties = MagicSource & BaseItemProperties;
+export namespace MagicProperties {
+  export function from(s: MagicSource, owningItem: WvItem): MagicProperties {
+    return {
+      ...s,
+      ...BaseItemProperties.from(s, owningItem),
+    }
+  }
+}
 
 export default interface MagicDataProperties extends MagicDataSource {
   data: MagicDataPropertiesData;

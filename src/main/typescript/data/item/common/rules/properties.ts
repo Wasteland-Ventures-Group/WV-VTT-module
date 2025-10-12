@@ -1,7 +1,7 @@
 import { getGame } from "../../../../foundryHelpers.js";
 import type WvItem from "../../../../item/wvItem.js";
 import type RuleElement from "../../../../ruleEngine/ruleElement.js";
-import RulesSource from "./source.js";
+import { type RulesSource } from "./source.js";
 
 export type RulesProperties = RulesSource & {
   /** The RuleElements, created from the sources */

@@ -1,27 +1,11 @@
 import type WvItem from "../../../item/wvItem.js";
-import { CompositeNumber } from "../../common.js";
-import RulesProperties from "../common/rules/properties.js";
-import StackableItemProperties from "../common/stackableItem/properties.js";
-import type MiscDataSource from "./source.js";
-import { MiscDataSourceData } from "./source.js";
+import { StackableItemProperties } from "../common/stackableItem/properties.js";
+import { type MiscSource } from "./source.js";
 
-export default interface MiscDataProperties extends MiscDataSource {
-  data: MiscDataPropertiesData;
-}
+export type MiscProperties = MiscSource & StackableItemProperties;
 
-export class MiscDataPropertiesData
-  extends MiscDataSourceData
-  implements StackableItemProperties
-{
-  constructor(source: MiscDataSourceData, owningItem: WvItem) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    StackableItemProperties.transform(this, source, owningItem);
+export namespace MiscProperties {
+  export function from(s: MiscSource, owningItem: WvItem) {
+    return StackableItemProperties.from(s, owningItem)
   }
-
-  override rules = new RulesProperties();
-
-  override value = new CompositeNumber();
-
-  override weight = new CompositeNumber();
 }

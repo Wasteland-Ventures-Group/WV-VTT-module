@@ -1,22 +1,14 @@
+import { BaseItemProperties } from "../common/baseItem/properties.js";
+import { EFFECT_SCHEMA, } from "./source.js";
+import fields = foundry.data.fields;
 import type WvItem from "../../../item/wvItem.js";
-import BaseItemProperties from "../common/baseItem/properties.js";
-import RulesProperties from "../common/rules/properties.js";
-import type EffectDataSource from "./source.js";
-import { EffectDataSourceData } from "./source.js";
 
-export default interface EffectDataProperties extends EffectDataSource {
-  data: EffectDataPropertiesData;
-}
+export type EffectSource = fields.SchemaField.InitializedData<typeof EFFECT_SCHEMA>;
 
-export class EffectDataPropertiesData
-  extends EffectDataSourceData
-  implements BaseItemProperties
-{
-  constructor(source: EffectDataSourceData, owningItem: WvItem) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    BaseItemProperties.transform(this, source, owningItem);
+export type EffectProperties = EffectSource & BaseItemProperties;
+
+export namespace EffectProperties {
+  export function from(s: EffectSource, owningItem: WvItem): EffectProperties {
+    return BaseItemProperties.from(s, owningItem);
   }
-
-  override rules = new RulesProperties();
 }

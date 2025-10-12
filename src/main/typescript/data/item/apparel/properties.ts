@@ -1,21 +1,26 @@
 import type { ApparelSlot } from "../../../constants.js";
 import type WvItem from "../../../item/wvItem.js";
 import { CompositeNumber } from "../../common.js";
-import PhysicalItemProperties from "../common/physicalItem/properties.js";
-import RulesProperties from "../common/rules/properties.js";
-import type ApparelDataSource from "./source.js";
-import { ApparelDataSourceData, type ApparelSource } from "./source.js";
+import { PhysicalItemProperties } from "../common/physicalItem/properties.js";
+import { RulesProperties } from "../common/rules/properties.js";
+import { APPAREL_SCHEMA, ApparelDataSourceData, } from "./source.js";
+import fields = foundry.data.fields;
 
-export type ApparelProperties = ApparelSource & {};
+export type ApparelProperties = ApparelSource & PhysicalItemProperties;
+export type ApparelSource = fields.SchemaField.InitializedData<typeof APPAREL_SCHEMA>;
 
-export default interface ApparelDataProperties extends ApparelDataSource {
-  data: ApparelDataPropertiesData;
+export namespace ApparelProperties {
+  export function from(s: ApparelSource, owningItem: WvItem) {
+    return {
+      ...s,
+      ...PhysicalItemProperties.from(s, owningItem),
+    }
+  }
 }
 
 export class ApparelDataPropertiesData
   extends ApparelDataSourceData
-  implements PhysicalItemProperties
-{
+  implements PhysicalItemProperties {
   constructor(source: ApparelDataSourceData, owningItem: WvItem) {
     super();
     foundry.utils.mergeObject(this, source);

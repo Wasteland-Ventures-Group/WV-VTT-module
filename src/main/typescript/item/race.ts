@@ -1,13 +1,9 @@
-import type { DocumentModificationOptions } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/abstract/document.mjs.js";
-import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData.js";
-import type { BaseUser } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/documents.mjs/baseUser.js";
 import WvActor from "../actor/wvActor.js";
 import { TYPES } from "../constants.js";
-import { RaceDataPropertiesData } from "../data/item/race/properties.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent a race in the system. */
-export default class Race extends WvItem {
+export default class Race extends WvItem<"race"> {
   /** This constructor enforces that instances have the correct data type. */
   constructor(
     data: ConstructorParameters<typeof Item>[0],
@@ -21,44 +17,40 @@ export default class Race extends WvItem {
 
   /** Whether this race can fly */
   get canFly(): boolean {
-    return this.data.data.physical.canFly;
+    return this.system.physical.canFly;
   }
 
   /** Whether this race can use some form of magic */
   get canUseMagic(): boolean {
-    return this.data.data.physical.canUseMagic;
+    return this.system.physical.canUseMagic;
   }
 
   /** Whether this race has a second head */
   get hasSecondHead(): boolean {
-    return this.data.data.physical.hasSecondHead;
+    return this.system.physical.hasSecondHead;
   }
 
   /** Whether this race has a Special Talent */
   get hasSpecialTalent(): boolean {
-    return this.data.data.physical.hasSpecialTalent;
+    return this.system.physical.hasSpecialTalent;
   }
 
   /** Whether this race has wings */
   get hasWings(): boolean {
-    return this.data.data.physical.hasWings;
+    return this.system.physical.hasWings;
   }
 
   /**
    * How many SPECIAL points can be spent with this race at character creation
    */
   get creationSpecialPoints(): number {
-    return this.data.data.creation.startingSpecialPoints;
-  }
-
-  override prepareBaseData(): void {
-    this.data.data = new RaceDataPropertiesData(this.data.data, this);
+    return this.system.creation.startingSpecialPoints;
   }
 
   protected override async _preCreate(
-    data: ItemDataConstructorData,
-    options: DocumentModificationOptions,
-    user: BaseUser
+    data: Item.CreateData,
+    options: Item.Database.PreCreateOptions,
+    user: User.Implementation,
   ): Promise<void> {
     super._preCreate(data, options, user);
     await this.removeRacesFromParent();
@@ -70,11 +62,4 @@ export default class Race extends WvItem {
 
     await this.parent.removeAllRaces();
   }
-}
-
-export default interface Race {
-  data: foundry.data.ItemData & {
-    type: typeof TYPES.ITEM.RACE;
-    _source: { type: typeof TYPES.ITEM.RACE };
-  };
 }

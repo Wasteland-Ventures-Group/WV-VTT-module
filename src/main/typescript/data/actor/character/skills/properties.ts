@@ -1,15 +1,14 @@
 import {
   CONSTANTS,
-  SkillName,
-  ThaumaturgySpecial
+  type SkillName,
+  type ThaumaturgySpecial
 } from "../../../../constants.js";
 import { CompositeNumber } from "../../../common.js";
-import type LevelingProperties from "../leveling/properties.js";
+import type { LevelingProperties } from "../leveling/properties.js";
 import type SpecialsProperties from "../specials/properties.js";
 
 export default class SkillsProperties
-  implements Record<SkillName, CompositeNumber>
-{
+  implements Record<SkillName, CompositeNumber> {
   /** The Barter skill of the character */
   barter = new CompositeNumber();
 
@@ -91,7 +90,7 @@ export default class SkillsProperties
       specials[
         skill === "thaumaturgy" ? thaumSpecial : CONSTANTS.skillSpecials[skill]
       ].permTotal *
-        2 +
+      2 +
       Math.floor(specials.luck.permTotal / 2);
     const composite = new CompositeNumber(baseSkill, { min: 0, max: 85 });
     composite.add({

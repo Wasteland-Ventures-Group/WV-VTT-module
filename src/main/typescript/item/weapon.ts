@@ -1,10 +1,9 @@
 import { TAGS, TYPES } from "../constants.js";
-import { WeaponDataPropertiesData } from "../data/item/weapon/properties.js";
 import { LOG } from "../systemLogger.js";
 import WvItem from "./wvItem.js";
 
 /** An Item that can represent a weapon in the Wasteland Ventures system. */
-export default class Weapon extends WvItem {
+export default class Weapon extends WvItem<"weapon"> {
   /** This constructor enforces that instances have the correct data type. */
   constructor(
     data: ConstructorParameters<typeof Item>[0],
@@ -16,10 +15,6 @@ export default class Weapon extends WvItem {
     super(data, context);
   }
 
-  override prepareBaseData(): void {
-    this.data.data = new WeaponDataPropertiesData(this.data.data, this);
-  }
-
   override finalizeData(): void {
     if (!this.actor) {
       LOG.warn(
@@ -27,18 +22,10 @@ export default class Weapon extends WvItem {
       );
     }
 
-    if (this.data.data.tags.includes(TAGS.skillDamageBonus))
-      this.data.data.attacks.applySkillDamageDiceMod(this.actor, this);
+    if (this.system.tags.includes(TAGS.skillDamageBonus))
+      this.system.attacks.applySkillDamageDiceMod(this.actor, this);
 
-    this.data.data.attacks.applyStrengthDamageDiceMod(this.actor);
-
-    this.data.data.ranges.applySizeCategoryReachBonus(this.actor);
+    this.system.attacks.applyStrengthDamageDiceMod(this.actor);
+    this.system.ranges.applySizeCategoryReachBonus(this.actor);
   }
-}
-
-export default interface Weapon {
-  data: foundry.data.ItemData & {
-    type: typeof TYPES.ITEM.WEAPON;
-    _source: { type: typeof TYPES.ITEM.WEAPON };
-  };
 }

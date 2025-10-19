@@ -11,6 +11,13 @@ export function getGame(): Game {
   return game;
 }
 
+export function getI18n() {
+  const i18n = game?.i18n;
+  if (!(i18n instanceof Localization)) throw new Error("Game or localization not yet initialized.");
+
+  return i18n
+}
+
 /**
  * Get a typesafe, initialized Canvas instance.
  * @throws if canvas has not yet been initialized.

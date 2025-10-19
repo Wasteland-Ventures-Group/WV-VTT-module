@@ -1,5 +1,3 @@
-import type Weapon from "../../../item/weapon.js";
-import { CompositeNumber } from "../../common.js";
 import { PhysicalItemProperties } from "../common/physicalItem/properties.js";
 import AttacksProperties from "./attack/properties.js";
 import RangesProperties from "./ranges/properties.js";
@@ -7,8 +5,25 @@ import ReloadProperties from "./reload/properties.js";
 import { WeaponDataSourceData, type WeaponSource } from "./source.js";
 import fields = foundry.data.fields;
 import type WvItem from "../../../item/wvItem.js";
+import type WvActor from "../../../actor/wvActor.js";
+import { TAGS } from "../../../constants.js";
 
-export type WeaponProperties = WeaponSource & PhysicalItemProperties & {};
+export type WeaponProperties = WeaponSource & PhysicalItemProperties & {
+  ranges: RangesProperties,
+  attacks: AttacksProperties,
+};
+
+export namespace WeaponProperties {
+  export function applySizeCategoryReachBonus(ranges: RangesProperties, actor: WvActor | null) {
+    if (!actor) return;
+
+    ranges.getMatching([TAGS.sizeCategoryReachBonus]).forEach((range) =>
+      range.distance.applySizeCategoryReachBonus(
+        actor.system.background.size.total
+      )
+    );
+  }
+}
 
 // export default interface WeaponDataProperties extends WeaponDataSource {
 //   data: WeaponDataPropertiesData;

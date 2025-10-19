@@ -121,7 +121,10 @@ function foundryEntrypointsPlugin(): Vite.Plugin {
       if (source === "/styles.css") {
         return stylesFile;
       }
+
+      throw "Invalid source ID"
     },
+
     async load(id) {
       if (id === jsFile) {
         const scriptsModule = await this.resolve(scriptsEntrypoint);
@@ -147,6 +150,8 @@ function foundryEntrypointsPlugin(): Vite.Plugin {
  * Vite automatically injects the styles into the DOM and performs hot module reload.
  */`;
       }
+
+      throw "Invalid source ID"
     }
   };
 }

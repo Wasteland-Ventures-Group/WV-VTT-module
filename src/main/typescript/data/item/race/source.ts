@@ -9,20 +9,33 @@ import {
 } from "../../foundryCommon.js";
 import fields = foundry.data.fields;
 
-const PHYSICAL_SCHEMA = {}
+const PHYSICAL_SCHEMA = {
+  /** Whether this race can fly */
+  canFly: new fields.BooleanField({ required: true, initial: false }),
+  /** Whether this race can use some form of magic */
+  canUseMagic: new fields.BooleanField({ required: true, initial: false }),
+  /** Whether this race has a second head */
+  hasSecondHead: new fields.BooleanField({ required: true, initial: false }),
+  /** Whether this race has a Special Talent */
+  hasSpecialTalent: new fields.BooleanField({ required: true, initial: false }),
+  /** Whether this race has wings */
+  hasWings: new fields.BooleanField({ required: true, initial: false }),
+}
+
+const CREATION_ATTRIBUTES_SCHEMA = {
+  /**
+   * How many SPECIAL points can be spent with this race at character creation
+   */
+  startingSpecialPoints: new fields.IntegerSortField({ required: true, initial: 40 }),
+}
 
 export const RACE_SCHEMA = {
   /** Physical characteristics of the race */
   physical: new fields.SchemaField(PHYSICAL_SCHEMA),
+  creation: new fields.SchemaField(CREATION_ATTRIBUTES_SCHEMA),
   ...BASE_ITEM_SCHEMA,
 }
 
-export type RaceSource = fields.SchemaField.InitializedData<typeof RACE_SCHEMA>;
-
-export interface RaceDataSource {
-  type: typeof TYPES.ITEM.RACE;
-  data: RaceDataSourceData;
-}
 
 /**
  * A type that reflects free things that are given to a character on creation
@@ -142,71 +155,10 @@ export const FREE_PER_LEVEL_PERIOD_SCHEMA: JSONSchemaType<FreePerLevelPeriod> =
 
 /** Physical characteristics of a race. */
 export class PhysicalSource {
-  /** Whether this race can fly */
-  canFly = false;
-
-  /** Whether this race can use some form of magic */
-  canUseMagic = false;
-
-  /** Whether this race has a second head */
-  hasSecondHead = false;
-
-  /** Whether this race has a Special Talent */
-  hasSpecialTalent = false;
-
-  /** Whether this race has wings */
-  hasWings = false;
 }
-
-export const PHYSICAL_SOURCE_JSON_SCHEMA: JSONSchemaType<PhysicalSource> = {
-  description: "Phyiscal characteristics of a race",
-  type: "object",
-  properties: {
-    canFly: {
-      type: "boolean",
-      default: false
-    },
-    canUseMagic: {
-      type: "boolean",
-      default: false
-    },
-    hasSecondHead: {
-      type: "boolean",
-      default: false
-    },
-    hasSpecialTalent: {
-      type: "boolean",
-      default: false
-    },
-    hasWings: {
-      type: "boolean",
-      default: false
-    }
-  },
-  required: [
-    "canFly",
-    "canUseMagic",
-    "hasSecondHead",
-    "hasSpecialTalent",
-    "hasWings"
-  ],
-  additionalProperties: false,
-  default: {
-    canFly: false,
-    canUseMagic: false,
-    hasSecondHead: false,
-    hasSpecialTalent: false,
-    hasWings: false
-  }
-};
 
 /** Attributes of a race on character creation */
 export class CreationAttributes {
-  /**
-   * How many SPECIAL points can be spent with this race at character creation
-   */
-  startingSpecialPoints = 40;
-
   /** Magic types this race can choose from */
   magicTypes: MagicType[] = [];
 
@@ -217,14 +169,10 @@ export class CreationAttributes {
   freeAlchemy = new FreeOnCreation();
 }
 
-export const CREATION_ATTRIBUTES_SCHEMA: JSONSchemaType<CreationAttributes> = {
+const CREATION_ATTRIBUTES_SCHEMA_JSON: JSONSchemaType<CreationAttributes> = {
   description: "Attributes of a race on character creation",
   type: "object",
   properties: {
-    startingSpecialPoints: {
-      type: "integer",
-      default: 40
-    },
     magicTypes: {
       type: "array",
       items: {
@@ -236,7 +184,6 @@ export const CREATION_ATTRIBUTES_SCHEMA: JSONSchemaType<CreationAttributes> = {
     freeAlchemy: FREE_ON_CREATION_SCHEMA
   },
   required: [
-    "startingSpecialPoints",
     "magicTypes",
     "freeSpells",
     "freeAlchemy"
@@ -271,34 +218,13 @@ export const LEVELING_ATTRIBUTES_JSON_SCHEMA: JSONSchemaType<LevelingAttributes>
   }
 };
 
-export class RaceDataSourceData extends BaseItemSource {
-  physical = new PhysicalSource();
-
+class RaceDataSourceData {
   /** Attributes of the race on character creation */
   creation = new CreationAttributes();
 
   /** Attributes of the race for leveling */
   leveling = new LevelingAttributes();
 }
-
-export const RACE_SOURCE_JSON_SCHEMA: JSONSchemaType<RaceDataSourceData> = {
-  description: "The system data for a race item",
-  type: "object",
-  properties: {
-    ...BASE_ITEM_SOURCE_JSON_SCHEMA.properties,
-    physical: PHYSICAL_SOURCE_JSON_SCHEMA,
-    creation: CREATION_ATTRIBUTES_SCHEMA,
-    leveling: LEVELING_ATTRIBUTES_JSON_SCHEMA
-  },
-  required: [
-    "physical",
-    "creation",
-    "leveling"
-  ],
-  additionalProperties: false,
-  default: {
-  }
-};
 
 export interface CompendiumRace
   extends FoundryCompendiumData<RaceDataSourceData> {
@@ -316,7 +242,6 @@ export const COMP_RACE_JSON_SCHEMA: JSONSchemaType<CompendiumRace> = {
       const: TYPES.ITEM.RACE,
       default: TYPES.ITEM.RACE
     },
-    data: RACE_SOURCE_JSON_SCHEMA
   },
   required: COMPENDIUM_JSON_SCHEMA.required,
   additionalProperties: false,

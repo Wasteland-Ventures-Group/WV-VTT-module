@@ -2,62 +2,102 @@ import type WvActor from "../../../actor/wvActor.js";
 import {
   CONSTANTS,
   isSpecialName,
-  SpecialName,
+  type SpecialName,
   SpecialNames,
-  ThaumaturgySpecial,
+  type ThaumaturgySpecial,
   ThaumaturgySpecials
 } from "../../../constants.js";
-import type CharacterDataProperties from "../../../data/actor/character/properties.js";
-import { getGame } from "../../../foundryHelpers.js";
+import { getI18n } from "../../../foundryHelpers.js";
 import type Race from "../../../item/race.js";
-import WvI18n, { I18nSpecial } from "../../../wvI18n.js";
+import WvI18n, { type I18nSpecial } from "../../../wvI18n.js";
+import ApplicationV2 = foundry.applications.api.ApplicationV2;
+import type { DeepPartial } from "fvtt-types/utils";
+import type { CharacterProperties } from "../../../data/actor/character/properties.js";
 
-export default class BaseSetup extends FormApplication<
-  FormApplicationOptions,
-  TemplateData,
-  WvActor
-> {
-  static override get defaultOptions(): FormApplicationOptions {
-    const defaultOptions = super.defaultOptions;
-    defaultOptions.classes.push(CONSTANTS.systemId);
-    defaultOptions.title = getGame().i18n.localize(
-      "wv.system.initialCharacterSetup.openButton"
-    );
-    defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/actors/character/baseSetup.hbs`;
-    return defaultOptions;
+export default class BaseSetup extends ApplicationV2<TemplateContext> {
+  static override DEFAULT_OPTIONS: ApplicationV2.DefaultOptions<BaseSetup> = {
+    classes: [CONSTANTS.systemId],
+    tag: "form",
+    form: {
+      handler: BaseSetup.#onSubmit,
+      submitOnChange: true,
+      closeOnSubmit: true,
+    },
+    window: {
+      title: getI18n().localize("wv.system.initialCharacterSetup.openButton"),
+    }
+  };
+
+  static PARTS = {
+    baseSetup: {
+      template: `${CONSTANTS.systemPath}/handlebars/actors/character/baseSetup.hbs`
+    }
+  };
+
+  static character: WvActor | null;
+  static async #onSubmit(_event: SubmitEvent | Event, form: HTMLFormElement, expandedFormData: FormDataExtended): Promise<void> {
+    if (!form.reportValidity()) return;
+    if (!this.character) return;
+    const specialPoints: Partial<Record<SpecialName, number>> = {};
+
+    const formData = foundry.utils.expandObject(expandedFormData.object) as AppFormData;
+
+    for (const specialName of SpecialNames) {
+      const points = parseInt(formData.special[specialName] ?? "");
+      if (isNaN(points)) continue;
+
+      specialPoints[specialName] = points;
+    }
+
+    const updateData: Record<string, unknown> = {
+      data: { leveling: { specialPoints } }
+    };
+    const thaumSpecial = formData["thaumSpecial"] as string ?? "";
+    if (isSpecialName(thaumSpecial))
+      updateData["data.magic.thaumSpecial"] = thaumSpecial;
+
+    await this.character.update(updateData);
   }
 
   constructor(
     public character: WvActor,
-    options: Partial<FormApplicationOptions> = {}
+    options: DeepPartial<ApplicationV2.Configuration> = {}
   ) {
-    if (!options?.title)
-      options.title = getGame().i18n.format(
+    if (!options.window) {
+      options.window = {}
+    }
+
+    if (!options.window.title) {
+      options.window.title = getI18n().format(
         "wv.system.initialCharacterSetup.title",
         { name: character.name }
-      );
+      )
+
+    }
 
     if (!options.id) options.id = `actor-${character.id}-base-setup`;
+    super(options);
 
-    super(character, options);
+    BaseSetup.character = character;
   }
 
   #specialPointsInputs: HTMLInputElement[] = [];
 
   #specialPointsTotalElement: HTMLElement | null = null;
 
-  override getData(): TemplateData {
+  protected override _prepareContext(options: DeepPartial<ApplicationV2.RenderOptions> & { isFirstRender: boolean }): Promise<TemplateContext> {
+    super._prepareContext(options);
     const i18nSpecials = WvI18n.specials;
+    BaseSetup.character = this.character;
 
-    return {
-      data: this.character.data,
+    const context = {
+      data: BaseSetup.character.system,
       sheet: {
         bounds: CONSTANTS.bounds,
         race: this.character.race,
         specials: SpecialNames.reduce(
           (specials, specialName) => {
-            const points =
-              this.character.data.data.specials[specialName].points;
+            const points = this.character.system.specials[specialName].points;
             specials[specialName] = {
               points,
               long: i18nSpecials[specialName].long,
@@ -77,57 +117,30 @@ export default class BaseSetup extends FormApplication<
         )
       }
     };
+    return Promise.resolve(context)
   }
 
-  override activateListeners(html: JQuery<HTMLElement>): void {
-    super.activateListeners(html);
+  override _onRender(context: DeepPartial<TemplateContext>, options: DeepPartial<ApplicationV2.RenderOptions>): Promise<void> {
+    super._onRender(context, options);
 
-    const sheetForm = html[0];
-    if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element.");
-
-    this.getHtmlElements(sheetForm);
-
-    sheetForm.addEventListener("submit", () => sheetForm.reportValidity());
+    this.getHtmlElements();
 
     this.#specialPointsInputs.forEach((element) =>
       element.addEventListener("change", this.onChangeSpecialPoints.bind(this))
     );
     this.onChangeSpecialPoints();
+    return Promise.resolve()
   }
 
-  protected override async _updateObject(
-    _event: Event,
-    formData?: AppFormData | undefined
-  ): Promise<void> {
-    const specialPoints: Partial<Record<SpecialName, number>> = {};
-
-    for (const specialName of SpecialNames) {
-      const points = parseInt(formData?.[`special.${specialName}`] ?? "");
-      if (isNaN(points)) continue;
-
-      specialPoints[specialName] = points;
-    }
-
-    const updateData: Record<string, unknown> = {
-      data: { leveling: { specialPoints } }
-    };
-    const thaumSpecial = formData?.["thaumSpecial"] ?? "";
-    if (isSpecialName(thaumSpecial))
-      updateData["data.magic.thaumSpecial"] = thaumSpecial;
-
-    await this.character.update(updateData);
-  }
-
-  private getHtmlElements(innerHtml: HTMLElement) {
+  private getHtmlElements() {
     this.#specialPointsInputs = [];
-    innerHtml.querySelectorAll("[data-special-points]").forEach((input) => {
+    this.element.querySelectorAll("[data-special-points]").forEach((input) => {
       if (input instanceof HTMLInputElement)
         this.#specialPointsInputs.push(input);
     });
 
     this.#specialPointsTotalElement = null;
-    const totalPoints = innerHtml.querySelector("[data-special-points-total]");
+    const totalPoints = this.element.querySelector("[data-special-points-total]");
     if (totalPoints instanceof HTMLElement)
       this.#specialPointsTotalElement = totalPoints;
   }
@@ -144,7 +157,7 @@ export default class BaseSetup extends FormApplication<
     if (total > this.character.race.creationSpecialPoints) {
       this.#specialPointsInputs.forEach((input) =>
         input.setCustomValidity(
-          getGame().i18n.localize(
+          getI18n().localize(
             "wv.system.initialCharacterSetup.messages.tooManySpecialPointsSpent"
           )
         )
@@ -152,7 +165,7 @@ export default class BaseSetup extends FormApplication<
     } else if (total < this.character.race.creationSpecialPoints) {
       this.#specialPointsInputs.forEach((input) =>
         input.setCustomValidity(
-          getGame().i18n.localize(
+          getI18n().localize(
             "wv.system.initialCharacterSetup.messages.tooFewSpecialPointsSpent"
           )
         )
@@ -174,12 +187,13 @@ export default class BaseSetup extends FormApplication<
   }
 }
 
-type SpecialPointsFormData = Partial<Record<`special.${SpecialName}`, string>>;
+type AppFormData = {
+  special: Partial<Record<SpecialName, string>>,
+  thaumSpecial?: string
+};
 
-type AppFormData = SpecialPointsFormData & { thaumSpecial?: string };
-
-interface TemplateData {
-  data: CharacterDataProperties;
+interface TemplateContext {
+  data: CharacterProperties;
   sheet: {
     bounds: (typeof CONSTANTS)["bounds"];
     race: Race;

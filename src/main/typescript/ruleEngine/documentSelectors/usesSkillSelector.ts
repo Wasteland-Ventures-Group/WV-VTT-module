@@ -7,7 +7,7 @@ import DocumentSelector from "../documentSelector.js";
 /** A DocumentSelector that selects documents based on their used skill. */
 export default class UsesSkillSelector extends DocumentSelector {
   constructor(
-    public root: WvActor | WvItem,
+    public override root: WvActor | WvItem,
     public skill: SkillName
   ) {
     super(root);
@@ -15,7 +15,7 @@ export default class UsesSkillSelector extends DocumentSelector {
 
   override selects(document: WvActor | WvItem): boolean {
     return (
-      document instanceof Weapon && document.data.data.skill === this.skill
+      document instanceof Weapon && document.system.skill === this.skill
     );
   }
 }

@@ -1,10 +1,12 @@
 import { type SkillName, SkillNames, TYPES } from "../../../constants.js";
-import { type CompositeNumberSource } from "../../common.js";
+import { CompositeNumberField } from "../../common.js";
 import type { FoundryCompendiumData } from "../../foundryCommon.js";
 import { PHYS_ITEM_SCHEMA, } from "../common/physicalItem/source.js";
-import AttacksSource from "./attack/source.js";
 
 import fields = foundry.data.fields;
+import { ATTACK_SCHEMA } from "./attack/source.js";
+import { RELOAD_SCHEMA } from "./reload/source.js";
+import { RANGES_SCHEMA } from "./ranges/source.js";
 
 export default interface WeaponDataSource {
   type: typeof TYPES.ITEM.WEAPON;
@@ -12,9 +14,6 @@ export default interface WeaponDataSource {
 }
 
 class WeaponDataSourceData {
-  /** The attacks of the weapon */
-  attacks: AttacksSource = new AttacksSource();
-
   /** Whether the weapon is a holdout weapon */
   holdout?: boolean = false;
 
@@ -22,13 +21,6 @@ class WeaponDataSourceData {
   // reload: ReloadSource = RELOAD_JSON_SCHEMA.default;
 
   skill: SkillName = "firearms";
-
-  /** The strength requirement for this weapon to be equipped */
-  strengthRequirement: CompositeNumberSource = { source: 0 };
-}
-
-const RANGES_SCHEMA = {
-
 }
 
 export const WEAPON_SCHEMA = {
@@ -36,10 +28,15 @@ export const WEAPON_SCHEMA = {
   skill: new fields.StringField({ choices: SkillNames }),
   /** The ranges of the weapon */
   ranges: new fields.SchemaField(RANGES_SCHEMA),
+  /** Information regarding the weapon's ammunition and reloading. */
+  reload: new fields.SchemaField(RELOAD_SCHEMA),
+  /** The attacks of the weapon */
+  attacks: new fields.ArrayField(new fields.SchemaField(ATTACK_SCHEMA), { required: true }),
+  /** The weapon's strength requirement */
+  strengthRequirement: CompositeNumberField.create({ min: 0, initial: 0 }),
   ...PHYS_ITEM_SCHEMA
 }
 
-export type WeaponSource = fields.SchemaField.InitializedData<typeof WEAPON_SCHEMA>;
 
 
 export interface CompendiumWeapon

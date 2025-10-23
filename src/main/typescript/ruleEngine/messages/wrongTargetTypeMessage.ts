@@ -1,4 +1,4 @@
-import { getGame } from "../../foundryHelpers.js";
+import { getI18n } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
 /** A warning about a wrong target property type on the selected Document */
@@ -14,7 +14,7 @@ export default class WrongTargetTypeMessage extends RuleElementMessage {
   }
 
   override get message(): string {
-    return getGame().i18n.format(this.messageKey, {
+    return getI18n().format(this.messageKey, {
       path: this.propertyPath,
       type: this.typeName
     });

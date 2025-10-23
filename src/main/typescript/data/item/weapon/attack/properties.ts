@@ -1,4 +1,4 @@
-import AttacksSource, { AttackSource, DamageSource } from "./source.js";
+import { ATTACK_SCHEMA, DamageSource } from "./source.js";
 import { CompositeNumber } from "../../../common.js";
 import type WvActor from "../../../../actor/wvActor.js";
 import type Weapon from "../../../../item/weapon.js";
@@ -8,22 +8,20 @@ import {
   RangeBracket
 } from "../../../../constants.js";
 import AttackExecution from "../../../../item/weapon/attackExecution.js";
+import fields = foundry.data.fields;
 
-export default class AttacksProperties extends AttacksSource {
-  constructor(source: AttacksSource, owningWeapon: Weapon) {
-    super();
-    foundry.utils.mergeObject(this, source);
-    Object.entries(source.sources).forEach(([name, source]) => {
-      this.attacks[name] = new AttackProperties(name, source, owningWeapon);
-    });
+export type AttacksProperties = AttackProperties[];
+type AttackSource = fields.SchemaField.InitializedData<typeof ATTACK_SCHEMA>
+type AttacksSource = AttackSource[];
+
+export namespace AttacksProperties {
+  export function from(s: AttacksSource, owningWeapon: Weapon): AttacksProperties {
+    return s.map(s => new AttackProperties(s, owningWeapon))
   }
 
-  /** The Weapon Attacks, created from the sources */
-  attacks: Record<string, AttackProperties> = {};
-
   /** Get all attacks matching the given tags. */
-  getMatching(tags: string[] | undefined): AttackProperties[] {
-    return Object.values(this.attacks).filter((attack) => attack.matches(tags));
+  export function getMatching(self: AttacksProperties, tags: string[] | undefined): AttackProperties[] {
+    return self.filter((attack) => attack.matches(tags));
   }
 
   /**
@@ -31,31 +29,28 @@ export default class AttacksProperties extends AttacksSource {
    * for it. This is based on the skill of the weapon and the skill value of the
    * given Actor.
    */
-  applySkillDamageDiceMod(actor: WvActor | null, weapon: Weapon): void {
+  export function applySkillDamageDiceMod(self: AttacksProperties, actor: WvActor | null, weapon: Weapon): void {
     if (!actor) return;
 
-    Object.values(this.attacks).forEach((attack) =>
+    self.forEach((attack) =>
       attack.damage.applySkillDamageDiceMod(actor, weapon)
     );
   }
-
   /**
    * Apply a Strength damage dice modifier to all attacks, based on the Strength
    * of the given Actor.
    */
-  applyStrengthDamageDiceMod(actor: WvActor | null): void {
+  export function applyStrengthDamageDiceMod(self: AttacksProperties, actor: WvActor | null): void {
     if (!actor) return;
 
-    Object.values(this.attacks).forEach((attack) =>
+    self.forEach((attack) =>
       attack.damage.applyStrengthDamageDiceMod(actor)
     );
   }
 }
 
-export class AttackProperties extends AttackSource {
-  constructor(name: string, source: AttackSource, owningWeapon: Weapon) {
-    super();
-    foundry.utils.mergeObject(this, source);
+export class AttackProperties implements AttackSource {
+  constructor(source: AttackSource, owningWeapon: Weapon) {
     this.damage = new DamageProperties(source.damage, owningWeapon);
 
     this.rounds = CompositeNumber.from(source.rounds ?? { source: 0 });
@@ -69,7 +64,7 @@ export class AttackProperties extends AttackSource {
     this.ap.bounds.min = 0;
 
     this.#weapon = owningWeapon;
-    this.#name = name;
+    this.name = source.name;
   }
 
   override damage: DamageProperties;
@@ -82,7 +77,7 @@ export class AttackProperties extends AttackSource {
 
   #weapon: Weapon;
 
-  #name: string;
+  name: string;
 
   /** Get the range picking relevant tags for this attack. */
   get rangePickingTags(): string[] {

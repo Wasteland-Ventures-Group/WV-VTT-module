@@ -1,22 +1,26 @@
 import type WvActor from "../../../../actor/wvActor.js";
-import { CONSTANTS, RangeBracket, TAGS } from "../../../../constants.js";
+import { CONSTANTS, RangeBracket, TAGS, type SpecialName } from "../../../../constants.js";
 import type SpecialsProperties from "../../../actor/character/specials/properties.js";
 import { CompositeNumber } from "../../../common.js";
-import RangesSource, { DistanceSource, RangeSource } from "./source.js";
+import { DISTANCE_SCHEMA, RANGE_SCHEMA, RANGES_SCHEMA } from "./source.js";
+import fields = foundry.data.fields;
 
-export default class RangesProperties extends RangesSource {
+type RangesSource = fields.SchemaField.InitializedData<typeof RANGES_SCHEMA>;
+type RangeSource = fields.SchemaField.InitializedData<typeof RANGE_SCHEMA>;
+type DistanceSource = fields.SchemaField.InitializedData<typeof DISTANCE_SCHEMA>;
+
+export default class RangesProperties implements RangesSource {
   constructor(source: RangesSource) {
-    super();
     this.short = new RangeProperties(source.short);
     this.medium = new RangeProperties(source.medium);
     this.long = new RangeProperties(source.long);
   }
 
-  override short: RangeProperties;
+  short: RangeProperties;
 
-  override medium: RangeProperties;
+  medium: RangeProperties;
 
-  override long: RangeProperties;
+  long: RangeProperties;
 
   /** Get all ranges matching the given tags. */
   getMatching(tags: string[] | undefined): RangeProperties[] {
@@ -94,24 +98,23 @@ export default class RangesProperties extends RangesSource {
     if (!actor) return;
 
     this.getMatching([TAGS.sizeCategoryReachBonus]).forEach((range) =>
-      range.distance.applySizeCategoryReachBonus(
-        actor.data.data.background.size.total
-      )
+      range.distance.applySizeCategoryReachBonus(actor.system.background.size.total)
     );
   }
 }
 
-export class RangeProperties extends RangeSource {
+export class RangeProperties implements RangeSource {
   constructor(source: RangeSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
     this.distance = new DistanceProperties(source.distance);
     this.modifier = CompositeNumber.from(source.modifier);
+    this.tags = source.tags;
   }
 
-  override distance: DistanceProperties;
+  distance: DistanceProperties;
 
-  override modifier: CompositeNumber;
+  modifier: CompositeNumber;
+
+  tags: string[];
 
   /** Check whether this range matches the given list of tags. */
   matches(tags: string[] | undefined): boolean {
@@ -121,21 +124,21 @@ export class RangeProperties extends RangeSource {
   }
 }
 
-export class DistanceProperties extends DistanceSource {
+export class DistanceProperties implements DistanceSource {
   constructor(source: DistanceSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
-
     this.base = CompositeNumber.from(source.base);
     this.base.bounds.min = 0;
 
     this.multiplier = CompositeNumber.from(source.multiplier);
     this.multiplier.bounds.min = 0;
+    this.special = source.special;
   }
 
-  override base: CompositeNumber;
+  base: CompositeNumber;
 
-  override multiplier: CompositeNumber;
+  multiplier: CompositeNumber;
+
+  special: SpecialName | undefined;
 
   /**
    * Get the effective distance for a range distance. If the distance is Special
@@ -145,7 +148,7 @@ export class DistanceProperties extends DistanceSource {
    * @returns the effective distance
    */
   getEffectiveRangeDistance(specials?: Partial<SpecialsProperties>): number {
-    if (this.multiplier.total !== 0 && this.special !== "") {
+    if (this.multiplier.total !== 0 && this.special !== undefined) {
       const specialValue = (specials ?? {})[this.special]?.tempTotal ?? 0;
       return this.getSpecialRangeDistance(specialValue);
     }
@@ -165,7 +168,7 @@ export class DistanceProperties extends DistanceSource {
   getDisplayRangeDistance(
     specials?: Partial<SpecialsProperties> | undefined
   ): string {
-    if (this.multiplier.total !== 0 && this.special !== "") {
+    if (this.multiplier.total !== 0 && this.special !== undefined) {
       const specialValue = (specials ?? {})[this.special]?.tempTotal;
       if (typeof specialValue === "number") {
         return this.getSpecialRangeDistance(specialValue).toString();

@@ -1,4 +1,4 @@
-import { getGame } from "../../foundryHelpers.js";
+import { getI18n } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
 export default class NotActorMessage extends RuleElementMessage {
@@ -7,6 +7,6 @@ export default class NotActorMessage extends RuleElementMessage {
   }
 
   override get message(): string {
-    return getGame().i18n.format(this.messageKey, { type: "WvActor" });
+    return getI18n().format(this.messageKey, { type: "WvActor" });
   }
 }

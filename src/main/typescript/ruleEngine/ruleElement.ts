@@ -1,13 +1,15 @@
+import assert from "assert";
 import WvActor from "../actor/wvActor.js";
 import { TYPES } from "../constants.js";
 import type { LabelComponent } from "../data/common.js";
+import { AttacksProperties } from "../data/item/weapon/attack/properties.js";
 import {
   isOwningActor,
   isSameDocument,
   isSiblingItem
 } from "../foundryHelpers.js";
 import type { DocumentRelation } from "../item/wvItem.js";
-import WvItem from "../item/wvItem.js";
+import WvItem, { isOfItemType } from "../item/wvItem.js";
 import DocumentSelector, { createSelector } from "./documentSelector.js";
 import ChangedTypeMessage from "./messages/changedTypeMessage.js";
 import NotMatchingTargetMessage from "./messages/notMatchingTargetMessage.js";
@@ -19,6 +21,12 @@ import type {
   RuleElementCondition,
   RuleElementHook
 } from "./ruleElementSource.js";
+
+
+export function getWeaponProperties(weapon: WvItem<"weapon">, tags: string[] | undefined, target: PropertyKey): unknown[] {
+  const attacks: AttacksProperties = weapon.system.attacks;
+  return AttacksProperties.getMatching(attacks, tags).map((attack) => foundry.utils.getProperty(attack, target));
+}
 
 /**
  * A rule engine element, allowing the modification of a data point, specified
@@ -130,14 +138,14 @@ export default class RuleElement {
   /** Get the target property of the RuleElement. */
   get target(): string {
     if (this.attackRegexpMatch) {
-      const path = this.attackRegexpMatch.groups?.path;
+      const path = this.attackRegexpMatch.groups?.["path"];
       if (path === undefined)
         throw new Error("There was no path after splitting!");
       return path;
     }
 
     if (this.rangesRegexpMatch) {
-      const path = this.rangesRegexpMatch.groups?.path;
+      const path = this.rangesRegexpMatch.groups?.["path"];
       if (path === undefined)
         throw new Error("There was no path after splitting!");
       return path;
@@ -211,15 +219,15 @@ export default class RuleElement {
 
   /** Get the properties of the given Document, the RuleElement targets. */
   protected getProperties(document: WvActor | WvItem): unknown[] {
-    if (this.attackRegexpMatch && document.type === TYPES.ITEM.WEAPON) {
-      return document.system.attacks
-        .getMatching(this.attackRegexpMatch?.groups?.tags?.split(","))
-        .map((attack) => foundry.utils.getProperty(attack, this.target));
+    if (this.attackRegexpMatch && document.type == "weapon") {
+      assert(isOfItemType(document, "weapon"))
+      getWeaponProperties(document, this.attackRegexpMatch?.groups?.["tags"]?.split(","), this.target)
     }
 
     if (this.rangesRegexpMatch && document.type === TYPES.ITEM.WEAPON) {
+      assert(isOfItemType(document, "weapon"))
       return document.system.ranges
-        .getMatching(this.rangesRegexpMatch?.groups?.tags?.split(","))
+        .getMatching(this.rangesRegexpMatch?.groups?.["tags"]?.split(","))
         .map((range) => foundry.utils.getProperty(range, this.target));
     }
 
@@ -235,9 +243,10 @@ export default class RuleElement {
     document: WvActor | WvItem,
     callback: (value: unknown) => unknown
   ) {
-    if (this.attackRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      document.data.data.attacks
-        .getMatching(this.attackRegexpMatch.groups?.tags?.split(","))
+    if (this.attackRegexpMatch && document.type === TYPES.ITEM.WEAPON) {
+      assert(isOfItemType(document, "weapon"))
+      AttacksProperties.getMatching(document.system.attacks,
+        this.attackRegexpMatch.groups?.["tags"]?.split(","))
         .forEach((attack) =>
           callback(foundry.utils.getProperty(attack, this.target))
         );
@@ -245,9 +254,10 @@ export default class RuleElement {
       return;
     }
 
-    if (this.rangesRegexpMatch && document.data.type === TYPES.ITEM.WEAPON) {
-      document.data.data.ranges
-        .getMatching(this.rangesRegexpMatch.groups?.tags?.split(","))
+    if (this.rangesRegexpMatch && document.type === TYPES.ITEM.WEAPON) {
+      assert(isOfItemType(document, "weapon"))
+      document.system.ranges
+        .getMatching(this.rangesRegexpMatch.groups?.["tags"]?.split(","))
         .forEach((range) =>
           callback(foundry.utils.getProperty(range, this.target))
         );
@@ -256,11 +266,11 @@ export default class RuleElement {
     }
 
     const modifiedProperty = callback(
-      foundry.utils.getProperty(document.data.data, this.target)
+      foundry.utils.getProperty(document.system, this.target)
     );
     if (modifiedProperty !== undefined)
       foundry.utils.setProperty(
-        document.data.data,
+        document.system,
         this.target,
         modifiedProperty
       );
@@ -271,7 +281,7 @@ export default class RuleElement {
    * overriden by subclasses if needed.
    */
 
-  protected validate(): void {}
+  protected validate(): void { }
 
   /**
    * Check whether the value is of the given type.
@@ -420,7 +430,7 @@ export default class RuleElement {
    * subclesses.
    */
 
-  protected innerApply(_document: WvActor | WvItem): void {}
+  protected innerApply(_document: WvActor | WvItem): void { }
 
   /**
    * Whether nothing prevents this RuleElement from applying to any Document.

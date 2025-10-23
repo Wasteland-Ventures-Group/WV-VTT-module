@@ -182,7 +182,7 @@ export default class WvI18n {
       acc[value] = foundry.utils.getProperty(
         getI18n().translations,
         internalizationKey
-      );
+      ) as string;
       return acc;
     }, {} as I18nRollModes);
   }

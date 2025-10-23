@@ -6,7 +6,7 @@ import DocumentSelector from "../documentSelector.js";
 /** A DocumentSelector that selects documents with the specified type. */
 export default class TypeSelector extends DocumentSelector {
   constructor(
-    public root: WvActor | WvItem,
+    public override root: WvActor | WvItem,
     public type: SystemDocumentType
   ) {
     super(root);

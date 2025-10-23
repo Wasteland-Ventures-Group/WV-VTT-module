@@ -1,16 +1,20 @@
 import { PhysicalItemProperties } from "../common/physicalItem/properties.js";
-import AttacksProperties from "./attack/properties.js";
+import { AttacksProperties } from "./attack/properties.js";
 import RangesProperties from "./ranges/properties.js";
 import ReloadProperties from "./reload/properties.js";
-import { WeaponDataSourceData, type WeaponSource } from "./source.js";
-import fields = foundry.data.fields;
+import { WEAPON_SCHEMA } from "./source.js";
 import type WvItem from "../../../item/wvItem.js";
 import type WvActor from "../../../actor/wvActor.js";
 import { TAGS } from "../../../constants.js";
+import fields = foundry.data.fields;
+import { CompositeNumber } from "../../common.js";
 
+type WeaponSource = fields.SchemaField.InitializedData<typeof WEAPON_SCHEMA>;
 export type WeaponProperties = WeaponSource & PhysicalItemProperties & {
   ranges: RangesProperties,
   attacks: AttacksProperties,
+  reload: ReloadProperties,
+  strengthRequirement: CompositeNumber,
 };
 
 export namespace WeaponProperties {
@@ -25,45 +29,15 @@ export namespace WeaponProperties {
   }
 }
 
-// export default interface WeaponDataProperties extends WeaponDataSource {
-//   data: WeaponDataPropertiesData;
-// }
-
-// export class WeaponDataPropertiesData
-//   extends WeaponDataSourceData
-//   implements PhysicalItemProperties {
-//   constructor(source: WeaponDataSourceData, owningWeapon: Weapon) {
-//     super();
-//     foundry.utils.mergeObject(this, source);
-//     PhysicalItemProperties.transform(this, source, owningWeapon);
-//     this.attacks = new AttacksProperties(source.attacks, owningWeapon);
-//     this.ranges = new RangesProperties(source.ranges);
-//     this.reload = new ReloadProperties(source.reload);
-//
-//     this.strengthRequirement = CompositeNumber.from(source.strengthRequirement);
-//     this.strengthRequirement.bounds = { min: 0, max: 15 };
-//   }
-//
-//   override rules = new RulesProperties();
-//
-//   override value = new CompositeNumber();
-//
-//   override weight = new CompositeNumber();
-//
-//   override attacks: AttacksProperties;
-//
-//   override ranges: RangesProperties;
-//
-//   override reload: ReloadProperties;
-//
-//   override strengthRequirement: CompositeNumber;
-// }
-
 export namespace WeaponProperties {
-  export function from(s: WeaponSource, owningItem: WvItem) {
+  export function from(s: WeaponSource, owningWeapon: WvItem<"weapon">): WeaponProperties {
     return {
       ...s,
-      ...PhysicalItemProperties.from(s, owningItem),
+      ...PhysicalItemProperties.from(s, owningWeapon),
+      attacks: AttacksProperties.from(s.attacks, owningWeapon),
+      reload: new ReloadProperties(s.reload),
+      strengthRequirement: CompositeNumber.from(s.strengthRequirement),
+      ranges: new RangesProperties(s.ranges),
     }
   }
 }

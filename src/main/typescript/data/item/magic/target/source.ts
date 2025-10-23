@@ -1,56 +1,22 @@
-import type { JSONSchemaType } from "ajv";
 import {
-  SplashSize,
   SplashSizes,
-  TargetType,
   TargetTypes
 } from "../../../../constants.js";
 import {
-  CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
+  CompositeNumberField
 } from "../../../common.js";
 
+import fields = foundry.data.fields;
+
 const AOETypes = ["none", "fixed", "varies"] as const;
-type AOEType = (typeof AOETypes)[number];
-export class TargetSource {
-  type: TargetType = "none";
 
-  count: CompositeNumberSource = { source: 0 };
-
-  aoeType: AOEType = "none";
-
-  fixedAoE: SplashSize = "tiny";
+export const TARGET_SCHEMA = {
+  /** What the spell targets */
+  type: new fields.StringField({ required: true, choices: TargetTypes, initial: "none" }),
+  /** If the spell targets an AoE, what kind? */
+  aoeType: new fields.StringField({ required: false, choices: AOETypes }),
+  /** If the spell targets a fixed AoE, how large is it? */
+  fixedAoE: new fields.StringField({ required: false, choices: SplashSizes }),
+  /** If the spell target creatures/objects… how many? */
+  count: CompositeNumberField.create({ min: 0, initial: 1, }),
 }
-
-export const TARGET_JSON_SCHEMA: JSONSchemaType<TargetSource> = {
-  type: "object",
-  properties: {
-    type: {
-      description: "How a spell determines its target",
-      type: "string",
-      enum: TargetTypes,
-      default: "none"
-    },
-    count: {
-      description:
-        "The number of creatures this spell can individually target. Only applies when `type` is `creature`",
-      ...COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-    },
-    aoeType: {
-      description:
-        "Whether or not a spell has an area of effect, and if it is fixed or varies based on potency.",
-      type: "string",
-      enum: AOETypes,
-      default: "none"
-    },
-    fixedAoE: {
-      description:
-        "If a spell has a fixed area of effect, this determines its size",
-      type: "string",
-      enum: SplashSizes,
-      default: "tiny"
-    }
-  },
-  required: ["type", "aoeType", "fixedAoE"],
-  additionalProperties: false
-};

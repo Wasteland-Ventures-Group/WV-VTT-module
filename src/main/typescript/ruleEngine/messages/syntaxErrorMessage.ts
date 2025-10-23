@@ -1,4 +1,4 @@
-import { getGame } from "../../foundryHelpers.js";
+import { getI18n } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
 /** An error about a syntax error in the source. */
@@ -11,7 +11,7 @@ export default class SyntaxErrorMessage extends RuleElementMessage {
   }
 
   override get message(): string {
-    return getGame().i18n.format(this.messageKey, {
+    return getI18n().format(this.messageKey, {
       message: this.errorMessage
     });
   }

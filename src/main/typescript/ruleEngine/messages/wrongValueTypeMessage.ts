@@ -1,4 +1,4 @@
-import { getGame } from "../../foundryHelpers.js";
+import { getI18n } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
 /** A warning about a wrong value type in the rule */
@@ -11,7 +11,7 @@ export default class WrongValueTypeMessage extends RuleElementMessage {
   }
 
   override get message(): string {
-    return getGame().i18n.format(this.messageKey, {
+    return getI18n().format(this.messageKey, {
       type: this.typeName
     });
   }

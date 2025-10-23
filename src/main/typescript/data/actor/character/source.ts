@@ -1,15 +1,9 @@
-import type { TYPES } from "../../../constants.js";
 import { EQUIPMENT_SCHEMA } from "./equipment/source.js";
 import { LEVELING_SCHEMA } from "./leveling/source.js";
 import { CHARACTER_MAGIC_SCHEMA } from "./magic/source.js";
 import { VITALS_SCHEME, } from "./vitals/source.js";
 import fields = foundry.data.fields;
 import { BACKGROUND_SCHEMA } from "./background/source.js";
-
-export default interface CharacterDataSource {
-  type: typeof TYPES.ACTOR.CHARACTER;
-  data: CharacterDataSourceData;
-}
 
 export const CHARACTER_SCHEMA = {
   /** The vitals of the character */
@@ -25,5 +19,3 @@ export const CHARACTER_SCHEMA = {
 };
 
 export type CharacterSource = fields.SchemaField.InitializedData<typeof CHARACTER_SCHEMA>;
-
-export type CharacterDataSourceData = { }

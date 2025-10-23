@@ -1,4 +1,4 @@
-import { getGame } from "../../foundryHelpers.js";
+import { getI18n } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
 /** An error about an additional property in a RuleElement source */
@@ -14,7 +14,7 @@ export default class AdditionalPropMessage extends RuleElementMessage {
   }
 
   override get message(): string {
-    return getGame().i18n.format(this.messageKey, {
+    return getI18n().format(this.messageKey, {
       path: this.instancePath,
       property: this.propertyName
     });

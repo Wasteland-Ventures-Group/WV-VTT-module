@@ -1,17 +1,18 @@
 import type { JSONSchemaType } from "ajv";
-import { SplashSize, SplashSizes } from "../../../../constants.js";
-import {
-  CompositeNumberSource,
-  COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA
-} from "../../../common.js";
-import { TAGS_SOURCE_JSON_SCHEMA } from "../../common/baseItem/source.js";
+import { SplashSizes } from "../../../../constants.js";
+import fields = foundry.data.fields;
+import { CompositeNumberField } from "../../../common.js";
 
-export default class AttacksSource {
-  /** The source objects for the Attacks */
-  sources: Record<string, AttackSource> = {};
+export const DAMAGE_SCHEMA = {
+  /** The base damage amount */
+  base: CompositeNumberField.create({ min: 0, initial: 0 })
 }
+export const ATTACK_SCHEMA = {
+  name: new fields.StringField({ required: true }),
+  damage: new fields.SchemaField(DAMAGE_SCHEMA),
+};
 
-export class AttackSource {
+class AttackSourceOld {
   /** The values related to the damage the weapon causes */
   damage = new DamageSource();
 
@@ -32,10 +33,7 @@ export class AttackSource {
 }
 
 /** The source data for weapon damage */
-export class DamageSource {
-  /** The base damage amount */
-  base: CompositeNumberSource = { source: 0 };
-
+class DamageSource {
   /** The number of d6 to throw for variable damage */
   dice: CompositeNumberSource = { source: 0 };
 

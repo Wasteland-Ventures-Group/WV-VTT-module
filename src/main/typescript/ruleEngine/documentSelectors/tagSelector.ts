@@ -5,7 +5,7 @@ import DocumentSelector from "../documentSelector.js";
 /** A DocumentSelector that selects items with a specific tag. */
 export default class TagSelector extends DocumentSelector {
   constructor(
-    public root: WvActor | WvItem,
+    public override root: WvActor | WvItem,
     public tag: string
   ) {
     super(root);
@@ -14,6 +14,6 @@ export default class TagSelector extends DocumentSelector {
   override selects(document: WvActor | WvItem): boolean {
     if (!(document instanceof WvItem)) return false;
 
-    return document.data.data.tags.includes(this.tag);
+    return document.system.tags.includes(this.tag);
   }
 }

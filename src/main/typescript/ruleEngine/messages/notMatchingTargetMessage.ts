@@ -1,4 +1,4 @@
-import { getGame } from "../../foundryHelpers.js";
+import { getI18n } from "../../foundryHelpers.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
 /** An error about a not matching target */
@@ -11,6 +11,6 @@ export default class NotMatchingTargetMessage extends RuleElementMessage {
   }
 
   override get message(): string {
-    return getGame().i18n.format(this.messageKey, { path: this.propertyPath });
+    return getI18n().format(this.messageKey, { path: this.propertyPath });
   }
 }

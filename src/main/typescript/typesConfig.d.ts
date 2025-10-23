@@ -88,7 +88,7 @@ declare global {
   }
 
   namespace ClientSettings {
-    interface Values {
+    interface SettingConfig {
       "wasteland-ventures.initialized": boolean;
       "wasteland-ventures.systemMigrationVersion": string;
       "wasteland-ventures.movement.enforceAndSubtractApForPlayers": settings.AlwaysNeverSetting;

@@ -1,8 +1,8 @@
 import type { JSONSchemaType } from "ajv";
 import {
-  SkillName,
+  type SkillName,
   SkillNames,
-  SystemDocumentType,
+  type SystemDocumentType,
   SystemDocumentTypes
 } from "../constants.js";
 

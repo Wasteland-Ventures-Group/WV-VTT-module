@@ -1,5 +1,4 @@
 import { type ApparelSlot, ApparelSlots, TYPES } from "../constants.js";
-import { ApparelDataPropertiesData } from "../data/item/apparel/properties.js";
 import WvItem from "./wvItem.js";
 
 /**
@@ -22,23 +21,12 @@ export default class Apparel extends WvItem<"apparel"> {
 
     for (const apparelSlot of ApparelSlots) {
       if (
-        apparelSlot !== this.data.data.slot &&
-        this.data.data.blockedSlots[apparelSlot]
+        apparelSlot !== this.system.slot &&
+        this.system.blockedSlots[apparelSlot]
       )
         slots.add(apparelSlot);
     }
 
     return [...slots];
   }
-
-  override prepareBaseData(): void {
-    this.data.data = new ApparelDataPropertiesData(this.data.data, this);
-  }
-}
-
-export default interface Apparel {
-  data: foundry.data.ItemData & {
-    type: typeof TYPES.ITEM.APPAREL;
-    _source: { type: typeof TYPES.ITEM.APPAREL };
-  };
 }

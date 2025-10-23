@@ -1,5 +1,4 @@
-import type { JSONSchemaType } from "ajv";
-import { getGame } from "../foundryHelpers.js";
+import { getI18n } from "../foundryHelpers.js";
 import type { WvI18nKey } from "../lang.js";
 import { type FoundrySerializable, Resource } from "./foundryCommon.js";
 import fields = foundry.data.fields;
@@ -9,10 +8,26 @@ export const COMPOSITE_NUMBER_SCHEMA = {
   source: new fields.NumberField({ required: true, nullable: false }),
 }
 
-export const COMPOSITE_NUMBER_FIELD = new fields.SchemaField(COMPOSITE_NUMBER_SCHEMA);
+type COMPNUM_SCHEMA = {
+  source: fields.NumberField<{ required: true, nullable: false }>,
+};
+
+type CreationArgs = {
+  min?: number;
+  max?: number;
+  initial: number;
+}
+
+export namespace CompositeNumberField {
+  export function create<Options extends fields.SchemaField.Options<COMPNUM_SCHEMA>>(options: CreationArgs, field_options?: Options): fields.SchemaField<COMPNUM_SCHEMA, Options> {
+    return new fields.SchemaField({
+      source: new fields.NumberField({ required: true, nullable: false, ...options }),
+    }, field_options)
+  }
+}
 
 /** The data layout needed to create a CompositeNumber from raw data. */
-export interface CompositeNumberSource extends fields.SchemaField.InitializedData<typeof COMPOSITE_NUMBER_SCHEMA> {}
+export interface CompositeNumberSource extends fields.SchemaField.InitializedData<COMPNUM_SCHEMA> { }
 
 /** The bounds of a composite number */
 export interface CompositeNumberBounds {
@@ -167,7 +182,7 @@ export function isLabelComponent(object: unknown): object is LabelComponent {
 
   const comp = object as LabelComponent;
   if ("key" in comp && typeof comp.key === "string") {
-    return getGame().i18n.localize(comp.key) !== comp.key;
+    return getI18n().localize(comp.key) !== comp.key;
   }
 
   return "text" in comp && typeof comp.text === "string";
@@ -237,7 +252,7 @@ export class Component implements ComponentSource, FoundrySerializable {
     return this.labelComponents
       .map((labelComponent) =>
         "key" in labelComponent
-          ? getGame().i18n.localize(labelComponent.key)
+          ? getI18n().localize(labelComponent.key)
           : labelComponent.text
       )
       .join(" ");
@@ -250,21 +265,6 @@ export class Component implements ComponentSource, FoundrySerializable {
     };
   }
 }
-
-export const COMPOSITE_NUMBER_SOURCE_JSON_SCHEMA: JSONSchemaType<CompositeNumberSource> =
-{
-  description: "A schema for modifiable number sources",
-  type: "object",
-  properties: {
-    source: {
-      description:
-        "The source value of the number This can be in the database, in which case it should not be modified aside from user input.",
-      type: "number"
-    }
-  },
-  required: ["source"],
-  additionalProperties: false
-};
 
 /**
  * A class for what Foundry VTT will automatically recognize as a "resource",
@@ -300,8 +300,8 @@ export class CompositeResource extends CompositeNumber implements Resource {
    */
   constructor(
     public value: number,
-    public source: number,
-    public bounds: CompositeNumberBounds = {}
+    public override source: number,
+    public override bounds: CompositeNumberBounds = {}
   ) {
     super(source, bounds);
   }

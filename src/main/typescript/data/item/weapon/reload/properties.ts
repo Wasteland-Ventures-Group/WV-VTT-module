@@ -1,19 +1,24 @@
 import { CompositeNumber } from "../../../common.js";
-import ReloadSource from "./source.js";
+import { RELOAD_SCHEMA, type AmmoContainerType } from "./source.js";
+import fields = foundry.data.fields;
+import type { Caliber } from "../../../../constants.js";
 
-export default class ReloadProperties extends ReloadSource {
+type ReloadSource = fields.SchemaField.InitializedData<typeof RELOAD_SCHEMA>;
+
+export default class ReloadProperties implements ReloadSource {
   constructor(source: ReloadSource) {
-    super();
-    foundry.utils.mergeObject(this, source);
+    this.containerType = source.containerType;
 
     this.ap = CompositeNumber.from(source.ap);
     this.ap.bounds.min = 0;
 
     this.size = CompositeNumber.from(source.size);
     this.size.bounds.min = 0;
+    this.caliber = source.caliber;
   }
 
-  override ap: CompositeNumber;
-
-  override size: CompositeNumber;
+  containerType: AmmoContainerType;
+  caliber: Caliber;
+  ap: CompositeNumber;
+  size: CompositeNumber;
 }

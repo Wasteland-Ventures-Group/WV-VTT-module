@@ -1,13 +1,6 @@
-import { CompositeNumber } from "../../../common";
-import { TargetSource } from "./source";
+import fields = foundry.data.fields
+import type { TARGET_SCHEMA } from "./source";
 
-export default class TargetProperties extends TargetSource {
-  constructor(source: TargetSource) {
-    super();
+type TargetSource = fields.SchemaField.InitializedData<typeof TARGET_SCHEMA>;
+export type TargetProperties = TargetSource;
 
-    this.count = CompositeNumber.from(source.count);
-    this.count.bounds.min = 0;
-  }
-
-  override count: CompositeNumber;
-}

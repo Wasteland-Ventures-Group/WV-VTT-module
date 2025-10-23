@@ -8,7 +8,7 @@ import DocumentSelector from "../documentSelector.js";
  */
 export default class OrSelector extends DocumentSelector {
   constructor(
-    public root: WvActor | WvItem,
+    public override root: WvActor | WvItem,
     public selectors: DocumentSelector[]
   ) {
     super(root);

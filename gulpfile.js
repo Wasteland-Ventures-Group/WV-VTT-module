@@ -6,7 +6,6 @@ import log from "fancy-log";
 import typescript from "gulp-typescript";
 import distZipTask from "./gulp/distZip.js";
 import templateTask from "./gulp/template.js";
-import compendiumSchemasTask from "./gulp/compendiumSchemas.js";
 import compileCompendiumsTask, {
   compileCompendiumsWatchTask
 } from "./gulp/compileCompendiums.js";
@@ -203,10 +202,9 @@ export const template = templateTask;
 
 // = schema tasks ==============================================================
 
-export const compSchemas = compendiumSchemasTask;
 export const langSchema = langSchemaTask;
 export const validateJson = gulp.series(
-  gulp.parallel(compSchemas, langSchema),
+  gulp.parallel(langSchema),
   validateJsonTask
 );
 validateJson.description = "Validate all JSON files.";

@@ -5,13 +5,18 @@ import {
   TYPES
 } from "../../../constants.js";
 import {
+  CompositeNumberField,
   type CompositeNumberSource,
-  COMPOSITE_NUMBER_FIELD,
 } from "../../common.js";
 import { type FoundryCompendiumData } from "../../foundryCommon.js";
 import { PHYS_ITEM_SCHEMA, } from "../common/physicalItem/source.js";
 
 import fields = foundry.data.fields;
+
+const SLOTS = ApparelSlots.reduce((acc, v) => {
+  acc[v] = new fields.BooleanField();
+  return acc
+}, {} as Record<ApparelSlot, fields.BooleanField>)
 
 export const APPAREL_SCHEMA = {
   /** The apparel slot this apparel occupies when equipped */
@@ -19,7 +24,8 @@ export const APPAREL_SCHEMA = {
   /** The sub type of the apparel */
   type: new fields.StringField({ nullable: false, required: true, choices: ApparelTypes, initial: "clothing" }),
   /** The number of quick slots of the apparel */
-  quickSlots: COMPOSITE_NUMBER_FIELD,
+  quickSlots: CompositeNumberField.create({ min: 0, initial: 0 }),
+  blockedSlots: new fields.SchemaField(SLOTS, { required: false }),
   ...PHYS_ITEM_SCHEMA
 }
 

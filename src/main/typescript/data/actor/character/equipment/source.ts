@@ -26,7 +26,7 @@ export const EQUIPMENT_SCHEMA = {
     { min: 2, max: 2, required: true, nullable: false }
   ),
   /** The amount of caps the character owns */
-  caps: new fields.NumberField(),
+  caps: new fields.NumberField({ required: true, nullable: false, initial: 0 }),
 };
 
 export type EquipmentSource = fields.SchemaField.InitializedData<typeof EQUIPMENT_SCHEMA>;

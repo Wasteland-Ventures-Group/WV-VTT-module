@@ -7,7 +7,7 @@ import fields = foundry.data.fields;
 
 export const MAGIC_SCHEMA = {
   /** Which school does this spell belong to? */
-  school: new fields.StringField({ choices: GeneralMagicSchools, required: true }),
+  school: new fields.StringField({ choices: GeneralMagicSchools, required: true, nullable: false }),
   /** How much AP does the spell cost to cast? */
   apCost: CompositeNumberField.create({ min: 0, initial: 0 }),
   /** How much strain does the spell cost to cast? */

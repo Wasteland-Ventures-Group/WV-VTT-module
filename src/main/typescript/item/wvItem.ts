@@ -27,7 +27,6 @@ import { MAGIC_SCHEMA } from "../data/item/magic/source.js";
 import { WeaponProperties } from "../data/item/weapon/properties.js";
 import { MagicProperties } from "../data/item/magic/properties.js";
 import { EffectProperties } from "../data/item/effect/properties.js";
-import { AttacksProperties } from "../data/item/weapon/attack/properties.js";
 
 export class WeaponSystem extends TypeDataModel<typeof WEAPON_SCHEMA, WvItem<"weapon">, WeaponProperties> {
   override prepareDerivedData(this: TypeDataModel.PrepareDerivedDataThis<this>) {

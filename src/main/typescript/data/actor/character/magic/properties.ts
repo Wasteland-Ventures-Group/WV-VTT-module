@@ -4,13 +4,11 @@ import {
   GeneralMagicSchools,
   type SpecialName
 } from "../../../../constants";
-import type WvItem from "../../../../item/wvItem";
-import { BaseItemProperties } from "../../../item/common/baseItem/properties";
 import { type MagicSource } from "./source";
-export type MagicProperties = MagicSource & BaseItemProperties;
+export type CharacterMagicProperties = MagicSource;
 
-export namespace MagicProperties {
-  export function from(source: MagicSource, owningItem: WvItem): MagicProperties {
+export namespace CharacterMagicProperties {
+  export function from(source: MagicSource): CharacterMagicProperties {
     const magicSpecials = defaultMagicSpecial();
     GeneralMagicSchools.forEach((school) => {
       const sourceMagicSpecials = source.magicSpecials as Record<GeneralMagicSchool, SpecialName>;
@@ -19,6 +17,6 @@ export namespace MagicProperties {
         magicSpecials[school] = specialOverride;
       }
     });
-    return { ...source, ...BaseItemProperties.from(source, owningItem), magicSpecials: magicSpecials }
+    return { ...source, magicSpecials: magicSpecials }
   }
 }

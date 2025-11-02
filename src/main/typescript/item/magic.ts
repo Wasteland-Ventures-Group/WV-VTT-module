@@ -1,10 +1,10 @@
 import { extraPotency, TYPES } from "../constants.js";
-import { MagicDataPropertiesData } from "../data/item/magic/properties.js";
+import { LevelingProperties } from "../data/actor/character/leveling/properties.js";
 import { LOG } from "../systemLogger.js";
 import WvItem from "./wvItem";
 
 /** An Item that can represent a spell of any school and type. */
-export default class Magic extends WvItem {
+export default class Magic extends WvItem<"magic"> {
   /** This constructor enforces that instances have the correct data type. */
   constructor(
     data: ConstructorParameters<typeof Item>[0],
@@ -16,10 +16,6 @@ export default class Magic extends WvItem {
     super(data, context);
   }
 
-  override prepareBaseData(): void {
-    this.data.data = new MagicDataPropertiesData(this.data.data, this);
-  }
-
   override finalizeData(): void {
     if (!this.actor) {
       LOG.warn(
@@ -27,19 +23,11 @@ export default class Magic extends WvItem {
       );
       return;
     }
-    const actorData = this.actor.data.data;
-    const relevantSpecialName =
-      actorData.magic.magicSpecials[this.data.data.school];
+    const actorData = this.actor.system;
+    const relevantSpecialName = actorData.magic.magicSpecials[this.system.school];
     const relevantSpecialValue =
       actorData.specials[relevantSpecialName].tempTotal;
-    this.data.data.potency.source =
-      actorData.leveling.level + extraPotency(relevantSpecialValue);
+    this.system.potency.source =
+      LevelingProperties.level(actorData.leveling) + extraPotency(relevantSpecialValue);
   }
-}
-
-export default interface Magic {
-  data: foundry.data.ItemData & {
-    type: typeof TYPES.ITEM.MAGIC;
-    _source: { type: typeof TYPES.ITEM.MAGIC };
-  };
 }

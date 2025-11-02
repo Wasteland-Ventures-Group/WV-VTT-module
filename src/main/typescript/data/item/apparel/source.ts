@@ -30,7 +30,7 @@ export const APPAREL_SCHEMA = {
 }
 
 
-export class ApparelDataSourceData {
+class ApparelDataSourceData {
   /** The other apparel slots this apparel blocks aside from its own */
   blockedSlots?: Record<ApparelSlot, boolean>;
 
@@ -41,7 +41,7 @@ export class ApparelDataSourceData {
   modSlots?: CompositeNumberSource = { source: 0 };
 }
 
-export interface CompendiumApparel
+interface CompendiumApparel
   extends FoundryCompendiumData<ApparelDataSourceData> {
   type: typeof TYPES.ITEM.APPAREL;
 }

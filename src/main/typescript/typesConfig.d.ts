@@ -14,8 +14,6 @@ import type { WvI18nKey } from "./lang.js";
 import { macros } from "./macros/index.js";
 import type {
   Critical,
-  flagCriticalFailure,
-  flagCriticalSuccesses
 } from "./rolls/criticalsModifiers.js";
 import type DocumentSelector from "./ruleEngine/documentSelector.js";
 import type OrSelector from "./ruleEngine/documentSelectors/orSelector.js";
@@ -109,13 +107,6 @@ declare global {
   namespace DiceTerm {
     interface Result {
       critical?: Critical;
-    }
-  }
-
-  namespace Die {
-    interface Modifiers {
-      fcs: typeof flagCriticalSuccesses;
-      fcf: typeof flagCriticalFailure;
     }
   }
 

@@ -1,11 +1,4 @@
-import { Caliber, CONSTANTS, ProtoItemTypes } from "../constants.js";
-import type { AmmoDataSourceData } from "../data/item/ammo/source.js";
-import type { ApparelDataSourceData } from "../data/item/apparel/source.js";
-import type {
-  DistanceSource,
-  RangeSource
-} from "../data/item/weapon/ranges/source.js";
-import type { WeaponDataSourceData } from "../data/item/weapon/source.js";
+import { type Caliber, CONSTANTS, type ProtoItemType, ProtoItemTypes } from "../constants.js";
 import {
   getUpdateDataFromCompendium,
   hasEnabledCompendiumLink
@@ -47,7 +40,7 @@ export default function migrateItems(currentVersion: string): void {
 
   for (const scene of game.scenes) {
     for (const token of scene.tokens) {
-      if (token.data.actorLink) continue;
+      if (token.actorLink) continue;
       if (!token.actor) continue;
 
       for (const item of token.actor.items) {
@@ -81,7 +74,7 @@ async function migrateItem(
     migrateRuleElements(item, updateData);
 
     if (
-      ProtoItemTypes.includes(item.data.type) &&
+      ProtoItemTypes.includes(item.type as ProtoItemType) &&
       hasEnabledCompendiumLink(item)
     ) {
       updateData = await migrateFromCompendium(item, updateData);
@@ -91,18 +84,16 @@ async function migrateItem(
       migrateMandatoryReload(item, updateData);
       migrateToCompositeNumbers(item, updateData);
     }
-    if (!foundry.utils.isObjectEmpty(updateData)) {
-      LOG.info(
-        `Migrating Item ${SystemLogger.getItemIdent(item)} with`,
-        updateData
-      );
-      await item.update(updateData);
-      await item.setFlag(
-        CONSTANTS.systemId,
-        "lastMigrationVersion",
-        currentVersion
-      );
-    }
+    LOG.info(
+      `Migrating Item ${SystemLogger.getItemIdent(item)} with`,
+      updateData
+    );
+    await item.update(updateData);
+    await item.setFlag(
+      CONSTANTS.systemId,
+      "lastMigrationVersion",
+      currentVersion
+    );
   } catch (err) {
     LOG.error(
       `Failed migration for Item ${SystemLogger.getItemIdent(item)}.`,
@@ -115,13 +106,13 @@ function migrateRuleElements(
   item: foundry.documents.BaseItem,
   updateData: Record<string, unknown>
 ) {
-  if (ruleElementsNeedMigration(item.data._source.data.rules.sources)) {
-    updateData["data.rules.sources"] = item.data._source.data.rules.sources.map(
-      (rule) => {
+  if (ruleElementsNeedMigration(item._source.system.rules.sources)) {
+    updateData["data.rules.sources"] = item._source.system.rules.sources.map(
+      (rule: RuleElementSource) => {
         const transformed = isLastMigrationOlderThan("0.17.2")
           ? migrateRuleElementPreComposedNumbers(
-              rule as unknown as OldRuleElementSource
-            )
+            rule as unknown as OldRuleElementSource
+          )
           : rule;
         return migrateRuleElementPostComposedNumbers(transformed);
       }

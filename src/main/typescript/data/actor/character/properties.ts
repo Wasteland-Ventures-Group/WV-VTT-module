@@ -3,7 +3,7 @@ import { CompositeNumber } from "../../common.js";
 import { BackgroundProperties } from "./background/properties.js";
 import { EquipmentProperties } from "./equipment/properties.js";
 import { LevelingProperties } from "./leveling/properties.js";
-import { MagicProperties } from "./magic/properties.js";
+import { CharacterMagicProperties } from "./magic/properties.js";
 import SkillsProperties from "./skills/properties.js";
 import { type CharacterSource } from "./source.js";
 import SpecialsProperties, { Special } from "./specials/properties.js";
@@ -26,7 +26,7 @@ export type CharacterProperties = CharacterSource & {
   background: BackgroundProperties;
 
   /** The magic statistics of the character. */
-  magic: MagicProperties;
+  magic: CharacterMagicProperties;
 
   /** The resistances of the character */
   resistances: ResistancesProperties;
@@ -139,7 +139,7 @@ export namespace CharacterProperties {
       vitals: VitalsProperties.from(source.vitals),
       equipment: EquipmentProperties.from(source.equipment),
       background: BackgroundProperties.from(source.background),
-      magic: MagicProperties.from(source.magic),
+      magic: CharacterMagicProperties.from(source.magic),
       resistances: new ResistancesProperties(),
     };
 

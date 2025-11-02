@@ -1,26 +1,27 @@
 import type WvActor from "../../actor/wvActor.js";
 import {
   CONSTANTS,
-  EquipmentSlot,
+  type EquipmentSlot,
   HANDLEBARS,
   isApparelSlot,
   isEquipmentSlot,
   isPhysicalItemType,
   isSkillName,
   isSpecialName,
-  SkillName,
+  type SkillName,
   SkillNames,
-  SpecialName,
+  type SpecialName,
   SpecialNames,
   TYPES
 } from "../../constants.js";
+import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
   isMiscItemDragData,
   isWeaponItemDragData
 } from "../../dragData.js";
-import { getGame } from "../../foundryHelpers.js";
+import { getGame, getI18n } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
 import Apparel from "../../item/apparel.js";
 import type Magic from "../../item/magic.js";
@@ -30,7 +31,7 @@ import WvItem from "../../item/wvItem.js";
 import { WvItemProxy } from "../../item/wvItemProxy.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
-import WvI18n, { I18nSpecial } from "../../wvI18n.js";
+import WvI18n, { type I18nSpecial } from "../../wvI18n.js";
 import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
@@ -193,18 +194,18 @@ export default class WvActorSheet extends ActorSheet {
 
     let totalValue = 0;
     let totalWeight = 0;
-    const items = this.actor.items
+    const items: SheetItem[] = this.actor.items
       .filter(
-        (item): item is StoredDocument<WvItem> =>
+        (item) =>
           typeof item.id === "string" && isPhysicalItemType(item.type)
       )
-      .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
+      .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
       .map((item) => {
         totalValue += item.totalValue ?? 0;
         totalWeight += item.totalWeight ?? 0;
 
         return {
-          id: item.id,
+          id: item.id ?? "",
           img: item.img,
           name: item.name,
           value: item.value,
@@ -216,17 +217,17 @@ export default class WvActorSheet extends ActorSheet {
       });
 
     // filter, sort, and transform items into sheet data
-    const spells = this.actor.items
+    const spells: SheetSpell[] = this.actor.items
       .filter(
-        (item): item is StoredDocument<Magic> =>
+        (item): item is Magic =>
           typeof item.id === "string" && item.type === TYPES.ITEM.MAGIC
       )
-      .sort((a, b) => (a.data.sort ?? 0) - (b.data.sort ?? 0))
+      .sort((a, b) => (a.sort ?? 0) - (b.sort ?? 0))
       .map((spell) => {
-        const spellData = spell.data.data;
+        const spellData = spell.system;
         const schoolI18n = WvI18n.magicSchools[spellData.school];
         return {
-          id: spell.id,
+          id: spell.id ?? "",
           img: spell.img,
           name: spell.name,
           school: schoolI18n,
@@ -243,9 +244,9 @@ export default class WvActorSheet extends ActorSheet {
         equipment: {
           readyItemCost: {
             direct:
-              this.actor.data.data.equipment.equipActionCosts.readyDirect.total,
+              this.actor.system.equipment.equipActionCosts.readyDirect.total,
             fromSlot:
-              this.actor.data.data.equipment.equipActionCosts.readyFromSlot
+              this.actor.system.equipment.equipActionCosts.readyFromSlot
                 .total
           },
           readiedItem,
@@ -261,14 +262,14 @@ export default class WvActorSheet extends ActorSheet {
         inventory: {
           items,
           totalValue: helpers.toFixed(
-            totalValue + this.actor.data.data.equipment.caps
+            totalValue + this.actor.system.equipment.caps
           ),
           totalWeight: helpers.toFixed(totalWeight)
         },
         leveling: {
           totalSkillPoints: SkillNames.reduce(
             (points, skillName) =>
-              this.actor.data.data.skills[skillName].source + points,
+              this.actor.system.skills[skillName].source + points,
             0
           )
         },
@@ -289,7 +290,7 @@ export default class WvActorSheet extends ActorSheet {
         race: this.actor.race,
         specials: SpecialNames.reduce(
           (specials, specialName) => {
-            const special = this.actor.data.data.specials[specialName];
+            const special = this.actor.system.specials[specialName];
             specials[specialName] = {
               ...special,
               permTotal: special.permTotal,
@@ -305,27 +306,27 @@ export default class WvActorSheet extends ActorSheet {
           (skills, skillName) => {
             const specialName =
               skillName === "thaumaturgy"
-                ? this.actor.data.data.magic.thaumSpecial
+                ? this.actor.system.magic.thaumSpecial
                 : CONSTANTS.skillSpecials[skillName];
             skills[skillName] = {
               name: i18nSkills[skillName],
-              ranks: this.actor.data.data.leveling.skillRanks[skillName],
+              ranks: this.actor.system.leveling.skillRanks[skillName],
               special: i18nSpecials[specialName].short,
-              total: this.actor.data.data.skills[skillName]?.total
+              total: this.actor.system.skills[skillName]?.total
             };
             return skills;
           },
           {} as Record<SkillName, SheetSkill>
         ),
-        systemGridUnit: getGame().system.data.gridUnits,
+        systemGridUnit: getGame().system.gridUnits.toString(),
         magic: { spells },
         effects: this.actor.items
           .filter(
-            (item): item is StoredDocument<WvItem> =>
+            (item): item is WvItem =>
               typeof item.id === "string" && item.type === TYPES.ITEM.EFFECT
           )
           .map((item) => ({
-            id: item.id,
+            id: item.id ?? "",
             img: item.img,
             name: item.name
           }))
@@ -354,45 +355,45 @@ export default class WvActorSheet extends ActorSheet {
     };
 
     if (
-      listenerElement.dataset.special &&
-      isSpecialName(listenerElement.dataset.special)
+      listenerElement.dataset["special"] &&
+      isSpecialName(listenerElement.dataset["special"])
     ) {
       dragData = {
         ...baseDragData,
         type: "special",
-        specialName: listenerElement.dataset.special
+        specialName: listenerElement.dataset["special"]
       };
     }
 
     if (
-      listenerElement.dataset.skill &&
-      isSkillName(listenerElement.dataset.skill)
+      listenerElement.dataset["skill"] &&
+      isSkillName(listenerElement.dataset["skill"])
     ) {
       dragData = {
         ...baseDragData,
         type: "skill",
-        specialName: listenerElement.dataset.skill
+        specialName: listenerElement.dataset["skill"]
       };
     }
 
-    if (listenerElement.dataset.itemId) {
-      const item = this.actor.items.get(listenerElement.dataset.itemId);
+    if (listenerElement.dataset["itemId"]) {
+      const item = this.actor.items.get(listenerElement.dataset["itemId"]);
       if (item) {
         dragData = {
           ...baseDragData,
           type: "Item",
-          data: item.data
+          data: item.system,
         };
       }
     }
 
-    if (listenerElement.dataset.effectId) {
-      const effect = this.actor.effects.get(listenerElement.dataset.effectId);
+    if (listenerElement.dataset["effectId"]) {
+      const effect = this.actor.effects.get(listenerElement.dataset["effectId"]);
       if (effect) {
         dragData = {
           ...baseDragData,
           type: "ActiveEffect",
-          data: effect.data
+          data: effect._source,
         };
       }
     }
@@ -405,7 +406,7 @@ export default class WvActorSheet extends ActorSheet {
 
   override async _onDropItem(
     event: DragEvent,
-    data: ActorSheet.DropData.Item
+    data: ActorSheet.DropData.Item,
   ): Promise<unknown> {
     if (!this.actor.isOwner) return false;
 
@@ -439,7 +440,7 @@ export default class WvActorSheet extends ActorSheet {
   // ignore this. The return value isn't used anyway.
   override _onSortItem(
     event: DragEvent,
-    itemData: foundry.data.ItemData["_source"]
+    itemData: foundry.documents.Item.Implementation["_source"]
   ): unknown {
     if (itemData._id === null) throw new Error("The ID was null.");
 
@@ -456,10 +457,10 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    if (typeof dropTarget.dataset.itemId !== "string")
+    if (typeof dropTarget.dataset["itemId"] !== "string")
       throw new Error("The target did not have an Item ID.");
 
-    const target = items.get(dropTarget.dataset.itemId, { strict: true });
+    const target = items.get(dropTarget.dataset["itemId"], { strict: true });
 
     // Don't sort on yourself
     if (source.id === target.id) return;
@@ -474,7 +475,7 @@ export default class WvActorSheet extends ActorSheet {
       if (!(el instanceof HTMLElement))
         throw new Error("The el was not an HTMLElement.");
 
-      const siblingId = el.dataset.itemId;
+      const siblingId = el.dataset["itemId"];
       if (siblingId && siblingId !== source.id)
         siblings.push(items.get(siblingId, { strict: true }));
     }
@@ -487,7 +488,7 @@ export default class WvActorSheet extends ActorSheet {
     const updateData = sortUpdates.map((u) => {
       const update: { sort: number; _id?: string | null | undefined } =
         u.update;
-      update._id = u.target?.data._id;
+      update._id = u.target?._id;
       return update;
     });
 
@@ -536,7 +537,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const special = event.target.dataset.special;
+    const special = event.target.dataset["special"];
     if (!special || !isSpecialName(special)) {
       LOG.warn(`Could not get the SPECIAL name for a roll.`);
       return;
@@ -550,7 +551,7 @@ export default class WvActorSheet extends ActorSheet {
             alias: this.actor.name
           },
           {
-            title: getGame().i18n.localize(WvI18n.specials[special].long)
+            title: getI18n().localize(WvI18n.specials[special].long)
           }
         )
       );
@@ -566,7 +567,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const skill = event.target.dataset.skill;
+    const skill = event.target.dataset["skill"];
     if (!skill || !isSkillName(skill)) {
       LOG.warn("Could not get the Skill name for a Skill roll.");
       return;
@@ -580,7 +581,7 @@ export default class WvActorSheet extends ActorSheet {
             alias: this.actor.name
           },
           {
-            title: getGame().i18n.localize(WvI18n.skills[skill])
+            title: getI18n().localize(WvI18n.skills[skill])
           }
         )
       );
@@ -608,19 +609,19 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attackName = attackElement.dataset.weaponAttackName;
+    const attackName = attackElement.dataset["weaponAttackName"];
     if (!attackName) {
       LOG.warn("Could not get the attack name.");
       return;
     }
 
-    const weaponId = weaponElement.dataset.itemId;
+    const weaponId = weaponElement.dataset["itemId"];
     if (!weaponId) {
       LOG.warn("Could not get the weapon ID.");
       return;
     }
 
-    if (weaponId !== this.actor.data.data.equipment.readiedItemId) {
+    if (weaponId !== this.actor.system.equipment.readiedItemId) {
       LOG.warn("The weapon was not readied.");
       return;
     }
@@ -631,7 +632,7 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attack = weapon.data.data.attacks.attacks[attackName];
+    const attack = weapon.system.attacks.filter((attack): attack is AttackProperties => attack.name === attackName)[0];
     if (!attack) {
       LOG.warn("Could not find the attack on the weapon.");
       return;
@@ -649,7 +650,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
-    const slotName = itemElement.dataset.equipmentSlot;
+    const slotName = itemElement.dataset["equipmentSlot"];
     if (typeof slotName !== "string" || !isEquipmentSlot(slotName)) return;
 
     try {
@@ -675,26 +676,26 @@ export default class WvActorSheet extends ActorSheet {
       throw new Error("The target was not an HTMLElement.");
 
     let data: ConstructorParameters<typeof Item>[0];
-    if (event.target.dataset.type === TYPES.ITEM.EFFECT) {
+    if (event.target.dataset["type"] === TYPES.ITEM.EFFECT) {
       data = {
-        name: getGame().i18n.format("wv.system.misc.newName", {
-          what: getGame().i18n.localize("wv.system.effect.singular")
+        name: getI18n().format("wv.system.misc.newName", {
+          what: getI18n().localize("wv.system.effect.singular")
         }),
-        type: event.target.dataset.type
+        type: event.target.dataset["type"]
       };
-    } else if (event.target.dataset.type === TYPES.ITEM.MISC) {
+    } else if (event.target.dataset["type"] === TYPES.ITEM.MISC) {
       data = {
-        name: getGame().i18n.format("wv.system.misc.newName", {
-          what: getGame().i18n.localize("wv.system.item.singular")
+        name: getI18n().format("wv.system.misc.newName", {
+          what: getI18n().localize("wv.system.item.singular")
         }),
-        type: event.target.dataset.type
+        type: event.target.dataset["type"]
       };
-    } else if (event.target.dataset.type === TYPES.ITEM.MAGIC) {
+    } else if (event.target.dataset["type"] === TYPES.ITEM.MAGIC) {
       data = {
-        name: getGame().i18n.format("wv.system.misc.newName", {
-          what: getGame().i18n.localize("wv.system.spell.singular")
+        name: getI18n().format("wv.system.misc.newName", {
+          what: getI18n().localize("wv.system.spell.singular")
         }),
-        type: event.target.dataset.type
+        type: event.target.dataset["type"]
       };
     } else return;
 
@@ -711,7 +712,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
-    const id = itemElement.dataset.itemId;
+    const id = itemElement.dataset["itemId"];
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
@@ -729,7 +730,7 @@ export default class WvActorSheet extends ActorSheet {
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
-    const id = itemElement.dataset.itemId;
+    const id = itemElement.dataset["itemId"];
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
@@ -748,12 +749,12 @@ export default class WvActorSheet extends ActorSheet {
     if (!(itemElement instanceof HTMLElement))
       throw new Error("The item element parent is not an HTMLElement.");
 
-    const id = itemElement.dataset.itemId;
+    const id = itemElement.dataset["itemId"];
     if (!(typeof id === "string") || !id) return;
 
     const item = this.actor.items.get(id);
     if (item) {
-      item.update({ data: { amount: event.target.valueAsNumber } });
+      item.update({ system: { amount: event.target.valueAsNumber } });
       item.render();
       this.render();
     }
@@ -762,7 +763,7 @@ export default class WvActorSheet extends ActorSheet {
   /** Handle Item drops onto equipment slots. */
   protected async onDropEquipmentSlot(
     slot: EquipmentSlot,
-    data: foundry.data.ItemData["_source"],
+    data: foundry.documents.Item.Implementation["_source"],
     useQuickSlot = false
   ): Promise<void> {
     try {
@@ -802,7 +803,7 @@ export default class WvActorSheet extends ActorSheet {
     const slotElement = target.closest("[data-equipment-slot]");
     if (!(slotElement instanceof HTMLElement)) return null;
 
-    const slotName = slotElement.dataset.equipmentSlot;
+    const slotName = slotElement.dataset["equipmentSlot"];
     if (typeof slotName !== "string") return null;
 
     if (isEquipmentSlot(slotName)) return slotName;
@@ -829,7 +830,7 @@ export default class WvActorSheet extends ActorSheet {
         if (
           this.actor.inCombat &&
           dragData.data._id !== null &&
-          this.actor.data.data.equipment.weaponSlotIds
+          this.actor.system.equipment.weaponSlotIds
             .filter((id): id is string => typeof id === "string")
             .includes(dragData.data._id)
         ) {
@@ -840,13 +841,13 @@ export default class WvActorSheet extends ActorSheet {
       if (!this.actor.inCombat) {
         if (dragData.data._id !== null) {
           if (
-            this.actor.data.data.equipment.weaponSlotIds[0] !==
+            this.actor.system.equipment.weaponSlotIds[0] !==
             dragData.data._id
           ) {
             slotsToAllow.push("weaponSlot1");
           }
           if (
-            this.actor.data.data.equipment.weaponSlotIds[1] !==
+            this.actor.system.equipment.weaponSlotIds[1] !==
             dragData.data._id
           ) {
             slotsToAllow.push("weaponSlot2");
@@ -859,7 +860,7 @@ export default class WvActorSheet extends ActorSheet {
 
         if (
           this.actor.inCombat &&
-          this.actor.data.data.equipment.quickSlots.value > 0
+          this.actor.system.equipment.quickSlots.value > 0
         ) {
           this.markReadySlot("quick-slotable");
         }
@@ -890,7 +891,7 @@ export default class WvActorSheet extends ActorSheet {
 
     form.querySelectorAll(`[data-equipment-slot]`).forEach((slotElement) => {
       if (!(slotElement instanceof HTMLElement)) return;
-      if (slots.includes(slotElement.dataset.equipmentSlot as EquipmentSlot)) {
+      if (slots.includes(slotElement.dataset["equipmentSlot"] as EquipmentSlot)) {
         slotElement.classList.add("slotable");
         if (this.actor.inCombat) slotElement.classList.add("in-combat");
       } else {

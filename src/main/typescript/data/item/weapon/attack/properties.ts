@@ -7,7 +7,6 @@ import {
   isRangePickingTag,
   RangeBracket
 } from "../../../../constants.js";
-import AttackExecution from "../../../../item/weapon/attackExecution.js";
 import fields = foundry.data.fields;
 
 export type AttacksProperties = AttackProperties[];
@@ -46,6 +45,10 @@ export namespace AttacksProperties {
     self.forEach((attack) =>
       attack.damage.applyStrengthDamageDiceMod(actor)
     );
+  }
+
+  export async function execute(self: AttackProperties): Promise<void> {
+    await self.execute()
   }
 }
 
@@ -92,7 +95,6 @@ export class AttackProperties implements AttackSource {
   }
 
   async execute(): Promise<void> {
-    await AttackExecution.execute(this.#name, this, this.#weapon);
   }
 }
 

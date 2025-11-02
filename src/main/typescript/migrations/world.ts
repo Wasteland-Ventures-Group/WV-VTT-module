@@ -1,5 +1,5 @@
 import { CONSTANTS } from "../constants.js";
-import { getGame } from "../foundryHelpers.js";
+import { getGame, getI18n } from "../foundryHelpers.js";
 import { initializedSettingName, migrVerSettingName } from "../settings.js";
 import { LOG } from "../systemLogger.js";
 import migrateActors from "./actors.js";
@@ -34,7 +34,7 @@ export function isLastMigrationOlderThan(version: string): boolean {
  * @returns A Promise which resolves once the migration completed
  */
 export async function migrateWorld(): Promise<void> {
-  const currentVersion = getGame().system.data.version;
+  const currentVersion = getGame().system.version;
   const lastMigrVersion = getGame().settings.get(
     CONSTANTS.systemId,
     migrVerSettingName
@@ -42,9 +42,9 @@ export async function migrateWorld(): Promise<void> {
 
   if (ui.notifications) {
     ui.notifications.info(
-      getGame().i18n.format("wv.system.messages.migrationStarted", {
+      getI18n().format("wv.system.messages.migrationStarted", {
         systemName: CONSTANTS.systemName,
-        version: getGame().system.data.version
+        version: getGame().system.version
       }),
       { permanent: true }
     );
@@ -60,9 +60,9 @@ export async function migrateWorld(): Promise<void> {
 
   if (ui.notifications) {
     ui.notifications.info(
-      getGame().i18n.format("wv.system.messages.migrationCompleted", {
+      getI18n().format("wv.system.messages.migrationCompleted", {
         systemName: CONSTANTS.systemName,
-        version: getGame().system.data.version
+        version: getGame().system.version
       }),
       { permanent: true }
     );
@@ -75,6 +75,6 @@ function setMigrationCurrentVersion(): void {
   getGame().settings.set(
     CONSTANTS.systemId,
     migrVerSettingName,
-    getGame().system.data.version
+    getGame().system.version
   );
 }

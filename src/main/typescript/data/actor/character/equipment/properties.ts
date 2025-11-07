@@ -33,15 +33,15 @@ export namespace EquipmentProperties {
    */
   export function applyEquippedApparel(self: EquipmentProperties, equippedApparel: Apparel[]) {
     equippedApparel.forEach((apparel) => {
-      if (apparel.data.data.damageThreshold)
+      if (apparel.system.damageThreshold)
         self.damageThreshold.add({
-          value: apparel.data.data.damageThreshold.total,
+          value: apparel.system.damageThreshold.total,
           labelComponents: [{ text: apparel.name ?? "" }]
         });
 
-      if (apparel.data.data.quickSlots.total)
+      if (apparel.system.quickSlots.total)
         self.quickSlots.add({
-          value: apparel.data.data.quickSlots.total,
+          value: apparel.system.quickSlots.total,
           labelComponents: [{ text: apparel.name ?? "" }]
         });
     });

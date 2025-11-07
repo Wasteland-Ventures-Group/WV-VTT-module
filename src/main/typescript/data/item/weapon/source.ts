@@ -25,7 +25,7 @@ class WeaponDataSourceData {
 
 export const WEAPON_SCHEMA = {
   /** The skill associated with the weapon attacks */
-  skill: new fields.StringField({ choices: SkillNames }),
+  skill: new fields.StringField({ choices: SkillNames, required: true }),
   /** The ranges of the weapon */
   ranges: new fields.SchemaField(RANGES_SCHEMA),
   /** Information regarding the weapon's ammunition and reloading. */

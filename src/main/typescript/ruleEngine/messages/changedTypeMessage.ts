@@ -1,4 +1,4 @@
-import { getI18n } from "../../foundryHelpers.js";
+import { getI18n } from "../../wvI18n.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
 /** A warning about a rule element changing the type of a property. */

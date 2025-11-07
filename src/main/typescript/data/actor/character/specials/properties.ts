@@ -3,16 +3,15 @@ import type {
   SpecialName
 } from "../../../../constants.js";
 import {
-  ComponentSource,
+  type ComponentSource,
   Component,
-  LabelComponent,
-  CompositeNumberBounds
+  type LabelComponent,
+  type CompositeNumberBounds
 } from "../../../common.js";
 import type { FoundrySerializable } from "../../../foundryCommon.js";
 
 export default class SpecialsProperties
-  implements Record<SpecialName, Special>
-{
+  implements Record<SpecialName, Special> {
   /** The Strength SPECIAL of the character */
   strength = new Special();
 

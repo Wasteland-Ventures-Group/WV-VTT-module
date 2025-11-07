@@ -3,7 +3,7 @@ import type Ammo from "../../item/ammo.js";
 import { isOfItemType } from "../../item/wvItem.js";
 import type { I18nCalibers } from "../../wvI18n.js";
 import WvI18n from "../../wvI18n.js";
-import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
+import WvItemSheet, { type SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 /** An Item sheet for Ammo items. */
 export default class AmmoSheet extends WvItemSheet {
@@ -31,7 +31,7 @@ export default class AmmoSheet extends WvItemSheet {
       ...data,
       sheet: {
         ...data.sheet,
-        caliber: calibersI18n[this.item.data.data.caliber],
+        caliber: calibersI18n[this.item.system.caliber],
         calibers: calibersI18n
       }
     };

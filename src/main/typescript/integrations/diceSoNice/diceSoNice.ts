@@ -9,11 +9,14 @@ import { isDiceSoNiceActive } from "../index.js";
  */
 export default async function diceSoNice(
   roll: Parameters<Dice3D["showForRoll"]>[0],
-  whisper: Parameters<Dice3D["showForRoll"]>[3],
+  whisper: string[] | undefined | null | string,
   blind: Parameters<Dice3D["showForRoll"]>[4],
   speaker: Parameters<Dice3D["showForRoll"]>[6]
 ): Promise<boolean | undefined> {
   if (!isDiceSoNiceActive()) return;
+  if (typeof(whisper) === 'string') {
+    whisper = [whisper]
+  }
 
   const dice3d = getGame().dice3d;
   if (dice3d) {
@@ -27,6 +30,7 @@ export default async function diceSoNice(
       speaker
     );
   }
+  return;
 }
 
 declare global {

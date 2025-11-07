@@ -14,14 +14,14 @@ import {
   SpecialNames,
   TYPES
 } from "../../constants.js";
-import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
+import { AttacksProperties } from "../../data/item/weapon/attack/properties.js";
 import type DragData from "../../dragData.js";
 import {
   isApparelItemDragData,
   isMiscItemDragData,
   isWeaponItemDragData
 } from "../../dragData.js";
-import { getGame, getI18n } from "../../foundryHelpers.js";
+import { getGame } from "../../foundryHelpers.js";
 import * as helpers from "../../helpers.js";
 import Apparel from "../../item/apparel.js";
 import type Magic from "../../item/magic.js";
@@ -31,7 +31,7 @@ import WvItem from "../../item/wvItem.js";
 import { WvItemProxy } from "../../item/wvItemProxy.js";
 import { LOG } from "../../systemLogger.js";
 import SystemRulesError from "../../systemRulesError.js";
-import WvI18n, { type I18nSpecial } from "../../wvI18n.js";
+import WvI18n, { getI18n, type I18nSpecial } from "../../wvI18n.js";
 import type { SheetApparel as SheetApparelData } from "../item/apparelSheet.js";
 import ApparelSheet from "../item/apparelSheet.js";
 import type { SheetWeapon as SheetWeaponData } from "../item/weaponSheet.js";
@@ -632,13 +632,7 @@ export default class WvActorSheet extends ActorSheet {
       return;
     }
 
-    const attack = weapon.system.attacks.filter((attack): attack is AttackProperties => attack.name === attackName)[0];
-    if (!attack) {
-      LOG.warn("Could not find the attack on the weapon.");
-      return;
-    }
-
-    attack.execute();
+    AttacksProperties.executeByName(weapon.system.attacks, attackName)
   }
 
   /** Handle a click event on an unequip item button. */

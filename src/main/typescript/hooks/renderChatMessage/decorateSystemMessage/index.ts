@@ -1,10 +1,10 @@
 import { CONSTANTS } from "../../../constants.js";
 import type { SerializedCompositeNumber } from "../../../data/common.js";
 import type { HookParams } from "../index.js";
-import decorateCheck, { CheckFlags } from "./decorateCheck.js";
-import decoratePTMessage, { PainThresholdFlags } from "./decoratePTMessage.js";
+import decorateCheck, { type CheckFlags } from "./decorateCheck.js";
+import decoratePTMessage, { type PainThresholdFlags } from "./decoratePTMessage.js";
 import decorateWeaponAttack, {
-  WeaponAttackFlags
+  type WeaponAttackFlags
 } from "./decorateWeaponAttack.js";
 
 /** Decorate system messages with content from their flags. */
@@ -12,7 +12,7 @@ export default function decorateSystemMessage(
   message: HookParams[0],
   html: HookParams[1]
 ): void {
-  const systemFlags = message.data.flags[CONSTANTS.systemId];
+  const systemFlags = message.flags[CONSTANTS.systemId];
   if (!systemFlags) {
     return;
   }

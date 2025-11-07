@@ -1,4 +1,4 @@
-import { ATTACK_SCHEMA, DamageSource } from "./source.js";
+import { ATTACK_SCHEMA } from "./source.js";
 import { CompositeNumber } from "../../../common.js";
 import type WvActor from "../../../../actor/wvActor.js";
 import type Weapon from "../../../../item/weapon.js";
@@ -13,9 +13,26 @@ export type AttacksProperties = AttackProperties[];
 type AttackSource = fields.SchemaField.InitializedData<typeof ATTACK_SCHEMA>
 type AttacksSource = AttackSource[];
 
+/** Get the default attack source for newly created attacks. */
+export function getDefaultAttack(): AttackSource {
+  return new fields.SchemaField(ATTACK_SCHEMA).getInitialValue();
+}
+
 export namespace AttacksProperties {
   export function from(s: AttacksSource, owningWeapon: Weapon): AttacksProperties {
     return s.map(s => new AttackProperties(s, owningWeapon))
+  }
+
+  export function find(self: AttacksProperties, name: string): AttackProperties | undefined {
+    return self.find((attack): attack is AttackProperties => attack.name === name);
+  }
+
+  export function executeByName(self: AttacksProperties, name: string) {
+    const attack = self.find((attack): attack is AttackProperties => attack.name === name);
+    if (!attack) {
+      return
+    }
+    attack.execute()
   }
 
   /** Get all attacks matching the given tags. */
@@ -56,31 +73,31 @@ export class AttackProperties implements AttackSource {
   constructor(source: AttackSource, owningWeapon: Weapon) {
     this.damage = new DamageProperties(source.damage, owningWeapon);
 
-    this.rounds = CompositeNumber.from(source.rounds ?? { source: 0 });
+    this.rounds = CompositeNumber.from(source.rounds);
     this.rounds.bounds.min = 0;
 
-    this.dtReduction = CompositeNumber.from(
-      source.dtReduction ?? { source: 0 }
-    );
+    this.dtReduction = CompositeNumber.from(source.dtReduction);
 
     this.ap = CompositeNumber.from(source.ap);
     this.ap.bounds.min = 0;
+    this.tags = source.tags;
 
     this.#weapon = owningWeapon;
     this.name = source.name;
   }
 
-  override damage: DamageProperties;
+  damage: DamageProperties;
 
-  override rounds: CompositeNumber;
+  rounds: CompositeNumber;
 
-  override dtReduction: CompositeNumber;
+  dtReduction: CompositeNumber;
 
-  override ap: CompositeNumber;
+  ap: CompositeNumber;
 
   #weapon: Weapon;
 
   name: string;
+  tags: string[];
 
   /** Get the range picking relevant tags for this attack. */
   get rangePickingTags(): string[] {
@@ -92,9 +109,6 @@ export class AttackProperties implements AttackSource {
     if (tags === undefined) return true;
 
     return !tags.some((tag) => !this.tags.includes(tag));
-  }
-
-  async execute(): Promise<void> {
   }
 }
 

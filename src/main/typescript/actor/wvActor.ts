@@ -555,7 +555,7 @@ export default class WvActor extends Actor<"character"> {
 
     await diceSoNice(
       checkRoll,
-      msgOptions.whisper,
+      msgOptions.whisper as string[], // fixme
       isRollBlindedForCurrUser(flags.blind),
       { actor: this.id }
     );

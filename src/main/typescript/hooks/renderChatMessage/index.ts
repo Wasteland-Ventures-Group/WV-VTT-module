@@ -3,8 +3,8 @@ import decorateSystemMessage from "./decorateSystemMessage/index.js";
 
 /** Register system callbacks for the renderChatMessage hook. */
 export default function registerForRenderChatMessage(): void {
-  Hooks.on("renderChatMessage", decorateCriticalRollMessage);
-  Hooks.on("renderChatMessage", decorateSystemMessage);
+  Hooks.on("renderChatMessageHTML", decorateCriticalRollMessage);
+  Hooks.on("renderChatMessageHTML", decorateSystemMessage);
 }
 
-export type HookParams = Parameters<Hooks.StaticCallbacks["renderChatMessage"]>;
+export type HookParams = Hooks.HookParameters<"renderChatMessageHTML">;

@@ -1,8 +1,9 @@
-import type { ItemDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/itemData";
+import { AttacksProperties } from "../data/item/weapon/attack/properties.js";
 import type { WeaponAttackDragData } from "../dragData.js";
 import { getGame } from "../foundryHelpers.js";
 import Weapon from "../item/weapon.js";
 import SystemDataSchemaError from "../systemDataSchemaError.js";
+import { getI18n } from "../wvI18n.js";
 
 /**
  * Assign a Weapon Attack Macro to the user's hotbar. This will assign an
@@ -46,7 +47,7 @@ async function getOrCreateWeaponAttackMacro(
   const command = createMacroCommand(data);
 
   const existingMacro = getGame().macros?.find(
-    (m) => m.name === name && m.data.command === command
+    (m) => m.name === name && m.command === command
   );
   if (existingMacro) return existingMacro;
 
@@ -64,9 +65,9 @@ async function getOrCreateWeaponAttackMacro(
  * @returns the Macro name
  */
 function createMacroName(
-  weaponData: foundry.data.ItemData["_source"],
+  weaponData: foundry.documents.Item["_source"],
   attackName: string,
-  actorData?: foundry.data.ActorData["_source"] | null | undefined
+  actorData?: foundry.documents.Actor["_source"] | null | undefined
 ): string {
   const tail = `${weaponData.name}/${attackName}`;
   return actorData ? `${actorData.name}/${tail}` : tail;
@@ -107,10 +108,7 @@ export function executeWeaponAttack(
   }
   if (!(weapon instanceof Weapon)) return;
 
-  const attack = weapon.data.data.attacks.attacks[attackName];
-  if (!attack) return;
-
-  attack.execute();
+  AttacksProperties.executeByName(weapon.system.attacks, attackName);
 }
 
 /**
@@ -119,7 +117,7 @@ export function executeWeaponAttack(
  * @param attackName - the name of the weapon attack in the source data
  */
 export async function executeWeaponAttackFromSource(
-  data: ItemDataConstructorData,
+  data: Item.CreateData,
   attackName: string
 ): Promise<void> {
   let weapon;
@@ -142,10 +140,10 @@ export async function executeWeaponAttackFromSource(
   }
   weapon.finalizeData();
 
-  const attack = weapon.data.data.attacks.attacks[attackName];
+  const attack = AttacksProperties.find(weapon.system.attacks, attackName);
   if (!attack) {
     ui?.notifications?.error(
-      getGame().i18n.format("wv.system.messages.attackNotFound", {
+      getI18n().format("wv.system.messages.attackNotFound", {
         name: attackName
       })
     );

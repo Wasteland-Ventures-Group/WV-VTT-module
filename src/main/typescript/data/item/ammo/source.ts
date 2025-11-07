@@ -6,7 +6,7 @@ export const AMMO_SCHEMA = {
   /** The sub type of the ammo */
   type: new fields.StringField(),
   /** The caliber of the ammo */
-  caliber: new fields.StringField({ required: false, initial: "308cal", nullable: false, choices: Calibers }),
+  caliber: new fields.StringField({ required: true, initial: "308cal", nullable: false, choices: Calibers }),
   ...STACKABLE_ITEM_SCHEMA,
 }
 

@@ -85,14 +85,12 @@ declare global {
     };
   }
 
-  namespace ClientSettings {
-    interface SettingConfig {
-      "wasteland-ventures.initialized": boolean;
-      "wasteland-ventures.systemMigrationVersion": string;
-      "wasteland-ventures.movement.enforceAndSubtractApForPlayers": settings.AlwaysNeverSetting;
-      "wasteland-ventures.movement.enforceApForGameMasters": settings.AlwaysNeverSetting;
-      "wasteland-ventures.movement.subtractApForGameMasters": settings.AlwaysNeverSetting;
-    }
+  interface SettingConfig {
+    "wasteland-ventures.initialized": boolean;
+    "wasteland-ventures.systemMigrationVersion": string;
+    "wasteland-ventures.movement.enforceAndSubtractApForPlayers": settings.AlwaysNeverSetting;
+    "wasteland-ventures.movement.enforceApForGameMasters": settings.AlwaysNeverSetting;
+    "wasteland-ventures.movement.subtractApForGameMasters": settings.AlwaysNeverSetting;
   }
 
   interface FlagConfig {

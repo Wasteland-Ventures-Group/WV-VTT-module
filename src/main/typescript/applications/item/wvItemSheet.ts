@@ -1,7 +1,7 @@
 import type { DefinedError } from "ajv";
 import type WvActor from "../../actor/wvActor.js";
-import { CONSTANTS, HANDLEBARS, Rarities, Rarity } from "../../constants.js";
-import { getGame } from "../../foundryHelpers.js";
+import { CONSTANTS, HANDLEBARS, Rarities, type Rarity } from "../../constants.js";
+import { getGame, } from "../../foundryHelpers.js";
 import type WvItem from "../../item/wvItem.js";
 import type { DocumentRelation } from "../../item/wvItem.js";
 import AdditionalPropMessage from "../../ruleEngine/messages/additionalPropMessage.js";
@@ -14,7 +14,7 @@ import RuleElementMessage from "../../ruleEngine/ruleElementMessage.js";
 import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
 import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
 import { LOG } from "../../systemLogger.js";
-import WvI18n from "../../wvI18n.js";
+import WvI18n, { getI18n } from "../../wvI18n.js";
 
 /** The basic Wasteland Ventures Item Sheet. */
 export default class WvItemSheet extends ItemSheet {
@@ -53,7 +53,7 @@ export default class WvItemSheet extends ItemSheet {
 
   override get template(): string {
     const root = `${CONSTANTS.systemPath}/handlebars/items/`;
-    switch (this.item.data.type) {
+    switch (this.item.type) {
       case "ammo":
         return root + "ammoSheet.hbs";
       case "apparel":
@@ -72,13 +72,13 @@ export default class WvItemSheet extends ItemSheet {
   }
 
   override async getData(): Promise<SheetData> {
-    const data = await super.getData();
+    const data = await super.getData()
 
     let rarity: SheetDataRarity | undefined = undefined;
-    if ("rarity" in data.data.data) {
+    if ("rarity" in data) {
       const i18nRarities = WvI18n.rarities;
       rarity = {
-        selectedName: i18nRarities[data.data.data.rarity],
+        selectedName: i18nRarities[data.rarity as Rarity],
         rarities: Rarities.reduce(
           (rarities, rarityName) => {
             rarities[rarityName] = i18nRarities[rarityName];
@@ -100,11 +100,11 @@ export default class WvItemSheet extends ItemSheet {
           rules: HANDLEBARS.partPaths.item.rules
         },
         rules: {
-          elements: this.item.data.data.rules.elements.map(
+          elements: this.item.system.rules.elements.map(
             this.mapSheetDataRuleElement.bind(this)
           )
         },
-        systemGridUnit: getGame().system.data.gridUnits
+        systemGridUnit: getGame().system.gridUnits.toString()
       }
     };
   }
@@ -141,7 +141,7 @@ export default class WvItemSheet extends ItemSheet {
 
   /** Handle a click event on a create rule element button. */
   protected onClickCreateRuleElement(): void {
-    const sources = this.item.data.data.rules.sources;
+    const sources = this.item.system.rules.sources;
     sources.push(this.getDefaultRuleElementSource());
     this.item.updateRuleSources(sources);
     LOG.debug(`Created RuleElement on item with id [${this.item.id}]`);
@@ -161,10 +161,10 @@ export default class WvItemSheet extends ItemSheet {
     if (!(ruleElementElement instanceof HTMLElement))
       throw new Error("The rule element element was not an HTMLElement.");
 
-    const index = parseInt(ruleElementElement.dataset.index ?? "");
+    const index = parseInt(ruleElementElement.dataset["index"] ?? "");
     if (isNaN(index)) throw new Error("The index was not a number.");
 
-    const sources = this.item.data.data.rules.sources;
+    const sources = this.item.system.rules.sources;
     sources.splice(index, 1);
     this.ruleElementSyntaxErrors.splice(index, 1);
     this.ruleElementSchemaErrors.splice(index, 1);
@@ -224,7 +224,7 @@ export default class WvItemSheet extends ItemSheet {
         ? "wv.system.messages.itemIsNowUnlinked"
         : "wv.system.messages.itemIsNowLinked";
       ui.notifications.info(
-        getGame().i18n.format(key, { name: this.item.name })
+        getI18n().format(key, { name: this.item.name })
       );
     }
   }
@@ -232,21 +232,21 @@ export default class WvItemSheet extends ItemSheet {
   /** Handle a click event on the update from compendium button. */
   protected onClickUpdateFromCompendium(): void {
     new Dialog({
-      title: getGame().i18n.format(
+      title: getI18n().format(
         "wv.system.dialogs.compendiumOverwriteConfirm.title",
         { name: this.item.name }
       ),
-      content: getGame().i18n.localize(
+      content: getI18n().localize(
         "wv.system.dialogs.compendiumOverwriteConfirm.content"
       ),
       default: "yes",
       buttons: {
         yes: {
-          label: getGame().i18n.localize("wv.system.actions.update"),
+          label: getI18n().localize("wv.system.actions.update"),
           callback: () => this.item.updateFromCompendium()
         },
         no: {
-          label: getGame().i18n.localize("wv.system.actions.cancel")
+          label: getI18n().localize("wv.system.actions.cancel")
         }
       }
     }).render(true);
@@ -256,13 +256,13 @@ export default class WvItemSheet extends ItemSheet {
     const buttons = super._getHeaderButtons();
     if (this.item.hasCompendiumLink && this.item.isProtoItemType) {
       buttons.unshift({
-        label: getGame().i18n.localize("wv.system.misc.updateFromCompendium"),
+        label: getI18n().localize("wv.system.misc.updateFromCompendium"),
         class: "wv-update-from-compendium",
         icon: "fas fa-file-download",
         onclick: this.onClickUpdateFromCompendium.bind(this)
       });
       buttons.unshift({
-        label: getGame().i18n.localize("wv.system.misc.toggleCompendiumLink"),
+        label: getI18n().localize("wv.system.misc.toggleCompendiumLink"),
         class: "wv-toggle-compendium-link",
         icon: "fas fa-link",
         onclick: this.onClickToggleCompendiumLink.bind(this)
@@ -363,7 +363,7 @@ export default class WvItemSheet extends ItemSheet {
       docId: document.id ?? "",
       docName: document.name ?? "",
       messages: value.messages,
-      docRelation: getGame().i18n.localize(
+      docRelation: getI18n().localize(
         `wv.system.ruleEngine.documentMessages.relations.${value.causeDocRelation}`
       )
     };
@@ -376,7 +376,7 @@ export default class WvItemSheet extends ItemSheet {
     return {
       docId: document.id ?? "",
       docName: document.name ?? "",
-      docRelation: getGame().i18n.localize(
+      docRelation: getI18n().localize(
         `wv.system.ruleEngine.documentMessages.relations.${relation}`
       )
     };
@@ -442,7 +442,7 @@ export default class WvItemSheet extends ItemSheet {
 
     // If there are some updates to be saved, fill the empty slots resulting
     // from errors with the same data that's currently saved in the backend
-    const originalSources = this.item.data.data.rules.sources;
+    const originalSources = this.item.system.rules.sources;
     for (let index = 0; index < originalSources.length; index += 1) {
       if (ruleSources[index] === undefined) {
         const originalSource = originalSources[index];

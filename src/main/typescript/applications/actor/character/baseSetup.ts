@@ -7,9 +7,8 @@ import {
   type ThaumaturgySpecial,
   ThaumaturgySpecials
 } from "../../../constants.js";
-import { getI18n } from "../../../foundryHelpers.js";
 import type Race from "../../../item/race.js";
-import WvI18n, { type I18nSpecial } from "../../../wvI18n.js";
+import WvI18n, { getI18n, type I18nSpecial } from "../../../wvI18n.js";
 import ApplicationV2 = foundry.applications.api.ApplicationV2;
 import type { DeepPartial } from "fvtt-types/utils";
 import type { CharacterProperties } from "../../../data/actor/character/properties.js";

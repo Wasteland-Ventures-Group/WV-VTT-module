@@ -4,11 +4,12 @@ import type { HookParams } from "./index.js";
 /** Decorate roll messages with critical results */
 export default function decorateCriticalRollMessage(
   message: HookParams[0],
-  html: HookParams[1]
+  html: HookParams[1],
+  _data: HookParams[2],
 ): void {
   if (!message.isRoll) return;
 
-  const roll = message.roll;
+  const roll = message.rolls[0];
   if (!roll) return;
 
   const searchResult = findCriticals(roll);
@@ -46,7 +47,12 @@ function decorateHasBothCriticals(html: HookParams[1]) {
 
 /** Get the dice total element. */
 function getResultElement(html: HookParams[1]): HTMLElement | undefined {
-  return html.find(".dice-total")[0];
+  for (const elem of html.getElementsByClassName("dice-total")) {
+    if (elem instanceof HTMLElement) {
+      return elem;
+    }
+  }
+  return undefined;
 }
 
 /** Check and find the at least one critical result. */

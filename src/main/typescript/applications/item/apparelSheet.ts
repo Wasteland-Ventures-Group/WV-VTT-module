@@ -24,9 +24,9 @@ export default class ApparelSheet extends WvItemSheet {
 
     return {
       blockedSlots: apparel.blockedApparelSlots.map((slot) => slotsI18ns[slot]),
-      slot: slotsI18ns[apparel.data.data.slot],
+      slot: slotsI18ns[apparel.system.slot],
       slots: slotsI18ns,
-      type: typesI18ns[apparel.data.data.type],
+      type: typesI18ns[apparel.system.type],
       types: typesI18ns
     };
   }
@@ -67,7 +67,7 @@ export default class ApparelSheet extends WvItemSheet {
   protected getOwnSlot(formData: Record<string, unknown>): ApparelSlot {
     const slot = formData["data.slot"];
     if (typeof slot === "string" && isApparelSlot(slot)) return slot;
-    return this.item.data.data.slot;
+    return this.item.system.slot;
   }
 }
 

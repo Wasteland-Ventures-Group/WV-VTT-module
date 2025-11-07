@@ -1,9 +1,8 @@
-import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import WvActor from "../../actor/wvActor.js";
-import { AttackPrompt, AttackPromptData } from "../../applications/prompt.js";
+import { AttackPrompt, type AttackPromptData } from "../../applications/prompt.js";
 import { CONSTANTS, RangeBracket } from "../../constants.js";
 import { CompositeNumber } from "../../data/common.js";
-import type { AttackProperties } from "../../data/item/weapon/attack/properties.js";
+import { AttackProperties, AttacksProperties } from "../../data/item/weapon/attack/properties.js";
 import Formulator from "../../formulator.js";
 import {
   createDefaultMessageData,
@@ -25,15 +24,13 @@ export default class AttackExecution {
    * @param weapon - the Weapon the attack belongs to
    */
   static async execute(
-    name: string,
     attackProperties: AttackProperties,
     weapon: Weapon
   ): Promise<void> {
-    await (await AttackExecution.new(name, attackProperties, weapon)).execute();
+    await (await AttackExecution.new(attackProperties, weapon)).execute();
   }
 
   static async new(
-    name: string,
     attackProperties: AttackProperties,
     weapon: Weapon
   ): Promise<AttackExecution> {
@@ -54,16 +51,16 @@ export default class AttackExecution {
         executionActor
       );
 
-      const clonedActor = await executionActor.clone();
+      const clonedActor = executionActor.clone();
       if (!clonedActor) {
         LOG.error("Could not clone the actor.", executionActor);
         throw new Error("Could not clone the actor.");
       }
       executionActor = clonedActor;
 
-      const weaponId = executionActor.data.update({
+      const weaponId = (await executionActor.update({
         items: [executionWeapon.toObject()]
-      }).items?.[0]?._id;
+      }))?.items?.find((_) => true)?._id;
       if (!weaponId) throw new Error("Could not embed the weapon.");
 
       executionActor.prepareData();
@@ -74,7 +71,7 @@ export default class AttackExecution {
 
       executionWeapon = embeddedWeapon;
 
-      const ephAttackProps = executionWeapon.data.data.attacks.attacks[name];
+      const ephAttackProps = AttacksProperties.find(executionWeapon.system.attacks, attackProperties.name);
       if (!ephAttackProps)
         throw new Error("Could not find the attack on the ephemeral weapon.");
 
@@ -84,7 +81,7 @@ export default class AttackExecution {
     token ??= interact.getActorToken(executionActor);
 
     return new this(
-      name,
+      attackProperties.name,
       executionAttackProperties,
       executionWeapon,
       token,
@@ -117,7 +114,7 @@ export default class AttackExecution {
 
   /** Execute the attack */
   async execute(): Promise<void> {
-    const secondary = this.actor.data.data.secondary;
+    const secondary = this.actor.system.secondary;
 
     // Get needed external data ------------------------------------------------
     let externalData: AttackPromptData;
@@ -135,7 +132,7 @@ export default class AttackExecution {
       externalData;
 
     // Create common chat message data -----------------------------------------
-    const commonData: ChatMessageDataConstructorData = createDefaultMessageData(
+    const commonData = createDefaultMessageData(
       {
         scene: null,
         actor: this.actor.id,
@@ -146,10 +143,10 @@ export default class AttackExecution {
     );
 
     // Get range bracket -------------------------------------------------------
-    const rangeBracket = this.weapon.data.data.ranges.getRangeBracket(
+    const rangeBracket = this.weapon.system.ranges.getRangeBracket(
       range,
       this.attackProperties.rangePickingTags,
-      this.actor.data.data.specials
+      this.actor.system.specials
     );
     const isOutOfRange = RangeBracket.OUT_OF_RANGE === rangeBracket;
     const damageDice =
@@ -157,7 +154,7 @@ export default class AttackExecution {
 
     // Calculate hit roll target -----------------------------------------------
     const rangeModifier =
-      this.weapon.data.data.ranges.getRangeModifier(rangeBracket);
+      this.weapon.system.ranges.getRangeModifier(rangeBracket);
 
     const critSuccess = secondary.criticals.success.clone();
     if (sneakAttack)
@@ -169,7 +166,7 @@ export default class AttackExecution {
     const critFailure = secondary.criticals.failure;
 
     const hitChance = this.getHitRollTarget(
-      this.actor.data.data.skills[this.weapon.data.data.skill],
+      this.actor.system.skills[this.weapon.system.skill],
       rangeModifier,
       modifier,
       critSuccess.total,
@@ -179,7 +176,7 @@ export default class AttackExecution {
     );
 
     // Calculate AP ------------------------------------------------------------
-    const previousAp = this.actor.data.data.vitals.actionPoints.value;
+    const previousAp = this.actor.system.vitals.actionPoints.value;
     const apCost = new CompositeNumber(this.attackProperties.ap.total, {
       min: 0
     });
@@ -231,9 +228,9 @@ export default class AttackExecution {
       blind: commonData.blind ?? false,
       weapon: {
         display: {
-          ranges: this.weapon.data.data.ranges.getDisplayRanges(
+          ranges: this.weapon.system.ranges.getDisplayRanges(
             this.attackProperties.rangePickingTags,
-            this.actor.data.data.specials
+            this.actor.system.specials
           )
         },
         image: this.weapon.img,
@@ -242,7 +239,7 @@ export default class AttackExecution {
           attack: {
             name: this.name
           },
-          name: this.weapon.data.name
+          name: this.weapon.name
         }
       }
     };
@@ -263,19 +260,18 @@ export default class AttackExecution {
     }
 
     // Hit roll ----------------------------------------------------------------
-    const hitRoll = new Roll(
+    const hitRoll = await new Roll(
       Formulator.skill(hitChance.total)
-        .criticals({ success: critSuccess.total, failure: critFailure.total })
         .toString()
-    ).evaluate({ async: false });
+    ).evaluate();
 
     // Damage roll -------------------------------------------------------------
-    const damageRoll = new Roll(
+    const damageRoll = await new Roll(
       Formulator.damage(
         this.attackProperties.damage.base.total,
         damageDice.total
       ).toString()
-    ).evaluate({ async: false });
+    ).evaluate();
 
     // Create attack message ---------------------------------------------------
     this.createAttackMessage(commonData, commonFlags, hitRoll, damageRoll);
@@ -351,7 +347,7 @@ export default class AttackExecution {
 
   /** Create a weapon attack message, signaling out of range. */
   private createOutOfRangeMessage(
-    commonData: ChatMessageDataConstructorData,
+    commonData: ChatMessage.CreateData,
     commonFlags: deco.CommonWeaponAttackFlags
   ): void {
     const flags: deco.NotExecutedAttackFlags = {
@@ -368,7 +364,7 @@ export default class AttackExecution {
 
   /** Create a weapon attack message, signaling insufficient AP. */
   private createNotEnoughApMessage(
-    commonData: ChatMessageDataConstructorData,
+    commonData: ChatMessage.CreateData,
     commonFlags: deco.CommonWeaponAttackFlags
   ): void {
     const flags: deco.NotExecutedAttackFlags = {
@@ -385,7 +381,7 @@ export default class AttackExecution {
 
   /** Create a chat message for an executed attack. */
   private async createAttackMessage(
-    commonData: ChatMessageDataConstructorData,
+    commonData: ChatMessage.CreateData,
     commonFlags: deco.CommonWeaponAttackFlags,
     hitRoll: Roll,
     damageRoll: Roll

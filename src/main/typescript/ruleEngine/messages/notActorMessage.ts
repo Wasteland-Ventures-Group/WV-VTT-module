@@ -1,4 +1,4 @@
-import { getI18n } from "../../foundryHelpers.js";
+import { getI18n } from "../../wvI18n.js";
 import RuleElementMessage from "../ruleElementMessage.js";
 
 export default class NotActorMessage extends RuleElementMessage {

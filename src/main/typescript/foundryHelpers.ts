@@ -1,4 +1,3 @@
-import type { ChatMessageDataConstructorData } from "@league-of-foundry-developers/foundry-vtt-types/src/foundry/common/data/data.mjs/chatMessageData";
 import type { RollMode } from "./constants";
 
 /**
@@ -9,13 +8,6 @@ export function getGame(): Game {
   if (!(game instanceof Game)) throw new Error("Game was not yet initialized.");
 
   return game;
-}
-
-export function getI18n() {
-  const i18n = game?.i18n;
-  if (!(i18n instanceof Localization)) throw new Error("Game or localization not yet initialized.");
-
-  return i18n
 }
 
 /**
@@ -61,9 +53,9 @@ export function isSiblingItem(root: Item, target: Item) {
 
 /** Create the default message data for roll messages. */
 export function createDefaultMessageData(
-  speaker: foundry.data.ChatMessageData["speaker"]["_source"],
+  speaker: foundry.documents.ChatMessage.CreateData["speaker"],
   rollMode: RollMode
-): ChatMessageDataConstructorData {
+): foundry.documents.ChatMessage.CreateData {
   return {
     speaker,
     whisper: whisperTargets(rollMode),
@@ -75,22 +67,22 @@ export function createDefaultMessageData(
  * Check whether the given blind roll flag still applies to the current user.
  */
 export function isRollBlindedForCurrUser(blind: boolean): boolean {
-  return blind && (!getGame().user?.isGM ?? false);
+  return blind && (!getGame().user?.isGM);
 }
 
 /** Get the whisper recipients for different types of roll modes. */
-export function whisperTargets(
+function whisperTargets(
   rollMode: RollMode
-): StoredDocument<User>[] | null {
+): string[] {
   const self = getGame().user;
 
   switch (rollMode) {
     case "publicroll":
+      return []
     case "blindroll":
-      return null;
     case "gmroll":
-      return ChatMessage.getWhisperRecipients("gm");
+      return ChatMessage.getWhisperRecipients("gm").map((user) => user._id);
     case "selfroll":
-      return self ? [self] : [];
+      return self ? [self._id] : [];
   }
 }

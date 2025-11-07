@@ -1,6 +1,6 @@
 import { getContentElement } from ".";
 import type { HookParams } from "..";
-import { CONSTANTS, PainThreshold } from "../../../constants";
+import { CONSTANTS, type PainThreshold } from "../../../constants";
 import { scrollChatToBottom } from "../../../foundryHelpers";
 
 const TEMPLATE = `${CONSTANTS.systemPath}/handlebars/chatMessages/painThreshold.hbs`;

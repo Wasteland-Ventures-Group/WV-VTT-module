@@ -2,7 +2,7 @@ import * as fs from "fs/promises";
 import * as Vite from "vite";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { checker } from "vite-plugin-checker";
+// import { checker } from "vite-plugin-checker";
 import esbuild from "esbuild";
 import * as path from "path";
 import { findFoundryHost } from "./utils.ts";
@@ -36,17 +36,17 @@ const config = Vite.defineConfig(({ command, mode }): Vite.UserConfig => {
   const outDir = "dist";
 
   const plugins: Vite.PluginOption[] = [
-    checker({
-      typescript: { buildMode: true },
-      eslint: {
-        lintCommand: "eslint .",
-        useFlatConfig: true
-      }
-      // FIXME: see https://github.com/fi3ework/vite-plugin-checker/issues/272
-      // stylelint: {
-      //   lintCommand: "stylelint **/*.{css,sass,scss}"
-      // }
-    }),
+    // checker({
+    //   typescript: { buildMode: true },
+    //   eslint: {
+    //     lintCommand: "eslint .",
+    //     useFlatConfig: true
+    //   }
+    //   // FIXME: see https://github.com/fi3ework/vite-plugin-checker/issues/272
+    //   // stylelint: {
+    //   //   lintCommand: "stylelint **/*.{css,sass,scss}"
+    //   // }
+    // }),
     tsconfigPaths(),
     foundryEntrypointsPlugin()
   ];

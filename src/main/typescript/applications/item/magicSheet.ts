@@ -1,8 +1,8 @@
-import { MagicType, MagicTypes, TYPES } from "../../constants";
-import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet";
+import { type MagicType, MagicTypes, TYPES } from "../../constants";
+import WvItemSheet, { type SheetData as ItemSheetData } from "./wvItemSheet";
 import { isOfItemType } from "../../item/wvItem.js";
 import type Magic from "../../item/magic";
-import WvI18n, { I18nMagicSchools } from "../../wvI18n";
+import WvI18n, { type I18nMagicSchools } from "../../wvI18n";
 
 /** An Item Sheet for Magic items. */
 export default class MagicSheet extends WvItemSheet {
@@ -23,8 +23,8 @@ export default class MagicSheet extends WvItemSheet {
 
   static getMagicSheetData(magic: Magic) {
     const typesI18n = WvI18n.magicTypes;
-    const type = magic.data.data.type;
-    const school = magic.data.data.school;
+    const type = magic.system.type;
+    const school = magic.system.school;
     const schoolI18n = WvI18n.magicSchools[school];
     if (!schoolI18n)
       throw new Error(`Invalid value of school (${school}) for type ${type}`);

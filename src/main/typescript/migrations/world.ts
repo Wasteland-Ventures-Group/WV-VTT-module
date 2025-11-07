@@ -1,7 +1,8 @@
 import { CONSTANTS } from "../constants.js";
-import { getGame, getI18n } from "../foundryHelpers.js";
+import { getGame, } from "../foundryHelpers.js";
 import { initializedSettingName, migrVerSettingName } from "../settings.js";
 import { LOG } from "../systemLogger.js";
+import { getI18n } from "../wvI18n.js";
 import migrateActors from "./actors.js";
 import migrateItems from "./items.js";
 
@@ -26,7 +27,7 @@ export function isLastMigrationOlderThan(version: string): boolean {
   // the given version is newer
   if (lastMigrVersion === "") return true;
 
-  return isNewerVersion(version, lastMigrVersion);
+  return foundry.utils.isNewerVersion(version, lastMigrVersion);
 }
 
 /**

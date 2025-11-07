@@ -1,16 +1,16 @@
 import { CONSTANTS, isRollMode, type RollMode } from "../constants.js";
 import { getGame } from "../foundryHelpers.js";
-import WvI18n, { type I18nRollModes } from "../wvI18n.js";
+import WvI18n, { getI18n, type I18nRollModes } from "../wvI18n.js";
 
 /**
  * An application to prompt the user for input regarding a roll.
  */
 export abstract class RollPrompt extends Application {
-  static override get defaultOptions(): ApplicationOptions {
+  static override get defaultOptions(): Application.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push(...[CONSTANTS.systemId, "prompt"]);
     defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/prompt.hbs`;
-    defaultOptions.title = getGame().i18n.localize(
+    defaultOptions.title = getI18n().localize(
       "wv.system.prompt.defaults.title"
     );
     return defaultOptions;
@@ -28,7 +28,7 @@ export abstract class RollPrompt extends Application {
     onSubmit: (data: never) => void,
     onClose: () => void,
     data: RollPromptConstructorData,
-    options?: Partial<ApplicationOptions>
+    options?: Partial<Application.Options>
   ) {
     super(options);
 
@@ -51,12 +51,14 @@ export abstract class RollPrompt extends Application {
   }
 
   override getData(): RollPromptTemplateData {
+    const default_rollmode = getGame().settings.get("core", "rollMode") as RollMode
+
     return {
       defaults: {
         alias: this.data.alias ?? "",
         modifier: this.data.modifier ?? 0,
         rollMode:
-          this.data.rollMode ?? getGame().settings.get("core", "rollMode")
+          this.data.rollMode ?? default_rollmode
       },
       isAttack: false,
       rollModes: WvI18n.rollModes
@@ -143,7 +145,7 @@ export class CheckPrompt extends RollPrompt {
    */
   static async get(
     data: CheckPromptConstructorData,
-    options?: Partial<ApplicationOptions>
+    options?: Partial<Application.Options>
   ): Promise<ExternalCheckData> {
     return new Promise((resolve, reject) => {
       new this((data) => resolve(data), reject, data, options).render(true);
@@ -161,7 +163,7 @@ export class CheckPrompt extends RollPrompt {
     onSubmit: (data: ExternalCheckData) => void,
     onClose: () => void,
     data: CheckPromptConstructorData,
-    options?: Partial<ApplicationOptions>
+    options?: Partial<Application.Options>
   ) {
     super(onSubmit, onClose, data, options);
 
@@ -185,7 +187,7 @@ export class AttackPrompt extends RollPrompt {
    */
   static async get(
     data: AttackPromptConstructorData,
-    options?: Partial<ApplicationOptions>
+    options?: Partial<Application.Options>
   ): Promise<AttackPromptData> {
     return new Promise((resolve, reject) => {
       new this((data) => resolve(data), reject, data, options).render(true);
@@ -203,7 +205,7 @@ export class AttackPrompt extends RollPrompt {
     onSubmit: (data: AttackPromptData) => void,
     onClose: () => void,
     data: AttackPromptConstructorData,
-    options?: Partial<ApplicationOptions>
+    options?: Partial<Application.Options>
   ) {
     super(onSubmit, onClose, data, options);
 
@@ -246,11 +248,11 @@ export class AttackPrompt extends RollPrompt {
  * An application to prompt the user for a single string
  */
 export class StringPrompt extends Application {
-  static override get defaultOptions(): ApplicationOptions {
+  static override get defaultOptions(): Application.Options {
     const defaultOptions = super.defaultOptions;
     defaultOptions.classes.push(...[CONSTANTS.systemId, "stringPrompt"]);
     defaultOptions.template = `${CONSTANTS.systemPath}/handlebars/stringPrompt.hbs`;
-    defaultOptions.title = getGame().i18n.localize(
+    defaultOptions.title = getI18n().localize(
       "wv.system.prompt.defaults.title"
     );
     return defaultOptions;
@@ -268,7 +270,7 @@ export class StringPrompt extends Application {
       label: string;
       defaultValue?: string;
     },
-    options?: Partial<ApplicationOptions>
+    options?: Partial<Application.Options>
   ): Promise<string> {
     return new Promise((resolve, reject) => {
       new this(
@@ -294,7 +296,7 @@ export class StringPrompt extends Application {
     onClose: () => void,
     label: string,
     defaultValue: string,
-    options?: Partial<ApplicationOptions>
+    options?: Partial<Application.Options>
   ) {
     super(options);
 

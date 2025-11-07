@@ -1,21 +1,18 @@
-import { SpecialName, TYPES } from "../../constants.js";
-import {
-  AttackSource,
-  ATTACK_JSON_SCHEMA
-} from "../../data/item/weapon/attack/source.js";
+import { type SpecialName, TYPES } from "../../constants.js";
+import { AttacksProperties, getDefaultAttack } from "../../data/item/weapon/attack/properties.js";
 import type { WeaponAttackDragData } from "../../dragData.js";
-import { getGame } from "../../foundryHelpers.js";
 import type Weapon from "../../item/weapon.js";
 import { isOfItemType } from "../../item/wvItem.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, {
-  I18nAmmoContainerTypes,
-  I18nCalibers,
-  I18nDamageFallOffTypes,
-  I18nSkills
+  getI18n,
+  type I18nAmmoContainerTypes,
+  type I18nCalibers,
+  type I18nDamageFallOffTypes,
+  type I18nSkills
 } from "../../wvI18n.js";
 import { StringPrompt } from "../prompt.js";
-import WvItemSheet, { SheetData as ItemSheetData } from "./wvItemSheet.js";
+import WvItemSheet, { type SheetData as ItemSheetData } from "./wvItemSheet.js";
 
 export default class WeaponSheet extends WvItemSheet {
   static override get defaultOptions(): ItemSheet.Options {
@@ -39,24 +36,24 @@ export default class WeaponSheet extends WvItemSheet {
         ...i18nDamageFallOffTypes
       },
       displayRanges: {
-        short: weapon.data.data.ranges.short.distance.getDisplayRangeDistance(
-          weapon.actor?.data.data.specials
+        short: weapon.system.ranges.short.distance.getDisplayRangeDistance(
+          weapon.actor?.system.specials
         ),
-        medium: weapon.data.data.ranges.medium.distance.getDisplayRangeDistance(
-          weapon.actor?.data.data.specials
+        medium: weapon.system.ranges.medium.distance.getDisplayRangeDistance(
+          weapon.actor?.system.specials
         ),
-        long: weapon.data.data.ranges.long.distance.getDisplayRangeDistance(
-          weapon.actor?.data.data.specials
+        long: weapon.system.ranges.long.distance.getDisplayRangeDistance(
+          weapon.actor?.system.specials
         )
       },
       reload: {
-        caliber: i18nCalibers[weapon.data.data.reload.caliber],
+        caliber: i18nCalibers[weapon.system.reload.caliber],
         calibers: i18nCalibers,
         containerType:
-          i18nContainerTypes[weapon.data.data.reload.containerType],
+          i18nContainerTypes[weapon.system.reload.containerType],
         containerTypes: i18nContainerTypes
       },
-      skill: i18nSkills[weapon.data.data.skill],
+      skill: i18nSkills[weapon.system.skill],
       skills: i18nSkills,
       specials: {
         "": "",
@@ -130,7 +127,7 @@ export default class WeaponSheet extends WvItemSheet {
     const target = event.currentTarget;
     if (!(target instanceof HTMLElement)) return super._onDragStart(event);
 
-    const attackKey = target.dataset.attack;
+    const attackKey = target.dataset["attack"];
     if (!attackKey) return super._onDragStart(event);
 
     const dragData: WeaponAttackDragData = {
@@ -163,8 +160,8 @@ export default class WeaponSheet extends WvItemSheet {
     for (const rangeName of ["short", "medium", "long"]) {
       this.sanitizeTags(formData, `data.ranges.${rangeName}.tags`);
     }
-    Object.keys(this.item.data.data.attacks.sources).forEach((attackName) => {
-      this.sanitizeTags(formData, `data.attacks.sources.${attackName}.tags`);
+    this.item.system.attacks.forEach((attack) => {
+      this.sanitizeTags(formData, `data.attacks.sources.${attack.name}.tags`);
     });
     return super._updateObject(event, formData);
   }
@@ -189,19 +186,13 @@ export default class WeaponSheet extends WvItemSheet {
       return;
     }
 
-    const attackName = attackElement.dataset.weaponAttackName;
+    const attackName = attackElement.dataset["weaponAttackName"];
     if (!attackName) {
       LOG.warn("Could not get the attack name.");
       return;
     }
 
-    const attack = this.item.data.data.attacks.attacks[attackName];
-    if (!attack) {
-      LOG.warn("Could not find the attack on the weapon.");
-      return;
-    }
-
-    attack.execute();
+    AttacksProperties.executeByName(this.item.system.attacks, attackName)
   }
 
   /** Handle a click click event on a create weapon attack button. */
@@ -209,16 +200,17 @@ export default class WeaponSheet extends WvItemSheet {
     let newName: string;
     try {
       newName = await StringPrompt.get({
-        label: getGame().i18n.localize("wv.system.misc.name")
+        label: getI18n().localize("wv.system.misc.name")
       });
     } catch (e) {
       if (e === "closed") return;
       else throw e;
     }
 
-    if (this.item.data.data.attacks.sources[newName]) {
+    const attack = AttacksProperties.find(this.item.system.attacks, newName)
+    if (attack) {
       ui?.notifications?.error(
-        getGame().i18n.format("wv.system.messages.attackAlreadyExists", {
+        getI18n().format("wv.system.messages.attackAlreadyExists", {
           name: newName
         })
       );
@@ -226,15 +218,10 @@ export default class WeaponSheet extends WvItemSheet {
     }
 
     this.item.update({
-      data: {
-        attacks: { sources: { [newName]: this.getDefaultAttackSource() } }
+      system: {
+        attacks: { sources: { [newName]: getDefaultAttack() } }
       }
     });
-  }
-
-  /** Get the default attack source for newly created attacks. */
-  protected getDefaultAttackSource(): AttackSource {
-    return { ...ATTACK_JSON_SCHEMA.default };
   }
 
   /** Handle a click click event on a delete weapon attack button. */
@@ -242,13 +229,13 @@ export default class WeaponSheet extends WvItemSheet {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
-    const attackName = event.target.dataset.attack;
+    const attackName = event.target.dataset["attack"];
     if (!attackName) return;
 
-    const attack = this.item.data.data.attacks.attacks[attackName];
+    const attack = AttacksProperties.find(this.item.system.attacks, attackName);
     if (!attack) {
       ui?.notifications?.error(
-        getGame().i18n.format("wv.system.messages.attackNotFound", {
+        getI18n().format("wv.system.messages.attackNotFound", {
           name: attackName
         })
       );
@@ -256,7 +243,7 @@ export default class WeaponSheet extends WvItemSheet {
     }
 
     this.item.update({
-      data: { attacks: { sources: { [`-=${attackName}`]: {} } } }
+      system: { attacks: { sources: { [`-=${attackName}`]: {} } } }
     });
   }
 
@@ -271,17 +258,17 @@ export default class WeaponSheet extends WvItemSheet {
       if (typeof newAttackName !== "string") continue;
       if (oldAttackName === newAttackName) continue;
 
-      const oldAttack = this.item.data.data.attacks.sources[oldAttackName];
-      const newAttack = this.item.data.data.attacks.sources[newAttackName];
+      const oldAttack = this.item.system._source.attacks.find((attack) => attack.name == oldAttackName);
+      const newAttack = this.item.system._source.attacks.find((attack) => attack.name == newAttackName);
       if (newAttack !== undefined) {
         ui?.notifications?.error(
-          getGame().i18n.format("wv.system.messages.attackAlreadyExists", {
+          getI18n().format("wv.system.messages.attackAlreadyExists", {
             name: newAttackName
           })
         );
       } else if (oldAttack === undefined) {
         ui?.notifications?.error(
-          getGame().i18n.format("wv.system.messages.attackNotFound", {
+          getI18n().format("wv.system.messages.attackNotFound", {
             name: oldAttackName
           })
         );

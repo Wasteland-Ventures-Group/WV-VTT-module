@@ -1,4 +1,4 @@
-import { CONSTANTS, SpecialName, SpecialNames } from "../constants.js";
+import { CONSTANTS, type SpecialName, SpecialNames } from "../constants.js";
 import SystemLogger, { LOG } from "../systemLogger.js";
 
 export default function migrateActors(currentVersion: string): void {
@@ -23,7 +23,7 @@ export default function migrateActors(currentVersion: string): void {
 
   for (const scene of game.scenes) {
     for (const token of scene.tokens) {
-      if (token.data.actorLink) continue;
+      if (token.actorLink) continue;
       if (!token.actor) continue;
 
       migrateActor(token.actor, currentVersion);

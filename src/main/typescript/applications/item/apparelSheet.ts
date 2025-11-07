@@ -1,3 +1,4 @@
+import type { DeepPartial } from "fvtt-types/utils";
 import { type ApparelSlot, isApparelSlot, TYPES } from "../../constants.js";
 import type Apparel from "../../item/apparel.js";
 import { isOfItemType } from "../../item/wvItem.js";
@@ -5,16 +6,15 @@ import WvI18n, {
   type I18nApparelSlots,
   type I18nApparelTypes
 } from "../../wvI18n.js";
-import WvItemSheet, { type SheetData as ItemSheetData } from "./wvItemSheet.js";
+import WvItemSheet, { type SheetContext as ItemSheetContext } from "./wvItemSheet.js";
+import ItemSheetV2 = foundry.applications.sheets.ItemSheetV2;
 
 /** An Item sheet for Apparel items. */
 export default class ApparelSheet extends WvItemSheet {
-  static override get defaultOptions(): ItemSheet.Options {
-    const defaultOptions = super.defaultOptions;
-    defaultOptions.classes.push("apparel-sheet");
-    defaultOptions.height = 300;
-    defaultOptions.width = 500;
-    return defaultOptions;
+  static override DEFAULT_OPTIONS = {
+    ...WvItemSheet.DEFAULT_OPTIONS,
+    classes: ["apparel-sheet"],
+    position: { height: 300, width: 500 },
   }
 
   /** Get the apparel sheet data for an Apparel. */
@@ -38,34 +38,29 @@ export default class ApparelSheet extends WvItemSheet {
     return super.item;
   }
 
-  override async getData(): Promise<SheetData> {
-    const data = await super.getData();
-
+  override async _prepareContext(options: DeepPartial<ItemSheetV2.RenderOptions> & { isFirstRender: boolean }): Promise<SheetContext> {
+    const sup = await super._prepareContext(options);
     return {
-      ...data,
-      sheet: {
-        ...data.sheet,
-        ...ApparelSheet.getApparelSheetData(this.item)
+      ...sup,
+      system: {
+        ...sup.system,
+        ...ApparelSheet.getApparelSheetData(this.item),
       }
-    };
+    }
   }
-
-  protected override _updateObject(
-    event: Event,
-    formData: Record<string, unknown>
-  ): Promise<unknown> {
+  override _prepareSubmitData(event: SubmitEvent, form: HTMLFormElement, formData: FormDataExtended, updateData?: object): object {
     this.patchBlockedApparelSlots(formData);
-    return super._updateObject(event, formData);
+    return super._prepareSubmitData(event, form, formData, updateData);
   }
 
   /** Patch the form data to set the self-occupied slot to not blocked. */
-  protected patchBlockedApparelSlots(formData: Record<string, unknown>) {
+  protected patchBlockedApparelSlots(formData: FormDataExtended) {
     const ownSlot = this.getOwnSlot(formData);
-    formData[`data.blockedSlots.${ownSlot}`] = false;
+    formData.object[`data.blockedSlots.${ownSlot}`] = false;
   }
 
-  protected getOwnSlot(formData: Record<string, unknown>): ApparelSlot {
-    const slot = formData["data.slot"];
+  protected getOwnSlot(formData: FormDataExtended): ApparelSlot {
+    const slot = formData.object["data.slot"];
     if (typeof slot === "string" && isApparelSlot(slot)) return slot;
     return this.item.system.slot;
   }
@@ -79,6 +74,6 @@ export interface SheetApparel {
   types: I18nApparelTypes;
 }
 
-export interface SheetData extends ItemSheetData {
-  sheet: ItemSheetData["sheet"] & SheetApparel;
+export interface SheetContext extends ItemSheetContext {
+  system: ItemSheetContext["system"] & SheetApparel;
 }

@@ -1,19 +1,18 @@
 import { type MagicType, MagicTypes, TYPES } from "../../constants";
-import WvItemSheet, { type SheetData as ItemSheetData } from "./wvItemSheet";
+import WvItemSheet, { type SheetContext as ItemSheetContext } from "./wvItemSheet";
 import { isOfItemType } from "../../item/wvItem.js";
 import type Magic from "../../item/magic";
 import WvI18n, { type I18nMagicSchools } from "../../wvI18n";
+import type { DeepPartial } from "fvtt-types/utils";
+import ItemSheetV2 = foundry.applications.sheets.ItemSheetV2;
 
 /** An Item Sheet for Magic items. */
 export default class MagicSheet extends WvItemSheet {
-  static override get defaultOptions(): ItemSheet.Options {
-    const defaultOptions = super.defaultOptions;
-    defaultOptions.classes.push("magic-sheet");
-    defaultOptions.height = 700;
-    defaultOptions.width = 670;
-    return defaultOptions;
+  static override DEFAULT_OPTIONS = {
+    ...WvItemSheet.DEFAULT_OPTIONS,
+    classes: ["magic-sheet"],
+    position: { height: 700, width: 670 },
   }
-
   override get item(): Magic {
     if (!isOfItemType(super.item, TYPES.ITEM.MAGIC))
       throw new Error("The used Item is not a Magic.");
@@ -42,13 +41,13 @@ export default class MagicSheet extends WvItemSheet {
     };
   }
 
-  override async getData(): Promise<SheetData> {
-    const data = await super.getData();
+  override async _prepareContext(options: DeepPartial<ItemSheetV2.RenderOptions> & { isFirstRender: boolean }): Promise<SheetContext> {
+    const data = await super._prepareContext(options);
 
     return {
       ...data,
-      sheet: {
-        ...data.sheet,
+      system: {
+        ...data.system,
         ...MagicSheet.getMagicSheetData(this.item)
       }
     };
@@ -66,6 +65,6 @@ export interface SheetMagic {
   type: string;
 }
 
-export interface SheetData extends ItemSheetData {
-  sheet: ItemSheetData["sheet"] & SheetMagic;
+export interface SheetContext extends ItemSheetContext {
+  system: ItemSheetContext["system"] & SheetMagic;
 }

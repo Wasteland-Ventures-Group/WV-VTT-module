@@ -1,6 +1,6 @@
 import type { DefinedError } from "ajv";
 import type WvActor from "../../actor/wvActor.js";
-import { CONSTANTS, HANDLEBARS, Rarities, type Rarity } from "../../constants.js";
+import { CONSTANTS, HANDLEBARS, ProtoItemTypes, Rarities, type ProtoItemType, type Rarity } from "../../constants.js";
 import { getGame, } from "../../foundryHelpers.js";
 import type WvItem from "../../item/wvItem.js";
 import type { DocumentRelation } from "../../item/wvItem.js";
@@ -11,149 +11,67 @@ import SyntaxErrorMessage from "../../ruleEngine/messages/syntaxErrorMessage.js"
 import WrongTypeMessage from "../../ruleEngine/messages/wrongTypeMessage.js";
 import RuleElement, * as re from "../../ruleEngine/ruleElement.js";
 import RuleElementMessage from "../../ruleEngine/ruleElementMessage.js";
-import type RuleElementSource from "../../ruleEngine/ruleElementSource.js";
-import { RULE_ELEMENT_SOURCE_JSON_SCHEMA } from "../../ruleEngine/ruleElementSource.js";
+import { type RuleElementSource } from "../../ruleEngine/ruleElementSource.js";
+import { defaultRuleElement, validateRuleElement } from "../../ruleEngine/ruleElementSource.js";
 import { LOG } from "../../systemLogger.js";
 import WvI18n, { getI18n } from "../../wvI18n.js";
 
-/** The basic Wasteland Ventures Item Sheet. */
-export default class WvItemSheet extends ItemSheet {
-  static override get defaultOptions(): ItemSheet.Options {
-    const defaultOptions = super.defaultOptions;
-    defaultOptions.classes.push(
-      ...[CONSTANTS.systemId, "document-sheet", "item-sheet"]
-    );
-    defaultOptions.height = 410;
-    defaultOptions.tabs = [
-      { navSelector: ".tabs", contentSelector: ".content", initial: "stats" }
-    ];
-    defaultOptions.width = 600;
-    return defaultOptions;
-  }
+import HandlebarsApplicationMixin = foundry.applications.api.HandlebarsApplicationMixin;
+import ItemSheetV2 = foundry.applications.sheets.ItemSheetV2;
+import _ = foundry.applications.api.DocumentSheetV2;
+import ApplicationV2 = foundry.applications.api.ApplicationV2;
+import type { DeepPartial } from "fvtt-types/utils";
 
-  /**
-   * A list of rule element syntax error tuples, with their indices
-   * corresponding to the rule elements. A tuple contains a syntax error message
-   * and the raw string source of the rule element.
-   */
-  protected ruleElementSyntaxErrors: [
-    message: SyntaxErrorMessage,
-    rawSource: string
-  ][] = [];
-
-  /**
-   * A list of rule element schema error tuples, with their indices
-   * corresponding to the rule elements. A tuple contains an array of rule
-   * element messages and the parsed source object of the rule element.
-   */
-  protected ruleElementSchemaErrors: [
-    messages: RuleElementMessage[],
-    source: object
-  ][] = [];
-
-  override get template(): string {
-    const root = `${CONSTANTS.systemPath}/handlebars/items/`;
-    switch (this.item.type) {
-      case "ammo":
-        return root + "ammoSheet.hbs";
-      case "apparel":
-        return root + "apparelSheet.hbs";
-      case "effect":
-        return root + "effectSheet.hbs";
-      case "magic":
-        return root + "magicSheet.hbs";
-      case "race":
-        return root + "raceSheet.hbs";
-      case "weapon":
-        return root + "weaponSheet.hbs";
-      default:
-        return root + "itemSheet.hbs";
-    }
-  }
-
-  override async getData(): Promise<SheetData> {
-    const data = await super.getData()
-
-    let rarity: SheetDataRarity | undefined = undefined;
-    if ("rarity" in data) {
-      const i18nRarities = WvI18n.rarities;
-      rarity = {
-        selectedName: i18nRarities[data.rarity as Rarity],
-        rarities: Rarities.reduce(
-          (rarities, rarityName) => {
-            rarities[rarityName] = i18nRarities[rarityName];
-            return rarities;
-          },
-          {} as Record<Rarity, string>
-        )
-      };
-    }
-
-    return {
-      ...data,
-      sheet: {
-        rarity,
-        parts: {
-          baseItemInputs: HANDLEBARS.partPaths.item.baseItemInputs,
-          header: HANDLEBARS.partPaths.item.header,
-          physicalItemInputs: HANDLEBARS.partPaths.item.physicalItemInputs,
-          rules: HANDLEBARS.partPaths.item.rules
+export default class WvItemSheet extends HandlebarsApplicationMixin(ItemSheetV2<SheetContext, ItemSheetV2.Configuration, ItemSheetV2.RenderOptions>) {
+  static override DEFAULT_OPTIONS = {
+    classes: ["document-sheet", "item-sheet"],
+    position: { height: 410, width: 600 },
+    actions: {
+      create: WvItemSheet2.createRuleElement,
+      updateFromCompendium: WvItemSheet2.updateFromCompendium,
+      toggleCompendiumlink: WvItemSheet2.toggleCompendiumLink,
+    },
+    window: {
+      controls: [
+        {
+          action: "updateFromCompendium",
+          class: "wv-update-from-compendium",
+          icon: "fas fa-file-download",
+          label: "wv.system.misc.updateFromCompendium",
         },
-        rules: {
-          elements: this.item.system.rules.elements.map(
-            this.mapSheetDataRuleElement.bind(this)
-          )
-        },
-        systemGridUnit: getGame().system.gridUnits.toString()
-      }
-    };
-  }
+        {
+          class: "wv-toggle-compendium-link",
+          icon: "fas fa-link",
+          action: "toggleCompendiumLink",
+          label: "wv.system.misc.toggleCompendiumLink",
+        }
+      ]
+    }
+  };
 
-  override activateListeners(html: JQuery<HTMLFormElement>): void {
-    super.activateListeners(html);
+  static override PARTS = ProtoItemTypes.reduce((a, b) => {
+    a[b] = { template: templateByType(b) };
+    return a
+  }, {} as Record<ProtoItemType, HandlebarsApplicationMixin.HandlebarsTemplatePart>)
 
-    const sheetForm = html[0];
-    if (!(sheetForm instanceof HTMLFormElement))
-      throw new Error("The element passed was not a form element.");
-
-    sheetForm
-      .querySelectorAll(".rule-element-control[data-action=create]")
-      .forEach((element) =>
-        element.addEventListener(
-          "click",
-          this.onClickCreateRuleElement.bind(this)
-        )
-      );
-
-    sheetForm
-      .querySelectorAll(".rule-element-control[data-action=delete]")
-      .forEach((element) =>
-        element.addEventListener("click", (event) => {
-          if (!(event instanceof MouseEvent))
-            throw new Error("This should not happen.");
-          this.onClickDeleteRuleElement(event);
-        })
-      );
-
-    if (this.item.hasEnabledCompendiumLink)
-      this.disableCompendiumLinkInputs(sheetForm);
+  static override TABS: Record<string, ApplicationV2.TabsConfiguration> = {
+    "item": {
+      initial: "stats",
+      tabs: []
+    }
   }
 
   /** Handle a click event on a create rule element button. */
-  protected onClickCreateRuleElement(): void {
-    const sources = this.item.system.rules.sources;
-    sources.push(this.getDefaultRuleElementSource());
-    this.item.updateRuleSources(sources);
-    LOG.debug(`Created RuleElement on item with id [${this.item.id}]`);
-  }
-
-  /** Get the default rule element source for newly created rule elements. */
-  protected getDefaultRuleElementSource(): RuleElementSource {
-    return { ...RULE_ELEMENT_SOURCE_JSON_SCHEMA.default };
+  protected static createRuleElement(): void {
+    const self: WvItemSheet2 = this as unknown as WvItemSheet2;
+    const sources = self.item.system.rules.sources;
+    sources.push(defaultRuleElement());
+    self.item.updateRuleSources(sources);
+    LOG.debug(`Created RuleElement on item with id [${self.item.id}]`);
   }
 
   /** Handle a click event on a delete rule element button. */
-  protected onClickDeleteRuleElement(event: MouseEvent): void {
+  protected deleteRuleElement(event: MouseEvent): void {
     if (!(event.target instanceof HTMLElement))
       throw new Error("The target was not an HTMLElement.");
 
@@ -172,122 +90,61 @@ export default class WvItemSheet extends ItemSheet {
     LOG.debug(`Deleted RuleElement on item with id [${this.item.id}]`);
   }
 
-  /** Disable all inputs that would be overwritten by a compendium update. */
-  protected disableCompendiumLinkInputs(form: HTMLFormElement): void {
-    const disableAmount = !!this.item.getFlag(
-      CONSTANTS.systemId,
-      "overwriteAmountWithCompendium"
-    );
-    const disableNotes = !!this.item.getFlag(
-      CONSTANTS.systemId,
-      "overwriteNotesWithCompendium"
-    );
-    const disableRules = !!this.item.getFlag(
-      CONSTANTS.systemId,
-      "overwriteRulesWithCompendium"
-    );
-
-    if (disableRules) {
-      form
-        .querySelectorAll("button.rule-element-control")
-        .forEach((element) => element.setAttribute("disabled", ""));
-    }
-
-    const tags = ["input", "select", "textarea"];
-    for (const tag of tags) {
-      const elements = form.getElementsByTagName(tag);
-      for (let i = 0; i < elements.length; i++) {
-        const el = elements.item(i);
-        if (
-          el instanceof HTMLInputElement ||
-          el instanceof HTMLSelectElement ||
-          el instanceof HTMLTextAreaElement
-        ) {
-          if (!el.name.startsWith("data.") && !el.name.startsWith("sheet."))
-            continue;
-
-          if (el.name === "data.amount" && !disableAmount) continue;
-          if (el.name === "data.notes" && !disableNotes) continue;
-          if (el.name.startsWith("sheet.rules.") && !disableRules) continue;
-
-          el.setAttribute("disabled", "");
-        }
-      }
-    }
+  override _configureRenderOptions(options: ItemSheetV2.RenderOptions) {
+    super._configureRenderOptions(options);
+    options.parts = [this.item.type];
   }
 
-  /** Handle a click event on the toggle compendium link button. */
-  protected async onClickToggleCompendiumLink(): Promise<void> {
-    await this.item.toggleCompendiumLink();
-    if (ui.notifications) {
-      const key = this.item.getFlag(CONSTANTS.systemId, "disableCompendiumLink")
-        ? "wv.system.messages.itemIsNowUnlinked"
-        : "wv.system.messages.itemIsNowLinked";
-      ui.notifications.info(
-        getI18n().format(key, { name: this.item.name })
-      );
+  override async _prepareContext(options: DeepPartial<ItemSheetV2.RenderOptions> & { isFirstRender: boolean }): Promise<SheetContext> {
+    let rarity: SheetDataRarity | undefined = undefined;
+    const data = this.item.system;
+    if ("rarity" in data) {
+      const i18nRarities = WvI18n.rarities;
+      rarity = {
+        selectedName: i18nRarities[data.rarity as Rarity],
+        rarities: Rarities.reduce(
+          (rarities, rarityName) => {
+            rarities[rarityName] = i18nRarities[rarityName];
+            return rarities;
+          },
+          {} as Record<Rarity, string>
+        )
+      };
     }
-  }
-
-  /** Handle a click event on the update from compendium button. */
-  protected onClickUpdateFromCompendium(): void {
-    new Dialog({
-      title: getI18n().format(
-        "wv.system.dialogs.compendiumOverwriteConfirm.title",
-        { name: this.item.name }
-      ),
-      content: getI18n().localize(
-        "wv.system.dialogs.compendiumOverwriteConfirm.content"
-      ),
-      default: "yes",
-      buttons: {
-        yes: {
-          label: getI18n().localize("wv.system.actions.update"),
-          callback: () => this.item.updateFromCompendium()
+    return {
+      ...await super._prepareContext(options),
+      system: {
+        rarity,
+        rules: {
+          elements: this.item.system.rules.elements.map(
+            this.mapSheetDataRuleElement.bind(this)
+          )
         },
-        no: {
-          label: getI18n().localize("wv.system.actions.cancel")
-        }
+        systemGridUnit: getGame().system.gridUnits.toString(),
+        parts: {
+          baseItemInputs: HANDLEBARS.partPaths.item.baseItemInputs,
+          header: HANDLEBARS.partPaths.item.header,
+          physicalItemInputs: HANDLEBARS.partPaths.item.physicalItemInputs,
+          rules: HANDLEBARS.partPaths.item.rules
+        },
       }
-    }).render(true);
-  }
-
-  protected override _getHeaderButtons(): Application.HeaderButton[] {
-    const buttons = super._getHeaderButtons();
-    if (this.item.hasCompendiumLink && this.item.isProtoItemType) {
-      buttons.unshift({
-        label: getI18n().localize("wv.system.misc.updateFromCompendium"),
-        class: "wv-update-from-compendium",
-        icon: "fas fa-file-download",
-        onclick: this.onClickUpdateFromCompendium.bind(this)
-      });
-      buttons.unshift({
-        label: getI18n().localize("wv.system.misc.toggleCompendiumLink"),
-        class: "wv-toggle-compendium-link",
-        icon: "fas fa-link",
-        onclick: this.onClickToggleCompendiumLink.bind(this)
-      });
     }
-    return buttons;
   }
 
-  protected override async _updateObject(
-    event: Event,
-    formData: Record<string, unknown>
-  ): Promise<unknown> {
+  override _prepareSubmitData(event: SubmitEvent, form: HTMLFormElement, formData: FormDataExtended, updateData?: object): object {
     this.sanitizeTags(formData, "data.tags");
     this.parseRuleElementSources(formData);
-    return super._updateObject(event, formData);
+    return super._prepareSubmitData(event, form, formData, updateData);
   }
 
   /** Sanitize the tags on the given property in the form data. */
   protected sanitizeTags(
-    formData: Record<string, unknown>,
+    formData: FormDataExtended,
     name: string
   ): void {
-    const value = formData[name];
+    const value = formData.object[name];
     if (typeof value === "string") {
-      formData[name] = [
+      formData.object[name] = [
         ...new Set(
           value
             .split(",")
@@ -299,97 +156,13 @@ export default class WvItemSheet extends ItemSheet {
   }
 
   /**
-   * Map a given, saved rule element to a SheetDataRuleElement. This checks the
-   * two error arrays of the application and uses their data, if there is an
-   * entry at the corresponding index.
-   * @param rule - the original rule, saved in the back-end
-   * @param index - the index of the rule in the sources array of the item
-   */
-  private mapSheetDataRuleElement(
-    rule: RuleElement,
-    index: number
-  ): SheetDataRuleElement {
-    const syntaxErrorTuple = this.ruleElementSyntaxErrors[index] ?? [];
-    const schemaErrorTuple = this.ruleElementSchemaErrors[index] ?? [];
-    const syntaxError = syntaxErrorTuple[0];
-    const schemaErrors = schemaErrorTuple[0];
-
-    const hasSyntaxError = syntaxError instanceof RuleElementMessage;
-    const hasSchemaErrors = schemaErrors?.length;
-
-    let messages: RuleElementMessage[];
-    let source: string;
-    let documentMessages: SheetDataDocumentMessages[] = [];
-    if (hasSyntaxError) {
-      messages = [syntaxError, new NotSavedMessage()];
-      source = syntaxErrorTuple[1] ?? "";
-    } else if (hasSchemaErrors) {
-      messages = [...schemaErrors, new NotSavedMessage()];
-      source = JSON.stringify(schemaErrorTuple[1] ?? "", null, 2);
-    } else {
-      messages = rule.messages;
-      source = JSON.stringify(rule.source, null, 2);
-      documentMessages = [...rule.documentMessages.entries()].map(
-        ([document, value]) =>
-          this.mapToSheetDataDocumentMessages(document, value)
-      );
-    }
-
-    return {
-      hasDocumentMessages: rule.hasDocumentMessages,
-      hasErrors: re.hasErrors(messages) || rule.hasDocumentErrors,
-      hasSelectedDocuments: rule.hasSelectedDocuments,
-      hasWarnings: re.hasWarnings(messages) || rule.hasDocumentWarnings,
-      documentMessages,
-      label: rule.label,
-      messages,
-      selectedDocuments: [...rule.selectedDocuments.entries()].map(
-        ([document, value]) =>
-          this.mapToSheetDataSelectedDocument(document, value)
-      ),
-      source
-    };
-  }
-
-  /**
-   * Map an entry in a RuleElement's documentMessages to a
-   * SheetDataDocumentMessages.
-   */
-  private mapToSheetDataDocumentMessages(
-    document: WvActor | WvItem,
-    value: re.DocumentMessagesValue
-  ): SheetDataDocumentMessages {
-    return {
-      docId: document.id ?? "",
-      docName: document.name ?? "",
-      messages: value.messages,
-      docRelation: getI18n().localize(
-        `wv.system.ruleEngine.documentMessages.relations.${value.causeDocRelation}`
-      )
-    };
-  }
-
-  private mapToSheetDataSelectedDocument(
-    document: WvActor | WvItem,
-    { relation }: { relation: DocumentRelation }
-  ): SheetDataSelectedDocument {
-    return {
-      docId: document.id ?? "",
-      docName: document.name ?? "",
-      docRelation: getI18n().localize(
-        `wv.system.ruleEngine.documentMessages.relations.${relation}`
-      )
-    };
-  }
-
-  /**
    * Parse the RuleElement sources from the form data. This adds the update data
    * for the rule elements to the given form data and deletes the front-end only
    * form data entries. If there are errors, they are added to the corresponding
    * arrays of this class and their updates are not added to the update data.
    * @param formData - the data of the submitted form
    */
-  private parseRuleElementSources(formData: Record<string, unknown>) {
+  private parseRuleElementSources(formData: FormDataExtended) {
     // Prepare for a new parse
     this.ruleElementSyntaxErrors = [];
     this.ruleElementSchemaErrors = [];
@@ -409,26 +182,26 @@ export default class WvItemSheet extends ItemSheet {
       } catch (error) {
         if (error instanceof SyntaxError) {
           this.handleJsonSyntaxError(index, error, value);
-          delete formData[key];
+          delete formData.object[key];
           continue;
         } else throw error;
       }
 
       // Validate the source with the rule element schema
-      const validator = getGame().wv.validators.ruleElement;
-      if (!validator(ruleSource)) {
+      const validationResult = validateRuleElement(ruleSource);
+      if (validationResult) {
         this.handleRuleElementSchemaErrors(
           index,
-          validator.errors as DefinedError[],
+          validationResult.elements as unknown as DefinedError[],
           ruleSource
         );
-        delete formData[key];
+        delete formData.object[key];
         continue;
       }
 
       // Assign the source to the corresponding index if successful
-      ruleSources[index] = ruleSource;
-      delete formData[key];
+      ruleSources[index] = ruleSource as RuleElementSource;
+      delete formData.object[key];
     }
 
     // If there are no updates that can be saved, don't add the data to the
@@ -454,7 +227,7 @@ export default class WvItemSheet extends ItemSheet {
     }
 
     // Add the updates to the appriate entry of the update data
-    formData["data.rules.sources"] = ruleSources;
+    formData.object["data.rules.sources"] = ruleSources;
   }
 
   /**
@@ -556,22 +329,239 @@ export default class WvItemSheet extends ItemSheet {
       "wv.system.ruleEngine.errors.semantic.unknown"
     );
   }
+
+  /**
+   * A list of rule element syntax error tuples, with their indices
+   * corresponding to the rule elements. A tuple contains a syntax error message
+   * and the raw string source of the rule element.
+   */
+  protected ruleElementSyntaxErrors: [
+    message: SyntaxErrorMessage,
+    rawSource: string
+  ][] = [];
+
+  /**
+   * A list of rule element schema error tuples, with their indices
+   * corresponding to the rule elements. A tuple contains an array of rule
+   * element messages and the parsed source object of the rule element.
+   */
+  protected ruleElementSchemaErrors: [
+    messages: RuleElementMessage[],
+    source: object
+  ][] = [];
+
+  /**
+   * Map a given, saved rule element to a SheetDataRuleElement. This checks the
+   * two error arrays of the application and uses their data, if there is an
+   * entry at the corresponding index.
+   * @param rule - the original rule, saved in the back-end
+   * @param index - the index of the rule in the sources array of the item
+   */
+  private mapSheetDataRuleElement(
+    rule: RuleElement,
+    index: number
+  ): SheetDataRuleElement {
+    const syntaxErrorTuple = this.ruleElementSyntaxErrors[index] ?? [];
+    const schemaErrorTuple = this.ruleElementSchemaErrors[index] ?? [];
+    const syntaxError = syntaxErrorTuple[0];
+    const schemaErrors = schemaErrorTuple[0];
+
+    const hasSyntaxError = syntaxError instanceof RuleElementMessage;
+    const hasSchemaErrors = schemaErrors?.length;
+
+    let messages: RuleElementMessage[];
+    let source: string;
+    let documentMessages: SheetDataDocumentMessages[] = [];
+    if (hasSyntaxError) {
+      messages = [syntaxError, new NotSavedMessage()];
+      source = syntaxErrorTuple[1] ?? "";
+    } else if (hasSchemaErrors) {
+      messages = [...schemaErrors, new NotSavedMessage()];
+      source = JSON.stringify(schemaErrorTuple[1] ?? "", null, 2);
+    } else {
+      messages = rule.messages;
+      source = JSON.stringify(rule.source, null, 2);
+      documentMessages = [...rule.documentMessages.entries()].map(
+        ([document, value]) =>
+          this.mapToSheetDataDocumentMessages(document, value)
+      );
+    }
+
+    return {
+      hasDocumentMessages: rule.hasDocumentMessages,
+      hasErrors: re.hasErrors(messages) || rule.hasDocumentErrors,
+      hasSelectedDocuments: rule.hasSelectedDocuments,
+      hasWarnings: re.hasWarnings(messages) || rule.hasDocumentWarnings,
+      documentMessages,
+      label: rule.label,
+      messages,
+      selectedDocuments: [...rule.selectedDocuments.entries()].map(
+        ([document, value]) =>
+          this.mapToSheetDataSelectedDocument(document, value)
+      ),
+      source
+    };
+  }
+
+  /**
+   * Map an entry in a RuleElement's documentMessages to a
+   * SheetDataDocumentMessages.
+   */
+  private mapToSheetDataDocumentMessages(
+    document: WvActor | WvItem,
+    value: re.DocumentMessagesValue
+  ): SheetDataDocumentMessages {
+    return {
+      docId: document.id ?? "",
+      docName: document.name ?? "",
+      messages: value.messages,
+      docRelation: getI18n().localize(
+        `wv.system.ruleEngine.documentMessages.relations.${value.causeDocRelation}`
+      )
+    };
+  }
+
+  private mapToSheetDataSelectedDocument(
+    document: WvActor | WvItem,
+    { relation }: { relation: DocumentRelation }
+  ): SheetDataSelectedDocument {
+    return {
+      docId: document.id ?? "",
+      docName: document.name ?? "",
+      docRelation: getI18n().localize(
+        `wv.system.ruleEngine.documentMessages.relations.${relation}`
+      )
+    };
+  }
+
+
+  override async _onRender(context: SheetContext, options: ItemSheetV2.RenderOptions): Promise<void> {
+    await super._onRender(context, options)
+
+    if (this.item.hasEnabledCompendiumLink)
+      this.disableCompendiumLinkInputs();
+  }
+
+  /** Disable all inputs that would be overwritten by a compendium update. */
+  protected disableCompendiumLinkInputs(): void {
+    if (this.form === null) {
+      return;
+    }
+    const disableAmount = !!this.item.getFlag(
+      CONSTANTS.systemId,
+      "overwriteAmountWithCompendium"
+    );
+    const disableNotes = !!this.item.getFlag(
+      CONSTANTS.systemId,
+      "overwriteNotesWithCompendium"
+    );
+    const disableRules = !!this.item.getFlag(
+      CONSTANTS.systemId,
+      "overwriteRulesWithCompendium"
+    );
+
+    if (disableRules) {
+      this.form
+        .querySelectorAll("button.rule-element-control")
+        .forEach((element) => element.setAttribute("disabled", ""));
+    }
+
+    const tags = ["input", "select", "textarea"];
+    for (const tag of tags) {
+      const elements = this.form.getElementsByTagName(tag);
+      for (let i = 0; i < elements.length; i++) {
+        const el = elements.item(i);
+        if (
+          el instanceof HTMLInputElement ||
+          el instanceof HTMLSelectElement ||
+          el instanceof HTMLTextAreaElement
+        ) {
+          if (!el.name.startsWith("data.") && !el.name.startsWith("sheet."))
+            continue;
+
+          if (el.name === "data.amount" && !disableAmount) continue;
+          if (el.name === "data.notes" && !disableNotes) continue;
+          if (el.name.startsWith("sheet.rules.") && !disableRules) continue;
+
+          el.setAttribute("disabled", "");
+        }
+      }
+    }
+  }
+
+  /** Handle a click event on the update from compendium button. */
+  protected static updateFromCompendium(): void {
+    const self: WvItemSheet2 = this as unknown as WvItemSheet2;
+    new Dialog({
+      title: getI18n().format(
+        "wv.system.dialogs.compendiumOverwriteConfirm.title",
+        { name: self.item.name }
+      ),
+      content: getI18n().localize(
+        "wv.system.dialogs.compendiumOverwriteConfirm.content"
+      ),
+      default: "yes",
+      buttons: {
+        yes: {
+          label: getI18n().localize("wv.system.actions.update"),
+          callback: () => self.item.updateFromCompendium()
+        },
+        no: {
+          label: getI18n().localize("wv.system.actions.cancel")
+        }
+      }
+    }).render(true);
+  }
+
+  /** Handle a click event on the toggle compendium link button. */
+  protected static async toggleCompendiumLink(): Promise<void> {
+    const self: WvItemSheet2 = this as unknown as WvItemSheet2;
+    await self.item.toggleCompendiumLink();
+    if (ui.notifications) {
+      const key = self.item.getFlag(CONSTANTS.systemId, "disableCompendiumLink")
+        ? "wv.system.messages.itemIsNowUnlinked"
+        : "wv.system.messages.itemIsNowLinked";
+      ui.notifications.info(
+        getI18n().format(key, { name: self.item.name })
+      );
+    }
+  }
 }
 
-export interface SheetData extends ItemSheet.Data {
-  sheet: {
+function templateByType(t: ProtoItemType): string {
+  const root = `${CONSTANTS.systemPath}/handlebars/items/`;
+  switch (t) {
+    case "ammo":
+      return root + "ammoSheet.hbs";
+    case "apparel":
+      return root + "apparelSheet.hbs";
+    case "effect":
+      return root + "effectSheet.hbs";
+    case "magic":
+      return root + "magicSheet.hbs";
+    case "race":
+      return root + "raceSheet.hbs";
+    case "weapon":
+      return root + "weaponSheet.hbs";
+    default:
+      return root + "itemSheet.hbs";
+  }
+}
+
+export interface SheetContext extends ItemSheetV2.RenderContext {
+  system: {
     rarity: SheetDataRarity | undefined;
+    rules: {
+      elements: SheetDataRuleElement[];
+    };
+    systemGridUnit: string | undefined;
     parts: {
       baseItemInputs: string;
       header: string;
       physicalItemInputs: string;
       rules: string;
     };
-    rules: {
-      elements: SheetDataRuleElement[];
-    };
-    systemGridUnit: string | undefined;
-  };
+  }
 }
 
 export interface SheetDataRarity {

@@ -44,6 +44,14 @@ declare module "fvtt-types/configuration" {
       misc: typeof MiscSystem;
     };
   }
+
+  interface SettingConfig {
+    "wasteland-ventures.initialized": boolean;
+    "wasteland-ventures.systemMigrationVersion": string;
+    "wasteland-ventures.movement.enforceAndSubtractApForPlayers": settings.AlwaysNeverSetting;
+    "wasteland-ventures.movement.enforceApForGameMasters": settings.AlwaysNeverSetting;
+    "wasteland-ventures.movement.subtractApForGameMasters": settings.AlwaysNeverSetting;
+  }
 }
 
 
@@ -83,14 +91,6 @@ declare global {
         };
       };
     };
-  }
-
-  interface SettingConfig {
-    "wasteland-ventures.initialized": boolean;
-    "wasteland-ventures.systemMigrationVersion": string;
-    "wasteland-ventures.movement.enforceAndSubtractApForPlayers": settings.AlwaysNeverSetting;
-    "wasteland-ventures.movement.enforceApForGameMasters": settings.AlwaysNeverSetting;
-    "wasteland-ventures.movement.subtractApForGameMasters": settings.AlwaysNeverSetting;
   }
 
   interface FlagConfig {
